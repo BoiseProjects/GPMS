@@ -30,6 +30,11 @@
 			<timezone>-6</timezone>
 		</developer>
 		<developer>
+			<id>tshamrin</id>
+			<name>Tamanna Shamrin</name>
+			<email>tamannashamrin@u.boisestate.edu</email>
+		</developer>
+		<developer>
 			<id>thomasvolz</id>
 			<name>Thomas Volz</name>
 			<email>thomasvolz@u.boisestate.edu</email>
@@ -150,6 +155,7 @@
 			<artifactId>jersey-json</artifactId>
 			<version>1.19</version>
 		</dependency>
+		
 		<dependency>
 			<groupId>asm</groupId>
 			<artifactId>asm</artifactId>
@@ -221,6 +227,7 @@
 			<artifactId>proxytoys</artifactId>
 			<version>1.0</version>
 		</dependency>
+
 		<!-- Java Mail sender API -->
 		<dependency>
 			<groupId>javax.mail</groupId>
