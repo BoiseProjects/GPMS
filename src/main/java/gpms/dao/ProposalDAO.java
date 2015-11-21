@@ -1,8 +1,10 @@
 package gpms.dao;
 
+import java.net.UnknownHostException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
+import org.bson.types.ObjectId;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
 import org.mongodb.morphia.dao.BasicDAO;
@@ -27,4 +29,10 @@ public class ProposalDAO  extends BasicDAO<Proposal, String> {
 		super(mongo, morphia, dbName);
 	}
 
+	public Proposal findProposalByProposalID(ObjectId id)
+			throws UnknownHostException {
+		Datastore ds = getDatastore();
+		return ds.createQuery(Proposal.class).field("_id").equal(id).get();
+	}
+	
 }
