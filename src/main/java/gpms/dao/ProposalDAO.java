@@ -3,6 +3,7 @@ package gpms.dao;
 import java.net.UnknownHostException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.Datastore;
@@ -13,7 +14,9 @@ import com.mongodb.MongoClient;
 import com.mongodb.MongoException;
 
 import gpms.model.AuditLog;
+import gpms.model.GPMSCommonInfo;
 import gpms.model.Proposal;
+import gpms.model.UserProfile;
 
 public class ProposalDAO  extends BasicDAO<Proposal, String> {
 	private static final String DBNAME = "db_gpms";
@@ -33,6 +36,16 @@ public class ProposalDAO  extends BasicDAO<Proposal, String> {
 			throws UnknownHostException {
 		Datastore ds = getDatastore();
 		return ds.createQuery(Proposal.class).field("_id").equal(id).get();
+	}
+	
+	public void deleteProposal(Proposal proposal, UserProfile authorProfile,
+			GPMSCommonInfo gpmsCommonObj) {
+		Datastore ds = getDatastore();
+		proposal.setProposalStatus(Status.DELETED);
+		AuditLog entry = new AuditLog(authorProfile, "Deleted Proposal for "
+				+ proposal.getProjectInfo().getProjectTitle(), new Date());
+		proposal.addEntryToAuditLog(entry);
+		ds.save(proposal);
 	}
 	
 }
