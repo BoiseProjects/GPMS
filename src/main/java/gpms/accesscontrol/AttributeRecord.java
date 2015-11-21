@@ -1,7 +1,5 @@
 package gpms.accesscontrol;
 
-import java.util.Vector;
-
 public class AttributeRecord {
 	private String attributeName;
 	private String fullAttributeName;

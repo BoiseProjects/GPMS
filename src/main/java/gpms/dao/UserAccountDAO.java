@@ -1,8 +1,5 @@
 package gpms.dao;
 
-import gpms.DAL.MongoDBConnector;
-import gpms.model.AuditLog;
-import gpms.model.GPMSCommonInfo;
 import gpms.model.UserAccount;
 import gpms.model.UserProfile;
 

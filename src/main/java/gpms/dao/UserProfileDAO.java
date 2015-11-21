@@ -6,18 +6,8 @@ package gpms.dao;
  * @author Milson Munakami
  */
 
-import gpms.DAL.MongoDBConnector;
-import gpms.model.Address;
-import gpms.model.AuditLog;
-import gpms.model.AuditLogInfo;
-import gpms.model.GPMSCommonInfo;
-import gpms.model.PositionDetails;
-import gpms.model.Proposal;
 import gpms.model.UserAccount;
-import gpms.model.UserInfo;
 import gpms.model.UserProfile;
-import gpms.rest.InvestigatorUsersAndPositions;
-
 import java.net.UnknownHostException;
 import java.text.DateFormat;
 import java.text.ParseException;
