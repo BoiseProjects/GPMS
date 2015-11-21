@@ -16,6 +16,7 @@ import com.mongodb.MongoException;
 import gpms.model.AuditLog;
 import gpms.model.GPMSCommonInfo;
 import gpms.model.Proposal;
+import gpms.model.Status;
 import gpms.model.UserProfile;
 
 public class ProposalDAO  extends BasicDAO<Proposal, String> {
