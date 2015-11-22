@@ -9,6 +9,14 @@ $(function() {
 		ignore : []
 	});
 
+	$.validator.addMethod('notequalto', function(value, element, param) {
+		if (value != "" && $(param).val() != "") {
+			return value != $(param).val();
+		} else {
+			return true;
+		}
+	}, 'Both emails looks same!');
+
 	var gpmsCommonObj = function() {
 		var gpmsCommonInfo = {
 			UserName : GPMS.utils.GetUserName(),
@@ -192,7 +200,31 @@ $(function() {
 		LoadStaticImage : function() {
 			$('.cssClassSuccessImg').prop('src',
 					'' + GPMS.utils.GetGPMSRootPath() + 'images/right.jpg');
-		},		
+		},
+
+		SearchUsers : function() {
+			var userName = $.trim($("#txtSearchUserName").val());
+			var college = $.trim($('#ddlSearchCollege').val()) == "" ? null : $
+					.trim($('#ddlSearchCollege').val()) == "0" ? null : $
+					.trim($('#ddlSearchCollege').val());
+			var department = $.trim($('#ddlSearchDepartment').val()) == "" ? null
+					: $.trim($('#ddlSearchDepartment').val()) == "0" ? null : $
+							.trim($('#ddlSearchDepartment').val());
+			var positionType = $.trim($('#ddlSearchPositionType').val()) == "" ? null
+					: $.trim($('#ddlSearchPositionType').val()) == "0" ? null
+							: $.trim($('#ddlSearchPositionType').val());
+			var positionTitle = $.trim($('#ddlSearchPositionTitle').val()) == "" ? null
+					: $.trim($('#ddlSearchPositionTitle').val()) == "0" ? null
+							: $.trim($('#ddlSearchPositionTitle').val());
+			var isActive = $.trim($("#ddlSearchIsActive").val()) == "" ? null
+					: $.trim($("#ddlSearchIsActive").val()) == "True" ? true
+							: false;
+			if (userName.length < 1) {
+				userName = null;
+			}
+			usersManage.BindUserGrid(userName, college, department,
+					positionType, positionTitle, isActive);
+		},
 
 		BindUserGrid : function(userName, college, department, positionType,
 				positionTitle, isActive) {
@@ -1583,7 +1615,7 @@ $(function() {
 
 				$('#divUserForm').hide();
 				$('#divUserGrid').show();
-				break;			
+				break;
 
 			case 7:
 				userNameIsUnique = stringToBoolean(msg);
@@ -1592,7 +1624,7 @@ $(function() {
 			case 8:
 				emailIsUnique = stringToBoolean(msg);
 				break;
-				
+
 			}
 		},
 
@@ -1909,7 +1941,15 @@ $(function() {
 									// td').fadeIn('slow');
 								}
 							});
+			$("#btnSearchUser").bind("click", function() {
+				usersManage.SearchUsers();
+				return false;
+			});
 
+			$("#btnSearchUserAuditLog").bind("click", function() {
+				usersManage.SearchUserAuditLogs();
+				return false;
+			});
 
 			// propose username by combining first- and lastname
 			$("#txtUserName").focus(function() {
