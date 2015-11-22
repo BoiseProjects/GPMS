@@ -11,6 +11,7 @@ import gpms.model.Address;
 import gpms.model.AuditLog;
 import gpms.model.AuditLogInfo;
 import gpms.model.PositionDetails;
+import gpms.model.Proposal;
 import gpms.model.UserAccount;
 import gpms.model.UserInfo;
 import gpms.model.UserProfile;
@@ -391,14 +392,24 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 	}
 
 	private int countPIProposal(UserProfile userProfile) {
-		return 0;
+		Datastore ds = getDatastore();
+		return ds.createQuery(Proposal.class)
+				.field("investigator info.PI.user profile").equal(userProfile)
+				.asList().size();
 	}
 
 	private int countCoPIProposal(UserProfile userProfile) {
-		return 0;
+		Datastore ds = getDatastore();
+		return ds.createQuery(Proposal.class)
+				.field("investigator info.CO-PI.user profile")
+				.equal(userProfile).asList().size();
 	}
 
 	private int countSeniorPersonnel(UserProfile userProfile) {
-		return 0;
+		Datastore ds = getDatastore();
+		return ds.createQuery(Proposal.class)
+				.field("investigator info.senior personnel.user profile")
+				.equal(userProfile).asList().size();
 	}
+
 }
