@@ -423,6 +423,18 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 		return ds.createQuery(UserProfile.class).field("user id")
 				.equal(userAccount).get();
 	}
+
+	public void deleteUserProfileByUserID(UserProfile userProfile,
+			UserProfile authorProfile, GPMSCommonInfo gpmsCommonObj) {
+		Datastore ds = getDatastore();
+		audit = new AuditLog(authorProfile, "Deleted user "
+				+ userProfile.getFullName(), new Date());
+		userProfile.addEntryToAuditLog(audit);
+
+		userProfile.setDeleted(true);
+		ds.save(userProfile);
+	}
+
 	public void activateUserProfileByUserID(UserProfile userProfile,
 			UserProfile authorProfile, GPMSCommonInfo gpmsCommonObj,
 			Boolean isActive) {

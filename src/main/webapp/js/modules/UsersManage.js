@@ -1623,6 +1623,19 @@ $(function() {
 				$('#divUserGrid').show();
 				break;
 
+			case 4:
+				SageData.Get("gdvUsers").Arr.length = 0;
+				usersManage.BindUserGrid(null, null, null, null, null, null);
+				csscody
+						.info("<h2>"
+								+ getLocale(gpmsUsersManagement,
+										'Successful Message')
+								+ "</h2><p>"
+								+ getLocale(gpmsUsersManagement,
+										'Selected user(s) has been deleted successfully.')
+								+ "</p>");
+				break;
+
 			case 5:
 				usersManage.BindUserGrid(null, null, null, null, null, null);
 				csscody.info("<h2>"
@@ -1699,6 +1712,17 @@ $(function() {
 						+ "</h2><p>"
 						+ getLocale(gpmsUsersManagement,
 								'User cannot be deleted.') + "</p>");
+				break;
+			case 4:
+				csscody
+						.error("<h2>"
+								+ getLocale(gpmsUsersManagement,
+										'Error Message')
+								+ "</h2><p>"
+								+ getLocale(gpmsUsersManagement,
+										'Selected user(s) cannot be deleted.')
+								+ "</p>");
+				break;
 			case 5:
 				csscody.error("<h2>"
 						+ getLocale(gpmsUsersManagement, 'Error Message')

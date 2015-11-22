@@ -279,6 +279,135 @@ public class UserService {
 	}
 
 	@POST
+	@Path("/DeleteUserByUserID")
+	public String deleteUserByUserID(String message)
+			throws JsonProcessingException, IOException {
+		UserProfile user = new UserProfile();
+		String response = new String();
+
+		String profileId = new String();
+		String userName = new String();
+		String userProfileID = new String();
+		String cultureName = new String();
+
+		ObjectMapper mapper = new ObjectMapper();
+		JsonNode root = mapper.readTree(message);
+
+		if (root != null && root.has("userId")) {
+			profileId = root.get("userId").getTextValue();
+		}
+
+		JsonNode commonObj = root.get("gpmsCommonObj");
+		if (commonObj != null && commonObj.has("UserName")) {
+			userName = commonObj.get("UserName").getTextValue();
+		}
+
+		if (commonObj != null && commonObj.has("UserProfileID")) {
+			userProfileID = commonObj.get("UserProfileID").getTextValue();
+		}
+
+		if (commonObj != null && commonObj.has("CultureName")) {
+			cultureName = commonObj.get("CultureName").getTextValue();
+		}
+
+		// TODO : login set this session value
+		// FOr Testing I am using HardCoded UserProfileID
+		// userProfileID = "55b9225454ffd82dc052a32a";
+
+		ObjectId id = new ObjectId(profileId);
+		ObjectId authorId = new ObjectId(userProfileID);
+
+		GPMSCommonInfo gpmsCommonObj = new GPMSCommonInfo();
+		gpmsCommonObj.setUserName(userName);
+		gpmsCommonObj.setUserProfileID(userProfileID);
+		gpmsCommonObj.setCultureName(cultureName);
+
+		UserProfile authorProfile = userProfileDAO
+				.findUserDetailsByProfileID(authorId);
+
+		UserProfile userProfile = userProfileDAO.findUserDetailsByProfileID(id);
+		userProfileDAO.deleteUserProfileByUserID(userProfile, authorProfile,
+				gpmsCommonObj);
+
+		UserAccount userAccount = userAccountDAO.findByID(userProfile
+				.getUserAccount().getId());
+		userAccountDAO.deleteUserAccountByUserID(userAccount, authorProfile,
+				gpmsCommonObj);
+
+		// response.setContentType("text/html;charset=UTF-8");
+		// response.getWriter().write("Success Data");
+
+		// Gson gson = new GsonBuilder().setPrettyPrinting().create();
+		// response = gson.toJson("Success", String.class);
+
+		response = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(
+				"Success");
+		return response;
+	}
+
+	@POST
+	@Path("/DeleteMultipleUsersByUserID")
+	public String deleteMultipleUsersByUserID(String message)
+			throws JsonProcessingException, IOException {
+		UserProfile user = new UserProfile();
+		String response = new String();
+
+		String profileIds = new String();
+		String profiles[] = new String[0];
+		String userName = new String();
+		String userProfileID = new String();
+		String cultureName = new String();
+
+		ObjectMapper mapper = new ObjectMapper();
+		JsonNode root = mapper.readTree(message);
+
+		if (root != null && root.has("userIds")) {
+			profileIds = root.get("userIds").getTextValue();
+			profiles = profileIds.split(",");
+		}
+
+		JsonNode commonObj = root.get("gpmsCommonObj");
+		if (commonObj != null && commonObj.has("UserName")) {
+			userName = commonObj.get("UserName").getTextValue();
+		}
+
+		if (commonObj != null && commonObj.has("UserProfileID")) {
+			userProfileID = commonObj.get("UserProfileID").getTextValue();
+		}
+
+		if (commonObj != null && commonObj.has("CultureName")) {
+			cultureName = commonObj.get("CultureName").getTextValue();
+		}
+
+		ObjectId authorId = new ObjectId(userProfileID);
+
+		GPMSCommonInfo gpmsCommonObj = new GPMSCommonInfo();
+		gpmsCommonObj.setUserName(userName);
+		gpmsCommonObj.setUserProfileID(userProfileID);
+		gpmsCommonObj.setCultureName(cultureName);
+
+		UserProfile authorProfile = userProfileDAO
+				.findUserDetailsByProfileID(authorId);
+
+		for (String profile : profiles) {
+			ObjectId id = new ObjectId(profile);
+
+			UserProfile userProfile = userProfileDAO
+					.findUserDetailsByProfileID(id);
+			userProfileDAO.deleteUserProfileByUserID(userProfile,
+					authorProfile, gpmsCommonObj);
+
+			UserAccount userAccount = userAccountDAO.findByID(userProfile
+					.getUserAccount().getId());
+			userAccountDAO.deleteUserAccountByUserID(userAccount,
+					authorProfile, gpmsCommonObj);
+		}
+		response = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(
+				"Success");
+		return response;
+	}
+
+	@POST
 	@Path("/UpdateUserIsActiveByUserID")
 	public String updateUserIsActiveByUserID(String message)
 			throws JsonProcessingException, IOException {

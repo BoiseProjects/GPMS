@@ -51,6 +51,11 @@ public class UserAccountDAO extends BasicDAO<UserAccount, String> {
 	public UserAccountDAO(MongoClient mongo, Morphia morphia, String dbName) {
 		super(mongo, morphia, dbName);
 	}	
+	public UserAccount findByID(ObjectId id) {
+		Datastore ds = getDatastore();
+		return ds.createQuery(UserAccount.class).field("_id").equal(id).get();
+	}
+
 	/**
 	 * This method will return a user account object that matches the username
 	 * searched for
@@ -64,6 +69,18 @@ public class UserAccountDAO extends BasicDAO<UserAccount, String> {
 		return ds.createQuery(UserAccount.class).field("username")
 				.equal(userName).get();
 	}
+	public void deleteUserAccountByUserID(UserAccount userAccount,
+			UserProfile authorProfile, GPMSCommonInfo gpmsCommonObj) {
+		Datastore ds = getDatastore();
+		audit = new AuditLog(authorProfile, "Deleted user account for "
+				+ userAccount.getUserName(), new Date());
+		userAccount.addEntryToAuditLog(audit);
+
+		userAccount.setDeleted(true);
+		userAccount.setActive(false);
+		ds.save(userAccount);
+	}
+
 	public void activateUserAccountByUserID(UserAccount userAccount,
 			UserProfile authorProfile, GPMSCommonInfo gpmsCommonObj,
 			Boolean isActive) {
