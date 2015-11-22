@@ -1623,6 +1623,26 @@ $(function() {
 				$('#divUserGrid').show();
 				break;
 
+			case 5:
+				usersManage.BindUserGrid(null, null, null, null, null, null);
+				csscody.info("<h2>"
+						+ getLocale(gpmsUsersManagement, 'Successful Message')
+						+ "</h2><p>"
+						+ getLocale(gpmsUsersManagement,
+								'User has been activated successfully.')
+						+ "</p>");
+				break;
+
+			case 6:
+				usersManage.BindUserGrid(null, null, null, null, null, null);
+				csscody.info("<h2>"
+						+ getLocale(gpmsUsersManagement, 'Successful Message')
+						+ "</h2><p>"
+						+ getLocale(gpmsUsersManagement,
+								'User has been deactivated successfully.')
+						+ "</p>");
+				break;
+
 			case 7:
 				userNameIsUnique = stringToBoolean(msg);
 				break;
@@ -1656,6 +1676,19 @@ $(function() {
 						+ "</h2><p>"
 						+ getLocale(gpmsUsersManagement,
 								'User cannot be deleted.') + "</p>");
+			case 5:
+				csscody.error("<h2>"
+						+ getLocale(gpmsUsersManagement, 'Error Message')
+						+ "</h2><p>"
+						+ getLocale(gpmsUsersManagement,
+								'User cannot be activated.') + "</p>");
+				break;
+			case 6:
+				csscody.error("<h2>"
+						+ getLocale(gpmsUsersManagement, 'Error Message')
+						+ "</h2><p>"
+						+ getLocale(gpmsUsersManagement,
+								'User cannot be deactivated.') + "</p>");
 				break;
 			case 7:
 				csscody.error("<h2>"

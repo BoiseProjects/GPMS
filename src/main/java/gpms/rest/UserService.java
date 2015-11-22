@@ -6,6 +6,7 @@ import gpms.dao.ProposalDAO;
 import gpms.dao.UserAccountDAO;
 import gpms.dao.UserProfileDAO;
 import gpms.model.AuditLogInfo;
+import gpms.model.GPMSCommonInfo;
 import gpms.model.UserAccount;
 import gpms.model.UserInfo;
 import gpms.model.UserProfile;
@@ -272,5 +273,67 @@ public class UserService {
 			throws JsonProcessingException, IOException {
 		DepartmentsPositionsCollection dpc = new DepartmentsPositionsCollection();
 		return dpc.getAvailableDepartmentsAndPositions();
+	}
+
+	@POST
+	@Path("/UpdateUserIsActiveByUserID")
+	public String updateUserIsActiveByUserID(String message)
+			throws JsonProcessingException, IOException {
+		UserProfile user = new UserProfile();
+		String response = new String();
+
+		String profileId = new String();
+		Boolean isActive = true;
+		String userName = new String();
+		String userProfileID = new String();
+		String cultureName = new String();
+
+		ObjectMapper mapper = new ObjectMapper();
+		JsonNode root = mapper.readTree(message);
+
+		if (root != null && root.has("userId")) {
+			profileId = root.get("userId").getTextValue();
+		}
+
+		if (root != null && root.has("isActive")) {
+			isActive = root.get("isActive").getBooleanValue();
+		}
+
+		JsonNode commonObj = root.get("gpmsCommonObj");
+		if (commonObj != null && commonObj.has("UserName")) {
+			userName = commonObj.get("UserName").getTextValue();
+		}
+
+		if (commonObj != null && commonObj.has("UserProfileID")) {
+			userProfileID = commonObj.get("UserProfileID").getTextValue();
+		}
+
+		if (commonObj != null && commonObj.has("CultureName")) {
+			cultureName = commonObj.get("CultureName").getTextValue();
+		}
+
+		ObjectId id = new ObjectId(profileId);
+		ObjectId authorId = new ObjectId(userProfileID);
+
+		GPMSCommonInfo gpmsCommonObj = new GPMSCommonInfo();
+		gpmsCommonObj.setUserName(userName);
+		gpmsCommonObj.setUserProfileID(userProfileID);
+		gpmsCommonObj.setCultureName(cultureName);
+
+		UserProfile authorProfile = userProfileDAO
+				.findUserDetailsByProfileID(authorId);
+
+		UserProfile userProfile = userProfileDAO.findUserDetailsByProfileID(id);
+		userProfileDAO.activateUserProfileByUserID(userProfile, authorProfile,
+				gpmsCommonObj, isActive);
+
+		UserAccount userAccount = userProfile.getUserAccount();
+		userAccountDAO.activateUserAccountByUserID(userAccount, authorProfile,
+				gpmsCommonObj, isActive);
+		// return Response.ok("Success", MediaType.APPLICATION_JSON).build();
+
+		response = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(
+				"Success");
+		return response;
 	}
 }

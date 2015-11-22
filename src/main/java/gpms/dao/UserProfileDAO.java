@@ -7,10 +7,9 @@ package gpms.dao;
  */
 
 import gpms.DAL.MongoDBConnector;
-import gpms.model.Address;
 import gpms.model.AuditLog;
 import gpms.model.AuditLogInfo;
-import gpms.model.PositionDetails;
+import gpms.model.GPMSCommonInfo;
 import gpms.model.Proposal;
 import gpms.model.UserAccount;
 import gpms.model.UserInfo;
@@ -24,7 +23,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.regex.Pattern;
 
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.Datastore;
@@ -32,8 +30,6 @@ import org.mongodb.morphia.Morphia;
 import org.mongodb.morphia.dao.BasicDAO;
 import org.mongodb.morphia.query.Query;
 
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Multimap;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoException;
 
@@ -415,5 +411,18 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 	public UserProfile findUserDetailsByProfileID(ObjectId id) {
 		Datastore ds = getDatastore();
 		return ds.createQuery(UserProfile.class).field("_id").equal(id).get();
+	}
+
+	public void activateUserProfileByUserID(UserProfile userProfile,
+			UserProfile authorProfile, GPMSCommonInfo gpmsCommonObj,
+			Boolean isActive) {
+		Datastore ds = getDatastore();
+		audit = new AuditLog(authorProfile, "Deleted user "
+				+ userProfile.getFullName(), new Date());
+		userProfile.addEntryToAuditLog(audit);
+
+		userProfile.setDeleted(!isActive);
+		ds.save(userProfile);
+
 	}
 }

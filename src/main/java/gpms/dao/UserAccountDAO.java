@@ -51,4 +51,17 @@ public class UserAccountDAO extends BasicDAO<UserAccount, String> {
 	public UserAccountDAO(MongoClient mongo, Morphia morphia, String dbName) {
 		super(mongo, morphia, dbName);
 	}	
+	public void activateUserAccountByUserID(UserAccount userAccount,
+			UserProfile authorProfile, GPMSCommonInfo gpmsCommonObj,
+			Boolean isActive) {
+		Datastore ds = getDatastore();
+		audit = new AuditLog(authorProfile, "Activated user account for "
+				+ userAccount.getUserName(), new Date());
+		userAccount.addEntryToAuditLog(audit);
+
+		userAccount.setDeleted(!isActive);
+		userAccount.setActive(isActive);
+		ds.save(userAccount);
+
+	}
 }
