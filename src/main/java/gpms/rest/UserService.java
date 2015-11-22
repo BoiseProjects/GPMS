@@ -5,12 +5,14 @@ import gpms.DAL.MongoDBConnector;
 import gpms.dao.ProposalDAO;
 import gpms.dao.UserAccountDAO;
 import gpms.dao.UserProfileDAO;
+import gpms.model.AuditLogInfo;
 import gpms.model.UserAccount;
 import gpms.model.UserInfo;
 import gpms.model.UserProfile;
 
 import java.io.IOException;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,6 +25,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import org.bson.types.ObjectId;
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.JsonProcessingException;
@@ -30,6 +33,8 @@ import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.mongodb.morphia.Morphia;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.mongodb.MongoClient;
 
 @Path("/users")
@@ -123,6 +128,142 @@ public class UserService {
 		// response = JSONTansformer.ConvertToJSON(users);
 
 		return users;
+	}
+
+	@POST
+	@Path("/GetUserDetailsByProfileId")
+	public String produceUserDetailsByProfileId(String message)
+			throws JsonProcessingException, IOException {
+		UserProfile user = new UserProfile();
+		String response = new String();
+
+		String profileId = new String();
+		// String userName = new String();
+		// String userProfileID = new String();
+		// String cultureName = new String();
+
+		ObjectMapper mapper = new ObjectMapper();
+		JsonNode root = mapper.readTree(message);
+
+		if (root != null && root.has("userId")) {
+			profileId = root.get("userId").getTextValue();
+		}
+
+		// JsonNode commonObj = root.get("gpmsCommonObj");
+		// if (commonObj != null && commonObj.has("UserName")) {
+		// userName = commonObj.get("UserName").getTextValue();
+		// }
+		//
+		// if (commonObj != null && commonObj.has("UserProfileID")) {
+		// userProfileID = commonObj.get("UserProfileID").getTextValue();
+		// }
+		//
+		// if (commonObj != null && commonObj.has("CultureName")) {
+		// cultureName = commonObj.get("CultureName").getTextValue();
+		// }
+
+		// // build a JSON object using org.JSON
+		// JSONObject obj = new JSONObject(message);
+		//
+		// // get the first result
+		// String profileId = obj.getString("userId");
+
+		// Alternatively
+		// // Embedded Object
+		// JSONObject commonObj = obj.getJSONObject("gpmsCommonObj");
+		// String userName = commonObj.getString("UserName");
+		// String userProfileID = commonObj.getString("UserProfileID");
+		// String cultureName = commonObj.getString("CultureName");
+
+		ObjectId id = new ObjectId(profileId);
+
+		// System.out.println("Profile ID String: " + profileId
+		// + ", Profile ID with ObjectId: " + id + ", User Name: "
+		// + userName + ", User Profile ID: " + userProfileID
+		// + ", Culture Name: " + cultureName);
+
+		// GPMSCommonInfo gpmsCommonObj = new GPMSCommonInfo();
+		// gpmsCommonObj.setUserName(userName);
+		// gpmsCommonObj.setUserProfileID(userProfileID);
+		// gpmsCommonObj.setCultureName(cultureName);
+
+		user = userProfileDAO.findUserDetailsByProfileID(id);
+		// user.getUserAccount();
+		// user.getUserAccount().getUserName();
+		// user.getUserAccount().getPassword();
+
+		// Gson gson = new Gson();
+		// .setDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz").create();
+		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd")
+				.excludeFieldsWithoutExposeAnnotation().setPrettyPrinting()
+				.create();
+		response = gson.toJson(user, UserProfile.class);
+
+		// response = gson.toJson(user);
+
+		// response =
+		// mapper.writerWithDefaultPrettyPrinter().writeValueAsString(
+		// user);
+
+		return response;
+	}
+
+	@POST
+	@Path("/GetUserAuditLogList")
+	public List<AuditLogInfo> produceUserAuditLogJSON(String message)
+			throws JsonGenerationException, JsonMappingException, IOException,
+			ParseException {
+		List<AuditLogInfo> userAuditLogs = new ArrayList<AuditLogInfo>();
+
+		int offset = 0, limit = 0;
+		String profileId = new String();
+		String action = new String();
+		String auditedBy = new String();
+		String activityOnFrom = new String();
+		String activityOnTo = new String();
+
+		ObjectMapper mapper = new ObjectMapper();
+		JsonNode root = mapper.readTree(message);
+
+		if (root != null && root.has("offset")) {
+			offset = root.get("offset").getIntValue();
+		}
+
+		if (root != null && root.has("limit")) {
+			limit = root.get("limit").getIntValue();
+		}
+
+		if (root != null && root.has("userId")) {
+			profileId = root.get("userId").getTextValue();
+		}
+
+		JsonNode auditLogBindObj = root.get("auditLogBindObj");
+		if (auditLogBindObj != null && auditLogBindObj.has("Action")) {
+			action = auditLogBindObj.get("Action").getTextValue();
+		}
+
+		if (auditLogBindObj != null && auditLogBindObj.has("AuditedBy")) {
+			auditedBy = auditLogBindObj.get("AuditedBy").getTextValue();
+		}
+
+		if (auditLogBindObj != null && auditLogBindObj.has("ActivityOnFrom")) {
+			activityOnFrom = auditLogBindObj.get("ActivityOnFrom")
+					.getTextValue();
+		}
+
+		if (auditLogBindObj != null && auditLogBindObj.has("ActivityOnTo")) {
+			activityOnTo = auditLogBindObj.get("ActivityOnTo").getTextValue();
+		}
+
+		ObjectId userId = new ObjectId(profileId);
+
+		userAuditLogs = userProfileDAO.findAllForUserAuditLogGrid(offset,
+				limit, userId, action, auditedBy, activityOnFrom, activityOnTo);
+
+		// users = (ArrayList<UserInfo>) userProfileDAO.findAllForUserGrid();
+		// response = JSONTansformer.ConvertToJSON(users);
+
+		return userAuditLogs;
 	}
 
 	@POST

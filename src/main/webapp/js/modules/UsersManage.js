@@ -1602,6 +1602,12 @@ $(function() {
 				positions = msg;
 				break;
 
+			case 2:// For User Edit Action
+				usersManage.FillForm(msg);
+				$('#divUserGrid').hide();
+				$('#divUserForm').show();
+				break;
+
 			case 3:// For Form Department Dropdown Binding
 				usersManage.BindUserGrid(null, null, null, null, null, null);
 				csscody
@@ -1638,6 +1644,11 @@ $(function() {
 						+ '</h2><p>'
 						+ getLocale(gpmsUsersManagement,
 								"Failed to load colleges list.") + '</p>');
+				break;
+			case 2:
+				csscody.error('<h2>'
+						+ getLocale(gpmsUsersManagement, "Error Message")
+						+ '</h2><p>' + "Failed to load user details." + '</p>');
 				break;
 			case 3:
 				csscody.error("<h2>"
