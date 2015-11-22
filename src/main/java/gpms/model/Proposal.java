@@ -6,9 +6,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-
 import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Indexed;
@@ -30,7 +27,6 @@ public class Proposal extends BaseEntity {
 
 	@Expose
 	@Property("proposal status")
-	@Enumerated(EnumType.STRING)
 	private Status proposalStatus = Status.NEW;
 
 	@Expose
@@ -139,7 +135,8 @@ public class Proposal extends BaseEntity {
 		return sponsorAndBudgetInfo;
 	}
 
-	public void setSponsorAndBudgetInfo(SponsorAndBudgetInfo sponsorAndBudgetInfo) {
+	public void setSponsorAndBudgetInfo(
+			SponsorAndBudgetInfo sponsorAndBudgetInfo) {
 		this.sponsorAndBudgetInfo = sponsorAndBudgetInfo;
 	}
 
@@ -155,7 +152,8 @@ public class Proposal extends BaseEntity {
 		return universityCommitments;
 	}
 
-	public void setUniversityCommitments(UniversityCommitments universityCommitments) {
+	public void setUniversityCommitments(
+			UniversityCommitments universityCommitments) {
 		this.universityCommitments = universityCommitments;
 	}
 
@@ -217,34 +215,63 @@ public class Proposal extends BaseEntity {
 
 	@Override
 	public String toString() {
-		return "Proposal [proposalNo=" + proposalNo + ", dateReceived=" + dateReceived + ", proposalStatus="
-				+ proposalStatus + ", investigatorInfo=" + investigatorInfo + ", projectInfo=" + projectInfo
-				+ ", sponsorAndBudgetInfo=" + sponsorAndBudgetInfo + ", costShareInfo=" + costShareInfo
-				+ ", universityCommitments=" + universityCommitments + ", conflicOfInterest=" + conflicOfInterest
-				+ ", complianceInfo=" + complianceInfo + ", additionalInfo=" + additionalInfo + ", collaborationInfo="
-				+ collaborationInfo + ", confidentialInfo=" + confidentialInfo + ", oSPSectionInfo=" + oSPSectionInfo
-				+ ", signatureInfo=" + signatureInfo + "]";
+		return "Proposal [proposalNo=" + proposalNo + ", dateReceived="
+				+ dateReceived + ", proposalStatus=" + proposalStatus
+				+ ", investigatorInfo=" + investigatorInfo + ", projectInfo="
+				+ projectInfo + ", sponsorAndBudgetInfo="
+				+ sponsorAndBudgetInfo + ", costShareInfo=" + costShareInfo
+				+ ", universityCommitments=" + universityCommitments
+				+ ", conflicOfInterest=" + conflicOfInterest
+				+ ", complianceInfo=" + complianceInfo + ", additionalInfo="
+				+ additionalInfo + ", collaborationInfo=" + collaborationInfo
+				+ ", confidentialInfo=" + confidentialInfo
+				+ ", oSPSectionInfo=" + oSPSectionInfo + ", signatureInfo="
+				+ signatureInfo + "]";
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((additionalInfo == null) ? 0 : additionalInfo.hashCode());
-		result = prime * result + ((collaborationInfo == null) ? 0 : collaborationInfo.hashCode());
-		result = prime * result + ((complianceInfo == null) ? 0 : complianceInfo.hashCode());
-		result = prime * result + ((confidentialInfo == null) ? 0 : confidentialInfo.hashCode());
-		result = prime * result + ((conflicOfInterest == null) ? 0 : conflicOfInterest.hashCode());
-		result = prime * result + ((costShareInfo == null) ? 0 : costShareInfo.hashCode());
-		result = prime * result + ((dateReceived == null) ? 0 : dateReceived.hashCode());
-		result = prime * result + ((investigatorInfo == null) ? 0 : investigatorInfo.hashCode());
-		result = prime * result + ((oSPSectionInfo == null) ? 0 : oSPSectionInfo.hashCode());
-		result = prime * result + ((projectInfo == null) ? 0 : projectInfo.hashCode());
+		result = prime * result
+				+ ((additionalInfo == null) ? 0 : additionalInfo.hashCode());
+		result = prime
+				* result
+				+ ((collaborationInfo == null) ? 0 : collaborationInfo
+						.hashCode());
+		result = prime * result
+				+ ((complianceInfo == null) ? 0 : complianceInfo.hashCode());
+		result = prime
+				* result
+				+ ((confidentialInfo == null) ? 0 : confidentialInfo.hashCode());
+		result = prime
+				* result
+				+ ((conflicOfInterest == null) ? 0 : conflicOfInterest
+						.hashCode());
+		result = prime * result
+				+ ((costShareInfo == null) ? 0 : costShareInfo.hashCode());
+		result = prime * result
+				+ ((dateReceived == null) ? 0 : dateReceived.hashCode());
+		result = prime
+				* result
+				+ ((investigatorInfo == null) ? 0 : investigatorInfo.hashCode());
+		result = prime * result
+				+ ((oSPSectionInfo == null) ? 0 : oSPSectionInfo.hashCode());
+		result = prime * result
+				+ ((projectInfo == null) ? 0 : projectInfo.hashCode());
 		result = prime * result + proposalNo;
-		result = prime * result + ((proposalStatus == null) ? 0 : proposalStatus.hashCode());
-		result = prime * result + ((signatureInfo == null) ? 0 : signatureInfo.hashCode());
-		result = prime * result + ((sponsorAndBudgetInfo == null) ? 0 : sponsorAndBudgetInfo.hashCode());
-		result = prime * result + ((universityCommitments == null) ? 0 : universityCommitments.hashCode());
+		result = prime * result
+				+ ((proposalStatus == null) ? 0 : proposalStatus.hashCode());
+		result = prime * result
+				+ ((signatureInfo == null) ? 0 : signatureInfo.hashCode());
+		result = prime
+				* result
+				+ ((sponsorAndBudgetInfo == null) ? 0 : sponsorAndBudgetInfo
+						.hashCode());
+		result = prime
+				* result
+				+ ((universityCommitments == null) ? 0 : universityCommitments
+						.hashCode());
 		return result;
 	}
 
