@@ -1651,6 +1651,29 @@ $(function() {
 				emailIsUnique = stringToBoolean(msg);
 				break;
 
+			case 9:
+				usersManage.BindUserGrid(null, null, null, null, null, null);
+				$('#divUserGrid').show();
+				if (editFlag > 0) {
+					csscody.info("<h2>"
+							+ getLocale(gpmsUsersManagement,
+									'Successful Message')
+							+ "</h2><p>"
+							+ getLocale(gpmsUsersManagement,
+									'User has been updated successfully.')
+							+ "</p>");
+				} else {
+					csscody.info("<h2>"
+							+ getLocale(gpmsUsersManagement,
+									'Successful Message')
+							+ "</h2><p>"
+							+ getLocale(gpmsUsersManagement,
+									'User has been saved successfully.')
+							+ "</p>");
+				}
+				usersManage.ClearForm();
+				$('#divUserForm').hide();
+				break;
 			}
 		},
 
@@ -1704,6 +1727,22 @@ $(function() {
 						+ "</h2><p>"
 						+ getLocale(gpmsUsersManagement,
 								'Cannot check for unique Email') + "</p>");
+				break;
+
+			case 9:
+				if (editFlag > 0) {
+					csscody.error("<h2>"
+							+ getLocale(gpmsUsersManagement, 'Error Message')
+							+ "</h2><p>"
+							+ getLocale(gpmsUsersManagement,
+									'Failed to update user!') + "</p>");
+				} else {
+					csscody.error("<h2>"
+							+ getLocale(gpmsUsersManagement, 'Error Message')
+							+ "</h2><p>"
+							+ getLocale(gpmsUsersManagement,
+									'Failed to save user!') + "</p>");
+				}
 				break;
 			}
 		},

@@ -5,8 +5,10 @@ import gpms.DAL.MongoDBConnector;
 import gpms.dao.ProposalDAO;
 import gpms.dao.UserAccountDAO;
 import gpms.dao.UserProfileDAO;
+import gpms.model.Address;
 import gpms.model.AuditLogInfo;
 import gpms.model.GPMSCommonInfo;
+import gpms.model.PositionDetails;
 import gpms.model.UserAccount;
 import gpms.model.UserInfo;
 import gpms.model.UserProfile;
@@ -16,6 +18,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -335,5 +338,511 @@ public class UserService {
 		response = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(
 				"Success");
 		return response;
+	}
+
+	@POST
+	@Path("/CheckUniqueUserName")
+	public String checkUniqueUserName(String message)
+			throws JsonProcessingException, IOException {
+		String userID = new String();
+		String newUserName = new String();
+		String userName = new String();
+		String userProfileID = new String();
+		String cultureName = new String();
+
+		String response = new String();
+
+		ObjectMapper mapper = new ObjectMapper();
+		JsonNode root = mapper.readTree(message);
+
+		JsonNode userUniqueObj = root.get("userUniqueObj");
+		if (userUniqueObj != null && userUniqueObj.has("UserID")) {
+			userID = userUniqueObj.get("UserID").getTextValue();
+		}
+
+		if (userUniqueObj != null && userUniqueObj.has("NewUserName")) {
+			newUserName = userUniqueObj.get("NewUserName").getTextValue();
+		}
+
+		JsonNode commonObj = root.get("gpmsCommonObj");
+		if (commonObj != null && commonObj.has("UserName")) {
+			userName = commonObj.get("UserName").getTextValue();
+		}
+
+		if (commonObj != null && commonObj.has("UserProfileID")) {
+			userProfileID = commonObj.get("UserProfileID").getTextValue();
+		}
+
+		if (commonObj != null && commonObj.has("CultureName")) {
+			cultureName = commonObj.get("CultureName").getTextValue();
+		}
+
+		ObjectId id = new ObjectId();
+		UserProfile userProfile = new UserProfile();
+		if (!userID.equals("0")) {
+			id = new ObjectId(userID);
+			userProfile = userProfileDAO.findNextUserWithSameUserName(id,
+					newUserName);
+		} else {
+			userProfile = userProfileDAO
+					.findAnyUserWithSameUserName(newUserName);
+		}
+
+		if (userProfile != null) {
+			response = mapper.writerWithDefaultPrettyPrinter()
+					.writeValueAsString("false");
+		} else {
+			response = mapper.writerWithDefaultPrettyPrinter()
+					.writeValueAsString("true");
+		}
+		return response;
+
+	}
+
+	@POST
+	@Path("/CheckUniqueEmail")
+	public String checkUniqueEmail(String message)
+			throws JsonProcessingException, IOException {
+		String userID = new String();
+		String newEmail = new String();
+		String userName = new String();
+		String userProfileID = new String();
+		String cultureName = new String();
+
+		String response = new String();
+
+		ObjectMapper mapper = new ObjectMapper();
+		JsonNode root = mapper.readTree(message);
+
+		JsonNode userUniqueObj = root.get("userUniqueObj");
+		if (userUniqueObj != null && userUniqueObj.has("UserID")) {
+			userID = userUniqueObj.get("UserID").getTextValue();
+		}
+
+		if (userUniqueObj != null && userUniqueObj.has("NewEmail")) {
+			newEmail = userUniqueObj.get("NewEmail").getTextValue();
+		}
+
+		JsonNode commonObj = root.get("gpmsCommonObj");
+		if (commonObj != null && commonObj.has("UserName")) {
+			userName = commonObj.get("UserName").getTextValue();
+		}
+
+		if (commonObj != null && commonObj.has("UserProfileID")) {
+			userProfileID = commonObj.get("UserProfileID").getTextValue();
+		}
+
+		if (commonObj != null && commonObj.has("CultureName")) {
+			cultureName = commonObj.get("CultureName").getTextValue();
+		}
+
+		ObjectId id = new ObjectId();
+		UserProfile userProfile = new UserProfile();
+		if (!userID.equals("0")) {
+			id = new ObjectId(userID);
+			userProfile = userProfileDAO
+					.findNextUserWithSameEmail(id, newEmail);
+		} else {
+			userProfile = userProfileDAO.findAnyUserWithSameEmail(newEmail);
+		}
+
+		if (userProfile != null) {
+			response = mapper.writerWithDefaultPrettyPrinter()
+					.writeValueAsString("false");
+		} else {
+			response = mapper.writerWithDefaultPrettyPrinter()
+					.writeValueAsString("true");
+		}
+		return response;
+	}
+
+	@POST
+	@Path("/SaveUpdateUser")
+	public String saveUpdateUser(String message)
+			throws JsonProcessingException, IOException, ParseException {
+
+		String userName = new String();
+		String userProfileID = new String();
+		String cultureName = new String();
+
+		String userID = new String();
+
+		UserAccount newAccount = new UserAccount();
+		UserProfile newProfile = new UserProfile();
+
+		UserAccount existingUserAccount = new UserAccount();
+		UserProfile existingUserProfile = new UserProfile();
+
+		String response = new String();
+
+		ObjectMapper mapper = new ObjectMapper();
+		JsonNode root = mapper.readTree(message);
+
+		JsonNode commonObj = root.get("gpmsCommonObj");
+		if (commonObj != null && commonObj.has("UserName")) {
+			userName = commonObj.get("UserName").getTextValue();
+		}
+
+		if (commonObj != null && commonObj.has("UserProfileID")) {
+			userProfileID = commonObj.get("UserProfileID").getTextValue();
+		}
+
+		if (commonObj != null && commonObj.has("CultureName")) {
+			cultureName = commonObj.get("CultureName").getTextValue();
+		}
+
+		JsonNode userInfo = root.get("userInfo");
+
+		if (userInfo != null && userInfo.has("UserID")) {
+			userID = userInfo.get("UserID").getTextValue();
+			if (!userID.equals("0")) {
+				ObjectId id = new ObjectId(userID);
+				existingUserProfile = userProfileDAO
+						.findUserDetailsByProfileID(id);
+			} else {
+				newAccount.setAddedOn(new Date());
+			}
+		}
+
+		if (userInfo != null && userInfo.has("UserName")) {
+			String loginUserName = userInfo.get("UserName").getTextValue();
+			if (!userID.equals("0")) {
+				existingUserAccount = userAccountDAO
+						.findByUserName(loginUserName);
+			} else {
+				newAccount.setUserName(loginUserName);
+			}
+		}
+
+		if (userInfo != null && userInfo.has("Password")) {
+			if (!userID.equals("0")) {
+				if (!existingUserAccount.getPassword().equals(
+						userInfo.get("Password").getTextValue())) {
+					existingUserAccount.setPassword(userInfo.get("Password")
+							.getTextValue());
+				}
+			} else {
+				newAccount.setPassword(userInfo.get("Password").getTextValue());
+			}
+		}
+
+		if (userInfo != null && userInfo.has("IsActive")) {
+			if (!userID.equals("0")) {
+				if (existingUserAccount.isActive() != userInfo.get("IsActive")
+						.getBooleanValue()) {
+					existingUserAccount.setActive(userInfo.get("IsActive")
+							.getBooleanValue());
+				}
+			} else {
+				newAccount
+						.setActive(userInfo.get("IsActive").getBooleanValue());
+			}
+			if (!userID.equals("0")) {
+				if (existingUserAccount.isDeleted() != !userInfo
+						.get("IsActive").getBooleanValue()) {
+					existingUserAccount.setDeleted(!userInfo.get("IsActive")
+							.getBooleanValue());
+				}
+			} else {
+				newAccount.setDeleted(!userInfo.get("IsActive")
+						.getBooleanValue());
+			}
+
+			// TODO: Check the old ways to do this
+			// if (userInfo != null && userInfo.has("IsActive")) {
+			// newAccount.setActive(Boolean.parseBoolean(userInfo.get(
+			// "IsActive").getTextValue()));
+			// newAccount.setDeleted(!Boolean.parseBoolean(userInfo.get(
+			// "IsActive").getTextValue()));
+			// newProfile.setDeleted(!Boolean.parseBoolean(userInfo.get(
+			// "IsActive").getTextValue()));
+			// }
+
+			if (!userID.equals("0")) {
+				if (existingUserProfile.isDeleted() != !userInfo
+						.get("IsActive").getBooleanValue()) {
+					existingUserProfile.setDeleted(!userInfo.get("IsActive")
+							.getBooleanValue());
+				}
+			} else {
+				newProfile.setDeleted(!userInfo.get("IsActive")
+						.getBooleanValue());
+			}
+		}
+
+		if (userID.equals("0")) {
+			newProfile.setUserId(newAccount);
+		}
+
+		if (userInfo != null && userInfo.has("FirstName")) {
+			if (!userID.equals("0")) {
+				if (!existingUserProfile.getFirstName().equals(
+						userInfo.get("FirstName").getTextValue())) {
+					existingUserProfile.setFirstName(userInfo.get("FirstName")
+							.getTextValue());
+				}
+			} else {
+				newProfile.setFirstName(userInfo.get("FirstName")
+						.getTextValue());
+			}
+		}
+
+		if (userInfo != null && userInfo.has("MiddleName")) {
+			if (!userID.equals("0")) {
+				if (!existingUserProfile.getMiddleName().equals(
+						userInfo.get("MiddleName").getTextValue())) {
+					existingUserProfile.setMiddleName(userInfo
+							.get("MiddleName").getTextValue());
+				}
+			} else {
+				newProfile.setMiddleName(userInfo.get("MiddleName")
+						.getTextValue());
+			}
+		}
+
+		if (userInfo != null && userInfo.has("LastName")) {
+			if (!userID.equals("0")) {
+				if (!existingUserProfile.getLastName().equals(
+						userInfo.get("LastName").getTextValue())) {
+					existingUserProfile.setLastName(userInfo.get("LastName")
+							.getTextValue());
+				}
+			} else {
+				newProfile.setLastName(userInfo.get("LastName").getTextValue());
+			}
+		}
+
+		if (userInfo != null && userInfo.has("DOB")) {
+			Date dob = formatter.parse(userInfo.get("DOB").getTextValue());
+			if (!userID.equals("0")) {
+				if (!existingUserProfile.getDateOfBirth().equals(dob)) {
+					existingUserProfile.setDateOfBirth(dob);
+				}
+			} else {
+				newProfile.setDateOfBirth(dob);
+			}
+		}
+
+		if (userInfo != null && userInfo.has("Gender")) {
+			if (!userID.equals("0")) {
+				if (!existingUserProfile.getGender().equals(
+						userInfo.get("Gender").getTextValue())) {
+					existingUserProfile.setGender(userInfo.get("Gender")
+							.getTextValue());
+				}
+			} else {
+				newProfile.setGender(userInfo.get("Gender").getTextValue());
+			}
+		}
+
+		Address newAddress = new Address();
+
+		if (userInfo != null && userInfo.has("Street")) {
+			newAddress.setStreet(userInfo.get("Street").getTextValue());
+		}
+		if (userInfo != null && userInfo.has("Apt")) {
+			newAddress.setApt(userInfo.get("Apt").getTextValue());
+		}
+		if (userInfo != null && userInfo.has("City")) {
+			newAddress.setCity(userInfo.get("City").getTextValue());
+		}
+		if (userInfo != null && userInfo.has("State")) {
+			newAddress.setState(userInfo.get("State").getTextValue());
+		}
+		if (userInfo != null && userInfo.has("Zip")) {
+			newAddress.setZipcode(userInfo.get("Zip").getTextValue());
+		}
+		if (userInfo != null && userInfo.has("Country")) {
+			newAddress.setCountry(userInfo.get("Country").getTextValue());
+		}
+
+		if (!userID.equals("0")) {
+			boolean alreadyExist = false;
+			for (Address address : existingUserProfile.getAddresses()) {
+				if (address.equals(newAddress)) {
+					alreadyExist = true;
+					break;
+				}
+			}
+			if (!alreadyExist) {
+				existingUserProfile.getAddresses().clear();
+				existingUserProfile.getAddresses().add(newAddress);
+			}
+		} else {
+			newProfile.getAddresses().add(newAddress);
+		}
+
+		if (userInfo != null && userInfo.has("OfficeNumber")) {
+			if (!userID.equals("0")) {
+				boolean alreadyExist = false;
+				for (String officeNo : existingUserProfile.getOfficeNumbers()) {
+					if (officeNo.equals(userInfo.get("OfficeNumber")
+							.getTextValue())) {
+						alreadyExist = true;
+						break;
+					}
+				}
+				if (!alreadyExist) {
+					existingUserProfile.getOfficeNumbers().clear();
+					existingUserProfile.getOfficeNumbers().add(
+							userInfo.get("OfficeNumber").getTextValue());
+				}
+			} else {
+				newProfile.getOfficeNumbers().add(
+						userInfo.get("OfficeNumber").getTextValue());
+			}
+		}
+
+		if (userInfo != null && userInfo.has("MobileNumber")) {
+			if (!userID.equals("0")) {
+				boolean alreadyExist = false;
+				for (String mobileNo : existingUserProfile.getMobileNumbers()) {
+					if (mobileNo.equals(userInfo.get("MobileNumber")
+							.getTextValue())) {
+						alreadyExist = true;
+						break;
+					}
+				}
+				if (!alreadyExist) {
+					existingUserProfile.getMobileNumbers().clear();
+					existingUserProfile.getMobileNumbers().add(
+							userInfo.get("MobileNumber").getTextValue());
+				}
+			} else {
+				newProfile.getMobileNumbers().add(
+						userInfo.get("MobileNumber").getTextValue());
+			}
+		}
+
+		if (userInfo != null && userInfo.has("HomeNumber")) {
+			if (!userID.equals("0")) {
+				boolean alreadyExist = false;
+				for (String homeNo : existingUserProfile.getHomeNumbers()) {
+					if (homeNo
+							.equals(userInfo.get("HomeNumber").getTextValue())) {
+						alreadyExist = true;
+						break;
+					}
+				}
+				if (!alreadyExist) {
+					existingUserProfile.getHomeNumbers().clear();
+					existingUserProfile.getHomeNumbers().add(
+							userInfo.get("HomeNumber").getTextValue());
+				}
+			} else {
+				newProfile.getHomeNumbers().add(
+						userInfo.get("HomeNumber").getTextValue());
+			}
+		}
+
+		if (userInfo != null && userInfo.has("OtherNumber")) {
+			if (!userID.equals("0")) {
+				boolean alreadyExist = false;
+				for (String otherNo : existingUserProfile.getOtherNumbers()) {
+					if (otherNo.equals(userInfo.get("OtherNumber")
+							.getTextValue())) {
+						alreadyExist = true;
+						break;
+					}
+				}
+				if (!alreadyExist) {
+					existingUserProfile.getOtherNumbers().clear();
+					existingUserProfile.getOtherNumbers().add(
+							userInfo.get("OtherNumber").getTextValue());
+				}
+			} else {
+				newProfile.getOtherNumbers().add(
+						userInfo.get("OtherNumber").getTextValue());
+			}
+		}
+
+		if (userInfo != null && userInfo.has("WorkEmail")) {
+			if (!userID.equals("0")) {
+				boolean alreadyExist = false;
+				for (String workEmail : existingUserProfile.getWorkEmails()) {
+					if (workEmail.equals(userInfo.get("WorkEmail")
+							.getTextValue())) {
+						alreadyExist = true;
+						break;
+					}
+				}
+				if (!alreadyExist) {
+					existingUserProfile.getWorkEmails().clear();
+					existingUserProfile.getWorkEmails().add(
+							userInfo.get("WorkEmail").getTextValue());
+				}
+			} else {
+				newProfile.getWorkEmails().add(
+						userInfo.get("WorkEmail").getTextValue());
+			}
+		}
+
+		if (userInfo != null && userInfo.has("PersonalEmail")) {
+			if (!userID.equals("0")) {
+				boolean alreadyExist = false;
+				for (String personalEmail : existingUserProfile
+						.getPersonalEmails()) {
+					if (personalEmail.equals(userInfo.get("PersonalEmail")
+							.getTextValue())) {
+						alreadyExist = true;
+						break;
+					}
+				}
+				if (!alreadyExist) {
+					existingUserProfile.getPersonalEmails().clear();
+					existingUserProfile.getPersonalEmails().add(
+							userInfo.get("PersonalEmail").getTextValue());
+				}
+			} else {
+				newProfile.getPersonalEmails().add(
+						userInfo.get("PersonalEmail").getTextValue());
+			}
+		}
+
+		if (userInfo != null && userInfo.has("SaveOptions")) {
+			if (!userID.equals("0")) {
+				existingUserProfile.getDetails().clear();
+			}
+
+			String[] rows = userInfo.get("SaveOptions").getTextValue()
+					.split("#!#");
+
+			for (String col : rows) {
+				String[] cols = col.split("!#!");
+				PositionDetails newDetails = new PositionDetails();
+				newDetails.setCollege(cols[0]);
+				newDetails.setDepartment(cols[1]);
+				newDetails.setPositionType(cols[2]);
+				newDetails.setPositionTitle(cols[3]);
+				if (!userID.equals("0")) {
+					existingUserProfile.getDetails().add(newDetails);
+				} else {
+					newProfile.getDetails().add(newDetails);
+				}
+			}
+		}
+
+		// Need to Compare Equals before saving existingUserProfile and
+		// newProfile
+
+		// Save the User Account
+		if (!userID.equals("0")) {
+			userAccountDAO.save(existingUserAccount);
+		} else {
+			userAccountDAO.save(newAccount);
+		}
+
+		// Save the User Profile
+		if (!userID.equals("0")) {
+			userProfileDAO.save(existingUserProfile);
+		} else {
+			userProfileDAO.save(newProfile);
+		}
+		UserProfile user = userProfileDAO.findByUserAccount(newAccount);
+		System.out.println(user);
+		response = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(
+				"Success");
+		return response;
+
 	}
 }

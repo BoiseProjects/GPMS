@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.Datastore;
@@ -413,6 +414,15 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 		return ds.createQuery(UserProfile.class).field("_id").equal(id).get();
 	}
 
+	public UserProfile findByUserAccount(UserAccount userAccount) {
+		Datastore ds = getDatastore();
+
+		// UserProfile temp = query.field("user id.$id").equal(id).get();
+		// UserProfile tempUser = ds.createQuery(UserProfile.class);
+		// .field("user id.id").equal(id).get();
+		return ds.createQuery(UserProfile.class).field("user id")
+				.equal(userAccount).get();
+	}
 	public void activateUserProfileByUserID(UserProfile userProfile,
 			UserProfile authorProfile, GPMSCommonInfo gpmsCommonObj,
 			Boolean isActive) {
@@ -424,5 +434,69 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 		userProfile.setDeleted(!isActive);
 		ds.save(userProfile);
 
+	}
+	public UserProfile findNextUserWithSameUserName(ObjectId id, String userName) {
+		Datastore ds = getDatastore();
+
+		Query<UserProfile> profileQuery = ds.createQuery(UserProfile.class);
+		Query<UserAccount> accountQuery = ds.createQuery(UserAccount.class);
+
+		// CriteriaContainer or3 =
+		// accountQuery.and(accountQuery.criteria("username").equal(userName));
+		// CriteriaBuilder c = new CriteriaBuilder();
+		// c.lower(x);
+		//
+
+		Pattern pattern = Pattern.compile("^" + userName + "$",
+				Pattern.CASE_INSENSITIVE);
+
+		accountQuery.criteria("username").containsIgnoreCase(pattern.pattern());
+
+		profileQuery.and(profileQuery.criteria("_id").notEqual(id),
+				profileQuery.criteria("user id").in(accountQuery.asKeyList()));
+		return profileQuery.get();
+	}
+
+	public UserProfile findAnyUserWithSameUserName(String newUserName) {
+		Datastore ds = getDatastore();
+
+		Query<UserProfile> profileQuery = ds.createQuery(UserProfile.class);
+		Query<UserAccount> accountQuery = ds.createQuery(UserAccount.class);
+
+		Pattern pattern = Pattern.compile("^" + newUserName + "$",
+				Pattern.CASE_INSENSITIVE);
+
+		accountQuery.criteria("username").containsIgnoreCase(pattern.pattern());
+		profileQuery.criteria("user id").in(accountQuery.asKeyList());
+		return profileQuery.get();
+	}
+
+	public UserProfile findNextUserWithSameEmail(ObjectId id, String newEmail) {
+		Datastore ds = getDatastore();
+
+		Query<UserProfile> profileQuery = ds.createQuery(UserProfile.class);
+		profileQuery.and(
+				profileQuery.criteria("_id").notEqual(id),
+				profileQuery.or(
+						profileQuery.criteria("work email").hasThisOne(
+								newEmail.toString()),
+						profileQuery.criteria("personal email").hasThisOne(
+								newEmail.toString())));
+		return profileQuery.get();
+	}
+
+	public UserProfile findAnyUserWithSameEmail(String newEmail) {
+		Datastore ds = getDatastore();
+
+		Query<UserProfile> profileQuery = ds.createQuery(UserProfile.class);
+
+		// Pattern pattern = Pattern.compile("^" + newEmail + "$",
+		// Pattern.CASE_INSENSITIVE);
+		profileQuery.or(
+				profileQuery.criteria("work email").hasThisOne(
+						newEmail.toString()),
+				profileQuery.criteria("personal email").hasThisOne(
+						newEmail.toString()));
+		return profileQuery.get();
 	}
 }

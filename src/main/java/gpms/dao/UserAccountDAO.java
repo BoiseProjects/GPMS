@@ -51,6 +51,19 @@ public class UserAccountDAO extends BasicDAO<UserAccount, String> {
 	public UserAccountDAO(MongoClient mongo, Morphia morphia, String dbName) {
 		super(mongo, morphia, dbName);
 	}	
+	/**
+	 * This method will return a user account object that matches the username
+	 * searched for
+	 * 
+	 * @param userName
+	 *            the user account name to search for
+	 * @return the username if it exists or null if it does not
+	 */
+	public UserAccount findByUserName(String userName) {
+		Datastore ds = getDatastore();
+		return ds.createQuery(UserAccount.class).field("username")
+				.equal(userName).get();
+	}
 	public void activateUserAccountByUserID(UserAccount userAccount,
 			UserProfile authorProfile, GPMSCommonInfo gpmsCommonObj,
 			Boolean isActive) {
