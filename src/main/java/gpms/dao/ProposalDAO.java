@@ -49,4 +49,9 @@ public class ProposalDAO  extends BasicDAO<Proposal, String> {
 		ds.save(proposal);
 	}
 	
+	public Proposal findProposalDetailsByProposalID(ObjectId id) {
+		Datastore ds = getDatastore();
+		return ds.createQuery(Proposal.class).field("_id").equal(id).get();
+	}
+	
 }
