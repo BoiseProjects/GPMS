@@ -25,8 +25,8 @@ import com.mongodb.MongoException;
  * MongoDBConnector providing the database connection.
  */
 public class MongoDBConnector {
-	// private static final Logger logger = LoggerFactory
-	// .getLogger(MongoDBConnector.class);
+	private static final Logger logger = LoggerFactory
+			.getLogger(MongoDBConnector.class);
 
 	private static MongoDBConnector instance = new MongoDBConnector();
 
@@ -48,8 +48,8 @@ public class MongoDBConnector {
 			mongo = new MongoClient(host, port);
 
 		} catch (Exception e) {
-			// logger.debug("New Mongo created with [" + host + "] and [" + port
-			// + "]");
+			logger.debug("New Mongo created with [" + host + "] and [" + port
+					+ "]");
 			throw new RuntimeException("Error initializing mongo db", e);
 		}
 	}
@@ -74,15 +74,15 @@ public class MongoDBConnector {
 				// mongodb://[username:password@]host1[:port1][,host2[:port2],...[,hostN[:portN]]][/[database][?options]]
 
 				mongo = new MongoClient(host, port);
-				// logger.debug("New Mongo created with [" + host + "] and ["
-				// + port + "]");
+				logger.debug("New Mongo created with [" + host + "] and ["
+						+ port + "]");
 
 				// MongoClientURI uri = new MongoClientURI(
 				// "mongodb://milstein:milstein@ds042888.mongolab.com:42888/db_gpms");
 				// mongo = new MongoClient(uri);
 
 			} catch (MongoException e) {
-				// logger.error(e.getMessage());
+				logger.error(e.getMessage());
 			}
 		}
 		return mongo;
