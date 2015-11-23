@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.Datastore;
@@ -168,6 +169,21 @@ public class ProposalDAO  extends BasicDAO<Proposal, String> {
 		} else {
 			return allAuditLogs.subList(offset - 1, rowTotal);
 		}
+	}
+	
+	public Proposal findNextProposalWithSameProjectTitle(ObjectId id,
+			String newProjectTitle) {
+		Datastore ds = getDatastore();
+
+		Query<Proposal> proposalQuery = ds.createQuery(Proposal.class);
+
+		Pattern pattern = Pattern.compile("^" + newProjectTitle + "$",
+				Pattern.CASE_INSENSITIVE);
+
+		proposalQuery.and(proposalQuery.criteria("_id").notEqual(id),
+				proposalQuery.criteria("project info.project title")
+						.containsIgnoreCase(pattern.pattern()));
+		return proposalQuery.get();
 	}
 	
 }
