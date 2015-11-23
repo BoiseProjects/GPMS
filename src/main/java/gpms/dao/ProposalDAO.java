@@ -186,4 +186,17 @@ public class ProposalDAO  extends BasicDAO<Proposal, String> {
 		return proposalQuery.get();
 	}
 	
+	public Proposal findAnyProposalWithSameProjectTitle(String newProjectTitle) {
+		Datastore ds = getDatastore();
+
+		Query<Proposal> proposalQuery = ds.createQuery(Proposal.class);
+
+		Pattern pattern = Pattern.compile("^" + newProjectTitle + "$",
+				Pattern.CASE_INSENSITIVE);
+
+		proposalQuery.criteria("project info.project title")
+				.containsIgnoreCase(pattern.pattern());
+		return proposalQuery.get();
+	}
+	
 }
