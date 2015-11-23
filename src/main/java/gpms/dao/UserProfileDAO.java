@@ -69,6 +69,41 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 		super(mongo, morphia, dbName);
 	}
 
+
+	/**
+	 * 
+	 * @return list of all users in the ds
+	 * @throws UnknownHostException
+	 */
+	public List<UserProfile> findAll() throws UnknownHostException {
+		Datastore ds = getDatastore();
+		return ds.createQuery(UserProfile.class).asList();
+	}
+
+	public List<UserProfile> findAllUsersWithPosition() throws UnknownHostException {
+		Datastore ds = getDatastore();
+		return ds.createQuery(UserProfile.class).field("details")
+				.notEqual(null).asList();
+	}
+
+	public List<UserProfile> findAllActiveUsers() throws UnknownHostException {
+		Datastore ds = getDatastore();
+
+		Query<UserProfile> profileQuery = ds.createQuery(UserProfile.class);
+		Query<UserAccount> accountQuery = ds.createQuery(UserAccount.class);
+
+		accountQuery.and(accountQuery.criteria("is deleted").equal(false),
+				accountQuery.criteria("is active").equal(true));
+		profileQuery.and(
+				profileQuery.criteria("details").notEqual(null),
+				profileQuery.and(profileQuery.criteria("user id").in(
+						accountQuery.asKeyList())),
+				profileQuery.criteria("is deleted").equal(false));
+
+		return profileQuery.retrievedFields(true, "_id", "first name",
+				"middle name", "last name").asList();
+	}
+
 	/*
 	 * This is example format for grid Info object bind that is customized to
 	 * bind in grid

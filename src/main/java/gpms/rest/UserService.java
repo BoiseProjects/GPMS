@@ -8,6 +8,7 @@ import gpms.dao.UserProfileDAO;
 import gpms.model.Address;
 import gpms.model.AuditLogInfo;
 import gpms.model.GPMSCommonInfo;
+import gpms.model.PasswordHash;
 import gpms.model.PositionDetails;
 import gpms.model.UserAccount;
 import gpms.model.UserInfo;
@@ -22,12 +23,17 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import org.bson.types.ObjectId;
 import org.codehaus.jackson.JsonGenerationException;
@@ -973,5 +979,72 @@ public class UserService {
 				"Success");
 		return response;
 
+	}
+
+	@POST
+	@Path("/login")
+	public Response login(@FormParam("username") String email,
+			@FormParam("password") String password,
+			@Context HttpServletRequest req) {
+		try {
+			List<UserProfile> userList = userProfileDAO.findAll();
+			boolean isFound = false;
+			if (userList.size() != 0) {
+				for (UserProfile user : userList) {
+					if (user.getUserAccount().getUserName().equals(email)
+							|| user.getWorkEmails().contains(email)) {
+						if (PasswordHash.validatePassword(password, user
+								.getUserAccount().getPassword())
+								&& !user.isDeleted()
+								&& user.getUserAccount().isActive()
+								&& !user.getUserAccount().isDeleted()) {
+							isFound = true;
+							setMySessionID(req, user.getId().toString());
+							java.net.URI location = new java.net.URI(
+									"../Home.jsp");
+							return Response.seeOther(location).build();
+						} else {
+							isFound = false;
+						}
+					}
+				}
+			} else {
+				isFound = false;
+			}
+			if (!isFound) {
+				java.net.URI location = new java.net.URI(
+						"../Login.jsp?msg=error");
+				return Response.seeOther(location).build();
+			}
+		} catch (Exception e) {
+			System.out.println("error");
+		}
+		// return
+		// Response.status(403).type("text/plain").entity(message).build();
+		return null;
+	}
+
+	private void setMySessionID(@Context HttpServletRequest req,
+			String sessionValue) {
+		try {
+			if (req == null) {
+				System.out.println("Null request in context");
+			}
+			HttpSession session = req.getSession();
+			if (session.getAttribute("userid") == null) {
+				// id = System.currentTimeMillis();
+				session.setAttribute("userid", sessionValue);
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}
+
+	public int getMySessionId(@Context HttpServletRequest req) {
+		HttpSession session = req.getSession();
+		if (session.getAttribute("userid") != null) {
+			return (int) session.getAttribute("userid");
+		}
+		return 0;
 	}
 }
