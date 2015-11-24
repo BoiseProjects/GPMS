@@ -238,5 +238,59 @@ public class ProposalService {
 		return response;
 	}
 
-	
+	@POST
+	@Path("/DeleteMultipleProposalsByProposalID")
+	public String deleteMultipleProposalsByProposalID(String message)
+			throws JsonProcessingException, IOException {
+		UserProfile user = new UserProfile();
+		String response = new String();
+
+		String proposalIds = new String();
+		String proposals[] = new String[0];
+		String userName = new String();
+		String userProfileID = new String();
+		String cultureName = new String();
+
+		ObjectMapper mapper = new ObjectMapper();
+		JsonNode root = mapper.readTree(message);
+
+		if (root != null && root.has("proposalIds")) {
+			proposalIds = root.get("proposalIds").getTextValue();
+			proposals = proposalIds.split(",");
+		}
+
+		JsonNode commonObj = root.get("gpmsCommonObj");
+		if (commonObj != null && commonObj.has("UserName")) {
+			userName = commonObj.get("UserName").getTextValue();
+		}
+
+		if (commonObj != null && commonObj.has("UserProfileID")) {
+			userProfileID = commonObj.get("UserProfileID").getTextValue();
+		}
+
+		if (commonObj != null && commonObj.has("CultureName")) {
+			cultureName = commonObj.get("CultureName").getTextValue();
+		}
+
+		ObjectId authorId = new ObjectId(userProfileID);
+
+		GPMSCommonInfo gpmsCommonObj = new GPMSCommonInfo();
+		gpmsCommonObj.setUserName(userName);
+		gpmsCommonObj.setUserProfileID(userProfileID);
+		gpmsCommonObj.setCultureName(cultureName);
+
+		UserProfile authorProfile = userProfileDAO
+				.findUserDetailsByProfileID(authorId);
+
+		for (String proposalId : proposals) {
+			ObjectId id = new ObjectId(proposalId);
+
+			Proposal proposal = proposalDAO.findProposalByProposalID(id);
+
+			proposalDAO.deleteProposal(proposal, authorProfile, gpmsCommonObj);
+		}
+		response = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(
+				"Success");
+		return response;
+	}
 }
