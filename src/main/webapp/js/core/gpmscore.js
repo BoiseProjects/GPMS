@@ -43,6 +43,12 @@ $(function() {
 			GetUserProfileID : function() {
 				return userProfileId;
 			},
+			GetUserPositionType : function() {
+				return userPositionType;
+			},
+			GetUserPositionTitle : function() {
+				return userPositionTitle;
+			},
 			GetCultureName : function() {
 				return gpmsCurrentCulture;
 			},
