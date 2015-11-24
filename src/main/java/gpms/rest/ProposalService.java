@@ -102,5 +102,75 @@ public class ProposalService {
 			throws JsonProcessingException, IOException {
 		return new ArrayList<Status>(Arrays.asList(Status.values()));
 	}
+	
+	@POST
+	@Path("/GetProposalsList")
+	public List<ProposalInfo> produceProposalsJSON(String message)
+			throws JsonGenerationException, JsonMappingException, IOException,
+			ParseException {
+		List<ProposalInfo> proposals = new ArrayList<ProposalInfo>();
 
+		int offset = 0, limit = 0;
+		String projectTitle = new String();
+		String proposedBy = new String();
+		Double totalCostsFrom = 0.0;
+		Double totalCostsTo = 0.0;
+		String receivedOnFrom = new String();
+		String receivedOnTo = new String();
+		String proposalStatus = new String();
+
+		ObjectMapper mapper = new ObjectMapper();
+		JsonNode root = mapper.readTree(message);
+
+		if (root != null && root.has("offset")) {
+			offset = root.get("offset").getIntValue();
+		}
+
+		if (root != null && root.has("limit")) {
+			limit = root.get("limit").getIntValue();
+		}
+
+		JsonNode proposalObj = root.get("proposalBindObj");
+		if (proposalObj != null && proposalObj.has("ProjectTitle")) {
+			projectTitle = proposalObj.get("ProjectTitle").getTextValue();
+		}
+
+		if (proposalObj != null && proposalObj.has("ProposedBy")) {
+			proposedBy = proposalObj.get("ProposedBy").getTextValue();
+		}
+
+		if (proposalObj != null && proposalObj.has("ReceivedOnFrom")) {
+			receivedOnFrom = proposalObj.get("ReceivedOnFrom").getTextValue();
+		}
+
+		if (proposalObj != null && proposalObj.has("ReceivedOnTo")) {
+			receivedOnTo = proposalObj.get("ReceivedOnTo").getTextValue();
+		}
+
+		if (proposalObj != null && proposalObj.has("TotalCostsFrom")) {
+			if (proposalObj.get("TotalCostsFrom").getTextValue() != null) {
+				totalCostsFrom = Double.valueOf(proposalObj.get(
+						"TotalCostsFrom").getTextValue());
+			}
+		}
+
+		if (proposalObj != null && proposalObj.has("TotalCostsTo")) {
+			if (proposalObj.get("TotalCostsTo").getTextValue() != null) {
+				totalCostsTo = Double.valueOf(proposalObj.get("TotalCostsTo")
+						.getTextValue());
+			}
+		}
+
+		if (proposalObj != null && proposalObj.has("ProposalStatus")) {
+			proposalStatus = proposalObj.get("ProposalStatus").getTextValue();
+		}
+
+		proposals = proposalDAO.findAllForProposalGrid(offset, limit,
+				projectTitle, proposedBy, receivedOnFrom, receivedOnTo,
+				totalCostsFrom, totalCostsTo, proposalStatus);
+
+		return proposals;
+	}
+
+	
 }
