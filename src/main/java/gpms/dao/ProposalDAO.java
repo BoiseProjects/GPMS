@@ -22,7 +22,9 @@ import com.mongodb.MongoException;
 import gpms.model.AuditLog;
 import gpms.model.AuditLogInfo;
 import gpms.model.GPMSCommonInfo;
+import gpms.model.InvestigatorRefAndPosition;
 import gpms.model.Proposal;
+import gpms.model.SimplePersonnelData;
 import gpms.model.Status;
 import gpms.model.UserProfile;
 
@@ -197,6 +199,69 @@ public class ProposalDAO  extends BasicDAO<Proposal, String> {
 		proposalQuery.criteria("project info.project title")
 				.containsIgnoreCase(pattern.pattern());
 		return proposalQuery.get();
+	}
+	
+	public List<SimplePersonnelData> PersonnelQuery(ObjectId id,
+			String searchQuery) {
+		ArrayList<SimplePersonnelData> spdList = new ArrayList<SimplePersonnelData>();
+		SimplePersonnelData newEntry;
+		Proposal queryProposal = null;
+		try {
+			queryProposal = findProposalByProposalID(id);
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		InvestigatorRefAndPosition pi = queryProposal.getInvestigatorInfo()
+				.getPi();
+		ArrayList<String> collegeSearch = new ArrayList<String>();
+		collegeSearch.add(pi.getCollege());
+
+		List<InvestigatorRefAndPosition> copi = queryProposal
+				.getInvestigatorInfo().getCo_pi();
+		List<String> copicollegeSearch = new ArrayList<String>();
+
+		for (int b = 0; b < copi.size(); b++) {
+			if (!collegeSearch.contains(copi.get(b).getCollege())) {
+				collegeSearch.add(copi.get(b).getCollege());
+			}
+		}
+
+		List<InvestigatorRefAndPosition> seniorPersonnel = queryProposal
+				.getInvestigatorInfo().getSeniorPersonnel();
+
+		for (int c = 0; c < seniorPersonnel.size(); c++) {
+			if (!collegeSearch.contains(seniorPersonnel.get(c).getCollege())) {
+				collegeSearch.add(seniorPersonnel.get(c).getCollege());
+			}
+		}
+
+		Datastore ds = getDatastore();
+
+
+
+		String checkName = "";
+		ArrayList<String> checkList = new ArrayList<String>();
+
+		for (int d = 0; d < collegeSearch.size(); d++) {
+			String CollegeQuery = collegeSearch.get(d);
+			Query<UserProfile> r = ds.createQuery(UserProfile.class);
+			r.and(r.criteria("details.college").equal(CollegeQuery), r
+					.criteria("details.position title").equal(searchQuery));
+			List<UserProfile> queryProfileList = r.asList();
+			for (int a = 0; a < queryProfileList.size(); a++) {
+				checkName = queryProfileList.get(a).getFirstName() + " "
+						+ queryProfileList.get(a).getLastName();
+				if (!checkList.contains(checkName)) {
+					newEntry = new SimplePersonnelData(queryProfileList.get(a));
+					spdList.add(newEntry);
+					checkList.add(checkName);
+				}
+			}
+		}
+
+		return spdList;
 	}
 	
 }
