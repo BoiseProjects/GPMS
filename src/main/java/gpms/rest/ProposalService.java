@@ -96,5 +96,11 @@ public class ProposalService {
 		return "Hello World!";
 	}
 
+	@POST
+	@Path("/GetProposalStatusList")
+	public ArrayList<Status> getProposalStatusList()
+			throws JsonProcessingException, IOException {
+		return new ArrayList<Status>(Arrays.asList(Status.values()));
+	}
 
 }
