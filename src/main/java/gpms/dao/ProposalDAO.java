@@ -264,4 +264,15 @@ public class ProposalDAO  extends BasicDAO<Proposal, String> {
 		return spdList;
 	}
 	
+	public int findLatestProposalNo() {
+		Datastore ds = getDatastore();
+		List<Proposal> q1 = ds.createQuery(Proposal.class)
+				.retrievedFields(true, "proposal no").asList();
+		if (q1.size() == 0) {
+			return 0;
+		} else {
+			return q1.get(q1.size() - 1).getProposalNo();
+		}
+	}
+	
 }
