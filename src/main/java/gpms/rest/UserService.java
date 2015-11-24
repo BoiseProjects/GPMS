@@ -15,6 +15,7 @@ import gpms.model.UserInfo;
 import gpms.model.UserProfile;
 
 import java.io.IOException;
+import java.net.UnknownHostException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -1046,5 +1047,18 @@ public class UserService {
 			return (int) session.getAttribute("userid");
 		}
 		return 0;
+	}
+	
+	@POST
+	@Path("/GetAllUserDropdown")
+	public HashMap<String, String> getAllUsers() throws UnknownHostException {
+		HashMap<String, String> users = new HashMap<String, String>();
+		// List<UserProfile> userprofiles = userProfileDAO.findAllActiveUsers();
+		List<UserProfile> userprofiles = userProfileDAO
+				.findAllUsersWithPosition();
+		for (UserProfile userProfile : userprofiles) {
+			users.put(userProfile.getId().toString(), userProfile.getFullName());
+		}
+		return users;
 	}
 }
