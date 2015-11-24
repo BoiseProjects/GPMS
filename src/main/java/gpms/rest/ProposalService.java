@@ -172,5 +172,71 @@ public class ProposalService {
 		return proposals;
 	}
 
+	@POST
+	@Path("/DeleteProposalByProposalID")
+	public String deleteUserByProposalID(String message)
+			throws JsonProcessingException, IOException {
+
+		HashMap AttributesMap = new HashMap<String, HashMap<String, String>>();
+
+		UserProfile user = new UserProfile();
+		String response = new String();
+
+		String proposalId = new String();
+		String userName = new String();
+		String userProfileID = new String();
+		String cultureName = new String();
+
+		ObjectMapper mapper = new ObjectMapper();
+		JsonNode root = mapper.readTree(message);
+
+		if (root != null && root.has("proposalId")) {
+			proposalId = root.get("proposalId").getTextValue();
+		}
+
+		JsonNode commonObj = root.get("gpmsCommonObj");
+		if (commonObj != null && commonObj.has("UserName")) {
+			userName = commonObj.get("UserName").getTextValue();
+		}
+
+		if (commonObj != null && commonObj.has("UserProfileID")) {
+			userProfileID = commonObj.get("UserProfileID").getTextValue();
+		}
+
+		if (commonObj != null && commonObj.has("CultureName")) {
+			cultureName = commonObj.get("CultureName").getTextValue();
+		}
+
+		/*
+		 * TODO CheckXACMLPOLICY Call the accesscontrol with the
+		 * 
+		 * if this person is the PI, then String isPI = PI if not then String
+		 * isPI = NOT policyEval(isPI, Proposal, Delete)
+		 * 
+		 * getPIname, getPIId, getProposalID, callPolicyMethod(PINAME, PIID,
+		 * PROPOSALID) if policy returns permit, continue if policy returns deny
+		 * do not continue
+		 */
+
+		ObjectId id = new ObjectId(proposalId);
+		ObjectId authorId = new ObjectId(userProfileID);
+
+		GPMSCommonInfo gpmsCommonObj = new GPMSCommonInfo();
+		gpmsCommonObj.setUserName(userName);
+		gpmsCommonObj.setUserProfileID(userProfileID);
+		gpmsCommonObj.setCultureName(cultureName);
+
+		UserProfile authorProfile = userProfileDAO
+				.findUserDetailsByProfileID(authorId);
+		Proposal proposal = proposalDAO.findProposalByProposalID(id);
+
+		proposalDAO.deleteProposal(proposal, authorProfile, gpmsCommonObj);
+
+		response = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(
+				"Success");
+
+		return response;
+	}
+
 	
 }
