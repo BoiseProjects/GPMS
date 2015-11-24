@@ -293,4 +293,36 @@ public class ProposalService {
 				"Success");
 		return response;
 	}
+	
+	@POST
+	@Path("/GetProposalDetailsByProposalId")
+	public String produceProposalDetailsByProposalId(String message)
+			throws JsonProcessingException, IOException {
+		Proposal proposal = new Proposal();
+		String response = new String();
+
+		String proposalId = new String();
+
+		ObjectMapper mapper = new ObjectMapper();
+		JsonNode root = mapper.readTree(message);
+
+		if (root != null && root.has("proposalId")) {
+			proposalId = root.get("proposalId").getTextValue();
+		}
+
+
+
+		ObjectId id = new ObjectId(proposalId);
+
+		proposal = proposalDAO.findProposalDetailsByProposalID(id);
+
+
+
+		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd")
+				.excludeFieldsWithoutExposeAnnotation().setPrettyPrinting()
+				.create();
+		response = gson.toJson(proposal, Proposal.class);
+
+		return response;
+	}
 }
