@@ -10,10 +10,12 @@ import gpms.DAL.MongoDBConnector;
 import gpms.model.AuditLog;
 import gpms.model.AuditLogInfo;
 import gpms.model.GPMSCommonInfo;
+import gpms.model.PositionDetails;
 import gpms.model.Proposal;
 import gpms.model.UserAccount;
 import gpms.model.UserInfo;
 import gpms.model.UserProfile;
+import gpms.rest.InvestigatorUsersAndPositions;
 
 import java.net.UnknownHostException;
 import java.text.DateFormat;
@@ -31,6 +33,8 @@ import org.mongodb.morphia.Morphia;
 import org.mongodb.morphia.dao.BasicDAO;
 import org.mongodb.morphia.query.Query;
 
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoException;
 
@@ -545,5 +549,45 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 				profileQuery.criteria("personal email").hasThisOne(
 						newEmail.toString()));
 		return profileQuery.get();
+	}
+	
+	public List<InvestigatorUsersAndPositions> findAllPositionDetailsForAUser(
+			ObjectId id) {
+		Datastore ds = getDatastore();
+		ArrayList<InvestigatorUsersAndPositions> userPositions = new ArrayList<InvestigatorUsersAndPositions>();
+
+		Query<UserProfile> q = ds
+				.createQuery(UserProfile.class)
+				.field("_id")
+				.equal(id)
+				.retrievedFields(true, "_id", "first name", "middle name",
+						"last name", "details", "mobile number");
+		List<UserProfile> userProfile = q.asList();
+
+		for (UserProfile user : userProfile) {
+			Multimap<String, Object> htUser = ArrayListMultimap.create();
+
+			InvestigatorUsersAndPositions userPosition = new InvestigatorUsersAndPositions();
+			userPosition.setId(user.getId().toString());
+			userPosition.setFullName(user.getFullName());
+			userPosition.setMobileNumber(user.getMobileNumbers().get(0));
+
+			for (PositionDetails userDetails : user.getDetails()) {
+				Multimap<String, Object> mapTypeTitle = ArrayListMultimap
+						.create();
+				Multimap<String, Object> mapDeptType = ArrayListMultimap
+						.create();
+
+				mapTypeTitle.put(userDetails.getPositionType(),
+						userDetails.getPositionTitle());
+				mapDeptType.put(userDetails.getDepartment(),
+						mapTypeTitle.asMap());
+
+				htUser.put(userDetails.getCollege(), mapDeptType.asMap());
+				userPosition.setPositions(htUser);
+			}
+			userPositions.add(userPosition);
+		}
+		return userPositions;
 	}
 }

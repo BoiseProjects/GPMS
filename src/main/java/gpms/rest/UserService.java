@@ -13,8 +13,10 @@ import gpms.model.PositionDetails;
 import gpms.model.UserAccount;
 import gpms.model.UserInfo;
 import gpms.model.UserProfile;
+import gpms.utils.MultimapAdapter;
 
 import java.io.IOException;
+import java.net.UnknownHostException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -43,6 +45,7 @@ import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.mongodb.morphia.Morphia;
 
+import com.google.common.collect.Multimap;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mongodb.MongoClient;
@@ -1046,5 +1049,42 @@ public class UserService {
 			return (int) session.getAttribute("userid");
 		}
 		return 0;
+	}
+	
+	@POST
+	@Path("/GetAllUserDropdown")
+	public HashMap<String, String> getAllUsers() throws UnknownHostException {
+		HashMap<String, String> users = new HashMap<String, String>();
+		// List<UserProfile> userprofiles = userProfileDAO.findAllActiveUsers();
+		List<UserProfile> userprofiles = userProfileDAO
+				.findAllUsersWithPosition();
+		for (UserProfile userProfile : userprofiles) {
+			users.put(userProfile.getId().toString(), userProfile.getFullName());
+		}
+		return users;
+	}
+	
+	@POST
+	@Path("/GetAllPositionDetailsForAUser")
+	public String getAllPositionDetailsForAUser(String message)
+			throws UnknownHostException, JsonProcessingException, IOException {
+		String userId = new String();
+
+		ObjectMapper mapper = new ObjectMapper();
+
+		JsonNode root = mapper.readTree(message);
+		if (root != null && root.has("userId")) {
+			userId = root.get("userId").getTextValue();
+		}
+
+		ObjectId id = new ObjectId(userId);
+
+		final MultimapAdapter multimapAdapter = new MultimapAdapter();
+		final Gson gson = new GsonBuilder().setPrettyPrinting()
+				.registerTypeAdapter(Multimap.class, multimapAdapter).create();
+
+		final String userPositions = gson.toJson(userProfileDAO
+				.findAllPositionDetailsForAUser(id));
+		return userPositions;
 	}
 }
