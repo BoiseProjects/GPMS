@@ -53,7 +53,7 @@
 
 	var gpmsServicePath = "REST/";
 	var gpmsRootPath = "http://localhost:8181/GPMS/";
-	var userProfileId = "5637b2510716940b3445a0a7";
+	var userProfileId = "565de4c154ffd81f18d4e4a0";
 	var userPositionType = "Tenured/tenure-track faculty";
 	var userPositionTitle = "Research Scientist";
 

@@ -19,6 +19,7 @@ import org.mongodb.morphia.query.Query;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoException;
 
+import gpms.DAL.MongoDBConnector;
 import gpms.model.AuditLog;
 import gpms.model.AuditLogInfo;
 import gpms.model.GPMSCommonInfo;
@@ -33,15 +34,36 @@ import gpms.model.TypeOfRequest;
 import gpms.model.UserAccount;
 import gpms.model.UserProfile;
 
-public class ProposalDAO  extends BasicDAO<Proposal, String> {
+public class ProposalDAO extends BasicDAO<Proposal, String> {
 	private static final String DBNAME = "db_gpms";
 	public static final String COLLECTION_NAME = "proposal";
 
 	private static Morphia morphia;
 	private static Datastore ds;
 	private AuditLog audit = new AuditLog();
-//	DelegationDAO delegationDAO = null;
 	DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+
+	private static Morphia getMorphia() throws UnknownHostException,
+			MongoException {
+		if (morphia == null) {
+			morphia = new Morphia().map(Proposal.class);
+		}
+		return morphia;
+	}
+
+	@Override
+	public Datastore getDatastore() {
+		if (ds == null) {
+			try {
+				ds = getMorphia().createDatastore(MongoDBConnector.getMongo(),
+						DBNAME);
+			} catch (UnknownHostException | MongoException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return ds;
+	}
 
 	public ProposalDAO(MongoClient mongo, Morphia morphia, String dbName) {
 		super(mongo, morphia, dbName);
@@ -52,22 +74,7 @@ public class ProposalDAO  extends BasicDAO<Proposal, String> {
 		Datastore ds = getDatastore();
 		return ds.createQuery(Proposal.class).field("_id").equal(id).get();
 	}
-	
-	public void deleteProposal(Proposal proposal, UserProfile authorProfile,
-			GPMSCommonInfo gpmsCommonObj) {
-		Datastore ds = getDatastore();
-		proposal.setProposalStatus(Status.DELETED);
-		AuditLog entry = new AuditLog(authorProfile, "Deleted Proposal for "
-				+ proposal.getProjectInfo().getProjectTitle(), new Date());
-		proposal.addEntryToAuditLog(entry);
-		ds.save(proposal);
-	}
-	
-	public Proposal findProposalDetailsByProposalID(ObjectId id) {
-		Datastore ds = getDatastore();
-		return ds.createQuery(Proposal.class).field("_id").equal(id).get();
-	}
-	
+
 	public List<AuditLogInfo> findAllForProposalAuditLogGrid(int offset,
 			int limit, ObjectId id, String action, String auditedBy,
 			String activityOnFrom, String activityOnTo) throws ParseException {
@@ -177,7 +184,7 @@ public class ProposalDAO  extends BasicDAO<Proposal, String> {
 			return allAuditLogs.subList(offset - 1, rowTotal);
 		}
 	}
-	
+
 	public Proposal findNextProposalWithSameProjectTitle(ObjectId id,
 			String newProjectTitle) {
 		Datastore ds = getDatastore();
@@ -192,7 +199,7 @@ public class ProposalDAO  extends BasicDAO<Proposal, String> {
 						.containsIgnoreCase(pattern.pattern()));
 		return proposalQuery.get();
 	}
-	
+
 	public Proposal findAnyProposalWithSameProjectTitle(String newProjectTitle) {
 		Datastore ds = getDatastore();
 
@@ -205,7 +212,7 @@ public class ProposalDAO  extends BasicDAO<Proposal, String> {
 				.containsIgnoreCase(pattern.pattern());
 		return proposalQuery.get();
 	}
-	
+
 	public List<SimplePersonnelData> PersonnelQuery(ObjectId id,
 			String searchQuery) {
 		ArrayList<SimplePersonnelData> spdList = new ArrayList<SimplePersonnelData>();
@@ -244,8 +251,6 @@ public class ProposalDAO  extends BasicDAO<Proposal, String> {
 
 		Datastore ds = getDatastore();
 
-
-
 		String checkName = "";
 		ArrayList<String> checkList = new ArrayList<String>();
 
@@ -268,7 +273,7 @@ public class ProposalDAO  extends BasicDAO<Proposal, String> {
 
 		return spdList;
 	}
-	
+
 	public int findLatestProposalNo() {
 		Datastore ds = getDatastore();
 		List<Proposal> q1 = ds.createQuery(Proposal.class)
@@ -279,7 +284,7 @@ public class ProposalDAO  extends BasicDAO<Proposal, String> {
 			return q1.get(q1.size() - 1).getProposalNo();
 		}
 	}
-	
+
 	public List<ProposalInfo> findAllForProposalGrid(int offset, int limit,
 			String projectTitle, String proposedBy, String receivedOnFrom,
 			String receivedOnTo, Double totalCostsFrom, Double totalCostsTo,
@@ -436,7 +441,6 @@ public class ProposalDAO  extends BasicDAO<Proposal, String> {
 			proposal.setLastAuditedBy(lastAuditedBy);
 			proposal.setLastAuditAction(lastAuditAction);
 
-			
 			String piUserId = userProposal.getInvestigatorInfo().getPi()
 					.getUserRef().getId().toString();
 			proposal.setPiUser(piUserId);
@@ -469,5 +473,5 @@ public class ProposalDAO  extends BasicDAO<Proposal, String> {
 		Collections.sort(proposals);
 		return proposals;
 	}
-	
+
 }
