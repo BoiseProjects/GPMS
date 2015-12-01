@@ -2073,7 +2073,8 @@ $(function() {
 				attributeName : "proposal-section",
 				attributeValue : "Whole Proposal"
 			});
-			if (_proposalId === "0") { //**TODO I have changed this testing equivalence
+			if (_proposalId === "0") { // **TODO I have changed this testing
+				// equivalence
 				attributeArray.push({
 					attributeType : "Action",
 					attributeName : "proposal-action",
@@ -3300,9 +3301,9 @@ $(function() {
 					});
 
 			$("#btnSearchProposal").on("click", function() {
-				if ($("#form1").valid()) {
-					proposalsManage.SearchProposals();
-				}
+				// if ($("#form1").valid()) {
+				proposalsManage.SearchProposals();
+				// }
 				return false;
 			});
 
