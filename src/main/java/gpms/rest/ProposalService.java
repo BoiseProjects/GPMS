@@ -5,6 +5,7 @@ import gpms.dao.ProposalDAO;
 import gpms.dao.UserAccountDAO;
 import gpms.dao.UserProfileDAO;
 import gpms.model.AdditionalInfo;
+import gpms.model.AuditLogInfo;
 import gpms.model.BaseInfo;
 import gpms.model.BaseOptions;
 import gpms.model.BasePIEligibilityOptions;
@@ -35,6 +36,7 @@ import gpms.model.UserAccount;
 import gpms.model.UserProfile;
 
 import java.io.IOException;
+import java.net.UnknownHostException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -328,6 +330,64 @@ public class ProposalService {
 	}
 
 	@POST
+	@Path("/GetProposalAuditLogList")
+	public List<AuditLogInfo> produceProposalAuditLogJSON(String message)
+			throws JsonGenerationException, JsonMappingException, IOException,
+			ParseException {
+		List<AuditLogInfo> proposalAuditLogs = new ArrayList<AuditLogInfo>();
+
+		int offset = 0, limit = 0;
+		String proposalId = new String();
+		String action = new String();
+		String auditedBy = new String();
+		String activityOnFrom = new String();
+		String activityOnTo = new String();
+
+		ObjectMapper mapper = new ObjectMapper();
+		JsonNode root = mapper.readTree(message);
+
+		if (root != null && root.has("offset")) {
+			offset = root.get("offset").getIntValue();
+		}
+
+		if (root != null && root.has("limit")) {
+			limit = root.get("limit").getIntValue();
+		}
+
+		if (root != null && root.has("proposalId")) {
+			proposalId = root.get("proposalId").getTextValue();
+		}
+
+		JsonNode auditLogBindObj = root.get("auditLogBindObj");
+		if (auditLogBindObj != null && auditLogBindObj.has("Action")) {
+			action = auditLogBindObj.get("Action").getTextValue();
+		}
+
+		if (auditLogBindObj != null && auditLogBindObj.has("AuditedBy")) {
+			auditedBy = auditLogBindObj.get("AuditedBy").getTextValue();
+		}
+
+		if (auditLogBindObj != null && auditLogBindObj.has("ActivityOnFrom")) {
+			activityOnFrom = auditLogBindObj.get("ActivityOnFrom")
+					.getTextValue();
+		}
+
+		if (auditLogBindObj != null && auditLogBindObj.has("ActivityOnTo")) {
+			activityOnTo = auditLogBindObj.get("ActivityOnTo").getTextValue();
+		}
+
+		ObjectId id = new ObjectId(proposalId);
+
+		proposalAuditLogs = proposalDAO.findAllForProposalAuditLogGrid(offset,
+				limit, id, action, auditedBy, activityOnFrom, activityOnTo);
+
+		// users = (ArrayList<UserInfo>) userProfileDAO.findAllForUserGrid();
+		// response = JSONTansformer.ConvertToJSON(users);
+
+		return proposalAuditLogs;
+	}
+
+	@POST
 	@Path("/CheckUniqueProjectTitle")
 	public String checkUniqueProjectTitle(String message)
 			throws JsonProcessingException, IOException {
@@ -384,6 +444,52 @@ public class ProposalService {
 					.writeValueAsString("true");
 		}
 		return response;
+	}
+
+	@POST
+	@Path("/GetAllSignatureForAProposal")
+	public List<SignatureInfo> getAllSignatureForAProposal(String message)
+			throws UnknownHostException, JsonProcessingException, IOException,
+			ParseException {
+		String proposalId = new String();
+		// String response = new String();
+
+		ObjectMapper mapper = new ObjectMapper();
+
+		JsonNode root = mapper.readTree(message);
+		if (root != null && root.has("proposalId")) {
+			proposalId = root.get("proposalId").getTextValue();
+		}
+
+		ObjectId id = new ObjectId(proposalId);
+
+		List<SignatureInfo> signatures = proposalDAO
+				.findAllSignatureForAProposal(id);
+
+		// Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd")
+		// .excludeFieldsWithoutExposeAnnotation().setPrettyPrinting()
+		// .create();
+		// response = gson.toJson(signatures, SignatureInfo.class);
+
+		// for (SignatureInfo signatureInfo : signatures) {
+		// // TODO : get all delegated User Info for this PI user and bind it
+		// // into signature Object
+		//
+		// // Check if the proposal Id is exact to this proposal id
+		//
+		// // TODO : find all the delegated User for this Proposal Id
+		// ObjectId userId = new ObjectId(signatureInfo.getUserProfileId());
+		// List<SignatureInfo> delegatedUsers = delegationDAO
+		// .findDelegatedUsersForAUser(userId,
+		// signatureInfo.getPositionTitle(), proposalId);
+		//
+		// for (SignatureInfo delegatedUser : delegatedUsers) {
+		// signatures.add(delegatedUser);
+		// }
+		//
+		// }
+
+		return signatures;
 	}
 
 	@POST

@@ -81,6 +81,35 @@ public class UserService {
 	}
 
 	@POST
+	@Path("/GetUserPositionDetailsForAProposal")
+	public String getUserPositionDetailsForAProposal(String message)
+			throws UnknownHostException, JsonProcessingException, IOException {
+		String profileIds = new String();
+		String profiles[] = new String[0];
+		List<ObjectId> userIds = new ArrayList<ObjectId>();
+
+		ObjectMapper mapper = new ObjectMapper();
+
+		JsonNode root = mapper.readTree(message);
+		if (root != null && root.has("userIds")) {
+			profileIds = root.get("userIds").getTextValue();
+			profiles = profileIds.split(", ");
+		}
+
+		for (String profile : profiles) {
+			ObjectId id = new ObjectId(profile);
+			userIds.add(id);
+		}
+		final MultimapAdapter multimapAdapter = new MultimapAdapter();
+		final Gson gson = new GsonBuilder().setPrettyPrinting()
+				.registerTypeAdapter(Multimap.class, multimapAdapter).create();
+
+		final String userPositions = gson.toJson(userProfileDAO
+				.findUserPositionDetailsForAProposal(userIds));
+		return userPositions;
+	}
+
+	@POST
 	@Path("/GetUsersList")
 	public List<UserInfo> produceUsersJSON(String message)
 			throws JsonGenerationException, JsonMappingException, IOException {
@@ -1050,7 +1079,7 @@ public class UserService {
 		}
 		return 0;
 	}
-	
+
 	@POST
 	@Path("/GetAllUserDropdown")
 	public HashMap<String, String> getAllUsers() throws UnknownHostException {
@@ -1063,7 +1092,7 @@ public class UserService {
 		}
 		return users;
 	}
-	
+
 	@POST
 	@Path("/GetAllPositionDetailsForAUser")
 	public String getAllPositionDetailsForAUser(String message)
