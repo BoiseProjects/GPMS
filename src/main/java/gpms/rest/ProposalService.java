@@ -1,6 +1,7 @@
 package gpms.rest;
 
 import gpms.DAL.MongoDBConnector;
+import gpms.dao.DelegationDAO;
 import gpms.dao.ProposalDAO;
 import gpms.dao.UserAccountDAO;
 import gpms.dao.UserProfileDAO;
@@ -61,7 +62,6 @@ import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.mongodb.morphia.Morphia;
 
-import com.google.common.collect.Multimap;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mongodb.MongoClient;
@@ -76,6 +76,7 @@ public class ProposalService {
 	UserAccountDAO userAccountDAO = null;
 	UserProfileDAO userProfileDAO = null;
 	ProposalDAO proposalDAO = null;
+	DelegationDAO delegationDAO = null;
 
 	DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -86,6 +87,7 @@ public class ProposalService {
 		userAccountDAO = new UserAccountDAO(mongoClient, morphia, dbName);
 		userProfileDAO = new UserProfileDAO(mongoClient, morphia, dbName);
 		proposalDAO = new ProposalDAO(mongoClient, morphia, dbName);
+		delegationDAO = new DelegationDAO(mongoClient, morphia, dbName);
 	}
 
 	@GET
