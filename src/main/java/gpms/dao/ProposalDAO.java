@@ -75,6 +75,16 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 		return ds.createQuery(Proposal.class).field("_id").equal(id).get();
 	}
 
+	public void deleteProposal(Proposal proposal, UserProfile authorProfile,
+			GPMSCommonInfo gpmsCommonObj) {
+		Datastore ds = getDatastore();
+		proposal.setProposalStatus(Status.DELETED);
+		AuditLog entry = new AuditLog(authorProfile, "Deleted Proposal for "
+				+ proposal.getProjectInfo().getProjectTitle(), new Date());
+		proposal.addEntryToAuditLog(entry);
+		ds.save(proposal);
+	}
+
 	public List<AuditLogInfo> findAllForProposalAuditLogGrid(int offset,
 			int limit, ObjectId id, String action, String auditedBy,
 			String activityOnFrom, String activityOnTo) throws ParseException {

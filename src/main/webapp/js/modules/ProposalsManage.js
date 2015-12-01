@@ -1665,6 +1665,76 @@ $(function() {
 					});
 		},
 
+		DeleteProposal : function(tblID, argus) {
+			switch (tblID) {
+			case "gdvProposals":
+				if (argus[1].toLowerCase() != "yes") {
+					proposalsManage.DeleteProposalById(argus[0]);
+				} else {
+					csscody.alert('<h2>'
+							+ getLocale(gpmsProposalsManagement,
+									"Information Alert")
+							+ '</h2><p>'
+							+ getLocale(gpmsProposalsManagement,
+									"Sorry! this proposal is already deleted.")
+							+ '</p>');
+				}
+				break;
+			default:
+				break;
+			}
+		},
+
+		DeleteProposalById : function(_proposalId) {
+			var properties = {
+				onComplete : function(e) {
+					proposalsManage.ConfirmSingleDelete(_proposalId, e);
+				}
+			};
+			csscody.confirm("<h2>"
+					+ getLocale(gpmsProposalsManagement, "Delete Confirmation")
+					+ "</h2><p>"
+					+ getLocale(gpmsProposalsManagement,
+							"Are you sure you want to delete this proposal?")
+					+ "</p>", properties);
+		},
+
+		ConfirmDeleteMultiple : function(proposal_ids, event) {
+			if (event) {
+				proposalsManage.DeleteMultipleProposals(proposal_ids);
+			}
+		},
+
+		DeleteMultipleProposals : function(_proposalIds) {
+			// this.config.dataType = "html";
+			this.config.url = this.config.baseURL
+					+ "DeleteMultipleProposalsByProposalID";
+			this.config.data = JSON2.stringify({
+				proposalIds : _proposalIds,
+				gpmsCommonObj : gpmsCommonObj()
+			});
+			this.config.ajaxCallMode = 3;
+			this.ajaxCall(this.config);
+			return false;
+		},
+
+		ConfirmSingleDelete : function(proposal_id, event) {
+			if (event) {
+				proposalsManage.DeleteSingleUser(proposal_id);
+			}
+		},
+
+		DeleteSingleUser : function(_proposalId) {
+			this.config.url = this.config.baseURL
+					+ "DeleteProposalByProposalID";
+			this.config.data = JSON2.stringify({
+				proposalId : _proposalId,
+				gpmsCommonObj : gpmsCommonObj()
+			});
+			this.config.ajaxCallMode = 2;
+			this.ajaxCall(this.config);
+			return false;
+		},
 
 		ClearForm : function() {
 			validator.resetForm();
