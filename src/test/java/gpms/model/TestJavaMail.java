@@ -1,4 +1,4 @@
-package gpms.model.test;
+package gpms.model;
 
 import java.util.Properties;
 import javax.mail.*;
