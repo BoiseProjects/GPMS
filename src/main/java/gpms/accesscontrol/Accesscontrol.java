@@ -251,17 +251,18 @@ public class Accesscontrol {
 		Accesscontrol ac = new Accesscontrol();
 		// ac.getXACMLdecision("Faculty", "Proposal", "Create");
 		HashMap<String, Multimap<String, String>> attrMap = new HashMap<String, Multimap<String, String>>();
-
 		Multimap<String, String> subjectMap = ArrayListMultimap.create();
+		Multimap<String, String> resourceMap = ArrayListMultimap.create();
+		Multimap<String, String> actionMap = ArrayListMultimap.create();
+		
+		// Test case for Rule : FacultyCreateProposal-Rule1			
 		subjectMap.put("position-type", "Non-tenure-track research faculty");
 		// subjectMap.put("Proposal Role", "PI");
 		attrMap.put("Subject", subjectMap);
-
-		Multimap<String, String> resourceMap = ArrayListMultimap.create();
+		
 		resourceMap.put("proposal-section", "Whole Proposal");
 		attrMap.put("Resource", resourceMap);
-
-		Multimap<String, String> actionMap = ArrayListMultimap.create();
+		
 		actionMap.put("proposal-action", "Create");
 		attrMap.put("Action", actionMap);
 
@@ -272,12 +273,13 @@ public class Accesscontrol {
 		ac.getXACMLdecision(attrMap);
 	}
 
-/**
- * I made this public so that it can be accessed by ProposalService.java
- * -Tommy
- * @param attrMap
- * @return
- */
+	/**
+	 * I made this public so that it can be accessed by ProposalService.java
+	 * -Tommy
+	 * 
+	 * @param attrMap
+	 * @return
+	 */
 	public String getXACMLdecision(
 			HashMap<String, Multimap<String, String>> attrMap) {
 		String request = createXACMLRequest(attrMap);
