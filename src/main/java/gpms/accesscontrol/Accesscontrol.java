@@ -254,21 +254,25 @@ public class Accesscontrol {
 		Multimap<String, String> subjectMap = ArrayListMultimap.create();
 		Multimap<String, String> resourceMap = ArrayListMultimap.create();
 		Multimap<String, String> actionMap = ArrayListMultimap.create();
-		
-		// Test case for Rule : FacultyCreateProposal-Rule1			
+
+		// Test case for Rule : FacultyCreateProposal-Rule1
 		subjectMap.put("position-type", "Non-tenure-track research faculty");
-		// subjectMap.put("Proposal Role", "PI");
+		subjectMap.put("position-title", "Assistant Research Professor");
+		subjectMap.put("proposal-role", "PI");
 		attrMap.put("Subject", subjectMap);
-		
+
 		resourceMap.put("proposal-section", "Whole Proposal");
+		resourceMap.put("status", "Withdraw by Research Office");
 		attrMap.put("Resource", resourceMap);
-		
+
 		actionMap.put("proposal-action", "Create");
+		actionMap.put("proposal-section-action", "View");
 		attrMap.put("Action", actionMap);
 
-		// Multimap<String, String> environmentMap = ArrayListMultimap.create();
-		// environmentMap.put("device-type", "Android Device");
-		// attrMap.put("Environment", environmentMap);
+		Multimap<String, String> environmentMap = ArrayListMultimap.create();
+		environmentMap.put("device-type", "Android Device");
+		environmentMap.put("network-type", "Campus");
+		attrMap.put("Environment", environmentMap);
 
 		ac.getXACMLdecision(attrMap);
 	}
@@ -322,6 +326,7 @@ public class Accesscontrol {
 
 			switch (entry.getKey()) {
 			case "Subject":
+				boolean isFirstSubject = true;
 				while (keyIterator.hasNext()) {
 					String key = (String) keyIterator.next();
 					Collection<String> values = entry.getValue().get(key);
@@ -331,21 +336,27 @@ public class Accesscontrol {
 						for (String value : values) {
 							if (attrRecord.getValues().contains(value)) {
 								System.out.println(key + " :::::: " + value);
-								subjectAttr = "<Attributes Category=\""
-										+ attrRecord.getCategory() + "\">\n"
-										+ "<Attribute AttributeId=\""
+								if (isFirstSubject) {
+									subjectAttr += "<Attributes Category=\""
+											+ attrRecord.getCategory()
+											+ "\">\n";
+								}
+								subjectAttr += "<Attribute AttributeId=\""
 										+ attrRecord.getFullAttributeName()
 										+ "\" IncludeInResult=\"false\">\n"
 										+ "<AttributeValue DataType=\""
 										+ attrRecord.getDataType() + "\">"
 										+ value + "</AttributeValue>\n"
-										+ "</Attribute>\n" + "</Attributes>\n";
+										+ "</Attribute>\n";
+								isFirstSubject = false;
 							}
 						}
 					}
 				}
+				subjectAttr += "</Attributes>\n";
 				break;
 			case "Resource":
+				boolean isFirstResource = true;
 				while (keyIterator.hasNext()) {
 					String key = (String) keyIterator.next();
 					Collection<String> values = entry.getValue().get(key);
@@ -355,21 +366,28 @@ public class Accesscontrol {
 						for (String value : values) {
 							if (attrRecord.getValues().contains(value)) {
 								System.out.println(key + " :::::: " + value);
-								resourceAttr = "<Attributes Category=\""
-										+ attrRecord.getCategory() + "\">\n"
-										+ "<Attribute AttributeId=\""
+								if (isFirstResource) {
+									resourceAttr += "<Attributes Category=\""
+											+ attrRecord.getCategory()
+											+ "\">\n";
+								}
+
+								resourceAttr += "<Attribute AttributeId=\""
 										+ attrRecord.getFullAttributeName()
 										+ "\" IncludeInResult=\"false\">\n"
 										+ "<AttributeValue DataType=\""
 										+ attrRecord.getDataType() + "\">"
 										+ value + "</AttributeValue>\n"
-										+ "</Attribute>\n" + "</Attributes>\n";
+										+ "</Attribute>\n";
+								isFirstResource = false;
 							}
 						}
 					}
 				}
+				resourceAttr += "</Attributes>\n";
 				break;
 			case "Action":
+				boolean isFirstAction = true;
 				while (keyIterator.hasNext()) {
 					String key = (String) keyIterator.next();
 					Collection<String> values = entry.getValue().get(key);
@@ -379,21 +397,28 @@ public class Accesscontrol {
 						for (String value : values) {
 							if (attrRecord.getValues().contains(value)) {
 								System.out.println(key + " :::::: " + value);
-								actionAttr = "<Attributes Category=\""
-										+ attrRecord.getCategory() + "\">\n"
-										+ "<Attribute AttributeId=\""
+								if (isFirstAction) {
+									actionAttr += "<Attributes Category=\""
+											+ attrRecord.getCategory()
+											+ "\">\n";
+								}
+
+								actionAttr += "<Attribute AttributeId=\""
 										+ attrRecord.getFullAttributeName()
 										+ "\" IncludeInResult=\"false\">\n"
 										+ "<AttributeValue DataType=\""
 										+ attrRecord.getDataType() + "\">"
 										+ value + "</AttributeValue>\n"
-										+ "</Attribute>\n" + "</Attributes>\n";
+										+ "</Attribute>\n";
+								isFirstAction = false;
 							}
 						}
 					}
 				}
+				actionAttr += "</Attributes>\n";
 				break;
 			case "Environment":
+				boolean isFirstEnvironment = true;
 				while (keyIterator.hasNext()) {
 					String key = (String) keyIterator.next();
 					Collection<String> values = entry.getValue().get(key);
@@ -403,19 +428,26 @@ public class Accesscontrol {
 						for (String value : values) {
 							if (attrRecord.getValues().contains(value)) {
 								System.out.println(key + " :::::: " + value);
-								environmentAttr = "<Attributes Category=\""
-										+ attrRecord.getCategory() + "\">\n"
-										+ "<Attribute AttributeId=\""
+								if (isFirstEnvironment) {
+									environmentAttr += "<Attributes Category=\""
+											+ attrRecord.getCategory()
+											+ "\">\n";
+								}
+
+								environmentAttr += "<Attribute AttributeId=\""
 										+ attrRecord.getFullAttributeName()
 										+ "\" IncludeInResult=\"false\">\n"
 										+ "<AttributeValue DataType=\""
 										+ attrRecord.getDataType() + "\">"
 										+ value + "</AttributeValue>\n"
-										+ "</Attribute>\n" + "</Attributes>\n";
+										+ "</Attribute>\n";
+
+								isFirstEnvironment = false;
 							}
 						}
 					}
 				}
+				environmentAttr += "</Attributes>\n";
 				break;
 
 			default:
