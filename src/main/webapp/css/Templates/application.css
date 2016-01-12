@@ -4324,5 +4324,16 @@ img.mfp-img {
     margin-bottom: 40px;
 }
 
+.ui-widget-header {
+	color: #8091a5 !important;
+}
+
+.ui-datepicker .ui-datepicker-header {
+    padding: 0.7em 0 !important;
+}
+
+.ui-datepicker .ui-datepicker-title {
+    margin: 0 1.3em !important;
+}
 
 
