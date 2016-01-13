@@ -76,6 +76,7 @@
 </script>
 
 <script type="text/javascript" src="js/core/gpmscore.js"></script>
+<script type="text/javascript" src="js/core/rememberme.js"></script>
 
 <script type="text/javascript"
 	src="js/FormValidation/jquery.validate.js"></script>
@@ -159,8 +160,7 @@
 							name="password" size="30" type="password">
 					</div>
 					<div class="form__item">
-						<input id="remember_me" name="remember_me" type="checkbox"
-							value="{:name=&gt;&quot;user[remember_me]&quot;}"> <label
+						<input id="remember_me" name="remember_me" type="checkbox"> <label
 							class="form__label label label--inline" for="remember_me">
 							Remember me </label>
 					</div>

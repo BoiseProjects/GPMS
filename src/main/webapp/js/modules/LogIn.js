@@ -33,6 +33,11 @@ $(function() {
 							}
 						},
 						submitHandler : function(form, event) {
+							if ($("#remember_me").is(':checked')) {
+								toMem();
+							} else {
+								delMem();
+							}
 							form.submit();
 							event.preventDefault();
 						}
