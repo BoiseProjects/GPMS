@@ -63,7 +63,7 @@
 	var gpmsCountryName = "RESERVED";
 	var gpmsRedirectPath = "/";
 
-	var logInURL = "login";
+	var logInURL = "Login";
 	var pageExtension = ".jsp";
 
 	$(function() {

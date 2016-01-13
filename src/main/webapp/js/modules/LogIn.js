@@ -2,6 +2,8 @@ var logIn = '';
 $(function() {
 
 	var userSession = "<%=session.getAttribute('userid')%>";
+	
+	alert(userSession + " From Login.jsp")
 	// if (userSession != null) {
 	// window.location = 'Home.jsp';
 	// }
