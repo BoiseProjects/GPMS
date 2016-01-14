@@ -50,7 +50,8 @@ public class UserAccountDAO extends BasicDAO<UserAccount, String> {
 
 	public UserAccountDAO(MongoClient mongo, Morphia morphia, String dbName) {
 		super(mongo, morphia, dbName);
-	}	
+	}
+
 	public UserAccount findByID(ObjectId id) {
 		Datastore ds = getDatastore();
 		return ds.createQuery(UserAccount.class).field("_id").equal(id).get();
@@ -69,11 +70,13 @@ public class UserAccountDAO extends BasicDAO<UserAccount, String> {
 		return ds.createQuery(UserAccount.class).field("username")
 				.equal(userName).get();
 	}
+
 	public void deleteUserAccountByUserID(UserAccount userAccount,
 			UserProfile authorProfile, GPMSCommonInfo gpmsCommonObj) {
 		Datastore ds = getDatastore();
-		audit = new AuditLog(authorProfile, "Deleted user account and profile of "
-				+ userAccount.getUserName(), new Date());
+		audit = new AuditLog(authorProfile,
+				"Deleted user account and profile of "
+						+ userAccount.getUserName(), new Date());
 		userAccount.addEntryToAuditLog(audit);
 
 		userAccount.setDeleted(true);
@@ -85,8 +88,15 @@ public class UserAccountDAO extends BasicDAO<UserAccount, String> {
 			UserProfile authorProfile, GPMSCommonInfo gpmsCommonObj,
 			Boolean isActive) {
 		Datastore ds = getDatastore();
-		audit = new AuditLog(authorProfile, "Activated user account and profile of "
-				+ userAccount.getUserName(), new Date());
+		if (isActive) {
+			audit = new AuditLog(authorProfile,
+					"Activated user account and profile of "
+							+ userAccount.getUserName(), new Date());
+		} else {
+			audit = new AuditLog(authorProfile,
+					"Deactivated user account and profile of "
+							+ userAccount.getUserName(), new Date());
+		}
 		userAccount.addEntryToAuditLog(audit);
 
 		userAccount.setDeleted(!isActive);

@@ -1038,7 +1038,7 @@ public class UserService {
 	}
 
 	@POST
-	@Path("/SignUpUser")
+	@Path("/signup")
 	public String signUpUser(String message) throws JsonProcessingException,
 			IOException, ParseException {
 
@@ -1117,34 +1117,14 @@ public class UserService {
 
 			newProfile.getAddresses().add(newAddress);
 
-			if (userInfo != null && userInfo.has("OfficeNumber")) {
-				newProfile.getOfficeNumbers().add(
-						userInfo.get("OfficeNumber").getTextValue());
-			}
-
 			if (userInfo != null && userInfo.has("MobileNumber")) {
 				newProfile.getMobileNumbers().add(
 						userInfo.get("MobileNumber").getTextValue());
 			}
 
-			if (userInfo != null && userInfo.has("HomeNumber")) {
-				newProfile.getHomeNumbers().add(
-						userInfo.get("HomeNumber").getTextValue());
-			}
-
-			if (userInfo != null && userInfo.has("OtherNumber")) {
-				newProfile.getOtherNumbers().add(
-						userInfo.get("OtherNumber").getTextValue());
-			}
-
 			if (userInfo != null && userInfo.has("WorkEmail")) {
 				newProfile.getWorkEmails().add(
 						userInfo.get("WorkEmail").getTextValue());
-			}
-
-			if (userInfo != null && userInfo.has("PersonalEmail")) {
-				newProfile.getPersonalEmails().add(
-						userInfo.get("PersonalEmail").getTextValue());
 			}
 
 			// Save the User Account
@@ -1213,6 +1193,37 @@ public class UserService {
 			System.out.println("Null request in context");
 		}
 		HttpSession session = req.getSession();
+
+		// if (session.getAttribute("gpmsUserName") != null) {
+		session.removeAttribute("gpmsUserName");
+		// session.invalidate();
+		// }
+
+		// if (session.getAttribute("userPositionType") == null) {
+		session.removeAttribute("userPositionType");
+		// session.invalidate();
+		// }
+
+		// if (session.getAttribute("userPositionTitle") == null) {
+		session.removeAttribute("userPositionTitle");
+		// session.invalidate();
+		// }
+
+		// if (session.getAttribute("userDepartment") == null) {
+		session.removeAttribute("userDepartment");
+		// session.invalidate();
+		// }
+
+		// if (session.getAttribute("userCollege") == null) {
+		session.removeAttribute("userCollege");
+		// session.invalidate();
+		// }
+
+		// if (session.getAttribute("isAdmin") == null) {
+		session.removeAttribute("isAdmin");
+		// session.invalidate();
+		// }
+
 		if (session.getAttribute("userProfileId") != null) {
 			// session.setAttribute("userProfileId", null);
 			session.removeAttribute("userProfileId");
@@ -1302,6 +1313,14 @@ public class UserService {
 
 		if (session.getAttribute("userPositionTitle") == null) {
 			return (String) session.getAttribute("userPositionTitle");
+		}
+
+		if (session.getAttribute("userDepartment") == null) {
+			return (String) session.getAttribute("userDepartment");
+		}
+
+		if (session.getAttribute("userCollege") == null) {
+			return (String) session.getAttribute("userCollege");
 		}
 
 		if (session.getAttribute("isAdmin") == null) {

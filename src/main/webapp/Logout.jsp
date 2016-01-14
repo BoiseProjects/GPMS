@@ -11,7 +11,7 @@
 	var BASE_URL = "";
 	onload = function() {
 		var url = document.URL;
-		var userSession = '<%=session.getAttribute("userid")%>';
+		var userSession = '<%=session.getAttribute("userProfileId")%>';
 		if (userSession == "null") {
 			window.location = 'Login.jsp';
 		} else {

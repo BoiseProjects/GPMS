@@ -15,9 +15,10 @@ public class UserInfo implements Comparable<UserInfo> {
 	private Date lastAudited = new Date();
 	private String lastAuditedBy = new String();
 	private String lastAuditAction = new String();
-	private boolean isDeleted = false;
-	private boolean isActive = false;
-	private boolean isAdmin = true;
+
+	private boolean isActive;
+	private boolean isDeleted;
+	private boolean isAdmin;
 
 	public UserInfo() {
 	}
@@ -110,14 +111,6 @@ public class UserInfo implements Comparable<UserInfo> {
 		this.lastAuditAction = lastAuditAction;
 	}
 
-	public boolean isDeleted() {
-		return isDeleted;
-	}
-
-	public void setDeleted(boolean isDeleted) {
-		this.isDeleted = isDeleted;
-	}
-
 	public boolean isActive() {
 		return isActive;
 	}
@@ -126,11 +119,40 @@ public class UserInfo implements Comparable<UserInfo> {
 		this.isActive = isActive;
 	}
 
+	public boolean isDeleted() {
+		return isDeleted;
+	}
+
+	public void setDeleted(boolean isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+
 	public boolean isAdmin() {
 		return isAdmin;
 	}
 
 	public void setAdmin(boolean isAdmin) {
+		this.isAdmin = isAdmin;
+	}
+
+	public UserInfo(int rowTotal, String id, String userName, String fullName,
+			int noOfPIedProposal, int noOfCoPIedProposal,
+			int noOfSenioredProposal, Date addedOn, Date lastAudited,
+			String lastAuditedBy, String lastAuditAction, boolean isActive,
+			boolean isDeleted, boolean isAdmin) {
+		this.rowTotal = rowTotal;
+		this.id = id;
+		this.userName = userName;
+		this.fullName = fullName;
+		this.noOfPIedProposal = noOfPIedProposal;
+		this.noOfCoPIedProposal = noOfCoPIedProposal;
+		this.noOfSenioredProposal = noOfSenioredProposal;
+		this.addedOn = addedOn;
+		this.lastAudited = lastAudited;
+		this.lastAuditedBy = lastAuditedBy;
+		this.lastAuditAction = lastAuditAction;
+		this.isActive = isActive;
+		this.isDeleted = isDeleted;
 		this.isAdmin = isAdmin;
 	}
 

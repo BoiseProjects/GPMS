@@ -318,7 +318,7 @@ $(function() {
 		},
 
 		AddUserInfo : function(info) {
-			this.config.url = this.config.baseURL + "SignUpUser";
+			this.config.url = this.config.baseURL + "signup";
 			this.config.data = JSON2.stringify({
 				userInfo : info
 			});
