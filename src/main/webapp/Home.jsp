@@ -113,7 +113,7 @@
 		</div>
 	</div>
 	<div id="divAdminControlPanel">
-        <ucstickybar:TopStickyBar ID="topStickybar" runat="server" />
+		<%@ include file="TopStickyBar.jsp"%>
     </div>
 	<noscript>
 		<span>This page requires java-script to be enabled. Please

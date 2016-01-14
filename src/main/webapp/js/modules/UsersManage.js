@@ -1,4 +1,5 @@
 ﻿var usersManage = '';
+
 $(function() {
 	jQuery.fn.exists = function() {
 		return this.length > 0;
@@ -948,13 +949,13 @@ $(function() {
 			// $('#form1').removeData('validator');
 			// $('.class-text').removeClass('error').next('span').removeClass(
 			// 'error');
-			var inputs = $("#container-7").find('INPUT, SELECT, TEXTAREA');
+			var inputs = $("#container-7").find('INPUT:not(".class-isdefault"), SELECT, TEXTAREA');
 			$.each(inputs, function(i, item) {
 				// rmErrorClass(item);
 				$(this).prop('checked', false);
 				$(this).val($(this).find('option').first().val());
-			});
-
+			});	
+			
 			usersManage.onInit();
 			$('#lblFormHeading').html(
 					getLocale(gpmsUsersManagement, "New User Details"));
@@ -968,12 +969,12 @@ $(function() {
 			// $(this).parent("td").find("span.error").remove();
 			// }
 			// });
-			$('#txtUserName').removeAttr('disabled');
-
-			$(".AddOption").val("[+] Add");
+			$('#txtUserName').removeAttr('disabled');			
 
 			rowIndex = 0;
 			$("#dataTable tbody>tr:gt(0)").remove();
+			$("#dataTable tr:eq(1)").find("input:not(:last)").prop('checked', true);
+			$(".AddOption").val("[+] Add");
 
 			if (!$('input[name=chkActive]').is(":checked")) {
 				$('input[name=chkActive]').prop('checked', 'checked');
@@ -1046,8 +1047,9 @@ $(function() {
 											}else{										
 												_saveOptions += optionsText + "!#!";
 											}										
-										} else if ($(this).hasClass("class-isdefault")) {
+										} else if ($(this).hasClass("class-isdefault")) {											
 				                            var _IsChecked = $(this).prop('checked');
+				                            alert(_IsChecked);
 				                            _saveOptions += _IsChecked + "#!#";
 				                        }
 									});
@@ -2004,6 +2006,7 @@ $(function() {
 					.on(
 							"click",
 							function() {
+								// var checkedState = false;
 								if ($(this).prop("name") == "DeleteOption") {
 									var t = $(this).closest('tr');	
 									
@@ -2019,6 +2022,8 @@ $(function() {
 													});
 
 								} else if ($(this).prop("name") == "AddMore") {
+									// checkedState = $('#dataTable>tbody
+									// tr:first').find('input[type="radio"]').prop("checked");
 									var cloneRow = $(this).closest('tr').clone(
 											true);
 									$(cloneRow).find("input").each(
@@ -2045,6 +2050,9 @@ $(function() {
 											});
 									$(cloneRow).appendTo("#dataTable").hide()
 											.fadeIn(1200);
+									// $('#dataTable>tbody
+									// tr:first').find('input[type="radio"]').prop("checked",
+									// checkedState);
 
 									rowIndex = $('#dataTable > tbody tr')
 											.size() - 1;

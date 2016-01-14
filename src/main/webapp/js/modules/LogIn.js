@@ -1,7 +1,7 @@
 var logIn = '';
 $(function() {
 
-	alert(userProfileId + " From Login.jsp")
+	//alert(userProfileId + " From Login.jsp")
 	// if (userSession != null) {
 	// window.location = 'Home.jsp';
 	// }
