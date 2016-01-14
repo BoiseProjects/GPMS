@@ -10,9 +10,8 @@ $(function() {
 		return gpmsCommonInfo;
 	};
 
-	$("#welcome").text("Welcome " + userProfileId);
-	alert(userProfileId == null + " From Home.jsp");
-	if (userProfileId == null) {
+	$("#welcome").text("Welcome " + userProfileId.toString());
+	if (userProfileId == "null") {
 		window.location = 'Login.jsp';
 	}
 });

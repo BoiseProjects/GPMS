@@ -1,9 +1,7 @@
 var logIn = '';
 $(function() {
 
-	var userSession = "<%=session.getAttribute('userid')%>";
-	
-	alert(userSession + " From Login.jsp")
+	alert(userProfileId + " From Login.jsp")
 	// if (userSession != null) {
 	// window.location = 'Home.jsp';
 	// }
@@ -37,9 +35,10 @@ $(function() {
 						submitHandler : function(form, event) {
 							if ($("#remember_me").is(':checked')) {
 								toMem();
-							} else {
-								delMem();
 							}
+							// else {
+							// delMem();
+							// }
 							form.submit();
 							event.preventDefault();
 						}
