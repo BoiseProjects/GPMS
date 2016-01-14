@@ -486,6 +486,7 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 		ds.save(userProfile);
 
 	}
+	
 	public UserProfile findNextUserWithSameUserName(ObjectId id, String userName) {
 		Datastore ds = getDatastore();
 

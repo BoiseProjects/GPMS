@@ -32,11 +32,15 @@ public class UserAccount extends BaseEntity {
 
 	@Expose
 	@Property("is deleted")
-	private boolean isDeleted;
+	private boolean isDeleted = false;
 
 	@Expose
 	@Property("is active")
-	private boolean isActive;
+	private boolean isActive = false;
+
+	@Expose
+	@Property("is admin")
+	private boolean isAdmin = false;
 
 	@Expose
 	@Property("added on")
@@ -101,11 +105,19 @@ public class UserAccount extends BaseEntity {
 		this.addedOn = addedOn;
 	}
 
+	public boolean isAdmin() {
+		return isAdmin;
+	}
+
+	public void setAdmin(boolean isAdmin) {
+		this.isAdmin = isAdmin;
+	}
+
 	@Override
 	public String toString() {
 		return "UserAccount [userName=" + userName + ", password=" + password
 				+ ", isDeleted=" + isDeleted + ", isActive=" + isActive
-				+ ", addedOn=" + addedOn + "]";
+				+ ", isAdmin=" + isAdmin + ", addedOn=" + addedOn + "]";
 	}
 
 	@Override
@@ -114,6 +126,7 @@ public class UserAccount extends BaseEntity {
 		int result = 1;
 		result = prime * result + ((addedOn == null) ? 0 : addedOn.hashCode());
 		result = prime * result + (isActive ? 1231 : 1237);
+		result = prime * result + (isAdmin ? 1231 : 1237);
 		result = prime * result + (isDeleted ? 1231 : 1237);
 		result = prime * result
 				+ ((password == null) ? 0 : password.hashCode());
@@ -137,6 +150,8 @@ public class UserAccount extends BaseEntity {
 		} else if (!addedOn.equals(other.addedOn))
 			return false;
 		if (isActive != other.isActive)
+			return false;
+		if (isAdmin != other.isAdmin)
 			return false;
 		if (isDeleted != other.isDeleted)
 			return false;

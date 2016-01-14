@@ -112,6 +112,9 @@
 			<span id="lblPrgress">Please wait...</span>
 		</div>
 	</div>
+	<div id="divAdminControlPanel">
+        <ucstickybar:TopStickyBar ID="topStickybar" runat="server" />
+    </div>
 	<noscript>
 		<span>This page requires java-script to be enabled. Please
 			adjust your browser-settings.</span>
@@ -121,6 +124,8 @@
 			src="images/logo.png"> </a>
 			
 		<label class="label form__label" id="welcome"></label>
+		
+		<a href="Logout.jsp">Logout</a>
 	</div>
 </body>
 </html>

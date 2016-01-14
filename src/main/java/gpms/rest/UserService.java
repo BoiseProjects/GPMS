@@ -16,6 +16,7 @@ import gpms.model.UserProfile;
 import gpms.utils.MultimapAdapter;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.UnknownHostException;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -45,6 +46,7 @@ import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.mongodb.morphia.Morphia;
 
+import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -981,6 +983,7 @@ public class UserService {
 				newDetails.setDepartment(cols[1]);
 				newDetails.setPositionType(cols[2]);
 				newDetails.setPositionTitle(cols[3]);
+				newDetails.setDefault(Boolean.parseBoolean(cols[4]));
 				if (!userID.equals("0")) {
 					existingUserProfile.getDetails().add(newDetails);
 				} else {
@@ -1056,6 +1059,29 @@ public class UserService {
 		return null;
 	}
 
+	@GET
+	@Path("/logout")
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	public Response logout(@Context HttpServletRequest req) {
+		if (req == null) {
+			System.out.println("Null request in context");
+		}
+		HttpSession session = req.getSession();
+		if (session.getAttribute("userProfileId") != null) {
+			// session.setAttribute("userProfileId", null);
+			session.removeAttribute("userProfileId");
+			session.invalidate();
+			java.net.URI location = null;
+			try {
+				location = new java.net.URI("../Login.jsp");
+			} catch (URISyntaxException e) {
+				e.printStackTrace();
+			}
+			return Response.seeOther(location).build();
+		}
+		return null;
+	}
+
 	private void setMySessionID(@Context HttpServletRequest req,
 			String sessionValue) {
 		try {
@@ -1063,21 +1089,79 @@ public class UserService {
 				System.out.println("Null request in context");
 			}
 			HttpSession session = req.getSession();
-			if (session.getAttribute("userid") == null) {
+
+			if (session.getAttribute("userProfileId") == null) {
 				// id = System.currentTimeMillis();
-				session.setAttribute("userid", sessionValue);
+				session.setAttribute("userProfileId", sessionValue);
 			}
+
+			UserProfile existingUserProfile = new UserProfile();
+			if (!sessionValue.equals("null")) {
+				ObjectId id = new ObjectId(sessionValue);
+				existingUserProfile = userProfileDAO
+						.findUserDetailsByProfileID(id);
+			}
+
+			if (session.getAttribute("gpmsUserName") == null) {
+				// id = System.currentTimeMillis();
+				session.setAttribute("gpmsUserName", existingUserProfile
+						.getUserAccount().getUserName());
+			}
+
+			if (session.getAttribute("isAdmin") == null) {
+				session.setAttribute("isAdmin", existingUserProfile
+						.getUserAccount().isAdmin());
+			}
+
+			// Get the first Position Details for a User
+			PositionDetails userDetails = existingUserProfile.getDetails().get(
+					0);
+
+			if (session.getAttribute("userPositionType") == null) {
+				session.setAttribute("userPositionType",
+						userDetails.getPositionType());
+			}
+
+			if (session.getAttribute("userPositionTitle") == null) {
+				session.setAttribute("userPositionTitle",
+						userDetails.getPositionTitle());
+			}
+
+			if (session.getAttribute("userDepartment") == null) {
+				session.setAttribute("userDepartment",
+						userDetails.getDepartment());
+			}
+
+			if (session.getAttribute("userCollege") == null) {
+				session.setAttribute("userCollege", userDetails.getCollege());
+			}
+
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
 	}
 
-	public int getMySessionId(@Context HttpServletRequest req) {
+	public String getMySessionId(@Context HttpServletRequest req) {
 		HttpSession session = req.getSession();
-		if (session.getAttribute("userid") != null) {
-			return (int) session.getAttribute("userid");
+		if (session.getAttribute("userProfileId") != null) {
+			return (String) session.getAttribute("userProfileId");
 		}
-		return 0;
+		if (session.getAttribute("gpmsUserName") != null) {
+			return (String) session.getAttribute("gpmsUserName");
+		}
+
+		if (session.getAttribute("userPositionType") == null) {
+			return (String) session.getAttribute("userPositionType");
+		}
+
+		if (session.getAttribute("userPositionTitle") == null) {
+			return (String) session.getAttribute("userPositionTitle");
+		}
+
+		if (session.getAttribute("isAdmin") == null) {
+			return (String) session.getAttribute("isAdmin");
+		}
+		return null;
 	}
 
 	@POST

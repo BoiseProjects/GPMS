@@ -19,7 +19,7 @@
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="lib/org.wso2.balana-1.0.0-SNAPSHOT.jar" sourcepath="lib/org.wso2.balana-1.0.0-SNAPSHOT.jar">
+	<classpathentry exported="true" kind="lib" path="lib/org.wso2.balana-1.0.0-SNAPSHOT.jar" sourcepath="lib/org.wso2.balana-1.0.0-SNAPSHOT.jar">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>

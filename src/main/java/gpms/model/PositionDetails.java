@@ -26,6 +26,10 @@ public class PositionDetails {
 	@Property("college")
 	private String college = new String();
 
+	@Expose
+	@Property("is default")
+	private boolean isDefault = false;
+
 	public PositionDetails() {
 	}
 
@@ -69,14 +73,21 @@ public class PositionDetails {
 		this.college = college;
 	}
 
+	public boolean isDefault() {
+		return isDefault;
+	}
+
+	public void setDefault(boolean isDefault) {
+		this.isDefault = isDefault;
+	}
+	
 	@Override
 	public String toString() {
-		String posDet = "Position Title: " + positionTitle + "\n";
-		posDet += "Position Type: " + positionType + "\n";
-		posDet += "College: " + college + "\n";
-		posDet += "Department: " + department + "\n";
-		return posDet;
-	}
+		return "PositionDetails [positionTitle=" + positionTitle
+				+ ", positionType=" + positionType + ", department="
+				+ department + ", college=" + college + ", isDefault="
+				+ isDefault + "]";
+	}	
 
 	@Override
 	public int hashCode() {
@@ -85,6 +96,7 @@ public class PositionDetails {
 		result = prime * result + ((college == null) ? 0 : college.hashCode());
 		result = prime * result
 				+ ((department == null) ? 0 : department.hashCode());
+		result = prime * result + (isDefault ? 1231 : 1237);
 		result = prime * result
 				+ ((positionTitle == null) ? 0 : positionTitle.hashCode());
 		result = prime * result
@@ -111,6 +123,8 @@ public class PositionDetails {
 				return false;
 		} else if (!department.equals(other.department))
 			return false;
+		if (isDefault != other.isDefault)
+			return false;
 		if (positionTitle == null) {
 			if (other.positionTitle != null)
 				return false;
@@ -125,7 +139,7 @@ public class PositionDetails {
 	}
 
 	@Override
-	public PositionDetails clone() throws CloneNotSupportedException{
+	public PositionDetails clone() throws CloneNotSupportedException {
 		return new PositionDetails(this.positionTitle, this.positionType,
 				this.department, this.college);
 	}

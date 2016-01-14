@@ -563,7 +563,7 @@ $(function() {
 						.each(
 								postitionDetails,
 								function(i, value) {
-									// alert(index + " :: " +
+									// alert(i + " :: " +
 									// value['positionTitle']);
 									var btnOption = "[+] Add";
 									var btnTitle = "Add More"
@@ -695,16 +695,19 @@ $(function() {
 																				}
 																			});
 														}
-													});
+													});									
 
 									$(
 											'#dataTable tbody>tr:eq('
 													+ rowIndex + ')').find(
-											"input").each(function(k) {
-										if ($(this).is(".AddOption")) {
-											$(this).prop("name", btnName);
-											$(this).prop("value", btnOption);
-											$(this).prop("title", btnTitle);
+											"input").each(function(l) {												
+										var $button = $(this);
+										if ($button.is(".AddOption")) {
+											$button.prop("name", btnName);
+											$button.prop("value", btnOption);
+											$button.prop("title", btnTitle);	
+										}else if ($button.hasClass("class-isdefault")) {
+											$button.prop('checked', value['isDefault']);												
 										}
 									});
 								});
@@ -1027,24 +1030,26 @@ $(function() {
 				if (validateErrorMessage == "") {
 					var _saveOptions = '';
 					$("#dataTable")
-							.find("tr select")
+							.find("tr input:not(:last), select")
 							.each(
 									function(i) {
 										var optionsText = $(this).val();
-										if (!optionsText
-												&& $(this).prop("name") != "ddlPositionTitle") {
-											validateErrorMessage = getLocale(
-													gpmsUsersManagement,
-													"Please select all position details for this user.")
-													+ "<br/>";
-											usersManage.SetFirstTabActive();
-											$(this).focus();
-										} else if (optionsText
-												&& $(this).prop("name") != "ddlPositionTitle") {
-											_saveOptions += optionsText + "!#!";
-										} else {
-											_saveOptions += optionsText + "#!#";
-										}
+										if ($(this).hasClass("sfListmenu")) {
+											if (!optionsText
+													&& $(this).prop("name") != "ddlPositionTitle") {
+												validateErrorMessage = getLocale(
+														gpmsUsersManagement,
+														"Please select all position details for this user.")
+														+ "<br/>";
+												usersManage.SetFirstTabActive();
+												$(this).focus();
+											}else{										
+												_saveOptions += optionsText + "!#!";
+											}										
+										} else if ($(this).hasClass("class-isdefault")) {
+				                            var _IsChecked = $(this).prop('checked');
+				                            _saveOptions += _IsChecked + "#!#";
+				                        }
 									});
 
 					_saveOptions = _saveOptions.substring(0,
@@ -2000,8 +2005,12 @@ $(function() {
 							"click",
 							function() {
 								if ($(this).prop("name") == "DeleteOption") {
-									var t = $(this).closest('tr');
-
+									var t = $(this).closest('tr');	
+									
+									if(t.find("input:not(:last)").prop('checked')){
+										$("#dataTable tr:eq(1)").find("input:not(:last)").prop('checked', true);
+									}
+									
 									t.find("td").wrapInner(
 											"<div style='display: block'/>")
 											.parent().find("td div").slideUp(
@@ -2022,6 +2031,8 @@ $(function() {
 															"Delete ");
 													$(this).prop("title",
 															"Delete");
+												}else if ($(this).hasClass("class-isdefault")) {
+						                            this.checked = false;
 												}
 												$(this).parent('td').find(
 														'span').removeClass(

@@ -54,7 +54,7 @@
 	var gpmsServicePath = "REST/";
 	var gpmsRootPath = "http://localhost:8181/GPMS/";
 	var userProfileId = "565de4c154ffd81f18d4e4a0";
-		
+
 	var sessionCode = "jxr30wycjzvpqd0jv3vkybx4";
 	var clientIPAddress = "::1";
 	var gpmsCountryName = "RESERVED";
@@ -560,7 +560,8 @@
 																								Type:</span> <span class="cssClassRequired">*</span></th>
 																						<th><span class="cssClassLabel">Position
 																								Title:</span> <span class="cssClassRequired">*</span></th>
-
+																						<th><span class="cssClassLabel">Is
+																								Default:</span> <span class="cssClassRequired">*</span></th>
 																						<th></th>
 																					</tr>
 																				</thead>
@@ -578,6 +579,8 @@
 																						<td><select title="Choose Position Title"
 																							class="sfListmenu" name="ddlPositionTitle">
 																						</select></td>
+																						<td><input type="radio" name="defaultRdo"
+																							class="class-isdefault" checked="checked"></td>
 																						<td><input type="Button" value="Add More"
 																							name="AddMore"
 																							class="AddOption cssClassButtonSubmit sfLocale" />

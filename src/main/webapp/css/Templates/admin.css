@@ -304,8 +304,9 @@ input [type="radio"] {
 }
 
 input[type="radio"], input[type="checkbox"] {
-	margin-right: 5px;
-	margin-left: 5px;
+	margin-left: 15px;
+    margin-right: 5px;
+    margin-top: 10px;
 }
 
 .inputbox {
