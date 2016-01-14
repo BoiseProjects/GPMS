@@ -455,7 +455,6 @@ $(function() {
 					}
 					// $('#txtUserName').val(argus[1]);
 					// $('#txtUserName').prop('disabled', 'disabled');
-					alert(argus);
 					if (argus[11].toLowerCase() != "yes") {
 						$(".delbutton").prop("id", argus[0]);
 						$(".delbutton").show();
