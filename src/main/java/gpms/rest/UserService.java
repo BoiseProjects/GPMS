@@ -1113,29 +1113,29 @@ public class UserService {
 						.getUserAccount().isAdmin());
 			}
 
-			// Get the first Position Details for a User
-			PositionDetails userDetails = existingUserProfile.getDetails().get(
-					0);
+			for (PositionDetails userDetails : existingUserProfile.getDetails()) {
+				if (userDetails.isDefault()) {
+					if (session.getAttribute("userPositionType") == null) {
+						session.setAttribute("userPositionType",
+								userDetails.getPositionType());
+					}
 
-			if (session.getAttribute("userPositionType") == null) {
-				session.setAttribute("userPositionType",
-						userDetails.getPositionType());
+					if (session.getAttribute("userPositionTitle") == null) {
+						session.setAttribute("userPositionTitle",
+								userDetails.getPositionTitle());
+					}
+
+					if (session.getAttribute("userDepartment") == null) {
+						session.setAttribute("userDepartment",
+								userDetails.getDepartment());
+					}
+
+					if (session.getAttribute("userCollege") == null) {
+						session.setAttribute("userCollege",
+								userDetails.getCollege());
+					}
+				}
 			}
-
-			if (session.getAttribute("userPositionTitle") == null) {
-				session.setAttribute("userPositionTitle",
-						userDetails.getPositionTitle());
-			}
-
-			if (session.getAttribute("userDepartment") == null) {
-				session.setAttribute("userDepartment",
-						userDetails.getDepartment());
-			}
-
-			if (session.getAttribute("userCollege") == null) {
-				session.setAttribute("userCollege", userDetails.getCollege());
-			}
-
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}

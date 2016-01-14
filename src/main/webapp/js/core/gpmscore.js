@@ -43,12 +43,22 @@ $(function() {
 			GetUserProfileID : function() {
 				return userProfileId;
 			},
+			IsAdmin : function() {
+				return isAdmin;
+			},
 			GetUserPositionType : function() {
 				return userPositionType;
 			},
 			GetUserPositionTitle : function() {
 				return userPositionTitle;
 			},
+			GetUserDepartment : function() {
+				return userDepartment;
+			},
+			GetUserCollege : function() {
+				return userCollege;
+			},
+			
 			GetCultureName : function() {
 				return gpmsCurrentCulture;
 			},
@@ -70,9 +80,14 @@ $(function() {
 			}
 		},
 		GPMSCommonObj : function() {
-			var gpmsCommonInfo = {
+			var gpmsCommonInfo = {				
 				UserName : GPMS.utils.GetUserName(),
 				UserProfileID : GPMS.utils.GetUserProfileID(),
+				UserIsAdmin : GPMS.utils.IsAdmin(),
+				UserPositionType: GPMS.utils.GetUserPositionType(),
+				UserPositionTitle: GPMS.utils.GetUserPositionTitle(),
+				UserDepartment: GPMS.utils.GetUserDepartment(),
+				UserCollege: GPMS.utils.GetUserCollege(),
 				CultureName : GPMS.utils.GetCultureName(),
 				SessionCode : GPMS.utils.GetSessionCode()
 			};

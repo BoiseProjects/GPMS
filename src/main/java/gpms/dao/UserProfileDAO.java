@@ -73,7 +73,6 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 		super(mongo, morphia, dbName);
 	}
 
-
 	/**
 	 * 
 	 * @return list of all users in the ds
@@ -84,7 +83,8 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 		return ds.createQuery(UserProfile.class).asList();
 	}
 
-	public List<UserProfile> findAllUsersWithPosition() throws UnknownHostException {
+	public List<UserProfile> findAllUsersWithPosition()
+			throws UnknownHostException {
 		Datastore ds = getDatastore();
 		return ds.createQuery(UserProfile.class).field("details")
 				.notEqual(null).asList();
@@ -486,7 +486,7 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 		ds.save(userProfile);
 
 	}
-	
+
 	public UserProfile findNextUserWithSameUserName(ObjectId id, String userName) {
 		Datastore ds = getDatastore();
 
@@ -551,7 +551,7 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 						newEmail.toString()));
 		return profileQuery.get();
 	}
-	
+
 	public List<InvestigatorUsersAndPositions> findAllPositionDetailsForAUser(
 			ObjectId id) {
 		Datastore ds = getDatastore();

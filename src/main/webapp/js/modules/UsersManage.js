@@ -1049,7 +1049,6 @@ $(function() {
 											}										
 										} else if ($(this).hasClass("class-isdefault")) {											
 				                            var _IsChecked = $(this).prop('checked');
-				                            alert(_IsChecked);
 				                            _saveOptions += _IsChecked + "#!#";
 				                        }
 									});
