@@ -581,7 +581,8 @@
 																						</select></td>
 																						<td><input type="radio"
 																							title="Choose Default Position"
-																							class="class-isdefault" checked="checked"></td>
+																							class="class-isdefault" name="defaultRdo"
+																							checked="checked"></td>
 																						<td><input type="Button" value="Add More"
 																							name="AddMore"
 																							class="AddOption cssClassButtonSubmit sfLocale" />
