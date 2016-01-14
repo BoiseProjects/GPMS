@@ -560,8 +560,8 @@
 																								Type:</span> <span class="cssClassRequired">*</span></th>
 																						<th><span class="cssClassLabel">Position
 																								Title:</span> <span class="cssClassRequired">*</span></th>
-																						<th><span class="cssClassLabel">Is
-																								Default:</span> <span class="cssClassRequired">*</span></th>
+																						<th><span class="cssClassLabel">Default:</span>
+																							<span class="cssClassRequired">*</span></th>
 																						<th></th>
 																					</tr>
 																				</thead>
@@ -579,7 +579,8 @@
 																						<td><select title="Choose Position Title"
 																							class="sfListmenu" name="ddlPositionTitle">
 																						</select></td>
-																						<td><input type="radio" name="defaultRdo"
+																						<td><input type="radio"
+																							title="Choose Default Position"
 																							class="class-isdefault" checked="checked"></td>
 																						<td><input type="Button" value="Add More"
 																							name="AddMore"
