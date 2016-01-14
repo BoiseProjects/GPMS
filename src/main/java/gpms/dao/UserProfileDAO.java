@@ -216,6 +216,7 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 
 			user.setDeleted(userProfile.getUserAccount().isDeleted());
 			user.setActive(userProfile.getUserAccount().isActive());
+			user.setAdmin(userProfile.getUserAccount().isAdmin());
 			users.add(user);
 		}
 		Collections.sort(users);
@@ -463,10 +464,31 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 				.equal(userAccount).get();
 	}
 
+	public void saveUserByUserID(UserProfile newProfile,
+			UserProfile authorProfile, GPMSCommonInfo gpmsCommonObj) {
+		Datastore ds = getDatastore();
+		audit = new AuditLog(authorProfile,
+				"Created user account and profile of "
+						+ newProfile.getUserAccount().getUserName(), new Date());
+		newProfile.addEntryToAuditLog(audit);
+		ds.save(newProfile);
+	}
+
+	public void updateUserByUserID(UserProfile existingUserProfile,
+			UserProfile authorProfile, GPMSCommonInfo gpmsCommonObj) {
+		Datastore ds = getDatastore();
+		audit = new AuditLog(authorProfile,
+				"Updated user account and profile of "
+						+ existingUserProfile.getUserAccount().getUserName(),
+				new Date());
+		existingUserProfile.addEntryToAuditLog(audit);
+		ds.save(existingUserProfile);
+	}
+
 	public void deleteUserProfileByUserID(UserProfile userProfile,
 			UserProfile authorProfile, GPMSCommonInfo gpmsCommonObj) {
 		Datastore ds = getDatastore();
-		audit = new AuditLog(authorProfile, "Deleted user "
+		audit = new AuditLog(authorProfile, "Deleted user profile of "
 				+ userProfile.getFullName(), new Date());
 		userProfile.addEntryToAuditLog(audit);
 
@@ -478,7 +500,7 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 			UserProfile authorProfile, GPMSCommonInfo gpmsCommonObj,
 			Boolean isActive) {
 		Datastore ds = getDatastore();
-		audit = new AuditLog(authorProfile, "Deleted user "
+		audit = new AuditLog(authorProfile, "Activated user profile of "
 				+ userProfile.getFullName(), new Date());
 		userProfile.addEntryToAuditLog(audit);
 
@@ -631,4 +653,5 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 		}
 		return userPositions;
 	}
+
 }

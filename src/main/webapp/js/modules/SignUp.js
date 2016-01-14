@@ -318,10 +318,9 @@ $(function() {
 		},
 
 		AddUserInfo : function(info) {
-			this.config.url = this.config.baseURL + "SaveUpdateUser";
+			this.config.url = this.config.baseURL + "SignUpUser";
 			this.config.data = JSON2.stringify({
-				userInfo : info,
-				gpmsCommonObj : gpmsCommonObj()
+				userInfo : info
 			});
 			this.config.ajaxCallMode = 3;
 			this.ajaxCall(this.config);

@@ -72,7 +72,7 @@ public class UserAccountDAO extends BasicDAO<UserAccount, String> {
 	public void deleteUserAccountByUserID(UserAccount userAccount,
 			UserProfile authorProfile, GPMSCommonInfo gpmsCommonObj) {
 		Datastore ds = getDatastore();
-		audit = new AuditLog(authorProfile, "Deleted user account for "
+		audit = new AuditLog(authorProfile, "Deleted user account and profile of "
 				+ userAccount.getUserName(), new Date());
 		userAccount.addEntryToAuditLog(audit);
 
@@ -85,7 +85,7 @@ public class UserAccountDAO extends BasicDAO<UserAccount, String> {
 			UserProfile authorProfile, GPMSCommonInfo gpmsCommonObj,
 			Boolean isActive) {
 		Datastore ds = getDatastore();
-		audit = new AuditLog(authorProfile, "Activated user account for "
+		audit = new AuditLog(authorProfile, "Activated user account and profile of "
 				+ userAccount.getUserName(), new Date());
 		userAccount.addEntryToAuditLog(audit);
 

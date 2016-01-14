@@ -73,6 +73,10 @@
 	"Sorry! this user is already deleted." : "Sorry! this user is already deleted.",
 	"Sorry! this user is already actived." : "Sorry! this user is already actived.",
 	"Sorry! this user is already deactived." : "Sorry! this user is already deactived.",
+	"Sorry! this user can not be edited." : "Sorry! this user can not be edited.",
+	"Sorry! this user can not be deleted." : "Sorry! this user can not be deleted.",
+	"Sorry! this user can not be activated." : "Sorry! this user can not be activated.",
+	"Sorry! this user can not be deactivated." : "Sorry! this user can not be deactivated.",
 
 	"Please enter unique username." : "Please enter unique username.",
 	"Please enter unique email id." : "Please enter unique email id.",

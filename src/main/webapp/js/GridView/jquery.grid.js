@@ -833,7 +833,7 @@ var fromServer = 0;
 
 						// Modified On 29 Dec 2010
 						if (cm.checkFor) {
-							tdcheckfor[j] = cm.checkFor;
+							tdcheckfor[j] = cm.checkFor.split(',');
 						}
 
 						if (cm.checkedItems) {
@@ -1150,20 +1150,25 @@ var fromServer = 0;
 																	// controlClass
 																	// =
 																	// ControlClass[rcount];
+																	
 																	var parentEls = $(
 																			this)
 																			.parent(
 																					'TR');
-																	var indexValue = $(
-																			parentEls)
-																			.find(
-																					'TD:eq("'
-																							+ tdcheckfor[rcount]
-																							+ '")')
-																			.text();
-																	checkstatus = (indexValue
-																			.toLowerCase() == 'yes') ? 'disabled'
-																			: '';
+																	$.each(tdcheckfor[rcount], function( index, value ) {																		
+																		if(checkstatus !="disabled"){
+																			var indexValue = $(
+																					parentEls)
+																					.find(
+																							'TD:eq("'
+																									+ value
+																									+ '")')
+																					.text();
+																			checkstatus = (indexValue
+																					.toLowerCase() == 'yes') ? 'disabled'
+																					: '';
+																		}
+																	});																	
 																	// alert(checkstatus);
 																	$(chkbox)
 																			.prop(

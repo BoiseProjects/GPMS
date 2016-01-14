@@ -17,6 +17,7 @@ public class UserInfo implements Comparable<UserInfo> {
 	private String lastAuditAction = new String();
 	private boolean isDeleted = false;
 	private boolean isActive = false;
+	private boolean isAdmin = true;
 
 	public UserInfo() {
 	}
@@ -123,6 +124,14 @@ public class UserInfo implements Comparable<UserInfo> {
 
 	public void setActive(boolean isActive) {
 		this.isActive = isActive;
+	}
+
+	public boolean isAdmin() {
+		return isAdmin;
+	}
+
+	public void setAdmin(boolean isAdmin) {
+		this.isAdmin = isAdmin;
 	}
 
 	@Override

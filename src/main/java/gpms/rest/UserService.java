@@ -44,6 +44,7 @@ import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.JsonProcessingException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
 
 import com.google.common.collect.ArrayListMultimap;
@@ -366,8 +367,11 @@ public class UserService {
 				.findUserDetailsByProfileID(authorId);
 
 		UserProfile userProfile = userProfileDAO.findUserDetailsByProfileID(id);
-		userProfileDAO.deleteUserProfileByUserID(userProfile, authorProfile,
-				gpmsCommonObj);
+		// userProfileDAO.deleteUserProfileByUserID(userProfile, authorProfile,
+		// gpmsCommonObj);
+
+		userProfile.setDeleted(true);
+		userProfileDAO.save(userProfile);
 
 		UserAccount userAccount = userAccountDAO.findByID(userProfile
 				.getUserAccount().getId());
@@ -434,8 +438,10 @@ public class UserService {
 
 			UserProfile userProfile = userProfileDAO
 					.findUserDetailsByProfileID(id);
-			userProfileDAO.deleteUserProfileByUserID(userProfile,
-					authorProfile, gpmsCommonObj);
+			// userProfileDAO.deleteUserProfileByUserID(userProfile,
+			// authorProfile, gpmsCommonObj);
+			userProfile.setDeleted(true);
+			userProfileDAO.save(userProfile);
 
 			UserAccount userAccount = userAccountDAO.findByID(userProfile
 					.getUserAccount().getId());
@@ -496,8 +502,13 @@ public class UserService {
 				.findUserDetailsByProfileID(authorId);
 
 		UserProfile userProfile = userProfileDAO.findUserDetailsByProfileID(id);
-		userProfileDAO.activateUserProfileByUserID(userProfile, authorProfile,
-				gpmsCommonObj, isActive);
+
+		// userProfileDAO.activateUserProfileByUserID(userProfile,
+		// authorProfile,
+		// gpmsCommonObj, isActive);
+
+		userProfile.setDeleted(!isActive);
+		userProfileDAO.save(userProfile);
 
 		UserAccount userAccount = userProfile.getUserAccount();
 		userAccountDAO.activateUserAccountByUserID(userAccount, authorProfile,
@@ -994,6 +1005,14 @@ public class UserService {
 
 		// Need to Compare Equals before saving existingUserProfile and
 		// newProfile
+		ObjectId authorId = new ObjectId(userProfileID);
+		GPMSCommonInfo gpmsCommonObj = new GPMSCommonInfo();
+		gpmsCommonObj.setUserName(userName);
+		gpmsCommonObj.setUserProfileID(userProfileID);
+		gpmsCommonObj.setCultureName(cultureName);
+
+		UserProfile authorProfile = userProfileDAO
+				.findUserDetailsByProfileID(authorId);
 
 		// Save the User Account
 		if (!userID.equals("0")) {
@@ -1004,12 +1023,139 @@ public class UserService {
 
 		// Save the User Profile
 		if (!userID.equals("0")) {
-			userProfileDAO.save(existingUserProfile);
+			userProfileDAO.updateUserByUserID(existingUserProfile,
+					authorProfile, gpmsCommonObj);
 		} else {
+			userProfileDAO.saveUserByUserID(newProfile, authorProfile,
+					gpmsCommonObj);
+		}
+		// UserProfile user = userProfileDAO.findByUserAccount(newAccount);
+		// System.out.println(user);
+		response = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(
+				"Success");
+		return response;
+
+	}
+
+	@POST
+	@Path("/SignUpUser")
+	public String signUpUser(String message) throws JsonProcessingException,
+			IOException, ParseException {
+
+		String userID = new String();
+
+		UserAccount newAccount = new UserAccount();
+		UserProfile newProfile = new UserProfile();
+
+		String response = new String();
+
+		ObjectMapper mapper = new ObjectMapper();
+		JsonNode root = mapper.readTree(message);
+
+		JsonNode userInfo = root.get("userInfo");
+
+		if (userInfo != null && userInfo.has("UserID")) {
+			userID = userInfo.get("UserID").getTextValue();
+			newAccount.setAddedOn(new Date());
+		}
+
+		if (userID.equals("0")) {
+			if (userInfo != null && userInfo.has("UserName")) {
+				String loginUserName = userInfo.get("UserName").getTextValue();
+				newAccount.setUserName(loginUserName);
+			}
+
+			if (userInfo != null && userInfo.has("Password")) {
+				newAccount.setPassword(userInfo.get("Password").getTextValue());
+			}
+
+			newProfile.setUserId(newAccount);
+
+			if (userInfo != null && userInfo.has("FirstName")) {
+				newProfile.setFirstName(userInfo.get("FirstName")
+						.getTextValue());
+			}
+
+			if (userInfo != null && userInfo.has("MiddleName")) {
+				newProfile.setMiddleName(userInfo.get("MiddleName")
+						.getTextValue());
+			}
+
+			if (userInfo != null && userInfo.has("LastName")) {
+				newProfile.setLastName(userInfo.get("LastName").getTextValue());
+			}
+
+			if (userInfo != null && userInfo.has("DOB")) {
+				Date dob = formatter.parse(userInfo.get("DOB").getTextValue());
+				newProfile.setDateOfBirth(dob);
+			}
+
+			if (userInfo != null && userInfo.has("Gender")) {
+				newProfile.setGender(userInfo.get("Gender").getTextValue());
+			}
+
+			Address newAddress = new Address();
+
+			if (userInfo != null && userInfo.has("Street")) {
+				newAddress.setStreet(userInfo.get("Street").getTextValue());
+			}
+			if (userInfo != null && userInfo.has("Apt")) {
+				newAddress.setApt(userInfo.get("Apt").getTextValue());
+			}
+			if (userInfo != null && userInfo.has("City")) {
+				newAddress.setCity(userInfo.get("City").getTextValue());
+			}
+			if (userInfo != null && userInfo.has("State")) {
+				newAddress.setState(userInfo.get("State").getTextValue());
+			}
+			if (userInfo != null && userInfo.has("Zip")) {
+				newAddress.setZipcode(userInfo.get("Zip").getTextValue());
+			}
+			if (userInfo != null && userInfo.has("Country")) {
+				newAddress.setCountry(userInfo.get("Country").getTextValue());
+			}
+
+			newProfile.getAddresses().add(newAddress);
+
+			if (userInfo != null && userInfo.has("OfficeNumber")) {
+				newProfile.getOfficeNumbers().add(
+						userInfo.get("OfficeNumber").getTextValue());
+			}
+
+			if (userInfo != null && userInfo.has("MobileNumber")) {
+				newProfile.getMobileNumbers().add(
+						userInfo.get("MobileNumber").getTextValue());
+			}
+
+			if (userInfo != null && userInfo.has("HomeNumber")) {
+				newProfile.getHomeNumbers().add(
+						userInfo.get("HomeNumber").getTextValue());
+			}
+
+			if (userInfo != null && userInfo.has("OtherNumber")) {
+				newProfile.getOtherNumbers().add(
+						userInfo.get("OtherNumber").getTextValue());
+			}
+
+			if (userInfo != null && userInfo.has("WorkEmail")) {
+				newProfile.getWorkEmails().add(
+						userInfo.get("WorkEmail").getTextValue());
+			}
+
+			if (userInfo != null && userInfo.has("PersonalEmail")) {
+				newProfile.getPersonalEmails().add(
+						userInfo.get("PersonalEmail").getTextValue());
+			}
+
+			// Save the User Account
+			userAccountDAO.save(newAccount);
+
+			// Save the User Profile
 			userProfileDAO.save(newProfile);
 		}
-		UserProfile user = userProfileDAO.findByUserAccount(newAccount);
-		System.out.println(user);
+
+		// UserProfile user = userProfileDAO.findByUserAccount(newAccount);
+		// System.out.println(user);
 		response = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(
 				"Success");
 		return response;
