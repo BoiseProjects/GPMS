@@ -45,23 +45,16 @@
 
 <script type="text/javascript">
 	//<![CDATA[
-	var gpmsAppPath = "";
-	var gpmsUserName = "superuser";
-	var gpmsCurrentCulture = "en-US";
-	var gpmsHostURL = "http://localhost:8181/GPMS/";
-	var gpmsSecureToken = "GPMS.AUTHjxr30wycjzvpqd0jv3vkybx4ZADJX9SLOC1";
-
+	var userProfileId = ''; //'<%=session.getAttribute("userProfileId")%>';
+	var gpmsUserName = '<%=session.getAttribute("gpmsUserName")%>';
+	var isAdmin = '<%=session.getAttribute("isAdmin")%>';
+	var userPositionType = '<%=session.getAttribute("userPositionType")%>';
+	var	userPositionTitle = '<%=session.getAttribute("userPositionTitle")%>';
+	var userDepartment = '<%=session.getAttribute("userDepartment")%>';
+	var userCollege = '<%=session.getAttribute("userCollege")%>';
+	
 	var gpmsServicePath = "REST/";
 	var gpmsRootPath = "http://localhost:8181/GPMS/";
-	var userProfileId = "565de4c154ffd81f18d4e4a0";
-		
-	var sessionCode = "jxr30wycjzvpqd0jv3vkybx4";
-	var clientIPAddress = "::1";
-	var gpmsCountryName = "RESERVED";
-	var gpmsRedirectPath = "/";
-
-	var logInURL = "login";
-	var pageExtension = ".jsp";
 
 	$(function() {
 		$(".sfLocale").localize({
