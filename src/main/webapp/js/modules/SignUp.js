@@ -172,8 +172,7 @@ $(function() {
 		},
 
 		LoadStaticImage : function() {
-			$('.cssClassSuccessImg').prop('src',
-					'' + GPMS.utils.GetGPMSRootPath() + 'images/right.jpg');
+			$('.cssClassSuccessImg').prop('src', 'images/right.jpg');
 		},
 
 		checkUniqueUserName : function(user_id, userName, textBoxUserName) {
@@ -318,7 +317,7 @@ $(function() {
 		},
 
 		AddUserInfo : function(info) {
-			this.config.url = this.config.baseURL + "SignUpUser";
+			this.config.url = this.config.baseURL + "signup";
 			this.config.data = JSON2.stringify({
 				userInfo : info
 			});

@@ -1308,9 +1308,6 @@ div.sideBarRight .sfSidebar ul.menu li.Grandparent ul.acitem li.parent ul li.chi
 	font-weight: normal !important;
 }
 /*---Footer---*/
-.sfFooterwrapper {
-	display: none;
-}
 
 /*---Main Content Holder---*/
 .sfMaincontentHolder {

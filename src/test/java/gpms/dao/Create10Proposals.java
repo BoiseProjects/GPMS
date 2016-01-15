@@ -209,6 +209,7 @@ public class Create10Proposals {
 			newProposalDAO.save(newProposal);
 
 			propNumb++;
+			
 
 		}
 

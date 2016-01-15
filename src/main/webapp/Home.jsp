@@ -56,7 +56,7 @@
 	var	userPositionTitle = '<%=session.getAttribute("userPositionTitle")%>';
 	var userDepartment = '<%=session.getAttribute("userDepartment")%>';
 	var userCollege = '<%=session.getAttribute("userCollege")%>';
-	
+
 	var gpmsServicePath = "REST/";
 	var gpmsRootPath = "http://localhost:8181/GPMS/";
 
@@ -95,9 +95,11 @@
 
 <link media="screen" rel="stylesheet"
 	href="css/Templates/application.css" type="text/css" />
+<link media="screen" rel="stylesheet"
+	href="css/Templates/topstickybar.css" type="text/css" />
 
 </head>
-<body class="account">
+<body>
 	<div style="display: none;" id="UpdateProgress1">
 		<div class="sfLoadingbg">&nbsp;</div>
 		<div class="sfLoadingdiv">
@@ -108,18 +110,10 @@
 	</div>
 	<div id="divAdminControlPanel">
 		<%@ include file="TopStickyBar.jsp"%>
-    </div>
+	</div>
 	<noscript>
 		<span>This page requires java-script to be enabled. Please
 			adjust your browser-settings.</span>
 	</noscript>
-	<div class="account__header">
-		<a href="#"><img alt="GPMS" title="GPMS" class="account__logo"
-			src="images/logo.png"> </a>
-			
-		<label class="label form__label" id="welcome"></label>
-		
-		<a href="Logout.jsp">Logout</a>
-	</div>
 </body>
 </html>

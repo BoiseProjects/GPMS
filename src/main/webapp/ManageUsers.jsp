@@ -46,28 +46,24 @@
 <script type="text/javascript">
 	//<![CDATA[
 	var gpmsAppPath = "";
-	var gpmsUserName = "superuser";
-	var gpmsCurrentCulture = "en-US";
-	var gpmsHostURL = "http://localhost:8181/GPMS/";
-	var gpmsSecureToken = "GPMS.AUTHjxr30wycjzvpqd0jv3vkybx4ZADJX9SLOC1";
+	
+	var userProfileId = '<%=session.getAttribute("userProfileId")%>';
+	var gpmsUserName = '<%=session.getAttribute("gpmsUserName")%>';
+	var isAdmin = '<%=session.getAttribute("isAdmin")%>';
+	var userPositionType = '<%=session.getAttribute("userPositionType")%>';
+	var	userPositionTitle = '<%=session.getAttribute("userPositionTitle")%>';
+	var userDepartment = '<%=session.getAttribute("userDepartment")%>';
+	var userCollege = '<%=session.getAttribute("userCollege")%>';
 
 	var gpmsServicePath = "REST/";
 	var gpmsRootPath = "http://localhost:8181/GPMS/";
-	var userProfileId = "5697f6dd58019e1cf4a425bb";
-
-	var sessionCode = "jxr30wycjzvpqd0jv3vkybx4";
-	var clientIPAddress = "::1";
-	var gpmsCountryName = "RESERVED";
-	var gpmsRedirectPath = "/";
-
-	var logInURL = "login";
-	var pageExtension = ".jsp";
 
 	$(function() {
 		$(".sfLocale").localize({
 			moduleKey : gpmsUsersManagement
 		});
 	});
+	
 	//]]>
 </script>
 
@@ -139,7 +135,7 @@
 <link type="text/css" rel="stylesheet" href="css/Templates/admin.css" />
 </head>
 <body>
-	<form enctype="multipart/form-data" action="Manage-Users.jsp"
+	<form enctype="multipart/form-data" action="ManageUsers.jsp"
 		method="post" name="form1" id="form1">
 		<div style="display: none;" id="UpdateProgress1">
 			<div class="sfLoadingbg">&nbsp;</div>
@@ -581,7 +577,8 @@
 																						</select></td>
 																						<td><input type="radio"
 																							title="Choose Default Position"
-																							class="class-isdefault" name="defaultRdo" checked="true" /></td>
+																							class="class-isdefault" name="defaultRdo"
+																							checked="true" /></td>
 																						<td><input type="Button" value="Add More"
 																							name="AddMore"
 																							class="AddOption cssClassButtonSubmit sfLocale" />

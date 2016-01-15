@@ -7,8 +7,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="Content-Script-Type" content="text/javascript">
 <meta http-equiv="Content-Style-Type" content="text/css">
-<meta content="Manage Users" name="DESCRIPTION">
-<meta content="Manage Users" name="KEYWORDS">
+<meta content="Settings" name="DESCRIPTION">
+<meta content="Settings" name="KEYWORDS">
 <meta content="@GPMS" name="COPYRIGHT">
 <meta content="GENERATOR" name="GENERATOR">
 <meta content="Author" name="AUTHOR">
@@ -45,22 +45,25 @@
 
 <script type="text/javascript">
 	//<![CDATA[
-	var userProfileId = ''; //'<%=session.getAttribute("userProfileId")%>';
+	var gpmsAppPath = "";
+	
+	var userProfileId = '<%=session.getAttribute("userProfileId")%>';
 	var gpmsUserName = '<%=session.getAttribute("gpmsUserName")%>';
 	var isAdmin = '<%=session.getAttribute("isAdmin")%>';
 	var userPositionType = '<%=session.getAttribute("userPositionType")%>';
 	var	userPositionTitle = '<%=session.getAttribute("userPositionTitle")%>';
 	var userDepartment = '<%=session.getAttribute("userDepartment")%>';
 	var userCollege = '<%=session.getAttribute("userCollege")%>';
-	
+
 	var gpmsServicePath = "REST/";
 	var gpmsRootPath = "http://localhost:8181/GPMS/";
 
 	$(function() {
 		$(".sfLocale").localize({
-			moduleKey : gpmsUsersManagement
+			moduleKey : gpmsSettings
 		});
 	});
+
 	//]]>
 </script>
 
@@ -116,9 +119,9 @@
 <!-- <script type="text/javascript" src="js/core/Session.js"></script> -->
 <script type="text/javascript" src="js/core/encoder.js"></script>
 
-<script type="text/javascript" src="js/modules/UsersManage.js"></script>
+<script type="text/javascript" src="js/modules/Settings.js"></script>
 <script type="text/javascript"
-	src="js/modules/Language/GPMSUsersManagement.js"></script>
+	src="js/modules/Language/GPMSSettings.js"></script>
 <!-- <script type="text/javascript" src="js/modules/Language/AspxRssFeedLocale.js"></script> -->
 
 <link type="text/css" rel="stylesheet"
@@ -132,5 +135,90 @@
 <link type="text/css" rel="stylesheet" href="css/Templates/admin.css" />
 </head>
 <body>
+	<form enctype="multipart/form-data" action="ManageUsers.jsp"
+		method="post" name="form1" id="form1">
+		<div style="display: none;" id="UpdateProgress1">
+			<div class="sfLoadingbg">&nbsp;</div>
+			<div class="sfLoadingdiv">
+				<img id="imgProgress" src="images/ajax-loader.gif"
+					style="border-width: 0px;" alt="Loading..." title="Loading..." />
+				<br> <span id="lblPrgress">Please wait...</span>
+			</div>
+		</div>
+		<noscript>
+			<span>This page requires java-script to be enabled. Please
+				adjust your browser-settings.</span>
+		</noscript>
+
+		<div id="sfOuterwrapper">
+			<div class="sfSagewrapper">
+
+				<!--Body Content-->
+				<div class="sfContentwrapper clearfix">
+					<div id="divCenterContent">
+						<!-- Side Bar Starts-->
+						<div class="sideBarLeft" id="divSideBar">
+							<%@ include file="AdminSideBar.jsp"%>
+						</div>
+						<!-- Side Bar Ends -->
+
+						<div class="sfMaincontent">
+							<div style="display: block" class="sfCpanel sfInnerwrapper"
+								id="divBottompanel">
+								<div class="sfModulecontent clearfix">
+									<!-- form -->
+									<div id="divUserForm" style="display: none">
+										<div class="cssClassCommonBox Curve">
+											<div class="cssClassHeader">
+												<h1>
+													<span id="lblFormHeading">Settings</span>
+												</h1>
+												<div>
+													<span class="cssClassRequired">*</span> <span
+														class="cssClassLabelTitle">indicates required
+														fields</span>
+												</div>
+											</div>
+											<div class="cssClassTabPanelTable">Add Your Content
+												Here</div>
+										</div>
+										<div class="sfButtonwrapper">
+											<p>
+												<button title="Go Back" type="button" id="btnBack"
+													class="sfBtn">
+													<span class="sfLocale icon-arrow-slim-w">Back</span>
+												</button>
+											</p>
+											<p>
+												<button title="Reset" type="button" id="btnReset"
+													class="sfBtn">
+													<span class="sfLocale icon-refresh">Reset</span>
+												</button>
+											</p>
+											<p>
+												<button title="Delete" type="button" class="delbutton sfBtn">
+													<span class="sfLocale icon-delete">Delete</span>
+												</button>
+											</p>
+											<p>
+												<button title="Save User" type="button" id="btnSaveUser"
+													class="sfBtn">
+													<span class="sfLocale icon-save">Save</span>
+												</button>
+											</p>
+										</div>
+									</div>
+									<!-- End form -->
+								</div>
+
+							</div>
+						</div>
+						<!-- END sfMaincontent -->
+					</div>
+				</div>
+				<!-- END Body Content sfContentwrapper -->
+			</div>
+		</div>
+	</form>
 </body>
 </html>
