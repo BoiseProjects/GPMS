@@ -76,6 +76,7 @@ public class SimplePersonnelData
 	/**
 	 * @return A string of id, Name
 	 */
+	@Override
 	public String toString()
 	{
 		String personnelString = personnelID.toString()+ " " +personnelName;

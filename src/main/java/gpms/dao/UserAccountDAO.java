@@ -8,8 +8,6 @@ import gpms.model.UserProfile;
 
 import java.net.UnknownHostException;
 import java.util.Date;
-import java.util.List;
-
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;

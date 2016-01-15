@@ -71,9 +71,8 @@ public class UserAccount extends BaseEntity {
 	}
 
 	public void setPassword(String password) {
-		PasswordHash newHash = new PasswordHash();
 		try {
-			this.password = newHash.createHash(password);
+			this.password = PasswordHash.createHash(password);
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
 		} catch (InvalidKeySpecException e) {

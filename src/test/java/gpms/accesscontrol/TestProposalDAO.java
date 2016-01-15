@@ -1,7 +1,5 @@
 package gpms.accesscontrol;
 
-import static org.junit.Assert.*;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mongodb.morphia.Morphia;
@@ -10,8 +8,6 @@ import com.mongodb.MongoClient;
 
 import gpms.DAL.MongoDBConnector;
 import gpms.dao.ProposalDAO;
-import gpms.dao.UserAccountDAO;
-import gpms.dao.UserProfileDAO;
 import gpms.model.UserAccount;
 import gpms.model.UserProfile;
 

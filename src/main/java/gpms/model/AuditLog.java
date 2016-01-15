@@ -59,6 +59,7 @@ public class AuditLog implements Comparable<AuditLog> {
 		this.activityDate = activityDate;
 	}
 
+	@Override
 	public int compareTo(AuditLog o) {
 		if (getActivityDate() == null || o.getActivityDate() == null)
 			return 0;
