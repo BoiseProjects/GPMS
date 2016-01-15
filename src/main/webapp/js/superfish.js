@@ -16,20 +16,25 @@
 		var sf = $.fn.superfish, c = sf.c, $arrow = $([ '<span class="',
 				c.arrowClass, '"> &#187;</span>' ].join('')), over = function() {
 			var $$ = $(this), menu = getMenu($$);
-			clearTimeout(menu.sfTimer);
-			$$.showSuperfishUl().siblings().hideSuperfishUl();
+			if (menu != undefined) {
+				clearTimeout(menu.sfTimer);
+				$$.showSuperfishUl().siblings().hideSuperfishUl();
+			}
 		}, out = function() {
 			var $$ = $(this), menu = getMenu($$), o = sf.op;
-			clearTimeout(menu.sfTimer);
-			menu.sfTimer = setTimeout(
-					function() {
-						o.retainPath = ($.inArray($$[0], o.$path) > -1);
-						$$.hideSuperfishUl();
-						if (o.$path.length
-								&& $$.parents([ 'li.', o.hoverClass ].join('')).length < 1) {
-							over.call(o.$path);
-						}
-					}, o.delay);
+			if (menu != undefined) {
+				clearTimeout(menu.sfTimer);
+				menu.sfTimer = setTimeout(
+						function() {
+							o.retainPath = ($.inArray($$[0], o.$path) > -1);
+							$$.hideSuperfishUl();
+							if (o.$path.length
+									&& $$.parents([ 'li.', o.hoverClass ]
+											.join('')).length < 1) {
+								over.call(o.$path);
+							}
+						}, o.delay);
+			}
 		}, getMenu = function($menu) {
 			var menu = $menu.parents([ 'ul.', c.menuClass, ':first' ].join(''))[0];
 			if (menu != undefined) {
@@ -111,7 +116,7 @@
 			opacity : 'show'
 		},
 		speed : 'normal',
-		autoArrows : true,
+		autoArrows : false,
 		dropShadows : true,
 		disableHI : false, // true disables hoverIntent detection
 		onInit : function() {

@@ -45,7 +45,7 @@
 					$('.Grandparent').find('a').eq(0).trigger('click');
 				}
 			}
-			if (SidebarMgr.config.ShowSideBar == "1")
+			if (SidebarMgr.config.ShowSideBar == "1") {
 				$('div.sfHidepanel')
 						.on(
 								"click",
@@ -62,42 +62,29 @@
 										InitModuleFloat(65);
 										$('.Grandparent').find('a').eq(0).find(
 												'span').eq(0).hide();
-										SidebarMgr.UpdateSidebarMode();
-
 									} else {
-										$('div.sfSidebar').find("ul li ul")
-												.show(function() {
-													$(this).animate({
-														display : "block"
-													}, 100)
-												});
-										$('div.sfSidebar').find("ul li a span")
-												.show(function() {
-													$(this).animate({
-														display : "block"
-													}, 100)
-												});
-										$('div.sfSidebar').animate({
-											width : "210px"
-										}, 400, function() {
-											//                            $('div.sfHidepanel').find("a span").show(function() { $(this).animate({ display: "block" }, 100) });
-											//                            $('div.sfHidepanel').find("img").attr("src", SageFrameAppPath + "/Administrator/Templates/Default/images/hide-arrow.png");
-										});
 										InitAccordianMode();
+										//$('#sidebar ul li a').removeAttr(
+										//		"class");
+										$('div.sfSidebar').removeClass(
+												"sfSidebarhide");
+
+										InitModuleFloat(200);
+
 										$('#sidebar ul').attr("class", "menu")
 												.css("visibility", "visible");
 										$('#sidebar ul li.Grandparent ul')
 												.attr("class",
-														"acitem fullwidth");
-										$('#sidebar ul li a').removeAttr(
-												"class");
-										$('div.sfSidebar').removeClass(
-												"sfSidebarhide");
-										InitModuleFloat(200);
-										$('.Grandparent').find('a').eq(0).find(
-												'span').eq(0).show();
-										SidebarMgr.UpdateSidebarMode();
-
+														"acitem fullwidth")
+												.show();
+										$('.Grandparent').find('a').eq(0).attr(
+												"class", "active").find('span')
+												.eq(0).show();
+										
+										$('div.sfSidebar').animate({
+											width : "210px"
+										}, 400, function() {
+										});
 									}
 
 									if ($('.sfHidepanel').find('i').hasClass(
@@ -115,6 +102,7 @@
 												'sfFooterCollapse');
 									}
 								});
+			}
 		},
 		HighlightSelected : function() {
 			var sidebar = $('#sidebar ul li');
@@ -145,17 +133,6 @@
 					}
 				}
 			});
-		},
-		BuildURL : function(item) {
-			var portalchange = SidebarMgr.config.PortalID > 1 ? "/portal/" + 1
-					: "";
-			var url = '/' + portalchange + item.URL
-					+ SageFrameSettingKeys.PageExtension
-			return url;
-		},
-		UpdateSidebarMode : function() {
-			var _status = $('div.sfSidebar').hasClass("sfSidebarhide") ? "closed"
-					: "open";
 		}
 	};
 	function InitCollapsedMode() {
@@ -187,6 +164,7 @@
 		});
 	}
 	function InitAccordianMode() {
+		//$('ul.menu').superfish('destroy');
 		var ul = $('ul.menu ul.acitem');
 		$.each(ul, function(index, item) {
 			$(this).removeClass("sfCollapsed").addClass("fullwidth");
