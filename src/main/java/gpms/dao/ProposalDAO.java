@@ -878,7 +878,6 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 
 		if(PositionTitle.equals("Dean"))
 		{
-			System.out.println("Dean is true:");
 			proposalQuery.or(
 					proposalQuery.criteria("investigator info.PI.college").equal(College),
 					proposalQuery.criteria("investigator info.CO-PI.college").equal(College),
@@ -888,7 +887,6 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 		}
 		else if(PositionTitle.equals("Department Chair"))
 		{
-			System.out.println("Department Chair is True:");
 			proposalQuery.and(
 					proposalQuery.or(
 							proposalQuery.criteria("investigator info.PI.college").equal(College),
@@ -905,7 +903,6 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 		}
 		else
 		{
-			System.out.println("Everybody Else: True");
 			proposalQuery.and(
 					proposalQuery.or(
 							proposalQuery.criteria("investigator info.PI.college").equal(College),
