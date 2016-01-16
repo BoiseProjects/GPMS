@@ -59,6 +59,9 @@
 	var gpmsRootPath = "http://localhost:8181/GPMS/";
 
 	$(function() {
+		// For Sidebar active menu
+		$('.acitem').find('a').eq(2).prop("class", "active");
+
 		$(".sfLocale").localize({
 			moduleKey : gpmsSettings
 		});
@@ -120,8 +123,7 @@
 <script type="text/javascript" src="js/core/encoder.js"></script>
 
 <script type="text/javascript" src="js/modules/Settings.js"></script>
-<script type="text/javascript"
-	src="js/modules/Language/GPMSSettings.js"></script>
+<script type="text/javascript" src="js/modules/Language/GPMSSettings.js"></script>
 <!-- <script type="text/javascript" src="js/modules/Language/AspxRssFeedLocale.js"></script> -->
 
 <link type="text/css" rel="stylesheet"
@@ -152,6 +154,9 @@
 
 		<div id="sfOuterwrapper">
 			<div class="sfSagewrapper">
+				<!-- Sticky Bar -->
+				<%@ include file="AdminTopStickyBar.jsp"%>
+				<!-- END Sticky Bar -->
 
 				<!--Body Content-->
 				<div class="sfContentwrapper clearfix">
@@ -167,7 +172,7 @@
 								id="divBottompanel">
 								<div class="sfModulecontent clearfix">
 									<!-- form -->
-									<div id="divUserForm" style="display: none">
+									<div id="divUserForm">
 										<div class="cssClassCommonBox Curve">
 											<div class="cssClassHeader">
 												<h1>

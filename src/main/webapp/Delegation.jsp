@@ -7,8 +7,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="Content-Script-Type" content="text/javascript">
 <meta http-equiv="Content-Style-Type" content="text/css">
-<meta content="Manage Users" name="DESCRIPTION">
-<meta content="Manage Users" name="KEYWORDS">
+<meta content="Delegation" name="DESCRIPTION">
+<meta content="Delegation" name="KEYWORDS">
 <meta content="@GPMS" name="COPYRIGHT">
 <meta content="GENERATOR" name="GENERATOR">
 <meta content="Author" name="AUTHOR">
@@ -30,7 +30,7 @@
 <!--[if lt IE 7]>
         <script type="text/javascript" src="js/core/IE8.js"></script>
     <![endif]-->
-<title>User Account For Delegation</title>
+<title>Delegation</title>
 
 <script src="js/jQuery/jquery-1.11.3.min.js" type="text/javascript"></script>
 
@@ -46,28 +46,35 @@
 <script type="text/javascript">
 	//<![CDATA[
 	var gpmsAppPath = "";
-	var gpmsUserName = "superuser";
-	var gpmsCurrentCulture = "en-US";
-	var gpmsHostURL = "http://localhost:8181/GPMS/";
-	var gpmsSecureToken = "GPMS.AUTHjxr30wycjzvpqd0jv3vkybx4ZADJX9SLOC1";
+	           
+	var userProfileId = '<%=session.getAttribute("userProfileId")%>';
+	var gpmsUserName = '<%=session.getAttribute("gpmsUserName")%>';
+	var isAdmin = '<%=session.getAttribute("isAdmin")%>';
+	var userPositionType = '<%=session.getAttribute("userPositionType")%>';
+	var	userPositionTitle = '<%=session.getAttribute("userPositionTitle")%>';
+	var userDepartment = '<%=session.getAttribute("userDepartment")%>';
+	var userCollege = '<%=session.getAttribute("userCollege")%>';
 
 	var gpmsServicePath = "REST/";
 	var gpmsRootPath = "http://localhost:8181/GPMS/";
-	var userProfileId = "55df8b79af6e0420a84d53ff";
-	var sessionCode = "jxr30wycjzvpqd0jv3vkybx4";
-	var clientIPAddress = "::1";
-	var gpmsCountryName = "RESERVED";
-	var gpmsRedirectPath = "/";
 
-	var logInURL = "login";
-	var pageExtension = ".jsp";
+	$(function() {
+		//For Sidebar active menu
+		$('.acitem').find('a').eq(1).prop("class", "active");
+		
+		$(".sfLocale").localize({
+			moduleKey : gpmsDelegation
+		});
+	});
+
 	//]]>
 </script>
 
-<script type="text/javascript"
-	src="js/jquery-ui-1.8.14.custom/js/jquery-ui-1.10.3.custom.min.js"></script>
+<script type="text/javascript" src="js/jQuery/jquery-ui.js"></script>
 
 <script type="text/javascript" src="js/core/gpmscore.js"></script>
+
+<script type="text/javascript" src="js/core/jquery.disable_with.js"></script>
 
 <!-- For Side Bar Navigation -->
 <script type="text/javascript" src="js/core/dashboard.js"></script>
@@ -83,6 +90,8 @@
 
 <script type="text/javascript"
 	src="js/FormValidation/jquery.maskedinput.js"></script>
+
+<script type="text/javascript" src="js/FormValidation/autoNumeric.js"></script>
 
 <!-- <script type="text/javascript" src="js/SystemLocale/systemlocale.js"></script> -->
 <script type="text/javascript"
@@ -115,13 +124,14 @@
 <!-- <script type="text/javascript" src="js/core/Session.js"></script> -->
 <script type="text/javascript" src="js/core/encoder.js"></script>
 
-<script type="text/javascript" src="js/modules/UserAccount.js"></script>
-<script type="text/javascript"
-	src="js/modules/Language/GPMSUserAccount.js"></script>
+<!-- <script type="text/javascript" src="js/Tabs/jquery.slidingtabs.js"></script> -->
+
+<script type="text/javascript" src="js/modules/Delegation.js"></script>
+<script type="text/javascript" src="js/modules/Language/GPMSDelegation.js"></script>
 <!-- <script type="text/javascript" src="js/modules/Language/AspxRssFeedLocale.js"></script> -->
 
 <link type="text/css" rel="stylesheet"
-	href="js/jquery-ui-1.8.14.custom/css/redmond/jquery-ui-1.8.16.custom.css" />
+	href="css/Templates/jquery-ui.css" />
 <link type="text/css" rel="stylesheet" href="css/GridView/tablesort.css" />
 <link type="text/css" rel="stylesheet" href="css/MessageBox/style.css" />
 
@@ -131,21 +141,24 @@
 <link type="text/css" rel="stylesheet" href="css/Templates/admin.css" />
 </head>
 <body>
-	<form enctype="multipart/form-data" action="UserAccount.jsp"
+	<form enctype="multipart/form-data" action="Delegation.jsp"
 		method="post" name="form1" id="form1">
 		<div style="display: none;" id="UpdateProgress1">
 			<div class="sfLoadingbg">&nbsp;</div>
 			<div class="sfLoadingdiv">
-				<img style="border-width: 0px;" alt="Loading..."
-					src="images/ajax-loader.gif" title="Loading..." id="imgProgress">
+				<img id="imgProgress" src="images/ajax-loader.gif"
+					style="border-width: 0px;" alt="Loading..." title="Loading..." />
 				<br> <span id="lblPrgress">Please wait...</span>
 			</div>
+		</div>
+		<div id="divAdminControlPanel">
+			<%@ include file="TopStickyBar.jsp"%>
 		</div>
 		<noscript>
 			<span>This page requires java-script to be enabled. Please
 				adjust your browser-settings.</span>
 		</noscript>
-
+		
 		<div id="sfOuterwrapper">
 			<div class="sfSagewrapper">
 
@@ -154,36 +167,167 @@
 					<div id="divCenterContent">
 						<!-- Side Bar Starts-->
 						<div class="sideBarLeft" id="divSideBar">
-							<%@ include file="Sidebar.jsp"%>
+							<%@ include file="UserSideBar.jsp"%>
 						</div>
 						<!-- Side Bar Ends -->
-
+						
 						<div class="sfMaincontent">
 							<div style="display: block" class="sfCpanel sfInnerwrapper"
 								id="divBottompanel">
 								<div class="sfModulecontent clearfix">
+									<!-- Grid -->
+									<div id="divProposalGrid" style="display: none">
+										<div class="cssClassCommonBox Curve">
+											<div class="cssClassHeader">
+												<h1>
+													<span>Manage Your Notifications</span>
+												</h1>
+												<div class="cssClassHeaderRight">
+													<div class="sfButtonwrapper">
+														<p>
+															<button title="Add New Proposal" type="button"
+																id="btnAddNew" class="sfBtn">
+																<span class="sfLocale icon-addnew">Add New
+																	Proposal</span>
+															</button>
+														</p>
+														<p>
+															<button title="Delete All Selected" type="button"
+																id="btnDeleteSelected" class="sfBtn">
+																<span class="sfLocale icon-delete">Delete All
+																	Selected</span>
+															</button>
+														</p>
+														<p>
+															<button title="Export to Excel" type="button"
+																id="btnExportToExcel" class="sfBtn">
+																<span class="sfLocale icon-showall">Export to
+																	Excel</span>
+															</button>
+														</p>
+														<p>
+															<button title="Export to CSV" type="button"
+																id="btnExportToCSV" class="sfBtn">
+																<span class="sfLocale icon-showall">Export to CSV</span>
+															</button>
+														</p>
 
-									<script type="text/javascript">
-										//<![CDATA[
-										$(function() {
-											$(".sfLocale").localize({
-												moduleKey : gpmsUserAccount
-											});
-										});
-										//]]>
-									</script>
+														<div class="cssClassClear"></div>
+													</div>
+													<div class="cssClassClear"></div>
+												</div>
+												<div class="cssClassClear"></div>
+											</div>
+											<div class="sfGridwrapper">
+												<div class="sfGridWrapperContent">
+													<div class="sfFormwrapper sfTableOption">
+														<table width="100%" cellspacing="0" cellpadding="0"
+															border="0">
+															<tbody>
+																<tr>
+																	<td><label class="cssClassLabel sfLocale">Project
+																			Title:</label> <input title="Project Title" type="text"
+																		class="sfTextBoxFix" id="txtSearchProjectTitle"
+																		placeholder="Project Title" /></td>
+																	<td><label class="cssClassLabel sfLocale">
+																			Proposed By:</label> <input title="Proposed By"
+																		id="txtSearchProposedBy" class="sfTextBoxFix"
+																		type="text" placeholder="Proposed By" /></td>
 
+																	<!-- 																		<td><label class="cssClassLabel sfLocale"> -->
+																	<!-- 																				Project Type:</label> <select title="Choose Project Type" id="ddlProjectType" -->
+																	<!-- 																			class="sfListmenu" style="width: 100px;"> -->
+																	<!-- 																				<option value="0" class="sfLocale">--All--</option> -->
+																	<!-- 																		</select></td> -->
+																	<!-- 																		<td><label class="cssClassLabel sfLocale"> -->
+																	<!-- 																				Type of Request:</label> <select title="Choose Type of Request" id="ddlTypeOfRequest" -->
+																	<!-- 																			class="sfListmenu" style="width: 100px;"> -->
+																	<!-- 																				<option value="0" class="sfLocale">--All--</option> -->
+																	<!-- 																		</select></td> -->
+																	<!-- 																		<td><label class="cssClassLabel sfLocale"> -->
+																	<!-- 																				Location of Project:</label> <select  title="Choose Location of Project" id="ddlLocationOfProject" -->
+																	<!-- 																			class="sfListmenu" style="width: 100px;"> -->
+																	<!-- 																				<option value="0" class="sfLocale">--All--</option> -->
+																	<!-- 																		</select></td> -->
 
+																	<td style="width: 180px; float: left;"><label
+																		class="cssClassLabel sfLocale">Received On:</label>
+																		<div>
+																			<span class="cssClassLabel sfLocale">From:</span> <input
+																				type="text" title="Received On From"
+																				id="txtSearchReceivedOnFrom" class="sfTextBoxFix"
+																				placeholder="From">
+																		</div>
+																		<div>
+																			<span class="cssClassLabel sfLocale">To:</span> <input
+																				type="text" title="Received On To"
+																				id="txtSearchReceivedOnTo" class="sfTextBoxFix"
+																				placeholder="To">
+																		</div></td>
+
+																	<td style="width: 180px;"><label
+																		class="cssClassLabel sfLocale">Total Costs:</label>
+																		<div>
+																			<span class="cssClassLabel sfLocale">From:</span> <input
+																				type="text" title="Total Costs From"
+																				id="txtSearchTotalCostsFrom"
+																				name="searchTotalCostsFrom" class="sfTextBoxFix"
+																				placeholder="From">
+																		</div>
+																		<div>
+																			<span class="cssClassLabel sfLocale">To:</span> <input
+																				type="text" title="Total Costs To"
+																				id="txtSearchTotalCostsTo" name="searchTotalCostsTo"
+																				class="sfTextBoxFix" placeholder="To">
+																		</div></td>
+
+																	<td><label class="cssClassLabel sfLocale">Proposal
+																			Status:</label> <select title="Choose Proposal Status"
+																		id="ddlSearchProposalStatus" class="sfListmenu"
+																		style="width: 80px;">
+																			<option value="0" class="sfLocale">--All--</option>
+																	</select></td>
+																	<td><label class="cssClassLabel">&nbsp;</label>
+																		<button title="Search Proposal" class="sfBtn"
+																			id="btnSearchProposal" type="button">
+																			<span class="sfLocale icon-search">Search</span>
+																		</button></td>
+																</tr>
+															</tbody>
+														</table>
+													</div>
+													<div class="loading">
+														<img id="ajaxLoader" src="" class="sfLocale"
+															alt="Loading..." title="Loading..." />
+													</div>
+													<div class="log"></div>
+													<table id="gdvProposals" cellspacing="0" cellpadding="0"
+														border="0" width="100%"></table>
+												</div>
+											</div>
+										</div>
+									</div>
+									<!-- End of Grid -->
+									<!-- form -->
+									<div id="divNotificationForm">
+										<div class="cssClassCommonBox Curve">
+											<div class="cssClassHeader">
+												<h1>
+													<span id="lblFormHeading">Manage Your Delegation</span>
+												</h1>
+												Goes here Your Delegation!
+											</div>
+										</div>
+										<!-- End form -->
+									</div>
 								</div>
-
 							</div>
+							<!-- END sfMaincontent -->
 						</div>
-						<!-- END sfMaincontent -->
 					</div>
+					<!-- END Body Content sfContentwrapper -->
 				</div>
-				<!-- END Body Content sfContentwrapper -->
 			</div>
-		</div>
 	</form>
 </body>
 </html>

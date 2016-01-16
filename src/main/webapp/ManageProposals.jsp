@@ -59,6 +59,9 @@
 	var gpmsRootPath = "http://localhost:8181/GPMS/";
 
 	$(function() {
+		// For Sidebar active menu
+		$('.acitem').find('a').eq(1).prop("class", "active");
+		
 		$(".sfLocale").localize({
 			moduleKey : gpmsProposalsManagement
 		});
@@ -157,7 +160,10 @@
 		</noscript>
 		<div id="sfOuterwrapper">
 			<div class="sfSagewrapper">
-
+				<!-- Sticky Bar -->
+				<%@ include file="AdminTopStickyBar.jsp"%>
+				<!-- END Sticky Bar -->
+				
 				<!--Body Content-->
 				<div class="sfContentwrapper clearfix">
 					<div id="divCenterContent">

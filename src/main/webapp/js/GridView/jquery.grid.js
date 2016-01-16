@@ -1167,6 +1167,8 @@ var fromServer = 0;
 																			checkstatus = (indexValue
 																					.toLowerCase() == 'yes') ? 'disabled'
 																					: '';
+																		}else{
+																			return false;
 																		}
 																	});																	
 																	// alert(checkstatus);

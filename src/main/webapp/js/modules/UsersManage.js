@@ -1,9 +1,6 @@
 ﻿var usersManage = '';
 
-$(function() {
-	
-	//For Sidebar active menu
-	$('.acitem').find('a').eq(0).prop("class", "active");
+$(function() {	
 	
 	jQuery.fn.exists = function() {
 		return this.length > 0;
@@ -24,9 +21,13 @@ $(function() {
 
 	var gpmsCommonObj = function() {
 		var gpmsCommonInfo = {
-			UserName : GPMS.utils.GetUserName(),
-			UserProfileID : GPMS.utils.GetUserProfileID(),
-			CultureName : GPMS.utils.GetCultureName()
+				UserName : GPMS.utils.GetUserName(),
+				UserProfileID : GPMS.utils.GetUserProfileID(),
+				UserIsAdmin : GPMS.utils.IsAdmin(),
+				UserPositionType : GPMS.utils.GetUserPositionType(),
+				UserPositionTitle : GPMS.utils.GetUserPositionTitle(),
+				UserDepartment : GPMS.utils.GetUserDepartment(),
+				UserCollege : GPMS.utils.GetUserCollege()
 		};
 		return gpmsCommonInfo;
 	};
@@ -1057,7 +1058,7 @@ $(function() {
 			$tabs.tabs('option', 'active', 0);
 		},
 
-		saveUser : function(_userId, _flag) {
+		saveUser : function(_userId) {
 			// $('#iferror').hide();
 			// var $form = $("#form1");
 			// $form.valid();
@@ -1131,7 +1132,6 @@ $(function() {
 						PersonalEmail : $('#txtPersonalEmail').val(),
 						IsActive : $('input[name=chkActive]').prop('checked'),
 						UserName : $.trim($('#txtUserName').val()),
-						Flag : _flag, // false for Update true for New Add
 						SaveOptions : _saveOptions
 					};
 
@@ -1668,7 +1668,7 @@ $(function() {
 				$('#divUserForm').show();
 				break;
 
-			case 3:// For Form Department Dropdown Binding
+			case 3:// For User Delete
 				usersManage.BindUserGrid(null, null, null, null, null, null);
 				csscody
 						.info("<h2>"
@@ -2010,10 +2010,10 @@ $(function() {
 				var user_id = $(this).prop("name");
 				if (user_id != '') {
 					editFlag = user_id;
-					usersManage.saveUser(user_id, false);
+					usersManage.saveUser(user_id);
 				} else {
 					editFlag = 0;
-					usersManage.saveUser("0", true);
+					usersManage.saveUser("0");
 				}
 				$(this).enable();
 				e.preventDefault();

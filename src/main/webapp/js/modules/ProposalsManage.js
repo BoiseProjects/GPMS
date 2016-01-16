@@ -1,8 +1,6 @@
 ﻿var proposalsManage = '';
 
 $(function() {
-	// For Sidebar active menu
-	$('.acitem').find('a').eq(1).prop("class", "active");
 	
 	jQuery.fn.exists = function() {
 		return this.length > 0;
@@ -14,9 +12,13 @@ $(function() {
 
 	var gpmsCommonObj = function() {
 		var gpmsCommonInfo = {
-			UserName : GPMS.utils.GetUserName(),
-			UserProfileID : GPMS.utils.GetUserProfileID(),
-			CultureName : GPMS.utils.GetCultureName()
+				UserName : GPMS.utils.GetUserName(),
+				UserProfileID : GPMS.utils.GetUserProfileID(),
+				UserIsAdmin : GPMS.utils.IsAdmin(),
+				UserPositionType : GPMS.utils.GetUserPositionType(),
+				UserPositionTitle : GPMS.utils.GetUserPositionTitle(),
+				UserDepartment : GPMS.utils.GetUserDepartment(),
+				UserCollege : GPMS.utils.GetUserCollege()
 		};
 		return gpmsCommonInfo;
 	};
@@ -2046,11 +2048,10 @@ $(function() {
 				ProposalID : proposalId,
 				NewProjectTitle : newProjectTitle
 			};
-			var gpmsCommonInfo = gpmsCommonObj();
+			
 			this.config.url = this.config.baseURL + "CheckUniqueProjectTitle";
 			this.config.data = JSON2.stringify({
-				proposalUniqueObj : proposalUniqueObj,
-				gpmsCommonObj : gpmsCommonInfo
+				proposalUniqueObj : proposalUniqueObj
 			});
 			this.config.ajaxCallMode = 7;
 			this.ajaxCall(this.config);

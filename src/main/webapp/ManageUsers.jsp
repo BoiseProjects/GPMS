@@ -59,11 +59,14 @@
 	var gpmsRootPath = "http://localhost:8181/GPMS/";
 
 	$(function() {
+		//For Sidebar active menu
+		$('.acitem').find('a').eq(0).prop("class", "active");
+
 		$(".sfLocale").localize({
 			moduleKey : gpmsUsersManagement
 		});
 	});
-	
+
 	//]]>
 </script>
 
@@ -152,8 +155,11 @@
 
 		<div id="sfOuterwrapper">
 			<div class="sfSagewrapper">
+				<!-- Sticky Bar -->
+				<%@ include file="AdminTopStickyBar.jsp"%>
+				<!-- END Sticky Bar -->
 
-				<!--Body Content-->
+				<!-- Body Content -->
 				<div class="sfContentwrapper clearfix">
 					<div id="divCenterContent">
 						<!-- Side Bar Starts-->
@@ -532,7 +538,7 @@
 																		<td class="cssClassTableRightCol" colspan="3"><input
 																			title="Active" type="checkbox" value=""
 																			name="chkActive" class="cssClassCheckBox"
-																			checked="checked"></td>
+																			checked="true"></td>
 																	</tr>
 																</tbody>
 															</table>
@@ -578,7 +584,7 @@
 																						<td><input type="radio"
 																							title="Choose Default Position"
 																							class="class-isdefault" name="defaultRdo"
-																							checked="true" /></td>
+																							checked="false" /></td>
 																						<td><input type="Button" value="Add More"
 																							name="AddMore"
 																							class="AddOption cssClassButtonSubmit sfLocale" />

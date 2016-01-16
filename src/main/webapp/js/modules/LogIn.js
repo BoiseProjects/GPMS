@@ -1,10 +1,10 @@
 var logIn = '';
 $(function() {
 
-	//alert(userProfileId + " From Login.jsp")
-	// if (userSession != null) {
-	// window.location = 'Home.jsp';
-	// }
+	// alert(userProfileId + " From Login.jsp")
+	if (userProfileId != "null") {
+		window.location = 'Home.jsp';
+	}
 
 	var validator = $('#form1')
 			.validate(

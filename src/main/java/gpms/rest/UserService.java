@@ -1054,10 +1054,12 @@ public class UserService {
 
 		if (userInfo != null && userInfo.has("UserID")) {
 			userID = userInfo.get("UserID").getTextValue();
-			newAccount.setAddedOn(new Date());
 		}
 
 		if (userID.equals("0")) {
+
+			newAccount.setAddedOn(new Date());
+
 			if (userInfo != null && userInfo.has("UserName")) {
 				String loginUserName = userInfo.get("UserName").getTextValue();
 				newAccount.setUserName(loginUserName);
@@ -1161,6 +1163,9 @@ public class UserService {
 							setMySessionID(req, user.getId().toString());
 							java.net.URI location = new java.net.URI(
 									"../Home.jsp");
+							if (user.getUserAccount().isAdmin()) {
+								location = new java.net.URI("../Dashboard.jsp");
+							}
 							return Response.seeOther(location).build();
 						} else {
 							isFound = false;

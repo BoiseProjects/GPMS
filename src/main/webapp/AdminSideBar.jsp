@@ -60,8 +60,8 @@
 										$('div.sfSidebar').addClass(
 												"sfSidebarhide");
 										InitModuleFloat(65);
-										$('.Grandparent').find('a').eq(0).find(
-												'span').eq(0).hide();
+										$('.Grandparent').find('a:eq(0)').find(
+												'span:eq(0)').hide();
 									} else {
 										InitAccordianMode();
 										//$('#sidebar ul li a').removeAttr(
@@ -196,7 +196,7 @@
 </div>
 
 <div class="sfFooterwrapper clearfix" id="divFooterWrapper">
-	<div id="ctl_CPanleFooter1_divFooterContent">Copyright 2015 GPMS.
+	<div id="ctl_CPanleFooter1_divFooterContent">Copyright 2016 GPMS.
 		All Rights Reserved&reg;</div>
 
 </div>

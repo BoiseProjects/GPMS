@@ -4,15 +4,6 @@ $(function() {
 		return this.length > 0;
 	}
 
-	var gpmsCommonObj = function() {
-		var gpmsCommonInfo = {
-			UserName : GPMS.utils.GetUserName(),
-			UserProfileID : GPMS.utils.GetUserProfileID(),
-			CultureName : GPMS.utils.GetCultureName()
-		};
-		return gpmsCommonInfo;
-	};
-
 	var validator = $("#form1")
 			.validate(
 					{
@@ -213,11 +204,10 @@ $(function() {
 				UserID : userId,
 				NewUserName : newUserName
 			};
-			var gpmsCommonInfo = gpmsCommonObj();
+			
 			this.config.url = this.config.baseURL + "CheckUniqueUserName";
 			this.config.data = JSON2.stringify({
-				userUniqueObj : userUniqueObj,
-				gpmsCommonObj : gpmsCommonInfo
+				userUniqueObj : userUniqueObj
 			});
 			this.config.ajaxCallMode = 1;
 			this.ajaxCall(this.config);
@@ -264,11 +254,10 @@ $(function() {
 				UserID : userId,
 				NewEmail : newEmail
 			};
-			var gpmsCommonInfo = gpmsCommonObj();
+			
 			this.config.url = this.config.baseURL + "CheckUniqueEmail";
 			this.config.data = JSON2.stringify({
-				userUniqueObj : userUniqueObj,
-				gpmsCommonObj : gpmsCommonInfo
+				userUniqueObj : userUniqueObj
 			});
 			this.config.ajaxCallMode = 2;
 			this.ajaxCall(this.config);

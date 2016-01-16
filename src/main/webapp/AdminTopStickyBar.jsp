@@ -13,8 +13,6 @@
 		//	$(".sfDashBoard").show();
 		//}
 
-		//TODO: Add dynamic roles with default selected with active checked(Tick) icon on it at ul= ulLoggedRoles before last li
-
 		$('.myProfile').on('click', function() {
 			if ($('.myProfileDrop').hasClass('Off')) {
 				$('.myProfileDrop').removeClass('Off');
@@ -32,14 +30,14 @@
 	<ul class="left">
 		<li>
 			<div class="sfLogo">
-				<a href="./Home.jsp" id="topStickybar_hypLogo"><img alt="Home"
-					title="Home" src="images/logo_small.png"></a>
+				<a href="./Dashboard.jsp" id="topStickybar_hypLogo"><img
+					alt="Dashboard" title="Dashboard" src="images/logo_small.png"></a>
 			</div>
 		</li>
 	</ul>
 
 	<ul class="right">
-		<li class="home"><a href="./Home.jsp" class="icon-home"
+		<li class="home"><a href="./Dashboard.jsp" class="icon-home"
 			id="hypHome"></a></li>
 
 		<li class="loggedin"><span class="icon-user"> Logged As</span>
@@ -47,12 +45,8 @@
 
 		<li class="logout"><span class="myProfile icon-arrow-s"></span>
 			<div class="myProfileDrop Off" style="display: none;">
-				<ul id="ulLoggedRoles">
+				<ul>
 					<li>Hello, <%=session.getAttribute("gpmsUserName")%></li>
-					<li class="myaccount"><a href="./MyAccount.jsp">My Account</a></li>
-					<li class="myrole active"><a href="#">View As Role1</a></li>
-					<li class="myrole"><a href="#">View As Role2</a></li>
-					<li class="myrole"><a href="#">View As Role3</a></li>
 					<li><a href="./Logout.jsp" class="sfBtnlogin"><i
 							class="i-logout"></i>Log Out</a></li>
 

@@ -1,4 +1,4 @@
-var home = '';
+var dashboard = '';
 $(function() {
 
 	var gpmsCommonObj = function() {
