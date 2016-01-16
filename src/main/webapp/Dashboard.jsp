@@ -122,7 +122,8 @@
 <!-- <script type="text/javascript" src="js/Tabs/jquery.slidingtabs.js"></script> -->
 
 <script type="text/javascript" src="js/modules/Dashboard.js"></script>
-<script type="text/javascript" src="js/modules/Language/GPMSDashboard.js"></script>
+<script type="text/javascript"
+	src="js/modules/Language/GPMSDashboard.js"></script>
 <!-- <script type="text/javascript" src="js/modules/Language/AspxRssFeedLocale.js"></script> -->
 
 <link type="text/css" rel="stylesheet"
@@ -166,23 +167,30 @@
 						</div>
 						<!-- Side Bar Ends -->
 						<div class="sfMaincontent">
-							<div style="display: block" class="sfCpanel sfInnerwrapper"
-								id="divBottompanel">
-								<div class="sfModulecontent clearfix">
-									<!-- form -->
-									<div id="divDashboardForm">
-										<div class="cssClassCommonBox Curve">
-											<div class="cssClassHeader">
-												<h1>
-													<span id="lblFormHeading">Welcome Details</span>
-												</h1>
-												Goes here Welcome to the GPMS world!
-											</div>
-										</div>
-										<!-- End form -->
-									</div>
-								</div>
+							<div class="sfWelcomeWrap clearfix">
+								<h1>Hi! Welcome to GPMS Control Panel Screen.</h1>
+								<h2>Proposal Workflow Management System - A web-based
+									application for replacing the manual approval process of grant
+									submission. You can take a quick tour to GPMS, on how to run
+									and operate the Grant Proposal Workflow Management Framework.
+									Get acquainted with the GPMS Dashboard. Take the tour.</h2>
 							</div>
+							<div class="sfDashboard clearfix">
+								<ul>
+									<li><a href="./ManageUsers.jsp"><span
+											class="sfModuleicon"> <i class="icon-user-accounts"></i></span>
+											<span class="sfModulename">Users</span> </a></li>
+
+									<li><a href="./ManageProposals.jsp"><span
+											class="sfModuleicon"> <i class="icon-message-template"></i></span>
+											<span class="sfModulename">Proposals</span> </a></li>
+
+									<li><a href="./Settings.jsp"><span
+											class="sfModuleicon"> <i class="icon-settings"></i></span> <span
+											class="sfModulename">Settings</span> </a></li>
+								</ul>
+							</div>
+
 							<!-- END sfMaincontent -->
 						</div>
 					</div>

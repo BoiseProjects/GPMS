@@ -37,8 +37,25 @@
 	</ul>
 
 	<ul class="right">
-		<li class="home"><a href="./Dashboard.jsp" class="icon-home"
-			id="hypHome"></a></li>
+		<li class="sfDashBoard"><a href="./Dashboard.jsp"
+			class="icon-dashboard" title="Dashboard">Dashboard</a></li>
+
+		<!-- <li class="home"><a href="./Dashboard.jsp" class="icon-home" title="Dashboard"></a></li> -->
+
+		<li class="sfquickNotification">
+			<div id="divNotification">
+				<ul>
+					<li class="sfqckUserInfo"><span class="notired" id="spanUsersInfo">100</span> <a
+						title="Click to View Notifications" class="icon-portal-management"
+						id="linkUsersInfo">&nbsp;</a>
+						<div style="display: none;" class="cssClassNotify">
+							<div>
+								<h5 class="cssClassNotifyHead">There are no Recently Notifications.</h5>
+							</div>
+						</div></li>
+				</ul>
+			</div>
+		</li>
 
 		<li class="loggedin"><span class="icon-user"> Logged As</span>
 			&nbsp;<strong><%=session.getAttribute("gpmsUserName")%></strong></li>

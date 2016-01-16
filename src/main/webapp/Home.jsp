@@ -136,8 +136,8 @@
 <link type="text/css" rel="stylesheet" href="css/Templates/admin.css" />
 </head>
 <body>
-	<form enctype="multipart/form-data" action="Home.jsp"
-		method="post" name="form1" id="form1">
+	<form enctype="multipart/form-data" action="Home.jsp" method="post"
+		name="form1" id="form1">
 		<div style="display: none;" id="UpdateProgress1">
 			<div class="sfLoadingbg">&nbsp;</div>
 			<div class="sfLoadingdiv">
@@ -155,7 +155,6 @@
 		</noscript>
 		<div id="sfOuterwrapper">
 			<div class="sfSagewrapper">
-
 				<!--Body Content-->
 				<div class="sfContentwrapper clearfix">
 					<div id="divCenterContent">
@@ -165,29 +164,36 @@
 						</div>
 						<!-- Side Bar Ends -->
 						<div class="sfMaincontent">
-							<div style="display: block" class="sfCpanel sfInnerwrapper"
-								id="divBottompanel">
-								<div class="sfModulecontent clearfix">
-									<!-- form -->
-									<div id="divHomeForm">
-										<div class="cssClassCommonBox Curve">
-											<div class="cssClassHeader">
-												<h1>
-													<span id="lblFormHeading">Welcome Details</span>
-												</h1>
-												Goes here Welcome to the GPMS world!
-											</div>
-										</div>
-										<!-- End form -->
-									</div>
-								</div>
+							<div class="welcome-msg">
+								<h2>Welcome, superuser</h2>
+								<p>From your Account Dashboard you have the ability to view
+									a snapshot of your recent account activities and update your
+									personal account information.</p>
+							</div>
+							<div class="recent-activity">
+								<h2>Recent Activities</h2>
+								<ul>
+									<li>Your Wishlist Contains: <a href="./My-WishList.jsp">0
+											items</a></li>
+									<li>Your Carts Contains: <a href="./My-Cart.jsp">0
+											items</a></li>
+								</ul>
+							</div>
+							<div class="welcomeWrap clearfix">
+								<h1>Hi! Welcome to GPMS User Control Panel.</h1>
+								<h2>Proposal Workflow Management System - A web-based
+									application for replacing the manual approval process of grant
+									submission. You can take a quick tour to GPMS, on how to run
+									and operate the Grant Proposal Workflow Management Framework.
+									Get acquainted with the GPMS Dashboard. Take the tour.</h2>
 							</div>
 							<!-- END sfMaincontent -->
 						</div>
 					</div>
-					<!-- END Body Content sfContentwrapper -->
 				</div>
+				<!-- END Body Content sfContentwrapper -->
 			</div>
+		</div>
 	</form>
 </body>
 </html>

@@ -184,7 +184,7 @@
 				<li class="sfLevel1"><a href="./ManageUsers.jsp"><i
 						class="icon-user-accounts"></i><span>Manage Users</span></a></li>
 				<li class="sfLevel1"><a href="./ManageProposals.jsp"><i
-						class="icon-reports"></i><span>Manage Proposals</span></a></li>
+						class="icon-message-template"></i><span>Manage Proposals</span></a></li>
 				<li class="sfLevel1"><a href="./Settings.jsp"><i
 						class="icon-settings"></i><span>Settings</span></a></li>
 			</ul>

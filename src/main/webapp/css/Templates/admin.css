@@ -1361,7 +1361,10 @@ div.sideBarRight .sfSidebar ul.menu li.Grandparent ul.acitem li.parent ul li.chi
 }
 /*---Dashboard---*/
 .sfDashboard {
-	margin-bottom: 40px;
+	float: right;
+    margin-bottom: 40px;
+    margin-top: 20px;
+    width: 12%;
 }
 
 .sfDashboard ul li {
@@ -4324,6 +4327,18 @@ div .sfGridwrapper table td a:hover.icon-edit, .sfGridwrapper table td a:hover.i
 	-webkit-border-radius: 3px;
 	-ms-border-radius: 3px;
 	-o-border-radius: 3px;
+	width: 82%;
+	float: left;
+}
+
+.welcomeWrap{
+	background: #fff none repeat scroll 0 0;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    float: left;
+    margin: 20px 0 30px;
+    padding: 25px;
+    position: relative;
 }
 
 .sfWelcomeWrap label.icon-close {
@@ -4339,7 +4354,7 @@ div .sfGridwrapper table td a:hover.icon-edit, .sfGridwrapper table td a:hover.i
 	color: #515357;
 }
 
-.sfWelcomeWrap h1 {
+.sfWelcomeWrap h1, .welcomeWrap h1 {
 	font-size: 28px;
 	margin-bottom: 5px;
 	color: #000;
@@ -4347,7 +4362,7 @@ div .sfGridwrapper table td a:hover.icon-edit, .sfGridwrapper table td a:hover.i
 	border-bottom: none;
 }
 
-.sfWelcomeWrap h2 {
+.sfWelcomeWrap h2, .welcomeWrap h2 {
 	font-size: 16px;
 	color: #838383;
 	font-weight: normal;
@@ -5266,7 +5281,6 @@ p.sfDisplayName span.sfFormlabel.sfDefaultName {
 .cssClassHeader {
 	position: relative;
 	overflow: hidden;
-	margin-bottom: 10px;
 }
 
 .cssClassLeft, .cssClassMiddle {
@@ -5900,5 +5914,41 @@ div#aspxcommereloading {
 	left: 50%;
 	top: 50%;
 	z-index: 5050;
-	"
+}
+
+.welcome-msg {
+    background: #6fc25c none repeat scroll 0 0;
+    margin-right: 30px;
+}
+
+.recent-activity {
+    background: #2b3f4d none repeat scroll 0 0;
+    border-bottom: 3px solid #6fc25c;
+    font-size: 14px;
+}
+
+.recent-activity ul, li, ol {
+    list-style: outside none none;
+}
+
+.welcome-msg, .recent-activity a:hover {
+    color: #fff;
+}
+
+.welcome-msg, .recent-activity a {
+    color: #6fc25c;
+}
+
+.welcome-msg, .recent-activity {
+    color: #fff;
+    float: left;
+    padding: 25px 34px;
+    width: 42.18%;
+}
+
+.welcome-msg p {
+    line-height: 24px;
+    font-size: 16px;
+    font-weight: 300;
+    color: #fff;
 }

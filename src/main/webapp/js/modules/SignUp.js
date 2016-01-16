@@ -1,5 +1,10 @@
 var signUp = '';
 $(function() {
+
+	if (userProfileId == "null") {
+		window.location = 'Login.jsp';
+	}
+
 	jQuery.fn.exists = function() {
 		return this.length > 0;
 	}
@@ -200,7 +205,7 @@ $(function() {
 				UserID : userId,
 				NewUserName : newUserName
 			};
-			
+
 			this.config.url = this.config.baseURL + "CheckUniqueUserName";
 			this.config.data = JSON2.stringify({
 				userUniqueObj : userUniqueObj
@@ -250,7 +255,7 @@ $(function() {
 				UserID : userId,
 				NewEmail : newEmail
 			};
-			
+
 			this.config.url = this.config.baseURL + "CheckUniqueEmail";
 			this.config.data = JSON2.stringify({
 				userUniqueObj : userUniqueObj

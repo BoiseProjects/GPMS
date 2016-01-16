@@ -45,8 +45,7 @@ li.preview a.icon-preview:before, li.home a.icon-dashboard:before, li.home a.ico
 
 li.sfDashBoard a.icon-dashboard:before, li.sfDashBoard a.icon-home:before
 	{
-	font-size: 18px;
-	margin-top: 14px;
+	font-size: 22px;
 }
 
 li.sfDashBoard a:hover {
@@ -55,8 +54,8 @@ li.sfDashBoard a:hover {
 }
 
 li.home a.icon-dashboard:before, li.home a.icon-home:before {
-	margin-right: 0px;
-	font-size: 16px;
+	margin-right: 3px;
+	font-size: 22px;
 }
 
 li.preview a:hover.icon-preview, li.preview a:hover.icon-preview:before,
@@ -140,6 +139,8 @@ li.preview a:hover.icon-preview, li.preview a:hover.icon-preview:before,
 
 .icon-checked:before {
 	content: "\e610";
+	color: #9ac659;
+	font-size: 16px;
 }
 
 .icon-arrow-e:before {
@@ -1921,8 +1922,12 @@ important
 
 
 
+
+
 ;
 font-style
+
+
 
 
 
@@ -1930,17 +1935,23 @@ font-style
 :
 
 
+
  
+
 
 
 normal
 
 
+
  
+
 
 
 !
 important
+
+
 
 
 
@@ -1951,20 +1962,28 @@ font-weight
 
 
 
+
+
 :
 
 
+
  
+
 
 
 normal
 
 
+
  
+
 
 
 !
 important
+
+
 
 
 
@@ -1975,20 +1994,28 @@ font-variant
 
 
 
+
+
 :
 
 
+
  
+
 
 
 normal
 
 
+
  
+
 
 
 !
 important
+
+
 
 
 
@@ -1999,20 +2026,28 @@ text-transform
 
 
 
+
+
 :
 
 
+
  
+
 
 
 none
 
 
+
  
+
 
 
 !
 important
+
+
 
 
 
@@ -2023,13 +2058,19 @@ speak
 
 
 
+
+
 :
+
 
 
  
 
 
+
 none
+
+
 
 
 
@@ -2040,10 +2081,14 @@ line-height
 
 
 
+
+
 :
 
 
+
  
+
 
 
 1;
@@ -2052,13 +2097,19 @@ line-height
 
 
 
+
+
 :
+
 
 
  
 
 
+
 antialiased
+
+
 
 
 
@@ -2069,13 +2120,19 @@ antialiased
 
 
 
+
+
 :
+
 
 
  
 
 
+
 grayscale
+
+
 
 
 
