@@ -162,10 +162,6 @@ $(function() {
 					});
 		},
 
-		LoadStaticImage : function() {
-			$('.cssClassSuccessImg').prop('src', 'images/right.jpg');
-		},
-
 		checkUniqueUserName : function(user_id, userName, textBoxUserName) {
 			var errors = '';
 			if (!textBoxUserName.hasClass('error') && userName.length > 0) {
@@ -389,7 +385,6 @@ $(function() {
 		},
 
 		init : function() {
-			signUp.LoadStaticImage();
 			signUp.ClearForm();
 
 			$("#txtMobileNumber").mask("(999) 999-9999");

@@ -85,7 +85,8 @@ public class Create10UsersTest {
 			// newProfile.getWorkEmails().add("workman@worksite.org");
 			newProfile.getPersonalEmails().add(userAccount + "@yahoo.com");
 
-			// Add two Position Detail objects to the user profile
+			// Add three Position Detail with second one get default role
+			setPositionDetails(newProfile);
 			setPositionDetails(newProfile);
 			setPositionDetails(newProfile);
 
@@ -186,6 +187,9 @@ public class Create10UsersTest {
 		int choice4 = rand.nextInt(fourthList.size());
 		newDetails.setPositionTitle(fourthList.get(choice4));
 
+		if (theProfile.getDetails().size() == 1) {
+			newDetails.setDefault(true);
+		}
 		theProfile.getDetails().add(newDetails);
 	}
 }

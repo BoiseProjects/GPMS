@@ -48,21 +48,17 @@
 <script type="text/javascript">
 	//<![CDATA[
 	var gpmsAppPath = "";
-	var gpmsUserName = "superuser";
-	var gpmsCurrentCulture = "en-US";
-	var gpmsHostURL = "http://localhost:8181/GPMS/";
-	var gpmsSecureToken = "GPMS.AUTHjxr30wycjzvpqd0jv3vkybx4ZADJX9SLOC1";
+	
+	var userProfileId = '<%=session.getAttribute("userProfileId")%>';
+	var gpmsUserName = '<%=session.getAttribute("gpmsUserName")%>';
+	var isAdmin = '<%=session.getAttribute("isAdmin")%>';
+	var userPositionType = '<%=session.getAttribute("userPositionType")%>';
+	var	userPositionTitle = '<%=session.getAttribute("userPositionTitle")%>';
+	var userDepartment = '<%=session.getAttribute("userDepartment")%>';
+	var userCollege = '<%=session.getAttribute("userCollege")%>';
 
 	var gpmsServicePath = "REST/";
 	var gpmsRootPath = "http://localhost:8181/GPMS/";
-	var userProfileId = "56175791a1602426088a3b84";
-	var sessionCode = "jxr30wycjzvpqd0jv3vkybx4";
-	var clientIPAddress = "::1";
-	var gpmsCountryName = "RESERVED";
-	var gpmsRedirectPath = "/";
-
-	var logInURL = "login";
-	var pageExtension = ".jsp";
 
 	$(function() {
 		$(".sfLocale").localize({
@@ -157,7 +153,7 @@
 							id="txtUserName" placeholder="User Name" name="username"
 							title="User name"><span style="display: none;"
 							class="cssClassRight"> <img
-							src="http://localhost:8181/GPMS//images/right.jpg"
+							src="./images/right.jpg"
 							class="cssClassSuccessImg sfLocale" alt="Right" title="Right"
 							height="13" width="18">
 						</span>
@@ -189,7 +185,7 @@
 						</label> <input class="form__input input" data-form-input=""
 							id="txtWorkEmail" placeholder="Work Email" name="workEmail"
 							title="Work Email"><span class="cssClassRight"> <img
-							src="" class="cssClassSuccessImg sfLocale" height="13" width="18"
+							src="./images/right.jpg" class="cssClassSuccessImg sfLocale" height="13" width="18"
 							alt="Right" title="Right" />
 						</span>
 					</div>

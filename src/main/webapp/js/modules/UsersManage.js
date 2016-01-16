@@ -203,11 +203,6 @@ $(function() {
 					});
 		},
 
-		LoadStaticImage : function() {
-			$('.cssClassSuccessImg').prop('src',
-					'' + GPMS.utils.GetGPMSRootPath() + 'images/right.jpg');
-		},
-
 		SearchUsers : function() {
 			var userName = $.trim($("#txtSearchUserName").val());
 			var college = $.trim($('#ddlSearchCollege').val()) == "" ? null : $
@@ -1832,7 +1827,6 @@ $(function() {
 		},
 
 		init : function() {
-			usersManage.LoadStaticImage();
 			usersManage.BindUserGrid(null, null, null, null, null, null);
 			$('#divUserForm').hide();
 			$('#divUserGrid').show();

@@ -512,7 +512,7 @@
 																				<input type="email" id="txtWorkEmail"
 																					class="sfInputbox" style="width: 160px;"
 																					name="workEmail" placeholder="Work Email" /> <span
-																					class="cssClassRight"> <img src=""
+																					class="cssClassRight"> <img src="./images/right.jpg"
 																					class="cssClassSuccessImg sfLocale" height="13"
 																					width="18" alt="Right" title="Right" />
 																				</span>
@@ -526,7 +526,7 @@
 																				<input type="email" class="sfInputbox"
 																					style="width: 160px;" id="txtPersonalEmail"
 																					name="personalEmail" placeholder="Personal Email" /><span
-																					class="cssClassRight"> <img src=""
+																					class="cssClassRight"> <img src="./images/right.jpg"
 																					class="cssClassSuccessImg sfLocale" height="13"
 																					width="18" alt="Right" title="Right" />
 																				</span>
@@ -609,7 +609,7 @@
 																			title="User Name" type="text" class="sfInputbox"
 																			id="txtUserName" name="username"
 																			placeholder="User Name"> <span
-																			class="cssClassRight"> <img src=""
+																			class="cssClassRight"> <img src="./images/right.jpg"
 																				class="cssClassSuccessImg sfLocale" height="13"
 																				width="18" alt="Right" title="Right" />
 																		</span></td>

@@ -202,13 +202,7 @@ $(function() {
 					});
 		},
 
-		LoadStaticImage : function() {
-			$('.cssClassSuccessImg').prop('src',
-					'' + GPMS.utils.GetGPMSRootPath() + 'images/right.jpg');
-		},
-
 		EditUser : function(userProfileId) {
-			myAccount.ClearForm();
 			$('#txtPassword').rules("remove");
 			$('#txtConfirmPassword').rules("remove");
 
@@ -293,9 +287,6 @@ $(function() {
 				// alert(index + " :: " + value);
 				$('#txtPersonalEmail').val(response['personalEmails']);
 			});
-
-			$('input[name=chkActive]').prop('checked',
-					response['userAccount']['isActive']);
 
 			$.each(response['userAccount'], function(index, value) {
 				$('#txtUserName').val(response['userAccount']['userName']);
@@ -568,34 +559,19 @@ $(function() {
 
 		ClearForm : function() {
 			validator.resetForm();
-			// $('#form1').removeData('validator');
-			// $('.class-text').removeClass('error').next('span').removeClass(
-			// 'error');
-			var inputs = $("#container-7").find(
-					'INPUT:not(".class-isdefault"), SELECT, TEXTAREA');
-			$.each(inputs, function(i, item) {
-				// rmErrorClass(item);
-				$(this).prop('checked', false);
-				$(this).val($(this).find('option').first().val());
-			});
-
-			myAccount.onInit();
-			$("#btnSaveUser").removeAttr("name");
-
-			rowIndex = 0;
-			$("#dataTable tbody>tr:gt(0)").remove();
-			$("#dataTable tr:eq(1)").find("input:not(:last)").prop('checked',
-					true);
-			return false;
-		},
-
-		onInit : function() {
 			myAccount.SetFirstTabActive();
+
 			$('.cssClassRight').hide();
 			$('.warning').hide();
 
 			$("#gdvUsersAuditLog").empty();
 			$("#gdvUsersAuditLog_Pagination").remove();
+
+			$("#btnSaveUser").removeAttr("name");
+
+			rowIndex = 0;
+			$("#dataTable tbody>tr:gt(0)").remove();
+			return false;
 		},
 
 		SetFirstTabActive : function() {
@@ -935,7 +911,6 @@ $(function() {
 					.eq(rowIndex).val(), $(
 					'select[name="ddlPositionType"] option:selected').eq(
 					rowIndex).val());
-
 			return false;
 		},
 
@@ -1081,8 +1056,6 @@ $(function() {
 
 			case 2:// For User Edit Action
 				myAccount.FillForm(msg);
-				$('#divUserGrid').hide();
-				$('#divUserForm').show();
 				break;
 
 			case 3:
@@ -1094,6 +1067,12 @@ $(function() {
 				break;
 
 			case 5:
+				myAccount.SetFirstTabActive();
+				$('#txtConfirmPassword').val('');
+				$('#txtPassword').rules("remove");
+				$('#txtConfirmPassword').rules("remove");
+				myAccount.BindUserAuditLogGrid(userProfileId, null, null, null,
+						null);
 				csscody
 						.info("<h2>"
 								+ getLocale(gpmsMyAccount, 'Successful Message')
@@ -1148,11 +1127,13 @@ $(function() {
 		},
 
 		init : function() {
-			myAccount.LoadStaticImage();
+			myAccount.ClearForm();
 			myAccount.BindPositionDetailsHash();
 			myAccount.BindCollegeDropDown();
-
 			myAccount.EditUser(userProfileId);
+
+			$('#txtPassword').rules("remove");
+			$('#txtConfirmPassword').rules("remove");
 
 			$('#btnSaveUser').click(function(e) {
 				$(this).disableWith('Saving...');

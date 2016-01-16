@@ -420,7 +420,7 @@
 																		title="Project Title" class="cssClassTextArea"
 																		cols="26" rows="2" name="projectTitle"
 																		id="txtProjectTitle" placeholder="Project Title"></textarea><span
-																	class="cssClassRight"> <img src=""
+																	class="cssClassRight"> <img src="./images/right.jpg"
 																		class="cssClassSuccessImg sfLocale" height="13"
 																		width="18" alt="Right" title="Right" />
 																</span></td>

@@ -976,8 +976,8 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 			String projectTitle, String userId, String college,
 			String department, String positionType, String positionTitle,
 			String receivedOnFrom, String receivedOnTo, Double totalCostsFrom,
-			Double totalCostsTo, String proposalStatus) {
-		// TODO Auto-generated method stub
+			Double totalCostsTo, String proposalStatus)
+			throws UnknownHostException, ParseException {
 		Datastore ds = getDatastore();
 		ArrayList<ProposalInfo> proposals = new ArrayList<ProposalInfo>();
 
@@ -990,7 +990,7 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 					.containsIgnoreCase(projectTitle);
 		}
 
-		String proposedBy="";
+		String proposedBy = "";
 		// investigator info.PI.user profile
 		if (proposedBy != null) {
 			accountQuery.field("username").containsIgnoreCase(proposedBy);

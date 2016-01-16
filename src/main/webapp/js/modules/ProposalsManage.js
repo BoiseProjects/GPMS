@@ -455,11 +455,6 @@ $(function() {
 					});
 		},
 
-		LoadStaticImage : function() {
-			$('.cssClassSuccessImg').prop('src',
-					'' + GPMS.utils.GetGPMSRootPath() + 'images/right.jpg');
-		},
-
 		SearchProposals : function() {
 			var projectTitle = $.trim($("#txtSearchProjectTitle").val());
 			var proposedBy = $.trim($("#txtSearchProposedBy").val());
@@ -2982,7 +2977,6 @@ $(function() {
 		},
 
 		init : function(config) {
-			proposalsManage.LoadStaticImage();
 			proposalsManage.InitializeAccordion();
 			$("#txtSearchReceivedOnFrom").datepicker(
 					{

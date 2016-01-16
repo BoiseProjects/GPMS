@@ -59,7 +59,7 @@
 	var gpmsRootPath = "http://localhost:8181/GPMS/";
 
 	$(function() {
-		
+
 		$(".sfLocale").localize({
 			moduleKey : gpmsMyAccount
 		});
@@ -123,7 +123,8 @@
 <!-- <script type="text/javascript" src="js/Tabs/jquery.slidingtabs.js"></script> -->
 
 <script type="text/javascript" src="js/modules/MyAccount.js"></script>
-<script type="text/javascript" src="js/modules/Language/GPMSMyAccount.js"></script>
+<script type="text/javascript"
+	src="js/modules/Language/GPMSMyAccount.js"></script>
 <!-- <script type="text/javascript" src="js/modules/Language/AspxRssFeedLocale.js"></script> -->
 
 <link type="text/css" rel="stylesheet"
@@ -388,7 +389,8 @@
 																				<input type="email" id="txtWorkEmail"
 																					class="sfInputbox" style="width: 160px;"
 																					name="workEmail" placeholder="Work Email" /> <span
-																					class="cssClassRight"> <img src=""
+																					class="cssClassRight"> <img
+																					src="./images/right.jpg"
 																					class="cssClassSuccessImg sfLocale" height="13"
 																					width="18" alt="Right" title="Right" />
 																				</span>
@@ -402,7 +404,7 @@
 																				<input type="email" class="sfInputbox"
 																					style="width: 160px;" id="txtPersonalEmail"
 																					name="personalEmail" placeholder="Personal Email" /><span
-																					class="cssClassRight"> <img src=""
+																					class="cssClassRight"> <img src="./images/right.jpg"
 																					class="cssClassSuccessImg sfLocale" height="13"
 																					width="18" alt="Right" title="Right" />
 																				</span>
@@ -439,16 +441,20 @@
 																				<tbody>
 																					<tr>
 																						<td><select title="Choose College Name"
-																							class="sfListmenu" name="ddlCollege" disabled="true">
+																							class="sfListmenu" name="ddlCollege"
+																							disabled="true">
 																						</select></td>
 																						<td><select title="Choose Department Name"
-																							class="sfListmenu" name="ddlDepartment" disabled="true">
+																							class="sfListmenu" name="ddlDepartment"
+																							disabled="true">
 																						</select></td>
 																						<td><select title="Choose Position Type"
-																							class="sfListmenu" name="ddlPositionType" disabled="true">
+																							class="sfListmenu" name="ddlPositionType"
+																							disabled="true">
 																						</select></td>
 																						<td><select title="Choose Position Title"
-																							class="sfListmenu" name="ddlPositionTitle" disabled="true">
+																							class="sfListmenu" name="ddlPositionTitle"
+																							disabled="true">
 																						</select></td>
 																						<td><input type="radio"
 																							title="Choose Default Position"
@@ -474,7 +480,7 @@
 																			title="User Name" type="text" class="sfInputbox"
 																			id="txtUserName" name="username"
 																			placeholder="User Name" disabled="true"> <span
-																			class="cssClassRight"> <img src=""
+																			class="cssClassRight"> <img src="./images/right.jpg"
 																				class="cssClassSuccessImg sfLocale" height="13"
 																				width="18" alt="Right" title="Right" />
 																		</span></td>
