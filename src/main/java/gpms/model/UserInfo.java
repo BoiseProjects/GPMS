@@ -2,6 +2,16 @@ package gpms.model;
 
 import java.util.Date;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(propOrder = { "rowTotal", "id", "userName", "fullName",
+		"noOfPIedProposal", "noOfCoPIedProposal", "noOfSenioredProposal" })
 public class UserInfo implements Comparable<UserInfo> {
 	private int rowTotal;
 	private String id = new String();
@@ -134,28 +144,6 @@ public class UserInfo implements Comparable<UserInfo> {
 	public void setAdmin(boolean isAdmin) {
 		this.isAdmin = isAdmin;
 	}
-
-	public UserInfo(int rowTotal, String id, String userName, String fullName,
-			int noOfPIedProposal, int noOfCoPIedProposal,
-			int noOfSenioredProposal, Date addedOn, Date lastAudited,
-			String lastAuditedBy, String lastAuditAction, boolean isActive,
-			boolean isDeleted, boolean isAdmin) {
-		this.rowTotal = rowTotal;
-		this.id = id;
-		this.userName = userName;
-		this.fullName = fullName;
-		this.noOfPIedProposal = noOfPIedProposal;
-		this.noOfCoPIedProposal = noOfCoPIedProposal;
-		this.noOfSenioredProposal = noOfSenioredProposal;
-		this.addedOn = addedOn;
-		this.lastAudited = lastAudited;
-		this.lastAuditedBy = lastAuditedBy;
-		this.lastAuditAction = lastAuditAction;
-		this.isActive = isActive;
-		this.isDeleted = isDeleted;
-		this.isAdmin = isAdmin;
-	}
-
 	@Override
 	public int compareTo(UserInfo o) {
 		if (getLastAudited() == null || o.getLastAudited() == null)

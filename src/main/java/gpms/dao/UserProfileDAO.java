@@ -654,23 +654,35 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 		return userPositions;
 	}
 
-	public UserProfile findMatchedUserDetails(ObjectId id, String college,
-			String department, String positionType, String positionTitle) {
+	public UserProfile findMatchedUserDetails(ObjectId id, String userName,
+			Boolean isAdminUser, String college, String department,
+			String positionType, String positionTitle) {
 		Datastore ds = getDatastore();
-		Query<UserProfile> userProfileQuery = ds.createQuery(UserProfile.class)
+
+		Query<UserAccount> accountQuery = ds.createQuery(UserAccount.class);
+
+		accountQuery.and(accountQuery.criteria("is deleted").equal(false),
+				accountQuery.criteria("is active").equal(true), accountQuery
+						.criteria("username").equal(userName), accountQuery
+						.criteria("is admin").equal(isAdminUser));
+
+		Query<UserProfile> profileQuery = ds.createQuery(UserProfile.class)
 				.retrievedFields(true, "_id", "user id", "details.college",
 						"details.department", "details.position type",
 						"details.position title");
-		userProfileQuery.and(
-				userProfileQuery.criteria("_id").equal(id),
-				userProfileQuery.criteria("details.college").equal(college),
-				userProfileQuery.criteria("details.department").equal(
-						department),
-				userProfileQuery.criteria("details.positionType").equal(
+		profileQuery.and(
+				profileQuery.criteria("_id").equal(id),
+				profileQuery.and(profileQuery.criteria("user id").in(
+						accountQuery.asKeyList())),
+				profileQuery.criteria("details").notEqual(null),
+				profileQuery.criteria("details.college").equal(college),
+				profileQuery.criteria("details.department").equal(department),
+				profileQuery.criteria("details.positionType").equal(
 						positionType),
-				userProfileQuery.criteria("details.positionTitle").equal(
-						positionTitle));
+				profileQuery.criteria("details.positionTitle").equal(
+						positionTitle), profileQuery.criteria("is deleted")
+						.equal(false));
 
-		return userProfileQuery.get();
+		return profileQuery.get();
 	}
 }

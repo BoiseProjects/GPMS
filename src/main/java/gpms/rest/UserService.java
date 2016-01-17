@@ -1202,14 +1202,20 @@ public class UserService {
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode root = mapper.readTree(message);
 
-		if (root != null && root.has("userId")) {
+		if (root != null && root.has("userId") && root.has("userName")
+				&& root.has("isAdminUser")) {
 			String profileId = root.get("userId").getTextValue();
 			ObjectId id = new ObjectId(profileId);
 
-			String college = "";
-			String department = "";
-			String positionType = "";
-			String positionTitle = "";
+			String userName = new String();
+			Boolean isAdminUser = false;
+			String college = new String();
+			String department = new String();
+			String positionType = new String();
+			String positionTitle = new String();
+			userName = root.get("userName").getTextValue();
+			isAdminUser = root.get("isAdminUser").getBooleanValue();
+
 			if (root != null && root.has("college")) {
 				college = root.get("college").getTextValue();
 			}
@@ -1227,11 +1233,11 @@ public class UserService {
 			}
 
 			UserProfile user = userProfileDAO.findMatchedUserDetails(id,
-					college, department, positionType, positionTitle);
+					userName, isAdminUser, college, department, positionType,
+					positionTitle);
 			if (user != null) {
-				setUserCurrentSession(req, user.getUserAccount().getUserName(),
-						user.getUserAccount().isAdmin(), profileId, college,
-						department, positionType, positionTitle);
+				setUserCurrentSession(req, userName, isAdminUser, profileId,
+						college, department, positionType, positionTitle);
 			}
 		}
 	}

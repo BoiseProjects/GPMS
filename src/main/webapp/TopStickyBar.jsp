@@ -84,6 +84,8 @@
 				this.config.url = this.config.baseURL + "SetUserViewSession";
 				this.config.data = JSON2.stringify({
 					userId : userId,
+					userName : gpmsUserName,
+					isAdminUser : isAdmin,
 					college : college,
 					department : department,
 					positionType : positionType,
