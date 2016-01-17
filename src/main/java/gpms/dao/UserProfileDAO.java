@@ -215,8 +215,8 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 			user.setLastAuditAction(lastAuditAction);
 
 			user.setDeleted(userProfile.getUserAccount().isDeleted());
-			user.setActive(userProfile.getUserAccount().isActive());
-			user.setAdmin(userProfile.getUserAccount().isAdmin());
+			user.setActivated(userProfile.getUserAccount().isActive());
+			user.setAdminUser(userProfile.getUserAccount().isAdmin());
 			users.add(user);
 		}
 		Collections.sort(users);

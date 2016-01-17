@@ -60,7 +60,7 @@
 
 	$(function() {
 		$(".sfLocale").localize({
-			moduleKey : gpmsDashboard
+			moduleKey : gpmsAdminDashboard
 		});
 	});
 
@@ -121,9 +121,9 @@
 
 <!-- <script type="text/javascript" src="js/Tabs/jquery.slidingtabs.js"></script> -->
 
-<script type="text/javascript" src="js/modules/Dashboard.js"></script>
+<script type="text/javascript" src="js/modules/AdminDashboard.js"></script>
 <script type="text/javascript"
-	src="js/modules/Language/GPMSDashboard.js"></script>
+	src="js/modules/Language/GPMSAdminDashboard.js"></script>
 <!-- <script type="text/javascript" src="js/modules/Language/AspxRssFeedLocale.js"></script> -->
 
 <link type="text/css" rel="stylesheet"

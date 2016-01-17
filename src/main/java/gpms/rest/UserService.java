@@ -173,6 +173,9 @@ public class UserService {
 		// users = (ArrayList<UserInfo>) userProfileDAO.findAllForUserGrid();
 		// response = JSONTansformer.ConvertToJSON(users);
 
+		String response = mapper.writerWithDefaultPrettyPrinter()
+				.writeValueAsString(users);
+
 		return users;
 	}
 

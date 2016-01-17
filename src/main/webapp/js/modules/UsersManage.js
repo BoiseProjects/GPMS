@@ -262,7 +262,7 @@ $(function() {
 					cssclass : 'cssClassHeadCheckBox',
 					coltype : 'checkbox',
 					align : 'center',
-					checkFor : '11,12', // this is count from 0 column index
+					checkFor : '10,12', // this is count from 0 column index
 					elemClass : 'attrChkbox',
 					elemDefault : false,
 					controlclass : 'attribHeaderChkbox'
@@ -339,15 +339,6 @@ $(function() {
 					align : 'left',
 					hide : true
 				}, {
-					display : getLocale(gpmsUsersManagement, 'Is Active?'),
-					name : 'is_active',
-					cssclass : 'cssClassHeadBoolean',
-					controlclass : '',
-					coltype : 'label',
-					align : 'left',
-					type : 'boolean',
-					format : 'Yes/No'
-				}, {
 					display : getLocale(gpmsUsersManagement, 'Is Deleted?'),
 					name : 'is_deleted',
 					cssclass : 'cssClassHeadBoolean',
@@ -360,6 +351,15 @@ $(function() {
 				// default format (No Need to specify) is True/False
 				// you can define 'Yes/No'
 				// hide : true
+				}, {
+					display : getLocale(gpmsUsersManagement, 'Is Active?'),
+					name : 'is_active',
+					cssclass : 'cssClassHeadBoolean',
+					controlclass : '',
+					coltype : 'label',
+					align : 'left',
+					type : 'boolean',
+					format : 'Yes/No'
 				}, {
 					display : 'Is Admin?',
 					name : 'is_admin',
@@ -393,7 +393,7 @@ $(function() {
 					_event : 'click',
 					trigger : '2',
 					callMethod : 'usersManage.DeleteUser',
-					arguments : '11,12'
+					arguments : '10,12'
 				}, {
 					display : getLocale(gpmsUsersManagement, "Activate"),
 					name : 'activate',
@@ -401,7 +401,7 @@ $(function() {
 					_event : 'click',
 					trigger : '3',
 					callMethod : 'usersManage.ActiveUser',
-					arguments : '10,12'
+					arguments : '11,12'
 				}, {
 					display : getLocale(gpmsUsersManagement, "Deactivate"),
 					name : 'deactivate',
@@ -409,7 +409,7 @@ $(function() {
 					_event : 'click',
 					trigger : '4',
 					callMethod : 'usersManage.DeactiveUser',
-					arguments : '10,12'
+					arguments : '11,12'
 				} ],
 				rp : perpage,
 				nomsg : getLocale(gpmsUsersManagement, 'No Records Found!'),
@@ -459,7 +459,7 @@ $(function() {
 					}
 					// $('#txtUserName').val(argus[1]);
 					// $('#txtUserName').prop('disabled', 'disabled');
-					if (argus[11].toLowerCase() != "yes") {
+					if (argus[10].toLowerCase() != "yes") {
 						$(".delbutton").prop("id", argus[0]);
 						$(".delbutton").show();
 					} else {

@@ -2,16 +2,20 @@ package gpms.model;
 
 import java.util.Date;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-@XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(propOrder = { "rowTotal", "id", "userName", "fullName",
-		"noOfPIedProposal", "noOfCoPIedProposal", "noOfSenioredProposal" })
+//@XmlRootElement
+//@XmlAccessorType(XmlAccessType.FIELD)
+//@XmlType(propOrder = { "rowTotal", "id", "userName", "fullName",
+//		"noOfPIedProposal", "noOfCoPIedProposal", "noOfSenioredProposal",
+//		"addedOn", "lastAudited", "lastAuditedBy", "lastAuditAction",
+//		"isDeleted", "isActive", "isAdmin" })
+//@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "name", visible = true)
+@JsonPropertyOrder({ "rowTotal", "id", "userName", "fullName",
+		"noOfPIedProposal", "noOfCoPIedProposal", "noOfSenioredProposal",
+		"addedOn", "lastAudited", "lastAuditedBy", "lastAuditAction",
+		"deleted", "activated", "adminUser" })
 public class UserInfo implements Comparable<UserInfo> {
 	private int rowTotal;
 	private String id = new String();
@@ -26,9 +30,14 @@ public class UserInfo implements Comparable<UserInfo> {
 	private String lastAuditedBy = new String();
 	private String lastAuditAction = new String();
 
-	private boolean isActive;
-	private boolean isDeleted;
-	private boolean isAdmin;
+	@JsonProperty("deleted")
+	private boolean deleted;
+
+	@JsonProperty("activated")
+	private boolean activated;
+
+	@JsonProperty("adminUser")
+	private boolean adminUser;
 
 	public UserInfo() {
 	}
@@ -121,29 +130,30 @@ public class UserInfo implements Comparable<UserInfo> {
 		this.lastAuditAction = lastAuditAction;
 	}
 
-	public boolean isActive() {
-		return isActive;
-	}
-
-	public void setActive(boolean isActive) {
-		this.isActive = isActive;
-	}
-
 	public boolean isDeleted() {
-		return isDeleted;
+		return deleted;
 	}
 
-	public void setDeleted(boolean isDeleted) {
-		this.isDeleted = isDeleted;
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
 	}
 
-	public boolean isAdmin() {
-		return isAdmin;
+	public boolean isActivated() {
+		return activated;
 	}
 
-	public void setAdmin(boolean isAdmin) {
-		this.isAdmin = isAdmin;
+	public void setActivated(boolean activated) {
+		this.activated = activated;
 	}
+
+	public boolean isAdminUser() {
+		return adminUser;
+	}
+
+	public void setAdminUser(boolean adminUser) {
+		this.adminUser = adminUser;
+	}
+
 	@Override
 	public int compareTo(UserInfo o) {
 		if (getLastAudited() == null || o.getLastAudited() == null)

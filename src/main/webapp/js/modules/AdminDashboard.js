@@ -1,4 +1,4 @@
-var dashboard = '';
+var adminDashboard = '';
 $(function() {
 
 	var gpmsCommonObj = function() {
