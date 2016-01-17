@@ -1020,116 +1020,98 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 			proposalQuery.field("proposal status").equal(proposalStatus);
 		}
 
-		if (positionTitle != null) {
-			if (positionTitle.equals("Dean") && college != null) {
-				proposalQuery.or(
-						proposalQuery.criteria("investigator info.PI.college")
-								.equal(college),
-						proposalQuery.criteria(
-								"investigator info.CO-PI.college").equal(
-								college),
-						proposalQuery.criteria(
-								"investigator info.senior personnel.college")
-								.equal(college));
-			} else if (positionTitle.equals("Department Chair")
-					&& college != null && department != null) {
-				proposalQuery
-						.and(proposalQuery
-								.or(proposalQuery.criteria(
-										"investigator info.PI.college").equal(
-										college),
-										proposalQuery
-												.criteria(
-														"investigator info.CO-PI.college")
-												.equal(college),
-										proposalQuery
-												.criteria(
-														"investigator info.senior personnel.college")
-												.equal(college)),
-								proposalQuery
-										.or(proposalQuery
-												.criteria(
-														"investigator info.PI.department")
-												.equal(department),
-												proposalQuery
-														.criteria(
-																"investigator info.CO-PI.department")
-														.equal(department),
-												proposalQuery
-														.criteria(
-																"investigator info.senior personnel.department")
-														.equal(department)));
+		if (positionTitle.equals("Dean")) {
+			proposalQuery.or(
+					proposalQuery.criteria("investigator info.PI.college")
+							.equal(college),
+					proposalQuery.criteria("investigator info.CO-PI.college")
+							.equal(college),
+					proposalQuery.criteria(
+							"investigator info.senior personnel.college")
+							.equal(college));
 
-			} else {
-				if (userId != null && college != null && department != null
-						&& positionType != null && positionTitle != null) {
+		} else if (positionTitle.equals("Department Chair")) {
+			proposalQuery.and(proposalQuery.or(
+					proposalQuery.criteria("investigator info.PI.college")
+							.equal(college),
+					proposalQuery.criteria("investigator info.CO-PI.college")
+							.equal(college),
+					proposalQuery.criteria(
+							"investigator info.senior personnel.college")
+							.equal(college)), proposalQuery.or(
+					proposalQuery.criteria("investigator info.PI.department")
+							.equal(department),
 					proposalQuery
-							.and(proposalQuery
-									.or(proposalQuery.criteria(
-											"investigator info.PI.college")
+							.criteria("investigator info.CO-PI.department")
+							.equal(department),
+					proposalQuery.criteria(
+							"investigator info.senior personnel.department")
+							.equal(department)));
+
+		} else {
+			proposalQuery
+					.and(proposalQuery
+							.or(proposalQuery.criteria(
+									"investigator info.PI.college").equal(
+									college),
+									proposalQuery.criteria(
+											"investigator info.CO-PI.college")
 											.equal(college),
-											proposalQuery
-													.criteria(
-															"investigator info.CO-PI.college")
-													.equal(college),
-											proposalQuery
-													.criteria(
-															"investigator info.senior personnel.college")
-													.equal(college)),
 									proposalQuery
-											.or(proposalQuery
+											.criteria(
+													"investigator info.senior personnel.college")
+											.equal(college)),
+							proposalQuery
+									.or(proposalQuery.criteria(
+											"investigator info.PI.department")
+											.equal(department),
+											proposalQuery
 													.criteria(
-															"investigator info.PI.department")
+															"investigator info.CO-PI.department")
 													.equal(department),
-													proposalQuery
-															.criteria(
-																	"investigator info.CO-PI.department")
-															.equal(department),
-													proposalQuery
-															.criteria(
-																	"investigator info.senior personnel.department")
-															.equal(department)),
-									proposalQuery
-											.or(proposalQuery
+											proposalQuery
 													.criteria(
-															"investigator info.PI.position type")
+															"investigator info.senior personnel.department")
+													.equal(department)),
+							proposalQuery
+									.or(proposalQuery
+											.criteria(
+													"investigator info.PI.position type")
+											.equal(positionType),
+											proposalQuery
+													.criteria(
+															"investigator info.CO-PI.position type")
 													.equal(positionType),
-													proposalQuery
-															.criteria(
-																	"investigator info.CO-PI.position type")
-															.equal(positionType),
-													proposalQuery
-															.criteria(
-																	"investigator info.senior personnel.position type")
-															.equal(positionType)),
-									proposalQuery
-											.or(proposalQuery
+											proposalQuery
 													.criteria(
-															"investigator info.PI.position title")
+															"investigator info.senior personnel.position type")
+													.equal(positionType)),
+							proposalQuery
+									.or(proposalQuery
+											.criteria(
+													"investigator info.PI.position title")
+											.equal(positionTitle),
+											proposalQuery
+													.criteria(
+															"investigator info.CO-PI.position title")
 													.equal(positionTitle),
-													proposalQuery
-															.criteria(
-																	"investigator info.CO-PI.position title")
-															.equal(positionTitle),
-													proposalQuery
-															.criteria(
-																	"investigator info.senior personnel.position title")
-															.equal(positionTitle)),
-									proposalQuery
-											.or(proposalQuery
+											proposalQuery
 													.criteria(
-															"investigator info.PI.user profile id")
+															"investigator info.senior personnel.position title")
+													.equal(positionTitle)),
+							proposalQuery
+									.or(proposalQuery
+											.criteria(
+													"investigator info.PI.user profile id")
+											.equal(userId),
+											proposalQuery
+													.criteria(
+															"investigator info.CO-PI.user profile id")
 													.equal(userId),
-													proposalQuery
-															.criteria(
-																	"investigator info.CO-PI.user profile id")
-															.equal(userId),
-													proposalQuery
-															.criteria(
-																	"investigator info.senior personnel.user profile id")
-															.equal(userId)));
-				}
-			}
+											proposalQuery
+													.criteria(
+															"investigator info.senior personnel.user profile id")
+													.equal(userId)));
 		}
 
 		int rowTotal = proposalQuery.asList().size();
