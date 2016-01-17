@@ -161,20 +161,20 @@
 										$this.attr('class', 'icon-checked');
 										$("#ulLoggedRoles li a").not(this)
 												.removeAttr('class');
+										$('.myProfile').trigger("click");
+										var $college = $this
+												.attr('data-college');
+										var $department = $this
+												.attr('data-department');
+										var $positionType = $this
+												.attr('data-positionType');
+										var $positionTitle = $this
+												.attr('data-positionTitle');
+										topStickyBar.SetViewSession(
+												userProfileId, $college,
+												$department, $positionType,
+												$positionTitle);
 									}
-
-									$('.myProfile').trigger("click");
-									var $college = $this.attr('data-college');
-									var $department = $this
-											.attr('data-department');
-									var $positionType = $this
-											.attr('data-positionType');
-									var $positionTitle = $this
-											.attr('data-positionTitle');
-									topStickyBar.SetViewSession(userProfileId,
-											$college, $department,
-											$positionType, $positionTitle);
-
 								});
 
 				$('.myProfile').on('click', function() {

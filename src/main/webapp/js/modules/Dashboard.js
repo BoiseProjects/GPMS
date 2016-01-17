@@ -16,6 +16,7 @@ $(function() {
 	};
 
 	// $("#welcome").text("Welcome " + gpmsCommonObj().UserName);
+	gpmsCommonObj();
 	if (userProfileId == "null") {
 		window.location = 'Login.jsp';
 	}
