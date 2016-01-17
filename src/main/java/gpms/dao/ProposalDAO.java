@@ -1027,8 +1027,8 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 		// Assistant,Department Chair,Associate Chair
 
 		if (!positionTitle.equals("University Research Administrator")
-				|| !positionTitle.equals("Research Administrator")
-				|| !positionTitle.equals("University Research Director")) {
+				&& !positionTitle.equals("Research Administrator")
+				&& !positionTitle.equals("University Research Director")) {
 			if (positionTitle.equals("Dean")
 					|| positionTitle.equals("Associate Dean")) {
 				proposalQuery.or(

@@ -11,8 +11,6 @@
 		var userDepartment = '<%=session.getAttribute("userDepartment")%>';
 		var userCollege = '<%=session.getAttribute("userCollege")%>';
 
-		//TODO: Add dynamic roles with default selected with active checked(Tick) icon on it at ul= ulLoggedRoles before last li
-
 		topStickyBar = {
 			config : {
 				isPostBack : false,
@@ -59,9 +57,9 @@
 					topStickyBar.LoadUserPositionViews(msg);
 					break;
 				case 2:
-					// 	var currentPage = location.pathname
-					// 							.substring(location.pathname.lastIndexOf("/") + 1);
-					//window.location = currentPage;
+					var currentPage = location.pathname
+							.substring(location.pathname.lastIndexOf("/") + 1);
+					window.location = currentPage;
 					break;
 				}
 			},
