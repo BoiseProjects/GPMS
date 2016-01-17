@@ -472,6 +472,11 @@ $(function() {
 			var proposalStatus = $.trim($('#ddlSearchProposalStatus').val()) == "" ? null
 					: $.trim($('#ddlSearchProposalStatus').val()) == "0" ? null
 							: $.trim($('#ddlSearchProposalStatus').val());
+			
+			var userRole = $.trim($('#ddlSearchUserRole').val()) == "" ? null
+					: $.trim($('#ddlSearchUserRole').val()) == "0" ? null
+							: $.trim($('#ddlSearchUserRole').val());
+			
 			if (projectTitle.length < 1) {
 				projectTitle = null;
 			}
@@ -493,11 +498,17 @@ $(function() {
 
 			proposalsManage.BindProposalGrid(projectTitle, proposedBy,
 					receivedOnFrom, receivedOnTo, totalCostsFrom, totalCostsTo,
-					proposalStatus);
+					proposalStatus, userRole);
 		},
+		
+		//TODO:
+		ddlSearchProposalStatus
+		BindProposalGrid
+		ddlSearchUserRole
+
 
 		BindProposalGrid : function(projectTitle, proposedBy, receivedOnFrom,
-				receivedOnTo, totalCostsFrom, totalCostsTo, proposalStatus) {
+				receivedOnTo, totalCostsFrom, totalCostsTo, proposalStatus, userRole) {
 			this.config.url = this.config.baseURL;
 			this.config.method = "GetUserProposalsList";
 			var offset_ = 1;
@@ -512,7 +523,8 @@ $(function() {
 				ReceivedOnTo : receivedOnTo,
 				TotalCostsFrom : totalCostsFrom,
 				TotalCostsTo : totalCostsTo,
-				ProposalStatus : proposalStatus
+				ProposalStatus : proposalStatus,
+				UserRole : userRole
 			};
 			
 			this.config.data = {

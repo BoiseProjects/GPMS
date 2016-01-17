@@ -847,7 +847,7 @@ $(function() {
 				$('#ui-id-23').show();
 				// Audit Log Section
 				$('#ui-id-25').show();
-
+alert(argus[20]+"FUCK"+argus[21]+"ME"+argus[22]);
 				proposalsManage.BindUserPositionDetailsForAProposal(argus[22]);
 
 				proposalsManage.BindProposalDetailsByProposalId(argus[0]);

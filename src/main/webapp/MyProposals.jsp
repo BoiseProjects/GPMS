@@ -285,6 +285,16 @@
 																		style="width: 80px;">
 																			<option value="0" class="sfLocale">--All--</option>
 																	</select></td>
+																	
+																	<td><label class="cssClassLabel sfLocale">As:</label> <select title="Choose User Role"
+																		id="ddlSearchUserRole" class="sfListmenu"
+																		style="width: 58px;">
+																			<option value="0" class="sfLocale">--All--</option>
+																			<option value="PI" class="sfLocale">PI</option>
+																			<option value="CO-PI" class="sfLocale">CO-PI</option>
+																			<option value="Senior" class="sfLocale">Senior</option>
+																	</select></td>
+																	
 																	<td><label class="cssClassLabel">&nbsp;</label>
 																		<button title="Search Proposal" class="sfBtn"
 																			id="btnSearchProposal" type="button">

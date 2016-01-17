@@ -187,6 +187,7 @@ public class ProposalService {
 		String receivedOnFrom = new String();
 		String receivedOnTo = new String();
 		String proposalStatus = new String();
+		String userRole = new String();
 
 		String userName = new String();
 		String userId = new String();
@@ -242,6 +243,10 @@ public class ProposalService {
 			proposalStatus = proposalObj.get("ProposalStatus").getTextValue();
 		}
 
+		if (proposalObj != null && proposalObj.has("UserRole")) {
+			userRole = proposalObj.get("UserRole").getTextValue();
+		}
+
 		JsonNode commonObj = root.get("gpmsCommonObj");
 		if (commonObj != null && commonObj.has("UserName")) {
 			userName = commonObj.get("UserName").getTextValue();
@@ -268,8 +273,8 @@ public class ProposalService {
 
 		proposals = proposalDAO.findUserProposalGrid(offset, limit,
 				projectTitle, proposedBy, receivedOnFrom, receivedOnTo,
-				totalCostsFrom, totalCostsTo, proposalStatus, userId, college,
-				department, positionType, positionTitle);
+				totalCostsFrom, totalCostsTo, proposalStatus, userRole, userId,
+				college, department, positionType, positionTitle);
 
 		return proposals;
 	}
