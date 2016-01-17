@@ -973,11 +973,11 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 	}
 
 	public List<ProposalInfo> findUserProposalGrid(int offset, int limit,
-			String projectTitle, String userId, String college,
-			String department, String positionType, String positionTitle,
-			String receivedOnFrom, String receivedOnTo, Double totalCostsFrom,
-			Double totalCostsTo, String proposalStatus)
-			throws UnknownHostException, ParseException {
+			String projectTitle, String proposedBy, String receivedOnFrom,
+			String receivedOnTo, Double totalCostsFrom, Double totalCostsTo,
+			String proposalStatus, String userId, String college,
+			String department, String positionType, String positionTitle)
+			throws ParseException {
 		Datastore ds = getDatastore();
 		ArrayList<ProposalInfo> proposals = new ArrayList<ProposalInfo>();
 
@@ -990,7 +990,6 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 					.containsIgnoreCase(projectTitle);
 		}
 
-		String proposedBy = "";
 		// investigator info.PI.user profile
 		if (proposedBy != null) {
 			accountQuery.field("username").containsIgnoreCase(proposedBy);
@@ -1009,20 +1008,128 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 		}
 
 		if (totalCostsFrom != null && totalCostsFrom != 0.0) {
-			// proposalQuery.filter("sponsor and budget info.total costs >",
-			// totalCostsFrom);
 			proposalQuery.field("sponsor and budget info.total costs")
 					.greaterThanOrEq(totalCostsFrom);
 		}
 		if (totalCostsTo != null && totalCostsTo != 0.0) {
-			// proposalQuery.filter("sponsor and budget info.total costs <=",
-			// totalCostsTo);
 			proposalQuery.field("sponsor and budget info.total costs")
 					.lessThanOrEq(totalCostsTo);
 		}
 
 		if (proposalStatus != null) {
 			proposalQuery.field("proposal status").equal(proposalStatus);
+		}
+
+		if (positionTitle != null) {
+			if (positionTitle.equals("Dean") && college != null) {
+				proposalQuery.or(
+						proposalQuery.criteria("investigator info.PI.college")
+								.equal(college),
+						proposalQuery.criteria(
+								"investigator info.CO-PI.college").equal(
+								college),
+						proposalQuery.criteria(
+								"investigator info.senior personnel.college")
+								.equal(college));
+			} else if (positionTitle.equals("Department Chair")
+					&& college != null && department != null) {
+				proposalQuery
+						.and(proposalQuery
+								.or(proposalQuery.criteria(
+										"investigator info.PI.college").equal(
+										college),
+										proposalQuery
+												.criteria(
+														"investigator info.CO-PI.college")
+												.equal(college),
+										proposalQuery
+												.criteria(
+														"investigator info.senior personnel.college")
+												.equal(college)),
+								proposalQuery
+										.or(proposalQuery
+												.criteria(
+														"investigator info.PI.department")
+												.equal(department),
+												proposalQuery
+														.criteria(
+																"investigator info.CO-PI.department")
+														.equal(department),
+												proposalQuery
+														.criteria(
+																"investigator info.senior personnel.department")
+														.equal(department)));
+
+			} else {
+				if (userId != null && college != null && department != null
+						&& positionType != null && positionTitle != null) {
+					proposalQuery
+							.and(proposalQuery
+									.or(proposalQuery.criteria(
+											"investigator info.PI.college")
+											.equal(college),
+											proposalQuery
+													.criteria(
+															"investigator info.CO-PI.college")
+													.equal(college),
+											proposalQuery
+													.criteria(
+															"investigator info.senior personnel.college")
+													.equal(college)),
+									proposalQuery
+											.or(proposalQuery
+													.criteria(
+															"investigator info.PI.department")
+													.equal(department),
+													proposalQuery
+															.criteria(
+																	"investigator info.CO-PI.department")
+															.equal(department),
+													proposalQuery
+															.criteria(
+																	"investigator info.senior personnel.department")
+															.equal(department)),
+									proposalQuery
+											.or(proposalQuery
+													.criteria(
+															"investigator info.PI.position type")
+													.equal(positionType),
+													proposalQuery
+															.criteria(
+																	"investigator info.CO-PI.position type")
+															.equal(positionType),
+													proposalQuery
+															.criteria(
+																	"investigator info.senior personnel.position type")
+															.equal(positionType)),
+									proposalQuery
+											.or(proposalQuery
+													.criteria(
+															"investigator info.PI.position title")
+													.equal(positionTitle),
+													proposalQuery
+															.criteria(
+																	"investigator info.CO-PI.position title")
+															.equal(positionTitle),
+													proposalQuery
+															.criteria(
+																	"investigator info.senior personnel.position title")
+															.equal(positionTitle)),
+									proposalQuery
+											.or(proposalQuery
+													.criteria(
+															"investigator info.PI.user profile id")
+													.equal(userId),
+													proposalQuery
+															.criteria(
+																	"investigator info.CO-PI.user profile id")
+															.equal(userId),
+													proposalQuery
+															.criteria(
+																	"investigator info.senior personnel.user profile id")
+															.equal(userId)));
+				}
+			}
 		}
 
 		int rowTotal = proposalQuery.asList().size();

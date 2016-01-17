@@ -654,4 +654,23 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 		return userPositions;
 	}
 
+	public UserProfile findMatchedUserDetails(ObjectId id, String college,
+			String department, String positionType, String positionTitle) {
+		Datastore ds = getDatastore();
+		Query<UserProfile> userProfileQuery = ds.createQuery(UserProfile.class)
+				.retrievedFields(true, "_id", "user id", "details.college",
+						"details.department", "details.position type",
+						"details.position title");
+		userProfileQuery.and(
+				userProfileQuery.criteria("_id").equal(id),
+				userProfileQuery.criteria("details.college").equal(college),
+				userProfileQuery.criteria("details.department").equal(
+						department),
+				userProfileQuery.criteria("details.positionType").equal(
+						positionType),
+				userProfileQuery.criteria("details.positionTitle").equal(
+						positionTitle));
+
+		return userProfileQuery.get();
+	}
 }

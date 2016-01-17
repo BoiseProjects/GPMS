@@ -5919,12 +5919,16 @@ div#aspxcommereloading {
 .welcome-msg {
     background: #6fc25c none repeat scroll 0 0;
     margin-right: 30px;
+    float: left;
+    width: 65%;
 }
 
 .recent-activity {
     background: #2b3f4d none repeat scroll 0 0;
     border-bottom: 3px solid #6fc25c;
     font-size: 14px;
+    float: right;
+    width: 23%;
 }
 
 .recent-activity ul, li, ol {
@@ -5940,10 +5944,8 @@ div#aspxcommereloading {
 }
 
 .welcome-msg, .recent-activity {
-    color: #fff;
-    float: left;
-    padding: 25px 34px;
-    width: 42.18%;
+    color: #fff;    
+    padding: 25px 41px;    
 }
 
 .welcome-msg p {

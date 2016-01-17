@@ -25,6 +25,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -37,6 +39,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 
 import org.bson.types.ObjectId;
 import org.codehaus.jackson.JsonGenerationException;
@@ -1188,58 +1191,107 @@ public class UserService {
 		return null;
 	}
 
+	@POST
+	@Path("/SetUserViewSession")
+	public void setUserViewSession(@Context HttpServletRequest req,
+			String message) throws JsonGenerationException,
+			JsonMappingException, IOException {
+
+		deleteAllSession(req);
+
+		ObjectMapper mapper = new ObjectMapper();
+		JsonNode root = mapper.readTree(message);
+
+		if (root != null && root.has("userId")) {
+			String profileId = root.get("userId").getTextValue();
+			ObjectId id = new ObjectId(profileId);
+
+			String college = "";
+			String department = "";
+			String positionType = "";
+			String positionTitle = "";
+			if (root != null && root.has("college")) {
+				college = root.get("college").getTextValue();
+			}
+
+			if (root != null && root.has("department")) {
+				department = root.get("department").getTextValue();
+			}
+
+			if (root != null && root.has("positionType")) {
+				positionType = root.get("positionType").getTextValue();
+			}
+
+			if (root != null && root.has("positionTitle")) {
+				positionTitle = root.get("positionTitle").getTextValue();
+			}
+
+			UserProfile user = userProfileDAO.findMatchedUserDetails(id,
+					college, department, positionType, positionTitle);
+			if (user != null) {
+				setUserCurrentSession(req, user.getUserAccount().getUserName(),
+						user.getUserAccount().isAdmin(), profileId, college,
+						department, positionType, positionTitle);
+			}
+		}
+	}
+
+	private void setUserCurrentSession(HttpServletRequest req, String userName,
+			boolean admin, String userId, String college, String department,
+			String positionType, String positionTitle) {
+
+		HttpSession session = req.getSession();
+		if (session.getAttribute("userProfileId") == null) {
+			session.setAttribute("userProfileId", userId);
+		}
+
+		if (session.getAttribute("gpmsUserName") == null) {
+			session.setAttribute("gpmsUserName", userName);
+		}
+
+		if (session.getAttribute("isAdmin") == null) {
+			session.setAttribute("isAdmin", admin);
+		}
+
+		if (session.getAttribute("userCollege") == null) {
+			session.setAttribute("userCollege", college);
+		}
+
+		if (session.getAttribute("userDepartment") == null) {
+			session.setAttribute("userDepartment", department);
+		}
+
+		if (session.getAttribute("userPositionType") == null) {
+			session.setAttribute("userPositionType", positionType);
+		}
+
+		if (session.getAttribute("userPositionTitle") == null) {
+			session.setAttribute("userPositionTitle", positionTitle);
+		}
+	}
+
 	@GET
 	@Path("/logout")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public Response logout(@Context HttpServletRequest req) {
+	public Response logout(@Context HttpServletRequest req)
+			throws URISyntaxException {
 		if (req == null) {
 			System.out.println("Null request in context");
 		}
+		deleteAllSession(req);
+		return Response.seeOther(new java.net.URI("../Login.jsp")).build();
+	}
+
+	private void deleteAllSession(@Context HttpServletRequest req) {
 		HttpSession session = req.getSession();
-
-		// if (session.getAttribute("gpmsUserName") != null) {
+		session.removeAttribute("userProfileId");
 		session.removeAttribute("gpmsUserName");
-		// session.invalidate();
-		// }
-
-		// if (session.getAttribute("userPositionType") == null) {
-		session.removeAttribute("userPositionType");
-		// session.invalidate();
-		// }
-
-		// if (session.getAttribute("userPositionTitle") == null) {
-		session.removeAttribute("userPositionTitle");
-		// session.invalidate();
-		// }
-
-		// if (session.getAttribute("userDepartment") == null) {
-		session.removeAttribute("userDepartment");
-		// session.invalidate();
-		// }
-
-		// if (session.getAttribute("userCollege") == null) {
-		session.removeAttribute("userCollege");
-		// session.invalidate();
-		// }
-
-		// if (session.getAttribute("isAdmin") == null) {
 		session.removeAttribute("isAdmin");
-		// session.invalidate();
-		// }
-
-		if (session.getAttribute("userProfileId") != null) {
-			// session.setAttribute("userProfileId", null);
-			session.removeAttribute("userProfileId");
-			session.invalidate();
-			java.net.URI location = null;
-			try {
-				location = new java.net.URI("../Login.jsp");
-			} catch (URISyntaxException e) {
-				e.printStackTrace();
-			}
-			return Response.seeOther(location).build();
-		}
-		return null;
+		session.removeAttribute("userCollege");
+		session.removeAttribute("userDepartment");
+		session.removeAttribute("userPositionType");
+		session.removeAttribute("userPositionTitle");
+		session.invalidate();
 	}
 
 	private void setMySessionID(@Context HttpServletRequest req,

@@ -63,7 +63,7 @@
 		$('.acitem').find('a').eq(0).prop("class", "active");
 		
 		$(".sfLocale").localize({
-			moduleKey : gpmsProposalsManagement
+			moduleKey : gpmsMyProposals
 		});
 	});
 	//]]>
@@ -125,9 +125,9 @@
 
 <!-- <script type="text/javascript" src="js/Tabs/jquery.slidingtabs.js"></script> -->
 
-<script type="text/javascript" src="js/modules/ProposalsManage.js"></script>
+<script type="text/javascript" src="js/modules/MyProposals.js"></script>
 <script type="text/javascript"
-	src="js/modules/Language/GPMSProposalsManagement.js"></script>
+	src="js/modules/Language/GPMSMyProposals.js"></script>
 <!-- <script type="text/javascript" src="js/modules/Language/AspxRssFeedLocale.js"></script> -->
 
 <link type="text/css" rel="stylesheet"
@@ -139,9 +139,6 @@
 <link type="text/css" rel="stylesheet"
 	href="css/Templates/topstickybar.css" />
 <link type="text/css" rel="stylesheet" href="css/Templates/admin.css" />
-
-<!-- <link type="text/css" rel="stylesheet" -->
-<!-- 	href="css/Tabs/slidingtabs-vertical.css"/> -->
 </head>
 <body>
 	<form enctype="multipart/form-data" action="MyProposals.jsp"

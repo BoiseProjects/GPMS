@@ -171,7 +171,7 @@
 								id="divBottompanel">
 								<div class="sfModulecontent clearfix">
 									<!-- form -->
-									<div id="divUserAccountForm">
+									<div id="divUserAccountForm" style="display: none;">
 										<div class="cssClassCommonBox Curve">
 											<div class="cssClassHeader">
 												<h1>
@@ -404,7 +404,8 @@
 																				<input type="email" class="sfInputbox"
 																					style="width: 160px;" id="txtPersonalEmail"
 																					name="personalEmail" placeholder="Personal Email" /><span
-																					class="cssClassRight"> <img src="./images/right.jpg"
+																					class="cssClassRight"> <img
+																					src="./images/right.jpg"
 																					class="cssClassSuccessImg sfLocale" height="13"
 																					width="18" alt="Right" title="Right" />
 																				</span>
@@ -480,7 +481,8 @@
 																			title="User Name" type="text" class="sfInputbox"
 																			id="txtUserName" name="username"
 																			placeholder="User Name" disabled="true"> <span
-																			class="cssClassRight"> <img src="./images/right.jpg"
+																			class="cssClassRight"> <img
+																				src="./images/right.jpg"
 																				class="cssClassSuccessImg sfLocale" height="13"
 																				width="18" alt="Right" title="Right" />
 																		</span></td>

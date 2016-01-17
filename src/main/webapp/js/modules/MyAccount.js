@@ -1,7 +1,7 @@
 var myAccount = '';
 
 $(function() {
-
+	
 	if (userProfileId == "null") {
 		window.location = 'Login.jsp';
 	}
@@ -564,6 +564,8 @@ $(function() {
 		ClearForm : function() {
 			validator.resetForm();
 			myAccount.SetFirstTabActive();
+
+			$('#divUserAccountForm').show();
 
 			$('.cssClassRight').hide();
 			$('.warning').hide();

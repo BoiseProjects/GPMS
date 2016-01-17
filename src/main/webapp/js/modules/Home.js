@@ -1,6 +1,5 @@
 var home = '';
 $(function() {
-
 	var gpmsCommonObj = function() {
 		var gpmsCommonInfo = {
 			UserName : GPMS.utils.GetUserName(),
@@ -15,7 +14,7 @@ $(function() {
 		return gpmsCommonInfo;
 	};
 
-	// $("#welcome").text("Welcome " + gpmsCommonObj().UserName);
+	gpmsCommonObj();
 	if (userProfileId == "null") {
 		window.location = 'Login.jsp';
 	}

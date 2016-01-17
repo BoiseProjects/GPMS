@@ -188,6 +188,14 @@ public class ProposalService {
 		String receivedOnTo = new String();
 		String proposalStatus = new String();
 
+		String userName = new String();
+		String userId = new String();
+		Boolean isAdmin = false;
+		String college = new String();
+		String department = new String();
+		String positionType = new String();
+		String positionTitle = new String();
+
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode root = mapper.readTree(message);
 
@@ -234,16 +242,34 @@ public class ProposalService {
 			proposalStatus = proposalObj.get("ProposalStatus").getTextValue();
 		}
 
-		// TODO:
-		String userId = "";
-		String college = "";
-		String department = "";
-		String positionType = "";
-		String positionTitle = "";
+		JsonNode commonObj = root.get("gpmsCommonObj");
+		if (commonObj != null && commonObj.has("UserName")) {
+			userName = commonObj.get("UserName").getTextValue();
+		}
+		if (commonObj != null && commonObj.has("UserProfileID")) {
+			userId = commonObj.get("UserProfileID").getTextValue();
+		}
+		if (commonObj != null && commonObj.has("UserIsAdmin")) {
+			isAdmin = commonObj.get("UserIsAdmin").getBooleanValue();
+		}
+
+		if (commonObj != null && commonObj.has("UserCollege")) {
+			college = commonObj.get("UserCollege").getTextValue();
+		}
+		if (commonObj != null && commonObj.has("UserDepartment")) {
+			department = commonObj.get("UserDepartment").getTextValue();
+		}
+		if (commonObj != null && commonObj.has("UserPositionTitle")) {
+			positionType = commonObj.get("UserPositionTitle").getTextValue();
+		}
+		if (commonObj != null && commonObj.has("UserPositionType")) {
+			positionTitle = commonObj.get("UserPositionType").getTextValue();
+		}
+
 		proposals = proposalDAO.findUserProposalGrid(offset, limit,
-				projectTitle, userId, college, department, positionType,
-				positionTitle, receivedOnFrom, receivedOnTo, totalCostsFrom,
-				totalCostsTo, proposalStatus);
+				projectTitle, proposedBy, receivedOnFrom, receivedOnTo, totalCostsFrom,
+				totalCostsTo, proposalStatus, userId, college, department,
+				positionType, positionTitle);
 
 		return proposals;
 	}

@@ -420,7 +420,7 @@ $(function() {
 					0 : {
 						sorter : false
 					},
-					12 : {
+					13 : {
 						sorter : false
 					}
 				}
