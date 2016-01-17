@@ -1,11 +1,11 @@
 ﻿var proposalsManage = '';
 
 $(function() {
-	
+
 	if (userProfileId == "null") {
 		window.location = 'Login.jsp';
 	}
-	
+
 	jQuery.fn.exists = function() {
 		return this.length > 0;
 	}
@@ -16,13 +16,13 @@ $(function() {
 
 	var gpmsCommonObj = function() {
 		var gpmsCommonInfo = {
-				UserName : GPMS.utils.GetUserName(),
-				UserProfileID : GPMS.utils.GetUserProfileID(),
-				UserIsAdmin : GPMS.utils.IsAdmin(),
-				UserPositionType : GPMS.utils.GetUserPositionType(),
-				UserPositionTitle : GPMS.utils.GetUserPositionTitle(),
-				UserDepartment : GPMS.utils.GetUserDepartment(),
-				UserCollege : GPMS.utils.GetUserCollege()
+			UserName : GPMS.utils.GetUserName(),
+			UserProfileID : GPMS.utils.GetUserProfileID(),
+			UserIsAdmin : GPMS.utils.IsAdmin(),
+			UserPositionType : GPMS.utils.GetUserPositionType(),
+			UserPositionTitle : GPMS.utils.GetUserPositionTitle(),
+			UserDepartment : GPMS.utils.GetUserDepartment(),
+			UserCollege : GPMS.utils.GetUserCollege()
 		};
 		return gpmsCommonInfo;
 	};
@@ -472,11 +472,11 @@ $(function() {
 			var proposalStatus = $.trim($('#ddlSearchProposalStatus').val()) == "" ? null
 					: $.trim($('#ddlSearchProposalStatus').val()) == "0" ? null
 							: $.trim($('#ddlSearchProposalStatus').val());
-			
+
 			var userRole = $.trim($('#ddlSearchUserRole').val()) == "" ? null
-					: $.trim($('#ddlSearchUserRole').val()) == "0" ? null
-							: $.trim($('#ddlSearchUserRole').val());
-			
+					: $.trim($('#ddlSearchUserRole').val()) == "0" ? null : $
+							.trim($('#ddlSearchUserRole').val());
+
 			if (projectTitle.length < 1) {
 				projectTitle = null;
 			}
@@ -500,15 +500,10 @@ $(function() {
 					receivedOnFrom, receivedOnTo, totalCostsFrom, totalCostsTo,
 					proposalStatus, userRole);
 		},
-		
-		//TODO:
-		ddlSearchProposalStatus
-		BindProposalGrid
-		ddlSearchUserRole
-
 
 		BindProposalGrid : function(projectTitle, proposedBy, receivedOnFrom,
-				receivedOnTo, totalCostsFrom, totalCostsTo, proposalStatus, userRole) {
+				receivedOnTo, totalCostsFrom, totalCostsTo, proposalStatus,
+				userRole) {
 			this.config.url = this.config.baseURL;
 			this.config.method = "GetUserProposalsList";
 			var offset_ = 1;
@@ -526,7 +521,7 @@ $(function() {
 				ProposalStatus : proposalStatus,
 				UserRole : userRole
 			};
-			
+
 			this.config.data = {
 				proposalBindObj : proposalBindObj,
 				gpmsCommonObj : gpmsCommonObj()
@@ -774,8 +769,7 @@ $(function() {
 										},
 										{
 											display : getLocale(
-													gpmsMyProposals,
-													'Actions'),
+													gpmsMyProposals, 'Actions'),
 											name : 'action',
 											cssclass : 'cssClassAction',
 											coltype : 'label',
@@ -785,8 +779,7 @@ $(function() {
 								buttons : [
 										{
 											display : getLocale(
-													gpmsMyProposals,
-													"Edit"),
+													gpmsMyProposals, "Edit"),
 											name : 'edit',
 											enable : true,
 											_event : 'click',
@@ -796,8 +789,7 @@ $(function() {
 										},
 										{
 											display : getLocale(
-													gpmsMyProposals,
-													"Delete"),
+													gpmsMyProposals, "Delete"),
 											name : 'delete',
 											enable : true,
 											_event : 'click',
@@ -1634,53 +1626,51 @@ $(function() {
 			};
 			var data = this.config.data;
 
-			$("#gdvProposalsAuditLog").sagegrid(
-					{
-						url : this.config.url,
-						functionMethod : this.config.method,
-						colModel : [ {
-							display : 'User Name',
-							name : 'user_name',
-							cssclass : '',
-							controlclass : '',
-							coltype : 'label',
-							align : 'left'
-						}, {
-							display : 'Full Name',
-							name : 'full_name',
-							cssclass : '',
-							controlclass : '',
-							coltype : 'label',
-							align : 'left'
-						}, {
-							display : 'Action',
-							name : 'action',
-							cssclass : '',
-							controlclass : '',
-							coltype : 'label',
-							align : 'left'
-						}, {
-							display : 'Activity On',
-							name : 'activity_on',
-							cssclass : 'cssClassHeadDate',
-							controlclass : '',
-							coltype : 'label',
-							align : 'left',
-							type : 'date',
-							format : 'yyyy/MM/dd hh:mm:ss a'
-						} ],
-						rp : perpage,
-						nomsg : getLocale(gpmsMyProposals,
-								'No Records Found!'),
-						param : data,
-						current : current_,
-						pnew : offset_,
-						sortcol : {
-							4 : {
-								sorter : false
-							}
-						}
-					});
+			$("#gdvProposalsAuditLog").sagegrid({
+				url : this.config.url,
+				functionMethod : this.config.method,
+				colModel : [ {
+					display : 'User Name',
+					name : 'user_name',
+					cssclass : '',
+					controlclass : '',
+					coltype : 'label',
+					align : 'left'
+				}, {
+					display : 'Full Name',
+					name : 'full_name',
+					cssclass : '',
+					controlclass : '',
+					coltype : 'label',
+					align : 'left'
+				}, {
+					display : 'Action',
+					name : 'action',
+					cssclass : '',
+					controlclass : '',
+					coltype : 'label',
+					align : 'left'
+				}, {
+					display : 'Activity On',
+					name : 'activity_on',
+					cssclass : 'cssClassHeadDate',
+					controlclass : '',
+					coltype : 'label',
+					align : 'left',
+					type : 'date',
+					format : 'yyyy/MM/dd hh:mm:ss a'
+				} ],
+				rp : perpage,
+				nomsg : getLocale(gpmsMyProposals, 'No Records Found!'),
+				param : data,
+				current : current_,
+				pnew : offset_,
+				sortcol : {
+					4 : {
+						sorter : false
+					}
+				}
+			});
 		},
 
 		DeleteProposal : function(tblID, argus) {
@@ -1690,8 +1680,7 @@ $(function() {
 					proposalsManage.DeleteProposalById(argus[0]);
 				} else {
 					csscody.alert('<h2>'
-							+ getLocale(gpmsMyProposals,
-									"Information Alert")
+							+ getLocale(gpmsMyProposals, "Information Alert")
 							+ '</h2><p>'
 							+ getLocale(gpmsMyProposals,
 									"Sorry! this proposal is already deleted.")
@@ -2061,7 +2050,7 @@ $(function() {
 				ProposalID : proposalId,
 				NewProjectTitle : newProjectTitle
 			};
-			
+
 			this.config.url = this.config.baseURL + "CheckUniqueProjectTitle";
 			this.config.data = JSON2.stringify({
 				proposalUniqueObj : proposalUniqueObj
@@ -2734,10 +2723,9 @@ $(function() {
 
 			case 2: // Single Proposal Delete
 				proposalsManage.BindProposalGrid(null, null, null, null, null,
-						null, null);
+						null, null, null);
 				csscody.info("<h2>"
-						+ getLocale(gpmsMyProposals,
-								'Successful Message')
+						+ getLocale(gpmsMyProposals, 'Successful Message')
 						+ "</h2><p>"
 						+ getLocale(gpmsMyProposals,
 								'Proposal has been deleted successfully.')
@@ -2751,11 +2739,10 @@ $(function() {
 		case 3: // Multiple Proposal Delete
 			SageData.Get("gdvProposals").Arr.length = 0;
 			proposalsManage.BindProposalGrid(null, null, null, null, null,
-					null, null);
+					null, null, null);
 			csscody
 					.info("<h2>"
-							+ getLocale(gpmsMyProposals,
-									'Successful Message')
+							+ getLocale(gpmsMyProposals, 'Successful Message')
 							+ "</h2><p>"
 							+ getLocale(gpmsMyProposals,
 									'Selected proposal(s) has been deleted successfully.')
@@ -2887,22 +2874,20 @@ $(function() {
 
 		case 9:
 			proposalsManage.BindProposalGrid(null, null, null, null, null,
-					null, null);
+					null, null, null);
 			$('#divProposalGrid').show();
 			$("#btnSaveProposal").removeAttr("name");
 			$("#accordion").accordion("option", "active", -1);
 			if (editFlag > 0) {
 				csscody.info("<h2>"
-						+ getLocale(gpmsMyProposals,
-								'Successful Message')
+						+ getLocale(gpmsMyProposals, 'Successful Message')
 						+ "</h2><p>"
 						+ getLocale(gpmsMyProposals,
 								'Proposal has been updated successfully.')
 						+ "</p>");
 			} else {
 				csscody.info("<h2>"
-						+ getLocale(gpmsMyProposals,
-								'Successful Message')
+						+ getLocale(gpmsMyProposals, 'Successful Message')
 						+ "</h2><p>"
 						+ getLocale(gpmsMyProposals,
 								'Proposal has been saved successfully.')
@@ -2976,8 +2961,7 @@ $(function() {
 			case 8:
 				csscody
 						.error("<h2>"
-								+ getLocale(gpmsMyProposals,
-										'Error Message')
+								+ getLocale(gpmsMyProposals, 'Error Message')
 								+ "</h2><p>"
 								+ getLocale(gpmsMyProposals,
 										'Cannot get certification/ signatures information')
@@ -2985,11 +2969,12 @@ $(function() {
 				break;
 
 			case 9:
-				csscody.error("<h2>"
-						+ getLocale(gpmsMyProposals, 'Error Message')
-						+ "</h2><p>"
-						+ getLocale(gpmsMyProposals,
-								'Failed to save proposal!') + "</p>");
+				csscody
+						.error("<h2>"
+								+ getLocale(gpmsMyProposals, 'Error Message')
+								+ "</h2><p>"
+								+ getLocale(gpmsMyProposals,
+										'Failed to save proposal!') + "</p>");
 				break;
 			}
 		},
@@ -3021,7 +3006,7 @@ $(function() {
 				placeholder : "yyyy-mm-dd"
 			});
 			proposalsManage.BindProposalGrid(null, null, null, null, null,
-					null, null);
+					null, null, null);
 			$('#divProposalForm').hide();
 			$('#divProposalGrid').show();
 
@@ -3630,12 +3615,12 @@ $(function() {
 			});
 
 			$(
-					'#txtSearchProjectTitle,#txtSearchProposedBy,#txtSearchReceivedOnFrom,#txtSearchReceivedOnTo,#txtSearchTotalCostsFrom,#txtSearchTotalCostsTo,#ddlSearchProposalStatus')
-					.keyup(function(event) {
-						if (event.keyCode == 13) {
-							$("#btnSearchProposal").click();
-						}
-					});
+					'#txtSearchProjectTitle,#txtSearchProposedBy,#txtSearchReceivedOnFrom,#txtSearchReceivedOnTo,#txtSearchTotalCostsFrom,#txtSearchTotalCostsTo,#ddlSearchProposalStatus',
+					'#ddlSearchUserRole').keyup(function(event) {
+				if (event.keyCode == 13) {
+					$("#btnSearchProposal").click();
+				}
+			});
 
 			$(
 					'#txtSearchAction, #txtSearchAuditedBy, #txtSearchActivityOnFrom, #txtSearchActivityOnTo')
