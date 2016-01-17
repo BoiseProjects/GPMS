@@ -259,17 +259,17 @@ public class ProposalService {
 		if (commonObj != null && commonObj.has("UserDepartment")) {
 			department = commonObj.get("UserDepartment").getTextValue();
 		}
-		if (commonObj != null && commonObj.has("UserPositionTitle")) {
-			positionType = commonObj.get("UserPositionTitle").getTextValue();
-		}
 		if (commonObj != null && commonObj.has("UserPositionType")) {
-			positionTitle = commonObj.get("UserPositionType").getTextValue();
+			positionType = commonObj.get("UserPositionType").getTextValue();
+		}
+		if (commonObj != null && commonObj.has("UserPositionTitle")) {
+			positionTitle = commonObj.get("UserPositionTitle").getTextValue();
 		}
 
 		proposals = proposalDAO.findUserProposalGrid(offset, limit,
-				projectTitle, proposedBy, receivedOnFrom, receivedOnTo, totalCostsFrom,
-				totalCostsTo, proposalStatus, userId, college, department,
-				positionType, positionTitle);
+				projectTitle, proposedBy, receivedOnFrom, receivedOnTo,
+				totalCostsFrom, totalCostsTo, proposalStatus, userId, college,
+				department, positionType, positionTitle);
 
 		return proposals;
 	}
