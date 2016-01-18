@@ -31,7 +31,7 @@ public class TestAccessControl {
 		HashMap<String, Multimap<String, String>> attrMap = new HashMap<String, Multimap<String, String>>();
 
 		Multimap<String, String> subjectMap = ArrayListMultimap.create();
-		subjectMap.put("position-type", "Non-tenure-track research faculty");
+		subjectMap.put("position-type", "Teaching faculty");
 		// subjectMap.put("Proposal Role", "PI");
 		attrMap.put("Subject", subjectMap);
 

@@ -46,7 +46,7 @@
 <script type="text/javascript">
 	//<![CDATA[
 	var gpmsAppPath = "";
-	           
+	
 	var userProfileId = '<%=session.getAttribute("userProfileId")%>';
 	var gpmsUserName = '<%=session.getAttribute("gpmsUserName")%>';
 	var isAdmin = '<%=session.getAttribute("isAdmin")%>';
@@ -59,16 +59,17 @@
 	var gpmsRootPath = "http://localhost:8181/GPMS/";
 
 	$(function() {
-		$(".sfLocale").localize({
-			moduleKey : gpmsProposalsManagement
-		});
+		// For Sidebar active menu
+		$('.acitem').find('a').eq(1).prop("class", "active");
 	});
+
 	//]]>
 </script>
 
 <script type="text/javascript" src="js/jQuery/jquery-ui.js"></script>
 
 <script type="text/javascript" src="js/core/gpmscore.js"></script>
+<script type="text/javascript" src="js/core/encoder.js"></script>
 
 <script type="text/javascript" src="js/core/jquery.disable_with.js"></script>
 
@@ -78,27 +79,17 @@
 <script type="text/javascript" src="js/superfish.js"></script>
 
 <script type="text/javascript"
-	src="js/FormValidation/jquery.form-validation-and-hints.js"></script>
-<script type="text/javascript"
 	src="js/FormValidation/jquery.validate.js"></script>
 <script type="text/javascript"
 	src="js/FormValidation/jquery.ui.datepicker.validation.js"></script>
-
 <script type="text/javascript"
 	src="js/FormValidation/jquery.maskedinput.js"></script>
-
 <script type="text/javascript" src="js/FormValidation/autoNumeric.js"></script>
-
-<!-- <script type="text/javascript" src="js/SystemLocale/systemlocale.js"></script> -->
-<script type="text/javascript"
-	src="js/modules/Language/CoreJsLanguage.js"></script>
 
 <script type="text/javascript" src="js/core/json2.js"></script>
 
 <script type="text/javascript" src="js/jquery-browser.js"></script>
 <script type="text/javascript" src="js/jquery.uniform.js"></script>
-
-<script type="text/javascript" src="js/jquery.qtip-1.0.0-rc3.js"></script>
 
 <script type="text/javascript" src="js/GridView/jquery.tablesorter.js"></script>
 <script type="text/javascript" src="js/GridView/jquery.grid.js"></script>
@@ -109,36 +100,18 @@
 <script type="text/javascript" src="js/MessageBox/jquery.easing.1.3.js"></script>
 <script type="text/javascript" src="js/MessageBox/alertbox.js"></script>
 
-<script type="text/javascript" src="js/AjaxFileUploader/ajaxupload.js"></script>
-
-<script type="text/javascript"
-	src="js/ckeditor_4.5.1_full/ckeditor/ckeditor.js"></script>
-<script type="text/javascript"
-	src="js/ckeditor_4.5.1_full/ckeditor/adapters/jquery.js"></script>
-
-
-<!-- <script type="text/javascript" src="js/core/Session.js"></script> -->
-<script type="text/javascript" src="js/core/encoder.js"></script>
-
-<!-- <script type="text/javascript" src="js/Tabs/jquery.slidingtabs.js"></script> -->
-
 <script type="text/javascript" src="js/modules/ProposalsManage.js"></script>
-<script type="text/javascript"
-	src="js/modules/Language/GPMSProposalsManagement.js"></script>
-<!-- <script type="text/javascript" src="js/modules/Language/AspxRssFeedLocale.js"></script> -->
 
 <link type="text/css" rel="stylesheet"
 	href="css/Templates/jquery-ui.css" />
-<link type="text/css" rel="stylesheet" href="css/GridView/tablesort.css" />
+
 <link type="text/css" rel="stylesheet" href="css/MessageBox/style.css" />
 
+<link type="text/css" rel="stylesheet" href="css/GridView/tablesort.css" />
 <link type="text/css" rel="stylesheet" href="css/Templates/grid.css" />
 <link type="text/css" rel="stylesheet"
 	href="css/Templates/topstickybar.css" />
 <link type="text/css" rel="stylesheet" href="css/Templates/admin.css" />
-
-<!-- <link type="text/css" rel="stylesheet" -->
-<!-- 	href="css/Tabs/slidingtabs-vertical.css"/> -->
 </head>
 <body>
 	<form enctype="multipart/form-data" action="ManageProposals.jsp"
@@ -146,7 +119,7 @@
 		<div style="display: none;" id="UpdateProgress1">
 			<div class="sfLoadingbg">&nbsp;</div>
 			<div class="sfLoadingdiv">
-				<img id="imgProgress" src="images/ajax-loader.gif"
+				<img id="imgProgress" src="./images/ajax-loader.gif"
 					style="border-width: 0px;" alt="Loading..." title="Loading..." />
 				<br> <span id="lblPrgress">Please wait...</span>
 			</div>
@@ -157,6 +130,9 @@
 		</noscript>
 		<div id="sfOuterwrapper">
 			<div class="sfSagewrapper">
+				<!-- Sticky Bar -->
+				<%@ include file="AdminTopStickyBar.jsp"%>
+				<!-- END Sticky Bar -->
 
 				<!--Body Content-->
 				<div class="sfContentwrapper clearfix">
@@ -182,28 +158,25 @@
 														<p>
 															<button title="Add New Proposal" type="button"
 																id="btnAddNew" class="sfBtn">
-																<span class="sfLocale icon-addnew">Add New
-																	Proposal</span>
+																<span class="icon-addnew">Add New Proposal</span>
 															</button>
 														</p>
 														<p>
 															<button title="Delete All Selected" type="button"
 																id="btnDeleteSelected" class="sfBtn">
-																<span class="sfLocale icon-delete">Delete All
-																	Selected</span>
+																<span class="icon-delete">Delete All Selected</span>
 															</button>
 														</p>
 														<p>
 															<button title="Export to Excel" type="button"
 																id="btnExportToExcel" class="sfBtn">
-																<span class="sfLocale icon-showall">Export to
-																	Excel</span>
+																<span class="icon-showall">Export to Excel</span>
 															</button>
 														</p>
 														<p>
 															<button title="Export to CSV" type="button"
 																id="btnExportToCSV" class="sfBtn">
-																<span class="sfLocale icon-showall">Export to CSV</span>
+																<span class="icon-showall">Export to CSV</span>
 															</button>
 														</p>
 
@@ -220,80 +193,90 @@
 															border="0">
 															<tbody>
 																<tr>
-																	<td><label class="cssClassLabel sfLocale">Project
+																	<td><label class="cssClassLabel">Project
 																			Title:</label> <input title="Project Title" type="text"
 																		class="sfTextBoxFix" id="txtSearchProjectTitle"
 																		placeholder="Project Title" /></td>
-																	<td><label class="cssClassLabel sfLocale">
-																			Proposed By:</label> <input title="Proposed By"
-																		id="txtSearchProposedBy" class="sfTextBoxFix"
-																		type="text" placeholder="Proposed By" /></td>
+																	<td><label class="cssClassLabel">User
+																			Name:</label> <input title="User Name" id="txtSearchUserName"
+																		class="sfTextBoxFix" type="text"
+																		placeholder="User Name" /></td>
 
-																	<!-- 																		<td><label class="cssClassLabel sfLocale"> -->
+																	<!-- 																		<td><label class="cssClassLabel"> -->
 																	<!-- 																				Project Type:</label> <select title="Choose Project Type" id="ddlProjectType" -->
 																	<!-- 																			class="sfListmenu" style="width: 100px;"> -->
-																	<!-- 																				<option value="0" class="sfLocale">--All--</option> -->
+																	<!-- 																				<option value="0" >--All--</option> -->
 																	<!-- 																		</select></td> -->
-																	<!-- 																		<td><label class="cssClassLabel sfLocale"> -->
+																	<!-- 																		<td><label class="cssClassLabel"> -->
 																	<!-- 																				Type of Request:</label> <select title="Choose Type of Request" id="ddlTypeOfRequest" -->
 																	<!-- 																			class="sfListmenu" style="width: 100px;"> -->
-																	<!-- 																				<option value="0" class="sfLocale">--All--</option> -->
+																	<!-- 																				<option value="0" >--All--</option> -->
 																	<!-- 																		</select></td> -->
-																	<!-- 																		<td><label class="cssClassLabel sfLocale"> -->
+																	<!-- 																		<td><label class="cssClassLabel"> -->
 																	<!-- 																				Location of Project:</label> <select  title="Choose Location of Project" id="ddlLocationOfProject" -->
 																	<!-- 																			class="sfListmenu" style="width: 100px;"> -->
-																	<!-- 																				<option value="0" class="sfLocale">--All--</option> -->
+																	<!-- 																				<option value="0" >--All--</option> -->
 																	<!-- 																		</select></td> -->
 
 																	<td style="width: 180px; float: left;"><label
-																		class="cssClassLabel sfLocale">Received On:</label>
+																		class="cssClassLabel">Received On:</label>
 																		<div>
-																			<span class="cssClassLabel sfLocale">From:</span> <input
+																			<span class="cssClassLabel">From:</span> <input
 																				type="text" title="Received On From"
 																				id="txtSearchReceivedOnFrom" class="sfTextBoxFix"
 																				placeholder="From">
 																		</div>
 																		<div>
-																			<span class="cssClassLabel sfLocale">To:</span> <input
+																			<span class="cssClassLabel">To:</span> <input
 																				type="text" title="Received On To"
 																				id="txtSearchReceivedOnTo" class="sfTextBoxFix"
 																				placeholder="To">
 																		</div></td>
 
 																	<td style="width: 180px;"><label
-																		class="cssClassLabel sfLocale">Total Costs:</label>
+																		class="cssClassLabel">Total Costs:</label>
 																		<div>
-																			<span class="cssClassLabel sfLocale">From:</span> <input
+																			<span class="cssClassLabel">From:</span> <input
 																				type="text" title="Total Costs From"
 																				id="txtSearchTotalCostsFrom"
 																				name="searchTotalCostsFrom" class="sfTextBoxFix"
 																				placeholder="From">
 																		</div>
 																		<div>
-																			<span class="cssClassLabel sfLocale">To:</span> <input
+																			<span class="cssClassLabel">To:</span> <input
 																				type="text" title="Total Costs To"
 																				id="txtSearchTotalCostsTo" name="searchTotalCostsTo"
 																				class="sfTextBoxFix" placeholder="To">
 																		</div></td>
 
-																	<td><label class="cssClassLabel sfLocale">Proposal
+																	<td><label class="cssClassLabel">Proposal
 																			Status:</label> <select title="Choose Proposal Status"
 																		id="ddlSearchProposalStatus" class="sfListmenu"
 																		style="width: 80px;">
-																			<option value="0" class="sfLocale">--All--</option>
+																			<option value="0">--All--</option>
 																	</select></td>
+
+																	<td><label class="cssClassLabel">As:</label> <select
+																		title="Choose User Role" id="ddlSearchUserRole"
+																		class="sfListmenu" style="width: 58px;">
+																			<option value="0">--All--</option>
+																			<option value="PI">PI</option>
+																			<option value="CO-PI">CO-PI</option>
+																			<option value="Senior">Senior</option>
+																	</select></td>
+
 																	<td><label class="cssClassLabel">&nbsp;</label>
 																		<button title="Search Proposal" class="sfBtn"
 																			id="btnSearchProposal" type="button">
-																			<span class="sfLocale icon-search">Search</span>
+																			<span class="icon-search">Search</span>
 																		</button></td>
 																</tr>
 															</tbody>
 														</table>
 													</div>
 													<div class="loading">
-														<img id="ajaxLoader" src="" class="sfLocale"
-															alt="Loading..." title="Loading..." />
+														<img id="ajaxLoader" src="" alt="Loading..."
+															title="Loading..." />
 													</div>
 													<div class="log"></div>
 													<table id="gdvProposals" cellspacing="0" cellpadding="0"
@@ -393,8 +376,7 @@
 																	name="txtPhoneNo" placeholder="Phone #"
 																	style="width: 90px !important" /></td>
 																<td><input type="Button" value="Add More"
-																	name="AddMore"
-																	class="AddOption cssClassButtonSubmit sfLocale" /></td>
+																	name="AddMore" class="AddOption cssClassButtonSubmit" /></td>
 															</tr>
 														</tbody>
 													</table>
@@ -414,9 +396,9 @@
 																		title="Project Title" class="cssClassTextArea"
 																		cols="26" rows="2" name="projectTitle"
 																		id="txtProjectTitle" placeholder="Project Title"></textarea><span
-																	class="cssClassRight"> <img src=""
-																		class="cssClassSuccessImg sfLocale" height="13"
-																		width="18" alt="Right" title="Right" />
+																	class="cssClassRight"> <img
+																		src="./images/right.jpg" class="cssClassSuccessImg"
+																		height="13" width="18" alt="Right" title="Right" />
 																</span></td>
 															</tr>
 															<tr>
@@ -1472,34 +1454,34 @@
 																		border="0">
 																		<tbody>
 																			<tr>
-																				<td><label class="cssClassLabel sfLocale">
+																				<td><label class="cssClassLabel">
 																						Action:</label> <input title="Action" type="text"
 																					class="sfInputbox" id="txtSearchAction"
 																					placeholder="Action" /></td>
-																				<td><label class="cssClassLabel sfLocale">
+																				<td><label class="cssClassLabel">
 																						Audited By:</label> <input title="Audited By" type="text"
 																					class="sfInputbox" id="txtSearchAuditedBy"
 																					placeholder="Audited By" /></td>
-																				<td><label class="cssClassLabel sfLocale">
+																				<td><label class="cssClassLabel">
 																						Activity On From:</label> <input title="Activity On From"
 																					type="text" class="sfTextBoxSmall"
 																					id="txtSearchActivityOnFrom" placeholder="From" /></td>
-																				<td><label class="cssClassLabel sfLocale">
+																				<td><label class="cssClassLabel">
 																						Activity On To:</label> <input title="Activity On To"
 																					type="text" class="sfTextBoxSmall"
 																					id="txtSearchActivityOnTo" placeholder="To" /></td>
 																				<td><label class="cssClassLabel"> </label>
 																					<button title="Search Audit Log" class="sfBtn"
 																						id="btnSearchProposalAuditLog" type="button">
-																						<span class="sfLocale icon-search">Search</span>
+																						<span class="icon-search">Search</span>
 																					</button></td>
 																			</tr>
 																		</tbody>
 																	</table>
 																</div>
 																<div class="loading">
-																	<img id="ajaxLoader" src="" class="sfLocale"
-																		alt="Loading..." title="Loading..." />
+																	<img id="ajaxLoader" src="" alt="Loading..."
+																		title="Loading..." />
 																</div>
 																<div class="log"></div>
 																<table id="gdvProposalsAuditLog" cellspacing="0"
@@ -1537,19 +1519,19 @@
 												<p>
 													<button title="Go Back" type="button" id="btnBack"
 														class="sfBtn">
-														<span class="sfLocale icon-arrow-slim-w">Back</span>
+														<span class="icon-arrow-slim-w">Back</span>
 													</button>
 												</p>
 												<p>
 													<button title="Reset" type="button" id="btnReset"
 														class="sfBtn">
-														<span class="sfLocale icon-refresh">Reset</span>
+														<span class="icon-refresh">Reset</span>
 													</button>
 												</p>
 												<p>
 													<button title="Save Proposal" type="button"
 														id="btnSaveProposal" class="sfBtn">
-														<span class="sfLocale icon-save">Save</span>
+														<span class="icon-save">Save</span>
 													</button>
 												</p>
 											</div>

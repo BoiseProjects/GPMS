@@ -60,8 +60,8 @@
 										$('div.sfSidebar').addClass(
 												"sfSidebarhide");
 										InitModuleFloat(65);
-										$('.Grandparent').find('a').eq(0).find(
-												'span').eq(0).hide();
+										$('.Grandparent').find('a:eq(0)').find(
+												'span:eq(0)').hide();
 									} else {
 										InitAccordianMode();
 										//$('#sidebar ul li a').removeAttr(
@@ -80,7 +80,7 @@
 										$('.Grandparent').find('a').eq(0).attr(
 												"class", "active").find('span')
 												.eq(0).show();
-										
+
 										$('div.sfSidebar').animate({
 											width : "210px"
 										}, 400, function() {
@@ -184,7 +184,7 @@
 				<li class="sfLevel1"><a href="./ManageUsers.jsp"><i
 						class="icon-user-accounts"></i><span>Manage Users</span></a></li>
 				<li class="sfLevel1"><a href="./ManageProposals.jsp"><i
-						class="icon-reports"></i><span>Manage Proposals</span></a></li>
+						class="icon-message-template"></i><span>Manage Proposals</span></a></li>
 				<li class="sfLevel1"><a href="./Settings.jsp"><i
 						class="icon-settings"></i><span>Settings</span></a></li>
 			</ul>
@@ -196,7 +196,7 @@
 </div>
 
 <div class="sfFooterwrapper clearfix" id="divFooterWrapper">
-	<div id="ctl_CPanleFooter1_divFooterContent">Copyright 2015 GPMS.
+	<div id="ctl_CPanleFooter1_divFooterContent">Copyright 2016 GPMS.
 		All Rights Reserved&reg;</div>
 
 </div>

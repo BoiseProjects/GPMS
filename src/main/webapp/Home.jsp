@@ -22,10 +22,6 @@
 <meta content="IE=EmulateIE7" http-equiv="X-UA-Compatible">
 <meta content="RevealTrans(Duration=0,Transition=1)"
 	http-equiv="PAGE-ENTER">
-
-<meta content="authenticity_token" name="csrf-param">
-<meta content="XhX9LjcVdDyY9jnVo+fFJBteb+x2anfwMUyirFUck3U="
-	name="csrf-token">
 <link type="icon shortcut" media="icon" href="favicon.ico">
 <!--[if IE 9]>
         <link rel="stylesheet" href="css/ie9.css" type="text/css" media="screen"/><![endif]-->
@@ -49,71 +45,122 @@
 
 <script type="text/javascript">
 	//<![CDATA[
+	var gpmsAppPath = "";
+	
 	var userProfileId = '<%=session.getAttribute("userProfileId")%>';
 	var gpmsUserName = '<%=session.getAttribute("gpmsUserName")%>';
 	var isAdmin = '<%=session.getAttribute("isAdmin")%>';
 	var userPositionType = '<%=session.getAttribute("userPositionType")%>';
 	var	userPositionTitle = '<%=session.getAttribute("userPositionTitle")%>';
 	var userDepartment = '<%=session.getAttribute("userDepartment")%>';
-	var userCollege = '<%=session.getAttribute("userCollege")%>';
+	var userCollege = '<%=session.getAttribute("userCollege")%>
+	';
 
 	var gpmsServicePath = "REST/";
 	var gpmsRootPath = "http://localhost:8181/GPMS/";
-
-	$(function() {
-		$(".sfLocale").localize({
-			moduleKey : gpmsHome
-		});
-	});
 
 	//]]>
 </script>
 
 <script type="text/javascript" src="js/core/gpmscore.js"></script>
 
-<script type="text/javascript"
-	src="js/FormValidation/jquery.validate.js"></script>
-
-<script type="text/javascript"
-	src="js/modules/Language/CoreJsLanguage.js"></script>
+<!-- For Side Bar Navigation -->
+<script type="text/javascript" src="js/core/dashboard.js"></script>
+<script type="text/javascript" src="js/sidebar_accordian.js"></script>
+<script type="text/javascript" src="js/superfish.js"></script>
 
 <script type="text/javascript" src="js/core/json2.js"></script>
 
 <script type="text/javascript" src="js/jquery-browser.js"></script>
 <script type="text/javascript" src="js/jquery.uniform.js"></script>
 
-<script type="text/javascript" src="js/jquery.qtip-1.0.0-rc3.js"></script>
-
 <script type="text/javascript" src="js/MessageBox/jquery.easing.1.3.js"></script>
 <script type="text/javascript" src="js/MessageBox/alertbox.js"></script>
 
-<!-- <script type="text/javascript" src="js/core/Session.js"></script> -->
-<script type="text/javascript" src="js/core/encoder.js"></script>
-
 <script type="text/javascript" src="js/modules/Home.js"></script>
-<script type="text/javascript" src="js/modules/Language/GPMSHome.js"></script>
 
-<link media="screen" rel="stylesheet"
-	href="css/Templates/application.css" type="text/css" />
-<link media="screen" rel="stylesheet"
-	href="css/Templates/topstickybar.css" type="text/css" />
+<link type="text/css" rel="stylesheet" href="css/MessageBox/style.css" />
 
+<link type="text/css" rel="stylesheet"
+	href="css/Templates/topstickybar.css" />
+<link type="text/css" rel="stylesheet" href="css/Templates/admin.css" />
 </head>
 <body>
-	<div style="display: none;" id="UpdateProgress1">
-		<div class="sfLoadingbg">&nbsp;</div>
-		<div class="sfLoadingdiv">
-			<img id="imgProgress" src="images/ajax-loader.gif"
-				style="border-width: 0px;" alt="Loading..." title="Loading..." /> <br>
-			<span id="lblPrgress">Please wait...</span>
+	<form enctype="multipart/form-data" action="Home.jsp" method="post"
+		name="form1" id="form1">
+		<div style="display: none;" id="UpdateProgress1">
+			<div class="sfLoadingbg">&nbsp;</div>
+			<div class="sfLoadingdiv">
+				<img id="imgProgress" src="./images/ajax-loader.gif"
+					style="border-width: 0px;" alt="Loading..." title="Loading..." />
+				<br> <span id="lblPrgress">Please wait...</span>
+			</div>
 		</div>
-	</div>
-	<div id="divAdminControlPanel">
-		<%@ include file="TopStickyBar.jsp"%>
-	</div>
-	<noscript>
-		<span>This page requires java-script to be enabled. Please
-			adjust your browser-settings.</span>
-	</noscript>
+		<div id="divAdminControlPanel">
+			<%@ include file="TopStickyBar.jsp"%>
+		</div>
+		<noscript>
+			<span>This page requires java-script to be enabled. Please
+				adjust your browser-settings.</span>
+		</noscript>
+
+		<div id="sfOuterwrapper">
+			<div class="sfSagewrapper">
+				<!--Body Content-->
+				<div class="sfContentwrapper clearfix">
+					<div id="divCenterContent">
+						<!-- Side Bar Starts-->
+						<div class="sideBarLeft" id="divSideBar">
+							<%@ include file="UserSideBar.jsp"%>
+						</div>
+						<!-- Side Bar Ends -->
+						<div class="sfMaincontent">
+							<div class="welcome-msg">
+								<h2>
+									Welcome, <%=session.getAttribute("gpmsUserName")%>
+								</h2>
+								<p>From your Account Dashboard you have the ability to view
+									a snapshot of your recent account activities and update your
+									personal account information. Lorem Ipsum is simply dummy text
+									of the printing and typesetting industry. Lorem Ipsum has been
+									the industry's standard dummy text ever since the 1500s, when
+									an unknown printer took a galley of type and scrambled it to
+									make a type specimen book. It has survived not only five
+									centuries, but also the leap into electronic typesetting,
+									remaining essentially unchanged. It was popularised in the
+									1960s with the release of Letraset sheets containing Lorem
+									Ipsum passages, and more recently with desktop publishing
+									software like Aldus PageMaker including versions of Lorem
+									Ipsum.</p>
+							</div>
+							<div class="recent-activity">
+								<h2>Overall Activities</h2>
+								<ul>
+									<li>Total: <a href="./MyProposals.jsp"
+										id="recentProposalCount"><span>100 proposals</span></a></li>
+									<li>As PI: <a href="#"><span id="recentPICount">100
+												proposals</span></a></li>
+									<li>As CO-PI: <a href="#"><span id="recentCoPICount">100
+												proposals</span></a></li>
+									<li>As Senior Personnel: <a href="#"><span
+											id="recentSeniorCount">100 proposals</span></a></li>
+								</ul>
+							</div>
+							<div class="welcomeWrap clearfix">
+								<h1>Hi! Welcome to GPMS User Control Panel.</h1>
+								<h2>Proposal Workflow Management System - A web-based
+									application for replacing the manual approval process of grant
+									submission. You can take a quick tour to GPMS, on how to run
+									and operate the Grant Proposal Workflow Management Framework.
+									Get acquainted with the GPMS Dashboard. Take the tour.</h2>
+							</div>
+							<!-- END sfMaincontent -->
+						</div>
+					</div>
+				</div>
+				<!-- END Body Content sfContentwrapper -->
+			</div>
+		</div>
+	</form>
 </body>
 </html>

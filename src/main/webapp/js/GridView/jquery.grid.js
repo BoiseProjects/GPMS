@@ -18,12 +18,11 @@ var fromServer = 0;
 			current : 1,
 			rp : 5, // results per page
 			rpOptions : [ 5, 10, 15, 20, 25, 40 ], // [8, 16, 32, 64, 128],
-			pageOf : '' + getLocale(CoreJsLanguage, "Page") + ' {box} '
-					+ getLocale(CoreJsLanguage, "Of") + ' {count}',
+			pageOf : '' + "Page" + ' {box} ' + "Of" + ' {count}',
 			pnew : 1,
 			pageshow : 5,
 			title : false,
-			nomsg : getLocale(CoreJsLanguage, 'No items'),
+			nomsg : 'No items',
 			dateformat : 'yyyy-MM-dd',
 			onError : true,
 			defaultImage : '',
@@ -226,10 +225,7 @@ var fromServer = 0;
 												.find('img')
 												.prop(
 														'src',
-														''
-																+ GPMS.utils
-																		.GetGPMSRootPath()
-																+ '/images/ajax-loader.gif');
+														'./images/ajax-loader.gif');
 										$("#" + t.id).prev().prev(".loading")
 												.show();
 										$
@@ -490,16 +486,11 @@ var fromServer = 0;
 					offset = p.total;
 				}
 				$(PageWrapper).prepend(
-						'<div class="cssClassViewOf">'
-								+ getLocale(CoreJsLanguage, "View") + ' '
-								+ p.pnew + '-' + offset + ' '
-								+ getLocale(CoreJsLanguage, 'Of') + ' '
-								+ p.total + ' '
-								+ getLocale(CoreJsLanguage, 'records')
-								+ '</div>');
+						'<div class="cssClassViewOf">' + 'View' + ' ' + p.pnew
+								+ '-' + offset + ' ' + 'Of' + ' ' + p.total
+								+ ' ' + 'records' + '</div>');
 				$(PageWrapper).prepend(
-						'<div class="cssClassViewPerPage">'
-								+ getLocale(CoreJsLanguage, "View Per Page:")
+						'<div class="cssClassViewPerPage">' + 'View Per Page:'
 								+ ' <select name="rp" id="' + t.id
 								+ '_pagesize">' + opt + '</select></div>');
 				$(PageWrapper).find('select').change(function() {
@@ -1150,25 +1141,32 @@ var fromServer = 0;
 																	// controlClass
 																	// =
 																	// ControlClass[rcount];
-																	
+
 																	var parentEls = $(
 																			this)
 																			.parent(
 																					'TR');
-																	$.each(tdcheckfor[rcount], function( index, value ) {																		
-																		if(checkstatus !="disabled"){
-																			var indexValue = $(
-																					parentEls)
-																					.find(
-																							'TD:eq("'
-																									+ value
-																									+ '")')
-																					.text();
-																			checkstatus = (indexValue
-																					.toLowerCase() == 'yes') ? 'disabled'
-																					: '';
-																		}
-																	});																	
+																	$
+																			.each(
+																					tdcheckfor[rcount],
+																					function(
+																							index,
+																							value) {
+																						if (checkstatus != "disabled") {
+																							var indexValue = $(
+																									parentEls)
+																									.find(
+																											'TD:eq("'
+																													+ value
+																													+ '")')
+																									.text();
+																							checkstatus = (indexValue
+																									.toLowerCase() == 'yes') ? 'disabled'
+																									: '';
+																						} else {
+																							return false;
+																						}
+																					});
 																	// alert(checkstatus);
 																	$(chkbox)
 																			.prop(
@@ -1631,9 +1629,7 @@ var fromServer = 0;
 																						+ ")")
 																		.html()) == 5) {
 																	trElement
-																			.prepend(getLocale(
-																					CoreJsLanguage,
-																					"Starting At"));
+																			.prepend('Starting At');
 																}
 
 																break;

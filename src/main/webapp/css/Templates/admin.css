@@ -18,7 +18,7 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p,
 }
 
 .sfPopupclose, .cssClassClose
-	/* HTML5 display-role reset for older browsers */ 
+	/* HTML5 display-role reset for older browsers */   
 article, aside, details, figcaption, figure, footer, header, hgroup,
 	menu, nav, section {
 	display: block;
@@ -305,8 +305,8 @@ input [type="radio"] {
 
 input[type="radio"], input[type="checkbox"] {
 	margin-left: 15px;
-    	margin-right: 17px;
-    	margin-top: 10px;
+	margin-right: 17px;
+	margin-top: 10px;
 }
 
 .inputbox {
@@ -741,114 +741,305 @@ div.sideBarRight .sfSidebar ul.menu li.Grandparent ul.acitem li.parent ul li.chi
 }
 
 .sideBarRight
+
+
  
+
+
 .sfSidebar
+
+
+
+
 .sfSidebarhide
+
+
  
+
+
 ul
+
+
+
+
 .menu
+
+
  
+
+
 li
+
+
+
+
 .Grandparent
+
+
+
+
 .sfLevel0
+
+
+
+
 .sfHover
+
+
  
+
+
 ul
+
+
+
+
 .acitem
+
+
  
+
+
 li
+
+
+
+
 .parent
+
+
  
+
+
 ul
+
+
  
+
+
 li
+
+
+
+
 .child
+
+
  
+
+
 a
+
+
  
+
+
 i
+
+
+
+
 :before
 ,
 {
 content
+
+
+
+
 :
-"\e618";
 
 
+
+
+"
+\e618
+
+
+";
 font-family
+
+
+
+
 :
+
+
  
+
+
 "
 aspx
+
+
+
+
 "
- 
 !
 important
+
+
+
+
 ;
-
-
 font-style
+
+
+
+
 :
+
+
  
+
+
 normal
+
+
  
+
+
 !
 important
+
+
+
+
 ;
-
-
 font-weight
+
+
+
+
 :
+
+
  
+
+
 normal
+
+
  
+
+
 !
 important
+
+
+
+
 ;
-
-
 font-variant
+
+
+
+
 :
+
+
  
+
+
 normal
+
+
  
+
+
 !
 important
+
+
+
+
 ;
-
-
 text-transform
+
+
+
+
 :
+
+
  
+
+
 none
+
+
  
+
+
 !
 important
+
+
+
+
 ;
-
-
 speak
+
+
+
+
 :
+
+
  
+
+
 none
+
+
+
+
 ;
-
-
 line-height
+
+
+
+
 :
+
+
  
+
+
 1;
 -webkit-font-smoothing
+
+
+
+
 :
+
+
  
+
+
 antialiased
+
+
+
+
 ;
-
-
 -moz-osx-font-smoothing
+
+
+
+
 :
+
+
  
+
+
 grayscale
+
+
+
+
 ;
 }
 .sfSidebar.sfSidebarhide ul.menu li.Grandparent.sfLevel0.sfHover ul.acitem li a:after
@@ -1170,7 +1361,10 @@ div.sideBarRight .sfSidebar ul.menu li.Grandparent ul.acitem li.parent ul li.chi
 }
 /*---Dashboard---*/
 .sfDashboard {
-	margin-bottom: 40px;
+	float: right;
+    margin-bottom: 40px;
+    margin-top: 20px;
+    width: 12%;
 }
 
 .sfDashboard ul li {
@@ -1599,11 +1793,11 @@ th.header {
 	font-weight: bold;
 }
 
-.cssClassLabelHeader{
-    color: #163652;
-    font-size: 28px;
-    font-weight: normal;
-    padding-bottom: 10px;
+.cssClassLabelHeader {
+	color: #163652;
+	font-size: 28px;
+	font-weight: normal;
+	padding-bottom: 10px;
 }
 
 .sfGridwrapper .sfButtonWrapper {
@@ -1905,7 +2099,7 @@ label.error {
 	display: table-caption;
 }
 
-#txtSearchTotalCostsTo-error{
+#txtSearchTotalCostsTo-error {
 	/*padding: 0 0 0 23px;*/
 	padding: 0px;
 }
@@ -3976,7 +4170,7 @@ div.sfFooterwrapper.sfFooterCollapse, div.sideBarRight .sfFooterwrapper.sfFooter
 	-moz-border-radius: 3px 3px 0px 0px;
 }
 
-.sfTableOption table tr td {	
+.sfTableOption table tr td {
 	color: #fff;
 }
 /*.sfTableOption .sfBtn.icon-search {background:#fff; border-bottom:none; font-size:15px; padding:8px;  margin-left: -4px; border:1px solid #CCCCCC; border-left:none;}*/
@@ -4133,6 +4327,18 @@ div .sfGridwrapper table td a:hover.icon-edit, .sfGridwrapper table td a:hover.i
 	-webkit-border-radius: 3px;
 	-ms-border-radius: 3px;
 	-o-border-radius: 3px;
+	width: 82%;
+	float: left;
+}
+
+.welcomeWrap{
+	background: #fff none repeat scroll 0 0;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    float: left;
+    margin: 20px 0 30px;
+    padding: 25px;
+    position: relative;
 }
 
 .sfWelcomeWrap label.icon-close {
@@ -4148,7 +4354,7 @@ div .sfGridwrapper table td a:hover.icon-edit, .sfGridwrapper table td a:hover.i
 	color: #515357;
 }
 
-.sfWelcomeWrap h1 {
+.sfWelcomeWrap h1, .welcomeWrap h1 {
 	font-size: 28px;
 	margin-bottom: 5px;
 	color: #000;
@@ -4156,7 +4362,7 @@ div .sfGridwrapper table td a:hover.icon-edit, .sfGridwrapper table td a:hover.i
 	border-bottom: none;
 }
 
-.sfWelcomeWrap h2 {
+.sfWelcomeWrap h2, .welcomeWrap h2 {
 	font-size: 16px;
 	color: #838383;
 	font-weight: normal;
@@ -5075,11 +5281,10 @@ p.sfDisplayName span.sfFormlabel.sfDefaultName {
 .cssClassHeader {
 	position: relative;
 	overflow: hidden;
-	margin-bottom: 10px;
 }
 
-.cssClassLeft, .cssClassMiddle{	
-    float:left;
+.cssClassLeft, .cssClassMiddle {
+	float: left;
 }
 
 .cssClassRssDiv {
@@ -5596,21 +5801,21 @@ tr.sfTableRowBrd-btm td {
 	text-align: right;
 }
 
-input.error, input.warning{
+input.error, input.warning {
 	padding: 8px;
 }
 
 select.error, select.warning {
-    border: 1px dashed #f00 !important;
-    color: red;
-    padding: 8px;
+	border: 1px dashed #f00 !important;
+	color: red;
+	padding: 8px;
 }
 
 .cssClassTextArea.error {
 	border: 1px dashed #F00 !important;
 	padding: 8px;
 	color: #737373;
-    width: 200px;
+	width: 200px;
 }
 
 .divLayoutContainer .sfMainContent {
@@ -5709,5 +5914,43 @@ div#aspxcommereloading {
 	left: 50%;
 	top: 50%;
 	z-index: 5050;
-	"
+}
+
+.welcome-msg {
+    background: #6fc25c none repeat scroll 0 0;
+    margin-right: 30px;
+    float: left;
+    width: 59%;
+}
+
+.recent-activity {
+    background: #2b3f4d none repeat scroll 0 0;
+    border-bottom: 3px solid #6fc25c;
+    font-size: 14px;
+    float: right;
+    width: 23%;
+}
+
+.recent-activity ul, li, ol {
+    list-style: outside none none;
+}
+
+.welcome-msg, .recent-activity a:hover {
+    color: #fff;
+}
+
+.welcome-msg, .recent-activity a {
+    color: #6fc25c;
+}
+
+.welcome-msg, .recent-activity {
+    color: #fff;    
+    padding: 25px 41px;    
+}
+
+.welcome-msg p {
+    line-height: 24px;
+    font-size: 16px;
+    font-weight: 300;
+    color: #fff;
 }

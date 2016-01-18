@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<title>Log Out</title>
 </head>
 <script language="javascript">
 	//var BASE_URL = "http://132.178.128.200/socialnetworking/";

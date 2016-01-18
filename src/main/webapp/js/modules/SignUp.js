@@ -1,17 +1,13 @@
 var signUp = '';
 $(function() {
+
+	// if (userProfileId == "null") {
+	// window.location = 'Login.jsp';
+	// }
+
 	jQuery.fn.exists = function() {
 		return this.length > 0;
 	}
-
-	var gpmsCommonObj = function() {
-		var gpmsCommonInfo = {
-			UserName : GPMS.utils.GetUserName(),
-			UserProfileID : GPMS.utils.GetUserProfileID(),
-			CultureName : GPMS.utils.GetCultureName()
-		};
-		return gpmsCommonInfo;
-	};
 
 	var validator = $("#form1")
 			.validate(
@@ -171,20 +167,13 @@ $(function() {
 					});
 		},
 
-		LoadStaticImage : function() {
-			$('.cssClassSuccessImg').prop('src', 'images/right.jpg');
-		},
-
 		checkUniqueUserName : function(user_id, userName, textBoxUserName) {
 			var errors = '';
 			if (!textBoxUserName.hasClass('error') && userName.length > 0) {
 				if (!signUp.isUniqueUserName(user_id, userName)) {
-					errors += getLocale(gpmsSignUp,
-							"Please enter unique username.")
-							+ " '"
-							+ userName.trim()
-							+ "' "
-							+ getLocale(gpmsSignUp, "has already been taken.");
+					errors += 'Please enter unique username.' + " '"
+							+ userName.trim() + "' "
+							+ 'has already been taken.';
 					textBoxUserName.addClass("error");
 					textBoxUserName.siblings('.cssClassRight').hide();
 					if (textBoxUserName.siblings('label.error').exists()) {
@@ -213,11 +202,10 @@ $(function() {
 				UserID : userId,
 				NewUserName : newUserName
 			};
-			var gpmsCommonInfo = gpmsCommonObj();
+
 			this.config.url = this.config.baseURL + "CheckUniqueUserName";
 			this.config.data = JSON2.stringify({
-				userUniqueObj : userUniqueObj,
-				gpmsCommonObj : gpmsCommonInfo
+				userUniqueObj : userUniqueObj
 			});
 			this.config.ajaxCallMode = 1;
 			this.ajaxCall(this.config);
@@ -229,12 +217,8 @@ $(function() {
 			var txtEmail = $("#" + textBoxEmail);
 			if (!txtEmail.hasClass('error') && email.length > 0) {
 				if (!signUp.isUniqueEmail(user_id, email)) {
-					errors += getLocale(gpmsSignUp,
-							"Please enter unique email id.")
-							+ " '"
-							+ email.trim()
-							+ "' "
-							+ getLocale(gpmsSignUp, "has already been taken.");
+					errors += 'Please enter unique email id.' + " '"
+							+ email.trim() + "' " + 'has already been taken.';
 					txtEmail.addClass("error");
 					txtEmail.siblings('.cssClassRight').hide();
 					if (txtEmail.siblings('label.error').exists()) {
@@ -264,11 +248,10 @@ $(function() {
 				UserID : userId,
 				NewEmail : newEmail
 			};
-			var gpmsCommonInfo = gpmsCommonObj();
+
 			this.config.url = this.config.baseURL + "CheckUniqueEmail";
 			this.config.data = JSON2.stringify({
-				userUniqueObj : userUniqueObj,
-				gpmsCommonObj : gpmsCommonInfo
+				userUniqueObj : userUniqueObj
 			});
 			this.config.ajaxCallMode = 2;
 			this.ajaxCall(this.config);
@@ -353,16 +336,13 @@ $(function() {
 			case 3:
 				csscody
 						.info("<h2>"
-								+ getLocale(gpmsSignUp,
-										'Great! You are signed up.')
+								+ 'Great! You are signed up.'
 								+ "</h2><p>"
 								+ "<b>"
 								+ $("#txtWorkEmail").val()
 								+ "</b>"
 								+ "</br>"
-								+ getLocale(
-										gpmsSignUp,
-										'Now, go check your email.<br/>The email contains a confirmation link for account activation.')
+								+ 'Now, go check your email.<br/>The email contains a confirmation link for account activation.'
 								+ "</p>");
 
 				signUp.ClearForm();
@@ -375,32 +355,21 @@ $(function() {
 			case 0:
 				break;
 			case 1:
-				csscody.error("<h2>"
-						+ getLocale(gpmsSignUp, 'Error Message')
-						+ "</h2><p>"
-						+ getLocale(gpmsSignUp,
-								'Cannot check for unique Username') + "</p>");
+				csscody.error("<h2>" + 'Error Message' + "</h2><p>"
+						+ 'Cannot check for unique Username' + "</p>");
 				break;
 			case 2:
-				csscody
-						.error("<h2>"
-								+ getLocale(gpmsSignUp, 'Error Message')
-								+ "</h2><p>"
-								+ getLocale(gpmsSignUp,
-										'Cannot check for unique Email')
-								+ "</p>");
+				csscody.error("<h2>" + 'Error Message' + "</h2><p>"
+						+ 'Cannot check for unique Email' + "</p>");
 				break;
 			case 3:
-				csscody.error("<h2>" + getLocale(gpmsSignUp, 'Error Message')
-						+ "</h2><p>"
-						+ getLocale(gpmsSignUp, 'Failed to save user!')
-						+ "</p>");
+				csscody.error("<h2>" + 'Error Message' + "</h2><p>"
+						+ 'Failed to save user!' + "</p>");
 				break;
 			}
 		},
 
 		init : function() {
-			signUp.LoadStaticImage();
 			signUp.ClearForm();
 
 			$("#txtMobileNumber").mask("(999) 999-9999");

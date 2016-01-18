@@ -59,17 +59,17 @@
 	var gpmsRootPath = "http://localhost:8181/GPMS/";
 
 	$(function() {
-		$(".sfLocale").localize({
-			moduleKey : gpmsUsersManagement
-		});
+		//For Sidebar active menu
+		$('.acitem').find('a').eq(0).prop("class", "active");
 	});
-	
+
 	//]]>
 </script>
 
 <script type="text/javascript" src="js/jQuery/jquery-ui.js"></script>
 
 <script type="text/javascript" src="js/core/gpmscore.js"></script>
+<script type="text/javascript" src="js/core/encoder.js"></script>
 
 <script type="text/javascript" src="js/core/jquery.disable_with.js"></script>
 
@@ -79,25 +79,17 @@
 <script type="text/javascript" src="js/superfish.js"></script>
 
 <script type="text/javascript"
-	src="js/FormValidation/jquery.form-validation-and-hints.js"></script>
-<script type="text/javascript"
 	src="js/FormValidation/jquery.validate.js"></script>
 <script type="text/javascript"
 	src="js/FormValidation/jquery.ui.datepicker.validation.js"></script>
-
 <script type="text/javascript"
 	src="js/FormValidation/jquery.maskedinput.js"></script>
-
-<!-- <script type="text/javascript" src="js/SystemLocale/systemlocale.js"></script> -->
-<script type="text/javascript"
-	src="js/modules/Language/CoreJsLanguage.js"></script>
+<script type="text/javascript" src="js/FormValidation/autoNumeric.js"></script>
 
 <script type="text/javascript" src="js/core/json2.js"></script>
 
 <script type="text/javascript" src="js/jquery-browser.js"></script>
 <script type="text/javascript" src="js/jquery.uniform.js"></script>
-
-<script type="text/javascript" src="js/jquery.qtip-1.0.0-rc3.js"></script>
 
 <script type="text/javascript" src="js/GridView/jquery.tablesorter.js"></script>
 <script type="text/javascript" src="js/GridView/jquery.grid.js"></script>
@@ -108,27 +100,14 @@
 <script type="text/javascript" src="js/MessageBox/jquery.easing.1.3.js"></script>
 <script type="text/javascript" src="js/MessageBox/alertbox.js"></script>
 
-<script type="text/javascript" src="js/AjaxFileUploader/ajaxupload.js"></script>
-
-<script type="text/javascript"
-	src="js/ckeditor_4.5.1_full/ckeditor/ckeditor.js"></script>
-<script type="text/javascript"
-	src="js/ckeditor_4.5.1_full/ckeditor/adapters/jquery.js"></script>
-
-
-<!-- <script type="text/javascript" src="js/core/Session.js"></script> -->
-<script type="text/javascript" src="js/core/encoder.js"></script>
-
 <script type="text/javascript" src="js/modules/UsersManage.js"></script>
-<script type="text/javascript"
-	src="js/modules/Language/GPMSUsersManagement.js"></script>
-<!-- <script type="text/javascript" src="js/modules/Language/AspxRssFeedLocale.js"></script> -->
 
 <link type="text/css" rel="stylesheet"
 	href="css/Templates/jquery-ui.css" />
-<link type="text/css" rel="stylesheet" href="css/GridView/tablesort.css" />
+
 <link type="text/css" rel="stylesheet" href="css/MessageBox/style.css" />
 
+<link type="text/css" rel="stylesheet" href="css/GridView/tablesort.css" />
 <link type="text/css" rel="stylesheet" href="css/Templates/grid.css" />
 <link type="text/css" rel="stylesheet"
 	href="css/Templates/topstickybar.css" />
@@ -140,7 +119,7 @@
 		<div style="display: none;" id="UpdateProgress1">
 			<div class="sfLoadingbg">&nbsp;</div>
 			<div class="sfLoadingdiv">
-				<img id="imgProgress" src="images/ajax-loader.gif"
+				<img id="imgProgress" src="./images/ajax-loader.gif"
 					style="border-width: 0px;" alt="Loading..." title="Loading..." />
 				<br> <span id="lblPrgress">Please wait...</span>
 			</div>
@@ -149,11 +128,13 @@
 			<span>This page requires java-script to be enabled. Please
 				adjust your browser-settings.</span>
 		</noscript>
-
 		<div id="sfOuterwrapper">
 			<div class="sfSagewrapper">
+				<!-- Sticky Bar -->
+				<%@ include file="AdminTopStickyBar.jsp"%>
+				<!-- END Sticky Bar -->
 
-				<!--Body Content-->
+				<!-- Body Content -->
 				<div class="sfContentwrapper clearfix">
 					<div id="divCenterContent">
 						<!-- Side Bar Starts-->
@@ -161,7 +142,6 @@
 							<%@ include file="AdminSideBar.jsp"%>
 						</div>
 						<!-- Side Bar Ends -->
-
 						<div class="sfMaincontent">
 							<div style="display: block" class="sfCpanel sfInnerwrapper"
 								id="divBottompanel">
@@ -178,27 +158,25 @@
 														<p>
 															<button title="Add New User" type="button" id="btnAddNew"
 																class="sfBtn">
-																<span class="sfLocale icon-addnew">Add New User</span>
+																<span class="icon-addnew">Add New User</span>
 															</button>
 														</p>
 														<p>
 															<button title="Delete All Selected" type="button"
 																id="btnDeleteSelected" class="sfBtn">
-																<span class="sfLocale icon-delete">Delete All
-																	Selected</span>
+																<span class="icon-delete">Delete All Selected</span>
 															</button>
 														</p>
 														<p>
 															<button title="Export to Excel" type="button"
 																id="btnExportToExcel" class="sfBtn">
-																<span class="sfLocale icon-showall">Export to
-																	Excel</span>
+																<span class="icon-showall">Export to Excel</span>
 															</button>
 														</p>
 														<p>
 															<button title="Export to CSV" type="button"
 																id="btnExportToCSV" class="sfBtn">
-																<span class="sfLocale icon-showall">Export to CSV</span>
+																<span class="icon-showall">Export to CSV</span>
 															</button>
 														</p>
 
@@ -215,69 +193,67 @@
 															border="0">
 															<tbody>
 																<tr>
-																	<td><label class="cssClassLabel sfLocale">User
+																	<td><label class="cssClassLabel">User
 																			Name:</label> <input title="User Name" type="text"
 																		class="sfTextBoxFix" id="txtSearchUserName"
 																		placeholder="User Name" /></td>
 
-																	<td><label class="cssClassLabel sfLocale">
-																			College:</label> <select title="Choose College"
-																		id="ddlSearchCollege" class="sfListmenu"
-																		style="width: 90px;">
-																			<option value="0" class="sfLocale">--All--</option>
+																	<td><label class="cssClassLabel"> College:</label>
+																		<select title="Choose College" id="ddlSearchCollege"
+																		class="sfListmenu" style="width: 90px;">
+																			<option value="0">--All--</option>
 																	</select></td>
 
-																	<td><label class="cssClassLabel sfLocale">
+																	<td><label class="cssClassLabel">
 																			Department:</label> <select title="Choose Department"
 																		id="ddlSearchDepartment" class="sfListmenu"
 																		style="width: 143px;">
-																			<option value="0" class="sfLocale">--All--</option>
+																			<option value="0">--All--</option>
 																	</select></td>
 
-																	<td><label class="cssClassLabel sfLocale">
-																			Position Type:</label> <select title="Choose Position Type"
+																	<td><label class="cssClassLabel"> Position
+																			Type:</label> <select title="Choose Position Type"
 																		id="ddlSearchPositionType" class="sfListmenu"
 																		style="width: 150px;">
-																			<option value="0" class="sfLocale">--All--</option>
+																			<option value="0">--All--</option>
 																	</select></td>
 
-																	<td><label class="cssClassLabel sfLocale">
-																			Position Title:</label> <select title="Choose Position Title"
+																	<td><label class="cssClassLabel"> Position
+																			Title:</label> <select title="Choose Position Title"
 																		id="ddlSearchPositionTitle" class="sfListmenu"
 																		style="width: 150px;">
-																			<option value="0" class="sfLocale">--All--</option>
+																			<option value="0">--All--</option>
 																	</select></td>
 
 																	<!-- <td width="315"><label
-																			class="cssClassLabel sfLocale">Added On:</label><br />
-																			<span class="label sfLocale">From:</span> <input title="Added On From" 
+																			class="cssClassLabel">Added On:</label><br />
+																			<span class="label">From:</span> <input title="Added On From" 
 																			type="text" id="txtSearchAddedOnFrom"
 																			class="sfTextBoxSmall"
 																			style="width: 80px !important;"/> <span
-																			class="label sfLocale">To:</span> <input title="Added On To" 
+																			class="label">To:</span> <input title="Added On To" 
 																			type="text" id="txtSearchAddedOnTo" class="sfTextBoxSmall"
 																			style="width: 80px !important;"/></td> -->
 
-																	<td><label class="cssClassLabel sfLocale">
-																			Active:</label> <select title="Is Active?"
-																		id="ddlSearchIsActive" class="sfListmenu"
-																		style="width: 50px;">
-																			<option value="" class="sfLocale">--All--</option>
-																			<option value="True" class="sfLocale">True</option>
-																			<option value="False" class="sfLocale">False</option>
+																	<td><label class="cssClassLabel"> Active:</label>
+																		<select title="Is Active?" id="ddlSearchIsActive"
+																		class="sfListmenu" style="width: 50px;">
+																			<option value="">--All--</option>
+																			<option value="True">True</option>
+																			<option value="False">False</option>
 																	</select></td>
 																	<td><label class="cssClassLabel">&nbsp;</label>
 																		<button title="Search User" class="sfBtn"
 																			id="btnSearchUser" type="button">
-																			<span class="sfLocale icon-search">Search</span>
+																			<span class="icon-search">Search</span>
 																		</button></td>
 																</tr>
 															</tbody>
 														</table>
 													</div>
 													<div class="loading">
-														<img id="ajaxLoader" src="" class="sfLocale"
-															alt="Loading..." title="Loading..." />
+														<img id="ajaxLoader" src="" alt="Loading..."
+															title="Loading..." />
 													</div>
 													<div class="log"></div>
 													<table id="gdvUsers" cellspacing="0" cellpadding="0"
@@ -506,9 +482,9 @@
 																				<input type="email" id="txtWorkEmail"
 																					class="sfInputbox" style="width: 160px;"
 																					name="workEmail" placeholder="Work Email" /> <span
-																					class="cssClassRight"> <img src=""
-																					class="cssClassSuccessImg sfLocale" height="13"
-																					width="18" alt="Right" title="Right" />
+																					class="cssClassRight"> <img
+																					src="./images/right.jpg" class="cssClassSuccessImg"
+																					height="13" width="18" alt="Right" title="Right" />
 																				</span>
 																			</div>
 																		</td>
@@ -520,9 +496,9 @@
 																				<input type="email" class="sfInputbox"
 																					style="width: 160px;" id="txtPersonalEmail"
 																					name="personalEmail" placeholder="Personal Email" /><span
-																					class="cssClassRight"> <img src=""
-																					class="cssClassSuccessImg sfLocale" height="13"
-																					width="18" alt="Right" title="Right" />
+																					class="cssClassRight"> <img
+																					src="./images/right.jpg" class="cssClassSuccessImg"
+																					height="13" width="18" alt="Right" title="Right" />
 																				</span>
 																			</div>
 																		</td>
@@ -532,7 +508,7 @@
 																		<td class="cssClassTableRightCol" colspan="3"><input
 																			title="Active" type="checkbox" value=""
 																			name="chkActive" class="cssClassCheckBox"
-																			checked="checked"></td>
+																			checked="true"></td>
 																	</tr>
 																</tbody>
 															</table>
@@ -578,11 +554,10 @@
 																						<td><input type="radio"
 																							title="Choose Default Position"
 																							class="class-isdefault" name="defaultRdo"
-																							checked="true" /></td>
+																							checked="false" /></td>
 																						<td><input type="Button" value="Add More"
 																							name="AddMore"
-																							class="AddOption cssClassButtonSubmit sfLocale" />
-																						</td>
+																							class="AddOption cssClassButtonSubmit" /></td>
 																					</tr>
 																				</tbody>
 																			</table>
@@ -603,9 +578,9 @@
 																			title="User Name" type="text" class="sfInputbox"
 																			id="txtUserName" name="username"
 																			placeholder="User Name"> <span
-																			class="cssClassRight"> <img src=""
-																				class="cssClassSuccessImg sfLocale" height="13"
-																				width="18" alt="Right" title="Right" />
+																			class="cssClassRight"> <img
+																				src="./images/right.jpg" class="cssClassSuccessImg"
+																				height="13" width="18" alt="Right" title="Right" />
 																		</span></td>
 																	</tr>
 																	<tr>
@@ -640,20 +615,20 @@
 																				border="0">
 																				<tbody>
 																					<tr>
-																						<td><label class="cssClassLabel sfLocale">
+																						<td><label class="cssClassLabel">
 																								Action:</label> <input title="Action" type="text"
 																							class="sfInputbox" id="txtSearchAction"
 																							placeholder="Action" /></td>
-																						<td><label class="cssClassLabel sfLocale">
+																						<td><label class="cssClassLabel">
 																								Audited By:</label> <input title="Audited By"
 																							type="text" class="sfInputbox"
 																							id="txtSearchAuditedBy" placeholder="Audited By" /></td>
-																						<td><label class="cssClassLabel sfLocale">
+																						<td><label class="cssClassLabel">
 																								Activity On From:</label> <input
 																							title="Activity On From" type="text"
 																							class="sfTextBoxSmall"
 																							id="txtSearchActivityOnFrom" placeholder="From" /></td>
-																						<td><label class="cssClassLabel sfLocale">
+																						<td><label class="cssClassLabel">
 																								Activity On To:</label> <input title="Activity On To"
 																							type="text" class="sfTextBoxSmall"
 																							id="txtSearchActivityOnTo" placeholder="To" /></td>
@@ -661,15 +636,15 @@
 																						<td><label class="cssClassLabel"> </label>
 																							<button title="Search Audit Log" class="sfBtn"
 																								id="btnSearchUserAuditLog" type="button">
-																								<span class="sfLocale icon-search">Search</span>
+																								<span class="icon-search">Search</span>
 																							</button></td>
 																					</tr>
 																				</tbody>
 																			</table>
 																		</div>
 																		<div class="loading">
-																			<img id="ajaxLoader" src="" class="sfLocale"
-																				alt="Loading..." title="Loading..." />
+																			<img id="ajaxLoader" src="" alt="Loading..."
+																				title="Loading..." />
 																		</div>
 																		<div class="log"></div>
 																		<table id="gdvUsersAuditLog" cellspacing="0"
@@ -709,24 +684,24 @@
 											<p>
 												<button title="Go Back" type="button" id="btnBack"
 													class="sfBtn">
-													<span class="sfLocale icon-arrow-slim-w">Back</span>
+													<span class="icon-arrow-slim-w">Back</span>
 												</button>
 											</p>
 											<p>
 												<button title="Reset" type="button" id="btnReset"
 													class="sfBtn">
-													<span class="sfLocale icon-refresh">Reset</span>
+													<span class="icon-refresh">Reset</span>
 												</button>
 											</p>
 											<p>
 												<button title="Delete" type="button" class="delbutton sfBtn">
-													<span class="sfLocale icon-delete">Delete</span>
+													<span class="icon-delete">Delete</span>
 												</button>
 											</p>
 											<p>
 												<button title="Save User" type="button" id="btnSaveUser"
 													class="sfBtn">
-													<span class="sfLocale icon-save">Save</span>
+													<span class="icon-save">Save</span>
 												</button>
 											</p>
 										</div>

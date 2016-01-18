@@ -7,7 +7,6 @@ import gpms.dao.UserAccountDAO;
 import gpms.dao.UserProfileDAO;
 import gpms.model.Address;
 import gpms.model.AuditLogInfo;
-import gpms.model.GPMSCommonInfo;
 import gpms.model.PasswordHash;
 import gpms.model.PositionDetails;
 import gpms.model.UserAccount;
@@ -166,10 +165,6 @@ public class UserService {
 
 		users = userProfileDAO.findAllForUserGrid(offset, limit, userName,
 				college, department, positionType, positionTitle, isActive);
-
-		// users = (ArrayList<UserInfo>) userProfileDAO.findAllForUserGrid();
-		// response = JSONTansformer.ConvertToJSON(users);
-
 		return users;
 	}
 
@@ -179,11 +174,7 @@ public class UserService {
 			throws JsonProcessingException, IOException {
 		UserProfile user = new UserProfile();
 		String response = new String();
-
 		String profileId = new String();
-		// String userName = new String();
-		// String userProfileID = new String();
-		// String cultureName = new String();
 
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode root = mapper.readTree(message);
@@ -191,19 +182,6 @@ public class UserService {
 		if (root != null && root.has("userId")) {
 			profileId = root.get("userId").getTextValue();
 		}
-
-		// JsonNode commonObj = root.get("gpmsCommonObj");
-		// if (commonObj != null && commonObj.has("UserName")) {
-		// userName = commonObj.get("UserName").getTextValue();
-		// }
-		//
-		// if (commonObj != null && commonObj.has("UserProfileID")) {
-		// userProfileID = commonObj.get("UserProfileID").getTextValue();
-		// }
-		//
-		// if (commonObj != null && commonObj.has("CultureName")) {
-		// cultureName = commonObj.get("CultureName").getTextValue();
-		// }
 
 		// // build a JSON object using org.JSON
 		// JSONObject obj = new JSONObject(message);
@@ -225,15 +203,7 @@ public class UserService {
 		// + userName + ", User Profile ID: " + userProfileID
 		// + ", Culture Name: " + cultureName);
 
-		// GPMSCommonInfo gpmsCommonObj = new GPMSCommonInfo();
-		// gpmsCommonObj.setUserName(userName);
-		// gpmsCommonObj.setUserProfileID(userProfileID);
-		// gpmsCommonObj.setCultureName(cultureName);
-
 		user = userProfileDAO.findUserDetailsByProfileID(id);
-		// user.getUserAccount();
-		// user.getUserAccount().getUserName();
-		// user.getUserAccount().getPassword();
 
 		// Gson gson = new Gson();
 		// .setDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz").create();
@@ -321,13 +291,8 @@ public class UserService {
 	@Path("/DeleteUserByUserID")
 	public String deleteUserByUserID(String message)
 			throws JsonProcessingException, IOException {
-		UserProfile user = new UserProfile();
 		String response = new String();
-
 		String profileId = new String();
-		String userName = new String();
-		String userProfileID = new String();
-		String cultureName = new String();
 
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode root = mapper.readTree(message);
@@ -336,45 +301,52 @@ public class UserService {
 			profileId = root.get("userId").getTextValue();
 		}
 
-		JsonNode commonObj = root.get("gpmsCommonObj");
-		if (commonObj != null && commonObj.has("UserName")) {
-			userName = commonObj.get("UserName").getTextValue();
-		}
+		String userProfileID = new String();
+		String userName = new String();
+		Boolean userIsAdmin = false;
+		String userCollege = new String();
+		String userDepartment = new String();
+		String userPositionType = new String();
+		String userPositionTitle = new String();
 
+		JsonNode commonObj = root.get("gpmsCommonObj");
 		if (commonObj != null && commonObj.has("UserProfileID")) {
 			userProfileID = commonObj.get("UserProfileID").getTextValue();
 		}
-
-		if (commonObj != null && commonObj.has("CultureName")) {
-			cultureName = commonObj.get("CultureName").getTextValue();
+		if (commonObj != null && commonObj.has("UserName")) {
+			userName = commonObj.get("UserName").getTextValue();
+		}
+		if (commonObj != null && commonObj.has("UserIsAdmin")) {
+			userIsAdmin = commonObj.get("UserIsAdmin").getBooleanValue();
+		}
+		if (commonObj != null && commonObj.has("UserCollege")) {
+			userCollege = commonObj.get("UserCollege").getTextValue();
+		}
+		if (commonObj != null && commonObj.has("UserDepartment")) {
+			userDepartment = commonObj.get("UserDepartment").getTextValue();
+		}
+		if (commonObj != null && commonObj.has("UserPositionType")) {
+			userPositionType = commonObj.get("UserPositionType").getTextValue();
+		}
+		if (commonObj != null && commonObj.has("UserPositionTitle")) {
+			userPositionTitle = commonObj.get("UserPositionTitle")
+					.getTextValue();
 		}
 
-		// TODO : login set this session value
-		// FOr Testing I am using HardCoded UserProfileID
-		// userProfileID = "55b9225454ffd82dc052a32a";
-
-		ObjectId id = new ObjectId(profileId);
 		ObjectId authorId = new ObjectId(userProfileID);
-
-		GPMSCommonInfo gpmsCommonObj = new GPMSCommonInfo();
-		gpmsCommonObj.setUserName(userName);
-		gpmsCommonObj.setUserProfileID(userProfileID);
-		gpmsCommonObj.setCultureName(cultureName);
-
 		UserProfile authorProfile = userProfileDAO
 				.findUserDetailsByProfileID(authorId);
 
+		ObjectId id = new ObjectId(profileId);
 		UserProfile userProfile = userProfileDAO.findUserDetailsByProfileID(id);
-		// userProfileDAO.deleteUserProfileByUserID(userProfile, authorProfile,
-		// gpmsCommonObj);
+		// userProfileDAO.deleteUserProfileByUserID(userProfile, authorProfile);
 
 		userProfile.setDeleted(true);
 		userProfileDAO.save(userProfile);
 
 		UserAccount userAccount = userAccountDAO.findByID(userProfile
 				.getUserAccount().getId());
-		userAccountDAO.deleteUserAccountByUserID(userAccount, authorProfile,
-				gpmsCommonObj);
+		userAccountDAO.deleteUserAccountByUserID(userAccount, authorProfile);
 
 		// response.setContentType("text/html;charset=UTF-8");
 		// response.getWriter().write("Success Data");
@@ -391,14 +363,10 @@ public class UserService {
 	@Path("/DeleteMultipleUsersByUserID")
 	public String deleteMultipleUsersByUserID(String message)
 			throws JsonProcessingException, IOException {
-		UserProfile user = new UserProfile();
 		String response = new String();
 
 		String profileIds = new String();
 		String profiles[] = new String[0];
-		String userName = new String();
-		String userProfileID = new String();
-		String cultureName = new String();
 
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode root = mapper.readTree(message);
@@ -408,43 +376,55 @@ public class UserService {
 			profiles = profileIds.split(",");
 		}
 
-		JsonNode commonObj = root.get("gpmsCommonObj");
-		if (commonObj != null && commonObj.has("UserName")) {
-			userName = commonObj.get("UserName").getTextValue();
-		}
+		String userProfileID = new String();
+		String userName = new String();
+		Boolean userIsAdmin = false;
+		String userCollege = new String();
+		String userDepartment = new String();
+		String userPositionType = new String();
+		String userPositionTitle = new String();
 
+		JsonNode commonObj = root.get("gpmsCommonObj");
 		if (commonObj != null && commonObj.has("UserProfileID")) {
 			userProfileID = commonObj.get("UserProfileID").getTextValue();
 		}
-
-		if (commonObj != null && commonObj.has("CultureName")) {
-			cultureName = commonObj.get("CultureName").getTextValue();
+		if (commonObj != null && commonObj.has("UserName")) {
+			userName = commonObj.get("UserName").getTextValue();
+		}
+		if (commonObj != null && commonObj.has("UserIsAdmin")) {
+			userIsAdmin = commonObj.get("UserIsAdmin").getBooleanValue();
+		}
+		if (commonObj != null && commonObj.has("UserCollege")) {
+			userCollege = commonObj.get("UserCollege").getTextValue();
+		}
+		if (commonObj != null && commonObj.has("UserDepartment")) {
+			userDepartment = commonObj.get("UserDepartment").getTextValue();
+		}
+		if (commonObj != null && commonObj.has("UserPositionType")) {
+			userPositionType = commonObj.get("UserPositionType").getTextValue();
+		}
+		if (commonObj != null && commonObj.has("UserPositionTitle")) {
+			userPositionTitle = commonObj.get("UserPositionTitle")
+					.getTextValue();
 		}
 
 		ObjectId authorId = new ObjectId(userProfileID);
-
-		GPMSCommonInfo gpmsCommonObj = new GPMSCommonInfo();
-		gpmsCommonObj.setUserName(userName);
-		gpmsCommonObj.setUserProfileID(userProfileID);
-		gpmsCommonObj.setCultureName(cultureName);
-
 		UserProfile authorProfile = userProfileDAO
 				.findUserDetailsByProfileID(authorId);
 
 		for (String profile : profiles) {
 			ObjectId id = new ObjectId(profile);
-
 			UserProfile userProfile = userProfileDAO
 					.findUserDetailsByProfileID(id);
 			// userProfileDAO.deleteUserProfileByUserID(userProfile,
-			// authorProfile, gpmsCommonObj);
+			// authorProfile);
 			userProfile.setDeleted(true);
 			userProfileDAO.save(userProfile);
 
 			UserAccount userAccount = userAccountDAO.findByID(userProfile
 					.getUserAccount().getId());
-			userAccountDAO.deleteUserAccountByUserID(userAccount,
-					authorProfile, gpmsCommonObj);
+			userAccountDAO
+					.deleteUserAccountByUserID(userAccount, authorProfile);
 		}
 		response = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(
 				"Success");
@@ -455,14 +435,9 @@ public class UserService {
 	@Path("/UpdateUserIsActiveByUserID")
 	public String updateUserIsActiveByUserID(String message)
 			throws JsonProcessingException, IOException {
-		UserProfile user = new UserProfile();
 		String response = new String();
-
 		String profileId = new String();
 		Boolean isActive = true;
-		String userName = new String();
-		String userProfileID = new String();
-		String cultureName = new String();
 
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode root = mapper.readTree(message);
@@ -475,42 +450,51 @@ public class UserService {
 			isActive = root.get("isActive").getBooleanValue();
 		}
 
-		JsonNode commonObj = root.get("gpmsCommonObj");
-		if (commonObj != null && commonObj.has("UserName")) {
-			userName = commonObj.get("UserName").getTextValue();
-		}
+		String userProfileID = new String();
+		String userName = new String();
+		Boolean userIsAdmin = false;
+		String userCollege = new String();
+		String userDepartment = new String();
+		String userPositionType = new String();
+		String userPositionTitle = new String();
 
+		JsonNode commonObj = root.get("gpmsCommonObj");
 		if (commonObj != null && commonObj.has("UserProfileID")) {
 			userProfileID = commonObj.get("UserProfileID").getTextValue();
 		}
-
-		if (commonObj != null && commonObj.has("CultureName")) {
-			cultureName = commonObj.get("CultureName").getTextValue();
+		if (commonObj != null && commonObj.has("UserName")) {
+			userName = commonObj.get("UserName").getTextValue();
+		}
+		if (commonObj != null && commonObj.has("UserIsAdmin")) {
+			userIsAdmin = commonObj.get("UserIsAdmin").getBooleanValue();
+		}
+		if (commonObj != null && commonObj.has("UserCollege")) {
+			userCollege = commonObj.get("UserCollege").getTextValue();
+		}
+		if (commonObj != null && commonObj.has("UserDepartment")) {
+			userDepartment = commonObj.get("UserDepartment").getTextValue();
+		}
+		if (commonObj != null && commonObj.has("UserPositionType")) {
+			userPositionType = commonObj.get("UserPositionType").getTextValue();
+		}
+		if (commonObj != null && commonObj.has("UserPositionTitle")) {
+			userPositionTitle = commonObj.get("UserPositionTitle")
+					.getTextValue();
 		}
 
-		ObjectId id = new ObjectId(profileId);
 		ObjectId authorId = new ObjectId(userProfileID);
-
-		GPMSCommonInfo gpmsCommonObj = new GPMSCommonInfo();
-		gpmsCommonObj.setUserName(userName);
-		gpmsCommonObj.setUserProfileID(userProfileID);
-		gpmsCommonObj.setCultureName(cultureName);
-
 		UserProfile authorProfile = userProfileDAO
 				.findUserDetailsByProfileID(authorId);
 
+		ObjectId id = new ObjectId(profileId);
 		UserProfile userProfile = userProfileDAO.findUserDetailsByProfileID(id);
-
-		// userProfileDAO.activateUserProfileByUserID(userProfile,
-		// authorProfile,
-		// gpmsCommonObj, isActive);
 
 		userProfile.setDeleted(!isActive);
 		userProfileDAO.save(userProfile);
 
 		UserAccount userAccount = userProfile.getUserAccount();
 		userAccountDAO.activateUserAccountByUserID(userAccount, authorProfile,
-				gpmsCommonObj, isActive);
+				isActive);
 		// return Response.ok("Success", MediaType.APPLICATION_JSON).build();
 
 		response = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(
@@ -524,10 +508,6 @@ public class UserService {
 			throws JsonProcessingException, IOException {
 		String userID = new String();
 		String newUserName = new String();
-		String userName = new String();
-		String userProfileID = new String();
-		String cultureName = new String();
-
 		String response = new String();
 
 		ObjectMapper mapper = new ObjectMapper();
@@ -542,17 +522,36 @@ public class UserService {
 			newUserName = userUniqueObj.get("NewUserName").getTextValue();
 		}
 
-		JsonNode commonObj = root.get("gpmsCommonObj");
-		if (commonObj != null && commonObj.has("UserName")) {
-			userName = commonObj.get("UserName").getTextValue();
-		}
+		String userProfileID = new String();
+		String userName = new String();
+		Boolean userIsAdmin = false;
+		String userCollege = new String();
+		String userDepartment = new String();
+		String userPositionType = new String();
+		String userPositionTitle = new String();
 
+		JsonNode commonObj = root.get("gpmsCommonObj");
 		if (commonObj != null && commonObj.has("UserProfileID")) {
 			userProfileID = commonObj.get("UserProfileID").getTextValue();
 		}
-
-		if (commonObj != null && commonObj.has("CultureName")) {
-			cultureName = commonObj.get("CultureName").getTextValue();
+		if (commonObj != null && commonObj.has("UserName")) {
+			userName = commonObj.get("UserName").getTextValue();
+		}
+		if (commonObj != null && commonObj.has("UserIsAdmin")) {
+			userIsAdmin = commonObj.get("UserIsAdmin").getBooleanValue();
+		}
+		if (commonObj != null && commonObj.has("UserCollege")) {
+			userCollege = commonObj.get("UserCollege").getTextValue();
+		}
+		if (commonObj != null && commonObj.has("UserDepartment")) {
+			userDepartment = commonObj.get("UserDepartment").getTextValue();
+		}
+		if (commonObj != null && commonObj.has("UserPositionType")) {
+			userPositionType = commonObj.get("UserPositionType").getTextValue();
+		}
+		if (commonObj != null && commonObj.has("UserPositionTitle")) {
+			userPositionTitle = commonObj.get("UserPositionTitle")
+					.getTextValue();
 		}
 
 		ObjectId id = new ObjectId();
@@ -574,7 +573,6 @@ public class UserService {
 					.writeValueAsString("true");
 		}
 		return response;
-
 	}
 
 	@POST
@@ -583,10 +581,6 @@ public class UserService {
 			throws JsonProcessingException, IOException {
 		String userID = new String();
 		String newEmail = new String();
-		String userName = new String();
-		String userProfileID = new String();
-		String cultureName = new String();
-
 		String response = new String();
 
 		ObjectMapper mapper = new ObjectMapper();
@@ -601,17 +595,36 @@ public class UserService {
 			newEmail = userUniqueObj.get("NewEmail").getTextValue();
 		}
 
-		JsonNode commonObj = root.get("gpmsCommonObj");
-		if (commonObj != null && commonObj.has("UserName")) {
-			userName = commonObj.get("UserName").getTextValue();
-		}
+		String userProfileID = new String();
+		String userName = new String();
+		Boolean userIsAdmin = false;
+		String userCollege = new String();
+		String userDepartment = new String();
+		String userPositionType = new String();
+		String userPositionTitle = new String();
 
+		JsonNode commonObj = root.get("gpmsCommonObj");
 		if (commonObj != null && commonObj.has("UserProfileID")) {
 			userProfileID = commonObj.get("UserProfileID").getTextValue();
 		}
-
-		if (commonObj != null && commonObj.has("CultureName")) {
-			cultureName = commonObj.get("CultureName").getTextValue();
+		if (commonObj != null && commonObj.has("UserName")) {
+			userName = commonObj.get("UserName").getTextValue();
+		}
+		if (commonObj != null && commonObj.has("UserIsAdmin")) {
+			userIsAdmin = commonObj.get("UserIsAdmin").getBooleanValue();
+		}
+		if (commonObj != null && commonObj.has("UserCollege")) {
+			userCollege = commonObj.get("UserCollege").getTextValue();
+		}
+		if (commonObj != null && commonObj.has("UserDepartment")) {
+			userDepartment = commonObj.get("UserDepartment").getTextValue();
+		}
+		if (commonObj != null && commonObj.has("UserPositionType")) {
+			userPositionType = commonObj.get("UserPositionType").getTextValue();
+		}
+		if (commonObj != null && commonObj.has("UserPositionTitle")) {
+			userPositionTitle = commonObj.get("UserPositionTitle")
+					.getTextValue();
 		}
 
 		ObjectId id = new ObjectId();
@@ -638,13 +651,7 @@ public class UserService {
 	@Path("/SaveUpdateUser")
 	public String saveUpdateUser(String message)
 			throws JsonProcessingException, IOException, ParseException {
-
-		String userName = new String();
-		String userProfileID = new String();
-		String cultureName = new String();
-
 		String userID = new String();
-
 		UserAccount newAccount = new UserAccount();
 		UserProfile newProfile = new UserProfile();
 
@@ -655,19 +662,6 @@ public class UserService {
 
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode root = mapper.readTree(message);
-
-		JsonNode commonObj = root.get("gpmsCommonObj");
-		if (commonObj != null && commonObj.has("UserName")) {
-			userName = commonObj.get("UserName").getTextValue();
-		}
-
-		if (commonObj != null && commonObj.has("UserProfileID")) {
-			userProfileID = commonObj.get("UserProfileID").getTextValue();
-		}
-
-		if (commonObj != null && commonObj.has("CultureName")) {
-			cultureName = commonObj.get("CultureName").getTextValue();
-		}
 
 		JsonNode userInfo = root.get("userInfo");
 
@@ -683,12 +677,14 @@ public class UserService {
 		}
 
 		if (userInfo != null && userInfo.has("UserName")) {
-			String loginUserName = userInfo.get("UserName").getTextValue();
-			if (!userID.equals("0")) {
-				existingUserAccount = userAccountDAO
-						.findByUserName(loginUserName);
+			String userNameOf = userInfo.get("UserName").getTextValue();
+			if (!userID.equals("0") && existingUserProfile != null) {
+				existingUserAccount = existingUserProfile.getUserAccount();
+				if (!existingUserAccount.getUserName().equals(userNameOf)) {
+					existingUserAccount = null;
+				}
 			} else {
-				newAccount.setUserName(loginUserName);
+				newAccount.setUserName(userNameOf);
 			}
 		}
 
@@ -1001,14 +997,39 @@ public class UserService {
 			}
 		}
 
-		// Need to Compare Equals before saving existingUserProfile and
-		// newProfile
-		ObjectId authorId = new ObjectId(userProfileID);
-		GPMSCommonInfo gpmsCommonObj = new GPMSCommonInfo();
-		gpmsCommonObj.setUserName(userName);
-		gpmsCommonObj.setUserProfileID(userProfileID);
-		gpmsCommonObj.setCultureName(cultureName);
+		String userProfileID = new String();
+		String userName = new String();
+		Boolean userIsAdmin = false;
+		String userCollege = new String();
+		String userDepartment = new String();
+		String userPositionType = new String();
+		String userPositionTitle = new String();
 
+		JsonNode commonObj = root.get("gpmsCommonObj");
+		if (commonObj != null && commonObj.has("UserProfileID")) {
+			userProfileID = commonObj.get("UserProfileID").getTextValue();
+		}
+		if (commonObj != null && commonObj.has("UserName")) {
+			userName = commonObj.get("UserName").getTextValue();
+		}
+		if (commonObj != null && commonObj.has("UserIsAdmin")) {
+			userIsAdmin = commonObj.get("UserIsAdmin").getBooleanValue();
+		}
+		if (commonObj != null && commonObj.has("UserCollege")) {
+			userCollege = commonObj.get("UserCollege").getTextValue();
+		}
+		if (commonObj != null && commonObj.has("UserDepartment")) {
+			userDepartment = commonObj.get("UserDepartment").getTextValue();
+		}
+		if (commonObj != null && commonObj.has("UserPositionType")) {
+			userPositionType = commonObj.get("UserPositionType").getTextValue();
+		}
+		if (commonObj != null && commonObj.has("UserPositionTitle")) {
+			userPositionTitle = commonObj.get("UserPositionTitle")
+					.getTextValue();
+		}
+
+		ObjectId authorId = new ObjectId(userProfileID);
 		UserProfile authorProfile = userProfileDAO
 				.findUserDetailsByProfileID(authorId);
 
@@ -1021,11 +1042,9 @@ public class UserService {
 
 		// Save the User Profile
 		if (!userID.equals("0")) {
-			userProfileDAO.updateUserByUserID(existingUserProfile,
-					authorProfile, gpmsCommonObj);
+			userProfileDAO.updateUser(existingUserProfile, authorProfile);
 		} else {
-			userProfileDAO.saveUserByUserID(newProfile, authorProfile,
-					gpmsCommonObj);
+			userProfileDAO.saveUser(newProfile, authorProfile);
 		}
 		// UserProfile user = userProfileDAO.findByUserAccount(newAccount);
 		// System.out.println(user);
@@ -1054,10 +1073,12 @@ public class UserService {
 
 		if (userInfo != null && userInfo.has("UserID")) {
 			userID = userInfo.get("UserID").getTextValue();
-			newAccount.setAddedOn(new Date());
 		}
 
 		if (userID.equals("0")) {
+
+			newAccount.setAddedOn(new Date());
+
 			if (userInfo != null && userInfo.has("UserName")) {
 				String loginUserName = userInfo.get("UserName").getTextValue();
 				newAccount.setUserName(loginUserName);
@@ -1161,6 +1182,9 @@ public class UserService {
 							setMySessionID(req, user.getId().toString());
 							java.net.URI location = new java.net.URI(
 									"../Home.jsp");
+							if (user.getUserAccount().isAdmin()) {
+								location = new java.net.URI("../Dashboard.jsp");
+							}
 							return Response.seeOther(location).build();
 						} else {
 							isFound = false;
@@ -1183,58 +1207,113 @@ public class UserService {
 		return null;
 	}
 
+	@POST
+	@Path("/SetUserViewSession")
+	public void setUserViewSession(@Context HttpServletRequest req,
+			String message) throws JsonGenerationException,
+			JsonMappingException, IOException {
+
+		deleteAllSession(req);
+
+		ObjectMapper mapper = new ObjectMapper();
+		JsonNode root = mapper.readTree(message);
+
+		if (root != null && root.has("userId") && root.has("userName")
+				&& root.has("isAdminUser")) {
+			String profileId = root.get("userId").getTextValue();
+			ObjectId id = new ObjectId(profileId);
+
+			String userName = new String();
+			Boolean isAdminUser = false;
+			String college = new String();
+			String department = new String();
+			String positionType = new String();
+			String positionTitle = new String();
+			userName = root.get("userName").getTextValue();
+			isAdminUser = root.get("isAdminUser").getBooleanValue();
+
+			if (root != null && root.has("college")) {
+				college = root.get("college").getTextValue();
+			}
+
+			if (root != null && root.has("department")) {
+				department = root.get("department").getTextValue();
+			}
+
+			if (root != null && root.has("positionType")) {
+				positionType = root.get("positionType").getTextValue();
+			}
+
+			if (root != null && root.has("positionTitle")) {
+				positionTitle = root.get("positionTitle").getTextValue();
+			}
+
+			UserProfile user = userProfileDAO.findMatchedUserDetails(id,
+					userName, isAdminUser, college, department, positionType,
+					positionTitle);
+			if (user != null) {
+				setUserCurrentSession(req, userName, isAdminUser, profileId,
+						college, department, positionType, positionTitle);
+			}
+		}
+	}
+
+	private void setUserCurrentSession(HttpServletRequest req, String userName,
+			boolean admin, String userId, String college, String department,
+			String positionType, String positionTitle) {
+
+		HttpSession session = req.getSession();
+		if (session.getAttribute("userProfileId") == null) {
+			session.setAttribute("userProfileId", userId);
+		}
+
+		if (session.getAttribute("gpmsUserName") == null) {
+			session.setAttribute("gpmsUserName", userName);
+		}
+
+		if (session.getAttribute("isAdmin") == null) {
+			session.setAttribute("isAdmin", admin);
+		}
+
+		if (session.getAttribute("userCollege") == null) {
+			session.setAttribute("userCollege", college);
+		}
+
+		if (session.getAttribute("userDepartment") == null) {
+			session.setAttribute("userDepartment", department);
+		}
+
+		if (session.getAttribute("userPositionType") == null) {
+			session.setAttribute("userPositionType", positionType);
+		}
+
+		if (session.getAttribute("userPositionTitle") == null) {
+			session.setAttribute("userPositionTitle", positionTitle);
+		}
+	}
+
 	@GET
 	@Path("/logout")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public Response logout(@Context HttpServletRequest req) {
+	public Response logout(@Context HttpServletRequest req)
+			throws URISyntaxException {
 		if (req == null) {
 			System.out.println("Null request in context");
 		}
+		deleteAllSession(req);
+		return Response.seeOther(new java.net.URI("../Login.jsp")).build();
+	}
+
+	private void deleteAllSession(@Context HttpServletRequest req) {
 		HttpSession session = req.getSession();
-
-		// if (session.getAttribute("gpmsUserName") != null) {
+		session.removeAttribute("userProfileId");
 		session.removeAttribute("gpmsUserName");
-		// session.invalidate();
-		// }
-
-		// if (session.getAttribute("userPositionType") == null) {
-		session.removeAttribute("userPositionType");
-		// session.invalidate();
-		// }
-
-		// if (session.getAttribute("userPositionTitle") == null) {
-		session.removeAttribute("userPositionTitle");
-		// session.invalidate();
-		// }
-
-		// if (session.getAttribute("userDepartment") == null) {
-		session.removeAttribute("userDepartment");
-		// session.invalidate();
-		// }
-
-		// if (session.getAttribute("userCollege") == null) {
-		session.removeAttribute("userCollege");
-		// session.invalidate();
-		// }
-
-		// if (session.getAttribute("isAdmin") == null) {
 		session.removeAttribute("isAdmin");
-		// session.invalidate();
-		// }
-
-		if (session.getAttribute("userProfileId") != null) {
-			// session.setAttribute("userProfileId", null);
-			session.removeAttribute("userProfileId");
-			session.invalidate();
-			java.net.URI location = null;
-			try {
-				location = new java.net.URI("../Login.jsp");
-			} catch (URISyntaxException e) {
-				e.printStackTrace();
-			}
-			return Response.seeOther(location).build();
-		}
-		return null;
+		session.removeAttribute("userCollege");
+		session.removeAttribute("userDepartment");
+		session.removeAttribute("userPositionType");
+		session.removeAttribute("userPositionTitle");
+		session.invalidate();
 	}
 
 	private void setMySessionID(@Context HttpServletRequest req,

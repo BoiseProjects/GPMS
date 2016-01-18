@@ -1,10 +1,11 @@
 ﻿var usersManage = '';
 
 $(function() {
-	
-	//For Sidebar active menu
-	$('.acitem').find('a').eq(0).prop("class", "active");
-	
+
+	if (userProfileId == "null") {
+		window.location = 'Login.jsp';
+	}
+
 	jQuery.fn.exists = function() {
 		return this.length > 0;
 	}
@@ -24,9 +25,13 @@ $(function() {
 
 	var gpmsCommonObj = function() {
 		var gpmsCommonInfo = {
-			UserName : GPMS.utils.GetUserName(),
 			UserProfileID : GPMS.utils.GetUserProfileID(),
-			CultureName : GPMS.utils.GetCultureName()
+		UserName : GPMS.utils.GetUserName(),			
+		UserIsAdmin : GPMS.utils.IsAdmin(),
+		UserPositionType : GPMS.utils.GetUserPositionType(),
+		UserPositionTitle : GPMS.utils.GetUserPositionTitle(),
+		UserDepartment : GPMS.utils.GetUserDepartment(),
+		UserCollege : GPMS.utils.GetUserCollege()
 		};
 		return gpmsCommonInfo;
 	};
@@ -157,7 +162,7 @@ $(function() {
 					});
 
 	var rowIndex = 0;
-	var editFlag = 0;
+	var editFlag = "0";
 	var userNameIsUnique = false;
 	var emailIsUnique = false;
 
@@ -200,11 +205,6 @@ $(function() {
 						success : usersManage.ajaxSuccess,
 						error : usersManage.ajaxFailure
 					});
-		},
-
-		LoadStaticImage : function() {
-			$('.cssClassSuccessImg').prop('src',
-					'' + GPMS.utils.GetGPMSRootPath() + 'images/right.jpg');
 		},
 
 		SearchUsers : function() {
@@ -262,7 +262,7 @@ $(function() {
 					cssclass : 'cssClassHeadCheckBox',
 					coltype : 'checkbox',
 					align : 'center',
-					checkFor : '11,12', // this is count from 0 column index
+					checkFor : '10,12', // this is count from 0 column index
 					elemClass : 'attrChkbox',
 					elemDefault : false,
 					controlclass : 'attribHeaderChkbox'
@@ -302,7 +302,7 @@ $(function() {
 					coltype : 'label',
 					align : 'left'
 				}, {
-					display : getLocale(gpmsUsersManagement, 'Added On'),
+					display : 'Added On',
 					name : 'added_on',
 					cssclass : 'cssClassHeadDate',
 					controlclass : '',
@@ -313,7 +313,7 @@ $(function() {
 				// Want more format then
 				// :https://github.com/phstc/jquery-dateFormat/blob/master/test/expected_inputs_spec.js
 				}, {
-					display : getLocale(gpmsUsersManagement, 'Last Audited'),
+					display : 'Last Audited',
 					name : 'last_audited',
 					cssclass : 'cssClassHeadDate',
 					controlclass : '',
@@ -339,16 +339,7 @@ $(function() {
 					align : 'left',
 					hide : true
 				}, {
-					display : getLocale(gpmsUsersManagement, 'Is Active?'),
-					name : 'is_active',
-					cssclass : 'cssClassHeadBoolean',
-					controlclass : '',
-					coltype : 'label',
-					align : 'left',
-					type : 'boolean',
-					format : 'Yes/No'
-				}, {
-					display : getLocale(gpmsUsersManagement, 'Is Deleted?'),
+					display : 'Is Deleted?',
 					name : 'is_deleted',
 					cssclass : 'cssClassHeadBoolean',
 					controlclass : '',
@@ -361,6 +352,15 @@ $(function() {
 				// you can define 'Yes/No'
 				// hide : true
 				}, {
+					display : 'Is Active?',
+					name : 'is_active',
+					cssclass : 'cssClassHeadBoolean',
+					controlclass : '',
+					coltype : 'label',
+					align : 'left',
+					type : 'boolean',
+					format : 'Yes/No'
+				}, {
 					display : 'Is Admin?',
 					name : 'is_admin',
 					cssclass : 'cssClassHeadBoolean',
@@ -371,7 +371,7 @@ $(function() {
 					format : 'Yes/No',
 					hide : true
 				}, {
-					display : getLocale(gpmsUsersManagement, 'Actions'),
+					display : 'Actions',
 					name : 'action',
 					cssclass : 'cssClassAction',
 					coltype : 'label',
@@ -379,7 +379,7 @@ $(function() {
 				} ],
 
 				buttons : [ {
-					display : getLocale(gpmsUsersManagement, "Edit"),
+					display : 'Edit',
 					name : 'edit',
 					enable : true,
 					_event : 'click',
@@ -387,32 +387,32 @@ $(function() {
 					callMethod : 'usersManage.EditUser',
 					arguments : '1,2,3,4,5,6,7,8,9,10,11,12'
 				}, {
-					display : getLocale(gpmsUsersManagement, "Delete"),
+					display : 'Delete',
 					name : 'delete',
 					enable : true,
 					_event : 'click',
 					trigger : '2',
 					callMethod : 'usersManage.DeleteUser',
-					arguments : '11,12'
+					arguments : '10,12'
 				}, {
-					display : getLocale(gpmsUsersManagement, "Activate"),
+					display : 'Activate',
 					name : 'activate',
 					enable : true,
 					_event : 'click',
 					trigger : '3',
 					callMethod : 'usersManage.ActiveUser',
-					arguments : '10,12'
+					arguments : '11,12'
 				}, {
-					display : getLocale(gpmsUsersManagement, "Deactivate"),
+					display : 'Deactivate',
 					name : 'deactivate',
 					enable : true,
 					_event : 'click',
 					trigger : '4',
 					callMethod : 'usersManage.DeactiveUser',
-					arguments : '10,12'
+					arguments : '11,12'
 				} ],
 				rp : perpage,
-				nomsg : getLocale(gpmsUsersManagement, 'No Records Found!'),
+				nomsg : 'No Records Found!',
 				param : data,
 				current : current_,
 				pnew : offset_,
@@ -420,7 +420,7 @@ $(function() {
 					0 : {
 						sorter : false
 					},
-					12 : {
+					13 : {
 						sorter : false
 					}
 				}
@@ -429,26 +429,19 @@ $(function() {
 
 		EditUser : function(tblID, argus) {
 			switch (tblID) {
-			case "gdvUsers":				
-				if(argus[12].toLowerCase() != "no"){
-					csscody.alert('<h2>'
-							+ getLocale(gpmsUsersManagement,
-									"Information Alert")
-							+ '</h2><p>'
-							+ getLocale(gpmsUsersManagement,
-									"Sorry! this user can not be edited.")
-							+ '</p>');
-					
+			case "gdvUsers":
+				if (argus[12].toLowerCase() != "no") {
+					csscody.alert('<h2>' + 'Information Alert' + '</h2><p>'
+							+ 'Sorry! this user can not be edited.' + '</p>');
+
 				} else {
 					usersManage.ClearForm();
 					$('#txtPassword').rules("remove");
 					$('#txtConfirmPassword').rules("remove");
-	
+
 					$('#lblFormHeading').html(
-							getLocale(gpmsUsersManagement,
-									'Edit User Details for: ')
-									+ argus[2]);
-	
+							'Edit User Details for: ' + argus[2]);
+
 					if (argus[7] != null && argus[7] != "") {
 						$('#tblLastAuditedInfo').show();
 						$('#lblLastUpdatedOn').html(argus[7]);
@@ -459,7 +452,7 @@ $(function() {
 					}
 					// $('#txtUserName').val(argus[1]);
 					// $('#txtUserName').prop('disabled', 'disabled');
-					if (argus[11].toLowerCase() != "yes") {
+					if (argus[10].toLowerCase() != "yes") {
 						$(".delbutton").prop("id", argus[0]);
 						$(".delbutton").show();
 					} else {
@@ -469,9 +462,9 @@ $(function() {
 					$("input[name=AddMore]").removeAttr('disabled');
 					$("input[name=DeleteOption]").removeAttr('disabled');
 					$("#btnSaveUser").prop("name", argus[0]);
-	
+
 					$("#btnReset").hide();
-	
+
 					usersManage.config.url = usersManage.config.baseURL
 							+ "GetUserDetailsByProfileId";
 					usersManage.config.data = JSON2.stringify({
@@ -479,9 +472,9 @@ $(function() {
 					});
 					usersManage.config.ajaxCallMode = 2;
 					usersManage.ajaxCall(usersManage.config);
-	
-					usersManage.BindUserAuditLogGrid(argus[0], null, null, null,
-							null);
+
+					usersManage.BindUserAuditLogGrid(argus[0], null, null,
+							null, null);
 					$('#auditLogTab').show();
 				}
 				break;
@@ -720,21 +713,34 @@ $(function() {
 																				}
 																			});
 														}
-													});									
+													});
 
 									$(
 											'#dataTable tbody>tr:eq('
-													+ rowIndex + ')').find(
-											"input").each(function(l) {												
-										var $button = $(this);
-										if ($button.is(".AddOption")) {
-											$button.prop("name", btnName);
-											$button.prop("value", btnOption);
-											$button.prop("title", btnTitle);	
-										}else if ($button.hasClass("class-isdefault")) {
-											$button.prop('checked', value['isDefault']);												
-										}
-									});
+													+ rowIndex + ')')
+											.find("input")
+											.each(
+													function(l) {
+														var $button = $(this);
+														if ($button
+																.is(".AddOption")) {
+															$button.prop(
+																	"name",
+																	btnName);
+															$button.prop(
+																	"value",
+																	btnOption);
+															$button.prop(
+																	"title",
+																	btnTitle);
+														} else if ($button
+																.hasClass("class-isdefault")) {
+															$button
+																	.prop(
+																			'checked',
+																			value['isDefault']);
+														}
+													});
 								});
 				$('#dataTable>tbody tr:first').remove();
 			} else {
@@ -829,7 +835,7 @@ $(function() {
 					format : 'yyyy/MM/dd hh:mm:ss a'
 				} ],
 				rp : perpage,
-				nomsg : getLocale(gpmsUsersManagement, 'No Records Found!'),
+				nomsg : 'No Records Found!',
 				param : data,
 				current : current_,
 				pnew : offset_,
@@ -844,27 +850,18 @@ $(function() {
 		DeleteUser : function(tblID, argus) {
 			switch (tblID) {
 			case "gdvUsers":
-				if(argus[2].toLowerCase() != "yes"){
+				if (argus[2].toLowerCase() != "yes") {
 					if (argus[1].toLowerCase() != "yes") {
 						usersManage.DeleteUserById(argus[0]);
 					} else {
-						csscody.alert('<h2>'
-								+ getLocale(gpmsUsersManagement,
-										"Information Alert")
-								+ '</h2><p>'
-								+ getLocale(gpmsUsersManagement,
-										"Sorry! this user is already deleted.")
+						csscody.alert('<h2>' + 'Information Alert' + '</h2><p>'
+								+ 'Sorry! this user is already deleted.'
 								+ '</p>');
 					}
 				} else {
-					csscody.alert('<h2>'
-								+ getLocale(gpmsUsersManagement,
-										"Information Alert")
-								+ '</h2><p>'
-								+ getLocale(gpmsUsersManagement,
-										"Sorry! this user can not be deleted.")
-								+ '</p>');
-					}
+					csscody.alert('<h2>' + 'Information Alert' + '</h2><p>'
+							+ 'Sorry! this user can not be deleted.' + '</p>');
+				}
 				break;
 			default:
 				break;
@@ -877,12 +874,9 @@ $(function() {
 					usersManage.ConfirmSingleDelete(_userId, e);
 				}
 			};
-			csscody.confirm("<h2>"
-					+ getLocale(gpmsUsersManagement, "Delete Confirmation")
-					+ "</h2><p>"
-					+ getLocale(gpmsUsersManagement,
-							"Are you sure you want to delete this user?")
-					+ "</p>", properties);
+			csscody.confirm("<h2>" + 'Delete Confirmation' + "</h2><p>"
+					+ 'Are you sure you want to delete this user?' + "</p>",
+					properties);
 		},
 
 		ConfirmSingleDelete : function(user_id, event) {
@@ -941,26 +935,19 @@ $(function() {
 		ActiveUser : function(tblID, argus) {
 			switch (tblID) {
 			case "gdvUsers":
-				if(argus[2].toLowerCase() != "yes"){
+				if (argus[2].toLowerCase() != "yes") {
 					if (argus[1].toLowerCase() != "yes") {
 						usersManage.ActivateUser(argus[0], true);
 					} else {
-						csscody.alert('<h2>'
-								+ getLocale(gpmsUsersManagement,
-										"Information Alert")
-								+ '</h2><p>'
-								+ getLocale(gpmsUsersManagement,
-										"Sorry! this user is already actived.")
+						csscody.alert('<h2>' + 'Information Alert' + '</h2><p>'
+								+ 'Sorry! this user is already actived.'
 								+ '</p>');
 					}
 				} else {
-					csscody.alert('<h2>'
-							+ getLocale(gpmsUsersManagement,
-									"Information Alert")
-							+ '</h2><p>'
-							+ getLocale(gpmsUsersManagement,
-									"Sorry! this user can not be activated.")
-							+ '</p>');
+					csscody
+							.alert('<h2>' + 'Information Alert' + '</h2><p>'
+									+ 'Sorry! this user can not be activated.'
+									+ '</p>');
 				}
 				break;
 			default:
@@ -971,25 +958,17 @@ $(function() {
 		DeactiveUser : function(tblID, argus) {
 			switch (tblID) {
 			case "gdvUsers":
-				if(argus[2].toLowerCase() != "yes"){
+				if (argus[2].toLowerCase() != "yes") {
 					if (argus[1].toLowerCase() != "no") {
 						usersManage.ActivateUser(argus[0], false);
 					} else {
-						csscody.alert('<h2>'
-								+ getLocale(gpmsUsersManagement,
-										"Information Alert")
-								+ '</h2><p>'
-								+ getLocale(gpmsUsersManagement,
-										"Sorry! this user is already deactived.")
+						csscody.alert('<h2>' + 'Information Alert' + '</h2><p>'
+								+ 'Sorry! this user is already deactived.'
 								+ '</p>');
 					}
 				} else {
-					csscody.alert('<h2>'
-							+ getLocale(gpmsUsersManagement,
-									"Information Alert")
-							+ '</h2><p>'
-							+ getLocale(gpmsUsersManagement,
-									"Sorry! this user can not be deactivated.")
+					csscody.alert('<h2>' + 'Information Alert' + '</h2><p>'
+							+ 'Sorry! this user can not be deactivated.'
 							+ '</p>');
 				}
 				break;
@@ -1003,16 +982,16 @@ $(function() {
 			// $('#form1').removeData('validator');
 			// $('.class-text').removeClass('error').next('span').removeClass(
 			// 'error');
-			var inputs = $("#container-7").find('INPUT:not(".class-isdefault"), SELECT, TEXTAREA');
+			var inputs = $("#container-7").find(
+					'INPUT:not(".class-isdefault"), SELECT, TEXTAREA');
 			$.each(inputs, function(i, item) {
 				// rmErrorClass(item);
 				$(this).prop('checked', false);
 				$(this).val($(this).find('option').first().val());
-			});	
-			
+			});
+
 			usersManage.onInit();
-			$('#lblFormHeading').html(
-					getLocale(gpmsUsersManagement, "New User Details"));
+			$('#lblFormHeading').html('New User Details');
 			$(".delbutton").removeAttr("id");
 			$("#btnSaveUser").removeAttr("name");
 			$(".delbutton").hide();
@@ -1023,11 +1002,12 @@ $(function() {
 			// $(this).parent("td").find("span.error").remove();
 			// }
 			// });
-			$('#txtUserName').removeAttr('disabled');			
+			$('#txtUserName').removeAttr('disabled');
 
 			rowIndex = 0;
 			$("#dataTable tbody>tr:gt(0)").remove();
-			$("#dataTable tr:eq(1)").find("input:not(:last)").prop('checked', true);
+			$("#dataTable tr:eq(1)").find("input:not(:last)").prop('checked',
+					true);
 			$(".AddOption").val("[+] Add");
 
 			if (!$('input[name=chkActive]').is(":checked")) {
@@ -1057,7 +1037,7 @@ $(function() {
 			$tabs.tabs('option', 'active', 0);
 		},
 
-		saveUser : function(_userId, _flag) {
+		saveUser : function(_userId) {
 			// $('#iferror').hide();
 			// var $form = $("#form1");
 			// $form.valid();
@@ -1092,19 +1072,20 @@ $(function() {
 										if ($(this).hasClass("sfListmenu")) {
 											if (!optionsText
 													&& $(this).prop("name") != "ddlPositionTitle") {
-												validateErrorMessage = getLocale(
-														gpmsUsersManagement,
-														"Please select all position details for this user.")
+												validateErrorMessage = 'Please select all position details for this user.'
 														+ "<br/>";
 												usersManage.SetFirstTabActive();
 												$(this).focus();
-											}else{										
-												_saveOptions += optionsText + "!#!";
-											}										
-										} else if ($(this).hasClass("class-isdefault")) {											
-				                            var _IsChecked = $(this).prop('checked');
-				                            _saveOptions += _IsChecked + "#!#";
-				                        }
+											} else {
+												_saveOptions += optionsText
+														+ "!#!";
+											}
+										} else if ($(this).hasClass(
+												"class-isdefault")) {
+											var _IsChecked = $(this).prop(
+													'checked');
+											_saveOptions += _IsChecked + "#!#";
+										}
 									});
 
 					_saveOptions = _saveOptions.substring(0,
@@ -1131,7 +1112,6 @@ $(function() {
 						PersonalEmail : $('#txtPersonalEmail').val(),
 						IsActive : $('input[name=chkActive]').prop('checked'),
 						UserName : $.trim($('#txtUserName').val()),
-						Flag : _flag, // false for Update true for New Add
 						SaveOptions : _saveOptions
 					};
 
@@ -1150,13 +1130,9 @@ $(function() {
 			var errors = '';
 			if (!textBoxUserName.hasClass('warning') && userName.length > 0) {
 				if (!usersManage.isUniqueUserName(user_id, userName)) {
-					errors += getLocale(gpmsUsersManagement,
-							"Please enter unique username.")
-							+ " '"
-							+ userName.trim()
-							+ "' "
-							+ getLocale(gpmsUsersManagement,
-									"has already been taken.");
+					errors += 'Please enter unique username.' + " '"
+							+ userName.trim() + "' "
+							+ 'has already been taken.';
 					textBoxUserName.addClass("error");
 					textBoxUserName.siblings('.cssClassRight').hide();
 					if (textBoxUserName.siblings('span.warning').exists()) {
@@ -1185,11 +1161,11 @@ $(function() {
 				UserID : userId,
 				NewUserName : newUserName
 			};
-			var gpmsCommonInfo = gpmsCommonObj();
+			
 			this.config.url = this.config.baseURL + "CheckUniqueUserName";
 			this.config.data = JSON2.stringify({
 				userUniqueObj : userUniqueObj,
-				gpmsCommonObj : gpmsCommonInfo
+				gpmsCommonObj : gpmsCommonObj()
 			});
 			this.config.ajaxCallMode = 7;
 			this.ajaxCall(this.config);
@@ -1201,13 +1177,8 @@ $(function() {
 			var txtEmail = $("#" + textBoxEmail);
 			if (!txtEmail.hasClass('warning') && email.length > 0) {
 				if (!usersManage.isUniqueEmail(user_id, email)) {
-					errors += getLocale(gpmsUsersManagement,
-							"Please enter unique email id.")
-							+ " '"
-							+ email.trim()
-							+ "' "
-							+ getLocale(gpmsUsersManagement,
-									"has already been taken.");
+					errors += 'Please enter unique email id.' + " '"
+							+ email.trim() + "' " + 'has already been taken.';
 					txtEmail.addClass("error");
 					txtEmail.siblings('.cssClassRight').hide();
 					if (txtEmail.siblings('span.warning').exists()) {
@@ -1237,11 +1208,11 @@ $(function() {
 				UserID : userId,
 				NewEmail : newEmail
 			};
-			var gpmsCommonInfo = gpmsCommonObj();
+			
 			this.config.url = this.config.baseURL + "CheckUniqueEmail";
 			this.config.data = JSON2.stringify({
 				userUniqueObj : userUniqueObj,
-				gpmsCommonObj : gpmsCommonInfo
+				gpmsCommonObj : gpmsCommonObj()
 			});
 			this.config.ajaxCallMode = 8;
 			this.ajaxCall(this.config);
@@ -1668,16 +1639,10 @@ $(function() {
 				$('#divUserForm').show();
 				break;
 
-			case 3:// For Form Department Dropdown Binding
+			case 3:// For User Delete
 				usersManage.BindUserGrid(null, null, null, null, null, null);
-				csscody
-						.info("<h2>"
-								+ getLocale(gpmsUsersManagement,
-										'Successful Message')
-								+ "</h2><p>"
-								+ getLocale(gpmsUsersManagement,
-										'User has been deleted successfully.')
-								+ "</p>");
+				csscody.info("<h2>" + 'Successful Message' + "</h2><p>"
+						+ 'User has been deleted successfully.' + "</p>");
 
 				$('#divUserForm').hide();
 				$('#divUserGrid').show();
@@ -1686,34 +1651,21 @@ $(function() {
 			case 4:
 				SageData.Get("gdvUsers").Arr.length = 0;
 				usersManage.BindUserGrid(null, null, null, null, null, null);
-				csscody
-						.info("<h2>"
-								+ getLocale(gpmsUsersManagement,
-										'Successful Message')
-								+ "</h2><p>"
-								+ getLocale(gpmsUsersManagement,
-										'Selected user(s) has been deleted successfully.')
-								+ "</p>");
+				csscody.info("<h2>" + 'Successful Message' + "</h2><p>"
+						+ 'Selected user(s) has been deleted successfully.'
+						+ "</p>");
 				break;
 
 			case 5:
 				usersManage.BindUserGrid(null, null, null, null, null, null);
-				csscody.info("<h2>"
-						+ getLocale(gpmsUsersManagement, 'Successful Message')
-						+ "</h2><p>"
-						+ getLocale(gpmsUsersManagement,
-								'User has been activated successfully.')
-						+ "</p>");
+				csscody.info("<h2>" + 'Successful Message' + "</h2><p>"
+						+ 'User has been activated successfully.' + "</p>");
 				break;
 
 			case 6:
 				usersManage.BindUserGrid(null, null, null, null, null, null);
-				csscody.info("<h2>"
-						+ getLocale(gpmsUsersManagement, 'Successful Message')
-						+ "</h2><p>"
-						+ getLocale(gpmsUsersManagement,
-								'User has been deactivated successfully.')
-						+ "</p>");
+				csscody.info("<h2>" + 'Successful Message' + "</h2><p>"
+						+ 'User has been deactivated successfully.' + "</p>");
 				break;
 
 			case 7:
@@ -1727,22 +1679,12 @@ $(function() {
 			case 9:
 				usersManage.BindUserGrid(null, null, null, null, null, null);
 				$('#divUserGrid').show();
-				if (editFlag > 0) {
-					csscody.info("<h2>"
-							+ getLocale(gpmsUsersManagement,
-									'Successful Message')
-							+ "</h2><p>"
-							+ getLocale(gpmsUsersManagement,
-									'User has been updated successfully.')
-							+ "</p>");
+				if (editFlag != "0") {
+					csscody.info("<h2>" + 'Successful Message' + "</h2><p>"
+							+ 'User has been updated successfully.' + "</p>");
 				} else {
-					csscody.info("<h2>"
-							+ getLocale(gpmsUsersManagement,
-									'Successful Message')
-							+ "</h2><p>"
-							+ getLocale(gpmsUsersManagement,
-									'User has been saved successfully.')
-							+ "</p>");
+					csscody.info("<h2>" + 'Successful Message' + "</h2><p>"
+							+ 'User has been saved successfully.' + "</p>");
 				}
 				usersManage.ClearForm();
 				$('#divUserForm').hide();
@@ -1755,84 +1697,52 @@ $(function() {
 			case 0:
 				break;
 			case 1:
-				csscody.error('<h2>'
-						+ getLocale(gpmsUsersManagement, "Error Message")
-						+ '</h2><p>'
-						+ getLocale(gpmsUsersManagement,
-								"Failed to load colleges list.") + '</p>');
+				csscody.error('<h2>' + 'Error Message' + '</h2><p>'
+						+ 'Failed to load colleges list.' + '</p>');
 				break;
 			case 2:
-				csscody.error('<h2>'
-						+ getLocale(gpmsUsersManagement, "Error Message")
-						+ '</h2><p>' + "Failed to load user details." + '</p>');
+				csscody.error('<h2>' + 'Error Message' + '</h2><p>'
+						+ 'Failed to load user details.' + '</p>');
 				break;
 			case 3:
-				csscody.error("<h2>"
-						+ getLocale(gpmsUsersManagement, 'Error Message')
-						+ "</h2><p>"
-						+ getLocale(gpmsUsersManagement,
-								'User cannot be deleted.') + "</p>");
+				csscody.error("<h2>" + 'Error Message' + "</h2><p>"
+						+ 'User cannot be deleted.' + "</p>");
 				break;
 			case 4:
-				csscody
-						.error("<h2>"
-								+ getLocale(gpmsUsersManagement,
-										'Error Message')
-								+ "</h2><p>"
-								+ getLocale(gpmsUsersManagement,
-										'Selected user(s) cannot be deleted.')
-								+ "</p>");
+				csscody.error("<h2>" + 'Error Message' + "</h2><p>"
+						+ 'Selected user(s) cannot be deleted.' + "</p>");
 				break;
 			case 5:
-				csscody.error("<h2>"
-						+ getLocale(gpmsUsersManagement, 'Error Message')
-						+ "</h2><p>"
-						+ getLocale(gpmsUsersManagement,
-								'User cannot be activated.') + "</p>");
+				csscody.error("<h2>" + 'Error Message' + "</h2><p>"
+						+ 'User cannot be activated.' + "</p>");
 				break;
 			case 6:
-				csscody.error("<h2>"
-						+ getLocale(gpmsUsersManagement, 'Error Message')
-						+ "</h2><p>"
-						+ getLocale(gpmsUsersManagement,
-								'User cannot be deactivated.') + "</p>");
+				csscody.error("<h2>" + 'Error Message' + "</h2><p>"
+						+ 'User cannot be deactivated.' + "</p>");
 				break;
 			case 7:
-				csscody.error("<h2>"
-						+ getLocale(gpmsUsersManagement, 'Error Message')
-						+ "</h2><p>"
-						+ getLocale(gpmsUsersManagement,
-								'Cannot check for unique Username') + "</p>");
+				csscody.error("<h2>" + 'Error Message' + "</h2><p>"
+						+ 'Cannot check for unique Username' + "</p>");
 				break;
 
 			case 8:
-				csscody.error("<h2>"
-						+ getLocale(gpmsUsersManagement, 'Error Message')
-						+ "</h2><p>"
-						+ getLocale(gpmsUsersManagement,
-								'Cannot check for unique Email') + "</p>");
+				csscody.error("<h2>" + 'Error Message' + "</h2><p>"
+						+ 'Cannot check for unique Email' + "</p>");
 				break;
 
 			case 9:
-				if (editFlag > 0) {
-					csscody.error("<h2>"
-							+ getLocale(gpmsUsersManagement, 'Error Message')
-							+ "</h2><p>"
-							+ getLocale(gpmsUsersManagement,
-									'Failed to update user!') + "</p>");
+				if (editFlag != "0") {
+					csscody.error("<h2>" + 'Error Message' + "</h2><p>"
+							+ 'Failed to update user!' + "</p>");
 				} else {
-					csscody.error("<h2>"
-							+ getLocale(gpmsUsersManagement, 'Error Message')
-							+ "</h2><p>"
-							+ getLocale(gpmsUsersManagement,
-									'Failed to save user!') + "</p>");
+					csscody.error("<h2>" + 'Error Message' + "</h2><p>"
+							+ 'Failed to save user!' + "</p>");
 				}
 				break;
 			}
 		},
 
 		init : function() {
-			usersManage.LoadStaticImage();
 			usersManage.BindUserGrid(null, null, null, null, null, null);
 			$('#divUserForm').hide();
 			$('#divUserGrid').show();
@@ -1951,25 +1861,17 @@ $(function() {
 									csscody
 											.confirm(
 													"<h2>"
-															+ getLocale(
-																	gpmsUsersManagement,
-																	'Delete Confirmation')
+															+ 'Delete Confirmation'
 															+ "</h2><p>"
-															+ getLocale(
-																	gpmsUsersManagement,
-																	'Are you sure you want to delete selected user(s)?')
+															+ 'Are you sure you want to delete selected user(s)?'
 															+ "</p>",
 													properties);
 								} else {
 									csscody
 											.alert('<h2>'
-													+ getLocale(
-															gpmsUsersManagement,
-															"Information Alert")
+													+ 'Information Alert'
 													+ '</h2><p>'
-													+ getLocale(
-															gpmsUsersManagement,
-															"Please select at least one user before deleting.")
+													+ 'Please select at least one user before deleting.'
 													+ '</p>');
 								}
 							});
@@ -2010,10 +1912,10 @@ $(function() {
 				var user_id = $(this).prop("name");
 				if (user_id != '') {
 					editFlag = user_id;
-					usersManage.saveUser(user_id, false);
+					usersManage.saveUser(user_id);
 				} else {
-					editFlag = 0;
-					usersManage.saveUser("0", true);
+					editFlag = "0";
+					usersManage.saveUser("0");
 				}
 				$(this).enable();
 				e.preventDefault();
@@ -2061,12 +1963,15 @@ $(function() {
 							function() {
 								// var checkedState = false;
 								if ($(this).prop("name") == "DeleteOption") {
-									var t = $(this).closest('tr');	
-									
-									if(t.find("input:not(:last)").prop('checked')){
-										$("#dataTable tr:eq(1)").find("input:not(:last)").prop('checked', true);
+									var t = $(this).closest('tr');
+
+									if (t.find("input:not(:last)").prop(
+											'checked')) {
+										$("#dataTable tr:eq(1)").find(
+												"input:not(:last)").prop(
+												'checked', true);
 									}
-									
+
 									t.find("td").wrapInner(
 											"<div style='display: block'/>")
 											.parent().find("td div").slideUp(
@@ -2089,8 +1994,9 @@ $(function() {
 															"Delete ");
 													$(this).prop("title",
 															"Delete");
-												}else if ($(this).hasClass("class-isdefault")) {
-						                            this.checked = false;
+												} else if ($(this).hasClass(
+														"class-isdefault")) {
+													this.checked = false;
 												}
 												$(this).parent('td').find(
 														'span').removeClass(

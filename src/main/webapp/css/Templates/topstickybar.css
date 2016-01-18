@@ -4,8 +4,8 @@
 	font-family: 'aspx';
 	src: url('./fonts/aspx.eot');
 	src: url('./fonts/aspx.eot') format('embedded-opentype'),
-		url('./fonts/aspx.ttf') format('truetype'), url('./fonts/aspx.svg#aspx')
-		format('svg');
+		url('./fonts/aspx.ttf') format('truetype'),
+		url('./fonts/aspx.svg#aspx') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }
@@ -45,8 +45,7 @@ li.preview a.icon-preview:before, li.home a.icon-dashboard:before, li.home a.ico
 
 li.sfDashBoard a.icon-dashboard:before, li.sfDashBoard a.icon-home:before
 	{
-	font-size: 18px;
-	margin-top: 14px;
+	font-size: 22px;
 }
 
 li.sfDashBoard a:hover {
@@ -55,8 +54,8 @@ li.sfDashBoard a:hover {
 }
 
 li.home a.icon-dashboard:before, li.home a.icon-home:before {
-	margin-right: 0px;
-	font-size: 16px;
+	margin-right: 3px;
+	font-size: 22px;
 }
 
 li.preview a:hover.icon-preview, li.preview a:hover.icon-preview:before,
@@ -140,6 +139,8 @@ li.preview a:hover.icon-preview, li.preview a:hover.icon-preview:before,
 
 .icon-checked:before {
 	content: "\e610";
+	color: #9ac659;
+	font-size: 16px;
 }
 
 .icon-arrow-e:before {
@@ -884,7 +885,7 @@ li.preview a:hover.icon-preview, li.preview a:hover.icon-preview:before,
 
 .sfTopbar ul.right>li {
 	height: 45px;
-	line-height: 41px;
+	line-height: 45px;
 	border-left: 1px solid #3d4d64;
 	padding: 0 15px;
 }
@@ -1150,7 +1151,7 @@ li.preview a:hover.icon-preview, li.preview a:hover.icon-preview:before,
 	top: 38px;
 	right: 9px;
 	background: #fff;
-	min-width: 150px;
+	min-width: 192px;
 	z-index: 9999;
 	border-radius: 3px;
 	-webkit-border-radius: 3px;
@@ -1194,8 +1195,15 @@ li.preview a:hover.icon-preview, li.preview a:hover.icon-preview:before,
 	font-weight: bold;
 }
 
-.sfTopbar ul.right li div.myProfileDrop ul li:nth-child(3) {
+.sfTopbar ul.right li div.myProfileDrop ul li:nth-child(-n+2) {
+	border-top: none;
+}
+
+.sfTopbar ul.right li div.myProfileDrop ul li {
 	border-top: 1px solid #e4e4e4;
+}
+
+.sfTopbar ul.right li div.myProfileDrop ul li:last-child {
 	padding-bottom: 10px;
 }
 
@@ -1906,79 +1914,6 @@ font-family: "aspx" !important;
 		display: none !important;
 	}
 }
-
-"
-!
-important
-;
-
-  
-font-style
-:
- 
-normal
- 
-!
-important
-;
-
-  
-font-weight
-:
- 
-normal
- 
-!
-important
-;
-
-  
-font-variant
-:
- 
-normal
- 
-!
-important
-;
-
-  
-text-transform
-:
- 
-none
- 
-!
-important
-;
-
-  
-speak
-:
- 
-none
-;
-
-  
-line-height
-:
- 
-1;
--webkit-font-smoothing
-:
- 
-antialiased
-;
-
-  
--moz-osx-font-smoothing
-:
- 
-grayscale
-;
-}
-* /
-
 
 .icon-info {
 	font-size: 12px;

@@ -1,4 +1,4 @@
-﻿var settings = '';
+﻿var notifications = '';
 
 $(function() {
 

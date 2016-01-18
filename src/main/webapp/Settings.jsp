@@ -59,9 +59,8 @@
 	var gpmsRootPath = "http://localhost:8181/GPMS/";
 
 	$(function() {
-		$(".sfLocale").localize({
-			moduleKey : gpmsSettings
-		});
+		// For Sidebar active menu
+		$('.acitem').find('a').eq(2).prop("class", "active");
 	});
 
 	//]]>
@@ -70,6 +69,7 @@
 <script type="text/javascript" src="js/jQuery/jquery-ui.js"></script>
 
 <script type="text/javascript" src="js/core/gpmscore.js"></script>
+<script type="text/javascript" src="js/core/encoder.js"></script>
 
 <script type="text/javascript" src="js/core/jquery.disable_with.js"></script>
 
@@ -79,25 +79,17 @@
 <script type="text/javascript" src="js/superfish.js"></script>
 
 <script type="text/javascript"
-	src="js/FormValidation/jquery.form-validation-and-hints.js"></script>
-<script type="text/javascript"
 	src="js/FormValidation/jquery.validate.js"></script>
 <script type="text/javascript"
 	src="js/FormValidation/jquery.ui.datepicker.validation.js"></script>
-
 <script type="text/javascript"
 	src="js/FormValidation/jquery.maskedinput.js"></script>
-
-<!-- <script type="text/javascript" src="js/SystemLocale/systemlocale.js"></script> -->
-<script type="text/javascript"
-	src="js/modules/Language/CoreJsLanguage.js"></script>
+<script type="text/javascript" src="js/FormValidation/autoNumeric.js"></script>
 
 <script type="text/javascript" src="js/core/json2.js"></script>
 
 <script type="text/javascript" src="js/jquery-browser.js"></script>
 <script type="text/javascript" src="js/jquery.uniform.js"></script>
-
-<script type="text/javascript" src="js/jquery.qtip-1.0.0-rc3.js"></script>
 
 <script type="text/javascript" src="js/GridView/jquery.tablesorter.js"></script>
 <script type="text/javascript" src="js/GridView/jquery.grid.js"></script>
@@ -108,27 +100,14 @@
 <script type="text/javascript" src="js/MessageBox/jquery.easing.1.3.js"></script>
 <script type="text/javascript" src="js/MessageBox/alertbox.js"></script>
 
-<script type="text/javascript" src="js/AjaxFileUploader/ajaxupload.js"></script>
-
-<script type="text/javascript"
-	src="js/ckeditor_4.5.1_full/ckeditor/ckeditor.js"></script>
-<script type="text/javascript"
-	src="js/ckeditor_4.5.1_full/ckeditor/adapters/jquery.js"></script>
-
-
-<!-- <script type="text/javascript" src="js/core/Session.js"></script> -->
-<script type="text/javascript" src="js/core/encoder.js"></script>
-
 <script type="text/javascript" src="js/modules/Settings.js"></script>
-<script type="text/javascript"
-	src="js/modules/Language/GPMSSettings.js"></script>
-<!-- <script type="text/javascript" src="js/modules/Language/AspxRssFeedLocale.js"></script> -->
 
 <link type="text/css" rel="stylesheet"
 	href="css/Templates/jquery-ui.css" />
-<link type="text/css" rel="stylesheet" href="css/GridView/tablesort.css" />
+
 <link type="text/css" rel="stylesheet" href="css/MessageBox/style.css" />
 
+<link type="text/css" rel="stylesheet" href="css/GridView/tablesort.css" />
 <link type="text/css" rel="stylesheet" href="css/Templates/grid.css" />
 <link type="text/css" rel="stylesheet"
 	href="css/Templates/topstickybar.css" />
@@ -140,7 +119,7 @@
 		<div style="display: none;" id="UpdateProgress1">
 			<div class="sfLoadingbg">&nbsp;</div>
 			<div class="sfLoadingdiv">
-				<img id="imgProgress" src="images/ajax-loader.gif"
+				<img id="imgProgress" src="./images/ajax-loader.gif"
 					style="border-width: 0px;" alt="Loading..." title="Loading..." />
 				<br> <span id="lblPrgress">Please wait...</span>
 			</div>
@@ -152,6 +131,9 @@
 
 		<div id="sfOuterwrapper">
 			<div class="sfSagewrapper">
+				<!-- Sticky Bar -->
+				<%@ include file="AdminTopStickyBar.jsp"%>
+				<!-- END Sticky Bar -->
 
 				<!--Body Content-->
 				<div class="sfContentwrapper clearfix">
@@ -167,7 +149,7 @@
 								id="divBottompanel">
 								<div class="sfModulecontent clearfix">
 									<!-- form -->
-									<div id="divUserForm" style="display: none">
+									<div id="divUserForm">
 										<div class="cssClassCommonBox Curve">
 											<div class="cssClassHeader">
 												<h1>
@@ -186,24 +168,24 @@
 											<p>
 												<button title="Go Back" type="button" id="btnBack"
 													class="sfBtn">
-													<span class="sfLocale icon-arrow-slim-w">Back</span>
+													<span class="icon-arrow-slim-w">Back</span>
 												</button>
 											</p>
 											<p>
 												<button title="Reset" type="button" id="btnReset"
 													class="sfBtn">
-													<span class="sfLocale icon-refresh">Reset</span>
+													<span class="icon-refresh">Reset</span>
 												</button>
 											</p>
 											<p>
 												<button title="Delete" type="button" class="delbutton sfBtn">
-													<span class="sfLocale icon-delete">Delete</span>
+													<span class="icon-delete">Delete</span>
 												</button>
 											</p>
 											<p>
 												<button title="Save User" type="button" id="btnSaveUser"
 													class="sfBtn">
-													<span class="sfLocale icon-save">Save</span>
+													<span class="icon-save">Save</span>
 												</button>
 											</p>
 										</div>

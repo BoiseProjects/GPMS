@@ -22,10 +22,6 @@
 <meta content="IE=EmulateIE7" http-equiv="X-UA-Compatible">
 <meta content="RevealTrans(Duration=0,Transition=1)"
 	http-equiv="PAGE-ENTER">
-
-<meta content="authenticity_token" name="csrf-param">
-<meta content="XhX9LjcVdDyY9jnVo+fFJBteb+x2anfwMUyirFUck3U="
-	name="csrf-token">
 <link type="icon shortcut" media="icon" href="favicon.ico">
 <!--[if IE 9]>
         <link rel="stylesheet" href="css/ie9.css" type="text/css" media="screen"/><![endif]-->
@@ -50,55 +46,39 @@
 <script type="text/javascript">
 	//<![CDATA[
 	var gpmsAppPath = "";
-	var gpmsUserName = "superuser";
-	var gpmsCurrentCulture = "en-US";
-	var gpmsHostURL = "http://localhost:8181/GPMS/";
-	var gpmsSecureToken = "GPMS.AUTHjxr30wycjzvpqd0jv3vkybx4ZADJX9SLOC1";
+	           
+	var userProfileId = '<%=session.getAttribute("userProfileId")%>';
+	var gpmsUserName = '<%=session.getAttribute("gpmsUserName")%>';
+	var isAdmin = '<%=session.getAttribute("isAdmin")%>';
+	var userPositionType = '<%=session.getAttribute("userPositionType")%>';
+	var	userPositionTitle = '<%=session.getAttribute("userPositionTitle")%>';
+	var userDepartment = '<%=session.getAttribute("userDepartment")%>';
+	var userCollege = '<%=session.getAttribute("userCollege")%>';
 
 	var gpmsServicePath = "REST/";
 	var gpmsRootPath = "http://localhost:8181/GPMS/";
-	var userProfileId = '<%=session.getAttribute("userid")%>';
-	var sessionCode = "jxr30wycjzvpqd0jv3vkybx4";
-	var clientIPAddress = "::1";
-	var gpmsCountryName = "RESERVED";
-	var gpmsRedirectPath = "/";
-
-	var logInURL = "Login";
-	var pageExtension = ".jsp";
-
-	$(function() {
-		$(".sfLocale").localize({
-			moduleKey : gpmsLogIn
-		});
-	});
 
 	//]]>
 </script>
 
 <script type="text/javascript" src="js/core/gpmscore.js"></script>
-<script type="text/javascript" src="js/core/rememberme.js"></script>
 
 <script type="text/javascript"
 	src="js/FormValidation/jquery.validate.js"></script>
-
-<script type="text/javascript"
-	src="js/modules/Language/CoreJsLanguage.js"></script>
 
 <script type="text/javascript" src="js/core/json2.js"></script>
 
 <script type="text/javascript" src="js/jquery-browser.js"></script>
 <script type="text/javascript" src="js/jquery.uniform.js"></script>
 
-<script type="text/javascript" src="js/jquery.qtip-1.0.0-rc3.js"></script>
-
 <script type="text/javascript" src="js/MessageBox/jquery.easing.1.3.js"></script>
 <script type="text/javascript" src="js/MessageBox/alertbox.js"></script>
 
-<!-- <script type="text/javascript" src="js/core/Session.js"></script> -->
-<script type="text/javascript" src="js/core/encoder.js"></script>
+<script type="text/javascript" src="js/core/rememberme.js"></script>
 
 <script type="text/javascript" src="js/modules/LogIn.js"></script>
-<script type="text/javascript" src="js/modules/Language/GPMSLogIn.js"></script>
+
+<link type="text/css" rel="stylesheet" href="css/MessageBox/style.css" />
 
 <link media="screen" rel="stylesheet"
 	href="css/Templates/application.css" type="text/css" />
@@ -108,7 +88,7 @@
 	<div style="display: none;" id="UpdateProgress1">
 		<div class="sfLoadingbg">&nbsp;</div>
 		<div class="sfLoadingdiv">
-			<img id="imgProgress" src="images/ajax-loader.gif"
+			<img id="imgProgress" src="./images/ajax-loader.gif"
 				style="border-width: 0px;" alt="Loading..." title="Loading..." /> <br>
 			<span id="lblPrgress">Please wait...</span>
 		</div>
@@ -160,8 +140,8 @@
 							name="password" size="30" type="password">
 					</div>
 					<div class="form__item">
-						<input id="remember_me" name="remember_me" type="checkbox"> <label
-							class="form__label label label--inline" for="remember_me">
+						<input id="remember_me" name="remember_me" type="checkbox">
+						<label class="form__label label label--inline" for="remember_me">
 							Remember me </label>
 					</div>
 					<input class="btn btn--large btn--expanded btn--blue" name="commit"

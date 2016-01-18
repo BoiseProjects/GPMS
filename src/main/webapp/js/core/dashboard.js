@@ -2,10 +2,9 @@
 $(function() {
 	DashBoard = {
 		init : function() {
-			$('body').append(
-					'<div id="ajaxBusy" style="display:none"><img align="absmiddle"  src="'
-							+ gpmsAppPath
-							+ 'images/ajax-loader.gif">&nbsp;Working...</div>');			
+			$('body')
+					.append(
+							'<div id="ajaxBusy" style="display:none"><img align="absmiddle"  src="./images/ajax-loader.gif">&nbsp;Working...</div>');
 		}
 	};
 	DashBoard.init();
@@ -46,12 +45,19 @@ function CalculateAdjustmentHeight() {
 
 function InitModuleFloat(leftOffset) {
 
-    if (location.href.toLowerCase().indexOf("page-modules") > -1) {
+	if (location.href.toLowerCase().indexOf("page-modules") > -1) {
 
-        var topOffset = $('#divDroppable').offset().top;
-        var adj = $('#sfOuterwrapper').height() + ($('#sfOuterwrapper').offset().top) - ($('#divFloat').height());
-        $("#divFloat").makeFloat({ x: leftOffset, y: 0, speed: "fast", adjustment: adj });
-    }
+		var topOffset = $('#divDroppable').offset().top;
+		var adj = $('#sfOuterwrapper').height()
+				+ ($('#sfOuterwrapper').offset().top)
+				- ($('#divFloat').height());
+		$("#divFloat").makeFloat({
+			x : leftOffset,
+			y : 0,
+			speed : "fast",
+			adjustment : adj
+		});
+	}
 
 }
 
@@ -69,4 +75,3 @@ $(document).ajaxComplete(function() {
 function startAjaxBusy() {
 	$('#ajaxBusy').hide();
 }
-

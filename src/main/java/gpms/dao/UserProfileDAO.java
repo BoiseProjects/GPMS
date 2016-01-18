@@ -9,7 +9,6 @@ package gpms.dao;
 import gpms.DAL.MongoDBConnector;
 import gpms.model.AuditLog;
 import gpms.model.AuditLogInfo;
-import gpms.model.GPMSCommonInfo;
 import gpms.model.PositionDetails;
 import gpms.model.Proposal;
 import gpms.model.UserAccount;
@@ -215,8 +214,8 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 			user.setLastAuditAction(lastAuditAction);
 
 			user.setDeleted(userProfile.getUserAccount().isDeleted());
-			user.setActive(userProfile.getUserAccount().isActive());
-			user.setAdmin(userProfile.getUserAccount().isAdmin());
+			user.setActivated(userProfile.getUserAccount().isActive());
+			user.setAdminUser(userProfile.getUserAccount().isAdmin());
 			users.add(user);
 		}
 		Collections.sort(users);
@@ -464,8 +463,8 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 				.equal(userAccount).get();
 	}
 
-	public void saveUserByUserID(UserProfile newProfile,
-			UserProfile authorProfile, GPMSCommonInfo gpmsCommonObj) {
+	public void saveUser(UserProfile newProfile,
+			UserProfile authorProfile) {
 		Datastore ds = getDatastore();
 		audit = new AuditLog(authorProfile,
 				"Created user account and profile of "
@@ -474,8 +473,8 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 		ds.save(newProfile);
 	}
 
-	public void updateUserByUserID(UserProfile existingUserProfile,
-			UserProfile authorProfile, GPMSCommonInfo gpmsCommonObj) {
+	public void updateUser(UserProfile existingUserProfile,
+			UserProfile authorProfile) {
 		Datastore ds = getDatastore();
 		audit = new AuditLog(authorProfile,
 				"Updated user account and profile of "
@@ -486,7 +485,7 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 	}
 
 	public void deleteUserProfileByUserID(UserProfile userProfile,
-			UserProfile authorProfile, GPMSCommonInfo gpmsCommonObj) {
+			UserProfile authorProfile) {
 		Datastore ds = getDatastore();
 		audit = new AuditLog(authorProfile, "Deleted user profile of "
 				+ userProfile.getFullName(), new Date());
@@ -497,8 +496,7 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 	}
 
 	public void activateUserProfileByUserID(UserProfile userProfile,
-			UserProfile authorProfile, GPMSCommonInfo gpmsCommonObj,
-			Boolean isActive) {
+			UserProfile authorProfile, Boolean isActive) {
 		Datastore ds = getDatastore();
 		audit = new AuditLog(authorProfile, "Activated user profile of "
 				+ userProfile.getFullName(), new Date());
@@ -654,4 +652,35 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 		return userPositions;
 	}
 
+	public UserProfile findMatchedUserDetails(ObjectId id, String userName,
+			Boolean isAdminUser, String college, String department,
+			String positionType, String positionTitle) {
+		Datastore ds = getDatastore();
+
+		Query<UserAccount> accountQuery = ds.createQuery(UserAccount.class);
+
+		accountQuery.and(accountQuery.criteria("is deleted").equal(false),
+				accountQuery.criteria("is active").equal(true), accountQuery
+						.criteria("username").equal(userName), accountQuery
+						.criteria("is admin").equal(isAdminUser));
+
+		Query<UserProfile> profileQuery = ds.createQuery(UserProfile.class)
+				.retrievedFields(true, "_id", "user id", "details.college",
+						"details.department", "details.position type",
+						"details.position title");
+		profileQuery.and(
+				profileQuery.criteria("_id").equal(id),
+				profileQuery.and(profileQuery.criteria("user id").in(
+						accountQuery.asKeyList())),
+				profileQuery.criteria("details").notEqual(null),
+				profileQuery.criteria("details.college").equal(college),
+				profileQuery.criteria("details.department").equal(department),
+				profileQuery.criteria("details.positionType").equal(
+						positionType),
+				profileQuery.criteria("details.positionTitle").equal(
+						positionTitle), profileQuery.criteria("is deleted")
+						.equal(false));
+
+		return profileQuery.get();
+	}
 }
