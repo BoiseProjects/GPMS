@@ -461,7 +461,7 @@ $(function() {
 
 		SearchProposals : function() {
 			var projectTitle = $.trim($("#txtSearchProjectTitle").val());
-			var proposedBy = $.trim($("#txtSearchProposedBy").val());
+			var usernameBy = $.trim($("#txtSearchUserName").val());
 			var receivedOnFrom = $.trim($("#txtSearchReceivedOnFrom").val());
 			var receivedOnTo = $.trim($("#txtSearchReceivedOnTo").val());
 			var totalCostsFrom = $.trim($("#txtSearchTotalCostsFrom")
@@ -472,11 +472,16 @@ $(function() {
 			var proposalStatus = $.trim($('#ddlSearchProposalStatus').val()) == "" ? null
 					: $.trim($('#ddlSearchProposalStatus').val()) == "0" ? null
 							: $.trim($('#ddlSearchProposalStatus').val());
+
+			var userRole = $.trim($('#ddlSearchUserRole').val()) == "" ? null
+					: $.trim($('#ddlSearchUserRole').val()) == "0" ? null : $
+							.trim($('#ddlSearchUserRole').val());
+
 			if (projectTitle.length < 1) {
 				projectTitle = null;
 			}
-			if (proposedBy.length < 1) {
-				proposedBy = null;
+			if (usernameBy.length < 1) {
+				usernameBy = null;
 			}
 			if (totalCostsFrom.length < 1) {
 				totalCostsFrom = null;
@@ -491,13 +496,14 @@ $(function() {
 				receivedOnTo = null;
 			}
 
-			proposalsManage.BindProposalGrid(projectTitle, proposedBy,
+			proposalsManage.BindProposalGrid(projectTitle, usernameBy,
 					receivedOnFrom, receivedOnTo, totalCostsFrom, totalCostsTo,
-					proposalStatus);
+					proposalStatus, userRole);
 		},
 
-		BindProposalGrid : function(projectTitle, proposedBy, receivedOnFrom,
-				receivedOnTo, totalCostsFrom, totalCostsTo, proposalStatus) {
+		BindProposalGrid : function(projectTitle, usernameBy, receivedOnFrom,
+				receivedOnTo, totalCostsFrom, totalCostsTo, proposalStatus,
+				userRole) {
 			this.config.url = this.config.baseURL;
 			this.config.method = "GetProposalsList";
 			var offset_ = 1;
@@ -507,12 +513,13 @@ $(function() {
 
 			var proposalBindObj = {
 				ProjectTitle : projectTitle,
-				ProposedBy : proposedBy,
+				UsernameBy : usernameBy,
 				ReceivedOnFrom : receivedOnFrom,
 				ReceivedOnTo : receivedOnTo,
 				TotalCostsFrom : totalCostsFrom,
 				TotalCostsTo : totalCostsTo,
-				ProposalStatus : proposalStatus
+				ProposalStatus : proposalStatus,
+				UserRole : userRole
 			};
 			this.config.data = {
 				proposalBindObj : proposalBindObj
@@ -2832,7 +2839,7 @@ $(function() {
 
 		case 9:
 			proposalsManage.BindProposalGrid(null, null, null, null, null,
-					null, null);
+					null, null, null);
 			$('#divProposalGrid').show();
 			$("#btnSaveProposal").removeAttr("name");
 			$("#accordion").accordion("option", "active", -1);
@@ -2925,7 +2932,7 @@ $(function() {
 				placeholder : "yyyy-mm-dd"
 			});
 			proposalsManage.BindProposalGrid(null, null, null, null, null,
-					null, null);
+					null, null, null);
 			$('#divProposalForm').hide();
 			$('#divProposalGrid').show();
 
@@ -3524,12 +3531,12 @@ $(function() {
 			});
 
 			$(
-					'#txtSearchProjectTitle,#txtSearchProposedBy,#txtSearchReceivedOnFrom,#txtSearchReceivedOnTo,#txtSearchTotalCostsFrom,#txtSearchTotalCostsTo,#ddlSearchProposalStatus')
-					.keyup(function(event) {
-						if (event.keyCode == 13) {
-							$("#btnSearchProposal").click();
-						}
-					});
+					'#txtSearchProjectTitle,#txtSearchUserName,#txtSearchReceivedOnFrom,#txtSearchReceivedOnTo,#txtSearchTotalCostsFrom,#txtSearchTotalCostsTo,#ddlSearchProposalStatus',
+					'#ddlSearchUserRole').keyup(function(event) {
+				if (event.keyCode == 13) {
+					$("#btnSearchProposal").click();
+				}
+			});
 
 			$(
 					'#txtSearchAction, #txtSearchAuditedBy, #txtSearchActivityOnFrom, #txtSearchActivityOnTo')

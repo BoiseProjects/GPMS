@@ -197,10 +197,10 @@
 																			Title:</label> <input title="Project Title" type="text"
 																		class="sfTextBoxFix" id="txtSearchProjectTitle"
 																		placeholder="Project Title" /></td>
-																	<td><label class="cssClassLabel"> Proposed
-																			By:</label> <input title="Proposed By"
-																		id="txtSearchProposedBy" class="sfTextBoxFix"
-																		type="text" placeholder="Proposed By" /></td>
+																	<td><label class="cssClassLabel">User
+																			Name:</label> <input title="User Name" id="txtSearchUserName"
+																		class="sfTextBoxFix" type="text"
+																		placeholder="User Name" /></td>
 
 																	<!-- 																		<td><label class="cssClassLabel"> -->
 																	<!-- 																				Project Type:</label> <select title="Choose Project Type" id="ddlProjectType" -->

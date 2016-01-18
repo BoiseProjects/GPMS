@@ -100,7 +100,7 @@
 <script type="text/javascript" src="js/MessageBox/jquery.easing.1.3.js"></script>
 <script type="text/javascript" src="js/MessageBox/alertbox.js"></script>
 
-<script type="text/javascript" src="js/modules/MyProposals.js"></script>
+<script type="text/javascript" src="js/modules/ProposalsManage.js"></script>
 
 <link type="text/css" rel="stylesheet"
 	href="css/Templates/jquery-ui.css" />
@@ -197,10 +197,10 @@
 																			Title:</label> <input title="Project Title" type="text"
 																		class="sfTextBoxFix" id="txtSearchProjectTitle"
 																		placeholder="Project Title" /></td>
-																	<td><label class="cssClassLabel"> Proposed
-																			By:</label> <input title="Proposed By"
-																		id="txtSearchProposedBy" class="sfTextBoxFix"
-																		type="text" placeholder="Proposed By" /></td>
+																	<td><label class="cssClassLabel">User
+																			Name:</label> <input title="User Name" id="txtSearchUserName"
+																		class="sfTextBoxFix" type="text"
+																		placeholder="User Name" /></td>
 
 																	<!-- 																		<td><label class="cssClassLabel"> -->
 																	<!-- 																				Project Type:</label> <select title="Choose Project Type" id="ddlProjectType" -->
@@ -255,6 +255,16 @@
 																		style="width: 80px;">
 																			<option value="0">--All--</option>
 																	</select></td>
+
+																	<td><label class="cssClassLabel">As:</label> <select
+																		title="Choose User Role" id="ddlSearchUserRole"
+																		class="sfListmenu" style="width: 58px;">
+																			<option value="0">--All--</option>
+																			<option value="PI">PI</option>
+																			<option value="CO-PI">CO-PI</option>
+																			<option value="Senior">Senior</option>
+																	</select></td>
+
 																	<td><label class="cssClassLabel">&nbsp;</label>
 																		<button title="Search Proposal" class="sfBtn"
 																			id="btnSearchProposal" type="button">

@@ -118,6 +118,7 @@ public class ProposalService {
 		String receivedOnFrom = new String();
 		String receivedOnTo = new String();
 		String proposalStatus = new String();
+		String userRole = new String();
 
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode root = mapper.readTree(message);
@@ -165,9 +166,13 @@ public class ProposalService {
 			proposalStatus = proposalObj.get("ProposalStatus").getTextValue();
 		}
 
+		if (proposalObj != null && proposalObj.has("UserRole")) {
+			userRole = proposalObj.get("UserRole").getTextValue();
+		}
+
 		proposals = proposalDAO.findAllForProposalGrid(offset, limit,
 				projectTitle, proposedBy, receivedOnFrom, receivedOnTo,
-				totalCostsFrom, totalCostsTo, proposalStatus);
+				totalCostsFrom, totalCostsTo, proposalStatus, userRole);
 
 		return proposals;
 	}
@@ -181,7 +186,7 @@ public class ProposalService {
 
 		int offset = 0, limit = 0;
 		String projectTitle = new String();
-		String proposedBy = new String();
+		String usernameBy = new String();
 		Double totalCostsFrom = 0.0;
 		Double totalCostsTo = 0.0;
 		String receivedOnFrom = new String();
@@ -213,8 +218,8 @@ public class ProposalService {
 			projectTitle = proposalObj.get("ProjectTitle").getTextValue();
 		}
 
-		if (proposalObj != null && proposalObj.has("ProposedBy")) {
-			proposedBy = proposalObj.get("ProposedBy").getTextValue();
+		if (proposalObj != null && proposalObj.has("UsernameBy")) {
+			usernameBy = proposalObj.get("UsernameBy").getTextValue();
 		}
 
 		if (proposalObj != null && proposalObj.has("ReceivedOnFrom")) {
@@ -272,7 +277,7 @@ public class ProposalService {
 		}
 
 		proposals = proposalDAO.findUserProposalGrid(offset, limit,
-				projectTitle, proposedBy, receivedOnFrom, receivedOnTo,
+				projectTitle, usernameBy, receivedOnFrom, receivedOnTo,
 				totalCostsFrom, totalCostsTo, proposalStatus, userRole, userId,
 				college, department, positionType, positionTitle);
 

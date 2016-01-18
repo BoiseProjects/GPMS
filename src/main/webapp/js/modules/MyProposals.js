@@ -461,7 +461,7 @@ $(function() {
 
 		SearchProposals : function() {
 			var projectTitle = $.trim($("#txtSearchProjectTitle").val());
-			var proposedBy = $.trim($("#txtSearchProposedBy").val());
+			var usernameBy = $.trim($("#txtSearchUserName").val());
 			var receivedOnFrom = $.trim($("#txtSearchReceivedOnFrom").val());
 			var receivedOnTo = $.trim($("#txtSearchReceivedOnTo").val());
 			var totalCostsFrom = $.trim($("#txtSearchTotalCostsFrom")
@@ -480,8 +480,8 @@ $(function() {
 			if (projectTitle.length < 1) {
 				projectTitle = null;
 			}
-			if (proposedBy.length < 1) {
-				proposedBy = null;
+			if (usernameBy.length < 1) {
+				usernameBy = null;
 			}
 			if (totalCostsFrom.length < 1) {
 				totalCostsFrom = null;
@@ -496,12 +496,12 @@ $(function() {
 				receivedOnTo = null;
 			}
 
-			proposalsManage.BindProposalGrid(projectTitle, proposedBy,
+			proposalsManage.BindProposalGrid(projectTitle, usernameBy,
 					receivedOnFrom, receivedOnTo, totalCostsFrom, totalCostsTo,
 					proposalStatus, userRole);
 		},
 
-		BindProposalGrid : function(projectTitle, proposedBy, receivedOnFrom,
+		BindProposalGrid : function(projectTitle, usernameBy, receivedOnFrom,
 				receivedOnTo, totalCostsFrom, totalCostsTo, proposalStatus,
 				userRole) {
 			this.config.url = this.config.baseURL;
@@ -513,7 +513,7 @@ $(function() {
 
 			var proposalBindObj = {
 				ProjectTitle : projectTitle,
-				ProposedBy : proposedBy,
+				UsernameBy : usernameBy,
 				ReceivedOnFrom : receivedOnFrom,
 				ReceivedOnTo : receivedOnTo,
 				TotalCostsFrom : totalCostsFrom,
@@ -3533,7 +3533,7 @@ $(function() {
 			});
 
 			$(
-					'#txtSearchProjectTitle,#txtSearchProposedBy,#txtSearchReceivedOnFrom,#txtSearchReceivedOnTo,#txtSearchTotalCostsFrom,#txtSearchTotalCostsTo,#ddlSearchProposalStatus',
+					'#txtSearchProjectTitle,#txtSearchUserName,#txtSearchReceivedOnFrom,#txtSearchReceivedOnTo,#txtSearchTotalCostsFrom,#txtSearchTotalCostsTo,#ddlSearchProposalStatus',
 					'#ddlSearchUserRole').keyup(function(event) {
 				if (event.keyCode == 13) {
 					$("#btnSearchProposal").click();
