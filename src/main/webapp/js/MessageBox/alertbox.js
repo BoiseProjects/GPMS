@@ -248,20 +248,18 @@ jQuery.fn.extend({
 					.chain(
 							function() {
 
-								properties = $
-										.extend(
-												{
-													'textBoxBtnOk' : 'OK',
-													'textBoxBtnCancel' : 'Cancel',
-													'textBoxContinue' : 'Continue Shopping',
-													'textBoxCheckOut' : 'CheckOut',
-													'textBoxBtnYes' : 'Yes',
-													'textBoxBtnNo' : 'No',
-													'textBoxInputPrompt' : null,
-													'password' : false,
-													'onComplete' : function(e) {
-													}
-												}, properties || {});
+								properties = $.extend({
+									'textBoxBtnOk' : 'OK',
+									'textBoxBtnCancel' : 'Cancel',
+									'textBoxContinue' : 'Continue Shopping',
+									'textBoxCheckOut' : 'CheckOut',
+									'textBoxBtnYes' : 'Yes',
+									'textBoxBtnNo' : 'No',
+									'textBoxInputPrompt' : null,
+									'password' : false,
+									'onComplete' : function(e) {
+									}
+								}, properties || {});
 
 								this.options.onReturnFunction = properties.onComplete;
 

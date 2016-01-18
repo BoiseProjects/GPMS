@@ -1,7 +1,7 @@
 var myAccount = '';
 
 $(function() {
-	
+
 	if (userProfileId == "null") {
 		window.location = 'Login.jsp';
 	}
@@ -677,10 +677,8 @@ $(function() {
 			var errors = '';
 			if (!textBoxUserName.hasClass('warning') && userName.length > 0) {
 				if (!myAccount.isUniqueUserName(user_id, userName)) {
-					errors += 'Please enter unique username.'
-							+ " '"
-							+ userName.trim()
-							+ "' "
+					errors += 'Please enter unique username.' + " '"
+							+ userName.trim() + "' "
 							+ 'has already been taken.';
 					textBoxUserName.addClass("error");
 					textBoxUserName.siblings('.cssClassRight').hide();
@@ -726,11 +724,8 @@ $(function() {
 			var txtEmail = $("#" + textBoxEmail);
 			if (!txtEmail.hasClass('warning') && email.length > 0) {
 				if (!myAccount.isUniqueEmail(user_id, email)) {
-					errors += 'Please enter unique email id.'
-							+ " '"
-							+ email.trim()
-							+ "' "
-							+ 'has already been taken.';
+					errors += 'Please enter unique email id.' + " '"
+							+ email.trim() + "' " + 'has already been taken.';
 					txtEmail.addClass("error");
 					txtEmail.siblings('.cssClassRight').hide();
 					if (txtEmail.siblings('span.warning').exists()) {
@@ -1073,12 +1068,8 @@ $(function() {
 				$('#txtConfirmPassword').rules("remove");
 				myAccount.BindUserAuditLogGrid(userProfileId, null, null, null,
 						null);
-				csscody
-						.info("<h2>"
-								+ 'Successful Message'
-								+ "</h2><p>"
-								+ 'User has been updated successfully.'
-								+ "</p>");
+				csscody.info("<h2>" + 'Successful Message' + "</h2><p>"
+						+ 'User has been updated successfully.' + "</p>");
 				break;
 			}
 		},
@@ -1088,36 +1079,26 @@ $(function() {
 			case 0:
 				break;
 			case 1:
-				csscody.error('<h2>'
-						+ 'Error Message'
-						+ '</h2><p>'
+				csscody.error('<h2>' + 'Error Message' + '</h2><p>'
 						+ 'Failed to load colleges list.' + '</p>');
 				break;
 			case 2:
-				csscody.error('<h2>'
-						+ 'Error Message'
-						+ '</h2><p>' + 'Failed to load user details.' + '</p>');
+				csscody.error('<h2>' + 'Error Message' + '</h2><p>'
+						+ 'Failed to load user details.' + '</p>');
 				break;
 			case 3:
-				csscody.error("<h2>"
-						+ 'Error Message'
-						+ "</h2><p>"
+				csscody.error("<h2>" + 'Error Message' + "</h2><p>"
 						+ 'Cannot check for unique Username' + "</p>");
 				break;
 
 			case 4:
-				csscody.error("<h2>"
-						+ 'Error Message'
-						+ "</h2><p>"
+				csscody.error("<h2>" + 'Error Message' + "</h2><p>"
 						+ 'Cannot check for unique Email' + "</p>");
 				break;
 
 			case 5:
-				csscody.error("<h2>"
-						+ 'Error Message'
-						+ "</h2><p>"
-						+ 'Failed to update user!'
-						+ "</p>");
+				csscody.error("<h2>" + 'Error Message' + "</h2><p>"
+						+ 'Failed to update user!' + "</p>");
 				break;
 			}
 		},

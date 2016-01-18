@@ -62,7 +62,7 @@
 		//For Sidebar active menu
 		$('.acitem').find('a').eq(1).prop("class", "active");
 	});
-	
+
 	//]]>
 </script>
 
@@ -131,7 +131,7 @@
 			<span>This page requires java-script to be enabled. Please
 				adjust your browser-settings.</span>
 		</noscript>
-		
+
 		<div id="sfOuterwrapper">
 			<div class="sfSagewrapper">
 
@@ -143,7 +143,7 @@
 							<%@ include file="UserSideBar.jsp"%>
 						</div>
 						<!-- Side Bar Ends -->
-						
+
 						<div class="sfMaincontent">
 							<div style="display: block" class="sfCpanel sfInnerwrapper"
 								id="divBottompanel">
@@ -160,22 +160,19 @@
 														<p>
 															<button title="Add New Proposal" type="button"
 																id="btnAddNew" class="sfBtn">
-																<span class="icon-addnew">Add New
-																	Proposal</span>
+																<span class="icon-addnew">Add New Proposal</span>
 															</button>
 														</p>
 														<p>
 															<button title="Delete All Selected" type="button"
 																id="btnDeleteSelected" class="sfBtn">
-																<span class="icon-delete">Delete All
-																	Selected</span>
+																<span class="icon-delete">Delete All Selected</span>
 															</button>
 														</p>
 														<p>
 															<button title="Export to Excel" type="button"
 																id="btnExportToExcel" class="sfBtn">
-																<span class="icon-showall">Export to
-																	Excel</span>
+																<span class="icon-showall">Export to Excel</span>
 															</button>
 														</p>
 														<p>
@@ -202,8 +199,8 @@
 																			Title:</label> <input title="Project Title" type="text"
 																		class="sfTextBoxFix" id="txtSearchProjectTitle"
 																		placeholder="Project Title" /></td>
-																	<td><label class="cssClassLabel">
-																			Proposed By:</label> <input title="Proposed By"
+																	<td><label class="cssClassLabel"> Proposed
+																			By:</label> <input title="Proposed By"
 																		id="txtSearchProposedBy" class="sfTextBoxFix"
 																		type="text" placeholder="Proposed By" /></td>
 
@@ -258,7 +255,7 @@
 																			Status:</label> <select title="Choose Proposal Status"
 																		id="ddlSearchProposalStatus" class="sfListmenu"
 																		style="width: 80px;">
-																			<option value="0" >--All--</option>
+																			<option value="0">--All--</option>
 																	</select></td>
 																	<td><label class="cssClassLabel">&nbsp;</label>
 																		<button title="Search Proposal" class="sfBtn"
@@ -270,8 +267,8 @@
 														</table>
 													</div>
 													<div class="loading">
-														<img id="ajaxLoader" src="" 
-															alt="Loading..." title="Loading..." />
+														<img id="ajaxLoader" src="" alt="Loading..."
+															title="Loading..." />
 													</div>
 													<div class="log"></div>
 													<table id="gdvProposals" cellspacing="0" cellpadding="0"

@@ -62,7 +62,7 @@
 		// For Sidebar active menu
 		$('.acitem').find('a').eq(2).prop("class", "active");
 	});
-	
+
 	//]]>
 </script>
 

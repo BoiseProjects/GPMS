@@ -74,7 +74,7 @@
 <script type="text/javascript"
 	src="js/FormValidation/jquery.ui.datepicker.validation.js"></script>
 <script type="text/javascript"
-	src="js/FormValidation/jquery.maskedinput.js"></script>	
+	src="js/FormValidation/jquery.maskedinput.js"></script>
 <script type="text/javascript" src="js/FormValidation/autoNumeric.js"></script>
 
 <script type="text/javascript" src="js/core/json2.js"></script>
@@ -135,8 +135,8 @@
 						</label> <input class="form__input input" id="txtUserName"
 							placeholder="User Name" name="username" title="User name"><span
 							style="display: none;" class="cssClassRight"> <img
-							src="./images/right.jpg" class="cssClassSuccessImg"
-							alt="Right" title="Right" height="13" width="18">
+							src="./images/right.jpg" class="cssClassSuccessImg" alt="Right"
+							title="Right" height="13" width="18">
 						</span>
 					</div>
 					<div class="form__item">
@@ -166,8 +166,8 @@
 						</label> <input class="form__input input" id="txtWorkEmail"
 							placeholder="Work Email" name="workEmail" title="Work Email"><span
 							class="cssClassRight"> <img src="./images/right.jpg"
-							class="cssClassSuccessImg" height="13" width="18"
-							alt="Right" title="Right" />
+							class="cssClassSuccessImg" height="13" width="18" alt="Right"
+							title="Right" />
 						</span>
 					</div>
 					<div class="form__item">
@@ -197,8 +197,8 @@
 					<div class="form__item">
 						<label class="form__label label" for="txtDOB"> Date of
 							Birth <span class="cssClassRequired">*</span>
-							<div class="label__description">So that we know when to
-								say happy birthday</div>
+							<div class="label__description">So that we know when to say
+								happy birthday</div>
 						</label> <input class="form__input input" id="txtDOB"
 							placeholder="Date of Birth" name="dob" title="Date of Birth">
 					</div>

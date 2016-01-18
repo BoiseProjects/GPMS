@@ -102,7 +102,7 @@
 			<span>This page requires java-script to be enabled. Please
 				adjust your browser-settings.</span>
 		</noscript>
-		
+
 		<div id="sfOuterwrapper">
 			<div class="sfSagewrapper">
 				<!--Body Content-->

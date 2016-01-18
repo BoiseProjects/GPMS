@@ -83,14 +83,14 @@
 
 </head>
 <body class="account">
-		<div style="display: none;" id="UpdateProgress1">
-			<div class="sfLoadingbg">&nbsp;</div>
-			<div class="sfLoadingdiv">
-				<img id="imgProgress" src="./images/ajax-loader.gif"
-					style="border-width: 0px;" alt="Loading..." title="Loading..." />
-				<br> <span id="lblPrgress">Please wait...</span>
-			</div>
+	<div style="display: none;" id="UpdateProgress1">
+		<div class="sfLoadingbg">&nbsp;</div>
+		<div class="sfLoadingdiv">
+			<img id="imgProgress" src="./images/ajax-loader.gif"
+				style="border-width: 0px;" alt="Loading..." title="Loading..." /> <br>
+			<span id="lblPrgress">Please wait...</span>
 		</div>
+	</div>
 	<noscript>
 		<span>This page requires java-script to be enabled. Please
 			adjust your browser-settings.</span>

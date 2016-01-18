@@ -87,11 +87,11 @@
 <body class="account">
 	<div style="display: none;" id="UpdateProgress1">
 		<div class="sfLoadingbg">&nbsp;</div>
-			<div class="sfLoadingdiv">
-				<img id="imgProgress" src="./images/ajax-loader.gif"
-					style="border-width: 0px;" alt="Loading..." title="Loading..." />
-				<br> <span id="lblPrgress">Please wait...</span>
-			</div>
+		<div class="sfLoadingdiv">
+			<img id="imgProgress" src="./images/ajax-loader.gif"
+				style="border-width: 0px;" alt="Loading..." title="Loading..." /> <br>
+			<span id="lblPrgress">Please wait...</span>
+		</div>
 	</div>
 	<noscript>
 		<span>This page requires java-script to be enabled. Please
@@ -140,8 +140,8 @@
 							name="password" size="30" type="password">
 					</div>
 					<div class="form__item">
-						<input id="remember_me" name="remember_me" type="checkbox"> <label
-							class="form__label label label--inline" for="remember_me">
+						<input id="remember_me" name="remember_me" type="checkbox">
+						<label class="form__label label label--inline" for="remember_me">
 							Remember me </label>
 					</div>
 					<input class="btn btn--large btn--expanded btn--blue" name="commit"

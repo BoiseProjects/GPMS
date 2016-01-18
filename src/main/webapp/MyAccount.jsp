@@ -56,8 +56,8 @@
 	var userCollege = '<%=session.getAttribute("userCollege")%>';
 
 	var gpmsServicePath = "REST/";
-	var gpmsRootPath = "http://localhost:8181/GPMS/";	
-	
+	var gpmsRootPath = "http://localhost:8181/GPMS/";
+
 	//]]>
 </script>
 
@@ -78,7 +78,7 @@
 <script type="text/javascript"
 	src="js/FormValidation/jquery.ui.datepicker.validation.js"></script>
 <script type="text/javascript"
-	src="js/FormValidation/jquery.maskedinput.js"></script>	
+	src="js/FormValidation/jquery.maskedinput.js"></script>
 <script type="text/javascript" src="js/FormValidation/autoNumeric.js"></script>
 
 <script type="text/javascript" src="js/core/json2.js"></script>
@@ -361,9 +361,8 @@
 																					class="sfInputbox" style="width: 160px;"
 																					name="workEmail" placeholder="Work Email" /> <span
 																					class="cssClassRight"> <img
-																					src="./images/right.jpg"
-																					class="cssClassSuccessImg" height="13"
-																					width="18" alt="Right" title="Right" />
+																					src="./images/right.jpg" class="cssClassSuccessImg"
+																					height="13" width="18" alt="Right" title="Right" />
 																				</span>
 																			</div>
 																		</td>
@@ -376,9 +375,8 @@
 																					style="width: 160px;" id="txtPersonalEmail"
 																					name="personalEmail" placeholder="Personal Email" /><span
 																					class="cssClassRight"> <img
-																					src="./images/right.jpg"
-																					class="cssClassSuccessImg" height="13"
-																					width="18" alt="Right" title="Right" />
+																					src="./images/right.jpg" class="cssClassSuccessImg"
+																					height="13" width="18" alt="Right" title="Right" />
 																				</span>
 																			</div>
 																		</td>
@@ -453,9 +451,8 @@
 																			id="txtUserName" name="username"
 																			placeholder="User Name" disabled="true"> <span
 																			class="cssClassRight"> <img
-																				src="./images/right.jpg"
-																				class="cssClassSuccessImg" height="13"
-																				width="18" alt="Right" title="Right" />
+																				src="./images/right.jpg" class="cssClassSuccessImg"
+																				height="13" width="18" alt="Right" title="Right" />
 																		</span></td>
 																	</tr>
 																	<tr>
@@ -518,8 +515,8 @@
 																			</table>
 																		</div>
 																		<div class="loading">
-																			<img id="ajaxLoader" src="" 
-																				alt="Loading..." title="Loading..." />
+																			<img id="ajaxLoader" src="" alt="Loading..."
+																				title="Loading..." />
 																		</div>
 																		<div class="log"></div>
 																		<table id="gdvUsersAuditLog" cellspacing="0"

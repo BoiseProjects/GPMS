@@ -62,7 +62,7 @@
 		//For Sidebar active menu
 		$('.acitem').find('a').eq(0).prop("class", "active");
 	});
-	
+
 	//]]>
 </script>
 
@@ -83,7 +83,7 @@
 <script type="text/javascript"
 	src="js/FormValidation/jquery.ui.datepicker.validation.js"></script>
 <script type="text/javascript"
-	src="js/FormValidation/jquery.maskedinput.js"></script>	
+	src="js/FormValidation/jquery.maskedinput.js"></script>
 <script type="text/javascript" src="js/FormValidation/autoNumeric.js"></script>
 
 <script type="text/javascript" src="js/core/json2.js"></script>
@@ -164,15 +164,13 @@
 														<p>
 															<button title="Delete All Selected" type="button"
 																id="btnDeleteSelected" class="sfBtn">
-																<span class="icon-delete">Delete All
-																	Selected</span>
+																<span class="icon-delete">Delete All Selected</span>
 															</button>
 														</p>
 														<p>
 															<button title="Export to Excel" type="button"
 																id="btnExportToExcel" class="sfBtn">
-																<span class="icon-showall">Export to
-																	Excel</span>
+																<span class="icon-showall">Export to Excel</span>
 															</button>
 														</p>
 														<p>
@@ -200,32 +198,31 @@
 																		class="sfTextBoxFix" id="txtSearchUserName"
 																		placeholder="User Name" /></td>
 
-																	<td><label class="cssClassLabel">
-																			College:</label> <select title="Choose College"
-																		id="ddlSearchCollege" class="sfListmenu"
-																		style="width: 90px;">
-																			<option value="0" >--All--</option>
+																	<td><label class="cssClassLabel"> College:</label>
+																		<select title="Choose College" id="ddlSearchCollege"
+																		class="sfListmenu" style="width: 90px;">
+																			<option value="0">--All--</option>
 																	</select></td>
 
 																	<td><label class="cssClassLabel">
 																			Department:</label> <select title="Choose Department"
 																		id="ddlSearchDepartment" class="sfListmenu"
 																		style="width: 143px;">
-																			<option value="0" >--All--</option>
+																			<option value="0">--All--</option>
 																	</select></td>
 
-																	<td><label class="cssClassLabel">
-																			Position Type:</label> <select title="Choose Position Type"
+																	<td><label class="cssClassLabel"> Position
+																			Type:</label> <select title="Choose Position Type"
 																		id="ddlSearchPositionType" class="sfListmenu"
 																		style="width: 150px;">
-																			<option value="0" >--All--</option>
+																			<option value="0">--All--</option>
 																	</select></td>
 
-																	<td><label class="cssClassLabel">
-																			Position Title:</label> <select title="Choose Position Title"
+																	<td><label class="cssClassLabel"> Position
+																			Title:</label> <select title="Choose Position Title"
 																		id="ddlSearchPositionTitle" class="sfListmenu"
 																		style="width: 150px;">
-																			<option value="0" >--All--</option>
+																			<option value="0">--All--</option>
 																	</select></td>
 
 																	<!-- <td width="315"><label
@@ -238,13 +235,12 @@
 																			type="text" id="txtSearchAddedOnTo" class="sfTextBoxSmall"
 																			style="width: 80px !important;"/></td> -->
 
-																	<td><label class="cssClassLabel">
-																			Active:</label> <select title="Is Active?"
-																		id="ddlSearchIsActive" class="sfListmenu"
-																		style="width: 50px;">
-																			<option value="" >--All--</option>
-																			<option value="True" >True</option>
-																			<option value="False" >False</option>
+																	<td><label class="cssClassLabel"> Active:</label>
+																		<select title="Is Active?" id="ddlSearchIsActive"
+																		class="sfListmenu" style="width: 50px;">
+																			<option value="">--All--</option>
+																			<option value="True">True</option>
+																			<option value="False">False</option>
 																	</select></td>
 																	<td><label class="cssClassLabel">&nbsp;</label>
 																		<button title="Search User" class="sfBtn"
@@ -256,8 +252,8 @@
 														</table>
 													</div>
 													<div class="loading">
-														<img id="ajaxLoader" src="" 
-															alt="Loading..." title="Loading..." />
+														<img id="ajaxLoader" src="" alt="Loading..."
+															title="Loading..." />
 													</div>
 													<div class="log"></div>
 													<table id="gdvUsers" cellspacing="0" cellpadding="0"
@@ -486,9 +482,9 @@
 																				<input type="email" id="txtWorkEmail"
 																					class="sfInputbox" style="width: 160px;"
 																					name="workEmail" placeholder="Work Email" /> <span
-																					class="cssClassRight"> <img src="./images/right.jpg"
-																					class="cssClassSuccessImg" height="13"
-																					width="18" alt="Right" title="Right" />
+																					class="cssClassRight"> <img
+																					src="./images/right.jpg" class="cssClassSuccessImg"
+																					height="13" width="18" alt="Right" title="Right" />
 																				</span>
 																			</div>
 																		</td>
@@ -500,9 +496,9 @@
 																				<input type="email" class="sfInputbox"
 																					style="width: 160px;" id="txtPersonalEmail"
 																					name="personalEmail" placeholder="Personal Email" /><span
-																					class="cssClassRight"> <img src="./images/right.jpg"
-																					class="cssClassSuccessImg" height="13"
-																					width="18" alt="Right" title="Right" />
+																					class="cssClassRight"> <img
+																					src="./images/right.jpg" class="cssClassSuccessImg"
+																					height="13" width="18" alt="Right" title="Right" />
 																				</span>
 																			</div>
 																		</td>
@@ -561,8 +557,7 @@
 																							checked="false" /></td>
 																						<td><input type="Button" value="Add More"
 																							name="AddMore"
-																							class="AddOption cssClassButtonSubmit" />
-																						</td>
+																							class="AddOption cssClassButtonSubmit" /></td>
 																					</tr>
 																				</tbody>
 																			</table>
@@ -583,9 +578,9 @@
 																			title="User Name" type="text" class="sfInputbox"
 																			id="txtUserName" name="username"
 																			placeholder="User Name"> <span
-																			class="cssClassRight"> <img src="./images/right.jpg"
-																				class="cssClassSuccessImg" height="13"
-																				width="18" alt="Right" title="Right" />
+																			class="cssClassRight"> <img
+																				src="./images/right.jpg" class="cssClassSuccessImg"
+																				height="13" width="18" alt="Right" title="Right" />
 																		</span></td>
 																	</tr>
 																	<tr>
@@ -648,8 +643,8 @@
 																			</table>
 																		</div>
 																		<div class="loading">
-																			<img id="ajaxLoader" src="" 
-																				alt="Loading..." title="Loading..." />
+																			<img id="ajaxLoader" src="" alt="Loading..."
+																				title="Loading..." />
 																		</div>
 																		<div class="log"></div>
 																		<table id="gdvUsersAuditLog" cellspacing="0"

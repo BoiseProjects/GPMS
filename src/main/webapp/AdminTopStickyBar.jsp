@@ -45,12 +45,14 @@
 		<li class="sfquickNotification">
 			<div id="divNotification">
 				<ul>
-					<li class="sfqckUserInfo"><span class="notired" id="spanUsersInfo">100</span> <a
+					<li class="sfqckUserInfo"><span class="notired"
+						id="spanUsersInfo">100</span> <a
 						title="Click to View Notifications" class="icon-portal-management"
 						id="linkUsersInfo">&nbsp;</a>
 						<div style="display: none;" class="cssClassNotify">
 							<div>
-								<h5 class="cssClassNotifyHead">There are no Recently Notifications.</h5>
+								<h5 class="cssClassNotifyHead">There are no Recently
+									Notifications.</h5>
 							</div>
 						</div></li>
 				</ul>

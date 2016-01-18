@@ -80,7 +80,7 @@
 										$('.Grandparent').find('a').eq(0).attr(
 												"class", "active").find('span')
 												.eq(0).show();
-										
+
 										$('div.sfSidebar').animate({
 											width : "210px"
 										}, 400, function() {

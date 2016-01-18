@@ -1,11 +1,11 @@
 ﻿var usersManage = '';
 
-$(function() {	
-	
+$(function() {
+
 	if (userProfileId == "null") {
 		window.location = 'Login.jsp';
 	}
-	
+
 	jQuery.fn.exists = function() {
 		return this.length > 0;
 	}
@@ -25,13 +25,13 @@ $(function() {
 
 	var gpmsCommonObj = function() {
 		var gpmsCommonInfo = {
-				UserName : GPMS.utils.GetUserName(),
-				UserProfileID : GPMS.utils.GetUserProfileID(),
-				UserIsAdmin : GPMS.utils.IsAdmin(),
-				UserPositionType : GPMS.utils.GetUserPositionType(),
-				UserPositionTitle : GPMS.utils.GetUserPositionTitle(),
-				UserDepartment : GPMS.utils.GetUserDepartment(),
-				UserCollege : GPMS.utils.GetUserCollege()
+			UserName : GPMS.utils.GetUserName(),
+			UserProfileID : GPMS.utils.GetUserProfileID(),
+			UserIsAdmin : GPMS.utils.IsAdmin(),
+			UserPositionType : GPMS.utils.GetUserPositionType(),
+			UserPositionTitle : GPMS.utils.GetUserPositionTitle(),
+			UserDepartment : GPMS.utils.GetUserDepartment(),
+			UserCollege : GPMS.utils.GetUserCollege()
 		};
 		return gpmsCommonInfo;
 	};
@@ -429,21 +429,19 @@ $(function() {
 
 		EditUser : function(tblID, argus) {
 			switch (tblID) {
-			case "gdvUsers":				
-				if(argus[12].toLowerCase() != "no"){
-					csscody.alert('<h2>'
-							+ 'Information Alert'
-							+ '</h2><p>'
-							+ 'Sorry! this user can not be edited.'
-							+ '</p>');
-					
+			case "gdvUsers":
+				if (argus[12].toLowerCase() != "no") {
+					csscody.alert('<h2>' + 'Information Alert' + '</h2><p>'
+							+ 'Sorry! this user can not be edited.' + '</p>');
+
 				} else {
 					usersManage.ClearForm();
 					$('#txtPassword').rules("remove");
 					$('#txtConfirmPassword').rules("remove");
-	
-					$('#lblFormHeading').html('Edit User Details for: ' + argus[2]);
-	
+
+					$('#lblFormHeading').html(
+							'Edit User Details for: ' + argus[2]);
+
 					if (argus[7] != null && argus[7] != "") {
 						$('#tblLastAuditedInfo').show();
 						$('#lblLastUpdatedOn').html(argus[7]);
@@ -464,9 +462,9 @@ $(function() {
 					$("input[name=AddMore]").removeAttr('disabled');
 					$("input[name=DeleteOption]").removeAttr('disabled');
 					$("#btnSaveUser").prop("name", argus[0]);
-	
+
 					$("#btnReset").hide();
-	
+
 					usersManage.config.url = usersManage.config.baseURL
 							+ "GetUserDetailsByProfileId";
 					usersManage.config.data = JSON2.stringify({
@@ -474,9 +472,9 @@ $(function() {
 					});
 					usersManage.config.ajaxCallMode = 2;
 					usersManage.ajaxCall(usersManage.config);
-	
-					usersManage.BindUserAuditLogGrid(argus[0], null, null, null,
-							null);
+
+					usersManage.BindUserAuditLogGrid(argus[0], null, null,
+							null, null);
 					$('#auditLogTab').show();
 				}
 				break;
@@ -715,21 +713,34 @@ $(function() {
 																				}
 																			});
 														}
-													});									
+													});
 
 									$(
 											'#dataTable tbody>tr:eq('
-													+ rowIndex + ')').find(
-											"input").each(function(l) {												
-										var $button = $(this);
-										if ($button.is(".AddOption")) {
-											$button.prop("name", btnName);
-											$button.prop("value", btnOption);
-											$button.prop("title", btnTitle);	
-										}else if ($button.hasClass("class-isdefault")) {
-											$button.prop('checked', value['isDefault']);												
-										}
-									});
+													+ rowIndex + ')')
+											.find("input")
+											.each(
+													function(l) {
+														var $button = $(this);
+														if ($button
+																.is(".AddOption")) {
+															$button.prop(
+																	"name",
+																	btnName);
+															$button.prop(
+																	"value",
+																	btnOption);
+															$button.prop(
+																	"title",
+																	btnTitle);
+														} else if ($button
+																.hasClass("class-isdefault")) {
+															$button
+																	.prop(
+																			'checked',
+																			value['isDefault']);
+														}
+													});
 								});
 				$('#dataTable>tbody tr:first').remove();
 			} else {
@@ -839,23 +850,18 @@ $(function() {
 		DeleteUser : function(tblID, argus) {
 			switch (tblID) {
 			case "gdvUsers":
-				if(argus[2].toLowerCase() != "yes"){
+				if (argus[2].toLowerCase() != "yes") {
 					if (argus[1].toLowerCase() != "yes") {
 						usersManage.DeleteUserById(argus[0]);
 					} else {
-						csscody.alert('<h2>'
-								+ 'Information Alert'
-								+ '</h2><p>'
+						csscody.alert('<h2>' + 'Information Alert' + '</h2><p>'
 								+ 'Sorry! this user is already deleted.'
 								+ '</p>');
 					}
 				} else {
-					csscody.alert('<h2>'
-								+ 'Information Alert'
-								+ '</h2><p>'
-								+ 'Sorry! this user can not be deleted.'
-								+ '</p>');
-					}
+					csscody.alert('<h2>' + 'Information Alert' + '</h2><p>'
+							+ 'Sorry! this user can not be deleted.' + '</p>');
+				}
 				break;
 			default:
 				break;
@@ -868,11 +874,9 @@ $(function() {
 					usersManage.ConfirmSingleDelete(_userId, e);
 				}
 			};
-			csscody.confirm("<h2>"
-					+ 'Delete Confirmation'
-					+ "</h2><p>"
-					+ 'Are you sure you want to delete this user?'
-					+ "</p>", properties);
+			csscody.confirm("<h2>" + 'Delete Confirmation' + "</h2><p>"
+					+ 'Are you sure you want to delete this user?' + "</p>",
+					properties);
 		},
 
 		ConfirmSingleDelete : function(user_id, event) {
@@ -931,22 +935,19 @@ $(function() {
 		ActiveUser : function(tblID, argus) {
 			switch (tblID) {
 			case "gdvUsers":
-				if(argus[2].toLowerCase() != "yes"){
+				if (argus[2].toLowerCase() != "yes") {
 					if (argus[1].toLowerCase() != "yes") {
 						usersManage.ActivateUser(argus[0], true);
 					} else {
-						csscody.alert('<h2>'
-								+ 'Information Alert'
-								+ '</h2><p>'
+						csscody.alert('<h2>' + 'Information Alert' + '</h2><p>'
 								+ 'Sorry! this user is already actived.'
 								+ '</p>');
 					}
 				} else {
-					csscody.alert('<h2>'
-							+ 'Information Alert'
-							+ '</h2><p>'
-							+ 'Sorry! this user can not be activated.'
-							+ '</p>');
+					csscody
+							.alert('<h2>' + 'Information Alert' + '</h2><p>'
+									+ 'Sorry! this user can not be activated.'
+									+ '</p>');
 				}
 				break;
 			default:
@@ -957,20 +958,16 @@ $(function() {
 		DeactiveUser : function(tblID, argus) {
 			switch (tblID) {
 			case "gdvUsers":
-				if(argus[2].toLowerCase() != "yes"){
+				if (argus[2].toLowerCase() != "yes") {
 					if (argus[1].toLowerCase() != "no") {
 						usersManage.ActivateUser(argus[0], false);
 					} else {
-						csscody.alert('<h2>'
-								+ 'Information Alert'
-								+ '</h2><p>'
+						csscody.alert('<h2>' + 'Information Alert' + '</h2><p>'
 								+ 'Sorry! this user is already deactived.'
 								+ '</p>');
 					}
 				} else {
-					csscody.alert('<h2>'
-							+ 'Information Alert'
-							+ '</h2><p>'
+					csscody.alert('<h2>' + 'Information Alert' + '</h2><p>'
 							+ 'Sorry! this user can not be deactivated.'
 							+ '</p>');
 				}
@@ -985,13 +982,14 @@ $(function() {
 			// $('#form1').removeData('validator');
 			// $('.class-text').removeClass('error').next('span').removeClass(
 			// 'error');
-			var inputs = $("#container-7").find('INPUT:not(".class-isdefault"), SELECT, TEXTAREA');
+			var inputs = $("#container-7").find(
+					'INPUT:not(".class-isdefault"), SELECT, TEXTAREA');
 			$.each(inputs, function(i, item) {
 				// rmErrorClass(item);
 				$(this).prop('checked', false);
 				$(this).val($(this).find('option').first().val());
-			});	
-			
+			});
+
 			usersManage.onInit();
 			$('#lblFormHeading').html('New User Details');
 			$(".delbutton").removeAttr("id");
@@ -1004,11 +1002,12 @@ $(function() {
 			// $(this).parent("td").find("span.error").remove();
 			// }
 			// });
-			$('#txtUserName').removeAttr('disabled');			
+			$('#txtUserName').removeAttr('disabled');
 
 			rowIndex = 0;
 			$("#dataTable tbody>tr:gt(0)").remove();
-			$("#dataTable tr:eq(1)").find("input:not(:last)").prop('checked', true);
+			$("#dataTable tr:eq(1)").find("input:not(:last)").prop('checked',
+					true);
 			$(".AddOption").val("[+] Add");
 
 			if (!$('input[name=chkActive]').is(":checked")) {
@@ -1077,13 +1076,16 @@ $(function() {
 														+ "<br/>";
 												usersManage.SetFirstTabActive();
 												$(this).focus();
-											}else{										
-												_saveOptions += optionsText + "!#!";
-											}										
-										} else if ($(this).hasClass("class-isdefault")) {											
-				                            var _IsChecked = $(this).prop('checked');
-				                            _saveOptions += _IsChecked + "#!#";
-				                        }
+											} else {
+												_saveOptions += optionsText
+														+ "!#!";
+											}
+										} else if ($(this).hasClass(
+												"class-isdefault")) {
+											var _IsChecked = $(this).prop(
+													'checked');
+											_saveOptions += _IsChecked + "#!#";
+										}
 									});
 
 					_saveOptions = _saveOptions.substring(0,
@@ -1128,10 +1130,8 @@ $(function() {
 			var errors = '';
 			if (!textBoxUserName.hasClass('warning') && userName.length > 0) {
 				if (!usersManage.isUniqueUserName(user_id, userName)) {
-					errors += 'Please enter unique username.'
-							+ " '"
-							+ userName.trim()
-							+ "' "
+					errors += 'Please enter unique username.' + " '"
+							+ userName.trim() + "' "
 							+ 'has already been taken.';
 					textBoxUserName.addClass("error");
 					textBoxUserName.siblings('.cssClassRight').hide();
@@ -1177,11 +1177,8 @@ $(function() {
 			var txtEmail = $("#" + textBoxEmail);
 			if (!txtEmail.hasClass('warning') && email.length > 0) {
 				if (!usersManage.isUniqueEmail(user_id, email)) {
-					errors += 'Please enter unique email id.'
-							+ " '"
-							+ email.trim()
-							+ "' "
-							+ 'has already been taken.';
+					errors += 'Please enter unique email id.' + " '"
+							+ email.trim() + "' " + 'has already been taken.';
 					txtEmail.addClass("error");
 					txtEmail.siblings('.cssClassRight').hide();
 					if (txtEmail.siblings('span.warning').exists()) {
@@ -1644,12 +1641,8 @@ $(function() {
 
 			case 3:// For User Delete
 				usersManage.BindUserGrid(null, null, null, null, null, null);
-				csscody
-						.info("<h2>"
-								+ 'Successful Message'
-								+ "</h2><p>"
-								+ 'User has been deleted successfully.'
-								+ "</p>");
+				csscody.info("<h2>" + 'Successful Message' + "</h2><p>"
+						+ 'User has been deleted successfully.' + "</p>");
 
 				$('#divUserForm').hide();
 				$('#divUserGrid').show();
@@ -1658,30 +1651,21 @@ $(function() {
 			case 4:
 				SageData.Get("gdvUsers").Arr.length = 0;
 				usersManage.BindUserGrid(null, null, null, null, null, null);
-				csscody
-						.info("<h2>"
-								+ 'Successful Message'
-								+ "</h2><p>"
-								+ 'Selected user(s) has been deleted successfully.'
-								+ "</p>");
+				csscody.info("<h2>" + 'Successful Message' + "</h2><p>"
+						+ 'Selected user(s) has been deleted successfully.'
+						+ "</p>");
 				break;
 
 			case 5:
 				usersManage.BindUserGrid(null, null, null, null, null, null);
-				csscody.info("<h2>"
-						+ 'Successful Message'
-						+ "</h2><p>"
-						+ 'User has been activated successfully.'
-						+ "</p>");
+				csscody.info("<h2>" + 'Successful Message' + "</h2><p>"
+						+ 'User has been activated successfully.' + "</p>");
 				break;
 
 			case 6:
 				usersManage.BindUserGrid(null, null, null, null, null, null);
-				csscody.info("<h2>"
-						+ 'Successful Message'
-						+ "</h2><p>"
-						+ 'User has been deactivated successfully.'
-						+ "</p>");
+				csscody.info("<h2>" + 'Successful Message' + "</h2><p>"
+						+ 'User has been deactivated successfully.' + "</p>");
 				break;
 
 			case 7:
@@ -1696,17 +1680,11 @@ $(function() {
 				usersManage.BindUserGrid(null, null, null, null, null, null);
 				$('#divUserGrid').show();
 				if (editFlag > 0) {
-					csscody.info("<h2>"
-							+ 'Successful Message'
-							+ "</h2><p>"
-							+ 'User has been updated successfully.'
-							+ "</p>");
+					csscody.info("<h2>" + 'Successful Message' + "</h2><p>"
+							+ 'User has been updated successfully.' + "</p>");
 				} else {
-					csscody.info("<h2>"
-							+ 'Successful Message'
-							+ "</h2><p>"
-							+ 'User has been saved successfully.'
-							+ "</p>");
+					csscody.info("<h2>" + 'Successful Message' + "</h2><p>"
+							+ 'User has been saved successfully.' + "</p>");
 				}
 				usersManage.ClearForm();
 				$('#divUserForm').hide();
@@ -1719,66 +1697,45 @@ $(function() {
 			case 0:
 				break;
 			case 1:
-				csscody.error('<h2>'
-						+ 'Error Message'
-						+ '</h2><p>'
+				csscody.error('<h2>' + 'Error Message' + '</h2><p>'
 						+ 'Failed to load colleges list.' + '</p>');
 				break;
 			case 2:
-				csscody.error('<h2>'
-						+ 'Error Message'
-						+ '</h2><p>' + 'Failed to load user details.' + '</p>');
+				csscody.error('<h2>' + 'Error Message' + '</h2><p>'
+						+ 'Failed to load user details.' + '</p>');
 				break;
 			case 3:
-				csscody.error("<h2>"
-						+ 'Error Message'
-						+ "</h2><p>"
+				csscody.error("<h2>" + 'Error Message' + "</h2><p>"
 						+ 'User cannot be deleted.' + "</p>");
 				break;
 			case 4:
-				csscody
-						.error("<h2>"
-								+ 'Error Message'
-								+ "</h2><p>"
-								+ 'Selected user(s) cannot be deleted.'
-								+ "</p>");
+				csscody.error("<h2>" + 'Error Message' + "</h2><p>"
+						+ 'Selected user(s) cannot be deleted.' + "</p>");
 				break;
 			case 5:
-				csscody.error("<h2>"
-						+ 'Error Message'
-						+ "</h2><p>"
+				csscody.error("<h2>" + 'Error Message' + "</h2><p>"
 						+ 'User cannot be activated.' + "</p>");
 				break;
 			case 6:
-				csscody.error("<h2>"
-						+ 'Error Message'
-						+ "</h2><p>"
+				csscody.error("<h2>" + 'Error Message' + "</h2><p>"
 						+ 'User cannot be deactivated.' + "</p>");
 				break;
 			case 7:
-				csscody.error("<h2>"
-						+ 'Error Message'
-						+ "</h2><p>"
+				csscody.error("<h2>" + 'Error Message' + "</h2><p>"
 						+ 'Cannot check for unique Username' + "</p>");
 				break;
 
 			case 8:
-				csscody.error("<h2>"
-						+ 'Error Message'
-						+ "</h2><p>"
+				csscody.error("<h2>" + 'Error Message' + "</h2><p>"
 						+ 'Cannot check for unique Email' + "</p>");
 				break;
 
 			case 9:
 				if (editFlag > 0) {
-					csscody.error("<h2>"
-							+ 'Error Message'
-							+ "</h2><p>"
+					csscody.error("<h2>" + 'Error Message' + "</h2><p>"
 							+ 'Failed to update user!' + "</p>");
 				} else {
-					csscody.error("<h2>"
-							+ 'Error Message'
-							+ "</h2><p>"
+					csscody.error("<h2>" + 'Error Message' + "</h2><p>"
 							+ 'Failed to save user!' + "</p>");
 				}
 				break;
@@ -2006,12 +1963,15 @@ $(function() {
 							function() {
 								// var checkedState = false;
 								if ($(this).prop("name") == "DeleteOption") {
-									var t = $(this).closest('tr');	
-									
-									if(t.find("input:not(:last)").prop('checked')){
-										$("#dataTable tr:eq(1)").find("input:not(:last)").prop('checked', true);
+									var t = $(this).closest('tr');
+
+									if (t.find("input:not(:last)").prop(
+											'checked')) {
+										$("#dataTable tr:eq(1)").find(
+												"input:not(:last)").prop(
+												'checked', true);
 									}
-									
+
 									t.find("td").wrapInner(
 											"<div style='display: block'/>")
 											.parent().find("td div").slideUp(
@@ -2034,8 +1994,9 @@ $(function() {
 															"Delete ");
 													$(this).prop("title",
 															"Delete");
-												}else if ($(this).hasClass("class-isdefault")) {
-						                            this.checked = false;
+												} else if ($(this).hasClass(
+														"class-isdefault")) {
+													this.checked = false;
 												}
 												$(this).parent('td').find(
 														'span').removeClass(

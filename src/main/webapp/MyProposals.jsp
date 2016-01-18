@@ -60,9 +60,9 @@
 
 	$(function() {
 		//For Sidebar active menu
-		$('.acitem').find('a').eq(0).prop("class", "active");	
+		$('.acitem').find('a').eq(0).prop("class", "active");
 	});
-	
+
 	//]]>
 </script>
 
@@ -83,7 +83,7 @@
 <script type="text/javascript"
 	src="js/FormValidation/jquery.ui.datepicker.validation.js"></script>
 <script type="text/javascript"
-	src="js/FormValidation/jquery.maskedinput.js"></script>	
+	src="js/FormValidation/jquery.maskedinput.js"></script>
 <script type="text/javascript" src="js/FormValidation/autoNumeric.js"></script>
 
 <script type="text/javascript" src="js/core/json2.js"></script>
@@ -158,22 +158,19 @@
 														<p>
 															<button title="Add New Proposal" type="button"
 																id="btnAddNew" class="sfBtn">
-																<span class="icon-addnew">Add New
-																	Proposal</span>
+																<span class="icon-addnew">Add New Proposal</span>
 															</button>
 														</p>
 														<p>
 															<button title="Delete All Selected" type="button"
 																id="btnDeleteSelected" class="sfBtn">
-																<span class="icon-delete">Delete All
-																	Selected</span>
+																<span class="icon-delete">Delete All Selected</span>
 															</button>
 														</p>
 														<p>
 															<button title="Export to Excel" type="button"
 																id="btnExportToExcel" class="sfBtn">
-																<span class="icon-showall">Export to
-																	Excel</span>
+																<span class="icon-showall">Export to Excel</span>
 															</button>
 														</p>
 														<p>
@@ -200,8 +197,8 @@
 																			Title:</label> <input title="Project Title" type="text"
 																		class="sfTextBoxFix" id="txtSearchProjectTitle"
 																		placeholder="Project Title" /></td>
-																	<td><label class="cssClassLabel">
-																			Proposed By:</label> <input title="Proposed By"
+																	<td><label class="cssClassLabel"> Proposed
+																			By:</label> <input title="Proposed By"
 																		id="txtSearchProposedBy" class="sfTextBoxFix"
 																		type="text" placeholder="Proposed By" /></td>
 
@@ -256,18 +253,18 @@
 																			Status:</label> <select title="Choose Proposal Status"
 																		id="ddlSearchProposalStatus" class="sfListmenu"
 																		style="width: 80px;">
-																			<option value="0" >--All--</option>
+																			<option value="0">--All--</option>
 																	</select></td>
-																	
-																	<td><label class="cssClassLabel">As:</label> <select title="Choose User Role"
-																		id="ddlSearchUserRole" class="sfListmenu"
-																		style="width: 58px;">
-																			<option value="0" >--All--</option>
-																			<option value="PI" >PI</option>
-																			<option value="CO-PI" >CO-PI</option>
-																			<option value="Senior" >Senior</option>
+
+																	<td><label class="cssClassLabel">As:</label> <select
+																		title="Choose User Role" id="ddlSearchUserRole"
+																		class="sfListmenu" style="width: 58px;">
+																			<option value="0">--All--</option>
+																			<option value="PI">PI</option>
+																			<option value="CO-PI">CO-PI</option>
+																			<option value="Senior">Senior</option>
 																	</select></td>
-																	
+
 																	<td><label class="cssClassLabel">&nbsp;</label>
 																		<button title="Search Proposal" class="sfBtn"
 																			id="btnSearchProposal" type="button">
@@ -278,8 +275,8 @@
 														</table>
 													</div>
 													<div class="loading">
-														<img id="ajaxLoader" src="" 
-															alt="Loading..." title="Loading..." />
+														<img id="ajaxLoader" src="" alt="Loading..."
+															title="Loading..." />
 													</div>
 													<div class="log"></div>
 													<table id="gdvProposals" cellspacing="0" cellpadding="0"
@@ -379,8 +376,7 @@
 																	name="txtPhoneNo" placeholder="Phone #"
 																	style="width: 90px !important" /></td>
 																<td><input type="Button" value="Add More"
-																	name="AddMore"
-																	class="AddOption cssClassButtonSubmit" /></td>
+																	name="AddMore" class="AddOption cssClassButtonSubmit" /></td>
 															</tr>
 														</tbody>
 													</table>
@@ -400,9 +396,9 @@
 																		title="Project Title" class="cssClassTextArea"
 																		cols="26" rows="2" name="projectTitle"
 																		id="txtProjectTitle" placeholder="Project Title"></textarea><span
-																	class="cssClassRight"> <img src="./images/right.jpg"
-																		class="cssClassSuccessImg" height="13"
-																		width="18" alt="Right" title="Right" />
+																	class="cssClassRight"> <img
+																		src="./images/right.jpg" class="cssClassSuccessImg"
+																		height="13" width="18" alt="Right" title="Right" />
 																</span></td>
 															</tr>
 															<tr>
@@ -1484,8 +1480,8 @@
 																	</table>
 																</div>
 																<div class="loading">
-																	<img id="ajaxLoader" src="" 
-																		alt="Loading..." title="Loading..." />
+																	<img id="ajaxLoader" src="" alt="Loading..."
+																		title="Loading..." />
 																</div>
 																<div class="log"></div>
 																<table id="gdvProposalsAuditLog" cellspacing="0"

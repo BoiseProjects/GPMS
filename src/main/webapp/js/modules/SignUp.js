@@ -171,10 +171,8 @@ $(function() {
 			var errors = '';
 			if (!textBoxUserName.hasClass('error') && userName.length > 0) {
 				if (!signUp.isUniqueUserName(user_id, userName)) {
-					errors += 'Please enter unique username.'
-							+ " '"
-							+ userName.trim()
-							+ "' "
+					errors += 'Please enter unique username.' + " '"
+							+ userName.trim() + "' "
 							+ 'has already been taken.';
 					textBoxUserName.addClass("error");
 					textBoxUserName.siblings('.cssClassRight').hide();
@@ -219,11 +217,8 @@ $(function() {
 			var txtEmail = $("#" + textBoxEmail);
 			if (!txtEmail.hasClass('error') && email.length > 0) {
 				if (!signUp.isUniqueEmail(user_id, email)) {
-					errors += 'Please enter unique email id.'
-							+ " '"
-							+ email.trim()
-							+ "' "
-							+ 'has already been taken.';
+					errors += 'Please enter unique email id.' + " '"
+							+ email.trim() + "' " + 'has already been taken.';
 					txtEmail.addClass("error");
 					txtEmail.siblings('.cssClassRight').hide();
 					if (txtEmail.siblings('label.error').exists()) {
@@ -360,24 +355,16 @@ $(function() {
 			case 0:
 				break;
 			case 1:
-				csscody.error("<h2>"
-						+ 'Error Message'
-						+ "</h2><p>"
+				csscody.error("<h2>" + 'Error Message' + "</h2><p>"
 						+ 'Cannot check for unique Username' + "</p>");
 				break;
 			case 2:
-				csscody
-						.error("<h2>"
-								+ 'Error Message'
-								+ "</h2><p>"
-								+ 'Cannot check for unique Email'
-								+ "</p>");
+				csscody.error("<h2>" + 'Error Message' + "</h2><p>"
+						+ 'Cannot check for unique Email' + "</p>");
 				break;
 			case 3:
-				csscody.error("<h2>" + 'Error Message'
-						+ "</h2><p>"
-						+ 'Failed to save user!'
-						+ "</p>");
+				csscody.error("<h2>" + 'Error Message' + "</h2><p>"
+						+ 'Failed to save user!' + "</p>");
 				break;
 			}
 		},

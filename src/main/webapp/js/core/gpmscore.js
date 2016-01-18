@@ -58,7 +58,7 @@ $(function() {
 			GetUserCollege : function() {
 				return userCollege;
 			},
-			
+
 			GetCultureName : function() {
 				return gpmsCurrentCulture;
 			},
@@ -80,14 +80,14 @@ $(function() {
 			}
 		},
 		GPMSCommonObj : function() {
-			var gpmsCommonInfo = {				
+			var gpmsCommonInfo = {
 				UserName : GPMS.utils.GetUserName(),
 				UserProfileID : GPMS.utils.GetUserProfileID(),
 				UserIsAdmin : GPMS.utils.IsAdmin(),
-				UserPositionType: GPMS.utils.GetUserPositionType(),
-				UserPositionTitle: GPMS.utils.GetUserPositionTitle(),
-				UserDepartment: GPMS.utils.GetUserDepartment(),
-				UserCollege: GPMS.utils.GetUserCollege(),
+				UserPositionType : GPMS.utils.GetUserPositionType(),
+				UserPositionTitle : GPMS.utils.GetUserPositionTitle(),
+				UserDepartment : GPMS.utils.GetUserDepartment(),
+				UserCollege : GPMS.utils.GetUserCollege(),
 				CultureName : GPMS.utils.GetCultureName(),
 				SessionCode : GPMS.utils.GetSessionCode()
 			};
@@ -171,12 +171,10 @@ $(function() {
 												+ '</p>');
 							},
 							error : function(msg) {
-								csscody
-										.error('<h2>'
-												+ 'Error Message'
-												+ '</h2><p>'
-												+ 'Failed to add item in wishlist!'
-												+ '</p>');
+								csscody.error('<h2>' + 'Error Message'
+										+ '</h2><p>'
+										+ 'Failed to add item in wishlist!'
+										+ '</p>');
 							}
 						});
 			}

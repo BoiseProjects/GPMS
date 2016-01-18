@@ -41,59 +41,56 @@ web: http://www.i-marco.nl/weblog/
 email: marco@i-marco.nl
 
 Free to use any way you like.
-*/
-
+ */
 
 jQuery.fn.initMenu = function() {
-    return this.each(function() {
-        var theMenu = $(this).get(0);
-        $('li.expand > .acitem', this).prev().addClass('active');
-        $('.acitem', this).hide();
-        $('li.expand > .acitem', this).hide();
-        $('li a', this).click(
-            function(e) {
-                e.stopImmediatePropagation();
-                var theElement = $(this).next();
-                var parent = this.parentNode.parentNode;
-                if ($(parent).hasClass('noaccordion')) {
-                    if (theElement[0] === undefined) {
-                        window.location.href = this.href;
-                    }
-                    $(theElement).slideToggle('normal', function() {
-                        if ($(this).is(':visible')) {
-                            $(this).prev().addClass('active');
-                        }
-                        else {
-                            $(this).prev().removeClass('active');
-                        }
-                    });
-                    return false;
-                }
-                else {
-                    if (theElement.hasClass('acitem') && theElement.is(':visible')) {
-                        //if($(parent).hasClass('collapsible')) {                       
-                        $('.acitem:visible', parent).first().slideUp('fast',
-                            function() {
-                                $(this).prev().removeClass('active');
-                            }
-                        );
-                        //return false;  
-                        // }
-                        return false;
-                    }
-                    if (theElement.hasClass('acitem') && !theElement.is(':visible')) {
-                        $('.acitem:visible', parent).first().slideUp('normal', function() {
-                            $(this).prev().removeClass('active');
-                        });
-                        theElement.prev().addClass('active');
-                        theElement.slideDown('normal', function() {
-                            // $(this).prev().addClass('active');
-                        });
-                        return false;
-                    }
-                }
-            }
-    );
-    });
+	return this.each(function() {
+		var theMenu = $(this).get(0);
+		$('li.expand > .acitem', this).prev().addClass('active');
+		$('.acitem', this).hide();
+		$('li.expand > .acitem', this).hide();
+		$('li a', this).click(
+				function(e) {
+					e.stopImmediatePropagation();
+					var theElement = $(this).next();
+					var parent = this.parentNode.parentNode;
+					if ($(parent).hasClass('noaccordion')) {
+						if (theElement[0] === undefined) {
+							window.location.href = this.href;
+						}
+						$(theElement).slideToggle('normal', function() {
+							if ($(this).is(':visible')) {
+								$(this).prev().addClass('active');
+							} else {
+								$(this).prev().removeClass('active');
+							}
+						});
+						return false;
+					} else {
+						if (theElement.hasClass('acitem')
+								&& theElement.is(':visible')) {
+							// if($(parent).hasClass('collapsible')) {
+							$('.acitem:visible', parent).first().slideUp(
+									'fast', function() {
+										$(this).prev().removeClass('active');
+									});
+							// return false;
+							// }
+							return false;
+						}
+						if (theElement.hasClass('acitem')
+								&& !theElement.is(':visible')) {
+							$('.acitem:visible', parent).first().slideUp(
+									'normal', function() {
+										$(this).prev().removeClass('active');
+									});
+							theElement.prev().addClass('active');
+							theElement.slideDown('normal', function() {
+								// $(this).prev().addClass('active');
+							});
+							return false;
+						}
+					}
+				});
+	});
 };
-

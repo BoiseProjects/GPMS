@@ -131,7 +131,7 @@
 			<span>This page requires java-script to be enabled. Please
 				adjust your browser-settings.</span>
 		</noscript>
-		
+
 		<div id="sfOuterwrapper">
 			<div class="sfSagewrapper">
 				<!--Body Content-->
@@ -151,7 +151,8 @@
 										<div class="cssClassCommonBox Curve">
 											<div class="cssClassHeader">
 												<h1>
-													<span id="lblFormHeading">Manage Your Account Settings</span>
+													<span id="lblFormHeading">Manage Your Account
+														Settings</span>
 												</h1>
 												Goes here Your Account Settings Details!
 											</div>
