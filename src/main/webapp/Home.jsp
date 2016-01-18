@@ -53,7 +53,8 @@
 	var userPositionType = '<%=session.getAttribute("userPositionType")%>';
 	var	userPositionTitle = '<%=session.getAttribute("userPositionTitle")%>';
 	var userDepartment = '<%=session.getAttribute("userDepartment")%>';
-	var userCollege = '<%=session.getAttribute("userCollege")%>';
+	var userCollege = '<%=session.getAttribute("userCollege")%>
+	';
 
 	var gpmsServicePath = "REST/";
 	var gpmsRootPath = "http://localhost:8181/GPMS/";
@@ -115,7 +116,9 @@
 						<!-- Side Bar Ends -->
 						<div class="sfMaincontent">
 							<div class="welcome-msg">
-								<h2>Welcome, superuser</h2>
+								<h2>
+									Welcome, <%=session.getAttribute("gpmsUserName")%>
+								</h2>
 								<p>From your Account Dashboard you have the ability to view
 									a snapshot of your recent account activities and update your
 									personal account information. Lorem Ipsum is simply dummy text

@@ -53,7 +53,8 @@
 	var userPositionType = '<%=session.getAttribute("userPositionType")%>';
 	var	userPositionTitle = '<%=session.getAttribute("userPositionTitle")%>';
 	var userDepartment = '<%=session.getAttribute("userDepartment")%>';
-	var userCollege = '<%=session.getAttribute("userCollege")%>';
+	var userCollege = '<%=session.getAttribute("userCollege")%>
+	';
 
 	var gpmsServicePath = "REST/";
 	var gpmsRootPath = "http://localhost:8181/GPMS/";
@@ -116,7 +117,10 @@
 						<!-- Side Bar Ends -->
 						<div class="sfMaincontent">
 							<div class="sfWelcomeWrap clearfix">
-								<h1>Hi! Welcome to GPMS Control Panel Screen.</h1>
+								<h1>
+									Hi! <%=session.getAttribute("gpmsUserName")%> Welcome to GPMS
+									Control Panel Screen.
+								</h1>
 								<h2>Proposal Workflow Management System - A web-based
 									application for replacing the manual approval process of grant
 									submission. You can take a quick tour to GPMS, on how to run
