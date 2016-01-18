@@ -680,7 +680,7 @@ public class UserService {
 			String userNameOf = userInfo.get("UserName").getTextValue();
 			if (!userID.equals("0") && existingUserProfile != null) {
 				existingUserAccount = existingUserProfile.getUserAccount();
-				if (existingUserAccount.getUserName().equals(userNameOf)) {
+				if (!existingUserAccount.getUserName().equals(userNameOf)) {
 					existingUserAccount = null;
 				}
 			} else {

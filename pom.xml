@@ -6,11 +6,11 @@
 	<packaging>war</packaging>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>GPMS Maven Webapp</name>
-	<url>https://github.com/dianxiangxu/GPMS-Trace</url>
+	<url>https://github.com/BoiseProjects/GPMS</url>
 	<scm>
-		<connection>scm:git:git@github.com:dianxiangxu/GPMS-Trace.git</connection>
-		<developerConnection>scm:git:git@github.com:dianxiangxu/GPMS-Trace.git</developerConnection>
-		<url>https://github.com/dianxiangxu/GPMS-Trace</url>
+		<connection>scm:git@github.com:BoiseProjects/GPMS.git</connection>
+		<developerConnection>https://github.com/Milstein</developerConnection>
+		<url>https://github.com/BoiseProjects/GPMS</url>
 		<tag>HEAD</tag>
 	</scm>
 	<prerequisites>
@@ -53,7 +53,7 @@
 	</contributors>
 	<issueManagement>
 		<system>GitHub Issues</system>
-		<url>https://github.com/dianxiangxu/GPMS-Trace/issues</url>
+		<url>https://github.com/BoiseProjects/GPMS/issues</url>
 	</issueManagement>
 	<mailingLists>
 		<mailingList>
@@ -283,4 +283,5 @@
 			</plugin>
 		</plugins>
 	</build>
+	<description>Proposal Workflow Management System - A web-based application for replacing the manual approval process of grant submission.</description>
 </project>

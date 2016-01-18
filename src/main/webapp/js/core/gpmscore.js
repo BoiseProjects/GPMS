@@ -1,4 +1,4 @@
-﻿//<![CDATA[
+﻿// <![CDATA[
 
 var GPMS = {};
 $(function() {
@@ -57,7 +57,13 @@ $(function() {
 			},
 			GetUserCollege : function() {
 				return userCollege;
-			}		
+			},
+			GetGPMSServicePath : function() {
+				return gpmsServicePath;
+			},
+			GetGPMSRootPath : function() {
+				return gpmsRootPath;
+			}
 		},
 		
 		GPMSCommonObj : function() {

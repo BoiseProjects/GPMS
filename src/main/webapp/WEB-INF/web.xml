@@ -6,12 +6,12 @@
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
 	<display-name>GPMS Web Application</display-name>
 	<welcome-file-list>
+		<welcome-file>Login.jsp</welcome-file>
+		<welcome-file>Login.html</welcome-file>
+		<welcome-file>Login.htm</welcome-file>
 		<welcome-file>index.html</welcome-file>
 		<welcome-file>index.htm</welcome-file>
 		<welcome-file>index.jsp</welcome-file>
-		<welcome-file>default.html</welcome-file>
-		<welcome-file>default.htm</welcome-file>
-		<welcome-file>default.jsp</welcome-file>
 	</welcome-file-list>
 	
 	<context-param>

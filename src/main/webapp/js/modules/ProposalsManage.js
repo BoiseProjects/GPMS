@@ -1,4 +1,4 @@
-﻿var proposalsManage = '';
+var proposalsManage = '';
 
 $(function() {
 
@@ -17,12 +17,12 @@ $(function() {
 	var gpmsCommonObj = function() {
 		var gpmsCommonInfo = {
 			UserProfileID : GPMS.utils.GetUserProfileID(),
-		UserName : GPMS.utils.GetUserName(),			
-		UserIsAdmin : GPMS.utils.IsAdmin(),
-		UserPositionType : GPMS.utils.GetUserPositionType(),
-		UserPositionTitle : GPMS.utils.GetUserPositionTitle(),
-		UserDepartment : GPMS.utils.GetUserDepartment(),
-		UserCollege : GPMS.utils.GetUserCollege()	
+			UserName : GPMS.utils.GetUserName(),
+			UserIsAdmin : GPMS.utils.IsAdmin(),
+			UserPositionType : GPMS.utils.GetUserPositionType(),
+			UserPositionTitle : GPMS.utils.GetUserPositionTitle(),
+			UserDepartment : GPMS.utils.GetUserDepartment(),
+			UserCollege : GPMS.utils.GetUserCollege()
 		};
 		return gpmsCommonInfo;
 	};
@@ -1753,6 +1753,17 @@ $(function() {
 			rowIndex = 0;
 			$("#dataTable tbody>tr:gt(0)").remove();
 
+			var $nameVal = $('select[name=ddlName]').eq(rowIndex).val(
+					GPMS.utils.GetUserProfileID()).prop('selected', 'selected')
+					.val();
+			if ($nameVal == null) {
+				$('select[name="ddlCollege"]').get(rowIndex).options.length = 0;
+				$('select[name="ddlDepartment"]').get(rowIndex).options.length = 0;
+				$('select[name="ddlPositionType"]').get(rowIndex).options.length = 0;
+				$('select[name="ddlPositionTitle"]').get(rowIndex).options.length = 0;
+				$('input[name="txtPhoneNo"]').eq(rowIndex).val('');
+			}
+
 			$('select[name=ddlRole]').eq(0).val(0).prop('selected', 'selected')
 					.prop('disabled', 'disabled');
 
@@ -2838,8 +2849,8 @@ $(function() {
 			$('#divProposalGrid').show();
 			$("#btnSaveProposal").removeAttr("name");
 			$("#accordion").accordion("option", "active", -1);
-			
-			if (editFlag !="0") {
+
+			if (editFlag != "0") {
 				csscody.info("<h2>" + 'Successful Message' + "</h2><p>"
 						+ 'Proposal has been updated successfully.' + "</p>");
 			} else {
@@ -3112,11 +3123,15 @@ $(function() {
 
 						$('select[name=ddlName]').eq(0).val(
 								GPMS.utils.GetUserProfileID()).prop('selected',
-								'selected').prop('disabled', 'disabled');
+								'selected').prop('disabled', false);
 
 						proposalsManage.ClearForm();
-						proposalsManage.BindDefaultUserPosition(0);
-						proposalsManage.BindPICoPISignatures();
+
+						var $nameVal = $('select[name="ddlName"]').eq(0).val();
+						if ($nameVal != null) {
+							proposalsManage.BindDefaultUserPosition(0);
+							proposalsManage.BindPICoPISignatures();
+						}
 
 						$('#divProposalGrid').hide();
 						$('#divProposalForm').show();
