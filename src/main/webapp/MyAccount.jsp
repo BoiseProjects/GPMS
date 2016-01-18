@@ -56,21 +56,15 @@
 	var userCollege = '<%=session.getAttribute("userCollege")%>';
 
 	var gpmsServicePath = "REST/";
-	var gpmsRootPath = "http://localhost:8181/GPMS/";
-
-	$(function() {
-
-		$(".sfLocale").localize({
-			moduleKey : gpmsMyAccount
-		});
-	});
-
+	var gpmsRootPath = "http://localhost:8181/GPMS/";	
+	
 	//]]>
 </script>
 
 <script type="text/javascript" src="js/jQuery/jquery-ui.js"></script>
 
 <script type="text/javascript" src="js/core/gpmscore.js"></script>
+<script type="text/javascript" src="js/core/encoder.js"></script>
 
 <script type="text/javascript" src="js/core/jquery.disable_with.js"></script>
 
@@ -80,25 +74,17 @@
 <script type="text/javascript" src="js/superfish.js"></script>
 
 <script type="text/javascript"
-	src="js/FormValidation/jquery.form-validation-and-hints.js"></script>
-<script type="text/javascript"
 	src="js/FormValidation/jquery.validate.js"></script>
 <script type="text/javascript"
 	src="js/FormValidation/jquery.ui.datepicker.validation.js"></script>
-
 <script type="text/javascript"
-	src="js/FormValidation/jquery.maskedinput.js"></script>
-
-<!-- <script type="text/javascript" src="js/SystemLocale/systemlocale.js"></script> -->
-<script type="text/javascript"
-	src="js/modules/Language/CoreJsLanguage.js"></script>
+	src="js/FormValidation/jquery.maskedinput.js"></script>	
+<script type="text/javascript" src="js/FormValidation/autoNumeric.js"></script>
 
 <script type="text/javascript" src="js/core/json2.js"></script>
 
 <script type="text/javascript" src="js/jquery-browser.js"></script>
 <script type="text/javascript" src="js/jquery.uniform.js"></script>
-
-<script type="text/javascript" src="js/jquery.qtip-1.0.0-rc3.js"></script>
 
 <script type="text/javascript" src="js/GridView/jquery.tablesorter.js"></script>
 <script type="text/javascript" src="js/GridView/jquery.grid.js"></script>
@@ -109,29 +95,14 @@
 <script type="text/javascript" src="js/MessageBox/jquery.easing.1.3.js"></script>
 <script type="text/javascript" src="js/MessageBox/alertbox.js"></script>
 
-<script type="text/javascript" src="js/AjaxFileUploader/ajaxupload.js"></script>
-
-<script type="text/javascript"
-	src="js/ckeditor_4.5.1_full/ckeditor/ckeditor.js"></script>
-<script type="text/javascript"
-	src="js/ckeditor_4.5.1_full/ckeditor/adapters/jquery.js"></script>
-
-
-<!-- <script type="text/javascript" src="js/core/Session.js"></script> -->
-<script type="text/javascript" src="js/core/encoder.js"></script>
-
-<!-- <script type="text/javascript" src="js/Tabs/jquery.slidingtabs.js"></script> -->
-
 <script type="text/javascript" src="js/modules/MyAccount.js"></script>
-<script type="text/javascript"
-	src="js/modules/Language/GPMSMyAccount.js"></script>
-<!-- <script type="text/javascript" src="js/modules/Language/AspxRssFeedLocale.js"></script> -->
 
 <link type="text/css" rel="stylesheet"
 	href="css/Templates/jquery-ui.css" />
-<link type="text/css" rel="stylesheet" href="css/GridView/tablesort.css" />
+
 <link type="text/css" rel="stylesheet" href="css/MessageBox/style.css" />
 
+<link type="text/css" rel="stylesheet" href="css/GridView/tablesort.css" />
 <link type="text/css" rel="stylesheet" href="css/Templates/grid.css" />
 <link type="text/css" rel="stylesheet"
 	href="css/Templates/topstickybar.css" />
@@ -143,7 +114,7 @@
 		<div style="display: none;" id="UpdateProgress1">
 			<div class="sfLoadingbg">&nbsp;</div>
 			<div class="sfLoadingdiv">
-				<img id="imgProgress" src="images/ajax-loader.gif"
+				<img id="imgProgress" src="./images/ajax-loader.gif"
 					style="border-width: 0px;" alt="Loading..." title="Loading..." />
 				<br> <span id="lblPrgress">Please wait...</span>
 			</div>
@@ -391,7 +362,7 @@
 																					name="workEmail" placeholder="Work Email" /> <span
 																					class="cssClassRight"> <img
 																					src="./images/right.jpg"
-																					class="cssClassSuccessImg sfLocale" height="13"
+																					class="cssClassSuccessImg" height="13"
 																					width="18" alt="Right" title="Right" />
 																				</span>
 																			</div>
@@ -406,7 +377,7 @@
 																					name="personalEmail" placeholder="Personal Email" /><span
 																					class="cssClassRight"> <img
 																					src="./images/right.jpg"
-																					class="cssClassSuccessImg sfLocale" height="13"
+																					class="cssClassSuccessImg" height="13"
 																					width="18" alt="Right" title="Right" />
 																				</span>
 																			</div>
@@ -483,7 +454,7 @@
 																			placeholder="User Name" disabled="true"> <span
 																			class="cssClassRight"> <img
 																				src="./images/right.jpg"
-																				class="cssClassSuccessImg sfLocale" height="13"
+																				class="cssClassSuccessImg" height="13"
 																				width="18" alt="Right" title="Right" />
 																		</span></td>
 																	</tr>
@@ -519,20 +490,20 @@
 																				border="0">
 																				<tbody>
 																					<tr>
-																						<td><label class="cssClassLabel sfLocale">
+																						<td><label class="cssClassLabel">
 																								Action:</label> <input title="Action" type="text"
 																							class="sfInputbox" id="txtSearchAction"
 																							placeholder="Action" /></td>
-																						<td><label class="cssClassLabel sfLocale">
+																						<td><label class="cssClassLabel">
 																								Audited By:</label> <input title="Audited By"
 																							type="text" class="sfInputbox"
 																							id="txtSearchAuditedBy" placeholder="Audited By" /></td>
-																						<td><label class="cssClassLabel sfLocale">
+																						<td><label class="cssClassLabel">
 																								Activity On From:</label> <input
 																							title="Activity On From" type="text"
 																							class="sfTextBoxSmall"
 																							id="txtSearchActivityOnFrom" placeholder="From" /></td>
-																						<td><label class="cssClassLabel sfLocale">
+																						<td><label class="cssClassLabel">
 																								Activity On To:</label> <input title="Activity On To"
 																							type="text" class="sfTextBoxSmall"
 																							id="txtSearchActivityOnTo" placeholder="To" /></td>
@@ -540,14 +511,14 @@
 																						<td><label class="cssClassLabel"> </label>
 																							<button title="Search Audit Log" class="sfBtn"
 																								id="btnSearchUserAuditLog" type="button">
-																								<span class="sfLocale icon-search">Search</span>
+																								<span class="icon-search">Search</span>
 																							</button></td>
 																					</tr>
 																				</tbody>
 																			</table>
 																		</div>
 																		<div class="loading">
-																			<img id="ajaxLoader" src="" class="sfLocale"
+																			<img id="ajaxLoader" src="" 
 																				alt="Loading..." title="Loading..." />
 																		</div>
 																		<div class="log"></div>
@@ -565,7 +536,7 @@
 											<p>
 												<button title="Save User" type="button" id="btnSaveUser"
 													class="sfBtn">
-													<span class="sfLocale icon-save">Save</span>
+													<span class="icon-save">Save</span>
 												</button>
 											</p>
 										</div>

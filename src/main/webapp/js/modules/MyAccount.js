@@ -549,7 +549,7 @@ $(function() {
 					format : 'yyyy/MM/dd hh:mm:ss a'
 				} ],
 				rp : perpage,
-				nomsg : getLocale(gpmsMyAccount, 'No Records Found!'),
+				nomsg : 'No Records Found!',
 				param : data,
 				current : current_,
 				pnew : offset_,
@@ -620,9 +620,7 @@ $(function() {
 										if ($(this).hasClass("sfListmenu")) {
 											if (!optionsText
 													&& $(this).prop("name") != "ddlPositionTitle") {
-												validateErrorMessage = getLocale(
-														gpmsMyAccount,
-														"Please select all position details for this user.")
+												validateErrorMessage = 'Please select all position details for this user.'
 														+ "<br/>";
 												myAccount.SetFirstTabActive();
 												$(this).focus();
@@ -679,13 +677,11 @@ $(function() {
 			var errors = '';
 			if (!textBoxUserName.hasClass('warning') && userName.length > 0) {
 				if (!myAccount.isUniqueUserName(user_id, userName)) {
-					errors += getLocale(gpmsMyAccount,
-							"Please enter unique username.")
+					errors += 'Please enter unique username.'
 							+ " '"
 							+ userName.trim()
 							+ "' "
-							+ getLocale(gpmsMyAccount,
-									"has already been taken.");
+							+ 'has already been taken.';
 					textBoxUserName.addClass("error");
 					textBoxUserName.siblings('.cssClassRight').hide();
 					if (textBoxUserName.siblings('span.warning').exists()) {
@@ -730,13 +726,11 @@ $(function() {
 			var txtEmail = $("#" + textBoxEmail);
 			if (!txtEmail.hasClass('warning') && email.length > 0) {
 				if (!myAccount.isUniqueEmail(user_id, email)) {
-					errors += getLocale(gpmsMyAccount,
-							"Please enter unique email id.")
+					errors += 'Please enter unique email id.'
 							+ " '"
 							+ email.trim()
 							+ "' "
-							+ getLocale(gpmsMyAccount,
-									"has already been taken.");
+							+ 'has already been taken.';
 					txtEmail.addClass("error");
 					txtEmail.siblings('.cssClassRight').hide();
 					if (txtEmail.siblings('span.warning').exists()) {
@@ -1081,10 +1075,9 @@ $(function() {
 						null);
 				csscody
 						.info("<h2>"
-								+ getLocale(gpmsMyAccount, 'Successful Message')
+								+ 'Successful Message'
 								+ "</h2><p>"
-								+ getLocale(gpmsMyAccount,
-										'User has been updated successfully.')
+								+ 'User has been updated successfully.'
 								+ "</p>");
 				break;
 			}
@@ -1096,37 +1089,34 @@ $(function() {
 				break;
 			case 1:
 				csscody.error('<h2>'
-						+ getLocale(gpmsMyAccount, "Error Message")
+						+ 'Error Message'
 						+ '</h2><p>'
-						+ getLocale(gpmsMyAccount,
-								"Failed to load colleges list.") + '</p>');
+						+ 'Failed to load colleges list.' + '</p>');
 				break;
 			case 2:
 				csscody.error('<h2>'
-						+ getLocale(gpmsMyAccount, "Error Message")
-						+ '</h2><p>' + "Failed to load user details." + '</p>');
+						+ 'Error Message'
+						+ '</h2><p>' + 'Failed to load user details.' + '</p>');
 				break;
 			case 3:
 				csscody.error("<h2>"
-						+ getLocale(gpmsMyAccount, 'Error Message')
+						+ 'Error Message'
 						+ "</h2><p>"
-						+ getLocale(gpmsMyAccount,
-								'Cannot check for unique Username') + "</p>");
+						+ 'Cannot check for unique Username' + "</p>");
 				break;
 
 			case 4:
 				csscody.error("<h2>"
-						+ getLocale(gpmsMyAccount, 'Error Message')
+						+ 'Error Message'
 						+ "</h2><p>"
-						+ getLocale(gpmsMyAccount,
-								'Cannot check for unique Email') + "</p>");
+						+ 'Cannot check for unique Email' + "</p>");
 				break;
 
 			case 5:
 				csscody.error("<h2>"
-						+ getLocale(gpmsMyAccount, 'Error Message')
+						+ 'Error Message'
 						+ "</h2><p>"
-						+ getLocale(gpmsMyAccount, 'Failed to update user!')
+						+ 'Failed to update user!'
 						+ "</p>");
 				break;
 			}

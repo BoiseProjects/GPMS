@@ -1,11 +1,11 @@
 ﻿var proposalsManage = '';
 
 $(function() {
-	
+
 	if (userProfileId == "null") {
 		window.location = 'Login.jsp';
 	}
-	
+
 	jQuery.fn.exists = function() {
 		return this.length > 0;
 	}
@@ -16,13 +16,13 @@ $(function() {
 
 	var gpmsCommonObj = function() {
 		var gpmsCommonInfo = {
-				UserName : GPMS.utils.GetUserName(),
-				UserProfileID : GPMS.utils.GetUserProfileID(),
-				UserIsAdmin : GPMS.utils.IsAdmin(),
-				UserPositionType : GPMS.utils.GetUserPositionType(),
-				UserPositionTitle : GPMS.utils.GetUserPositionTitle(),
-				UserDepartment : GPMS.utils.GetUserDepartment(),
-				UserCollege : GPMS.utils.GetUserCollege()
+			UserName : GPMS.utils.GetUserName(),
+			UserProfileID : GPMS.utils.GetUserProfileID(),
+			UserIsAdmin : GPMS.utils.IsAdmin(),
+			UserPositionType : GPMS.utils.GetUserPositionType(),
+			UserPositionTitle : GPMS.utils.GetUserPositionTitle(),
+			UserDepartment : GPMS.utils.GetUserDepartment(),
+			UserCollege : GPMS.utils.GetUserCollege()
 		};
 		return gpmsCommonInfo;
 	};
@@ -524,255 +524,224 @@ $(function() {
 							{
 								url : this.config.url,
 								functionMethod : this.config.method,
-								colModel : [
-										{
-											display : 'Proposal ID',
-											cssclass : 'cssClassHeadCheckBox',
-											coltype : 'checkbox',
-											align : 'center',
-											checkFor : '22',
-											elemClass : 'attrChkbox',
-											elemDefault : false,
-											controlclass : 'attribHeaderChkbox'
-										},
-										{
-											display : 'Proposal No',
-											name : 'proposal_no',
-											cssclass : '',
-											controlclass : '',
-											coltype : 'label',
-											align : 'left',
-											hide : true
-										},
-										{
-											display : 'Project Title',
-											name : 'project_title',
-											cssclass : '',
-											controlclass : '',
-											coltype : 'label',
-											align : 'left'
-										},
-										{
-											display : 'Project Type',
-											name : 'project_type',
-											cssclass : '',
-											controlclass : '',
-											coltype : 'label',
-											align : 'left'
-										},
-										{
-											display : 'Type of Request',
-											name : 'type_of_request',
-											cssclass : '',
-											controlclass : '',
-											coltype : 'label',
-											align : 'left',
-											type : 'array',
-											hide : true
-										},
-										{
-											display : 'Project Location',
-											name : 'project_location',
-											cssclass : '',
-											controlclass : '',
-											coltype : 'label',
-											align : 'left',
-											hide : true
-										},
-										{
-											display : 'Granting Agencies',
-											name : 'granting_agencies',
-											cssclass : '',
-											controlclass : '',
-											coltype : 'label',
-											align : 'left',
-											type : 'array'
-										},
-										{
-											display : 'Direct Costs',
-											name : 'directCosts',
-											cssclass : '',
-											controlclass : '',
-											coltype : 'label',
-											align : 'left',
-											type : 'currency',
-											hide : true
-										},
-										{
-											display : 'FA Costs',
-											name : 'FA_costs',
-											cssclass : '',
-											controlclass : '',
-											coltype : 'label',
-											align : 'left',
-											type : 'currency',
-											hide : true
-										},
-										{
-											display : 'Total Costs',
-											name : 'total_costs',
-											cssclass : '',
-											controlclass : '',
-											coltype : 'label',
-											align : 'left',
-											type : 'currency'
-										},
-										{
-											display : 'FA Rate',
-											name : 'FA_rate',
-											cssclass : '',
-											controlclass : '',
-											coltype : 'label',
-											align : 'left',
-											type : 'percent',
-											hide : true
-										},
-										{
-											display : 'Date Received',
-											name : 'date_received',
-											cssclass : '',
-											controlclass : '',
-											coltype : 'label',
-											align : 'left',
-											type : 'date',
-											format : 'yyyy/MM/dd hh:mm:ss a'
-										},
-										{
-											display : 'Due Date',
-											name : 'due_date',
-											cssclass : 'cssClassHeadDate',
-											controlclass : '',
-											coltype : 'label',
-											align : 'left',
-											type : 'date',
-											format : 'yyyy/MM/dd hh:mm:ss a'
-										},
-										{
-											display : 'Project Period From',
-											name : 'project_period_from',
-											cssclass : 'cssClassHeadDate',
-											controlclass : '',
-											coltype : 'label',
-											align : 'left',
-											type : 'date',
-											format : 'yyyy/MM/dd hh:mm:ss a',
-											hide : true
-										},
-										{
-											display : 'Project Period To',
-											name : 'project_period_to',
-											cssclass : 'cssClassHeadDate',
-											controlclass : '',
-											coltype : 'label',
-											align : 'left',
-											type : 'date',
-											format : 'yyyy/MM/dd hh:mm:ss a',
-											hide : true
-										},
-										{
-											display : 'Status',
-											name : 'proposal_status',
-											cssclass : '',
-											controlclass : '',
-											coltype : 'label',
-											align : 'left'
-										},
-										{
-											display : getLocale(
-													gpmsProposalsManagement,
-													'Last Audited'),
-											name : 'last_audited',
-											cssclass : 'cssClassHeadDate',
-											controlclass : '',
-											coltype : 'label',
-											align : 'left',
-											type : 'date',
-											format : 'yyyy/MM/dd hh:mm:ss a',
-											hide : true
-										},
-										{
-											display : 'Last Audited By',
-											name : 'last_audited_by',
-											cssclass : '',
-											controlclass : '',
-											coltype : 'label',
-											align : 'left',
-											hide : true
-										},
-										{
-											display : 'Last Audited Action',
-											name : 'last_audited_action',
-											cssclass : '',
-											controlclass : '',
-											coltype : 'label',
-											align : 'left',
-											hide : true
-										},
-										{
-											display : 'PI User',
-											name : 'pi_user',
-											cssclass : '',
-											controlclass : '',
-											coltype : 'label',
-											align : 'left',
-											hide : true
-										},
-										{
-											display : 'Co-PI Users',
-											name : 'co_pi_users',
-											cssclass : '',
-											controlclass : '',
-											coltype : 'label',
-											align : 'left',
-											type : 'array',
-											hide : true
-										},
-										{
-											display : 'Senior Personnel Users',
-											name : 'senior_personnel_users',
-											cssclass : '',
-											controlclass : '',
-											coltype : 'label',
-											align : 'left',
-											type : 'array',
-											hide : true
-										},
-										{
-											display : 'All Involved Users',
-											name : 'all_users',
-											cssclass : '',
-											controlclass : '',
-											coltype : 'label',
-											align : 'left',
-											type : 'array',
-											hide : true
-										},
-										{
-											display : 'Is Deleted?',
-											name : 'is_deleted',
-											cssclass : 'cssClassHeadBoolean',
-											controlclass : '',
-											coltype : 'label',
-											align : 'left',
-											type : 'boolean',
-											format : 'Yes/No',
-											hide : true
-										},
-										{
-											display : getLocale(
-													gpmsProposalsManagement,
-													'Actions'),
-											name : 'action',
-											cssclass : 'cssClassAction',
-											coltype : 'label',
-											align : 'center'
-										} ],
+								colModel : [ {
+									display : 'Proposal ID',
+									cssclass : 'cssClassHeadCheckBox',
+									coltype : 'checkbox',
+									align : 'center',
+									checkFor : '22',
+									elemClass : 'attrChkbox',
+									elemDefault : false,
+									controlclass : 'attribHeaderChkbox'
+								}, {
+									display : 'Proposal No',
+									name : 'proposal_no',
+									cssclass : '',
+									controlclass : '',
+									coltype : 'label',
+									align : 'left',
+									hide : true
+								}, {
+									display : 'Project Title',
+									name : 'project_title',
+									cssclass : '',
+									controlclass : '',
+									coltype : 'label',
+									align : 'left'
+								}, {
+									display : 'Project Type',
+									name : 'project_type',
+									cssclass : '',
+									controlclass : '',
+									coltype : 'label',
+									align : 'left'
+								}, {
+									display : 'Type of Request',
+									name : 'type_of_request',
+									cssclass : '',
+									controlclass : '',
+									coltype : 'label',
+									align : 'left',
+									type : 'array',
+									hide : true
+								}, {
+									display : 'Project Location',
+									name : 'project_location',
+									cssclass : '',
+									controlclass : '',
+									coltype : 'label',
+									align : 'left',
+									hide : true
+								}, {
+									display : 'Granting Agencies',
+									name : 'granting_agencies',
+									cssclass : '',
+									controlclass : '',
+									coltype : 'label',
+									align : 'left',
+									type : 'array'
+								}, {
+									display : 'Direct Costs',
+									name : 'directCosts',
+									cssclass : '',
+									controlclass : '',
+									coltype : 'label',
+									align : 'left',
+									type : 'currency',
+									hide : true
+								}, {
+									display : 'FA Costs',
+									name : 'FA_costs',
+									cssclass : '',
+									controlclass : '',
+									coltype : 'label',
+									align : 'left',
+									type : 'currency',
+									hide : true
+								}, {
+									display : 'Total Costs',
+									name : 'total_costs',
+									cssclass : '',
+									controlclass : '',
+									coltype : 'label',
+									align : 'left',
+									type : 'currency'
+								}, {
+									display : 'FA Rate',
+									name : 'FA_rate',
+									cssclass : '',
+									controlclass : '',
+									coltype : 'label',
+									align : 'left',
+									type : 'percent',
+									hide : true
+								}, {
+									display : 'Date Received',
+									name : 'date_received',
+									cssclass : '',
+									controlclass : '',
+									coltype : 'label',
+									align : 'left',
+									type : 'date',
+									format : 'yyyy/MM/dd hh:mm:ss a'
+								}, {
+									display : 'Due Date',
+									name : 'due_date',
+									cssclass : 'cssClassHeadDate',
+									controlclass : '',
+									coltype : 'label',
+									align : 'left',
+									type : 'date',
+									format : 'yyyy/MM/dd hh:mm:ss a'
+								}, {
+									display : 'Project Period From',
+									name : 'project_period_from',
+									cssclass : 'cssClassHeadDate',
+									controlclass : '',
+									coltype : 'label',
+									align : 'left',
+									type : 'date',
+									format : 'yyyy/MM/dd hh:mm:ss a',
+									hide : true
+								}, {
+									display : 'Project Period To',
+									name : 'project_period_to',
+									cssclass : 'cssClassHeadDate',
+									controlclass : '',
+									coltype : 'label',
+									align : 'left',
+									type : 'date',
+									format : 'yyyy/MM/dd hh:mm:ss a',
+									hide : true
+								}, {
+									display : 'Status',
+									name : 'proposal_status',
+									cssclass : '',
+									controlclass : '',
+									coltype : 'label',
+									align : 'left'
+								}, {
+									display : 'Last Audited',
+									name : 'last_audited',
+									cssclass : 'cssClassHeadDate',
+									controlclass : '',
+									coltype : 'label',
+									align : 'left',
+									type : 'date',
+									format : 'yyyy/MM/dd hh:mm:ss a',
+									hide : true
+								}, {
+									display : 'Last Audited By',
+									name : 'last_audited_by',
+									cssclass : '',
+									controlclass : '',
+									coltype : 'label',
+									align : 'left',
+									hide : true
+								}, {
+									display : 'Last Audited Action',
+									name : 'last_audited_action',
+									cssclass : '',
+									controlclass : '',
+									coltype : 'label',
+									align : 'left',
+									hide : true
+								}, {
+									display : 'PI User',
+									name : 'pi_user',
+									cssclass : '',
+									controlclass : '',
+									coltype : 'label',
+									align : 'left',
+									hide : true
+								}, {
+									display : 'Co-PI Users',
+									name : 'co_pi_users',
+									cssclass : '',
+									controlclass : '',
+									coltype : 'label',
+									align : 'left',
+									type : 'array',
+									hide : true
+								}, {
+									display : 'Senior Personnel Users',
+									name : 'senior_personnel_users',
+									cssclass : '',
+									controlclass : '',
+									coltype : 'label',
+									align : 'left',
+									type : 'array',
+									hide : true
+								}, {
+									display : 'All Involved Users',
+									name : 'all_users',
+									cssclass : '',
+									controlclass : '',
+									coltype : 'label',
+									align : 'left',
+									type : 'array',
+									hide : true
+								}, {
+									display : 'Is Deleted?',
+									name : 'is_deleted',
+									cssclass : 'cssClassHeadBoolean',
+									controlclass : '',
+									coltype : 'label',
+									align : 'left',
+									type : 'boolean',
+									format : 'Yes/No',
+									hide : true
+								}, {
+									display : 'Actions',
+									name : 'action',
+									cssclass : 'cssClassAction',
+									coltype : 'label',
+									align : 'center'
+								} ],
 
 								buttons : [
 										{
-											display : getLocale(
-													gpmsProposalsManagement,
-													"Edit"),
+											display : 'Edit',
 											name : 'edit',
 											enable : true,
 											_event : 'click',
@@ -781,9 +750,7 @@ $(function() {
 											arguments : '1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23'
 										},
 										{
-											display : getLocale(
-													gpmsProposalsManagement,
-													"Delete"),
+											display : 'Delete',
 											name : 'delete',
 											enable : true,
 											_event : 'click',
@@ -792,8 +759,7 @@ $(function() {
 											arguments : '23'
 										} ],
 								rp : perpage,
-								nomsg : getLocale(gpmsProposalsManagement,
-										'No Records Found!'),
+								nomsg : 'No Records Found!',
 								param : data,
 								current : current_,
 								pnew : offset_,
@@ -816,9 +782,7 @@ $(function() {
 				// $('#accordion-expand-holder').show();
 
 				$('#lblFormHeading').html(
-						getLocale(gpmsProposalsManagement,
-								'Edit Proposal Details for: ')
-								+ argus[2]);
+						'Edit Proposal Details for: ' + argus[2]);
 
 				$("#lblProposalDateReceived").text(argus[11]);
 
@@ -847,7 +811,7 @@ $(function() {
 				$('#ui-id-23').show();
 				// Audit Log Section
 				$('#ui-id-25').show();
-alert(argus[20]+"FUCK"+argus[21]+"ME"+argus[22]);
+
 				proposalsManage.BindUserPositionDetailsForAProposal(argus[22]);
 
 				proposalsManage.BindProposalDetailsByProposalId(argus[0]);
@@ -1620,53 +1584,51 @@ alert(argus[20]+"FUCK"+argus[21]+"ME"+argus[22]);
 			};
 			var data = this.config.data;
 
-			$("#gdvProposalsAuditLog").sagegrid(
-					{
-						url : this.config.url,
-						functionMethod : this.config.method,
-						colModel : [ {
-							display : 'User Name',
-							name : 'user_name',
-							cssclass : '',
-							controlclass : '',
-							coltype : 'label',
-							align : 'left'
-						}, {
-							display : 'Full Name',
-							name : 'full_name',
-							cssclass : '',
-							controlclass : '',
-							coltype : 'label',
-							align : 'left'
-						}, {
-							display : 'Action',
-							name : 'action',
-							cssclass : '',
-							controlclass : '',
-							coltype : 'label',
-							align : 'left'
-						}, {
-							display : 'Activity On',
-							name : 'activity_on',
-							cssclass : 'cssClassHeadDate',
-							controlclass : '',
-							coltype : 'label',
-							align : 'left',
-							type : 'date',
-							format : 'yyyy/MM/dd hh:mm:ss a'
-						} ],
-						rp : perpage,
-						nomsg : getLocale(gpmsProposalsManagement,
-								'No Records Found!'),
-						param : data,
-						current : current_,
-						pnew : offset_,
-						sortcol : {
-							4 : {
-								sorter : false
-							}
-						}
-					});
+			$("#gdvProposalsAuditLog").sagegrid({
+				url : this.config.url,
+				functionMethod : this.config.method,
+				colModel : [ {
+					display : 'User Name',
+					name : 'user_name',
+					cssclass : '',
+					controlclass : '',
+					coltype : 'label',
+					align : 'left'
+				}, {
+					display : 'Full Name',
+					name : 'full_name',
+					cssclass : '',
+					controlclass : '',
+					coltype : 'label',
+					align : 'left'
+				}, {
+					display : 'Action',
+					name : 'action',
+					cssclass : '',
+					controlclass : '',
+					coltype : 'label',
+					align : 'left'
+				}, {
+					display : 'Activity On',
+					name : 'activity_on',
+					cssclass : 'cssClassHeadDate',
+					controlclass : '',
+					coltype : 'label',
+					align : 'left',
+					type : 'date',
+					format : 'yyyy/MM/dd hh:mm:ss a'
+				} ],
+				rp : perpage,
+				nomsg : 'No Records Found!',
+				param : data,
+				current : current_,
+				pnew : offset_,
+				sortcol : {
+					4 : {
+						sorter : false
+					}
+				}
+			});
 		},
 
 		DeleteProposal : function(tblID, argus) {
@@ -1675,12 +1637,8 @@ alert(argus[20]+"FUCK"+argus[21]+"ME"+argus[22]);
 				if (argus[1].toLowerCase() != "yes") {
 					proposalsManage.DeleteProposalById(argus[0]);
 				} else {
-					csscody.alert('<h2>'
-							+ getLocale(gpmsProposalsManagement,
-									"Information Alert")
-							+ '</h2><p>'
-							+ getLocale(gpmsProposalsManagement,
-									"Sorry! this proposal is already deleted.")
+					csscody.alert('<h2>' + 'Information Alert' + '</h2><p>'
+							+ 'Sorry! this proposal is already deleted.'
 							+ '</p>');
 				}
 				break;
@@ -1695,12 +1653,10 @@ alert(argus[20]+"FUCK"+argus[21]+"ME"+argus[22]);
 					proposalsManage.ConfirmSingleDelete(_proposalId, e);
 				}
 			};
-			csscody.confirm("<h2>"
-					+ getLocale(gpmsProposalsManagement, "Delete Confirmation")
-					+ "</h2><p>"
-					+ getLocale(gpmsProposalsManagement,
-							"Are you sure you want to delete this proposal?")
-					+ "</p>", properties);
+			csscody.confirm(
+					"<h2>" + 'Delete Confirmation' + "</h2><p>"
+							+ 'Are you sure you want to delete this proposal?'
+							+ "</p>", properties);
 		},
 
 		ConfirmDeleteMultiple : function(proposal_ids, event) {
@@ -1801,6 +1757,15 @@ alert(argus[20]+"FUCK"+argus[21]+"ME"+argus[22]);
 				$(this).val($(this).find('option').first().val());
 			});
 			$(".AddOption").val("[+] Add");
+
+			// TODO: I suppose by default the OSP Admin section don't need any
+			// validation default only activate validation once it is clicked
+			// and allowed to edit is set true
+
+			$("#ui-id-24").find('input:text, select, textarea').each(
+					function() {
+						$(this).addClass("ignore");
+					});
 			return false;
 		},
 
@@ -1864,22 +1829,26 @@ alert(argus[20]+"FUCK"+argus[21]+"ME"+argus[22]);
 										alert("After Activated! GO to XACML to see if he is allowed to change this panel content");
 										var allowedToEdit = true;
 										if (allowedToEdit) {
+											var selectedSection = $
+													.trim(ui.newHeader.text());
 											alert("Allowed to EDIT this Panel "
-													+ $.trim(ui.newHeader
-															.text()));
-											$("#ui-id-24")
-													.find(
-															'input:text, select, textarea')
-													.each(
-															function() {
-																if ($(this)
-																		.attr(
-																				'id') != "txtNamesSubrecipients") {
-																	$(this)
-																			.removeClass(
-																					"ignore");
-																}
-															});
+													+ selectedSection);
+
+											if (selectedSection == "OSP Section") {
+												$("#ui-id-24")
+														.find(
+																'input:text, select, textarea')
+														.each(
+																function() {
+																	if ($(this)
+																			.attr(
+																					'id') != "txtNamesSubrecipients") {
+																		$(this)
+																				.removeClass(
+																						"ignore");
+																	}
+																});
+											}
 											// ui.newPanel
 											// .find("input, select")
 											// .each(
@@ -1913,15 +1882,6 @@ alert(argus[20]+"FUCK"+argus[21]+"ME"+argus[22]);
 																				"disabled",
 																				"disabled");
 															});
-											$("#ui-id-24")
-													.find(
-															'input:text, select, textarea')
-													.each(
-															function() {
-																$(this)
-																		.addClass(
-																				"ignore");
-															});
 											event.preventDefault();
 										}
 									}
@@ -1936,6 +1896,21 @@ alert(argus[20]+"FUCK"+argus[21]+"ME"+argus[22]);
 											&& ui.newPanel.size() != 0
 											&& $.trim(ui.newHeader.text()) != "Audit Logs") {
 										alert("Before Activated! need to check XACML if the user is allowed to view this panel content");
+
+										var beforeactive = $("#accordion")
+												.accordion("option", "active"); // OSP
+										// Section
+										if (beforeactive == 11) {
+											$("#ui-id-24")
+													.find(
+															'input:text, select, textarea')
+													.each(
+															function() {
+																$(this)
+																		.addClass(
+																				"ignore");
+															});
+										}
 
 										var allowedToView = true;
 										if (allowedToView) {
@@ -2011,14 +1986,9 @@ alert(argus[20]+"FUCK"+argus[21]+"ME"+argus[22]);
 					&& projectTitle.length > 0) {
 				if (!proposalsManage.isUniqueProjectTitle(proposal_id,
 						projectTitle)) {
-					errors += "'"
-							+ getLocale(gpmsProposalsManagement,
-									"Please enter unique Project Title.")
-							+ " '"
-							+ projectTitle.trim()
-							+ "' "
-							+ getLocale(gpmsProposalsManagement,
-									"has already been taken.");
+					errors += "'" + 'Please enter unique Project Title.' + " '"
+							+ projectTitle.trim() + "' "
+							+ 'has already been taken.';
 					textBoxProjectTitle.addClass("error");
 					textBoxProjectTitle.siblings('.cssClassRight').hide();
 					if (textBoxProjectTitle.siblings('.error').exists()) {
@@ -2047,7 +2017,7 @@ alert(argus[20]+"FUCK"+argus[21]+"ME"+argus[22]);
 				ProposalID : proposalId,
 				NewProjectTitle : newProjectTitle
 			};
-			
+
 			this.config.url = this.config.baseURL + "CheckUniqueProjectTitle";
 			this.config.data = JSON2.stringify({
 				proposalUniqueObj : proposalUniqueObj
@@ -2115,9 +2085,7 @@ alert(argus[20]+"FUCK"+argus[21]+"ME"+argus[22]);
 																	&& $(this)
 																			.prop(
 																					"name") != "ddlPositionTitle") {
-																validateErrorMessage = getLocale(
-																		gpmsProposalsManagement,
-																		"Please select all position details for this user.")
+																validateErrorMessage = 'Please select all position details for this user.'
 																		+ "<br/>";
 																$(this).focus();
 															} else if (optionsText
@@ -2720,14 +2688,9 @@ alert(argus[20]+"FUCK"+argus[21]+"ME"+argus[22]);
 
 			case 2: // Single Proposal Delete
 				proposalsManage.BindProposalGrid(null, null, null, null, null,
-						null, null);
-				csscody.info("<h2>"
-						+ getLocale(gpmsProposalsManagement,
-								'Successful Message')
-						+ "</h2><p>"
-						+ getLocale(gpmsProposalsManagement,
-								'Proposal has been deleted successfully.')
-						+ "</p>");
+						null, null, null);
+				csscody.info("<h2>" + 'Successful Message' + "</h2><p>"
+						+ 'Proposal has been deleted successfully.' + "</p>");
 
 				$('#divProposalForm').hide();
 				$('#divProposalGrid').show();
@@ -2737,15 +2700,10 @@ alert(argus[20]+"FUCK"+argus[21]+"ME"+argus[22]);
 		case 3: // Multiple Proposal Delete
 			SageData.Get("gdvProposals").Arr.length = 0;
 			proposalsManage.BindProposalGrid(null, null, null, null, null,
-					null, null);
-			csscody
-					.info("<h2>"
-							+ getLocale(gpmsProposalsManagement,
-									'Successful Message')
-							+ "</h2><p>"
-							+ getLocale(gpmsProposalsManagement,
-									'Selected proposal(s) has been deleted successfully.')
-							+ "</p>");
+					null, null, null);
+			csscody.info("<h2>" + 'Successful Message' + "</h2><p>"
+					+ 'Selected proposal(s) has been deleted successfully.'
+					+ "</p>");
 			break;
 
 		case 4:// For Proposal Edit Action
@@ -2812,12 +2770,13 @@ alert(argus[20]+"FUCK"+argus[21]+"ME"+argus[22]);
 										focusMethod = 'onfocus="proposalsManage.BindCurrentDateTime(this);" required="true"';
 										readOnly = 'required="true"';
 										allowedSign = true;
+										allowedChange = true;
 									}
 								}
 
-								if (readOnly == '') {
-									allowedChange = true;
-								}
+								// if (readOnly == '') {
+								// allowedChange = true;
+								// }
 								var cloneRow = '<tr allowchange="'
 										+ allowedChange
 										+ '" allowsign="'
@@ -2878,21 +2837,11 @@ alert(argus[20]+"FUCK"+argus[21]+"ME"+argus[22]);
 			$("#btnSaveProposal").removeAttr("name");
 			$("#accordion").accordion("option", "active", -1);
 			if (editFlag > 0) {
-				csscody.info("<h2>"
-						+ getLocale(gpmsProposalsManagement,
-								'Successful Message')
-						+ "</h2><p>"
-						+ getLocale(gpmsProposalsManagement,
-								'Proposal has been updated successfully.')
-						+ "</p>");
+				csscody.info("<h2>" + 'Successful Message' + "</h2><p>"
+						+ 'Proposal has been updated successfully.' + "</p>");
 			} else {
-				csscody.info("<h2>"
-						+ getLocale(gpmsProposalsManagement,
-								'Successful Message')
-						+ "</h2><p>"
-						+ getLocale(gpmsProposalsManagement,
-								'Proposal has been saved successfully.')
-						+ "</p>");
+				csscody.info("<h2>" + 'Successful Message' + "</h2><p>"
+						+ 'Proposal has been saved successfully.' + "</p>");
 			}
 			$('#divProposalForm').hide();
 			// proposalsManage.CollapseAccordion();
@@ -2906,76 +2855,45 @@ alert(argus[20]+"FUCK"+argus[21]+"ME"+argus[22]);
 			case 0:
 				break;
 			case 1:
-				csscody.error('<h2>'
-						+ getLocale(gpmsProposalsManagement, "Error Message")
-						+ '</h2><p>'
-						+ getLocale(gpmsProposalsManagement,
-								"Failed to load Proposal Status.") + '</p>');
+				csscody.error('<h2>' + 'Error Message' + '</h2><p>'
+						+ 'Failed to load Proposal Status.' + '</p>');
 				break;
 			case 2:
-				csscody.error('<h2>'
-						+ getLocale(gpmsProposalsManagement, "Error Message")
-						+ '</h2><p>'
-						+ getLocale(gpmsProposalsManagement,
-								"Failed to delete the proposal.") + '</p>');
+				csscody.error('<h2>' + 'Error Message' + '</h2><p>'
+						+ 'Failed to delete the proposal.' + '</p>');
 				break;
 			case 3:
-				csscody.error('<h2>'
-						+ getLocale(gpmsProposalsManagement, "Error Message")
-						+ '</h2><p>'
-						+ getLocale(gpmsProposalsManagement,
-								"Failed to delete multiple proposals.")
-						+ '</p>');
+				csscody.error('<h2>' + 'Error Message' + '</h2><p>'
+						+ 'Failed to delete multiple proposals.' + '</p>');
 				break;
 			case 4:
-				csscody.error('<h2>'
-						+ getLocale(gpmsProposalsManagement, "Error Message")
-						+ '</h2><p>' + "Failed to load proposal details."
-						+ '</p>');
+				csscody.error('<h2>' + 'Error Message' + '</h2><p>'
+						+ 'Failed to load proposal details.' + '</p>');
 				break;
 			case 5:
-				csscody.error('<h2>'
-						+ getLocale(gpmsProposalsManagement, "Error Message")
-						+ '</h2><p>'
-						+ getLocale(gpmsProposalsManagement,
-								"Failed to load user list.") + '</p>');
+				csscody.error('<h2>' + 'Error Message' + '</h2><p>'
+						+ 'Failed to load user list.' + '</p>');
 				break;
 
 			case 6:
-				csscody.error("<h2>"
-						+ getLocale(gpmsProposalsManagement, 'Error Message')
-						+ "</h2><p>"
-						+ getLocale(gpmsProposalsManagement,
-								'Failed to load user\'s position details.')
-						+ "</p>");
+				csscody.error("<h2>" + 'Error Message' + "</h2><p>"
+						+ 'Failed to load user\'s position details.' + "</p>");
 				break;
 
 			case 7:
-				csscody.error("<h2>"
-						+ getLocale(gpmsProposalsManagement, 'Error Message')
-						+ "</h2><p>"
-						+ getLocale(gpmsProposalsManagement,
-								'Cannot check for unique project title')
-						+ "</p>");
+				csscody.error("<h2>" + 'Error Message' + "</h2><p>"
+						+ 'Cannot check for unique project title' + "</p>");
 				break;
 
 			case 8:
-				csscody
-						.error("<h2>"
-								+ getLocale(gpmsProposalsManagement,
-										'Error Message')
-								+ "</h2><p>"
-								+ getLocale(gpmsProposalsManagement,
-										'Cannot get certification/ signatures information')
-								+ "</p>");
+				csscody.error("<h2>" + 'Error Message' + "</h2><p>"
+						+ 'Cannot get certification/ signatures information'
+						+ "</p>");
 				break;
 
 			case 9:
-				csscody.error("<h2>"
-						+ getLocale(gpmsProposalsManagement, 'Error Message')
-						+ "</h2><p>"
-						+ getLocale(gpmsProposalsManagement,
-								'Failed to save proposal!') + "</p>");
+				csscody.error("<h2>" + 'Error Message' + "</h2><p>"
+						+ 'Failed to save proposal!' + "</p>");
 				break;
 			}
 		},
@@ -3156,25 +3074,17 @@ alert(argus[20]+"FUCK"+argus[21]+"ME"+argus[22]);
 									csscody
 											.confirm(
 													"<h2>"
-															+ getLocale(
-																	gpmsProposalsManagement,
-																	'Delete Confirmation')
+															+ 'Delete Confirmation'
 															+ "</h2><p>"
-															+ getLocale(
-																	gpmsProposalsManagement,
-																	'Are you sure you want to delete selected proposal(s)?')
+															+ 'Are you sure you want to delete selected proposal(s)?'
 															+ "</p>",
 													properties);
 								} else {
 									csscody
 											.alert('<h2>'
-													+ getLocale(
-															gpmsProposalsManagement,
-															"Information Alert")
+													+ 'Information Alert'
 													+ '</h2><p>'
-													+ getLocale(
-															gpmsProposalsManagement,
-															"Please select at least one proposal before deleting.")
+													+ 'Please select at least one proposal before deleting.'
 													+ '</p>');
 								}
 							});
@@ -3184,9 +3094,7 @@ alert(argus[20]+"FUCK"+argus[21]+"ME"+argus[22]);
 					function() {
 						// proposalsManage.InitializeAccordion();
 
-						$('#lblFormHeading').html(
-								getLocale(gpmsProposalsManagement,
-										"New Proposal Details"));
+						$('#lblFormHeading').html('New Proposal Details');
 
 						$("#btnReset").show();
 

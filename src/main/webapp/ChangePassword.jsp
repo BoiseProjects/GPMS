@@ -7,16 +7,14 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="Content-Script-Type" content="text/javascript">
 <meta http-equiv="Content-Style-Type" content="text/css">
-<meta content="Manage Users" name="DESCRIPTION">
-<meta content="Manage Users" name="KEYWORDS">
+<meta content="Reset password - GPMS" name="DESCRIPTION">
+<meta content="Reset password - GPMS" name="KEYWORDS">
 <meta content="@GPMS" name="COPYRIGHT">
 <meta content="GENERATOR" name="GENERATOR">
 <meta content="Author" name="AUTHOR">
 <meta content="DOCUMENT" name="RESOURCE-TYPE">
 <meta content="GLOBAL" name="DISTRIBUTION">
-<!-- <meta content="INDEX, FOLLOW" name="ROBOTS"> -->
-<meta content="noindex,nofollow" name="robots">
-<meta content="noindex,nofollow" name="googlebot">
+<meta content="INDEX, FOLLOW" name="ROBOTS">
 <meta content="1 DAYS" name="REVISIT-AFTER">
 <meta content="GENERAL" name="RATING">
 <meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7; IE=EDGE">
@@ -48,66 +46,51 @@
 <script type="text/javascript">
 	//<![CDATA[
 	var gpmsAppPath = "";
-	var gpmsUserName = "superuser";
-	var gpmsCurrentCulture = "en-US";
-	var gpmsHostURL = "http://localhost:8181/GPMS/";
-	var gpmsSecureToken = "GPMS.AUTHjxr30wycjzvpqd0jv3vkybx4ZADJX9SLOC1";
+	
+	var userProfileId = '<%=session.getAttribute("userProfileId")%>';
+	var gpmsUserName = '<%=session.getAttribute("gpmsUserName")%>';
+	var isAdmin = '<%=session.getAttribute("isAdmin")%>';
+	var userPositionType = '<%=session.getAttribute("userPositionType")%>';
+	var	userPositionTitle = '<%=session.getAttribute("userPositionTitle")%>';
+	var userDepartment = '<%=session.getAttribute("userDepartment")%>';
+	var userCollege = '<%=session.getAttribute("userCollege")%>';
 
 	var gpmsServicePath = "REST/";
 	var gpmsRootPath = "http://localhost:8181/GPMS/";
-	var userProfileId = "560ed83daf6e040da04e60f2";
-	var sessionCode = "jxr30wycjzvpqd0jv3vkybx4";
-	var clientIPAddress = "::1";
-	var gpmsCountryName = "RESERVED";
-	var gpmsRedirectPath = "/";
 
-	var logInURL = "login";
-	var pageExtension = ".jsp";
-
-	$(function() {
-		$(".sfLocale").localize({
-			moduleKey : gpmsChangePassword
-		});
-	});
 	//]]>
 </script>
 
 <script type="text/javascript" src="js/core/gpmscore.js"></script>
 
 <script type="text/javascript"
-	src="js/modules/Language/CoreJsLanguage.js"></script>
+	src="js/FormValidation/jquery.validate.js"></script>
 
 <script type="text/javascript" src="js/core/json2.js"></script>
 
 <script type="text/javascript" src="js/jquery-browser.js"></script>
 <script type="text/javascript" src="js/jquery.uniform.js"></script>
 
-<script type="text/javascript" src="js/jquery.qtip-1.0.0-rc3.js"></script>
-
 <script type="text/javascript" src="js/MessageBox/jquery.easing.1.3.js"></script>
 <script type="text/javascript" src="js/MessageBox/alertbox.js"></script>
 
-<!-- <script type="text/javascript" src="js/core/Session.js"></script> -->
-<script type="text/javascript" src="js/core/encoder.js"></script>
-
 <script type="text/javascript" src="js/modules/ChangePassword.js"></script>
-<script type="text/javascript"
-	src="js/modules/Language/GPMSChangePassword.js"></script>
+
+<link type="text/css" rel="stylesheet" href="css/MessageBox/style.css" />
 
 <link media="screen" rel="stylesheet"
 	href="css/Templates/application.css" type="text/css" />
-<link href="css/Templates/style.css" media="screen" rel="stylesheet"
-	type="text/css" />
+
 </head>
 <body class="account">
-	<div style="display: none;" id="UpdateProgress1">
-		<div class="sfLoadingbg">&nbsp;</div>
-		<div class="sfLoadingdiv">
-			<img id="imgProgress" src="images/ajax-loader.gif"
-				style="border-width: 0px;" alt="Loading..." title="Loading..." /> <br>
-			<span id="lblPrgress">Please wait...</span>
+		<div style="display: none;" id="UpdateProgress1">
+			<div class="sfLoadingbg">&nbsp;</div>
+			<div class="sfLoadingdiv">
+				<img id="imgProgress" src="./images/ajax-loader.gif"
+					style="border-width: 0px;" alt="Loading..." title="Loading..." />
+				<br> <span id="lblPrgress">Please wait...</span>
+			</div>
 		</div>
-	</div>
 	<noscript>
 		<span>This page requires java-script to be enabled. Please
 			adjust your browser-settings.</span>

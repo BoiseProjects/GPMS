@@ -165,21 +165,17 @@ $(function() {
 								}
 								csscody
 										.info('<h2>'
-												+ getLocale(CoreJsLanguage,
-														"Successful Message")
+												+ 'Successful Message'
 												+ '</h2><p>'
-												+ getLocale(CoreJsLanguage,
-														"Item has been successfully added to wishlist.")
+												+ 'Item has been successfully added to wishlist.'
 												+ '</p>');
 							},
 							error : function(msg) {
 								csscody
 										.error('<h2>'
-												+ getLocale(CoreJsLanguage,
-														"Error Message")
+												+ 'Error Message'
 												+ '</h2><p>'
-												+ getLocale(CoreJsLanguage,
-														"Failed to add item in wishlist!")
+												+ 'Failed to add item in wishlist!'
 												+ '</p>');
 							}
 						});

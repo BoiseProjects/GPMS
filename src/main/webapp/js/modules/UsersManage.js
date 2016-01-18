@@ -302,7 +302,7 @@ $(function() {
 					coltype : 'label',
 					align : 'left'
 				}, {
-					display : getLocale(gpmsUsersManagement, 'Added On'),
+					display : 'Added On',
 					name : 'added_on',
 					cssclass : 'cssClassHeadDate',
 					controlclass : '',
@@ -313,7 +313,7 @@ $(function() {
 				// Want more format then
 				// :https://github.com/phstc/jquery-dateFormat/blob/master/test/expected_inputs_spec.js
 				}, {
-					display : getLocale(gpmsUsersManagement, 'Last Audited'),
+					display : 'Last Audited',
 					name : 'last_audited',
 					cssclass : 'cssClassHeadDate',
 					controlclass : '',
@@ -339,7 +339,7 @@ $(function() {
 					align : 'left',
 					hide : true
 				}, {
-					display : getLocale(gpmsUsersManagement, 'Is Deleted?'),
+					display : 'Is Deleted?',
 					name : 'is_deleted',
 					cssclass : 'cssClassHeadBoolean',
 					controlclass : '',
@@ -352,7 +352,7 @@ $(function() {
 				// you can define 'Yes/No'
 				// hide : true
 				}, {
-					display : getLocale(gpmsUsersManagement, 'Is Active?'),
+					display : 'Is Active?',
 					name : 'is_active',
 					cssclass : 'cssClassHeadBoolean',
 					controlclass : '',
@@ -371,7 +371,7 @@ $(function() {
 					format : 'Yes/No',
 					hide : true
 				}, {
-					display : getLocale(gpmsUsersManagement, 'Actions'),
+					display : 'Actions',
 					name : 'action',
 					cssclass : 'cssClassAction',
 					coltype : 'label',
@@ -379,7 +379,7 @@ $(function() {
 				} ],
 
 				buttons : [ {
-					display : getLocale(gpmsUsersManagement, "Edit"),
+					display : 'Edit',
 					name : 'edit',
 					enable : true,
 					_event : 'click',
@@ -387,7 +387,7 @@ $(function() {
 					callMethod : 'usersManage.EditUser',
 					arguments : '1,2,3,4,5,6,7,8,9,10,11,12'
 				}, {
-					display : getLocale(gpmsUsersManagement, "Delete"),
+					display : 'Delete',
 					name : 'delete',
 					enable : true,
 					_event : 'click',
@@ -395,7 +395,7 @@ $(function() {
 					callMethod : 'usersManage.DeleteUser',
 					arguments : '10,12'
 				}, {
-					display : getLocale(gpmsUsersManagement, "Activate"),
+					display : 'Activate',
 					name : 'activate',
 					enable : true,
 					_event : 'click',
@@ -403,7 +403,7 @@ $(function() {
 					callMethod : 'usersManage.ActiveUser',
 					arguments : '11,12'
 				}, {
-					display : getLocale(gpmsUsersManagement, "Deactivate"),
+					display : 'Deactivate',
 					name : 'deactivate',
 					enable : true,
 					_event : 'click',
@@ -412,7 +412,7 @@ $(function() {
 					arguments : '11,12'
 				} ],
 				rp : perpage,
-				nomsg : getLocale(gpmsUsersManagement, 'No Records Found!'),
+				nomsg : 'No Records Found!',
 				param : data,
 				current : current_,
 				pnew : offset_,
@@ -432,11 +432,9 @@ $(function() {
 			case "gdvUsers":				
 				if(argus[12].toLowerCase() != "no"){
 					csscody.alert('<h2>'
-							+ getLocale(gpmsUsersManagement,
-									"Information Alert")
+							+ 'Information Alert'
 							+ '</h2><p>'
-							+ getLocale(gpmsUsersManagement,
-									"Sorry! this user can not be edited.")
+							+ 'Sorry! this user can not be edited.'
 							+ '</p>');
 					
 				} else {
@@ -444,10 +442,7 @@ $(function() {
 					$('#txtPassword').rules("remove");
 					$('#txtConfirmPassword').rules("remove");
 	
-					$('#lblFormHeading').html(
-							getLocale(gpmsUsersManagement,
-									'Edit User Details for: ')
-									+ argus[2]);
+					$('#lblFormHeading').html('Edit User Details for: ' + argus[2]);
 	
 					if (argus[7] != null && argus[7] != "") {
 						$('#tblLastAuditedInfo').show();
@@ -829,7 +824,7 @@ $(function() {
 					format : 'yyyy/MM/dd hh:mm:ss a'
 				} ],
 				rp : perpage,
-				nomsg : getLocale(gpmsUsersManagement, 'No Records Found!'),
+				nomsg : 'No Records Found!',
 				param : data,
 				current : current_,
 				pnew : offset_,
@@ -849,20 +844,16 @@ $(function() {
 						usersManage.DeleteUserById(argus[0]);
 					} else {
 						csscody.alert('<h2>'
-								+ getLocale(gpmsUsersManagement,
-										"Information Alert")
+								+ 'Information Alert'
 								+ '</h2><p>'
-								+ getLocale(gpmsUsersManagement,
-										"Sorry! this user is already deleted.")
+								+ 'Sorry! this user is already deleted.'
 								+ '</p>');
 					}
 				} else {
 					csscody.alert('<h2>'
-								+ getLocale(gpmsUsersManagement,
-										"Information Alert")
+								+ 'Information Alert'
 								+ '</h2><p>'
-								+ getLocale(gpmsUsersManagement,
-										"Sorry! this user can not be deleted.")
+								+ 'Sorry! this user can not be deleted.'
 								+ '</p>');
 					}
 				break;
@@ -878,10 +869,9 @@ $(function() {
 				}
 			};
 			csscody.confirm("<h2>"
-					+ getLocale(gpmsUsersManagement, "Delete Confirmation")
+					+ 'Delete Confirmation'
 					+ "</h2><p>"
-					+ getLocale(gpmsUsersManagement,
-							"Are you sure you want to delete this user?")
+					+ 'Are you sure you want to delete this user?'
 					+ "</p>", properties);
 		},
 
@@ -946,20 +936,16 @@ $(function() {
 						usersManage.ActivateUser(argus[0], true);
 					} else {
 						csscody.alert('<h2>'
-								+ getLocale(gpmsUsersManagement,
-										"Information Alert")
+								+ 'Information Alert'
 								+ '</h2><p>'
-								+ getLocale(gpmsUsersManagement,
-										"Sorry! this user is already actived.")
+								+ 'Sorry! this user is already actived.'
 								+ '</p>');
 					}
 				} else {
 					csscody.alert('<h2>'
-							+ getLocale(gpmsUsersManagement,
-									"Information Alert")
+							+ 'Information Alert'
 							+ '</h2><p>'
-							+ getLocale(gpmsUsersManagement,
-									"Sorry! this user can not be activated.")
+							+ 'Sorry! this user can not be activated.'
 							+ '</p>');
 				}
 				break;
@@ -976,20 +962,16 @@ $(function() {
 						usersManage.ActivateUser(argus[0], false);
 					} else {
 						csscody.alert('<h2>'
-								+ getLocale(gpmsUsersManagement,
-										"Information Alert")
+								+ 'Information Alert'
 								+ '</h2><p>'
-								+ getLocale(gpmsUsersManagement,
-										"Sorry! this user is already deactived.")
+								+ 'Sorry! this user is already deactived.'
 								+ '</p>');
 					}
 				} else {
 					csscody.alert('<h2>'
-							+ getLocale(gpmsUsersManagement,
-									"Information Alert")
+							+ 'Information Alert'
 							+ '</h2><p>'
-							+ getLocale(gpmsUsersManagement,
-									"Sorry! this user can not be deactivated.")
+							+ 'Sorry! this user can not be deactivated.'
 							+ '</p>');
 				}
 				break;
@@ -1011,8 +993,7 @@ $(function() {
 			});	
 			
 			usersManage.onInit();
-			$('#lblFormHeading').html(
-					getLocale(gpmsUsersManagement, "New User Details"));
+			$('#lblFormHeading').html('New User Details');
 			$(".delbutton").removeAttr("id");
 			$("#btnSaveUser").removeAttr("name");
 			$(".delbutton").hide();
@@ -1092,9 +1073,7 @@ $(function() {
 										if ($(this).hasClass("sfListmenu")) {
 											if (!optionsText
 													&& $(this).prop("name") != "ddlPositionTitle") {
-												validateErrorMessage = getLocale(
-														gpmsUsersManagement,
-														"Please select all position details for this user.")
+												validateErrorMessage = 'Please select all position details for this user.'
 														+ "<br/>";
 												usersManage.SetFirstTabActive();
 												$(this).focus();
@@ -1149,13 +1128,11 @@ $(function() {
 			var errors = '';
 			if (!textBoxUserName.hasClass('warning') && userName.length > 0) {
 				if (!usersManage.isUniqueUserName(user_id, userName)) {
-					errors += getLocale(gpmsUsersManagement,
-							"Please enter unique username.")
+					errors += 'Please enter unique username.'
 							+ " '"
 							+ userName.trim()
 							+ "' "
-							+ getLocale(gpmsUsersManagement,
-									"has already been taken.");
+							+ 'has already been taken.';
 					textBoxUserName.addClass("error");
 					textBoxUserName.siblings('.cssClassRight').hide();
 					if (textBoxUserName.siblings('span.warning').exists()) {
@@ -1200,13 +1177,11 @@ $(function() {
 			var txtEmail = $("#" + textBoxEmail);
 			if (!txtEmail.hasClass('warning') && email.length > 0) {
 				if (!usersManage.isUniqueEmail(user_id, email)) {
-					errors += getLocale(gpmsUsersManagement,
-							"Please enter unique email id.")
+					errors += 'Please enter unique email id.'
 							+ " '"
 							+ email.trim()
 							+ "' "
-							+ getLocale(gpmsUsersManagement,
-									"has already been taken.");
+							+ 'has already been taken.';
 					txtEmail.addClass("error");
 					txtEmail.siblings('.cssClassRight').hide();
 					if (txtEmail.siblings('span.warning').exists()) {
@@ -1671,11 +1646,9 @@ $(function() {
 				usersManage.BindUserGrid(null, null, null, null, null, null);
 				csscody
 						.info("<h2>"
-								+ getLocale(gpmsUsersManagement,
-										'Successful Message')
+								+ 'Successful Message'
 								+ "</h2><p>"
-								+ getLocale(gpmsUsersManagement,
-										'User has been deleted successfully.')
+								+ 'User has been deleted successfully.'
 								+ "</p>");
 
 				$('#divUserForm').hide();
@@ -1687,31 +1660,27 @@ $(function() {
 				usersManage.BindUserGrid(null, null, null, null, null, null);
 				csscody
 						.info("<h2>"
-								+ getLocale(gpmsUsersManagement,
-										'Successful Message')
+								+ 'Successful Message'
 								+ "</h2><p>"
-								+ getLocale(gpmsUsersManagement,
-										'Selected user(s) has been deleted successfully.')
+								+ 'Selected user(s) has been deleted successfully.'
 								+ "</p>");
 				break;
 
 			case 5:
 				usersManage.BindUserGrid(null, null, null, null, null, null);
 				csscody.info("<h2>"
-						+ getLocale(gpmsUsersManagement, 'Successful Message')
+						+ 'Successful Message'
 						+ "</h2><p>"
-						+ getLocale(gpmsUsersManagement,
-								'User has been activated successfully.')
+						+ 'User has been activated successfully.'
 						+ "</p>");
 				break;
 
 			case 6:
 				usersManage.BindUserGrid(null, null, null, null, null, null);
 				csscody.info("<h2>"
-						+ getLocale(gpmsUsersManagement, 'Successful Message')
+						+ 'Successful Message'
 						+ "</h2><p>"
-						+ getLocale(gpmsUsersManagement,
-								'User has been deactivated successfully.')
+						+ 'User has been deactivated successfully.'
 						+ "</p>");
 				break;
 
@@ -1728,19 +1697,15 @@ $(function() {
 				$('#divUserGrid').show();
 				if (editFlag > 0) {
 					csscody.info("<h2>"
-							+ getLocale(gpmsUsersManagement,
-									'Successful Message')
+							+ 'Successful Message'
 							+ "</h2><p>"
-							+ getLocale(gpmsUsersManagement,
-									'User has been updated successfully.')
+							+ 'User has been updated successfully.'
 							+ "</p>");
 				} else {
 					csscody.info("<h2>"
-							+ getLocale(gpmsUsersManagement,
-									'Successful Message')
+							+ 'Successful Message'
 							+ "</h2><p>"
-							+ getLocale(gpmsUsersManagement,
-									'User has been saved successfully.')
+							+ 'User has been saved successfully.'
 							+ "</p>");
 				}
 				usersManage.ClearForm();
@@ -1755,76 +1720,66 @@ $(function() {
 				break;
 			case 1:
 				csscody.error('<h2>'
-						+ getLocale(gpmsUsersManagement, "Error Message")
+						+ 'Error Message'
 						+ '</h2><p>'
-						+ getLocale(gpmsUsersManagement,
-								"Failed to load colleges list.") + '</p>');
+						+ 'Failed to load colleges list.' + '</p>');
 				break;
 			case 2:
 				csscody.error('<h2>'
-						+ getLocale(gpmsUsersManagement, "Error Message")
-						+ '</h2><p>' + "Failed to load user details." + '</p>');
+						+ 'Error Message'
+						+ '</h2><p>' + 'Failed to load user details.' + '</p>');
 				break;
 			case 3:
 				csscody.error("<h2>"
-						+ getLocale(gpmsUsersManagement, 'Error Message')
+						+ 'Error Message'
 						+ "</h2><p>"
-						+ getLocale(gpmsUsersManagement,
-								'User cannot be deleted.') + "</p>");
+						+ 'User cannot be deleted.' + "</p>");
 				break;
 			case 4:
 				csscody
 						.error("<h2>"
-								+ getLocale(gpmsUsersManagement,
-										'Error Message')
+								+ 'Error Message'
 								+ "</h2><p>"
-								+ getLocale(gpmsUsersManagement,
-										'Selected user(s) cannot be deleted.')
+								+ 'Selected user(s) cannot be deleted.'
 								+ "</p>");
 				break;
 			case 5:
 				csscody.error("<h2>"
-						+ getLocale(gpmsUsersManagement, 'Error Message')
+						+ 'Error Message'
 						+ "</h2><p>"
-						+ getLocale(gpmsUsersManagement,
-								'User cannot be activated.') + "</p>");
+						+ 'User cannot be activated.' + "</p>");
 				break;
 			case 6:
 				csscody.error("<h2>"
-						+ getLocale(gpmsUsersManagement, 'Error Message')
+						+ 'Error Message'
 						+ "</h2><p>"
-						+ getLocale(gpmsUsersManagement,
-								'User cannot be deactivated.') + "</p>");
+						+ 'User cannot be deactivated.' + "</p>");
 				break;
 			case 7:
 				csscody.error("<h2>"
-						+ getLocale(gpmsUsersManagement, 'Error Message')
+						+ 'Error Message'
 						+ "</h2><p>"
-						+ getLocale(gpmsUsersManagement,
-								'Cannot check for unique Username') + "</p>");
+						+ 'Cannot check for unique Username' + "</p>");
 				break;
 
 			case 8:
 				csscody.error("<h2>"
-						+ getLocale(gpmsUsersManagement, 'Error Message')
+						+ 'Error Message'
 						+ "</h2><p>"
-						+ getLocale(gpmsUsersManagement,
-								'Cannot check for unique Email') + "</p>");
+						+ 'Cannot check for unique Email' + "</p>");
 				break;
 
 			case 9:
 				if (editFlag > 0) {
 					csscody.error("<h2>"
-							+ getLocale(gpmsUsersManagement, 'Error Message')
+							+ 'Error Message'
 							+ "</h2><p>"
-							+ getLocale(gpmsUsersManagement,
-									'Failed to update user!') + "</p>");
+							+ 'Failed to update user!' + "</p>");
 				} else {
 					csscody.error("<h2>"
-							+ getLocale(gpmsUsersManagement, 'Error Message')
+							+ 'Error Message'
 							+ "</h2><p>"
-							+ getLocale(gpmsUsersManagement,
-									'Failed to save user!') + "</p>");
+							+ 'Failed to save user!' + "</p>");
 				}
 				break;
 			}
@@ -1949,25 +1904,17 @@ $(function() {
 									csscody
 											.confirm(
 													"<h2>"
-															+ getLocale(
-																	gpmsUsersManagement,
-																	'Delete Confirmation')
+															+ 'Delete Confirmation'
 															+ "</h2><p>"
-															+ getLocale(
-																	gpmsUsersManagement,
-																	'Are you sure you want to delete selected user(s)?')
+															+ 'Are you sure you want to delete selected user(s)?'
 															+ "</p>",
 													properties);
 								} else {
 									csscody
 											.alert('<h2>'
-													+ getLocale(
-															gpmsUsersManagement,
-															"Information Alert")
+													+ 'Information Alert'
 													+ '</h2><p>'
-													+ getLocale(
-															gpmsUsersManagement,
-															"Please select at least one user before deleting.")
+													+ 'Please select at least one user before deleting.'
 													+ '</p>');
 								}
 							});

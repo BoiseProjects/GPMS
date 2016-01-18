@@ -46,7 +46,7 @@
 <script type="text/javascript">
 	//<![CDATA[
 	var gpmsAppPath = "";
-	           
+	
 	var userProfileId = '<%=session.getAttribute("userProfileId")%>';
 	var gpmsUserName = '<%=session.getAttribute("gpmsUserName")%>';
 	var isAdmin = '<%=session.getAttribute("isAdmin")%>';
@@ -58,80 +58,28 @@
 	var gpmsServicePath = "REST/";
 	var gpmsRootPath = "http://localhost:8181/GPMS/";
 
-	$(function() {
-		$(".sfLocale").localize({
-			moduleKey : gpmsAdminDashboard
-		});
-	});
-
 	//]]>
 </script>
 
-<script type="text/javascript" src="js/jQuery/jquery-ui.js"></script>
-
 <script type="text/javascript" src="js/core/gpmscore.js"></script>
-
-<script type="text/javascript" src="js/core/jquery.disable_with.js"></script>
 
 <!-- For Side Bar Navigation -->
 <script type="text/javascript" src="js/core/dashboard.js"></script>
 <script type="text/javascript" src="js/sidebar_accordian.js"></script>
 <script type="text/javascript" src="js/superfish.js"></script>
 
-<script type="text/javascript"
-	src="js/FormValidation/jquery.form-validation-and-hints.js"></script>
-<script type="text/javascript"
-	src="js/FormValidation/jquery.validate.js"></script>
-<script type="text/javascript"
-	src="js/FormValidation/jquery.ui.datepicker.validation.js"></script>
-
-<script type="text/javascript"
-	src="js/FormValidation/jquery.maskedinput.js"></script>
-
-<!-- <script type="text/javascript" src="js/SystemLocale/systemlocale.js"></script> -->
-<script type="text/javascript"
-	src="js/modules/Language/CoreJsLanguage.js"></script>
-
 <script type="text/javascript" src="js/core/json2.js"></script>
 
 <script type="text/javascript" src="js/jquery-browser.js"></script>
 <script type="text/javascript" src="js/jquery.uniform.js"></script>
 
-<script type="text/javascript" src="js/jquery.qtip-1.0.0-rc3.js"></script>
-
-<script type="text/javascript" src="js/GridView/jquery.tablesorter.js"></script>
-<script type="text/javascript" src="js/GridView/jquery.grid.js"></script>
-<script type="text/javascript" src="js/GridView/SagePaging.js"></script>
-<script type="text/javascript" src="js/GridView/jquery.global.js"></script>
-<script type="text/javascript" src="js/GridView/jquery-dateFormat.js"></script>
-
 <script type="text/javascript" src="js/MessageBox/jquery.easing.1.3.js"></script>
 <script type="text/javascript" src="js/MessageBox/alertbox.js"></script>
 
-<script type="text/javascript" src="js/AjaxFileUploader/ajaxupload.js"></script>
-
-<script type="text/javascript"
-	src="js/ckeditor_4.5.1_full/ckeditor/ckeditor.js"></script>
-<script type="text/javascript"
-	src="js/ckeditor_4.5.1_full/ckeditor/adapters/jquery.js"></script>
-
-
-<!-- <script type="text/javascript" src="js/core/Session.js"></script> -->
-<script type="text/javascript" src="js/core/encoder.js"></script>
-
-<!-- <script type="text/javascript" src="js/Tabs/jquery.slidingtabs.js"></script> -->
-
 <script type="text/javascript" src="js/modules/AdminDashboard.js"></script>
-<script type="text/javascript"
-	src="js/modules/Language/GPMSAdminDashboard.js"></script>
-<!-- <script type="text/javascript" src="js/modules/Language/AspxRssFeedLocale.js"></script> -->
 
-<link type="text/css" rel="stylesheet"
-	href="css/Templates/jquery-ui.css" />
-<link type="text/css" rel="stylesheet" href="css/GridView/tablesort.css" />
 <link type="text/css" rel="stylesheet" href="css/MessageBox/style.css" />
 
-<link type="text/css" rel="stylesheet" href="css/Templates/grid.css" />
 <link type="text/css" rel="stylesheet"
 	href="css/Templates/topstickybar.css" />
 <link type="text/css" rel="stylesheet" href="css/Templates/admin.css" />
@@ -142,7 +90,7 @@
 		<div style="display: none;" id="UpdateProgress1">
 			<div class="sfLoadingbg">&nbsp;</div>
 			<div class="sfLoadingdiv">
-				<img id="imgProgress" src="images/ajax-loader.gif"
+				<img id="imgProgress" src="./images/ajax-loader.gif"
 					style="border-width: 0px;" alt="Loading..." title="Loading..." />
 				<br> <span id="lblPrgress">Please wait...</span>
 			</div>

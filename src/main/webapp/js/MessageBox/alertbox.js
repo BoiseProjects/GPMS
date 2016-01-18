@@ -251,24 +251,12 @@ jQuery.fn.extend({
 								properties = $
 										.extend(
 												{
-													'textBoxBtnOk' : getLocale(
-															CoreJsLanguage,
-															'OK'),
-													'textBoxBtnCancel' : getLocale(
-															CoreJsLanguage,
-															'Cancel'),
-													'textBoxContinue' : getLocale(
-															CoreJsLanguage,
-															'Continue Shopping'),
-													'textBoxCheckOut' : getLocale(
-															CoreJsLanguage,
-															'CheckOut'),
-													'textBoxBtnYes' : getLocale(
-															CoreJsLanguage,
-															'Yes'),
-													'textBoxBtnNo' : getLocale(
-															CoreJsLanguage,
-															'No'),
+													'textBoxBtnOk' : 'OK',
+													'textBoxBtnCancel' : 'Cancel',
+													'textBoxContinue' : 'Continue Shopping',
+													'textBoxCheckOut' : 'CheckOut',
+													'textBoxBtnYes' : 'Yes',
+													'textBoxBtnNo' : 'No',
 													'textBoxInputPrompt' : null,
 													'password' : false,
 													'onComplete' : function(e) {
