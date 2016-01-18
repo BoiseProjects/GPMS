@@ -225,10 +225,7 @@ var fromServer = 0;
 												.find('img')
 												.prop(
 														'src',
-														''
-																+ GPMS.utils
-																		.GetGPMSRootPath()
-																+ '/images/ajax-loader.gif');
+														'./images/ajax-loader.gif');
 										$("#" + t.id).prev().prev(".loading")
 												.show();
 										$

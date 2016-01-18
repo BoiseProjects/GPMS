@@ -4,7 +4,7 @@ $(function() {
 		init : function() {
 			$('body')
 					.append(
-							'<div id="ajaxBusy" style="display:none"><img align="absmiddle"  src="../../images/ajax-loader.gif">&nbsp;Working...</div>');
+							'<div id="ajaxBusy" style="display:none"><img align="absmiddle"  src="./images/ajax-loader.gif">&nbsp;Working...</div>');
 		}
 	};
 	DashBoard.init();
