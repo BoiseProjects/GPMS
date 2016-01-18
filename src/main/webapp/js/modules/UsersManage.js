@@ -25,13 +25,13 @@ $(function() {
 
 	var gpmsCommonObj = function() {
 		var gpmsCommonInfo = {
-			UserName : GPMS.utils.GetUserName(),
 			UserProfileID : GPMS.utils.GetUserProfileID(),
-			UserIsAdmin : GPMS.utils.IsAdmin(),
-			UserPositionType : GPMS.utils.GetUserPositionType(),
-			UserPositionTitle : GPMS.utils.GetUserPositionTitle(),
-			UserDepartment : GPMS.utils.GetUserDepartment(),
-			UserCollege : GPMS.utils.GetUserCollege()
+		UserName : GPMS.utils.GetUserName(),			
+		UserIsAdmin : GPMS.utils.IsAdmin(),
+		UserPositionType : GPMS.utils.GetUserPositionType(),
+		UserPositionTitle : GPMS.utils.GetUserPositionTitle(),
+		UserDepartment : GPMS.utils.GetUserDepartment(),
+		UserCollege : GPMS.utils.GetUserCollege()
 		};
 		return gpmsCommonInfo;
 	};
@@ -1161,11 +1161,11 @@ $(function() {
 				UserID : userId,
 				NewUserName : newUserName
 			};
-			var gpmsCommonInfo = gpmsCommonObj();
+			
 			this.config.url = this.config.baseURL + "CheckUniqueUserName";
 			this.config.data = JSON2.stringify({
 				userUniqueObj : userUniqueObj,
-				gpmsCommonObj : gpmsCommonInfo
+				gpmsCommonObj : gpmsCommonObj()
 			});
 			this.config.ajaxCallMode = 7;
 			this.ajaxCall(this.config);
@@ -1208,11 +1208,11 @@ $(function() {
 				UserID : userId,
 				NewEmail : newEmail
 			};
-			var gpmsCommonInfo = gpmsCommonObj();
+			
 			this.config.url = this.config.baseURL + "CheckUniqueEmail";
 			this.config.data = JSON2.stringify({
 				userUniqueObj : userUniqueObj,
-				gpmsCommonObj : gpmsCommonInfo
+				gpmsCommonObj : gpmsCommonObj()
 			});
 			this.config.ajaxCallMode = 8;
 			this.ajaxCall(this.config);

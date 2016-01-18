@@ -9,7 +9,6 @@ package gpms.dao;
 import gpms.DAL.MongoDBConnector;
 import gpms.model.AuditLog;
 import gpms.model.AuditLogInfo;
-import gpms.model.GPMSCommonInfo;
 import gpms.model.PositionDetails;
 import gpms.model.Proposal;
 import gpms.model.UserAccount;
@@ -486,7 +485,7 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 	}
 
 	public void deleteUserProfileByUserID(UserProfile userProfile,
-			UserProfile authorProfile, GPMSCommonInfo gpmsCommonObj) {
+			UserProfile authorProfile) {
 		Datastore ds = getDatastore();
 		audit = new AuditLog(authorProfile, "Deleted user profile of "
 				+ userProfile.getFullName(), new Date());
@@ -497,8 +496,7 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 	}
 
 	public void activateUserProfileByUserID(UserProfile userProfile,
-			UserProfile authorProfile, GPMSCommonInfo gpmsCommonObj,
-			Boolean isActive) {
+			UserProfile authorProfile, Boolean isActive) {
 		Datastore ds = getDatastore();
 		audit = new AuditLog(authorProfile, "Activated user profile of "
 				+ userProfile.getFullName(), new Date());

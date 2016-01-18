@@ -57,45 +57,25 @@ $(function() {
 			},
 			GetUserCollege : function() {
 				return userCollege;
-			},
-
-			GetCultureName : function() {
-				return gpmsCurrentCulture;
-			},
-
-			GetSessionCode : function() {
-				return sessionCode;
-			},
-			GetClientIP : function() {
-				return clientIPAddress;
-			},
-			GetGPMSClientCountry : function() {
-				return gpmsCountryName;
-			},
-			GetGPMSServicePath : function() {
-				return gpmsServicePath;
-			},
-			GetGPMSRootPath : function() {
-				return gpmsRootPath;
-			}
+			}		
 		},
+		
 		GPMSCommonObj : function() {
 			var gpmsCommonInfo = {
-				UserName : GPMS.utils.GetUserName(),
 				UserProfileID : GPMS.utils.GetUserProfileID(),
-				UserIsAdmin : GPMS.utils.IsAdmin(),
-				UserPositionType : GPMS.utils.GetUserPositionType(),
-				UserPositionTitle : GPMS.utils.GetUserPositionTitle(),
-				UserDepartment : GPMS.utils.GetUserDepartment(),
+				UserName : GPMS.utils.GetUserName(),			
+				UserIsAdmin : GPMS.utils.IsAdmin(),				
 				UserCollege : GPMS.utils.GetUserCollege(),
-				CultureName : GPMS.utils.GetCultureName(),
-				SessionCode : GPMS.utils.GetSessionCode()
+				UserDepartment : GPMS.utils.GetUserDepartment(),
+				UserPositionType : GPMS.utils.GetUserPositionType(),
+				UserPositionTitle : GPMS.utils.GetUserPositionTitle()
 			};
 			return gpmsCommonInfo;
 		},
+		
 		CheckSessionActive : function(gpmsCommonObj) {
 			GPMS.config.url = GPMS.config.baseURL
-					+ "AspxCommonHandler.ashx/CheckSessionActive";
+					+ "users/CheckSessionActive";
 			GPMS.config.data = JSON2.stringify({
 				gpmsCommonObj : gpmsCommonObj
 			});
@@ -110,81 +90,13 @@ $(function() {
 					});
 			return vars;
 		},
-		RootFunction : {
-			Login : function(returnUrl) {
-				returnUrl = window.location.href;
-				window.location.href = GPMS.utils.GetGPMSRootPath() + logInURL
-						+ pageExtension + '?' + "ReturnUrl=" + returnUrl;
-				return false;
-			},
+		RootFunction : {			
 			// You can call ajax call to db here too using REST service methods
 			RedirectToOtherPage : function(pagename) {
 				window.location.href = GPMS.utils.GetGPMSRootPath() + 'item/'
 						+ pagename + pageExtension;
 				return false;
-			},
-			AddToWishListFromJS : function(itemID, ip, countryName,
-					costVariantValueIDs) {
-				var gpmsCommonInfo = GPMS.gpmsCommonObj();
-				delete gpmsCommonInfo.CultureName;
-				delete gpmsCommonInfo.SessionCode;
-				delete gpmsCommonInfo.CutomerID;
-				var saveWishList = {
-					ItemID : itemID,
-					CostVariantValueIDs : costVariantValueIDs,
-					IP : ip,
-					CountryName : countryName
-				};
-				var addparam = {
-					saveWishListInfo : saveWishList,
-					gpmsCommonObj : gpmsCommonInfo
-				};
-				var adddata = JSON2.stringify(addparam);
-				$
-						.ajax({
-							type : "POST",
-							url : GPMS.utils.GetGPMSServicePath()
-									+ 'SaveWishItems',
-							data : adddata,
-							contentType : "application/json; charset=utf-8",
-							dataType : "json",
-							success : function(msg) {
-								// MyWishList();
-								if ($('#lnkMyWishlist').length > 0) {
-									GPMS.RootFunction.IncreaseWishListCount(); // for
-									// header
-									// counter
-									// increase
-									// HeaderControl.GetWishListCount(); // for
-									// header wish counter increase for database
-								}
-								if ($('#divRecentlyAddedWishList').length > 0) {
-									WishItems.BindMyWishList(); // for wishlist
-									// item in
-									// rightside
-								}
-								csscody
-										.info('<h2>'
-												+ 'Successful Message'
-												+ '</h2><p>'
-												+ 'Item has been successfully added to wishlist.'
-												+ '</p>');
-							},
-							error : function(msg) {
-								csscody.error('<h2>' + 'Error Message'
-										+ '</h2><p>'
-										+ 'Failed to add item in wishlist!'
-										+ '</p>');
-							}
-						});
-			}
-		},
-		IncreaseWishListCount : function() {
-			var wishListCount = $('#lnkMyWishlist span').html().replace(
-					/[^0-9]/gi, '');
-			wishListCount = parseInt(wishListCount) + 1;
-			$('.cssClassLoginStatusInfo ul li a#lnkMyWishlist span').html(
-					" [" + wishListCount + "]");
+			}			
 		},
 		ajaxSuccess : function(data) {
 			switch (GPMS.config.ajaxCallMode) {
@@ -198,7 +110,6 @@ $(function() {
 			}
 		},
 		init : function() {
-
 			// $('body').append('<div id="ajaxBusy"><div id="dialog"
 			// style="background-color:#AAAAAA;
 			// position:absolute;left:50%;top:50%;display:none;z-index:9999;"
@@ -206,11 +117,9 @@ $(function() {
 			// 'Templates/Default/images/progress_bar.gif" alt=""
 			// title="Loading"/></div><div id="mask" style="
 			// position:absolute;left:0;top:0;z-index:9000;background-color:#000;display:none;"></div></div>');
-
 		}
 	};
 	GPMS.init();
-
 });
 
 // ]]>
@@ -295,6 +204,7 @@ function getLocale(moduleKey, text) {
 	return moduleKey[$.trim(text)] == undefined ? text
 			: moduleKey[$.trim(text)];
 }
+
 $.fn.SystemLocalize = function() {
 
 	return this.each(function() {
@@ -451,9 +361,7 @@ function startLoader() {
 
 			$divappend
 					.prepend("<div id='gpmsloading'>"
-							+ "<img id='loading' src='"
-							+ GPMS.utils.GetGPMSRootPath()
-							+ "images/gpms-loader.gif' title='GPMS loading' alt='GPMS loading'>"
+							+ "<img id='loading' src='./images/gpms-loader.gif' title='GPMS loading' alt='GPMS loading'>"
 							+ "</div><div id='fade'></div>");
 			$("#fade").show();
 		}
@@ -488,6 +396,7 @@ function strDecrypt(value) {
 	}
 	return result;
 }
+
 Boolean.parse = function(b) {
 	var a = b.trim().toLowerCase();
 	if (a === "false")
@@ -495,6 +404,7 @@ Boolean.parse = function(b) {
 	if (a === "true")
 		return true
 }
+
 stringToBoolean = function(b) {
 	switch (b.toLowerCase()) {
 	case "true":

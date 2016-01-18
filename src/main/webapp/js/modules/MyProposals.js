@@ -16,13 +16,13 @@ $(function() {
 
 	var gpmsCommonObj = function() {
 		var gpmsCommonInfo = {
-			UserName : GPMS.utils.GetUserName(),
 			UserProfileID : GPMS.utils.GetUserProfileID(),
-			UserIsAdmin : GPMS.utils.IsAdmin(),
-			UserPositionType : GPMS.utils.GetUserPositionType(),
-			UserPositionTitle : GPMS.utils.GetUserPositionTitle(),
-			UserDepartment : GPMS.utils.GetUserDepartment(),
-			UserCollege : GPMS.utils.GetUserCollege()
+		UserName : GPMS.utils.GetUserName(),			
+		UserIsAdmin : GPMS.utils.IsAdmin(),
+		UserPositionType : GPMS.utils.GetUserPositionType(),
+		UserPositionTitle : GPMS.utils.GetUserPositionTitle(),
+		UserDepartment : GPMS.utils.GetUserDepartment(),
+		UserCollege : GPMS.utils.GetUserCollege()	
 		};
 		return gpmsCommonInfo;
 	};

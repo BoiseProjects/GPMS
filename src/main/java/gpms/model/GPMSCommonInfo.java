@@ -1,20 +1,15 @@
 package gpms.model;
 
 public class GPMSCommonInfo {
-	private String userName;
 	private String userProfileID;
-	private String cultureName;
-	private String sessionCode;
+	private String userName;
+	private boolean userIsAdmin;
+	private String userCollege;
+	private String userDepartment;
+	private String userPositionType;
+	private String userPositionTitle;
 
 	public GPMSCommonInfo() {
-	}
-
-	public String getUserName() {
-		return userName;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
 	}
 
 	public String getUserProfileID() {
@@ -25,27 +20,60 @@ public class GPMSCommonInfo {
 		this.userProfileID = userProfileID;
 	}
 
-	public String getCultureName() {
-		return cultureName;
+	public String getUserName() {
+		return userName;
 	}
 
-	public void setCultureName(String cultureName) {
-		this.cultureName = cultureName;
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 
-	public String getSessionCode() {
-		return sessionCode;
+	public boolean getUserIsAdmin() {
+		return userIsAdmin;
 	}
 
-	public void setSessionCode(String sessionCode) {
-		this.sessionCode = sessionCode;
+	public void setUserIsAdmin(boolean userIsAdmin) {
+		this.userIsAdmin = userIsAdmin;
+	}
+
+	public String getUserCollege() {
+		return userCollege;
+	}
+
+	public void setUserCollege(String userCollege) {
+		this.userCollege = userCollege;
+	}
+
+	public String getUserDepartment() {
+		return userDepartment;
+	}
+
+	public void setUserDepartment(String userDepartment) {
+		this.userDepartment = userDepartment;
+	}
+
+	public String getUserPositionType() {
+		return userPositionType;
+	}
+
+	public void setUserPositionType(String userPositionType) {
+		this.userPositionType = userPositionType;
+	}
+
+	public String getUserPositionTitle() {
+		return userPositionTitle;
+	}
+
+	public void setUserPositionTitle(String userPositionTitle) {
+		this.userPositionTitle = userPositionTitle;
 	}
 
 	@Override
 	public String toString() {
-		return "GPMSCommonInfo [userName=" + userName + ", userProfileID="
-				+ userProfileID + ", cultureName=" + cultureName
-				+ ", sessionCode=" + sessionCode + "]";
-	}	
-
+		return "GPMSCommonInfo [userProfileID=" + userProfileID + ", userName="
+				+ userName + ", userIsAdmin=" + userIsAdmin + ", userCollege="
+				+ userCollege + ", userDepartment=" + userDepartment
+				+ ", userPositionType=" + userPositionType
+				+ ", userPositionTitle=" + userPositionTitle + "]";
+	}
 }

@@ -95,6 +95,8 @@ public class UserAccountDAO extends BasicDAO<UserAccount, String> {
 							+ userAccount.getUserName(), new Date());
 		}
 		userAccount.addEntryToAuditLog(audit);
+		userAccount.setDeleted(!isActive);
+		userAccount.setActive(isActive);
 		ds.save(userAccount);
 
 	}
