@@ -7,7 +7,6 @@ import gpms.dao.UserAccountDAO;
 import gpms.dao.UserProfileDAO;
 import gpms.model.Address;
 import gpms.model.AuditLogInfo;
-import gpms.model.GPMSCommonInfo;
 import gpms.model.PasswordHash;
 import gpms.model.PositionDetails;
 import gpms.model.UserAccount;
@@ -25,8 +24,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -39,7 +36,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
 
 import org.bson.types.ObjectId;
 import org.codehaus.jackson.JsonGenerationException;
@@ -169,13 +165,6 @@ public class UserService {
 
 		users = userProfileDAO.findAllForUserGrid(offset, limit, userName,
 				college, department, positionType, positionTitle, isActive);
-
-		// users = (ArrayList<UserInfo>) userProfileDAO.findAllForUserGrid();
-		// response = JSONTansformer.ConvertToJSON(users);
-
-		String response = mapper.writerWithDefaultPrettyPrinter()
-				.writeValueAsString(users);
-
 		return users;
 	}
 
@@ -327,13 +316,8 @@ public class UserService {
 	@Path("/DeleteUserByUserID")
 	public String deleteUserByUserID(String message)
 			throws JsonProcessingException, IOException {
-		UserProfile user = new UserProfile();
 		String response = new String();
-
 		String profileId = new String();
-		String userName = new String();
-		String userProfileID = new String();
-		String cultureName = new String();
 
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode root = mapper.readTree(message);
@@ -341,6 +325,10 @@ public class UserService {
 		if (root != null && root.has("userId")) {
 			profileId = root.get("userId").getTextValue();
 		}
+
+		String userName = new String();
+		String userProfileID = new String();
+		String cultureName = new String();
 
 		JsonNode commonObj = root.get("gpmsCommonObj");
 		if (commonObj != null && commonObj.has("UserName")) {
@@ -355,32 +343,20 @@ public class UserService {
 			cultureName = commonObj.get("CultureName").getTextValue();
 		}
 
-		// TODO : login set this session value
-		// FOr Testing I am using HardCoded UserProfileID
-		// userProfileID = "55b9225454ffd82dc052a32a";
-
-		ObjectId id = new ObjectId(profileId);
 		ObjectId authorId = new ObjectId(userProfileID);
-
-		GPMSCommonInfo gpmsCommonObj = new GPMSCommonInfo();
-		gpmsCommonObj.setUserName(userName);
-		gpmsCommonObj.setUserProfileID(userProfileID);
-		gpmsCommonObj.setCultureName(cultureName);
-
 		UserProfile authorProfile = userProfileDAO
 				.findUserDetailsByProfileID(authorId);
 
+		ObjectId id = new ObjectId(profileId);
 		UserProfile userProfile = userProfileDAO.findUserDetailsByProfileID(id);
-		// userProfileDAO.deleteUserProfileByUserID(userProfile, authorProfile,
-		// gpmsCommonObj);
+		// userProfileDAO.deleteUserProfileByUserID(userProfile, authorProfile);
 
 		userProfile.setDeleted(true);
 		userProfileDAO.save(userProfile);
 
 		UserAccount userAccount = userAccountDAO.findByID(userProfile
 				.getUserAccount().getId());
-		userAccountDAO.deleteUserAccountByUserID(userAccount, authorProfile,
-				gpmsCommonObj);
+		userAccountDAO.deleteUserAccountByUserID(userAccount, authorProfile);
 
 		// response.setContentType("text/html;charset=UTF-8");
 		// response.getWriter().write("Success Data");
@@ -397,14 +373,10 @@ public class UserService {
 	@Path("/DeleteMultipleUsersByUserID")
 	public String deleteMultipleUsersByUserID(String message)
 			throws JsonProcessingException, IOException {
-		UserProfile user = new UserProfile();
 		String response = new String();
 
 		String profileIds = new String();
 		String profiles[] = new String[0];
-		String userName = new String();
-		String userProfileID = new String();
-		String cultureName = new String();
 
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode root = mapper.readTree(message);
@@ -413,6 +385,10 @@ public class UserService {
 			profileIds = root.get("userIds").getTextValue();
 			profiles = profileIds.split(",");
 		}
+
+		String userName = new String();
+		String userProfileID = new String();
+		String cultureName = new String();
 
 		JsonNode commonObj = root.get("gpmsCommonObj");
 		if (commonObj != null && commonObj.has("UserName")) {
@@ -428,29 +404,22 @@ public class UserService {
 		}
 
 		ObjectId authorId = new ObjectId(userProfileID);
-
-		GPMSCommonInfo gpmsCommonObj = new GPMSCommonInfo();
-		gpmsCommonObj.setUserName(userName);
-		gpmsCommonObj.setUserProfileID(userProfileID);
-		gpmsCommonObj.setCultureName(cultureName);
-
 		UserProfile authorProfile = userProfileDAO
 				.findUserDetailsByProfileID(authorId);
 
 		for (String profile : profiles) {
 			ObjectId id = new ObjectId(profile);
-
 			UserProfile userProfile = userProfileDAO
 					.findUserDetailsByProfileID(id);
 			// userProfileDAO.deleteUserProfileByUserID(userProfile,
-			// authorProfile, gpmsCommonObj);
+			// authorProfile);
 			userProfile.setDeleted(true);
 			userProfileDAO.save(userProfile);
 
 			UserAccount userAccount = userAccountDAO.findByID(userProfile
 					.getUserAccount().getId());
-			userAccountDAO.deleteUserAccountByUserID(userAccount,
-					authorProfile, gpmsCommonObj);
+			userAccountDAO
+					.deleteUserAccountByUserID(userAccount, authorProfile);
 		}
 		response = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(
 				"Success");
@@ -461,14 +430,9 @@ public class UserService {
 	@Path("/UpdateUserIsActiveByUserID")
 	public String updateUserIsActiveByUserID(String message)
 			throws JsonProcessingException, IOException {
-		UserProfile user = new UserProfile();
 		String response = new String();
-
 		String profileId = new String();
 		Boolean isActive = true;
-		String userName = new String();
-		String userProfileID = new String();
-		String cultureName = new String();
 
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode root = mapper.readTree(message);
@@ -481,6 +445,10 @@ public class UserService {
 			isActive = root.get("isActive").getBooleanValue();
 		}
 
+		String userName = new String();
+		String userProfileID = new String();
+		String cultureName = new String();
+
 		JsonNode commonObj = root.get("gpmsCommonObj");
 		if (commonObj != null && commonObj.has("UserName")) {
 			userName = commonObj.get("UserName").getTextValue();
@@ -494,29 +462,19 @@ public class UserService {
 			cultureName = commonObj.get("CultureName").getTextValue();
 		}
 
-		ObjectId id = new ObjectId(profileId);
 		ObjectId authorId = new ObjectId(userProfileID);
-
-		GPMSCommonInfo gpmsCommonObj = new GPMSCommonInfo();
-		gpmsCommonObj.setUserName(userName);
-		gpmsCommonObj.setUserProfileID(userProfileID);
-		gpmsCommonObj.setCultureName(cultureName);
-
 		UserProfile authorProfile = userProfileDAO
 				.findUserDetailsByProfileID(authorId);
 
+		ObjectId id = new ObjectId(profileId);
 		UserProfile userProfile = userProfileDAO.findUserDetailsByProfileID(id);
-
-		// userProfileDAO.activateUserProfileByUserID(userProfile,
-		// authorProfile,
-		// gpmsCommonObj, isActive);
 
 		userProfile.setDeleted(!isActive);
 		userProfileDAO.save(userProfile);
 
 		UserAccount userAccount = userProfile.getUserAccount();
 		userAccountDAO.activateUserAccountByUserID(userAccount, authorProfile,
-				gpmsCommonObj, isActive);
+				isActive);
 		// return Response.ok("Success", MediaType.APPLICATION_JSON).build();
 
 		response = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(
@@ -530,10 +488,6 @@ public class UserService {
 			throws JsonProcessingException, IOException {
 		String userID = new String();
 		String newUserName = new String();
-		String userName = new String();
-		String userProfileID = new String();
-		String cultureName = new String();
-
 		String response = new String();
 
 		ObjectMapper mapper = new ObjectMapper();
@@ -547,6 +501,10 @@ public class UserService {
 		if (userUniqueObj != null && userUniqueObj.has("NewUserName")) {
 			newUserName = userUniqueObj.get("NewUserName").getTextValue();
 		}
+
+		String userName = new String();
+		String userProfileID = new String();
+		String cultureName = new String();
 
 		JsonNode commonObj = root.get("gpmsCommonObj");
 		if (commonObj != null && commonObj.has("UserName")) {
@@ -580,7 +538,6 @@ public class UserService {
 					.writeValueAsString("true");
 		}
 		return response;
-
 	}
 
 	@POST
@@ -589,10 +546,6 @@ public class UserService {
 			throws JsonProcessingException, IOException {
 		String userID = new String();
 		String newEmail = new String();
-		String userName = new String();
-		String userProfileID = new String();
-		String cultureName = new String();
-
 		String response = new String();
 
 		ObjectMapper mapper = new ObjectMapper();
@@ -606,6 +559,10 @@ public class UserService {
 		if (userUniqueObj != null && userUniqueObj.has("NewEmail")) {
 			newEmail = userUniqueObj.get("NewEmail").getTextValue();
 		}
+
+		String userName = new String();
+		String userProfileID = new String();
+		String cultureName = new String();
 
 		JsonNode commonObj = root.get("gpmsCommonObj");
 		if (commonObj != null && commonObj.has("UserName")) {
@@ -644,13 +601,7 @@ public class UserService {
 	@Path("/SaveUpdateUser")
 	public String saveUpdateUser(String message)
 			throws JsonProcessingException, IOException, ParseException {
-
-		String userName = new String();
-		String userProfileID = new String();
-		String cultureName = new String();
-
 		String userID = new String();
-
 		UserAccount newAccount = new UserAccount();
 		UserProfile newProfile = new UserProfile();
 
@@ -661,19 +612,6 @@ public class UserService {
 
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode root = mapper.readTree(message);
-
-		JsonNode commonObj = root.get("gpmsCommonObj");
-		if (commonObj != null && commonObj.has("UserName")) {
-			userName = commonObj.get("UserName").getTextValue();
-		}
-
-		if (commonObj != null && commonObj.has("UserProfileID")) {
-			userProfileID = commonObj.get("UserProfileID").getTextValue();
-		}
-
-		if (commonObj != null && commonObj.has("CultureName")) {
-			cultureName = commonObj.get("CultureName").getTextValue();
-		}
 
 		JsonNode userInfo = root.get("userInfo");
 
@@ -689,12 +627,14 @@ public class UserService {
 		}
 
 		if (userInfo != null && userInfo.has("UserName")) {
-			String loginUserName = userInfo.get("UserName").getTextValue();
-			if (!userID.equals("0")) {
-				existingUserAccount = userAccountDAO
-						.findByUserName(loginUserName);
+			String userNameOf = userInfo.get("UserName").getTextValue();
+			if (!userID.equals("0") && existingUserProfile != null) {
+				existingUserAccount = existingUserProfile.getUserAccount();
+				if (existingUserAccount.getUserName().equals(userNameOf)) {
+					existingUserAccount = null;
+				}
 			} else {
-				newAccount.setUserName(loginUserName);
+				newAccount.setUserName(userNameOf);
 			}
 		}
 
@@ -1007,14 +947,24 @@ public class UserService {
 			}
 		}
 
-		// Need to Compare Equals before saving existingUserProfile and
-		// newProfile
-		ObjectId authorId = new ObjectId(userProfileID);
-		GPMSCommonInfo gpmsCommonObj = new GPMSCommonInfo();
-		gpmsCommonObj.setUserName(userName);
-		gpmsCommonObj.setUserProfileID(userProfileID);
-		gpmsCommonObj.setCultureName(cultureName);
+		String userName = new String();
+		String userProfileID = new String();
+		String cultureName = new String();
 
+		JsonNode commonObj = root.get("gpmsCommonObj");
+		if (commonObj != null && commonObj.has("UserName")) {
+			userName = commonObj.get("UserName").getTextValue();
+		}
+
+		if (commonObj != null && commonObj.has("UserProfileID")) {
+			userProfileID = commonObj.get("UserProfileID").getTextValue();
+		}
+
+		if (commonObj != null && commonObj.has("CultureName")) {
+			cultureName = commonObj.get("CultureName").getTextValue();
+		}
+
+		ObjectId authorId = new ObjectId(userProfileID);
 		UserProfile authorProfile = userProfileDAO
 				.findUserDetailsByProfileID(authorId);
 
@@ -1027,11 +977,9 @@ public class UserService {
 
 		// Save the User Profile
 		if (!userID.equals("0")) {
-			userProfileDAO.updateUserByUserID(existingUserProfile,
-					authorProfile, gpmsCommonObj);
+			userProfileDAO.updateUser(existingUserProfile, authorProfile);
 		} else {
-			userProfileDAO.saveUserByUserID(newProfile, authorProfile,
-					gpmsCommonObj);
+			userProfileDAO.saveUser(newProfile, authorProfile);
 		}
 		// UserProfile user = userProfileDAO.findByUserAccount(newAccount);
 		// System.out.println(user);

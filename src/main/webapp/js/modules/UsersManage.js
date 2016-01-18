@@ -162,7 +162,7 @@ $(function() {
 					});
 
 	var rowIndex = 0;
-	var editFlag = 0;
+	var editFlag = "0";
 	var userNameIsUnique = false;
 	var emailIsUnique = false;
 
@@ -1679,7 +1679,7 @@ $(function() {
 			case 9:
 				usersManage.BindUserGrid(null, null, null, null, null, null);
 				$('#divUserGrid').show();
-				if (editFlag > 0) {
+				if (editFlag != "0") {
 					csscody.info("<h2>" + 'Successful Message' + "</h2><p>"
 							+ 'User has been updated successfully.' + "</p>");
 				} else {
@@ -1731,7 +1731,7 @@ $(function() {
 				break;
 
 			case 9:
-				if (editFlag > 0) {
+				if (editFlag != "0") {
 					csscody.error("<h2>" + 'Error Message' + "</h2><p>"
 							+ 'Failed to update user!' + "</p>");
 				} else {
@@ -1914,7 +1914,7 @@ $(function() {
 					editFlag = user_id;
 					usersManage.saveUser(user_id);
 				} else {
-					editFlag = 0;
+					editFlag = "0";
 					usersManage.saveUser("0");
 				}
 				$(this).enable();

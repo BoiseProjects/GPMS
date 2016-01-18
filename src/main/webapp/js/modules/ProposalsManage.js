@@ -413,7 +413,7 @@ $(function() {
 					});
 
 	var rowIndex = 0;
-	var editFlag = 0;
+	var editFlag = "0";
 	var projectTitleIsUnique = false;
 	var signatureInfo = '';
 
@@ -2053,8 +2053,7 @@ $(function() {
 				attributeName : "proposal-section",
 				attributeValue : "Whole Proposal"
 			});
-			if (_proposalId === "0") { // **TODO I have changed this testing
-				// equivalence
+			if (_proposalId === "0" && _flag) { // TODO I have changed this
 				attributeArray.push({
 					attributeType : "Action",
 					attributeName : "proposal-action",
@@ -2251,16 +2250,14 @@ $(function() {
 						ComplianceInfo : complianceInfo,
 						AdditionalInfo : additionalInfo,
 						CollaborationInfo : collaborationInfo,
-						ConfidentialInfo : confidentialInfo,
-
-						Flag : _flag
-					// false for Update true for New Add
+						ConfidentialInfo : confidentialInfo
 					};
 
 					if (signatureInfo != "") {
 						proposalInfo.SignatureInfo = signatureInfo;
 					}
 
+					// TODO check if the OSP section is allowed to edit ?
 					if (!_flag) {
 						proposalInfo.ProposalStatus = $("#ddlProposalStatus")
 								.val();
@@ -2348,8 +2345,6 @@ $(function() {
 									.trim($("#txtNamesSubrecipients").val());
 						}
 
-						// subjectInfo.OSPSEctionInfo = OSPSection;
-						// Make another collection object here
 						proposalInfo.OSPSectionInfo = OSPSection;
 					}
 
@@ -2843,7 +2838,8 @@ $(function() {
 			$('#divProposalGrid').show();
 			$("#btnSaveProposal").removeAttr("name");
 			$("#accordion").accordion("option", "active", -1);
-			if (editFlag > 0) {
+			
+			if (editFlag !="0") {
 				csscody.info("<h2>" + 'Successful Message' + "</h2><p>"
 						+ 'Proposal has been updated successfully.' + "</p>");
 			} else {
@@ -2899,8 +2895,13 @@ $(function() {
 				break;
 
 			case 9:
-				csscody.error("<h2>" + 'Error Message' + "</h2><p>"
-						+ 'Failed to save proposal!' + "</p>");
+				if (editFlag != "0") {
+					csscody.error("<h2>" + 'Error Message' + "</h2><p>"
+							+ 'Failed to update proposal!' + "</p>");
+				} else {
+					csscody.error("<h2>" + 'Error Message' + "</h2><p>"
+							+ 'Failed to save proposal!' + "</p>");
+				}
 				break;
 			}
 		},
@@ -3113,12 +3114,6 @@ $(function() {
 								GPMS.utils.GetUserProfileID()).prop('selected',
 								'selected').prop('disabled', 'disabled');
 
-						// OSP Section remove validation
-						$("#ui-id-24").find('input:text, select, textarea')
-								.each(function() {
-									$(this).addClass("ignore");
-								});
-
 						proposalsManage.ClearForm();
 						proposalsManage.BindDefaultUserPosition(0);
 						proposalsManage.BindPICoPISignatures();
@@ -3149,7 +3144,7 @@ $(function() {
 					editFlag = proposal_id;
 					proposalsManage.SaveProposal(proposal_id, false);
 				} else {
-					editFlag = 0;
+					editFlag = "0";
 					proposalsManage.SaveProposal("0", true);
 				}
 				$(this).enable();

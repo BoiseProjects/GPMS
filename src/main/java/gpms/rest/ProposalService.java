@@ -16,7 +16,6 @@ import gpms.model.ConfidentialInfo;
 import gpms.model.ConflictOfInterest;
 import gpms.model.CostShareInfo;
 import gpms.model.FundingSource;
-import gpms.model.GPMSCommonInfo;
 import gpms.model.InvestigatorInfo;
 import gpms.model.InvestigatorRefAndPosition;
 import gpms.model.OSPSectionInfo;
@@ -44,7 +43,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -112,7 +110,7 @@ public class ProposalService {
 
 		int offset = 0, limit = 0;
 		String projectTitle = new String();
-		String proposedBy = new String();
+		String usernameBy = new String();
 		Double totalCostsFrom = 0.0;
 		Double totalCostsTo = 0.0;
 		String receivedOnFrom = new String();
@@ -136,8 +134,8 @@ public class ProposalService {
 			projectTitle = proposalObj.get("ProjectTitle").getTextValue();
 		}
 
-		if (proposalObj != null && proposalObj.has("ProposedBy")) {
-			proposedBy = proposalObj.get("ProposedBy").getTextValue();
+		if (proposalObj != null && proposalObj.has("UsernameBy")) {
+			usernameBy = proposalObj.get("UsernameBy").getTextValue();
 		}
 
 		if (proposalObj != null && proposalObj.has("ReceivedOnFrom")) {
@@ -171,7 +169,7 @@ public class ProposalService {
 		}
 
 		proposals = proposalDAO.findAllForProposalGrid(offset, limit,
-				projectTitle, proposedBy, receivedOnFrom, receivedOnTo,
+				projectTitle, usernameBy, receivedOnFrom, receivedOnTo,
 				totalCostsFrom, totalCostsTo, proposalStatus, userRole);
 
 		return proposals;
@@ -288,40 +286,14 @@ public class ProposalService {
 	@Path("/DeleteProposalByProposalID")
 	public String deleteUserByProposalID(String message)
 			throws JsonProcessingException, IOException {
-
-		// I just have this here as an example of multimapping, hashmaps within
-		// hashmaps etc.
-		// Hashtable<String, Hashtable<String, Hashtable<String,
-		// ArrayList<String>>>> ht = new Hashtable<String, Hashtable<String,
-		// Hashtable<String, ArrayList<String>>>>();
-		HashMap AttributesMap = new HashMap<String, HashMap<String, String>>();
-
-		UserProfile user = new UserProfile();
 		String response = new String();
-
 		String proposalId = new String();
-		String userName = new String();
-		String userProfileID = new String();
-		String cultureName = new String();
 
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode root = mapper.readTree(message);
 
 		if (root != null && root.has("proposalId")) {
 			proposalId = root.get("proposalId").getTextValue();
-		}
-
-		JsonNode commonObj = root.get("gpmsCommonObj");
-		if (commonObj != null && commonObj.has("UserName")) {
-			userName = commonObj.get("UserName").getTextValue();
-		}
-
-		if (commonObj != null && commonObj.has("UserProfileID")) {
-			userProfileID = commonObj.get("UserProfileID").getTextValue();
-		}
-
-		if (commonObj != null && commonObj.has("CultureName")) {
-			cultureName = commonObj.get("CultureName").getTextValue();
 		}
 
 		/*
@@ -335,50 +307,9 @@ public class ProposalService {
 		 * do not continue
 		 */
 
-		// TODO : login set this session value
-		// FOr Testing I am using HardCoded UserProfileID
-		// userProfileID = "55b9225454ffd82dc052a32a";
-
-		ObjectId id = new ObjectId(proposalId);
-		ObjectId authorId = new ObjectId(userProfileID);
-
-		GPMSCommonInfo gpmsCommonObj = new GPMSCommonInfo();
-		gpmsCommonObj.setUserName(userName);
-		gpmsCommonObj.setUserProfileID(userProfileID);
-		gpmsCommonObj.setCultureName(cultureName);
-
-		UserProfile authorProfile = userProfileDAO
-				.findUserDetailsByProfileID(authorId);
-		Proposal proposal = proposalDAO.findProposalByProposalID(id);
-
-		proposalDAO.deleteProposal(proposal, authorProfile, gpmsCommonObj);
-
-		response = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(
-				"Success");
-
-		return response;
-	}
-
-	@POST
-	@Path("/DeleteMultipleProposalsByProposalID")
-	public String deleteMultipleProposalsByProposalID(String message)
-			throws JsonProcessingException, IOException {
-		UserProfile user = new UserProfile();
-		String response = new String();
-
-		String proposalIds = new String();
-		String proposals[] = new String[0];
 		String userName = new String();
 		String userProfileID = new String();
 		String cultureName = new String();
-
-		ObjectMapper mapper = new ObjectMapper();
-		JsonNode root = mapper.readTree(message);
-
-		if (root != null && root.has("proposalIds")) {
-			proposalIds = root.get("proposalIds").getTextValue();
-			proposals = proposalIds.split(",");
-		}
 
 		JsonNode commonObj = root.get("gpmsCommonObj");
 		if (commonObj != null && commonObj.has("UserName")) {
@@ -393,22 +324,61 @@ public class ProposalService {
 			cultureName = commonObj.get("CultureName").getTextValue();
 		}
 
+		ObjectId id = new ObjectId(proposalId);
+
 		ObjectId authorId = new ObjectId(userProfileID);
+		UserProfile authorProfile = userProfileDAO
+				.findUserDetailsByProfileID(authorId);
 
-		GPMSCommonInfo gpmsCommonObj = new GPMSCommonInfo();
-		gpmsCommonObj.setUserName(userName);
-		gpmsCommonObj.setUserProfileID(userProfileID);
-		gpmsCommonObj.setCultureName(cultureName);
+		Proposal proposal = proposalDAO.findProposalByProposalID(id);
 
+		proposalDAO.deleteProposal(proposal, authorProfile);
+
+		response = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(
+				"Success");
+
+		return response;
+	}
+
+	@POST
+	@Path("/DeleteMultipleProposalsByProposalID")
+	public String deleteMultipleProposalsByProposalID(String message)
+			throws JsonProcessingException, IOException {
+		String response = new String();
+		String proposalIds = new String();
+		String proposals[] = new String[0];
+
+		ObjectMapper mapper = new ObjectMapper();
+		JsonNode root = mapper.readTree(message);
+
+		if (root != null && root.has("proposalIds")) {
+			proposalIds = root.get("proposalIds").getTextValue();
+			proposals = proposalIds.split(",");
+		}
+
+		String userName = new String();
+		String userProfileID = new String();
+		String cultureName = new String();
+
+		JsonNode commonObj = root.get("gpmsCommonObj");
+		if (commonObj != null && commonObj.has("UserName")) {
+			userName = commonObj.get("UserName").getTextValue();
+		}
+		if (commonObj != null && commonObj.has("UserProfileID")) {
+			userProfileID = commonObj.get("UserProfileID").getTextValue();
+		}
+		if (commonObj != null && commonObj.has("CultureName")) {
+			cultureName = commonObj.get("CultureName").getTextValue();
+		}
+
+		ObjectId authorId = new ObjectId(userProfileID);
 		UserProfile authorProfile = userProfileDAO
 				.findUserDetailsByProfileID(authorId);
 
 		for (String proposalId : proposals) {
 			ObjectId id = new ObjectId(proposalId);
-
 			Proposal proposal = proposalDAO.findProposalByProposalID(id);
-
-			proposalDAO.deleteProposal(proposal, authorProfile, gpmsCommonObj);
+			proposalDAO.deleteProposal(proposal, authorProfile);
 		}
 		response = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(
 				"Success");
@@ -432,7 +402,6 @@ public class ProposalService {
 		}
 
 		ObjectId id = new ObjectId(proposalId);
-
 		proposal = proposalDAO.findProposalByProposalID(id);
 
 		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd")
@@ -507,10 +476,6 @@ public class ProposalService {
 			throws JsonProcessingException, IOException {
 		String proposalID = new String();
 		String newProjectTitle = new String();
-		String userName = new String();
-		String userProfileID = new String();
-		String cultureName = new String();
-
 		String response = new String();
 
 		ObjectMapper mapper = new ObjectMapper();
@@ -526,6 +491,10 @@ public class ProposalService {
 			newProjectTitle = proposalUniqueObj.get("NewProjectTitle")
 					.getTextValue();
 		}
+
+		String userName = new String();
+		String userProfileID = new String();
+		String cultureName = new String();
 
 		JsonNode commonObj = root.get("gpmsCommonObj");
 		if (commonObj != null && commonObj.has("UserName")) {
@@ -609,33 +578,13 @@ public class ProposalService {
 	@POST
 	@Path("/SaveUpdateProposal")
 	public String saveUpdateProposal(String message) throws Exception {
-		String userName = new String();
-		String userProfileID = new String();
-		String cultureName = new String();
-
 		String proposalID = new String();
-
 		Proposal newProposal = new Proposal();
 		Proposal existingProposal = new Proposal();
-
 		String response = new String();
 
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode root = mapper.readTree(message);
-
-		JsonNode commonObj = root.get("gpmsCommonObj");
-
-		if (commonObj != null && commonObj.has("UserName")) {
-			userName = commonObj.get("UserName").getTextValue();
-		}
-
-		if (commonObj != null && commonObj.has("UserProfileID")) {
-			userProfileID = commonObj.get("UserProfileID").getTextValue();
-		}
-
-		if (commonObj != null && commonObj.has("CultureName")) {
-			cultureName = commonObj.get("CultureName").getTextValue();
-		}
 
 		JsonNode proposalInfo = root.get("proposalInfo");
 		if (proposalInfo != null && proposalInfo.has("ProposalID")) {
@@ -1926,14 +1875,33 @@ public class ProposalService {
 			newProposal.setProposalStatus(Status.NEW);
 		}
 
-		// Need to Compare Equals before saving existingUserProfile and
-		// newProfile
+		String userName = new String();
+		String userProfileID = new String();
+		String cultureName = new String();
+
+		JsonNode commonObj = root.get("gpmsCommonObj");
+
+		if (commonObj != null && commonObj.has("UserName")) {
+			userName = commonObj.get("UserName").getTextValue();
+		}
+
+		if (commonObj != null && commonObj.has("UserProfileID")) {
+			userProfileID = commonObj.get("UserProfileID").getTextValue();
+		}
+
+		if (commonObj != null && commonObj.has("CultureName")) {
+			cultureName = commonObj.get("CultureName").getTextValue();
+		}
+
+		ObjectId authorId = new ObjectId(userProfileID);
+		UserProfile authorProfile = userProfileDAO
+				.findUserDetailsByProfileID(authorId);
 
 		// Save the Proposal
 		if (!proposalID.equals("0")) {
-			proposalDAO.save(existingProposal);
+			proposalDAO.updateProposal(existingProposal, authorProfile);
 		} else {
-			proposalDAO.save(newProposal);
+			proposalDAO.saveProposal(newProposal, authorProfile);
 		}
 
 		response = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(

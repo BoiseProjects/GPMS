@@ -464,8 +464,8 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 				.equal(userAccount).get();
 	}
 
-	public void saveUserByUserID(UserProfile newProfile,
-			UserProfile authorProfile, GPMSCommonInfo gpmsCommonObj) {
+	public void saveUser(UserProfile newProfile,
+			UserProfile authorProfile) {
 		Datastore ds = getDatastore();
 		audit = new AuditLog(authorProfile,
 				"Created user account and profile of "
@@ -474,8 +474,8 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 		ds.save(newProfile);
 	}
 
-	public void updateUserByUserID(UserProfile existingUserProfile,
-			UserProfile authorProfile, GPMSCommonInfo gpmsCommonObj) {
+	public void updateUser(UserProfile existingUserProfile,
+			UserProfile authorProfile) {
 		Datastore ds = getDatastore();
 		audit = new AuditLog(authorProfile,
 				"Updated user account and profile of "

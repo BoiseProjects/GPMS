@@ -3,7 +3,6 @@ package gpms.dao;
 import gpms.DAL.MongoDBConnector;
 import gpms.model.AuditLog;
 import gpms.model.AuditLogInfo;
-import gpms.model.GPMSCommonInfo;
 import gpms.model.InvestigatorRefAndPosition;
 import gpms.model.PositionDetails;
 import gpms.model.ProjectLocation;
@@ -76,12 +75,28 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 		return ds.createQuery(Proposal.class).field("_id").equal(id).get();
 	}
 
-	public void deleteProposal(Proposal proposal, UserProfile authorProfile,
-			GPMSCommonInfo gpmsCommonObj) {
+	public void saveProposal(Proposal newProposal, UserProfile authorProfile) {
+		Datastore ds = getDatastore();
+		audit = new AuditLog(authorProfile, "Created proposal by "
+				+ authorProfile.getUserAccount().getUserName(), new Date());
+		newProposal.addEntryToAuditLog(audit);
+		ds.save(newProposal);
+	}
+
+	public void updateProposal(Proposal existingProposal,
+			UserProfile authorProfile) {
+		Datastore ds = getDatastore();
+		audit = new AuditLog(authorProfile, "Updated proposal by "
+				+ authorProfile.getUserAccount().getUserName(), new Date());
+		existingProposal.addEntryToAuditLog(audit);
+		ds.save(existingProposal);
+	}
+
+	public void deleteProposal(Proposal proposal, UserProfile authorProfile) {
 		Datastore ds = getDatastore();
 		proposal.setProposalStatus(Status.DELETED);
-		AuditLog entry = new AuditLog(authorProfile, "Deleted Proposal for "
-				+ proposal.getProjectInfo().getProjectTitle(), new Date());
+		AuditLog entry = new AuditLog(authorProfile, "Deleted Proposal by "
+				+ authorProfile.getUserAccount().getUserName(), new Date());
 		proposal.addEntryToAuditLog(entry);
 		ds.save(proposal);
 	}
@@ -238,8 +253,7 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 	public List<ProposalInfo> findAllForProposalGrid(int offset, int limit,
 			String projectTitle, String usernameBy, String receivedOnFrom,
 			String receivedOnTo, Double totalCostsFrom, Double totalCostsTo,
-			String proposalStatus, String userRole)
-			throws UnknownHostException, ParseException {
+			String proposalStatus, String userRole) throws ParseException {
 		Datastore ds = getDatastore();
 		ArrayList<ProposalInfo> proposals = new ArrayList<ProposalInfo>();
 
@@ -252,8 +266,34 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 					.containsIgnoreCase(projectTitle);
 		}
 
+		if (receivedOnFrom != null) {
+			Date receivedOnF = formatter.parse(receivedOnFrom);
+			proposalQuery.field("date received").greaterThanOrEq(receivedOnF);
+		}
+		if (receivedOnTo != null) {
+			Date receivedOnT = formatter.parse(receivedOnTo);
+			proposalQuery.field("date received").lessThanOrEq(receivedOnT);
+		}
+
+		if (totalCostsFrom != null && totalCostsFrom != 0.0) {
+			// proposalQuery.filter("sponsor and budget info.total costs >",
+			// totalCostsFrom);
+			proposalQuery.field("sponsor and budget info.total costs")
+					.greaterThanOrEq(totalCostsFrom);
+		}
+		if (totalCostsTo != null && totalCostsTo != 0.0) {
+			// proposalQuery.filter("sponsor and budget info.total costs <=",
+			// totalCostsTo);
+			proposalQuery.field("sponsor and budget info.total costs")
+					.lessThanOrEq(totalCostsTo);
+		}
+
+		if (proposalStatus != null) {
+			proposalQuery.field("proposal status").equal(proposalStatus);
+		}
+
 		if (usernameBy != null) {
-			// accountQuery.field("username").containsIgnoreCase(proposedBy);
+			// accountQuery.field("username").containsIgnoreCase(usernameBy);
 			// profileQuery.criteria("user id").in(accountQuery.asKeyList());
 			// proposalQuery.criteria("investigator info.PI.user profile").in(
 			// profileQuery.asKeyList());
@@ -297,32 +337,6 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 												"investigator info.senior personnel.user profile")
 										.in(profileQuery.asKeyList()));
 			}
-		}
-
-		if (receivedOnFrom != null) {
-			Date receivedOnF = formatter.parse(receivedOnFrom);
-			proposalQuery.field("date received").greaterThanOrEq(receivedOnF);
-		}
-		if (receivedOnTo != null) {
-			Date receivedOnT = formatter.parse(receivedOnTo);
-			proposalQuery.field("date received").lessThanOrEq(receivedOnT);
-		}
-
-		if (totalCostsFrom != null && totalCostsFrom != 0.0) {
-			// proposalQuery.filter("sponsor and budget info.total costs >",
-			// totalCostsFrom);
-			proposalQuery.field("sponsor and budget info.total costs")
-					.greaterThanOrEq(totalCostsFrom);
-		}
-		if (totalCostsTo != null && totalCostsTo != 0.0) {
-			// proposalQuery.filter("sponsor and budget info.total costs <=",
-			// totalCostsTo);
-			proposalQuery.field("sponsor and budget info.total costs")
-					.lessThanOrEq(totalCostsTo);
-		}
-
-		if (proposalStatus != null) {
-			proposalQuery.field("proposal status").equal(proposalStatus);
 		}
 
 		int rowTotal = proposalQuery.asList().size();
@@ -503,124 +517,8 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 			proposalQuery.field("proposal status").equal(proposalStatus);
 		}
 
-		// High Level Users University Level --> University Research
-		// Administrator,Research Administrator,University Research
-		// Director
-		// College Level --> Dean,Associate Dean
-		// Department Level --> Business Manager,Department
-		// Administrative
-		// Assistant,Department Chair,Associate Chair
-
-		if (!positionTitle.equals("University Research Administrator")
-				&& !positionTitle.equals("Research Administrator")
-				&& !positionTitle.equals("University Research Director")) {
-			if (positionTitle.equals("Dean")
-					|| positionTitle.equals("Associate Dean")) {
-				proposalQuery.or(
-						proposalQuery.criteria("investigator info.PI.college")
-								.equal(college),
-						proposalQuery.criteria(
-								"investigator info.CO-PI.college").equal(
-								college),
-						proposalQuery.criteria(
-								"investigator info.senior personnel.college")
-								.equal(college));
-			} else if (positionTitle.equals("Business Manager")
-					|| positionTitle
-							.equals("Department Administrative Assistant")
-					|| positionTitle.equals("Department Chair")
-					|| positionTitle.equals("Associate Chair")) {
-				proposalQuery
-						.and(proposalQuery
-								.or(proposalQuery.criteria(
-										"investigator info.PI.college").equal(
-										college),
-										proposalQuery
-												.criteria(
-														"investigator info.CO-PI.college")
-												.equal(college),
-										proposalQuery
-												.criteria(
-														"investigator info.senior personnel.college")
-												.equal(college)),
-								proposalQuery
-										.or(proposalQuery
-												.criteria(
-														"investigator info.PI.department")
-												.equal(department),
-												proposalQuery
-														.criteria(
-																"investigator info.CO-PI.department")
-														.equal(department),
-												proposalQuery
-														.criteria(
-																"investigator info.senior personnel.department")
-														.equal(department)));
-			} else {
-				proposalQuery
-						.or(proposalQuery.and(
-								proposalQuery.criteria(
-										"investigator info.PI.user profile id")
-										.equal(userId),
-								proposalQuery.criteria(
-										"investigator info.PI.college").equal(
-										college),
-								proposalQuery.criteria(
-										"investigator info.PI.department")
-										.equal(department),
-								proposalQuery.criteria(
-										"investigator info.PI.position type")
-										.equal(positionType),
-								proposalQuery.criteria(
-										"investigator info.PI.position title")
-										.equal(positionTitle)),
-								proposalQuery
-										.and(proposalQuery
-												.criteria(
-														"investigator info.CO-PI.user profile id")
-												.equal(userId),
-												proposalQuery
-														.criteria(
-																"investigator info.CO-PI.college")
-														.equal(college),
-												proposalQuery
-														.criteria(
-																"investigator info.CO-PI.department")
-														.equal(department),
-												proposalQuery
-														.criteria(
-																"investigator info.CO-PI.position type")
-														.equal(positionType),
-												proposalQuery
-														.criteria(
-																"investigator info.CO-PI.position title")
-														.equal(positionTitle)),
-								proposalQuery
-										.and(proposalQuery
-												.criteria(
-														"investigator info.senior personnel.user profile id")
-												.equal(userId),
-												proposalQuery
-														.criteria(
-																"investigator info.senior personnel.college")
-														.equal(college),
-												proposalQuery
-														.criteria(
-																"investigator info.senior personnel.department")
-														.equal(department),
-												proposalQuery
-														.criteria(
-																"investigator info.senior personnel.position type")
-														.equal(positionType),
-												proposalQuery
-														.criteria(
-																"investigator info.senior personnel.position title")
-														.equal(positionTitle)));
-			}
-		}
-
 		if (usernameBy != null) {
-			// accountQuery.field("username").containsIgnoreCase(proposedBy);
+			// accountQuery.field("username").containsIgnoreCase(usernameBy);
 			// profileQuery.criteria("user id").in(accountQuery.asKeyList());
 			profileQuery.or(
 					profileQuery.criteria("first name").containsIgnoreCase(
@@ -1305,5 +1203,4 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 
 		return proposalQuery.asList();
 	}
-
 }
