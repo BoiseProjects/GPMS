@@ -357,9 +357,9 @@ public class UserService {
 		notification.setAction("Deleted user account and profile of "
 				+ userAccount.getUserName());
 		notification.setProposal(null);
-		notification.setUserProfile(userProfile);
-		notification.setUserProfileId(userProfile.getId().toString());
-		notification.setActivityDate(new Date());
+		notification.setUserProfile(null);
+		// notification.setUserProfileId(userProfile.getId().toString());
+		// notification.isViewedByUser(true);
 		notificationDAO.save(notification);
 
 		// response.setContentType("text/html;charset=UTF-8");
@@ -445,9 +445,9 @@ public class UserService {
 			notification.setAction("Deleted user account and profile of "
 					+ userAccount.getUserName());
 			notification.setProposal(null);
-			notification.setUserProfile(userProfile);
-			notification.setUserProfileId(userProfile.getId().toString());
-			notification.setActivityDate(new Date());
+			notification.setUserProfile(null);
+			// notification.setUserProfileId(userProfile.getId().toString());
+			// notification.isViewedByUser(true);
 			notificationDAO.save(notification);
 		}
 		response = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(
@@ -528,11 +528,26 @@ public class UserService {
 		} else {
 			notification.setAction("Deactivated user account and profile of "
 					+ userAccount.getUserName());
+			notification.setViewedByUser(true);
 		}
 		notification.setProposal(null);
 		notification.setUserProfile(userProfile);
 		notification.setUserProfileId(userProfile.getId().toString());
-		notification.setActivityDate(new Date());
+		notificationDAO.save(notification);
+
+		notification = new NotificationLog();
+		notification.setType("User");
+		if (isActive) {
+			notification.setAction("Activated user account and profile of "
+					+ userAccount.getUserName());
+		} else {
+			notification.setAction("Deactivated user account and profile of "
+					+ userAccount.getUserName());
+			notification.setViewedByUser(true);
+		}
+		notification.setProposal(null);
+		notification.setUserProfile(null);
+		// notification.setUserProfileId(userProfile.getId().toString());
 		notificationDAO.save(notification);
 
 		// return Response.ok("Success", MediaType.APPLICATION_JSON).build();
@@ -690,13 +705,15 @@ public class UserService {
 	@POST
 	@Path("/SaveUpdateUser")
 	public String saveUpdateUser(String message)
-			throws JsonProcessingException, IOException, ParseException {
+			throws JsonProcessingException, IOException, ParseException,
+			CloneNotSupportedException {
 		String userID = new String();
 		UserAccount newAccount = new UserAccount();
 		UserProfile newProfile = new UserProfile();
 
 		UserAccount existingUserAccount = new UserAccount();
 		UserProfile existingUserProfile = new UserProfile();
+		UserProfile oldUserProfile = new UserProfile();
 
 		String response = new String();
 
@@ -711,6 +728,7 @@ public class UserService {
 				ObjectId id = new ObjectId(userID);
 				existingUserProfile = userProfileDAO
 						.findUserDetailsByProfileID(id);
+				oldUserProfile = existingUserProfile.clone();
 			} else {
 				newAccount.setAddedOn(new Date());
 			}
@@ -1083,23 +1101,45 @@ public class UserService {
 		// Save the User Profile
 		NotificationLog notification = new NotificationLog();
 		if (!userID.equals("0")) {
-			userProfileDAO.updateUser(existingUserProfile, authorProfile);
-			notification.setAction("Updated user account and profile of "
-					+ existingUserProfile.getUserAccount().getUserName());
-			notification.setUserProfile(existingUserProfile);
-			notification.setUserProfileId(existingUserProfile.getId()
-					.toString());
+			if (!oldUserProfile.equals(existingUserProfile)) {
+				userProfileDAO.updateUser(existingUserProfile, authorProfile);
+
+				notification.setType("User");
+				notification.setAction("Updated user account and profile of "
+						+ existingUserProfile.getUserAccount().getUserName());
+				notification.setProposal(null);
+				notification.setUserProfile(existingUserProfile);
+				notification.setUserProfileId(existingUserProfile.getId()
+						.toString());
+				notificationDAO.save(notification);
+
+				notification = new NotificationLog();
+				notification.setType("User");
+				notification.setAction("Updated user account and profile of "
+						+ existingUserProfile.getUserAccount().getUserName());
+				notification.setProposal(null);
+				notification.setUserProfile(null);
+				notificationDAO.save(notification);
+			}
 		} else {
 			userProfileDAO.saveUser(newProfile, authorProfile);
+
+			notification.setType("User");
 			notification.setAction("Created user account and profile of "
 					+ newProfile.getUserAccount().getUserName());
+			notification.setProposal(null);
 			notification.setUserProfile(newProfile);
 			notification.setUserProfileId(newProfile.getId().toString());
+			notificationDAO.save(notification);
+
+			notification = new NotificationLog();
+			notification.setType("User");
+			notification.setAction("Created user account and profile of "
+					+ newProfile.getUserAccount().getUserName());
+			notification.setProposal(null);
+			notification.setUserProfile(null);
+			notificationDAO.save(notification);
 		}
-		notification.setProposal(null);
-		notification.setType("User");		
-		notification.setActivityDate(new Date());
-		notificationDAO.save(notification);
 
 		// UserProfile user = userProfileDAO.findByUserAccount(newAccount);
 		// System.out.println(user);
@@ -1209,12 +1249,11 @@ public class UserService {
 
 			NotificationLog notification = new NotificationLog();
 			notification.setType("User");
-			notification.setAction("Signup by " + newAccount.getUserName());
+			notification.setAction("Signed Up by " + newAccount.getUserName());
 			notification.setProposal(null);
-			notification.setUserProfile(newProfile);
-			notification.setUserProfileId(newProfile.getId().toString());
-			notification.setViewedByUser(true);
-			notification.setActivityDate(new Date());
+			notification.setUserProfile(null);
+			// notification.setUserProfileId(newProfile.getId().toString());
+			// notification.setViewedByUser(true);
 			notificationDAO.save(notification);
 		}
 

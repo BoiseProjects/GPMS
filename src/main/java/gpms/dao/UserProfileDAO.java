@@ -9,12 +9,12 @@ package gpms.dao;
 import gpms.DAL.MongoDBConnector;
 import gpms.model.AuditLog;
 import gpms.model.AuditLogInfo;
+import gpms.model.InvestigatorUsersAndPositions;
 import gpms.model.PositionDetails;
 import gpms.model.Proposal;
 import gpms.model.UserAccount;
 import gpms.model.UserInfo;
 import gpms.model.UserProfile;
-import gpms.rest.InvestigatorUsersAndPositions;
 
 import java.net.UnknownHostException;
 import java.text.DateFormat;

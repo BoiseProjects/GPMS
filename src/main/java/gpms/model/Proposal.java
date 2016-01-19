@@ -356,6 +356,11 @@ public class Proposal extends BaseEntity {
 		return true;
 	}
 
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		return super.clone();
+	}
+
 	public void addEntryToAuditLog(AuditLog audit) {
 		this.getAuditLog().add(audit);
 	}

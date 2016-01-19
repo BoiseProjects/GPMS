@@ -423,7 +423,7 @@ $(function() {
 		config : {
 			isPostBack : false,
 			async : false,
-			cache : true,
+			cache : false,
 			type : 'POST',
 			contentType : "application/json; charset=utf-8",
 			data : '{}',
@@ -1506,7 +1506,7 @@ $(function() {
 																.val());
 									} else if (this.name == "ddlPositionType") {
 										$(this).val(userDetails.positionType)
-												.prop('selected', 'selected');
+												.prop('selected', 'selected');									
 										myProposal
 												.BindPositionTitleDropDown(
 														$(
@@ -2737,6 +2737,7 @@ $(function() {
 			break;
 
 		case 6: // Bind User Position Details on dropdown selection change
+			// TODO multiple Title Dropdown binding problem!
 			$.merge(positionsDetails, msg);
 			$('select[name="ddlCollege"]').get(rowIndex).options.length = 0;
 			$('select[name="ddlDepartment"]').get(rowIndex).options.length = 0;

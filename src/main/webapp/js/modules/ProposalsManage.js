@@ -17,12 +17,12 @@ $(function() {
 	var gpmsCommonObj = function() {
 		var gpmsCommonInfo = {
 			UserProfileID : GPMS.utils.GetUserProfileID(),
-			UserName : GPMS.utils.GetUserName(),			
+			UserName : GPMS.utils.GetUserName(),
 			UserIsAdmin : GPMS.utils.IsAdmin(),
 			UserPositionType : GPMS.utils.GetUserPositionType(),
 			UserPositionTitle : GPMS.utils.GetUserPositionTitle(),
 			UserDepartment : GPMS.utils.GetUserDepartment(),
-			UserCollege : GPMS.utils.GetUserCollege()	
+			UserCollege : GPMS.utils.GetUserCollege()
 		};
 		return gpmsCommonInfo;
 	};
@@ -423,7 +423,7 @@ $(function() {
 		config : {
 			isPostBack : false,
 			async : false,
-			cache : true,
+			cache : false,
 			type : 'POST',
 			contentType : "application/json; charset=utf-8",
 			data : '{}',
