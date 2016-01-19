@@ -1084,14 +1084,14 @@ public class UserService {
 		NotificationLog notification = new NotificationLog();
 		if (!userID.equals("0")) {
 			userProfileDAO.updateUser(existingUserProfile, authorProfile);
-			notification.setAction("Created user account and profile of "
+			notification.setAction("Updated user account and profile of "
 					+ existingUserProfile.getUserAccount().getUserName());
 			notification.setUserProfile(existingUserProfile);
 			notification.setUserProfileId(existingUserProfile.getId()
 					.toString());
 		} else {
 			userProfileDAO.saveUser(newProfile, authorProfile);
-			notification.setAction("Updated user account and profile of "
+			notification.setAction("Created user account and profile of "
 					+ newProfile.getUserAccount().getUserName());
 			notification.setUserProfile(newProfile);
 			notification.setUserProfileId(newProfile.getId().toString());
