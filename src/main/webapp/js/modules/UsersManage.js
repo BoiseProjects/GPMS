@@ -172,7 +172,7 @@ $(function() {
 		config : {
 			isPostBack : false,
 			async : false,
-			cache : false,
+			cache : true,
 			type : 'POST',
 			contentType : "application/json; charset=utf-8",
 			data : '{}',

@@ -2,6 +2,7 @@ package gpms.rest;
 
 import gpms.DAL.MongoDBConnector;
 import gpms.dao.DelegationDAO;
+import gpms.dao.NotificationDAO;
 import gpms.dao.ProposalDAO;
 import gpms.dao.UserAccountDAO;
 import gpms.dao.UserProfileDAO;
@@ -18,6 +19,7 @@ import gpms.model.CostShareInfo;
 import gpms.model.FundingSource;
 import gpms.model.InvestigatorInfo;
 import gpms.model.InvestigatorRefAndPosition;
+import gpms.model.NotificationLog;
 import gpms.model.OSPSectionInfo;
 import gpms.model.ProjectInfo;
 import gpms.model.ProjectLocation;
@@ -75,6 +77,7 @@ public class ProposalService {
 	UserProfileDAO userProfileDAO = null;
 	ProposalDAO proposalDAO = null;
 	DelegationDAO delegationDAO = null;
+	NotificationDAO notificationDAO = null;
 
 	DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -86,6 +89,7 @@ public class ProposalService {
 		userProfileDAO = new UserProfileDAO(mongoClient, morphia, dbName);
 		proposalDAO = new ProposalDAO(mongoClient, morphia, dbName);
 		delegationDAO = new DelegationDAO(mongoClient, morphia, dbName);
+		notificationDAO = new NotificationDAO(mongoClient, morphia, dbName);
 	}
 
 	@GET
@@ -1281,6 +1285,9 @@ public class ProposalService {
 			newProposal.setConfidentialInfo(newConfidentialInfo);
 		}
 
+		// To hold all new Investigators list to get notified
+		InvestigatorInfo addedInvestigators = new InvestigatorInfo();
+
 		if (proposalInfo != null && proposalInfo.has("InvestigatorInfo")) {
 			if (!proposalID.equals("0")) {
 				existingProposal.getInvestigatorInfo().getCo_pi().clear();
@@ -1313,6 +1320,8 @@ public class ProposalService {
 								.equals(investigatorRefAndPosition)) {
 							existingProposal.getInvestigatorInfo().setPi(
 									investigatorRefAndPosition);
+							addedInvestigators
+									.setPi(investigatorRefAndPosition);
 						}
 					} else {
 						newInvestigatorInfo.setPi(investigatorRefAndPosition);
@@ -1322,6 +1331,8 @@ public class ProposalService {
 					if (!proposalID.equals("0")) {
 						existingProposal.getInvestigatorInfo().getCo_pi()
 								.add(investigatorRefAndPosition);
+						addedInvestigators.getCo_pi().add(
+								investigatorRefAndPosition);
 					} else {
 						newInvestigatorInfo.getCo_pi().add(
 								investigatorRefAndPosition);
@@ -1332,6 +1343,8 @@ public class ProposalService {
 						existingProposal.getInvestigatorInfo()
 								.getSeniorPersonnel()
 								.add(investigatorRefAndPosition);
+						addedInvestigators.getSeniorPersonnel().add(
+								investigatorRefAndPosition);
 					} else {
 						newInvestigatorInfo.getSeniorPersonnel().add(
 								investigatorRefAndPosition);
@@ -1344,8 +1357,12 @@ public class ProposalService {
 			// InvestigatorInfo
 			if (proposalID.equals("0")) {
 				newProposal.setInvestigatorInfo(newInvestigatorInfo);
+				addedInvestigators = newInvestigatorInfo;
 			}
 		}
+
+		// To hold all new Investigators list to get notified
+		List<SignatureInfo> addedSignatures = new ArrayList<SignatureInfo>();
 
 		if (proposalInfo != null && proposalInfo.has("SignatureInfo")) {
 			String[] rows = proposalInfo.get("SignatureInfo").getTextValue()
@@ -1377,6 +1394,7 @@ public class ProposalService {
 				}
 			}
 			// SignatureInfo
+			addedSignatures = newSignatureInfo;
 			if (!proposalID.equals("0")) {
 				for (SignatureInfo signatureInfo : newSignatureInfo) {
 					existingProposal.getSignatureInfo().add(signatureInfo);
@@ -1960,10 +1978,107 @@ public class ProposalService {
 				.findUserDetailsByProfileID(authorId);
 
 		// Save the Proposal
+		Proposal currentProposal = new Proposal();
+		NotificationLog notification = new NotificationLog();
+		notification.setUserProfile(null);
 		if (!proposalID.equals("0")) {
 			proposalDAO.updateProposal(existingProposal, authorProfile);
+			currentProposal = existingProposal;
+			notification.setType("Proposal");
+			notification.setAction("Updated proposal "
+					+ existingProposal.getProjectInfo().getProjectTitle()
+					+ " by " + authorProfile.getUserAccount().getUserName());
+			notification.setProposal(existingProposal);
+			notification.setActivityDate(new Date());
+			notificationDAO.save(notification);
 		} else {
 			proposalDAO.saveProposal(newProposal, authorProfile);
+			currentProposal = newProposal;
+			notification.setType("Proposal");
+			notification.setAction("Created proposal  "
+					+ newProposal.getProjectInfo().getProjectTitle() + " by "
+					+ authorProfile.getUserAccount().getUserName());
+			notification.setProposal(newProposal);
+			notification.setActivityDate(new Date());
+			notificationDAO.save(notification);
+		}
+
+		// for each new investigators user set a new row notification
+		if (addedInvestigators != null) {
+			notification.setUserProfileId(addedInvestigators.getPi()
+					.getUserProfileId());
+			notification.setType("Investigator");
+			notification.setAction("Added as PI by "
+					+ authorProfile.getUserAccount().getUserName()
+					+ " for proposal "
+					+ currentProposal.getProjectInfo().getProjectTitle());
+			notificationDAO.save(notification);
+
+			for (InvestigatorRefAndPosition investigator : addedInvestigators
+					.getCo_pi()) {
+				// for each user set an row
+				notification.setUserProfileId(investigator.getUserProfileId());
+				notification.setType("Investigator");
+				notification.setAction("Added as CO-PI by "
+						+ authorProfile.getUserAccount().getUserName()
+						+ " for proposal "
+						+ currentProposal.getProjectInfo().getProjectTitle());
+				notificationDAO.save(notification);
+			}
+
+			for (InvestigatorRefAndPosition investigator : addedInvestigators
+					.getSeniorPersonnel()) {
+				notification.setUserProfileId(investigator.getUserProfileId());
+				notification.setType("Investigator");
+				notification.setAction("Added as Senior Personnel by "
+						+ authorProfile.getUserAccount().getUserName()
+						+ " for proposal "
+						+ currentProposal.getProjectInfo().getProjectTitle());
+				notificationDAO.save(notification);
+			}
+		}
+
+		// for each new signatures user set a new row notification
+		if (addedSignatures != null) {
+			for (SignatureInfo signatureInfo : addedSignatures) {
+				notification.setUserProfileId(existingProposal
+						.getInvestigatorInfo().getPi().getUserProfileId());
+				notification.setType("Signature");
+				notification.setAction("Proposal "
+						+ currentProposal.getProjectInfo().getProjectTitle()
+						+ " was signed by " + signatureInfo.getFullName()
+						+ " on " + signatureInfo.getSignedDate());
+				notificationDAO.save(notification);
+
+				for (InvestigatorRefAndPosition investigator : existingProposal
+						.getInvestigatorInfo().getCo_pi()) {
+					// for each user set an row
+					notification.setUserProfileId(investigator
+							.getUserProfileId());
+					notification.setType("Signature");
+					notification.setAction("Proposal "
+							+ currentProposal.getProjectInfo()
+									.getProjectTitle() + " was signed by "
+							+ signatureInfo.getFullName() + " on "
+							+ signatureInfo.getSignedDate());
+					notificationDAO.save(notification);
+				}
+
+				for (InvestigatorRefAndPosition investigator : existingProposal
+						.getInvestigatorInfo().getSeniorPersonnel()) {
+					// for each user set an row
+					notification.setUserProfileId(investigator
+							.getUserProfileId());
+					notification.setType("Signature");
+					notification.setAction("Proposal "
+							+ currentProposal.getProjectInfo()
+									.getProjectTitle() + " was signed by "
+							+ signatureInfo.getFullName() + " on "
+							+ signatureInfo.getSignedDate());
+					notificationDAO.save(notification);
+				}
+
+			}
 		}
 
 		response = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(

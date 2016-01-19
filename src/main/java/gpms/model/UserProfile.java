@@ -86,7 +86,7 @@ public class UserProfile extends BaseEntity {
 
 	@Expose
 	@Property("is deleted")
-	private boolean isDeleted;
+	private boolean isDeleted = false;
 
 	/**
 	 * Non-Parameterized constructor, needed for @id assignment

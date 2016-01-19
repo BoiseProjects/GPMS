@@ -2,11 +2,13 @@ package gpms.rest;
 
 import gpms.DAL.DepartmentsPositionsCollection;
 import gpms.DAL.MongoDBConnector;
+import gpms.dao.NotificationDAO;
 import gpms.dao.ProposalDAO;
 import gpms.dao.UserAccountDAO;
 import gpms.dao.UserProfileDAO;
 import gpms.model.Address;
 import gpms.model.AuditLogInfo;
+import gpms.model.NotificationLog;
 import gpms.model.PasswordHash;
 import gpms.model.PositionDetails;
 import gpms.model.UserAccount;
@@ -62,6 +64,7 @@ public class UserService {
 	UserAccountDAO userAccountDAO = null;
 	UserProfileDAO userProfileDAO = null;
 	ProposalDAO proposalDAO = null;
+	NotificationDAO notificationDAO = null;
 
 	DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -72,6 +75,7 @@ public class UserService {
 		userAccountDAO = new UserAccountDAO(mongoClient, morphia, dbName);
 		userProfileDAO = new UserProfileDAO(mongoClient, morphia, dbName);
 		proposalDAO = new ProposalDAO(mongoClient, morphia, dbName);
+		notificationDAO = new NotificationDAO(mongoClient, morphia, dbName);
 	}
 
 	@GET
@@ -348,6 +352,16 @@ public class UserService {
 				.getUserAccount().getId());
 		userAccountDAO.deleteUserAccountByUserID(userAccount, authorProfile);
 
+		NotificationLog notification = new NotificationLog();
+		notification.setType("User");
+		notification.setAction("Deleted user account and profile of "
+				+ userAccount.getUserName());
+		notification.setProposal(null);
+		notification.setUserProfile(userProfile);
+		notification.setUserProfileId(userProfile.getId().toString());
+		notification.setActivityDate(new Date());
+		notificationDAO.save(notification);
+
 		// response.setContentType("text/html;charset=UTF-8");
 		// response.getWriter().write("Success Data");
 
@@ -425,6 +439,16 @@ public class UserService {
 					.getUserAccount().getId());
 			userAccountDAO
 					.deleteUserAccountByUserID(userAccount, authorProfile);
+
+			NotificationLog notification = new NotificationLog();
+			notification.setType("User");
+			notification.setAction("Deleted user account and profile of "
+					+ userAccount.getUserName());
+			notification.setProposal(null);
+			notification.setUserProfile(userProfile);
+			notification.setUserProfileId(userProfile.getId().toString());
+			notification.setActivityDate(new Date());
+			notificationDAO.save(notification);
 		}
 		response = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(
 				"Success");
@@ -495,6 +519,22 @@ public class UserService {
 		UserAccount userAccount = userProfile.getUserAccount();
 		userAccountDAO.activateUserAccountByUserID(userAccount, authorProfile,
 				isActive);
+
+		NotificationLog notification = new NotificationLog();
+		notification.setType("User");
+		if (isActive) {
+			notification.setAction("Activated user account and profile of "
+					+ userAccount.getUserName());
+		} else {
+			notification.setAction("Deactivated user account and profile of "
+					+ userAccount.getUserName());
+		}
+		notification.setProposal(null);
+		notification.setUserProfile(userProfile);
+		notification.setUserProfileId(userProfile.getId().toString());
+		notification.setActivityDate(new Date());
+		notificationDAO.save(notification);
+
 		// return Response.ok("Success", MediaType.APPLICATION_JSON).build();
 
 		response = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(
@@ -1041,11 +1081,26 @@ public class UserService {
 		}
 
 		// Save the User Profile
+		NotificationLog notification = new NotificationLog();
 		if (!userID.equals("0")) {
 			userProfileDAO.updateUser(existingUserProfile, authorProfile);
+			notification.setAction("Created user account and profile of "
+					+ existingUserProfile.getUserAccount().getUserName());
+			notification.setUserProfile(existingUserProfile);
+			notification.setUserProfileId(existingUserProfile.getId()
+					.toString());
 		} else {
 			userProfileDAO.saveUser(newProfile, authorProfile);
+			notification.setAction("Updated user account and profile of "
+					+ newProfile.getUserAccount().getUserName());
+			notification.setUserProfile(newProfile);
+			notification.setUserProfileId(newProfile.getId().toString());
 		}
+		notification.setProposal(null);
+		notification.setType("User");		
+		notification.setActivityDate(new Date());
+		notificationDAO.save(notification);
+
 		// UserProfile user = userProfileDAO.findByUserAccount(newAccount);
 		// System.out.println(user);
 		response = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(
@@ -1151,6 +1206,16 @@ public class UserService {
 
 			// Save the User Profile
 			userProfileDAO.save(newProfile);
+
+			NotificationLog notification = new NotificationLog();
+			notification.setType("User");
+			notification.setAction("Signup by " + newAccount.getUserName());
+			notification.setProposal(null);
+			notification.setUserProfile(newProfile);
+			notification.setUserProfileId(newProfile.getId().toString());
+			notification.setViewedByUser(true);
+			notification.setActivityDate(new Date());
+			notificationDAO.save(notification);
 		}
 
 		// UserProfile user = userProfileDAO.findByUserAccount(newAccount);

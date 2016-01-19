@@ -63,7 +63,8 @@ public class AuditLog implements Comparable<AuditLog> {
 	public int compareTo(AuditLog o) {
 		if (getActivityDate() == null || o.getActivityDate() == null)
 			return 0;
-		return getActivityDate().compareTo(o.getActivityDate()); // Ascending
+		// return getActivityDate().compareTo(o.getActivityDate()); // Ascending
+		return o.getActivityDate().compareTo(getActivityDate()); // Descending
 	}
 
 	@Override

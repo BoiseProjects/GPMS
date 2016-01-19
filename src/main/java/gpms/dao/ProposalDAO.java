@@ -4,6 +4,7 @@ import gpms.DAL.MongoDBConnector;
 import gpms.model.AuditLog;
 import gpms.model.AuditLogInfo;
 import gpms.model.InvestigatorRefAndPosition;
+import gpms.model.NotificationLog;
 import gpms.model.PositionDetails;
 import gpms.model.ProjectLocation;
 import gpms.model.ProjectType;

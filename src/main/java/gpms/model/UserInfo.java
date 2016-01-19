@@ -12,10 +12,10 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 //		"addedOn", "lastAudited", "lastAuditedBy", "lastAuditAction",
 //		"isDeleted", "isActive", "isAdmin" })
 //@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "name", visible = true)
-@JsonPropertyOrder({ "rowTotal", "id", "userName", "fullName",
-		"noOfPIedProposal", "noOfCoPIedProposal", "noOfSenioredProposal",
-		"addedOn", "lastAudited", "lastAuditedBy", "lastAuditAction",
-		"deleted", "activated", "adminUser" })
+//@JsonPropertyOrder({ "rowTotal", "id", "userName", "fullName",
+//		"noOfPIedProposal", "noOfCoPIedProposal", "noOfSenioredProposal",
+//		"addedOn", "lastAudited", "lastAuditedBy", "lastAuditAction",
+//		"deleted", "activated", "adminUser" })
 public class UserInfo implements Comparable<UserInfo> {
 	private int rowTotal;
 	private String id = new String();
@@ -30,13 +30,13 @@ public class UserInfo implements Comparable<UserInfo> {
 	private String lastAuditedBy = new String();
 	private String lastAuditAction = new String();
 
-	@JsonProperty("deleted")
+	// @JsonProperty("deleted")
 	private boolean deleted;
 
-	@JsonProperty("activated")
+	// @JsonProperty("activated")
 	private boolean activated;
 
-	@JsonProperty("adminUser")
+	// @JsonProperty("adminUser")
 	private boolean adminUser;
 
 	public UserInfo() {

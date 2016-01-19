@@ -117,8 +117,9 @@
 						<div class="sfMaincontent">
 							<div class="sfWelcomeWrap clearfix">
 								<h1>
-									Hi! <%=session.getAttribute("gpmsUserName")%> Welcome to GPMS
-									Control Panel Screen.
+									Hi!
+									<%=session.getAttribute("gpmsUserName")%>
+									Welcome to GPMS Control Panel Screen.
 								</h1>
 								<h2>Proposal Workflow Management System - A web-based
 									application for replacing the manual approval process of grant

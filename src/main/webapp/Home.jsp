@@ -56,8 +56,8 @@
 	var userCollege = '<%=session.getAttribute("userCollege")%>';
 
 	var gpmsServicePath = "REST/";
-	var gpmsRootPath = "http://localhost:8181/GPMS/";
-
+	var gpmsRootPath = "http://localhost:8181/GPMS/";	
+	
 	//]]>
 </script>
 
@@ -116,7 +116,8 @@
 						<div class="sfMaincontent">
 							<div class="welcome-msg">
 								<h2>
-									Welcome, <%=session.getAttribute("gpmsUserName")%>
+									Welcome,
+									<%=session.getAttribute("gpmsUserName")%>
 								</h2>
 								<p>From your Account Dashboard you have the ability to view
 									a snapshot of your recent account activities and update your
