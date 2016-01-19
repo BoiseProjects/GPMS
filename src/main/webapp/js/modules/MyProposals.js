@@ -17,12 +17,12 @@ $(function() {
 	var gpmsCommonObj = function() {
 		var gpmsCommonInfo = {
 			UserProfileID : GPMS.utils.GetUserProfileID(),
-		UserName : GPMS.utils.GetUserName(),			
-		UserIsAdmin : GPMS.utils.IsAdmin(),
-		UserPositionType : GPMS.utils.GetUserPositionType(),
-		UserPositionTitle : GPMS.utils.GetUserPositionTitle(),
-		UserDepartment : GPMS.utils.GetUserDepartment(),
-		UserCollege : GPMS.utils.GetUserCollege()	
+			UserName : GPMS.utils.GetUserName(),			
+			UserIsAdmin : GPMS.utils.IsAdmin(),
+			UserPositionType : GPMS.utils.GetUserPositionType(),
+			UserPositionTitle : GPMS.utils.GetUserPositionTitle(),
+			UserDepartment : GPMS.utils.GetUserDepartment(),
+			UserCollege : GPMS.utils.GetUserCollege()	
 		};
 		return gpmsCommonInfo;
 	};
@@ -538,7 +538,7 @@ $(function() {
 									cssclass : 'cssClassHeadCheckBox',
 									coltype : 'checkbox',
 									align : 'center',
-									checkFor : '22',
+									checkFor : '23',
 									elemClass : 'attrChkbox',
 									elemDefault : false,
 									controlclass : 'attribHeaderChkbox'

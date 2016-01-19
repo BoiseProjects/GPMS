@@ -76,24 +76,10 @@ public class InvestigatorInfo {
 
 	@Override
 	public String toString() {
-		int count = 0;
-		String outPut = "";
-		outPut += "PI               : " + "\n";
-		outPut += pi.toString() + "\n";
-		outPut += "CO-PI            : " + "\n";
-		for (InvestigatorRefAndPosition coPi : co_pi) {
-			outPut += "Co-Pi number : " + count + "\n";
-			outPut += coPi.toString() + "\n";
-			count++;
-		}
-		count = 0;
-		outPut += "senior personnel : " + "\n";
-		for (InvestigatorRefAndPosition sp : seniorPersonnel) {
-			outPut += "Senior Personel number : " + count + "\n";
-			outPut += sp.toString() + "\n";
-			count++;
-		}
-		return outPut;
+		return "InvestigatorInfo [MAX_NUM_CO_PI=" + MAX_NUM_CO_PI
+				+ ", MAX_NUM_SENIOR_PERSONNEL=" + MAX_NUM_SENIOR_PERSONNEL
+				+ ", pi=" + pi + ", co_pi=" + co_pi + ", seniorPersonnel="
+				+ seniorPersonnel + "]";
 	}
 
 	@Override
@@ -109,33 +95,35 @@ public class InvestigatorInfo {
 		return result;
 	}
 
-	public boolean equals(InvestigatorInfo invInf) {
-
-		boolean coPiEqual = false;
-		if (this.co_pi.size() == invInf.co_pi.size()) {
-			coPiEqual = true;
-			for (int i = 0; i < this.co_pi.size(); i++) {
-				if (!this.co_pi.get(i).equals(invInf.co_pi.get(i))) {
-					coPiEqual = false;
-					break;
-				}
-			}
-		}
-
-		boolean seniorPersonnelEqual = false;
-		if (this.seniorPersonnel.size() == invInf.seniorPersonnel.size()) {
-			seniorPersonnelEqual = true;
-			for (int i = 0; i < this.seniorPersonnel.size(); i++) {
-				if (!this.seniorPersonnel.get(i).equals(
-						invInf.seniorPersonnel.get(i))) {
-					seniorPersonnelEqual = false;
-					break;
-				}
-			}
-		}
-
-		return this.pi.equals(invInf.getPi()) && coPiEqual
-				&& seniorPersonnelEqual;
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		InvestigatorInfo other = (InvestigatorInfo) obj;
+		if (MAX_NUM_CO_PI != other.MAX_NUM_CO_PI)
+			return false;
+		if (MAX_NUM_SENIOR_PERSONNEL != other.MAX_NUM_SENIOR_PERSONNEL)
+			return false;
+		if (co_pi == null) {
+			if (other.co_pi != null)
+				return false;
+		} else if (!co_pi.equals(other.co_pi))
+			return false;
+		if (pi == null) {
+			if (other.pi != null)
+				return false;
+		} else if (!pi.equals(other.pi))
+			return false;
+		if (seniorPersonnel == null) {
+			if (other.seniorPersonnel != null)
+				return false;
+		} else if (!seniorPersonnel.equals(other.seniorPersonnel))
+			return false;
+		return true;
 	}
 
 	@Override

@@ -724,6 +724,7 @@ public class ProposalService {
 		return signatures;
 	}
 
+	@SuppressWarnings("null")
 	@POST
 	@Path("/SaveUpdateProposal")
 	public String saveUpdateProposal(String message) throws Exception {
@@ -1383,13 +1384,15 @@ public class ProposalService {
 		}
 
 		// To hold all new Investigators list to get notified
-		InvestigatorInfo addedInvestigators = null;
+		InvestigatorInfo addedInvestigators = new InvestigatorInfo();
 		InvestigatorInfo existingInvestigators = new InvestigatorInfo();
+		InvestigatorInfo deletedInvestigators = new InvestigatorInfo();
 
 		if (proposalInfo != null && proposalInfo.has("InvestigatorInfo")) {
 			if (!proposalID.equals("0")) {
 				// Existing Investigator Info to compare
-				existingInvestigators = existingProposal.getInvestigatorInfo();
+				existingInvestigators = existingProposal.getInvestigatorInfo()
+						.clone();
 
 				// MUST Clear all co-PI and Seniors
 				existingProposal.getInvestigatorInfo().getCo_pi().clear();
@@ -1409,7 +1412,6 @@ public class ProposalService {
 				UserProfile userRef = userProfileDAO
 						.findUserDetailsByProfileID(id);
 				investigatorRefAndPosition.setUserRef(userRef);
-
 				investigatorRefAndPosition.setUserProfileId(cols[1]);
 				investigatorRefAndPosition.setCollege(cols[2]);
 				investigatorRefAndPosition.setDepartment(cols[3]);
@@ -1431,8 +1433,11 @@ public class ProposalService {
 					break;
 				case "1":
 					if (!proposalID.equals("0")) {
-						existingProposal.getInvestigatorInfo().getCo_pi()
-								.add(investigatorRefAndPosition);
+						if (!existingProposal.getInvestigatorInfo().getCo_pi()
+								.contains(investigatorRefAndPosition)) {
+							existingProposal.getInvestigatorInfo().getCo_pi()
+									.add(investigatorRefAndPosition);
+						}
 						if (!existingInvestigators.getCo_pi().contains(
 								investigatorRefAndPosition)) {
 							addedInvestigators.getCo_pi().add(
@@ -1445,10 +1450,15 @@ public class ProposalService {
 					break;
 				case "2":
 					if (!proposalID.equals("0")) {
-						existingProposal.getInvestigatorInfo()
+						if (!existingProposal.getInvestigatorInfo()
 								.getSeniorPersonnel()
-								.add(investigatorRefAndPosition);
-						if (!existingInvestigators.getSeniorPersonnel().contains(investigatorRefAndPosition)) {
+								.contains(investigatorRefAndPosition)) {
+							existingProposal.getInvestigatorInfo()
+									.getSeniorPersonnel()
+									.add(investigatorRefAndPosition);
+						}
+						if (!existingInvestigators.getSeniorPersonnel()
+								.contains(investigatorRefAndPosition)) {
 							addedInvestigators.getSeniorPersonnel().add(
 									investigatorRefAndPosition);
 						}
@@ -1461,10 +1471,28 @@ public class ProposalService {
 					break;
 				}
 			}
+
 			// InvestigatorInfo
 			if (proposalID.equals("0")) {
 				newProposal.setInvestigatorInfo(newInvestigatorInfo);
 				addedInvestigators = newInvestigatorInfo;
+			} else {
+				// TO see the deleted from addedInvestigators vs
+				// existingInvestigators
+				for (InvestigatorRefAndPosition coPI : existingInvestigators
+						.getCo_pi()) {
+					if (!addedInvestigators.getCo_pi().contains(coPI)) {
+						deletedInvestigators.getCo_pi().add(coPI);
+					}
+				}
+
+				for (InvestigatorRefAndPosition senior : existingInvestigators
+						.getSeniorPersonnel()) {
+					if (!addedInvestigators.getSeniorPersonnel().contains(
+							senior)) {
+						deletedInvestigators.getSeniorPersonnel().add(senior);
+					}
+				}
 			}
 		}
 
@@ -2115,7 +2143,7 @@ public class ProposalService {
 		// for each new investigators user set a new row notification
 		String projectTitle = currentProposal.getProjectInfo()
 				.getProjectTitle();
-		if (addedInvestigators != null) {
+		if (addedInvestigators.getPi().getUserRef() != null) {
 			notification = new NotificationLog();
 			notification.setType("Investigator");
 			notification.setProposal(currentProposal);
@@ -2126,32 +2154,58 @@ public class ProposalService {
 			notification.setAction("Added as PI by " + authorUserName
 					+ " for proposal " + projectTitle);
 			notificationDAO.save(notification);
+		}
 
-			for (InvestigatorRefAndPosition investigator : addedInvestigators
-					.getCo_pi()) {
-				notification = new NotificationLog();
-				notification.setType("Investigator");
-				notification.setProposal(currentProposal);
-				notification.setActivityDate(new Date());
-				notification.setUserProfile(null);
-				notification.setUserProfileId(investigator.getUserProfileId());
-				notification.setAction("Added as CO-PI by " + authorUserName
-						+ " for proposal " + projectTitle);
-				notificationDAO.save(notification);
-			}
+		for (InvestigatorRefAndPosition investigator : addedInvestigators
+				.getCo_pi()) {
+			notification = new NotificationLog();
+			notification.setType("Investigator");
+			notification.setProposal(currentProposal);
+			notification.setActivityDate(new Date());
+			notification.setUserProfile(null);
+			notification.setUserProfileId(investigator.getUserProfileId());
+			notification.setAction("Added as CO-PI by " + authorUserName
+					+ " for proposal " + projectTitle);
+			notificationDAO.save(notification);
+		}
 
-			for (InvestigatorRefAndPosition investigator : addedInvestigators
-					.getSeniorPersonnel()) {
-				notification = new NotificationLog();
-				notification.setType("Investigator");
-				notification.setProposal(currentProposal);
-				notification.setActivityDate(new Date());
-				notification.setUserProfile(null);
-				notification.setUserProfileId(investigator.getUserProfileId());
-				notification.setAction("Added as Senior Personnel by "
-						+ authorUserName + " for proposal " + projectTitle);
-				notificationDAO.save(notification);
-			}
+		for (InvestigatorRefAndPosition investigator : addedInvestigators
+				.getSeniorPersonnel()) {
+			notification = new NotificationLog();
+			notification.setType("Investigator");
+			notification.setProposal(currentProposal);
+			notification.setActivityDate(new Date());
+			notification.setUserProfile(null);
+			notification.setUserProfileId(investigator.getUserProfileId());
+			notification.setAction("Added as Senior Personnel by "
+					+ authorUserName + " for proposal " + projectTitle);
+			notificationDAO.save(notification);
+		}
+
+		for (InvestigatorRefAndPosition investigator : deletedInvestigators
+				.getCo_pi()) {
+			notification = new NotificationLog();
+			notification.setType("Investigator");
+			notification.setProposal(currentProposal);
+			notification.setActivityDate(new Date());
+			notification.setUserProfile(null);
+			notification.setUserProfileId(investigator.getUserProfileId());
+			notification.setAction("Deleted as CO-PI by " + authorUserName
+					+ " for proposal " + projectTitle);
+			notificationDAO.save(notification);
+		}
+
+		for (InvestigatorRefAndPosition investigator : deletedInvestigators
+				.getSeniorPersonnel()) {
+			notification = new NotificationLog();
+			notification.setType("Investigator");
+			notification.setProposal(currentProposal);
+			notification.setActivityDate(new Date());
+			notification.setUserProfile(null);
+			notification.setUserProfileId(investigator.getUserProfileId());
+			notification.setAction("Deleted as Senior Personnel by "
+					+ authorUserName + " for proposal " + projectTitle);
+			notificationDAO.save(notification);
 		}
 
 		// for each new signatures user set a new row notification

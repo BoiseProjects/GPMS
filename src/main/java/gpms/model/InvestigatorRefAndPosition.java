@@ -86,15 +86,10 @@ public class InvestigatorRefAndPosition {
 
 	@Override
 	public String toString() {
-		String output = "";
-		output += "User Reference : " + userRef + "\n";
-		output += "User Profile ID : " + userProfileId + "\n";
-		output += "College        : " + college + "\n";
-		output += "Department     : " + department + "\n";
-		output += "Position Type  : " + positionType + "\n";
-		output += "Position Title : " + positionTitle;
-
-		return output;
+		return "InvestigatorRefAndPosition [userRef=" + userRef
+				+ ", userProfileId=" + userProfileId + ", college=" + college
+				+ ", department=" + department + ", positionType="
+				+ positionType + ", positionTitle=" + positionTitle + "]";
 	}
 
 	@Override
