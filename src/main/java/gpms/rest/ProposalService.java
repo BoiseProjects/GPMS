@@ -360,23 +360,32 @@ public class ProposalService {
 
 		String authorUserName = authorProfile.getUserAccount().getUserName();
 		String projectTitle = proposal.getProjectInfo().getProjectTitle();
+
+		// For Admin Set UserProfileId = "" (default)
+		// For User Set is to actual value and also set College, Department,
+		// Position Type and Position Title
 		NotificationLog notification = new NotificationLog();
 		notification.setType("Proposal");
 		notification.setAction("Proposal " + projectTitle + " was deleted by "
 				+ authorUserName);
-		notification.setProposal(proposal);
-		notification.setUserProfile(null);
+		notification.setProposalId(proposalId);
 		notificationDAO.save(notification);
 
 		notification = new NotificationLog();
 		notification.setType("Proposal");
 		notification.setAction("Proposal " + projectTitle + " was deleted by "
 				+ authorUserName);
-		notification.setProposal(proposal);
-		notification.setUserProfile(proposal.getInvestigatorInfo().getPi()
-				.getUserRef());
+		notification.setProposalId(proposalId);
 		notification.setUserProfileId(proposal.getInvestigatorInfo().getPi()
 				.getUserProfileId());
+		notification.setCollege(proposal.getInvestigatorInfo().getPi()
+				.getCollege());
+		notification.setDepartment(proposal.getInvestigatorInfo().getPi()
+				.getDepartment());
+		notification.setPositionType(proposal.getInvestigatorInfo().getPi()
+				.getPositionType());
+		notification.setPositionTitle(proposal.getInvestigatorInfo().getPi()
+				.getPositionTitle());
 		notificationDAO.save(notification);
 
 		for (InvestigatorRefAndPosition copi : proposal.getInvestigatorInfo()
@@ -385,9 +394,12 @@ public class ProposalService {
 			notification.setType("Proposal");
 			notification.setAction("Proposal " + projectTitle
 					+ " was deleted by " + authorUserName);
-			notification.setProposal(proposal);
-			notification.setUserProfile(copi.getUserRef());
+			notification.setProposalId(proposalId);
 			notification.setUserProfileId(copi.getUserProfileId());
+			notification.setCollege(copi.getCollege());
+			notification.setDepartment(copi.getDepartment());
+			notification.setPositionType(copi.getPositionType());
+			notification.setPositionTitle(copi.getPositionTitle());
 			notificationDAO.save(notification);
 		}
 
@@ -398,9 +410,12 @@ public class ProposalService {
 			notification.setType("Proposal");
 			notification.setAction("Proposal " + projectTitle
 					+ " was deleted by " + authorUserName);
-			notification.setProposal(proposal);
-			notification.setUserProfile(senior.getUserRef());
+			notification.setProposalId(proposalId);
 			notification.setUserProfileId(senior.getUserProfileId());
+			notification.setCollege(senior.getCollege());
+			notification.setDepartment(senior.getDepartment());
+			notification.setPositionType(senior.getPositionType());
+			notification.setPositionTitle(senior.getPositionTitle());
 			notificationDAO.save(notification);
 		}
 
@@ -475,19 +490,24 @@ public class ProposalService {
 			notification.setType("Proposal");
 			notification.setAction("Proposal " + projectTitle
 					+ " was deleted by " + authorUserName);
-			notification.setProposal(proposal);
-			notification.setUserProfile(null);
+			notification.setProposalId(proposalId);
 			notificationDAO.save(notification);
 
 			notification = new NotificationLog();
 			notification.setType("Proposal");
 			notification.setAction("Proposal " + projectTitle
 					+ " was deleted by " + authorUserName);
-			notification.setProposal(proposal);
-			notification.setUserProfile(proposal.getInvestigatorInfo().getPi()
-					.getUserRef());
+			notification.setProposalId(proposalId);
 			notification.setUserProfileId(proposal.getInvestigatorInfo()
 					.getPi().getUserProfileId());
+			notification.setCollege(proposal.getInvestigatorInfo().getPi()
+					.getCollege());
+			notification.setDepartment(proposal.getInvestigatorInfo().getPi()
+					.getDepartment());
+			notification.setPositionType(proposal.getInvestigatorInfo().getPi()
+					.getPositionType());
+			notification.setPositionTitle(proposal.getInvestigatorInfo()
+					.getPi().getPositionTitle());
 			notificationDAO.save(notification);
 
 			for (InvestigatorRefAndPosition copi : proposal
@@ -496,9 +516,12 @@ public class ProposalService {
 				notification.setType("Proposal");
 				notification.setAction("Proposal " + projectTitle
 						+ " was deleted by " + authorUserName);
-				notification.setProposal(proposal);
-				notification.setUserProfile(copi.getUserRef());
+				notification.setProposalId(proposalId);
 				notification.setUserProfileId(copi.getUserProfileId());
+				notification.setCollege(copi.getCollege());
+				notification.setDepartment(copi.getDepartment());
+				notification.setPositionType(copi.getPositionType());
+				notification.setPositionTitle(copi.getPositionTitle());
 				notificationDAO.save(notification);
 			}
 
@@ -508,9 +531,12 @@ public class ProposalService {
 				notification.setType("Proposal");
 				notification.setAction("Proposal " + projectTitle
 						+ " was deleted by " + authorUserName);
-				notification.setProposal(proposal);
-				notification.setUserProfile(senior.getUserRef());
+				notification.setProposalId(proposalId);
 				notification.setUserProfileId(senior.getUserProfileId());
+				notification.setCollege(senior.getCollege());
+				notification.setDepartment(senior.getDepartment());
+				notification.setPositionType(senior.getPositionType());
+				notification.setPositionTitle(senior.getPositionTitle());
 				notificationDAO.save(notification);
 			}
 		}
@@ -730,6 +756,8 @@ public class ProposalService {
 		String proposalID = new String();
 		Proposal newProposal = new Proposal();
 		Proposal existingProposal = new Proposal();
+		Proposal oldProposal = new Proposal();
+
 		String response = new String();
 		ObjectId proposalId = new ObjectId();
 
@@ -782,6 +810,7 @@ public class ProposalService {
 					proposalId = new ObjectId(proposalID);
 					existingProposal = proposalDAO
 							.findProposalByProposalID(proposalId);
+					oldProposal = existingProposal.clone();
 				}
 			}
 
@@ -2225,186 +2254,125 @@ public class ProposalService {
 
 			// Save the Proposal
 			Proposal currentProposal = new Proposal();
-			NotificationLog notification = new NotificationLog();
 			String projectTitle = existingProposal.getProjectInfo()
 					.getProjectTitle();
-
 			String authorUserName = authorProfile.getUserAccount()
 					.getUserName();
+			String notificationMessage = new String();
+
 			if (!proposalID.equals("0")) {
 				// TODO get clone rather again calling db
-				Proposal oldProposal = proposalDAO
-						.findProposalByProposalID(proposalId);
+				// Proposal oldProposal = proposalDAO
+				// .findProposalByProposalID(proposalId);
 
 				if (!existingProposal.equals(oldProposal)) {
 					proposalDAO.updateProposal(existingProposal, authorProfile);
 					currentProposal = existingProposal;
-					notification.setType("Proposal");
-					notification.setAction("Updated proposal "
-							+ existingProposal.getProjectInfo()
-									.getProjectTitle() + " by "
-							+ authorUserName);
-					notification.setProposal(existingProposal);
-					notification.setUserProfile(null);
-					notificationDAO.save(notification);
 
-					// TODO update notification for all users
-					if (existingProposal.getInvestigatorInfo().getPi()
-							.getUserRef() != null) {
-						notification = new NotificationLog();
-						notification.setType("Proposal");
-						notification.setAction("Updated proposal "
-								+ projectTitle + " by " + authorUserName);
-						notification.setProposal(existingProposal);
-						notification.setUserProfile(existingProposal
-								.getInvestigatorInfo().getPi().getUserRef());
-						notification.setUserProfileId(existingProposal
-								.getInvestigatorInfo().getPi()
-								.getUserProfileId());
-						notificationDAO.save(notification);
-					}
-
-					for (InvestigatorRefAndPosition investigator : existingProposal
-							.getInvestigatorInfo().getCo_pi()) {
-						notification = new NotificationLog();
-						notification.setType("Proposal");
-						notification.setAction("Updated proposal "
-								+ projectTitle + " by " + authorUserName);
-						notification.setProposal(existingProposal);
-						notification.setUserProfile(investigator.getUserRef());
-						notification.setUserProfileId(investigator
-								.getUserProfileId());
-						notificationDAO.save(notification);
-					}
-
-					for (InvestigatorRefAndPosition investigator : existingProposal
-							.getInvestigatorInfo().getSeniorPersonnel()) {
-						notification = new NotificationLog();
-						notification.setType("Proposal");
-						notification.setAction("Updated proposal "
-								+ projectTitle + " by " + authorUserName);
-						notification.setProposal(existingProposal);
-						notification.setUserProfile(investigator.getUserRef());
-						notification.setUserProfileId(investigator
-								.getUserProfileId());
-						notificationDAO.save(notification);
-					}
+					// TODO update notification for all users but
+					// need to check the duplicate notification cause there
+					// going to be update as well as added as PI, Co-PI, Senior?
+					notificationMessage = "Created proposal  " + projectTitle
+							+ " by " + authorUserName;
+					NotifyAllExistingInvestigators(proposalID,
+							existingProposal, notificationMessage, "Proposal");
 				}
 			} else {
 				proposalDAO.saveProposal(newProposal, authorProfile);
 				currentProposal = newProposal;
-				notification.setType("Proposal");
-				notification.setAction("Created proposal  " + projectTitle
-						+ " by " + authorUserName);
-				notification.setProposal(newProposal);
-				notification.setUserProfile(null);
-				notificationDAO.save(notification);
 
 				// TODO create notification for all users
-				if (newProposal.getInvestigatorInfo().getPi().getUserRef() != null) {
-					notification = new NotificationLog();
-					notification.setType("Proposal");
-					notification.setAction("Created proposal  " + projectTitle
-							+ " by " + authorUserName);
-					notification.setProposal(newProposal);
-					notification.setUserProfile(newProposal
-							.getInvestigatorInfo().getPi().getUserRef());
-					notification.setUserProfileId(newProposal
-							.getInvestigatorInfo().getPi().getUserProfileId());
-					notificationDAO.save(notification);
-				}
-
-				for (InvestigatorRefAndPosition investigator : newProposal
-						.getInvestigatorInfo().getCo_pi()) {
-					notification = new NotificationLog();
-					notification.setType("Proposal");
-					notification.setAction("Created proposal  " + projectTitle
-							+ " by " + authorUserName);
-					notification.setProposal(newProposal);
-					notification.setUserProfile(investigator.getUserRef());
-					notification.setUserProfileId(investigator
-							.getUserProfileId());
-					notificationDAO.save(notification);
-				}
-
-				for (InvestigatorRefAndPosition investigator : newProposal
-						.getInvestigatorInfo().getSeniorPersonnel()) {
-					notification = new NotificationLog();
-					notification.setType("Proposal");
-					notification.setAction("Created proposal  " + projectTitle
-							+ " by " + authorUserName);
-					notification.setProposal(newProposal);
-					notification.setUserProfile(investigator.getUserRef());
-					notification.setUserProfileId(investigator
-							.getUserProfileId());
-					notificationDAO.save(notification);
-				}
+				notificationMessage = "Updated proposal " + projectTitle
+						+ " by " + authorUserName;
+				NotifyAllExistingInvestigators(newProposal.getId().toString(),
+						newProposal, notificationMessage, "Proposal");
 			}
 
-			// for each new investigators user set a new row notification
-
+			// Added Investigators Notify
+			NotificationLog notification = new NotificationLog();
 			if (addedInvestigators.getPi().getUserRef() != null) {
 				notification = new NotificationLog();
+
 				notification.setType("Investigator");
 				notification.setAction("Added as PI by " + authorUserName
 						+ " for proposal " + projectTitle);
-				notification.setProposal(currentProposal);
-				notification.setUserProfile(addedInvestigators.getPi()
-						.getUserRef());
+
+				notification.setProposalId(currentProposal.getId().toString());
 				notification.setUserProfileId(addedInvestigators.getPi()
 						.getUserProfileId());
+				notification
+						.setCollege(addedInvestigators.getPi().getCollege());
+				notification.setDepartment(addedInvestigators.getPi()
+						.getDepartment());
+				notification.setPositionType(addedInvestigators.getPi()
+						.getPositionType());
+				notification.setPositionTitle(addedInvestigators.getPi()
+						.getPositionTitle());
 				notificationDAO.save(notification);
 			}
 
-			for (InvestigatorRefAndPosition investigator : addedInvestigators
+			for (InvestigatorRefAndPosition copi : addedInvestigators
 					.getCo_pi()) {
 				notification = new NotificationLog();
 				notification.setType("Investigator");
 				notification.setAction("Added as CO-PI by " + authorUserName
 						+ " for proposal " + projectTitle);
-				notification.setProposal(currentProposal);
-				notification.setUserProfile(investigator.getUserRef());
-				notification.setUserProfileId(investigator.getUserProfileId());
+				notification.setProposalId(currentProposal.getId().toString());
+				notification.setUserProfileId(copi.getUserProfileId());
+				notification.setCollege(copi.getCollege());
+				notification.setDepartment(copi.getDepartment());
+				notification.setPositionType(copi.getPositionType());
+				notification.setPositionTitle(copi.getPositionTitle());
 				notificationDAO.save(notification);
 			}
 
-			for (InvestigatorRefAndPosition investigator : addedInvestigators
+			for (InvestigatorRefAndPosition senior : addedInvestigators
 					.getSeniorPersonnel()) {
 				notification = new NotificationLog();
 				notification.setType("Investigator");
 				notification.setAction("Added as Senior Personnel by "
 						+ authorUserName + " for proposal " + projectTitle);
-				notification.setProposal(currentProposal);
-				notification.setUserProfile(investigator.getUserRef());
-				notification.setUserProfileId(investigator.getUserProfileId());
+				notification.setProposalId(currentProposal.getId().toString());
+				notification.setUserProfileId(senior.getUserProfileId());
+				notification.setCollege(senior.getCollege());
+				notification.setDepartment(senior.getDepartment());
+				notification.setPositionType(senior.getPositionType());
+				notification.setPositionTitle(senior.getPositionTitle());
 				notificationDAO.save(notification);
 			}
 
-			for (InvestigatorRefAndPosition investigator : deletedInvestigators
+			// Deleted Users Notify
+			for (InvestigatorRefAndPosition copi : deletedInvestigators
 					.getCo_pi()) {
 				notification = new NotificationLog();
 				notification.setType("Investigator");
 				notification.setAction("Deleted as CO-PI by " + authorUserName
 						+ " for proposal " + projectTitle);
-				notification.setProposal(currentProposal);
-				notification.setUserProfile(investigator.getUserRef());
-				notification.setUserProfileId(investigator.getUserProfileId());
+				notification.setProposalId(currentProposal.getId().toString());
+				notification.setUserProfileId(copi.getUserProfileId());
+				notification.setCollege(copi.getCollege());
+				notification.setDepartment(copi.getDepartment());
+				notification.setPositionType(copi.getPositionType());
+				notification.setPositionTitle(copi.getPositionTitle());
 				notificationDAO.save(notification);
 			}
 
-			for (InvestigatorRefAndPosition investigator : deletedInvestigators
+			for (InvestigatorRefAndPosition senior : deletedInvestigators
 					.getSeniorPersonnel()) {
 				notification = new NotificationLog();
 				notification.setType("Investigator");
 				notification.setAction("Deleted as Senior Personnel by "
 						+ authorUserName + " for proposal " + projectTitle);
-				notification.setProposal(currentProposal);
-				notification.setUserProfile(investigator.getUserRef());
-				notification.setUserProfileId(investigator.getUserProfileId());
+				notification.setProposalId(currentProposal.getId().toString());
+				notification.setUserProfileId(senior.getUserProfileId());
+				notification.setCollege(senior.getCollege());
+				notification.setDepartment(senior.getDepartment());
+				notification.setPositionType(senior.getPositionType());
+				notification.setPositionTitle(senior.getPositionTitle());
 				notificationDAO.save(notification);
 			}
 
-			// for each new signatures user set a new row notification
+			// New Signatures Notify
 			if (addedSignatures.size() != 0) {
 				for (SignatureInfo signatureInfo : addedSignatures) {
 					String signFullName = signatureInfo.getFullName();
@@ -2414,43 +2382,65 @@ public class ProposalService {
 					notification.setType("Signature");
 					notification.setAction("Proposal " + projectTitle
 							+ " was signed by " + signFullName + " on "
-							+ signedDate + " as " + position); // May be for
-																// Admin
-																// we need
-																// combined
-																// message
-																// rather
-																// many
-																// rows!
-					notification.setProposal(currentProposal);
-					notification.setUserProfile(null);
+							+ signedDate + " as " + position);// TODO make only
+																// one etry for
+																// admin
+					notification.setProposalId(currentProposal.getId()
+							.toString());
 					notificationDAO.save(notification);
 
-					for (InvestigatorRefAndPosition investigator : currentProposal
+					notification = new NotificationLog();
+					notification.setType("Signature");
+					notification.setAction("Proposal " + projectTitle
+							+ " was signed by " + signFullName + " on "
+							+ signedDate + " as " + position);
+					notification.setProposalId(currentProposal.getId()
+							.toString());
+					notification.setUserProfileId(currentProposal
+							.getInvestigatorInfo().getPi().getUserProfileId());
+					notification.setCollege(currentProposal
+							.getInvestigatorInfo().getPi().getCollege());
+					notification.setDepartment(currentProposal
+							.getInvestigatorInfo().getPi().getDepartment());
+					notification.setPositionType(currentProposal
+							.getInvestigatorInfo().getPi().getPositionType());
+					notification.setPositionTitle(currentProposal
+							.getInvestigatorInfo().getPi().getPositionTitle());
+					notificationDAO.save(notification);
+
+					for (InvestigatorRefAndPosition copi : currentProposal
 							.getInvestigatorInfo().getCo_pi()) {
 						notification = new NotificationLog();
 						notification.setType("Signature");
 						notification.setAction("Proposal " + projectTitle
 								+ " was signed by " + signFullName + " on "
 								+ signedDate + " as " + position);
-						notification.setProposal(currentProposal);
-						notification.setUserProfile(investigator.getUserRef());
-						notification.setUserProfileId(investigator
-								.getUserProfileId());
+						notification.setProposalId(currentProposal.getId()
+								.toString());
+						notification.setUserProfileId(copi.getUserProfileId());
+						notification.setCollege(copi.getCollege());
+						notification.setDepartment(copi.getDepartment());
+						notification.setPositionType(copi.getPositionType());
+						notification.setPositionTitle(copi.getPositionTitle());
 						notificationDAO.save(notification);
 					}
 
-					for (InvestigatorRefAndPosition investigator : currentProposal
+					for (InvestigatorRefAndPosition senior : currentProposal
 							.getInvestigatorInfo().getSeniorPersonnel()) {
 						notification = new NotificationLog();
 						notification.setType("Signature");
 						notification.setAction("Proposal " + projectTitle
 								+ " was signed by " + signFullName + " on "
 								+ signedDate + " as " + position);
-						notification.setProposal(currentProposal);
-						notification.setUserProfile(investigator.getUserRef());
-						notification.setUserProfileId(investigator
-								.getUserProfileId());
+						notification.setProposalId(currentProposal.getId()
+								.toString());
+						notification
+								.setUserProfileId(senior.getUserProfileId());
+						notification.setCollege(senior.getCollege());
+						notification.setDepartment(senior.getDepartment());
+						notification.setPositionType(senior.getPositionType());
+						notification
+								.setPositionTitle(senior.getPositionTitle());
 						notificationDAO.save(notification);
 					}
 				}
@@ -2465,4 +2455,65 @@ public class ProposalService {
 
 		return response;
 	}
+
+	private void NotifyAllExistingInvestigators(String proposalID,
+			Proposal existingProposal, String notificationMessage,
+			String notificationType) {
+		NotificationLog notification = new NotificationLog();
+
+		notification.setType(notificationType);
+		notification.setAction(notificationMessage);
+		notification.setProposalId(proposalID);
+		notificationDAO.save(notification);
+
+		if (existingProposal.getInvestigatorInfo().getPi().getUserRef() != null) {
+			notification = new NotificationLog();
+			notification.setType(notificationType);
+			notification.setAction(notificationMessage);
+
+			notification.setProposalId(proposalID);
+			notification.setUserProfileId(existingProposal
+					.getInvestigatorInfo().getPi().getUserProfileId());
+			notification.setCollege(existingProposal.getInvestigatorInfo()
+					.getPi().getCollege());
+			notification.setDepartment(existingProposal.getInvestigatorInfo()
+					.getPi().getDepartment());
+			notification.setPositionType(existingProposal.getInvestigatorInfo()
+					.getPi().getPositionType());
+			notification.setPositionTitle(existingProposal
+					.getInvestigatorInfo().getPi().getPositionTitle());
+			notificationDAO.save(notification);
+		}
+
+		for (InvestigatorRefAndPosition copi : existingProposal
+				.getInvestigatorInfo().getCo_pi()) {
+			notification = new NotificationLog();
+			notification.setType(notificationType);
+			notification.setAction(notificationMessage);
+
+			notification.setProposalId(proposalID);
+			notification.setUserProfileId(copi.getUserProfileId());
+			notification.setCollege(copi.getCollege());
+			notification.setDepartment(copi.getDepartment());
+			notification.setPositionType(copi.getPositionType());
+			notification.setPositionTitle(copi.getPositionTitle());
+			notificationDAO.save(notification);
+			notificationDAO.save(notification);
+		}
+
+		for (InvestigatorRefAndPosition senior : existingProposal
+				.getInvestigatorInfo().getSeniorPersonnel()) {
+			notification = new NotificationLog();
+			notification.setType(notificationType);
+			notification.setAction(notificationMessage);
+			notification.setProposalId(proposalID);
+			notification.setUserProfileId(senior.getUserProfileId());
+			notification.setCollege(senior.getCollege());
+			notification.setDepartment(senior.getDepartment());
+			notification.setPositionType(senior.getPositionType());
+			notification.setPositionTitle(senior.getPositionTitle());
+			notificationDAO.save(notification);
+		}
+	}
+
 }

@@ -2451,16 +2451,15 @@ $(function() {
 										$
 												.map(
 														item.positions,
-														function(keyCollege,
-																valueCollege) {
-															if ($
-																	.inArray(
-																			valueCollege,
-																			arrCollege) !== -1) {
+														function(collegelist,
+																keyCollege) {
+															if ($.inArray(
+																	keyCollege,
+																	arrCollege) !== -1) {
 																return false;
 															} else {
 																arrCollege
-																		.push(valueCollege);
+																		.push(keyCollege);
 																$(
 																		'select[name="ddlCollege"]')
 																		.get(
@@ -2468,10 +2467,11 @@ $(function() {
 																		'select[name="ddlCollege"]')
 																		.get(
 																				rowIndex).options.length] = new Option(
-																		valueCollege,
-																		valueCollege);
+																		keyCollege,
+																		keyCollege);
 															}
 														});
+										return false;
 									}
 								});
 			}
@@ -2493,29 +2493,29 @@ $(function() {
 										$
 												.map(
 														item.positions,
-														function(keyCollege,
-																valueCollege) {
-															if (valueCollege == collegeName) {
+														function(collegelist,
+																keyCollege) {
+															if (keyCollege == collegeName) {
 																$
 																		.map(
-																				keyCollege,
+																				collegelist,
 																				function(
-																						i,
-																						j) {
+																						college,
+																						collegeCount) {
 																					$
 																							.map(
-																									i,
+																									college,
 																									function(
-																											keyDepartment,
-																											valueDepartment) {
+																											departmentlist,
+																											keyDepartment) {
 																										if ($
 																												.inArray(
-																														valueDepartment,
+																														keyDepartment,
 																														arrDepartment) !== -1) {
 																											return false;
 																										} else {
 																											arrDepartment
-																													.push(valueDepartment);
+																													.push(keyDepartment);
 																											$(
 																													'select[name="ddlDepartment"]')
 																													.get(
@@ -2523,13 +2523,14 @@ $(function() {
 																													'select[name="ddlDepartment"]')
 																													.get(
 																															rowIndex).options.length] = new Option(
-																													valueDepartment,
-																													valueDepartment);
+																													keyDepartment,
+																													keyDepartment);
 																										}
 																									});
 																				});
 															}
 														});
+										return false;
 									}
 								});
 			}
@@ -2550,42 +2551,42 @@ $(function() {
 										$
 												.map(
 														item.positions,
-														function(keyCollege,
-																valueCollege) {
-															if (valueCollege == collegeName) {
+														function(collegelist,
+																keyCollege) {
+															if (keyCollege == collegeName) {
 																$
 																		.map(
-																				keyCollege,
+																				collegelist,
 																				function(
-																						i,
-																						j) {
+																						college,
+																						collegeCount) {
 																					$
 																							.map(
-																									i,
+																									college,
 																									function(
-																											keyDepartment,
-																											valueDepartment) {
-																										if (valueDepartment == departmentName) {
+																											departmentlist,
+																											keyDepartment) {
+																										if (keyDepartment == departmentName) {
 																											$
 																													.map(
-																															keyDepartment,
+																															departmentlist,
 																															function(
-																																	keyPositionType,
-																																	valuePositionType) {
+																																	positionTypelist,
+																																	positionTypeCount) {
 																																$
 																																		.map(
-																																				keyPositionType,
+																																				positionTypelist,
 																																				function(
-																																						keyPositionTitle,
-																																						valuePositionTitle) {
+																																						valuePositionTitle,
+																																						keyPositionType) {
 																																					if ($
 																																							.inArray(
-																																									valuePositionTitle,
+																																									keyPositionType,
 																																									arrPositionType) !== -1) {
 																																						return false;
 																																					} else {
 																																						arrPositionType
-																																								.push(valuePositionTitle);
+																																								.push(keyPositionType);
 																																						$(
 																																								'select[name="ddlPositionType"]')
 																																								.get(
@@ -2593,8 +2594,8 @@ $(function() {
 																																								'select[name="ddlPositionType"]')
 																																								.get(
 																																										rowIndex).options.length] = new Option(
-																																								valuePositionTitle,
-																																								valuePositionTitle);
+																																								keyPositionType,
+																																								keyPositionType);
 																																					}
 																																				});
 																															});
@@ -2603,6 +2604,7 @@ $(function() {
 																				});
 															}
 														});
+										return false;
 									}
 								});
 			}
@@ -2614,65 +2616,68 @@ $(function() {
 			if (userId != null && collegeName != null && departmentName != null
 					&& positionTypeName != null) {
 				$('select[name="ddlPositionTitle"]').get(rowIndex).options.length = 0;
-
 				$
 						.map(
 								positionsDetails,
 								function(item, value) {
-									$
-											.map(
-													item.positions,
-													function(keyCollege,
-															valueCollege) {
-														if (valueCollege == collegeName) {
-															$
-																	.map(
-																			keyCollege,
-																			function(
-																					i,
-																					j) {
-																				$
-																						.map(
-																								i,
-																								function(
-																										keyDepartment,
-																										valueDepartment) {
-																									if (valueDepartment == departmentName) {
-																										$
-																												.map(
-																														keyDepartment,
-																														function(
-																																k,
-																																l) {
-																															$
-																																	.map(
-																																			k,
-																																			function(
-																																					keyPositionType,
-																																					valuePositionType) {
-																																				if (valuePositionType == positionTypeName) {
-																																					$(
-																																							'select[name="ddlPositionTitle"]')
-																																							.get(
-																																									rowIndex).options[$(
-																																							'select[name="ddlPositionTitle"]')
-																																							.get(
-																																									rowIndex).options.length] = new Option(
-																																							keyPositionType,
-																																							keyPositionType);
-																																				}
-																																			});
-																														});
-																									}
-																								});
-																			});
-														}
-													});
+									if (item.id == userId) {
+										$
+												.map(
+														item.positions,
+														function(collegelist,
+																keyCollege) {
+															// (keyCollege.hasOwnProperty(collegeName))
+															if (keyCollege == collegeName) {
+																$
+																		.map(
+																				collegelist,
+																				function(
+																						college,
+																						collegeCount) {
+																					$
+																							.map(
+																									college,
+																									function(
+																											departmentlist,
+																											keyDepartment) {
+																										if (keyDepartment == departmentName) {
+																											$
+																													.map(
+																															departmentlist,
+																															function(
+																																	positionTypelist,
+																																	positionTypeCount) {
+																																$
+																																		.map(
+																																				positionTypelist,
+																																				function(
+																																						valuePositionTitle,
+																																						keyPositionType) {
+																																					if (keyPositionType == positionTypeName) {
+																																						$(
+																																								'select[name="ddlPositionTitle"]')
+																																								.get(
+																																										rowIndex).options[$(
+																																								'select[name="ddlPositionTitle"]')
+																																								.get(
+																																										rowIndex).options.length] = new Option(
+																																								valuePositionTitle,
+																																								valuePositionTitle);
+																																					}
+																																				});
+
+																															});
+																										}
+																									});
+																				});
+															}
+														});
+										return false;
+									}
 								});
 			}
 			return false;
 		},
-
 		ajaxSuccess : function(msg) {
 			switch (myProposal.config.ajaxCallMode) {
 			case 0:
@@ -2737,7 +2742,7 @@ $(function() {
 			break;
 
 		case 6: // Bind User Position Details on dropdown selection change
-			// TODO multiple Title Dropdown binding problem!
+			positionsDetails = [];
 			$.merge(positionsDetails, msg);
 			$('select[name="ddlCollege"]').get(rowIndex).options.length = 0;
 			$('select[name="ddlDepartment"]').get(rowIndex).options.length = 0;

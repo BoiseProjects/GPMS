@@ -387,21 +387,19 @@ public class UserProfile extends BaseEntity {
 		for (String phone : this.otherNumbers) {
 			copy.getOtherNumbers().add(phone);
 		}
+		for (Address address : this.addresses) {
+			copy.getAddresses().add(address);
+		}
 		for (String email : this.workEmails) {
 			copy.getWorkEmails().add(email);
 		}
 		for (String email : this.personalEmails) {
 			copy.getPersonalEmails().add(email);
 		}
-
-		for (Address address : this.addresses) {
-			copy.getAddresses().add(address);
-		}
-
 		copy.setUserId(this.userAccount.clone());
+		copy.setDeleted(this.isDeleted());
 		copy.setId(this.getId());
 		copy.setVersion(this.getVersion());
-		copy.setDeleted(this.isDeleted());
 		for (AuditLog entry : this.getAuditLog()) {
 			copy.addEntryToAuditLog(entry);
 		}

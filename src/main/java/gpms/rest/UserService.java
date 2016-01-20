@@ -356,8 +356,6 @@ public class UserService {
 		notification.setType("User");
 		notification.setAction("Deleted user account and profile of "
 				+ userAccount.getUserName());
-		notification.setProposal(null);
-		notification.setUserProfile(null);
 		// notification.setUserProfileId(userProfile.getId().toString());
 		// notification.isViewedByUser(true);
 		notificationDAO.save(notification);
@@ -444,8 +442,6 @@ public class UserService {
 			notification.setType("User");
 			notification.setAction("Deleted user account and profile of "
 					+ userAccount.getUserName());
-			notification.setProposal(null);
-			notification.setUserProfile(null);
 			// notification.setUserProfileId(userProfile.getId().toString());
 			// notification.isViewedByUser(true);
 			notificationDAO.save(notification);
@@ -521,33 +517,45 @@ public class UserService {
 				isActive);
 
 		NotificationLog notification = new NotificationLog();
-		notification.setType("User");
+
+		String notificationMessage = new String();
+		Boolean needToView = false;
+
 		if (isActive) {
-			notification.setAction("Activated user account and profile of "
-					+ userAccount.getUserName());
+			notificationMessage = "Activated user account and profile of "
+					+ userAccount.getUserName();
 		} else {
-			notification.setAction("Deactivated user account and profile of "
-					+ userAccount.getUserName());
-			notification.setViewedByUser(true);
+			notificationMessage = "Deactivated user account and profile of "
+					+ userAccount.getUserName();
+			needToView = true;
 		}
-		notification.setProposal(null);
-		notification.setUserProfile(userProfile);
-		notification.setUserProfileId(userProfile.getId().toString());
+
+		// To Admin
+		notification.setType("User");
+		notification.setViewedByUser(needToView);
 		notificationDAO.save(notification);
 
-		notification = new NotificationLog();
-		notification.setType("User");
+		// To All User Roles based on positions
 		if (isActive) {
-			notification.setAction("Activated user account and profile of "
-					+ userAccount.getUserName());
+			notificationMessage = "Activated user account and profile of "
+					+ userAccount.getUserName();
 		} else {
-			notification.setAction("Deactivated user account and profile of "
-					+ userAccount.getUserName());
-			notification.setViewedByUser(true);
+			notificationMessage = "Deactivated user account and profile of "
+					+ userAccount.getUserName();
+			needToView = true;
 		}
-		notification.setProposal(null);
-		notification.setUserProfile(null);
-		// notification.setUserProfileId(userProfile.getId().toString());
+
+		for (PositionDetails positions : userProfile.getDetails()) {
+			notification = new NotificationLog();
+			notification.setType("User");
+			notification.setViewedByUser(needToView);
+			notification.setUserProfileId(userProfile.getId().toString());
+			notification.setCollege(positions.getCollege());
+			notification.setDepartment(positions.getDepartment());
+			notification.setPositionType(positions.getPositionType());
+			notification.setPositionTitle(positions.getPositionTitle());
+		}
+
 		notificationDAO.save(notification);
 
 		// return Response.ok("Success", MediaType.APPLICATION_JSON).build();
@@ -1104,41 +1112,55 @@ public class UserService {
 			if (!oldUserProfile.equals(existingUserProfile)) {
 				userProfileDAO.updateUser(existingUserProfile, authorProfile);
 
-				notification.setType("User");
-				notification.setAction("Updated user account and profile of "
-						+ existingUserProfile.getUserAccount().getUserName());
-				notification.setProposal(null);
-				notification.setUserProfile(existingUserProfile);
-				notification.setUserProfileId(existingUserProfile.getId()
-						.toString());
-				notificationDAO.save(notification);
-
+				// For Admin
 				notification = new NotificationLog();
 				notification.setType("User");
 				notification.setAction("Updated user account and profile of "
 						+ existingUserProfile.getUserAccount().getUserName());
-				notification.setProposal(null);
-				notification.setUserProfile(null);
 				notificationDAO.save(notification);
+
+				// For all Roles of the User
+				for (PositionDetails positions : existingUserProfile
+						.getDetails()) {
+					notification = new NotificationLog();
+					notification.setType("User");
+					notification
+							.setAction("Updated user account and profile of "
+									+ existingUserProfile.getUserAccount()
+											.getUserName());
+
+					notification.setUserProfileId(existingUserProfile.getId()
+							.toString());
+					notification.setCollege(positions.getCollege());
+					notification.setDepartment(positions.getDepartment());
+					notification.setPositionType(positions.getPositionType());
+					notification.setPositionTitle(positions.getPositionTitle());
+					notificationDAO.save(notification);
+				}
 			}
 		} else {
 			userProfileDAO.saveUser(newProfile, authorProfile);
 
-			notification.setType("User");
-			notification.setAction("Created user account and profile of "
-					+ newProfile.getUserAccount().getUserName());
-			notification.setProposal(null);
-			notification.setUserProfile(newProfile);
-			notification.setUserProfileId(newProfile.getId().toString());
-			notificationDAO.save(notification);
-
+			// For Admin
 			notification = new NotificationLog();
 			notification.setType("User");
 			notification.setAction("Created user account and profile of "
 					+ newProfile.getUserAccount().getUserName());
-			notification.setProposal(null);
-			notification.setUserProfile(null);
 			notificationDAO.save(notification);
+
+			// For Roles of the user notify
+			for (PositionDetails positions : newProfile.getDetails()) {
+				notification = new NotificationLog();
+				notification.setType("User");
+				notification.setAction("Created user account and profile of "
+						+ newProfile.getUserAccount().getUserName());
+				notification.setUserProfileId(newProfile.getId().toString());
+				notification.setCollege(positions.getCollege());
+				notification.setDepartment(positions.getDepartment());
+				notification.setPositionType(positions.getPositionType());
+				notification.setPositionTitle(positions.getPositionTitle());
+				notificationDAO.save(notification);
+			}
 		}
 
 		// UserProfile user = userProfileDAO.findByUserAccount(newAccount);
@@ -1250,8 +1272,6 @@ public class UserService {
 			NotificationLog notification = new NotificationLog();
 			notification.setType("User");
 			notification.setAction("Signed Up by " + newAccount.getUserName());
-			notification.setProposal(null);
-			notification.setUserProfile(null);
 			// notification.setUserProfileId(newProfile.getId().toString());
 			// notification.setViewedByUser(true);
 			notificationDAO.save(notification);

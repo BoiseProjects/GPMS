@@ -41,6 +41,9 @@ public class Proposal extends BaseEntity {
 	@Embedded("sponsor and budget info")
 	private SponsorAndBudgetInfo sponsorAndBudgetInfo = new SponsorAndBudgetInfo();
 
+	// Until this clone is done
+	// below need to be done
+
 	@Expose
 	@Embedded("cost share info")
 	private CostShareInfo costShareInfo = new CostShareInfo();
@@ -357,8 +360,31 @@ public class Proposal extends BaseEntity {
 	}
 
 	@Override
-	public Object clone() throws CloneNotSupportedException {
-		return super.clone();
+	public Proposal clone() throws CloneNotSupportedException {
+		Proposal copy = new Proposal();
+		copy.setProposalNo(proposalNo);
+		copy.setDateReceived(dateReceived);
+		copy.setProposalStatus(proposalStatus);
+		copy.setInvestigatorInfo(investigatorInfo);
+		copy.setProjectInfo(projectInfo);
+		copy.setSponsorAndBudgetInfo(sponsorAndBudgetInfo);
+		copy.setCostShareInfo(costShareInfo);
+		copy.setUniversityCommitments(universityCommitments);
+		copy.setConflicOfInterest(conflicOfInterest);
+		copy.setComplianceInfo(complianceInfo);
+		copy.setAdditionalInfo(additionalInfo);
+		copy.setCollaborationInfo(collaborationInfo);
+		copy.setConfidentialInfo(confidentialInfo);
+		copy.setoSPSectionInfo(oSPSectionInfo);
+		copy.setSignatureInfo(signatureInfo);
+
+		copy.setId(this.getId());
+		copy.setVersion(this.getVersion());
+		for (AuditLog entry : this.getAuditLog()) {
+			copy.addEntryToAuditLog(entry);
+		}
+
+		return copy;
 	}
 
 	public void addEntryToAuditLog(AuditLog audit) {
