@@ -2,6 +2,7 @@ package gpms.accesscontrol;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -31,7 +32,12 @@ public class Accesscontrol {
 
 	public Accesscontrol() throws Exception {
 		// Policy Attribute Mapping XLS file
-		this.attrSpreadSheet = new AttributeSpreadSheet("XACML Data sheet.xls");
+		// this.attrSpreadSheet = new
+		// AttributeSpreadSheet("XACML Data sheet.xls");
+
+		InputStream stream = Thread.currentThread().getContextClassLoader()
+				.getResourceAsStream("XACML Data sheet.xls");
+		this.attrSpreadSheet = new AttributeSpreadSheet(stream);
 	}
 
 	// whatever, go knows whether we need multi-thread in the future

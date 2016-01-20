@@ -2,6 +2,7 @@ package gpms.accesscontrol;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -27,6 +28,14 @@ public class AttributeSpreadSheet {
 
 	public AttributeSpreadSheet(String spreadSheetFile) throws Exception {
 		readAttributeSpreadSheet(spreadSheetFile);
+	}
+
+	public AttributeSpreadSheet(InputStream spreadSheetFile) throws Exception {
+		HSSFWorkbook workBook = new HSSFWorkbook(spreadSheetFile);
+		Sheet sheet = workBook.getSheetAt(0);
+		for (Row row : sheet) {
+			loadAttributeRow(row);
+		}
 	}
 
 	public static List<AttributeRecord> readExcelData(String fileName) {
