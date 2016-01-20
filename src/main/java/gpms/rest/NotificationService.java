@@ -7,7 +7,6 @@ import gpms.dao.ProposalDAO;
 import gpms.dao.UserAccountDAO;
 import gpms.dao.UserProfileDAO;
 import gpms.model.NotificationLog;
-import gpms.model.Proposal;
 import gpms.model.UserAccount;
 import gpms.model.UserProfile;
 
@@ -105,7 +104,8 @@ public class NotificationService {
 		}
 
 		return notificationDAO.findAllNotificationCountAUser(userProfileID,
-				userIsAdmin);
+				userCollege, userDepartment, userPositionType,
+				userPositionTitle, userIsAdmin);
 
 	}
 
@@ -148,11 +148,11 @@ public class NotificationService {
 			userPositionTitle = commonObj.get("UserPositionTitle")
 					.getTextValue();
 		}
-		// limit: 10, offset: 1
-		List<NotificationLog> notifications = notificationDAO
-				.findAllNotificationForAUser(1, 10, userProfileID, userIsAdmin);
 
-		return notifications;
+		// limit: 10, offset: 1
+		return notificationDAO.findAllNotificationForAUser(1, 10,
+				userProfileID, userCollege, userDepartment, userPositionType,
+				userPositionTitle, userIsAdmin);
 
 	}
 }

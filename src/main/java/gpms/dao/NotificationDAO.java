@@ -2,7 +2,6 @@ package gpms.dao;
 
 import gpms.DAL.MongoDBConnector;
 import gpms.model.NotificationLog;
-import gpms.model.Proposal;
 import gpms.model.UserAccount;
 import gpms.model.UserProfile;
 
@@ -10,6 +9,7 @@ import java.net.UnknownHostException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.mongodb.morphia.Datastore;
@@ -56,7 +56,9 @@ public class NotificationDAO extends BasicDAO<NotificationLog, String> {
 	}
 
 	public long findAllNotificationCountAUser(String userProfileId,
-			boolean isUserAdmin) throws ParseException {
+			String userCollege, String userDepartment, String userPositionType,
+			String userPositionTitle, boolean isUserAdmin)
+			throws ParseException {
 		Datastore ds = getDatastore();
 
 		if (isUserAdmin) {
@@ -65,28 +67,50 @@ public class NotificationDAO extends BasicDAO<NotificationLog, String> {
 		} else {
 			Query<NotificationLog> notificationQuery = ds
 					.createQuery(NotificationLog.class);
-			notificationQuery.and(notificationQuery.criteria("isViewedByUser")
-					.equal(false), notificationQuery.criteria("userProfileId")
-					.equal(userProfileId));
+			notificationQuery.and(
+					notificationQuery.criteria("isViewedByUser").equal(false),
+					notificationQuery.criteria("user profile id").equal(
+							userProfileId),
+					notificationQuery.criteria("college").equal(userCollege),
+					notificationQuery.criteria("department").equal(
+							userDepartment),
+					notificationQuery.criteria("position type").equal(
+							userPositionType),
+					notificationQuery.criteria("position title").equal(
+							userPositionTitle));
 			return notificationQuery.countAll();
 		}
 	}
 
 	public List<NotificationLog> findAllNotificationForAUser(int offset,
-			int limit, String userProfileId, boolean isUserAdmin)
+			int limit, String userProfileId, String userCollege,
+			String userDepartment, String userPositionType,
+			String userPositionTitle, boolean isUserAdmin)
 			throws ParseException {
-		Query<NotificationLog> notificationQuery = ds.createQuery(
-				NotificationLog.class).retrievedFields(true, "type", "action",
-				"activity on");
+
+		List<NotificationLog> notifications = new ArrayList<NotificationLog>();
+		Query<NotificationLog> notificationQuery = ds
+				.createQuery(NotificationLog.class);
 		if (isUserAdmin) {
 			// int rowTotal = notificationQuery.asList().size();
-			return notificationQuery.offset(offset - 1).limit(limit).asList();
+			notifications = notificationQuery.offset(offset - 1).limit(limit)
+					.asList();
 		} else {
-			notificationQuery.and(notificationQuery.criteria("isViewedByUser")
-					.equal(false), notificationQuery.criteria("userProfileId")
-					.equal(userProfileId));
+			notificationQuery.and(
+					notificationQuery.criteria("isViewedByUser").equal(false),
+					notificationQuery.criteria("user profile id").equal(
+							userProfileId),
+					notificationQuery.criteria("college").equal(userCollege),
+					notificationQuery.criteria("department").equal(
+							userDepartment),
+					notificationQuery.criteria("position type").equal(
+							userPositionType),
+					notificationQuery.criteria("position title").equal(
+							userPositionTitle));
 
-			return notificationQuery.offset(offset - 1).limit(limit).asList();
+			notifications = notificationQuery.offset(offset - 1).limit(limit)
+					.asList();
 		}
+		return notifications;
 	}
 }
