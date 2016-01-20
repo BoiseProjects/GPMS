@@ -191,7 +191,7 @@
 			}
 		};
 		topStickyBar.init();
-		
+
 		//for Notification
 		$(this).NotificationViewDetails();
 	});
@@ -215,18 +215,13 @@
 			title="Home">Home</a></li>
 
 		<li class="sfquickNotification">
-			<div id="divNotification">
+			<div id="divNotification" class="sfHtmlview notificationsSticker">
 				<ul>
-					<li class="sfqckUserInfo"><span class="notired"
-						id="spanUsersInfo">100</span> <a
-						title="Click to View Notifications" class="icon-portal-management"
-						id="linkUsersInfo">&nbsp;</a>
-						<div style="display: none;" class="cssClassNotify">
-							<div>
-								<h5 class="cssClassNotifyHead">There are no Recently
-									Notifications.</h5>
-							</div>
-						</div></li>
+					<li class="notifyInfoPanel"><span id="spanNotifyInfo"
+						class="notired" style="display: none">0</span> <a
+						id="linkNotifyInfo"
+						class="showfrindreq mesgnotfctn topopup icon-portal-management"
+						title="Click to View Recent Activities">&nbsp;</a></li>
 				</ul>
 			</div>
 		</li>

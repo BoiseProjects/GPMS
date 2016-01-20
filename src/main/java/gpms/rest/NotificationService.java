@@ -111,7 +111,7 @@ public class NotificationService {
 
 	@POST
 	@Path("/NotificationGetAll")
-	public String notificationGetAllForAUser(String message)
+	public List<NotificationLog> notificationGetAllForAUser(String message)
 			throws JsonProcessingException, IOException, ParseException {
 		String response = new String();
 		ObjectMapper mapper = new ObjectMapper();
@@ -148,12 +148,11 @@ public class NotificationService {
 			userPositionTitle = commonObj.get("UserPositionTitle")
 					.getTextValue();
 		}
-
 		// limit: 10, offset: 1
 		List<NotificationLog> notifications = notificationDAO
 				.findAllNotificationForAUser(1, 10, userProfileID, userIsAdmin);
 
-		return response;
+		return notifications;
 
 	}
 }

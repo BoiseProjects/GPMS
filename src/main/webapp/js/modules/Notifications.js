@@ -63,7 +63,11 @@
 					break;
 				// your methods
 				case 1:
-					NotificationView.NotificationGetAllSuccess(msg);
+					NotificationView.NotificationGetAllCountSuccess(msg);
+					break;
+					
+				case 2:
+					alert(msg);
 					break;
 				}
 			},
@@ -74,13 +78,17 @@
 				case 1:
 					// Show csscody alert with apt message
 					csscody.error('<h2>' + 'Error Message' + '</h2><p>'
-							+ 'Failed to load Proposal Status.' + '</p>');
+							+ 'Failed to load Notifications.' + '</p>');
+					break;					
+				case 2:
+					csscody.error('<h2>' + 'Error Message' + '</h2><p>'
+							+ 'Failed to load Notifications details.' + '</p>');
 					break;
 				}
 			},
 			init : function() {
 				NotificationView.NotificationGetAllCount();
-				$("#linkUsersInfo").click(function() {
+				$("#linkNotifyInfo").click(function() {
 					if (!$(".cssClassNotify").is(":visible")) {
 						$(this).addClass("sfNotificationSelect");
 						NotificationView.NotificationGetAll();
@@ -175,28 +183,15 @@
 				return false;
 			},
 			NotificationGetAllCountSuccess : function(msg) {
-				if (msg.UsersInfoCount !== 0) {
-					$("#spanUsersInfo").html(msg.UsersInfoCount);
-					$("#spanUsersInfo").show();
-					p.notificationsNumber += parseInt(msg.UsersInfoCount);
+				if (msg !== 0) {
+					$("#spanNotifyInfo").html(msg);
+					$("#spanNotifyInfo").show();
+					p.notificationsNumber += parseInt(msg);
 				} else {
-					$("#spanUsersInfo").hide();
+					$("#spanNotifyInfo").hide();
 				}
-				if (msg.ItemsInfoCount !== 0) {
-					$("#spanItemsInfo").html(msg.ItemsInfoCount);
-					$("#spanItemsInfo").show();
-					p.notificationsNumber += parseInt(msg.ItemsInfoCount);
-				} else {
-					$("#spanItemsInfo").hide();
-				}
-				if (msg.NewOrdersCount !== 0) {
-					$("#spanOrdersInfo").html(msg.NewOrdersCount);
-					$("#spanOrdersInfo").show();
-					p.notificationsNumber += parseInt(msg.NewOrdersCount);
-				} else {
-					$("#spanOrdersInfo").hide();
-				}
-				NotificationView.UpdateTitle();
+				
+				// NotificationView.UpdateTitle();
 			},
 			NotificationGetAll : function() {
 				this.config.method = "NotificationGetAll";
@@ -206,7 +201,7 @@
 				});
 				this.config.ajaxCallMode = 2;
 				this.ajaxCall(this.config);
-				$("#spanUsersInfo").hide();
+				$("#spanNotifyInfo").hide();
 				return false;
 			},
 			NotificationGetAllSuccess : function(msg) {
@@ -224,7 +219,7 @@
 					var userName = "";
 					var customerID = "";
 
-					var intNewUsers = parseInt($('#spanUsersInfo').text());
+					var intNewUsers = parseInt($('#spanNotifyInfo').text());
 
 					$
 							.each(
@@ -293,7 +288,7 @@
 				userData += '<div class="cssClassNotify" style="display:none">'
 						+ contentUser + '</div>';
 
-				$('.sfqckUserInfo').append(userData);
+				$('.notifyInfoPanel').append(userData);
 			}
 		};
 		NotificationView.init();

@@ -2,6 +2,7 @@ package gpms.dao;
 
 import gpms.DAL.MongoDBConnector;
 import gpms.model.NotificationLog;
+import gpms.model.Proposal;
 import gpms.model.UserAccount;
 import gpms.model.UserProfile;
 
@@ -74,18 +75,17 @@ public class NotificationDAO extends BasicDAO<NotificationLog, String> {
 	public List<NotificationLog> findAllNotificationForAUser(int offset,
 			int limit, String userProfileId, boolean isUserAdmin)
 			throws ParseException {
+		Query<NotificationLog> notificationQuery = ds.createQuery(
+				NotificationLog.class).retrievedFields(true, "type", "action",
+				"activity on");
 		if (isUserAdmin) {
-			Query<NotificationLog> notificationQuery = ds
-					.createQuery(NotificationLog.class);
-
 			// int rowTotal = notificationQuery.asList().size();
 			return notificationQuery.offset(offset - 1).limit(limit).asList();
 		} else {
-			Query<NotificationLog> notificationQuery = ds
-					.createQuery(NotificationLog.class);
 			notificationQuery.and(notificationQuery.criteria("isViewedByUser")
 					.equal(false), notificationQuery.criteria("userProfileId")
 					.equal(userProfileId));
+
 			return notificationQuery.offset(offset - 1).limit(limit).asList();
 		}
 	}
