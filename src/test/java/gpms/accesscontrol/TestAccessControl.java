@@ -2,7 +2,6 @@ package gpms.accesscontrol;
 
 import static org.junit.Assert.*;
 
-import java.io.File;
 import java.util.HashMap;
 
 import org.junit.After;
@@ -75,7 +74,7 @@ public class TestAccessControl {
 		// ac.getXACMLdecision("Research-Administrator", "OSP-Section", "Edit");
 
 		// String decision = ac.getXACMLdecision("PI", "Project-Info", "View");
-		System.out.println(new File("XACML Data sheet.xls").getAbsoluteFile());
+
 		String decision = ac.getXACMLdecision(attrMap);
 
 		assertEquals("Permit", decision);
