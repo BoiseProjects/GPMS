@@ -842,15 +842,25 @@ $(function() {
 			var canWithDrawTitles = [ "Research Administrator" ];
 			var canArchiveTitles = [ "University Research Director" ];
 
-			$.each(currentProposalRoles, function(index, value) {
-				if ($.inArray(value, canSubmitRoles) !== -1
-						&& proposalStatus == "Not Submitted by PI") {
-					$("#btnSubmitProposal").show();
-					return false;
-				} else {
-					$("#btnSubmitProposal").hide();
-				}
-			});
+			$.each(currentProposalRoles,
+					function(index, value) {
+						if ($.inArray(value, canSubmitRoles) !== -1
+								&& proposalStatus == "Not Submitted by PI") {
+							$("#btnSubmitProposal").show();
+
+							$("input[name=AddMore]").removeAttr('disabled')
+									.show();
+							$("input[name=DeleteOption]")
+									.removeAttr('disabled').show();
+
+							return false;
+						} else {
+							$("#btnSubmitProposal").hide();
+							$("input[name=AddMore]").attr('disabled', true)
+									.hide();
+							$("input[name=DeleteOption]").remove();
+						}
+					});
 
 			var currentPositionTitle = GPMS.utils.GetUserPositionTitle();
 
@@ -923,9 +933,6 @@ $(function() {
 						'Edit Proposal Details for: ' + argus[2]);
 
 				$("#lblProposalDateReceived").text(argus[12]);
-
-				$("input[name=AddMore]").removeAttr('disabled');
-				$("input[name=DeleteOption]").removeAttr('disabled');
 
 				myProposal.ClearForm();
 
@@ -2823,6 +2830,7 @@ $(function() {
 			break;
 
 		case 5: // Bind User List for Investigator Info
+			alert(rowIndex);
 			$('select[name="ddlName"]').get(rowIndex).options.length = 0;
 			$('select[name="ddlCollege"]').get(rowIndex).options.length = 0;
 			$('select[name="ddlDepartment"]').get(rowIndex).options.length = 0;
