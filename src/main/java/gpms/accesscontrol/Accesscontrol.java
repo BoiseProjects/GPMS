@@ -35,9 +35,7 @@ public class Accesscontrol {
 		// this.attrSpreadSheet = new
 		// AttributeSpreadSheet("XACML Data sheet.xls");
 
-		InputStream stream = Thread.currentThread().getContextClassLoader()
-				.getResourceAsStream("XACML Data sheet.xls");
-		this.attrSpreadSheet = new AttributeSpreadSheet(stream);
+		this.attrSpreadSheet = new AttributeSpreadSheet("/XACMLDataSheet.xls");
 	}
 
 	// whatever, go knows whether we need multi-thread in the future
