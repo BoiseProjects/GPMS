@@ -22,6 +22,7 @@ import org.wso2.balana.finder.impl.FileBasedPolicyFinderModule;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
+import com.sun.research.ws.wadl.Resource;
 
 public class Accesscontrol {
 
@@ -31,7 +32,13 @@ public class Accesscontrol {
 
 	public Accesscontrol() throws Exception {
 		// Policy Attribute Mapping XLS file
-		this.attrSpreadSheet = new AttributeSpreadSheet("XACML Data sheet.xls");
+		//Remapping will be necessary
+		//This came out to have a path of C:\Eclipse\XACML Data sheet.xls
+		//Use .getAbsoluteFile() should return the current file path location
+//		String fileName = "/XACMLDatasheet.xls"; //use forward slash to recognize your file
+//		String path = this.getClass().getResource(fileName).toString();
+
+		this.attrSpreadSheet = new AttributeSpreadSheet("/XACMLDatasheet.xls");
 	}
 
 	// whatever, go knows whether we need multi-thread in the future

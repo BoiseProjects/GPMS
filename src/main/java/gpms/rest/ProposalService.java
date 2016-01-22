@@ -1,6 +1,7 @@
 package gpms.rest;
 
 import gpms.DAL.MongoDBConnector;
+import gpms.accesscontrol.Accesscontrol;
 import gpms.dao.DelegationDAO;
 import gpms.dao.ProposalDAO;
 import gpms.dao.UserAccountDAO;
@@ -43,6 +44,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -60,6 +62,8 @@ import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.mongodb.morphia.Morphia;
 
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mongodb.MongoClient;
@@ -1959,6 +1963,26 @@ public class ProposalService {
 		UserProfile authorProfile = userProfileDAO
 				.findUserDetailsByProfileID(authorId);
 
+		//TODO: Add and verify XACML Support
+		Accesscontrol ac = new Accesscontrol();
+		HashMap<String, Multimap<String, String>> attrMap = new HashMap<String, Multimap<String, String>>();
+
+		Multimap<String, String> subjectMap = ArrayListMultimap.create();
+		subjectMap.put("position-type", "Teaching faculty");
+		// subjectMap.put("Proposal Role", "PI");
+		attrMap.put("Subject", subjectMap);
+
+		Multimap<String, String> resourceMap = ArrayListMultimap.create();
+		resourceMap.put("proposal-section", "Whole Proposal");
+		resourceMap.put("status", "Withdraw by Research Office");
+		attrMap.put("Resource", resourceMap);
+
+		Multimap<String, String> actionMap = ArrayListMultimap.create();
+		actionMap.put("proposal-action", "Create");
+		attrMap.put("Action", actionMap);
+		
+		String decision = ac.getXACMLdecision(attrMap);
+		
 		// Save the Proposal
 		if (!proposalID.equals("0")) {
 			proposalDAO.updateProposal(existingProposal, authorProfile);

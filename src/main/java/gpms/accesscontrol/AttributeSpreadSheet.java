@@ -1,7 +1,9 @@
 package gpms.accesscontrol;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -80,13 +82,10 @@ public class AttributeSpreadSheet {
 							switch (cell.getCellType()) {
 							case Cell.CELL_TYPE_STRING:
 								if (attributeName.equalsIgnoreCase("")) {
-									attributeName = cell.getStringCellValue()
-											.trim();
-								} else if (fullAttributeName
-										.equalsIgnoreCase("")) {
+									attributeName = cell.getStringCellValue().trim();
+								} else if (fullAttributeName.equalsIgnoreCase("")) {
 									// 1nd column
-									fullAttributeName = cell
-											.getStringCellValue().trim();
+									fullAttributeName = cell.getStringCellValue().trim();
 								} else if (category.equalsIgnoreCase("")) {
 									// 2nd column
 									category = cell.getStringCellValue().trim();
@@ -123,10 +122,11 @@ public class AttributeSpreadSheet {
 		return policyRequestsList;
 	}
 
-	public void readAttributeSpreadSheet(String testSuiteSpreadSheetFile)
-			throws Exception {
-		FileInputStream inputStream = new FileInputStream(
-				testSuiteSpreadSheetFile);
+	public void readAttributeSpreadSheet(String testSuiteSpreadSheetFile) throws Exception {
+
+//		File thisFile = new File(this.getClass().getResource(testSuiteSpreadSheetFile).toString());
+		InputStream inputStream = this.getClass().getResourceAsStream(testSuiteSpreadSheetFile);
+//		FileInputStream inputStream = new FileInputStream(thisFile);
 		HSSFWorkbook workBook = new HSSFWorkbook(inputStream);
 		Sheet sheet = workBook.getSheetAt(0);
 		for (Row row : sheet) {
@@ -141,17 +141,12 @@ public class AttributeSpreadSheet {
 			String attributeName = row.getCell(0).toString().trim();
 			if (attributeName.equals("") || attributeName.startsWith("//"))
 				return;
-			String fullAttributeName = row.getCell(1) != null ? row.getCell(1)
-					.toString() : "";
+			String fullAttributeName = row.getCell(1) != null ? row.getCell(1).toString() : "";
 
-			String category = row.getCell(2) != null ? row.getCell(2)
-					.toString() : "";
-			String dataType = row.getCell(3) != null ? row.getCell(3)
-					.toString() : "";
-			String values = row.getCell(4) != null ? row.getCell(4).toString()
-					: "";
-			allAttributeRecords.add(new AttributeRecord(attributeName,
-					fullAttributeName, category, dataType, values));
+			String category = row.getCell(2) != null ? row.getCell(2).toString() : "";
+			String dataType = row.getCell(3) != null ? row.getCell(3).toString() : "";
+			String values = row.getCell(4) != null ? row.getCell(4).toString() : "";
+			allAttributeRecords.add(new AttributeRecord(attributeName, fullAttributeName, category, dataType, values));
 		}
 	}
 
