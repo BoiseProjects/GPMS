@@ -53,7 +53,8 @@
 	var userPositionType = '<%=session.getAttribute("userPositionType")%>';
 	var	userPositionTitle = '<%=session.getAttribute("userPositionTitle")%>';
 	var userDepartment = '<%=session.getAttribute("userDepartment")%>';
-	var userCollege = '<%=session.getAttribute("userCollege")%>';
+	var userCollege = '<%=session.getAttribute("userCollege")%>
+	';
 
 	var gpmsServicePath = "REST/";
 	var gpmsRootPath = "http://localhost:8181/GPMS/";
@@ -1405,32 +1406,33 @@
 																</select></td>
 															</tr>
 
-															<tr>
-																<td><span class="cssClassLabel">Proposal
-																		Notes:</span> <span class="cssClassRequired">*</span></td>
-																<td class="cssClassTableRightCol"><textarea
-																		title="Proposal Notes" class="cssClassTextArea"
-																		cols="26" rows="2" name="proposalNotes"
-																		id="txtProposalNotes" placeholder="Proposal Notes"
-																		required></textarea></td>
-															</tr>
-															<tr>
-																<td><span class="cssClassLabel">Research
-																		Administrator:</span> <span class="cssClassRequired">*</span></td>
-																<td class="cssClassTableRightCol"><div
-																		class="cssClassCheckBox">
-																		<input title="DF" type="checkbox"
-																			class="cssClassCheckBox" id="chkDF" name="DF"
-																			value="DF" /><label class="cssClassLabel"
-																			for="chkDF">DF</label><input title="LG"
-																			type="checkbox" class="cssClassCheckBox" id="chkLG"
-																			name="LG" value="LG" /><label class="cssClassLabel"
-																			for="chkLG">LG</label><input title="LN"
-																			type="checkbox" class="cssClassCheckBox" id="chkLN"
-																			name="LN" value="LN" /><label class="cssClassLabel"
-																			for="chkLN">LN</label>
-																	</div></td>
-															</tr>
+															<!-- 															<tr> -->
+															<!-- 																<td><span class="cssClassLabel">Proposal -->
+															<!-- 																		Notes:</span> <span class="cssClassRequired">*</span></td> -->
+															<!-- 																<td class="cssClassTableRightCol"><textarea -->
+															<!-- 																		title="Proposal Notes" class="cssClassTextArea" -->
+															<!-- 																		cols="26" rows="2" name="proposalNotes" -->
+															<!-- 																		id="txtProposalNotes" placeholder="Proposal Notes" -->
+															<!-- 																		required></textarea></td> -->
+															<!-- 															</tr> -->
+															Research Administrator Put sign here
+															<!-- 															<tr> -->
+															<!-- 																<td><span class="cssClassLabel">Research -->
+															<!-- 																		Administrator:</span> <span class="cssClassRequired">*</span></td> -->
+															<!-- 																<td class="cssClassTableRightCol"><div -->
+															<!-- 																		class="cssClassCheckBox"> -->
+															<!-- 																		<input title="DF" type="checkbox" -->
+															<!-- 																			class="cssClassCheckBox" id="chkDF" name="DF" -->
+															<!-- 																			value="DF" /><label class="cssClassLabel" -->
+															<!-- 																			for="chkDF">DF</label><input title="LG" -->
+															<!-- 																			type="checkbox" class="cssClassCheckBox" id="chkLG" -->
+															<!-- 																			name="LG" value="LG" /><label class="cssClassLabel" -->
+															<!-- 																			for="chkLG">LG</label><input title="LN" -->
+															<!-- 																			type="checkbox" class="cssClassCheckBox" id="chkLN" -->
+															<!-- 																			name="LN" value="LN" /><label class="cssClassLabel" -->
+															<!-- 																			for="chkLN">LN</label> -->
+															<!-- 																	</div></td> -->
+															<!-- 															</tr> -->
 														</tbody>
 													</table>
 

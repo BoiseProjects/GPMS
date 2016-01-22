@@ -6,7 +6,7 @@ import org.mongodb.morphia.annotations.Property;
 import com.google.gson.annotations.Expose;
 
 @Embedded
-public class ConfidentialInfo {
+public class ConfidentialInfo implements Cloneable {
 	@Expose
 	@Property("contain confidential information")
 	private boolean containConfidentialInformation;
@@ -117,6 +117,17 @@ public class ConfidentialInfo {
 		if (patentable != other.patentable)
 			return false;
 		return true;
+	}
+
+	@Override
+	protected ConfidentialInfo clone() throws CloneNotSupportedException {
+		ConfidentialInfo copy = new ConfidentialInfo();
+		copy.setContainConfidentialInformation(this.containConfidentialInformation);
+		copy.setOnPages(this.onPages);
+		copy.setPatentable(this.patentable);
+		copy.setCopyrightable(this.copyrightable);
+		copy.setInvolveIntellectualProperty(this.involveIntellectualProperty);
+		return copy;
 	}
 
 }

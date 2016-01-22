@@ -11,9 +11,9 @@ import org.mongodb.morphia.annotations.Reference;
 import com.google.gson.annotations.Expose;
 
 @Entity(value = DelegationDAO.COLLECTION_NAME, noClassnameStored = true)
-public class Delegation extends BaseEntity {
+public class Delegation extends BaseEntity implements Cloneable {
 	@Expose
-	@Reference(value = "user profile id"/* , lazy = true */)
+	@Reference(value = "user profile"/* , lazy = true */)
 	private UserProfile userProfile = new UserProfile();
 
 	@Expose
@@ -209,6 +209,21 @@ public class Delegation extends BaseEntity {
 				+ department + ", positionType=" + positionType
 				+ ", positionTitle=" + positionTitle + ", proposalId="
 				+ proposalId + ", from=" + from + ", to=" + to + "]";
+	}
+
+	@Override
+	protected Delegation clone() throws CloneNotSupportedException {
+		Delegation copy = new Delegation();
+		copy.setUserProfile(this.userProfile.clone());
+		copy.setAssignedId(this.assignedId);
+		copy.setCollege(this.college);
+		copy.setDepartment(this.department);
+		copy.setPositionType(this.positionType);
+		copy.setPositionTitle(this.positionTitle);
+		copy.setProposalId(this.proposalId);
+		copy.setFrom(this.from);
+		copy.setTo(this.to);
+		return copy;
 	}
 
 }

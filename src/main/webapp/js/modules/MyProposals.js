@@ -17,12 +17,12 @@ $(function() {
 	var gpmsCommonObj = function() {
 		var gpmsCommonInfo = {
 			UserProfileID : GPMS.utils.GetUserProfileID(),
-			UserName : GPMS.utils.GetUserName(),			
+			UserName : GPMS.utils.GetUserName(),
 			UserIsAdmin : GPMS.utils.IsAdmin(),
 			UserPositionType : GPMS.utils.GetUserPositionType(),
 			UserPositionTitle : GPMS.utils.GetUserPositionTitle(),
 			UserDepartment : GPMS.utils.GetUserDepartment(),
-			UserCollege : GPMS.utils.GetUserCollege()	
+			UserCollege : GPMS.utils.GetUserCollege()
 		};
 		return gpmsCommonInfo;
 	};
@@ -47,12 +47,25 @@ $(function() {
 		$("#txtSearchTotalCostsTo-error").remove();
 	});
 
-	$('.open').on("click", function() {
-		myProposal.ExpandAccordion();
-	});
+	/** * Expand all ** */
+	$(".expandAll").click(
+			function(event) {
+				$('#accordion .ui-accordion-header:not(.ui-state-active)')
+						.next().slideDown();
 
-	$('.close').on("click", function() {
-		myProposal.CollapseAccordion();
+				return false;
+			});
+
+	/** * Collapse all ** */
+	$(".collapseAll").click(function(event) {
+		$('#accordion').accordion({
+			collapsible : true,
+			active : false
+		});
+
+		$('#accordion .ui-accordion-header').next().slideUp();
+
+		return false;
 	});
 
 	var validator = $("#form1")
@@ -462,8 +475,8 @@ $(function() {
 		SearchProposals : function() {
 			var projectTitle = $.trim($("#txtSearchProjectTitle").val());
 			var usernameBy = $.trim($("#txtSearchUserName").val());
-			var receivedOnFrom = $.trim($("#txtSearchReceivedOnFrom").val());
-			var receivedOnTo = $.trim($("#txtSearchReceivedOnTo").val());
+			var submittedOnFrom = $.trim($("#txtSearchSubmittedOnFrom").val());
+			var submittedOnTo = $.trim($("#txtSearchSubmittedOnTo").val());
 			var totalCostsFrom = $.trim($("#txtSearchTotalCostsFrom")
 					.autoNumeric('get'));
 			var totalCostsTo = $.trim($("#txtSearchTotalCostsTo").autoNumeric(
@@ -489,20 +502,20 @@ $(function() {
 			if (totalCostsTo.length < 1) {
 				totalCostsTo = null;
 			}
-			if (receivedOnFrom.length < 1) {
-				receivedOnFrom = null;
+			if (submittedOnFrom.length < 1) {
+				submittedOnFrom = null;
 			}
-			if (receivedOnTo.length < 1) {
-				receivedOnTo = null;
+			if (submittedOnTo.length < 1) {
+				submittedOnTo = null;
 			}
 
 			myProposal.BindProposalGrid(projectTitle, usernameBy,
-					receivedOnFrom, receivedOnTo, totalCostsFrom, totalCostsTo,
-					proposalStatus, userRole);
+					submittedOnFrom, submittedOnTo, totalCostsFrom,
+					totalCostsTo, proposalStatus, userRole);
 		},
 
-		BindProposalGrid : function(projectTitle, usernameBy, receivedOnFrom,
-				receivedOnTo, totalCostsFrom, totalCostsTo, proposalStatus,
+		BindProposalGrid : function(projectTitle, usernameBy, submittedOnFrom,
+				submittedOnTo, totalCostsFrom, totalCostsTo, proposalStatus,
 				userRole) {
 			this.config.url = this.config.baseURL;
 			this.config.method = "GetUserProposalsList";
@@ -514,8 +527,8 @@ $(function() {
 			var proposalBindObj = {
 				ProjectTitle : projectTitle,
 				UsernameBy : usernameBy,
-				ReceivedOnFrom : receivedOnFrom,
-				ReceivedOnTo : receivedOnTo,
+				SubmittedOnFrom : submittedOnFrom,
+				SubmittedOnTo : submittedOnTo,
 				TotalCostsFrom : totalCostsFrom,
 				TotalCostsTo : totalCostsTo,
 				ProposalStatus : proposalStatus,
@@ -538,9 +551,8 @@ $(function() {
 									cssclass : 'cssClassHeadCheckBox',
 									coltype : 'checkbox',
 									align : 'center',
-									checkFor : '23',
+									checkFor : '25',
 									elemClass : 'attrChkbox',
-									elemDefault : false,
 									controlclass : 'attribHeaderChkbox'
 								}, {
 									display : 'Proposal No',
@@ -563,7 +575,8 @@ $(function() {
 									cssclass : '',
 									controlclass : '',
 									coltype : 'label',
-									align : 'left'
+									align : 'left',
+									hide : true
 								}, {
 									display : 'Type of Request',
 									name : 'type_of_request',
@@ -625,8 +638,18 @@ $(function() {
 									type : 'percent',
 									hide : true
 								}, {
-									display : 'Date Received',
-									name : 'date_received',
+									display : 'Date Created',
+									name : 'date_created',
+									cssclass : '',
+									controlclass : '',
+									coltype : 'label',
+									align : 'left',
+									type : 'date',
+									format : 'yyyy/MM/dd hh:mm:ss a',
+									hide : true
+								}, {
+									display : 'Date Submitted',
+									name : 'date_submitted',
 									cssclass : '',
 									controlclass : '',
 									coltype : 'label',
@@ -650,8 +673,7 @@ $(function() {
 									coltype : 'label',
 									align : 'left',
 									type : 'date',
-									format : 'yyyy/MM/dd hh:mm:ss a',
-									hide : true
+									format : 'yyyy/MM/dd hh:mm:ss a'
 								}, {
 									display : 'Project Period To',
 									name : 'project_period_to',
@@ -660,15 +682,15 @@ $(function() {
 									coltype : 'label',
 									align : 'left',
 									type : 'date',
-									format : 'yyyy/MM/dd hh:mm:ss a',
-									hide : true
+									format : 'yyyy/MM/dd hh:mm:ss a'
 								}, {
 									display : 'Status',
 									name : 'proposal_status',
 									cssclass : '',
 									controlclass : '',
 									coltype : 'label',
-									align : 'left'
+									align : 'left',
+									type : 'array'
 								}, {
 									display : 'Last Audited',
 									name : 'last_audited',
@@ -731,6 +753,14 @@ $(function() {
 									type : 'array',
 									hide : true
 								}, {
+									display : 'Current User Roles',
+									name : 'proposal_roles',
+									cssclass : '',
+									controlclass : '',
+									coltype : 'label',
+									align : 'left',
+									type : 'array'
+								}, {
 									display : 'Is Deleted?',
 									name : 'is_deleted',
 									cssclass : 'cssClassHeadBoolean',
@@ -738,8 +768,7 @@ $(function() {
 									coltype : 'label',
 									align : 'left',
 									type : 'boolean',
-									format : 'Yes/No',
-									hide : true
+									format : 'Yes/No'
 								}, {
 									display : 'Actions',
 									name : 'action',
@@ -756,7 +785,7 @@ $(function() {
 											_event : 'click',
 											trigger : '1',
 											callMethod : 'myProposal.EditProposal',
-											arguments : '1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23'
+											arguments : '1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25'
 										},
 										{
 											display : 'Delete',
@@ -765,7 +794,16 @@ $(function() {
 											_event : 'click',
 											trigger : '2',
 											callMethod : 'myProposal.DeleteProposal',
-											arguments : '23'
+											arguments : '25'
+										},
+										{
+											display : 'View Change Logs',
+											name : 'changelog',
+											enable : true,
+											_event : 'click',
+											trigger : '3',
+											callMethod : 'myProposal.ViewChangeLogs',
+											arguments : '2,17,18,19'
 										} ],
 								rp : perpage,
 								nomsg : 'No Records Found!',
@@ -776,11 +814,101 @@ $(function() {
 									0 : {
 										sorter : false
 									},
-									24 : {
+									26 : {
 										sorter : false
 									}
 								}
 							});
+		},
+
+		ButtonHideShow : function(currentProposalRoles, proposalStatus) {
+			$("#btnReset").hide();
+			$("#btnSaveProposal").hide();
+			$("#btnSubmitProposal").hide();
+			$("#btnUpdateProposal").hide();
+			$("#btnApproveProposal").hide();
+			$("#btnDisapproveProposal").hide();
+			$("#btnWithdrawProposal").hide();
+			$("#btnArchiveProposal").hide();
+
+			var canUpdateRoles = [ "PI", "CO-PI" ];
+			var canUpdateTitles = [ "Business Manager",
+					"Research Administrator", "Department Chair", "Dean" ];
+			var canSubmitRoles = [ "PI" ];
+			var canApproveTitles = [ "Department Chair", "Dean",
+					"University Research Director" ];
+			var canDisApproveTitles = [ "Department Chair", "Dean",
+					"University Research Director" ];
+			var canWithDrawTitles = [ "Research Administrator" ];
+			var canArchiveTitles = [ "University Research Director" ];
+
+			$.each(currentProposalRoles, function(index, value) {
+				if ($.inArray(value, canSubmitRoles) !== -1
+						&& proposalStatus == "Not Submitted by PI") {
+					$("#btnSubmitProposal").show();
+					return false;
+				} else {
+					$("#btnSubmitProposal").hide();
+				}
+			});
+
+			var currentPositionTitle = GPMS.utils.GetUserPositionTitle();
+
+			if ($.inArray(currentPositionTitle, canUpdateTitles) !== -1) {
+				$("#btnUpdateProposal").show();
+				return false;
+			} else {
+				$.each(currentProposalRoles, function(index, value) {
+					if ($.inArray(value, canUpdateRoles) !== -1) {
+						$("#btnUpdateProposal").show();
+						return false;
+					} else {
+						$("#btnUpdateProposal").hide();
+					}
+				});
+			}
+
+			if ($.inArray(currentPositionTitle, canUpdateTitles) !== -1) {
+				$("#btnUpdateProposal").show();
+				return false;
+			} else {
+				$.each(currentProposalRoles, function(index, value) {
+					if ($.inArray(value, canUpdateRoles) !== -1) {
+						$("#btnUpdateProposal").show();
+						return false;
+					} else {
+						$("#btnUpdateProposal").hide();
+					}
+				});
+			}
+
+			if ($.inArray(currentPositionTitle, canApproveTitles) !== -1) {
+				$("#btnApproveProposal").show();
+				return false;
+			} else {
+				$("#btnApproveProposal").hide();
+			}
+
+			if ($.inArray(currentPositionTitle, canDisApproveTitles) !== -1) {
+				$("#btnDisapproveProposal").show();
+				return false;
+			} else {
+				$("#btnDisapproveProposal").hide();
+			}
+
+			if ($.inArray(currentPositionTitle, canDisApproveTitles) !== -1) {
+				$("#btnWithdrawProposal").show();
+				return false;
+			} else {
+				$("#btnWithdrawProposal").hide();
+			}
+
+			if ($.inArray(currentPositionTitle, canDisApproveTitles) !== -1) {
+				$("#btnArchiveProposal").show();
+				return false;
+			} else {
+				$("#btnArchiveProposal").hide();
+			}
 		},
 
 		EditProposal : function(tblID, argus) {
@@ -789,20 +917,13 @@ $(function() {
 
 				// TODO
 				// $('#accordion-expand-holder').show();
+				$("#accordion").accordion("option", "active", false);
 
 				$('#lblFormHeading').html(
 						'Edit Proposal Details for: ' + argus[2]);
 
-				$("#lblProposalDateReceived").text(argus[11]);
+				$("#lblProposalDateReceived").text(argus[12]);
 
-				if (argus[16] != null && argus[16] != "") {
-					$('#tblLastAuditedInfo').show();
-					$('#lblLastUpdatedOn').html(argus[16]);
-					$('#lblLastUpdatedBy').html(argus[17]);
-					$('#lblActivity').html(argus[18]);
-				} else {
-					$('#tblLastAuditedInfo').hide();
-				}
 				$("input[name=AddMore]").removeAttr('disabled');
 				$("input[name=DeleteOption]").removeAttr('disabled');
 
@@ -811,28 +932,30 @@ $(function() {
 				$("#btnSaveProposal").prop("name", argus[0]);
 				$("#txtNameOfGrantingAgency").val(argus[6]);
 
-				$("#btnReset").hide();
 				$("#trSignChair").show();
 				$("#trSignDean").show();
 				$("#trSignBusinessManager").show();
 
 				// OSP Section
 				$('#ui-id-23').show();
-				// Audit Log Section
-				$('#ui-id-25').show();
 
-				myProposal.BindUserPositionDetailsForAProposal(argus[22]);
+				$('#ddlProposalStatus option').length = 0;
+				$('#ddlProposalStatus')
+						.append(new Option(argus[16], argus[16])).prop(
+								'disabled', true);
+
+				myProposal.BindUserPositionDetailsForAProposal(argus[23]);
 
 				myProposal.BindProposalDetailsByProposalId(argus[0]);
+
+				myProposal.ButtonHideShow($.trim(argus[24]).split(', '),
+						argus[16]);
 
 				// Certification/ Signatures Info
 				myProposal.BindAllSignatureForAProposal(argus[0]);
 
 				// Delegation Info
 
-				// Get Audit Logs
-				myProposal.BindProposalAuditLogGrid(argus[0], null, null,
-						null, null);
 				break;
 			default:
 				break;
@@ -864,13 +987,18 @@ $(function() {
 		},
 
 		FillForm : function(response) {
+			// TODO
+			if ($.inArray("NOTSUBMITTEDBYPI", response.proposalStatus) !== -1) {
+				$("#btnSubmitProposal").show();
+			} else {
+				$("#btnSubmitProposal").hide();
+			}
 			// Investigator Information
 			myProposal.BindInvestigatorInfo(response.investigatorInfo);
 
 			// Project Extra Information
 			$("#lblProposalNo").text(response.proposalNo);
 			$("#lblHiddenDateReceived").text(response.dateReceived);
-			$("#ddlProposalStatus").val(response.proposalStatus);
 
 			// Project Information
 			$("#txtProjectTitle").val(response.projectInfo.projectTitle).prop(
@@ -1331,21 +1459,11 @@ $(function() {
 			} else {
 				$("#ddlCheckedExcludedPartyList").prop("selectedIndex", 0);
 			}
-
-			$("#txtProposalNotes").val(response.oSPSectionInfo.proposalNotes);
-
-			$("#chkDF").prop("checked",
-					response.oSPSectionInfo.researchAdministrator.DF);
-			$("#chkLG").prop("checked",
-					response.oSPSectionInfo.researchAdministrator.LG);
-			$("#chkLN").prop("checked",
-					response.oSPSectionInfo.researchAdministrator.LN);
 		},
 
 		BindInvestigatorInfo : function(investigatorInfo) {
 			rowIndex = 0;
-			myProposal
-					.BindUserToPositionDetails(investigatorInfo.pi, "PI");
+			myProposal.BindUserToPositionDetails(investigatorInfo.pi, "PI");
 
 			$.each(investigatorInfo.co_pi, function(i, coPI) {
 				myProposal.BindUserToPositionDetails(coPI, "Co-PI");
@@ -1356,41 +1474,6 @@ $(function() {
 			});
 
 			$('#dataTable>tbody tr:first').remove();
-		},
-
-		ExpandAccordion : function() {
-			var icons = $("#accordion").accordion("option", "icons");
-			$('.ui-accordion-header').removeClass('ui-corner-all').addClass(
-					'ui-accordion-header-active ui-state-active ui-corner-top')
-					.attr({
-						'aria-selected' : 'true',
-						'aria-expanded' : 'true',
-						'tabindex' : '0'
-					});
-			$('.ui-accordion-header-icon').removeClass(icons.header).addClass(
-					icons.activeHeader);
-			$('.ui-accordion-content').addClass('ui-accordion-content-active')
-					.attr({
-						'aria-hidden' : 'false'
-					}).show('blind');
-		},
-
-		CollapseAccordion : function() {
-			var icons = $("#accordion").accordion("option", "icons");
-			$('.ui-accordion-header').removeClass(
-					'ui-accordion-header-active ui-state-active ui-corner-top')
-					.addClass('ui-corner-all').attr({
-						'aria-selected' : 'false',
-						'aria-expanded' : 'false',
-						'tabindex' : '-1'
-					});
-			$('.ui-accordion-header-icon').removeClass(icons.activeHeader)
-					.addClass(icons.header);
-			$('.ui-accordion-content').removeClass(
-					'ui-accordion-content-active').attr({
-				'aria-hidden' : 'true'
-			}).hide('blind');
-			// $("#accordion").accordion("option", "active", -1);
 		},
 
 		SelectFirstAccordion : function() {
@@ -1482,31 +1565,24 @@ $(function() {
 									} else if (this.name == "ddlCollege") {
 										$(this).val(userDetails.college).prop(
 												'selected', 'selected');
-										myProposal.BindDepartmentDropDown(
-												$('select[name="ddlName"]').eq(
-														rowIndex).val(),
-												$('select[name="ddlCollege"]')
-														.eq(rowIndex).val());
+										myProposal.BindDepartmentDropDown($(
+												'select[name="ddlName"]').eq(
+												rowIndex).val(), $(
+												'select[name="ddlCollege"]')
+												.eq(rowIndex).val());
 									} else if (this.name == "ddlDepartment") {
 										$(this).val(userDetails.department)
 												.prop('selected', 'selected');
-										myProposal
-												.BindPositionTypeDropDown(
-														$(
-																'select[name="ddlName"]')
-																.eq(rowIndex)
-																.val(),
-														$(
-																'select[name="ddlCollege"]')
-																.eq(rowIndex)
-																.val(),
-														$(
-																'select[name="ddlDepartment"]')
-																.eq(rowIndex)
-																.val());
+										myProposal.BindPositionTypeDropDown($(
+												'select[name="ddlName"]').eq(
+												rowIndex).val(), $(
+												'select[name="ddlCollege"]')
+												.eq(rowIndex).val(), $(
+												'select[name="ddlDepartment"]')
+												.eq(rowIndex).val());
 									} else if (this.name == "ddlPositionType") {
 										$(this).val(userDetails.positionType)
-												.prop('selected', 'selected');									
+												.prop('selected', 'selected');
 										myProposal
 												.BindPositionTitleDropDown(
 														$(
@@ -1568,8 +1644,8 @@ $(function() {
 				proposalId = "0";
 			}
 
-			myProposal.BindProposalAuditLogGrid(proposalId, action,
-					auditedBy, activityOnFrom, activityOnTo);
+			myProposal.BindProposalAuditLogGrid(proposalId, action, auditedBy,
+					activityOnFrom, activityOnTo);
 		},
 
 		BindProposalAuditLogGrid : function(proposalId, action, auditedBy,
@@ -1640,6 +1716,31 @@ $(function() {
 			});
 		},
 
+		ViewChangeLogs : function(tblID, argus) {
+			switch (tblID) {
+			case "gdvProposals":
+				$('#lblLogsHeading').html('View Audit Logs for: ' + argus[1]);
+				if (argus[2] != null && argus[2] != "") {
+					$('#tblLastAuditedInfo').show();
+					$('#lblLastUpdatedOn').html(argus[2]);
+					$('#lblLastUpdatedBy').html(argus[3]);
+					$('#lblActivity').html(argus[4]);
+				} else {
+					$('#tblLastAuditedInfo').hide();
+				}
+				// Get Audit Logs
+				myProposal.BindProposalAuditLogGrid(argus[0], null, null, null,
+						null);
+
+				$('#divProposalGrid').hide();
+				$('#divProposalForm').hide();
+				$('#divProposalAuditGrid').show();
+				break;
+			default:
+				break;
+			}
+		},
+
 		DeleteProposal : function(tblID, argus) {
 			switch (tblID) {
 			case "gdvProposals":
@@ -1674,6 +1775,8 @@ $(function() {
 			}
 		},
 
+		// TODO need to remove this multiple delete options otherwise need to
+		// alert in each row
 		DeleteMultipleProposals : function(_proposalIds) {
 			// this.config.dataType = "html";
 			this.config.url = this.config.baseURL
@@ -1788,18 +1891,18 @@ $(function() {
 
 			myProposal.BindCollegeDropDown($('select[name="ddlName"]').eq(
 					rowIndexVal).val());
-			myProposal.BindDepartmentDropDown($('select[name="ddlName"]')
-					.eq(rowIndexVal).val(), $('select[name="ddlCollege"]').eq(
+			myProposal.BindDepartmentDropDown($('select[name="ddlName"]').eq(
+					rowIndexVal).val(), $('select[name="ddlCollege"]').eq(
 					rowIndexVal).val());
-			myProposal.BindPositionTypeDropDown(
-					$('select[name="ddlName"]').eq(rowIndexVal).val(), $(
-							'select[name="ddlCollege"]').eq(rowIndexVal).val(),
-					$('select[name="ddlDepartment"]').eq(rowIndexVal).val());
-			myProposal.BindPositionTitleDropDown($(
-					'select[name="ddlName"]').eq(rowIndexVal).val(), $(
-					'select[name="ddlCollege"]').eq(rowIndexVal).val(), $(
-					'select[name="ddlDepartment"]').eq(rowIndexVal).val(), $(
-					'select[name="ddlPositionType"]').eq(rowIndexVal).val());
+			myProposal.BindPositionTypeDropDown($('select[name="ddlName"]').eq(
+					rowIndexVal).val(), $('select[name="ddlCollege"]').eq(
+					rowIndexVal).val(), $('select[name="ddlDepartment"]').eq(
+					rowIndexVal).val());
+			myProposal.BindPositionTitleDropDown($('select[name="ddlName"]')
+					.eq(rowIndexVal).val(), $('select[name="ddlCollege"]').eq(
+					rowIndexVal).val(), $('select[name="ddlDepartment"]').eq(
+					rowIndexVal).val(), $('select[name="ddlPositionType"]').eq(
+					rowIndexVal).val());
 			return false;
 		},
 
@@ -1826,7 +1929,7 @@ $(function() {
 							{
 								heightStyle : "content",
 								icons : icons,
-								active : -1,
+								active : false,
 								collapsible : true,
 								activate : function(event, ui) {
 									var proposal_id = $("#btnSaveProposal")
@@ -1993,8 +2096,7 @@ $(function() {
 			var errors = '';
 			if (!textBoxProjectTitle.hasClass('error')
 					&& projectTitle.length > 0) {
-				if (!myProposal.isUniqueProjectTitle(proposal_id,
-						projectTitle)) {
+				if (!myProposal.isUniqueProjectTitle(proposal_id, projectTitle)) {
 					errors += "'" + 'Please enter unique Project Title.' + " '"
 							+ projectTitle.trim() + "' "
 							+ 'has already been taken.';
@@ -2074,9 +2176,8 @@ $(function() {
 			if (validator.form()) {
 				var $projectTitle = $('#txtProjectTitle');
 				var projectTitle = $.trim($projectTitle.val());
-				var validateErrorMessage = myProposal
-						.checkUniqueProjectTitle(_proposalId, projectTitle,
-								$projectTitle);
+				var validateErrorMessage = myProposal.checkUniqueProjectTitle(
+						_proposalId, projectTitle, $projectTitle);
 
 				if (validateErrorMessage == "") {
 					var investigatorInfo = '';
@@ -2261,8 +2362,8 @@ $(function() {
 
 					// TODO check if the OSP section is allowed to edit ?
 					if (!_flag) {
-						proposalInfo.ProposalStatus = $("#ddlProposalStatus")
-								.val();
+						// proposalInfo.ProposalStatus = $("#ddlProposalStatus")
+						// .val();
 
 						var OSPSection = {
 							ListAgency : $.trim($("#txtAgencyList").val()),
@@ -2333,13 +2434,7 @@ $(function() {
 									.val(),
 							ConflictOfInterestForms : $("#ddlCOIForms").val(),
 							ExcludedPartyListChecked : $(
-									"#ddlCheckedExcludedPartyList").val(),
-							proposalNotes : $
-									.trim($("#txtProposalNotes").val()),
-
-							DF : $("#chkDF").prop("checked"),
-							LG : $("#chkLG").prop("checked"),
-							LN : $("#chkLN").prop("checked")
+									"#ddlCheckedExcludedPartyList").val()
 						};
 
 						if ($("#ddlSubrecipients").val() == "1") {
@@ -2379,6 +2474,7 @@ $(function() {
 			return false;
 		},
 
+		// TODO only bind user based on current user details not show all users
 		BindUserDropDown : function() {
 			// Used User REST API instead Proposal
 			this.config.url = this.config.rootURL + "users/"
@@ -2678,6 +2774,7 @@ $(function() {
 			}
 			return false;
 		},
+
 		ajaxSuccess : function(msg) {
 			switch (myProposal.config.ajaxCallMode) {
 			case 0:
@@ -2686,30 +2783,32 @@ $(function() {
 			case 1: // For Proposal Status Dropdown Binding for both form and
 				// search
 				$('#ddlSearchProposalStatus option').length = 1;
-				$('#ddlProposalStatus option').length = 1;
+				$('#ddlProposalStatus option').length = 0;
 
 				$.each(msg, function(index, item) {
-					$('#ddlSearchProposalStatus')
-							.append(new Option(item, item));
-					$('#ddlProposalStatus').append(new Option(item, item));
+					$('#ddlSearchProposalStatus').append(
+							new Option(item.statusValue, item.statusKey));
+					// $('#ddlProposalStatus').append(
+					// new Option(item.statusValue, item.statusKey));
 				});
 				break;
 
 			case 2: // Single Proposal Delete
-				myProposal.BindProposalGrid(null, null, null, null, null,
-						null, null, null);
+				myProposal.BindProposalGrid(null, null, null, null, null, null,
+						null, null);
 				csscody.info("<h2>" + 'Successful Message' + "</h2><p>"
 						+ 'Proposal has been deleted successfully.' + "</p>");
 
 				$('#divProposalForm').hide();
 				$('#divProposalGrid').show();
+				$('#divProposalAuditGrid').hide();
 				break;
 			break;
 
 		case 3: // Multiple Proposal Delete
 			SageData.Get("gdvProposals").Arr.length = 0;
-			myProposal.BindProposalGrid(null, null, null, null, null,
-					null, null, null);
+			myProposal.BindProposalGrid(null, null, null, null, null, null,
+					null, null);
 			csscody.info("<h2>" + 'Successful Message' + "</h2><p>"
 					+ 'Selected proposal(s) has been deleted successfully.'
 					+ "</p>");
@@ -2719,7 +2818,8 @@ $(function() {
 			myProposal.FillForm(msg);
 			$('#divProposalGrid').hide();
 			$('#divProposalForm').show();
-			$("#accordion").accordion("option", "active", 0);
+			$('#divProposalAuditGrid').hide();
+			// $("#accordion").accordion("option", "active", 0);
 			break;
 
 		case 5: // Bind User List for Investigator Info
@@ -2841,13 +2941,13 @@ $(function() {
 			break;
 
 		case 9:
-			myProposal.BindProposalGrid(null, null, null, null, null,
-					null, null, null);
+			myProposal.BindProposalGrid(null, null, null, null, null, null,
+					null, null);
 			$('#divProposalGrid').show();
 			$("#btnSaveProposal").removeAttr("name");
-			$("#accordion").accordion("option", "active", -1);
-			
-			if (editFlag !="0") {
+			// $("#accordion").accordion("option", "active", 0);
+
+			if (editFlag != "0") {
 				csscody.info("<h2>" + 'Successful Message' + "</h2><p>"
 						+ 'Proposal has been updated successfully.' + "</p>");
 			} else {
@@ -2855,6 +2955,7 @@ $(function() {
 						+ 'Proposal has been saved successfully.' + "</p>");
 			}
 			$('#divProposalForm').hide();
+			$('#divProposalAuditGrid').hide();
 			// myProposal.CollapseAccordion();
 			// myProposal.SelectFirstAccordion();
 			break;
@@ -2916,34 +3017,42 @@ $(function() {
 
 		init : function(config) {
 			myProposal.InitializeAccordion();
-			$("#txtSearchReceivedOnFrom").datepicker(
+
+			$('#btnLogsBack').on("click", function() {
+				$('#divProposalGrid').show();
+				$('#divProposalForm').hide();
+				$('#divProposalAuditGrid').hide();
+			});
+
+			$("#txtSearchSubmittedOnFrom").datepicker(
 					{
 						dateFormat : 'yy-mm-dd',
 						changeMonth : true,
 						changeYear : true,
 						onSelect : function(selectedDate) {
-							$("#txtSearchReceivedOnTo").datepicker("option",
+							$("#txtSearchSubmittedOnTo").datepicker("option",
 									"minDate", selectedDate);
 						}
 					}).mask("9999-99-99", {
 				placeholder : "yyyy-mm-dd"
 			});
-			$("#txtSearchReceivedOnTo").datepicker(
+			$("#txtSearchSubmittedOnTo").datepicker(
 					{
 						dateFormat : 'yy-mm-dd',
 						changeMonth : true,
 						changeYear : true,
 						onSelect : function(selectedDate) {
-							$("#txtSearchReceivedOnFrom").datepicker("option",
+							$("#txtSearchSubmittedOnFrom").datepicker("option",
 									"maxDate", selectedDate);
 						}
 					}).mask("9999-99-99", {
 				placeholder : "yyyy-mm-dd"
 			});
-			myProposal.BindProposalGrid(null, null, null, null, null,
-					null, null, null);
+			myProposal.BindProposalGrid(null, null, null, null, null, null,
+					null, null);
 			$('#divProposalForm').hide();
 			$('#divProposalGrid').show();
+			$('#divProposalAuditGrid').hide();
 
 			// For Filling Form
 			$("#txtDueDate").datepicker({
@@ -3033,14 +3142,13 @@ $(function() {
 											rowIndex).val(), $(
 											'select[name="ddlCollege"]').eq(
 											rowIndex).val(), $(this).val());
-									myProposal.BindPositionTitleDropDown(
-											$('select[name="ddlName"]').eq(
-													rowIndex).val(),
-											$('select[name="ddlCollege"]').eq(
-													rowIndex).val(), $(this)
-													.val(),
-											$('select[name="ddlPositionType"]')
-													.eq(rowIndex).val());
+									myProposal.BindPositionTitleDropDown($(
+											'select[name="ddlName"]').eq(
+											rowIndex).val(), $(
+											'select[name="ddlCollege"]').eq(
+											rowIndex).val(), $(this).val(), $(
+											'select[name="ddlPositionType"]')
+											.eq(rowIndex).val());
 								} else {
 									$('select[name="ddlPositionType"]').find(
 											'option:gt(0)').remove();
@@ -3057,14 +3165,13 @@ $(function() {
 										&& $('select[name="ddlDepartment"]')
 												.eq(rowIndex).val() != "0"
 										&& $(this).val() != "0") {
-									myProposal.BindPositionTitleDropDown(
-											$('select[name="ddlName"]').eq(
-													rowIndex).val(),
-											$('select[name="ddlCollege"]').eq(
-													rowIndex).val(),
-											$('select[name="ddlDepartment"]')
-													.eq(rowIndex).val(),
-											$(this).val());
+									myProposal.BindPositionTitleDropDown($(
+											'select[name="ddlName"]').eq(
+											rowIndex).val(), $(
+											'select[name="ddlCollege"]').eq(
+											rowIndex).val(), $(
+											'select[name="ddlDepartment"]').eq(
+											rowIndex).val(), $(this).val());
 								} else {
 									$('select[name="ddlPositionTitle"]').find(
 											'option:gt(0)').remove();
@@ -3082,9 +3189,8 @@ $(function() {
 								if (proposal_ids.length > 10) {
 									var properties = {
 										onComplete : function(e) {
-											myProposal
-													.ConfirmDeleteMultiple(
-															proposal_ids, e);
+											myProposal.ConfirmDeleteMultiple(
+													proposal_ids, e);
 										}
 									};
 									csscody
@@ -3113,10 +3219,17 @@ $(function() {
 						$('#lblFormHeading').html('New Proposal Details');
 
 						$("#btnReset").show();
+						$("#btnUpdateProposal").hide();
+						$("#btnSaveProposal").show();
+						$("#btnSubmitProposal").show();
+
+						// For Admin user only
+						$("#btnApproveProposal").hide();
+						$("#btnDisapproveProposal").hide();
+						$("#btnWithdrawProposal").hide();
+						$("#btnArchiveProposal").hide();
 
 						$('#ui-id-23').hide();
-						$('#ui-id-25').hide();
-						$('#divProposalAuditGrid').hide();
 
 						$('select[name=ddlName]').eq(0).val(
 								GPMS.utils.GetUserProfileID()).prop('selected',
@@ -3128,21 +3241,23 @@ $(function() {
 
 						$('#divProposalGrid').hide();
 						$('#divProposalForm').show();
+						$('#divProposalAuditGrid').hide();
 						$("#accordion").accordion("option", "active", 0);
 					});
 
 			$('#btnBack').on("click", function() {
 				$('#divProposalGrid').show();
 				$('#divProposalForm').hide();
+				$('#divProposalAuditGrid').hide();
 				$("#btnSaveProposal").removeAttr("name");
-				$("#accordion").accordion("option", "active", -1);
+				// $("#accordion").accordion("option", "active", 0);
 			});
 
 			$('#btnReset').on("click", function() {
 				myProposal.ClearForm();
 				myProposal.BindDefaultUserPosition(0);
 				myProposal.BindPICoPISignatures();
-				$("#accordion").accordion("option", "active", 0);
+				// $("#accordion").accordion("option", "active", 0);
 			});
 
 			$('#btnSaveProposal').click(function(e) {
@@ -3534,7 +3649,7 @@ $(function() {
 			});
 
 			$(
-					'#txtSearchProjectTitle,#txtSearchUserName,#txtSearchReceivedOnFrom,#txtSearchReceivedOnTo,#txtSearchTotalCostsFrom,#txtSearchTotalCostsTo,#ddlSearchProposalStatus',
+					'#txtSearchProjectTitle,#txtSearchUserName,#txtSearchSubmittedOnFrom,#txtSearchSubmittedOnTo,#txtSearchTotalCostsFrom,#txtSearchTotalCostsTo,#ddlSearchProposalStatus',
 					'#ddlSearchUserRole').keyup(function(event) {
 				if (event.keyCode == 13) {
 					$("#btnSearchProposal").click();

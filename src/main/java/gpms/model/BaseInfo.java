@@ -6,7 +6,7 @@ import org.mongodb.morphia.annotations.Property;
 import com.google.gson.annotations.Expose;
 
 @Embedded
-public class BaseInfo {
+public class BaseInfo implements Cloneable {
 	@Expose
 	@Property("MTDC")
 	private boolean MTDC;
@@ -108,6 +108,17 @@ public class BaseInfo {
 		if (this.other != other.other)
 			return false;
 		return true;
-	}	
+	}
+
+	@Override
+	protected BaseInfo clone() throws CloneNotSupportedException {
+		BaseInfo copy = new BaseInfo();
+		copy.setMTDC(this.MTDC);
+		copy.setTDC(this.TDC);
+		copy.setTC(this.TC);
+		copy.setOther(this.other);
+		copy.setNotApplicable(this.notApplicable);
+		return copy;
+	}
 
 }

@@ -6,7 +6,7 @@ import org.mongodb.morphia.annotations.Property;
 import com.google.gson.annotations.Expose;
 
 @Embedded
-public class Recovery {
+public class Recovery implements Cloneable {
 	@Expose
 	@Property("full recovery")
 	private boolean fullRecovery;
@@ -122,5 +122,16 @@ public class Recovery {
 			return false;
 		return true;
 	}
-	
+
+	@Override
+	protected Recovery clone() throws CloneNotSupportedException {
+		Recovery copy = new Recovery();
+		copy.setFullRecovery(this.fullRecovery);
+		copy.setNoRecoveryNormalSponsorPolicy(this.noRecoveryNormalSponsorPolicy);
+		copy.setNoRecoveryInstitutionalWaiver(this.noRecoveryInstitutionalWaiver);
+		copy.setLimitedRecoveryNormalSponsorPolicy(this.limitedRecoveryNormalSponsorPolicy);
+		copy.setLimitedRecoveryInstitutionalWaiver(this.limitedRecoveryInstitutionalWaiver);
+		return copy;
+	}
+
 }

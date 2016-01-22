@@ -13,6 +13,7 @@ import gpms.model.ProjectType;
 import gpms.model.Proposal;
 import gpms.model.SignatureInfo;
 import gpms.model.SponsorAndBudgetInfo;
+import gpms.model.Status;
 import gpms.model.TypeOfRequest;
 import gpms.model.UserAccount;
 import gpms.model.UserProfile;
@@ -134,13 +135,14 @@ public class Create10Proposals {
 
 			int totalCops = rand.nextInt(5);
 			for (int a = 0; a < totalCops; a++) {
-				newInfo.addCo_pi(makeCoPI(masterList, newInfo));
+				newInfo.getCo_pi().add(makeCoPI(masterList, newInfo));
 
 			}
 
 			int totalSeniors = rand.nextInt(2) + 1;
 			for (int b = 0; b < totalSeniors; b++) {
-				newInfo.addSeniorPersonnel(makeSenior(masterList, newInfo));
+				newInfo.getSeniorPersonnel().add(
+						makeSenior(masterList, newInfo));
 			}
 
 			newProposal.setInvestigatorInfo(newInfo);
@@ -206,10 +208,11 @@ public class Create10Proposals {
 
 			newProposal.setDateReceived(new Date());
 
+			newProposal.getProposalStatus().add(Status.NOTSUBMITTEDBYPI);
+
 			newProposalDAO.save(newProposal);
 
 			propNumb++;
-			
 
 		}
 

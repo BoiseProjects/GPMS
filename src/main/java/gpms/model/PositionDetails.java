@@ -9,7 +9,7 @@ import org.mongodb.morphia.annotations.Property;
 import com.google.gson.annotations.Expose;
 
 @Embedded
-public class PositionDetails {
+public class PositionDetails implements Cloneable {
 	@Expose
 	@Property("position title")
 	private String positionTitle = new String();
@@ -31,14 +31,6 @@ public class PositionDetails {
 	private boolean isDefault = false;
 
 	public PositionDetails() {
-	}
-
-	public PositionDetails(String positionTitle, String positionType,
-			String department, String college) {
-		this.positionTitle = positionTitle;
-		this.positionType = positionType;
-		this.department = department;
-		this.college = college;
 	}
 
 	public String getPositionTitle() {
@@ -80,14 +72,14 @@ public class PositionDetails {
 	public void setDefault(boolean isDefault) {
 		this.isDefault = isDefault;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "PositionDetails [positionTitle=" + positionTitle
 				+ ", positionType=" + positionType + ", department="
 				+ department + ", college=" + college + ", isDefault="
 				+ isDefault + "]";
-	}	
+	}
 
 	@Override
 	public int hashCode() {
@@ -140,8 +132,11 @@ public class PositionDetails {
 
 	@Override
 	public PositionDetails clone() throws CloneNotSupportedException {
-		return new PositionDetails(this.positionTitle, this.positionType,
-				this.department, this.college);
+		PositionDetails copy = new PositionDetails();
+		copy.setCollege(this.college);
+		copy.setDepartment(this.department);
+		copy.setPositionType(this.positionType);
+		copy.setPositionTitle(this.positionTitle);
+		return copy;
 	}
-
 }

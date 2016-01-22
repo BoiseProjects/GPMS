@@ -6,7 +6,7 @@ import org.mongodb.morphia.annotations.Property;
 import com.google.gson.annotations.Expose;
 
 @Embedded
-public class CollaborationInfo {
+public class CollaborationInfo implements Cloneable {
 	@Expose
 	@Property("involve non-funded collaborations")
 	private boolean involveNonFundedCollab;
@@ -70,6 +70,14 @@ public class CollaborationInfo {
 		} else if (!involvedCollaborators.equals(other.involvedCollaborators))
 			return false;
 		return true;
-	}	
+	}
+
+	@Override
+	protected CollaborationInfo clone() throws CloneNotSupportedException {
+		CollaborationInfo copy = new CollaborationInfo();
+		copy.setInvolveNonFundedCollab(this.involveNonFundedCollab);
+		copy.setInvolvedCollaborators(this.involvedCollaborators);
+		return copy;
+	}
 
 }

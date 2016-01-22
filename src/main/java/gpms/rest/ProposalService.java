@@ -1,7 +1,6 @@
 package gpms.rest;
 
 import gpms.DAL.MongoDBConnector;
-import gpms.accesscontrol.Accesscontrol;
 import gpms.dao.DelegationDAO;
 import gpms.dao.NotificationDAO;
 import gpms.dao.ProposalDAO;
@@ -28,8 +27,8 @@ import gpms.model.ProjectPeriod;
 import gpms.model.ProjectType;
 import gpms.model.Proposal;
 import gpms.model.ProposalInfo;
+import gpms.model.ProposalStatusInfo;
 import gpms.model.Recovery;
-import gpms.model.ResearchAdministrator;
 import gpms.model.SignatureInfo;
 import gpms.model.SponsorAndBudgetInfo;
 import gpms.model.Status;
@@ -44,7 +43,6 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -104,9 +102,17 @@ public class ProposalService {
 
 	@POST
 	@Path("/GetProposalStatusList")
-	public ArrayList<Status> getProposalStatusList()
+	public List<ProposalStatusInfo> getProposalStatusList()
 			throws JsonProcessingException, IOException {
-		return new ArrayList<Status>(Arrays.asList(Status.values()));
+		List<ProposalStatusInfo> proposalStatusList = new ArrayList<ProposalStatusInfo>();
+		for (Status status : Status.values()) {
+			ProposalStatusInfo proposalStatus = new ProposalStatusInfo();
+			proposalStatus.setStatusKey(status.name());
+			proposalStatus.setStatusValue(status.toString());
+			proposalStatusList.add(proposalStatus);
+		}
+
+		return proposalStatusList;
 	}
 
 	@POST
@@ -195,8 +201,8 @@ public class ProposalService {
 		String usernameBy = new String();
 		Double totalCostsFrom = 0.0;
 		Double totalCostsTo = 0.0;
-		String receivedOnFrom = new String();
-		String receivedOnTo = new String();
+		String submittedOnFrom = new String();
+		String submittedOnTo = new String();
 		String proposalStatus = new String();
 		String userRole = new String();
 
@@ -220,12 +226,12 @@ public class ProposalService {
 			usernameBy = proposalObj.get("UsernameBy").getTextValue();
 		}
 
-		if (proposalObj != null && proposalObj.has("ReceivedOnFrom")) {
-			receivedOnFrom = proposalObj.get("ReceivedOnFrom").getTextValue();
+		if (proposalObj != null && proposalObj.has("SubmittedOnFrom")) {
+			submittedOnFrom = proposalObj.get("SubmittedOnFrom").getTextValue();
 		}
 
-		if (proposalObj != null && proposalObj.has("ReceivedOnTo")) {
-			receivedOnTo = proposalObj.get("ReceivedOnTo").getTextValue();
+		if (proposalObj != null && proposalObj.has("SubmittedOnTo")) {
+			submittedOnTo = proposalObj.get("SubmittedOnTo").getTextValue();
 		}
 
 		if (proposalObj != null && proposalObj.has("TotalCostsFrom")) {
@@ -283,7 +289,7 @@ public class ProposalService {
 		}
 
 		proposals = proposalDAO.findUserProposalGrid(offset, limit,
-				projectTitle, usernameBy, receivedOnFrom, receivedOnTo,
+				projectTitle, usernameBy, submittedOnFrom, submittedOnTo,
 				totalCostsFrom, totalCostsTo, proposalStatus, userRole,
 				userProfileID, userCollege, userDepartment, userPositionType,
 				userPositionTitle);
@@ -810,7 +816,9 @@ public class ProposalService {
 					proposalId = new ObjectId(proposalID);
 					existingProposal = proposalDAO
 							.findProposalByProposalID(proposalId);
-					oldProposal = existingProposal.clone();
+					if (existingProposal instanceof Cloneable) {
+						oldProposal = existingProposal.clone();
+					}
 				}
 			}
 
@@ -2146,48 +2154,6 @@ public class ProposalService {
 								.setExcludedPartyListChecked(newBaseOptions);
 					}
 				}
-
-				if (oSPSectionInfo != null
-						&& oSPSectionInfo.has("proposalNotes")) {
-					if (!proposalID.equals("0")) {
-						if (!existingProposal
-								.getoSPSectionInfo()
-								.getProposalNotes()
-								.equals(oSPSectionInfo.get("proposalNotes")
-										.getTextValue())) {
-							existingProposal.getoSPSectionInfo()
-									.setProposalNotes(
-											oSPSectionInfo.get("proposalNotes")
-													.getTextValue());
-						}
-					}
-				}
-
-				ResearchAdministrator newResearchAdministrator = new ResearchAdministrator();
-
-				if (oSPSectionInfo != null && oSPSectionInfo.has("DF")) {
-					newResearchAdministrator.setDF(oSPSectionInfo.get("DF")
-							.getBooleanValue());
-				}
-
-				if (oSPSectionInfo != null && oSPSectionInfo.has("LG")) {
-					newResearchAdministrator.setLG(oSPSectionInfo.get("LG")
-							.getBooleanValue());
-				}
-
-				if (oSPSectionInfo != null && oSPSectionInfo.has("LN")) {
-					newResearchAdministrator.setLN(oSPSectionInfo.get("LN")
-							.getBooleanValue());
-				}
-				if (!proposalID.equals("0")) {
-					if (!existingProposal.getoSPSectionInfo()
-							.getResearchAdministrator()
-							.equals(newResearchAdministrator)) {
-						existingProposal.getoSPSectionInfo()
-								.setResearchAdministrator(
-										newResearchAdministrator);
-					}
-				}
 			}
 
 			if (proposalInfo != null && !proposalInfo.has("ProposalNo")
@@ -2206,13 +2172,13 @@ public class ProposalService {
 					if (!existingProposal.getProposalStatus().equals(
 							Status.valueOf(proposalInfo.get("ProposalStatus")
 									.getTextValue()))) {
-						existingProposal.setProposalStatus(Status
-								.valueOf(proposalInfo.get("ProposalStatus")
-										.getTextValue()));
+
+						// TODO Need to clear all Proposal Status Before exists!
+						existingProposal.getProposalStatus().add(
+								Status.valueOf(proposalInfo.get(
+										"ProposalStatus").getTextValue()));
 					}
 				}
-			} else {
-				newProposal.setProposalStatus(Status.NEW);
 			}
 
 			String userProfileID = new String();

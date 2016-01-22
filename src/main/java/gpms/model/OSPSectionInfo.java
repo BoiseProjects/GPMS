@@ -6,7 +6,7 @@ import org.mongodb.morphia.annotations.Property;
 import com.google.gson.annotations.Expose;
 
 @Embedded
-public class OSPSectionInfo {
+public class OSPSectionInfo implements Cloneable {
 	@Expose
 	@Property("list agency")
 	private String listAgency = new String();
@@ -82,10 +82,6 @@ public class OSPSectionInfo {
 	@Expose
 	@Property("proposal notes")
 	private String proposalNotes = new String();
-
-	@Expose
-	@Embedded("research administrator")
-	private ResearchAdministrator researchAdministrator = new ResearchAdministrator();
 
 	public OSPSectionInfo() {
 	}
@@ -245,15 +241,6 @@ public class OSPSectionInfo {
 		this.proposalNotes = proposalNotes;
 	}
 
-	public ResearchAdministrator getResearchAdministrator() {
-		return researchAdministrator;
-	}
-
-	public void setResearchAdministrator(
-			ResearchAdministrator researchAdministrator) {
-		this.researchAdministrator = researchAdministrator;
-	}
-
 	@Override
 	public String toString() {
 		return "OSPSectionInfo [listAgency=" + listAgency + ", fundingSource="
@@ -271,7 +258,7 @@ public class OSPSectionInfo {
 				+ PIEligibilityWaiver + ", conflictOfInterestForms="
 				+ conflictOfInterestForms + ", excludedPartyListChecked="
 				+ excludedPartyListChecked + ", proposalNotes=" + proposalNotes
-				+ ", researchAdministrator=" + researchAdministrator + "]";
+				+ "]";
 	}
 
 	@Override
@@ -322,10 +309,6 @@ public class OSPSectionInfo {
 				+ ((proposalNotes == null) ? 0 : proposalNotes.hashCode());
 		result = prime * result
 				+ ((recovery == null) ? 0 : recovery.hashCode());
-		result = prime
-				* result
-				+ ((researchAdministrator == null) ? 0 : researchAdministrator
-						.hashCode());
 		result = prime
 				* result
 				+ ((thirdPartyCostDocumented == null) ? 0
@@ -426,11 +409,6 @@ public class OSPSectionInfo {
 				return false;
 		} else if (!recovery.equals(other.recovery))
 			return false;
-		if (researchAdministrator == null) {
-			if (other.researchAdministrator != null)
-				return false;
-		} else if (!researchAdministrator.equals(other.researchAdministrator))
-			return false;
 		if (thirdPartyCostDocumented == null) {
 			if (other.thirdPartyCostDocumented != null)
 				return false;
@@ -438,6 +416,44 @@ public class OSPSectionInfo {
 				.equals(other.thirdPartyCostDocumented))
 			return false;
 		return true;
+	}
+
+	public OSPSectionInfo(String listAgency, FundingSource fundingSource,
+			String cFDANo, String programNo, String programTitle,
+			Recovery recovery, BaseInfo baseInfo, boolean isPISalaryIncluded,
+			double pISalary, double pIFringe, String departmentId,
+			BaseOptions institutionalCostDocumented,
+			BaseOptions thirdPartyCostDocumented,
+			boolean isAnticipatedSubRecipients,
+			String anticipatedSubRecipientsNames,
+			BasePIEligibilityOptions pIEligibilityWaiver,
+			BaseOptions conflictOfInterestForms,
+			BaseOptions excludedPartyListChecked, String proposalNotes) {
+
+	}
+
+	@Override
+	protected OSPSectionInfo clone() throws CloneNotSupportedException {
+		OSPSectionInfo copy = new OSPSectionInfo();
+		copy.setListAgency(this.listAgency);
+		copy.setFundingSource(this.fundingSource.clone());
+		copy.setCFDANo(this.CFDANo);
+		copy.setProgramNo(this.programNo);
+		copy.setProgramTitle(this.programTitle);
+		copy.setRecovery(this.recovery.clone());
+		copy.setBaseInfo(this.baseInfo.clone());
+		copy.setPISalaryIncluded(this.isPISalaryIncluded);
+		copy.setPISalary(this.PISalary);
+		copy.setPIFringe(this.PIFringe);
+		copy.setDepartmentId(this.departmentId);
+		copy.setInstitutionalCostDocumented(this.institutionalCostDocumented.clone());
+		copy.setThirdPartyCostDocumented(this.thirdPartyCostDocumented.clone());
+		copy.setAnticipatedSubRecipients(this.isAnticipatedSubRecipients);
+		copy.setAnticipatedSubRecipientsNames(this.anticipatedSubRecipientsNames);
+		copy.setPIEligibilityWaiver(this.PIEligibilityWaiver.clone());
+		copy.setConflictOfInterestForms(this.conflictOfInterestForms.clone());
+		copy.setExcludedPartyListChecked(this.excludedPartyListChecked.clone());
+		return copy;
 	}
 
 }

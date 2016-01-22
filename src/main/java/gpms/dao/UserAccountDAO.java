@@ -40,7 +40,6 @@ public class UserAccountDAO extends BasicDAO<UserAccount, String> {
 						DBNAME);
 				ds.ensureIndexes();
 			} catch (UnknownHostException | MongoException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -76,7 +75,7 @@ public class UserAccountDAO extends BasicDAO<UserAccount, String> {
 		audit = new AuditLog(authorProfile,
 				"Deleted user account and profile of "
 						+ userAccount.getUserName(), new Date());
-		userAccount.addEntryToAuditLog(audit);
+		userAccount.getAuditLog().add(audit);
 
 		userAccount.setDeleted(true);
 		userAccount.setActive(false);
@@ -95,7 +94,7 @@ public class UserAccountDAO extends BasicDAO<UserAccount, String> {
 					"Deactivated user account and profile of "
 							+ userAccount.getUserName(), new Date());
 		}
-		userAccount.addEntryToAuditLog(audit);
+		userAccount.getAuditLog().add(audit);
 		userAccount.setDeleted(!isActive);
 		userAccount.setActive(isActive);
 		ds.save(userAccount);

@@ -7,10 +7,10 @@ import org.mongodb.morphia.annotations.Reference;
 import com.google.gson.annotations.Expose;
 
 @Embedded
-public class InvestigatorRefAndPosition {
+public class InvestigatorRefAndPosition implements Cloneable {
 	@Expose
 	@Reference(value = "user profile" /* , lazy = true */)
-	UserProfile userRef;
+	UserProfile userRef = new UserProfile();
 
 	@Expose
 	@Property("user profile id")
@@ -154,12 +154,12 @@ public class InvestigatorRefAndPosition {
 	@Override
 	public InvestigatorRefAndPosition clone() throws CloneNotSupportedException {
 		InvestigatorRefAndPosition copy = new InvestigatorRefAndPosition();
-		copy.setUserRef(userRef);
-		copy.setUserProfileId(userProfileId);
-		copy.setCollege(college);
-		copy.setDepartment(department);
-		copy.setPositionType(positionType);
-		copy.setPositionTitle(positionTitle);
+		copy.setUserRef(this.userRef.clone());
+		copy.setUserProfileId(this.userProfileId);
+		copy.setCollege(this.college);
+		copy.setDepartment(this.department);
+		copy.setPositionType(this.positionType);
+		copy.setPositionTitle(this.positionTitle);
 		return copy;
 	}
 

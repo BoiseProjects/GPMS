@@ -12,12 +12,7 @@ import org.mongodb.morphia.annotations.Transient;
 import com.google.gson.annotations.Expose;
 
 @Embedded
-public class InvestigatorInfo {
-	@Transient
-	public final int MAX_NUM_CO_PI = 4;
-	@Transient
-	public final int MAX_NUM_SENIOR_PERSONNEL = 10;
-
+public class InvestigatorInfo implements Cloneable {
 	@Expose
 	@Embedded("PI")
 	private InvestigatorRefAndPosition pi = new InvestigatorRefAndPosition();
@@ -43,51 +38,29 @@ public class InvestigatorInfo {
 		return co_pi;
 	}
 
-	public void setCo_pi(ArrayList<InvestigatorRefAndPosition> co_pi) {
-		if (co_pi.size() <= MAX_NUM_CO_PI) {
-			this.co_pi = co_pi;
-		}
-	}
-
-	public void addCo_pi(InvestigatorRefAndPosition co_pi) {
-		if (!this.co_pi.contains(co_pi)) {
-			if (this.co_pi.size() < MAX_NUM_CO_PI) {
-				this.co_pi.add(co_pi);
-			}
-		}
+	public void setCo_pi(List<InvestigatorRefAndPosition> co_pi) {
+		this.co_pi = co_pi;
 	}
 
 	public List<InvestigatorRefAndPosition> getSeniorPersonnel() {
 		return seniorPersonnel;
 	}
 
-	public void addSeniorPersonnel(InvestigatorRefAndPosition seniorPersonnel) {
-		if (this.seniorPersonnel.size() < MAX_NUM_SENIOR_PERSONNEL) {
-			this.seniorPersonnel.add(seniorPersonnel);
-		}
-	}
-
 	public void setSeniorPersonnel(
-			ArrayList<InvestigatorRefAndPosition> seniorPersonnel) {
-		if (seniorPersonnel.size() <= MAX_NUM_SENIOR_PERSONNEL) {
-			this.seniorPersonnel = seniorPersonnel;
-		}
+			List<InvestigatorRefAndPosition> seniorPersonnel) {
+		this.seniorPersonnel = seniorPersonnel;
 	}
 
 	@Override
 	public String toString() {
-		return "InvestigatorInfo [MAX_NUM_CO_PI=" + MAX_NUM_CO_PI
-				+ ", MAX_NUM_SENIOR_PERSONNEL=" + MAX_NUM_SENIOR_PERSONNEL
-				+ ", pi=" + pi + ", co_pi=" + co_pi + ", seniorPersonnel="
-				+ seniorPersonnel + "]";
+		return "InvestigatorInfo [pi=" + pi + ", co_pi=" + co_pi
+				+ ", seniorPersonnel=" + seniorPersonnel + "]";
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + MAX_NUM_CO_PI;
-		result = prime * result + MAX_NUM_SENIOR_PERSONNEL;
 		result = prime * result + ((co_pi == null) ? 0 : co_pi.hashCode());
 		result = prime * result + ((pi == null) ? 0 : pi.hashCode());
 		result = prime * result
@@ -104,10 +77,6 @@ public class InvestigatorInfo {
 		if (getClass() != obj.getClass())
 			return false;
 		InvestigatorInfo other = (InvestigatorInfo) obj;
-		if (MAX_NUM_CO_PI != other.MAX_NUM_CO_PI)
-			return false;
-		if (MAX_NUM_SENIOR_PERSONNEL != other.MAX_NUM_SENIOR_PERSONNEL)
-			return false;
 		if (co_pi == null) {
 			if (other.co_pi != null)
 				return false;
@@ -132,10 +101,10 @@ public class InvestigatorInfo {
 		copy.setPi(this.pi.clone());
 
 		for (InvestigatorRefAndPosition coPi : this.co_pi) {
-			copy.addCo_pi(coPi.clone());
+			copy.getCo_pi().add(coPi.clone());
 		}
 		for (InvestigatorRefAndPosition seniorPersonnel : this.seniorPersonnel) {
-			copy.addSeniorPersonnel(seniorPersonnel.clone());
+			copy.getSeniorPersonnel().add(seniorPersonnel.clone());
 		}
 		return copy;
 	}

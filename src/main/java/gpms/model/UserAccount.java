@@ -20,7 +20,7 @@ import com.google.gson.annotations.Expose;
 @Entity(value = UserAccountDAO.COLLECTION_NAME, noClassnameStored = true)
 // @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class,
 // property = "_id")
-public class UserAccount extends BaseEntity {
+public class UserAccount extends BaseEntity implements Cloneable {
 	@Expose
 	@Property("username")
 	@Indexed(value = IndexDirection.ASC, name = "userNameIndex", unique = true)
@@ -167,21 +167,22 @@ public class UserAccount extends BaseEntity {
 		return true;
 	}
 
-	// TODO::Password from constructor removed, verify correct function of
-	// method
 	@Override
 	public UserAccount clone() throws CloneNotSupportedException {
 		UserAccount copy = new UserAccount(this.userName);
-		copy.setId(this.getId());
-		copy.setVersion(this.getVersion());
+		copy.setUserName(this.userName);
+		copy.setPassword(this.password);
+		copy.setActive(this.isActive);
+		copy.setAdmin(this.isAdmin);
+		copy.setAddedOn(this.addedOn);
 		copy.setDeleted(this.isDeleted());
-		for (AuditLog entry : this.getAuditLog()) {
-			copy.addEntryToAuditLog(entry);
-		}
+
+		// copy.setId(this.getId());
+		// copy.setVersion(this.getVersion());
+		// for (AuditLog entry : this.getAuditLog()) {
+		// copy.getAuditLog().add(entry);
+		// }
 		return copy;
 	}
 
-	public void addEntryToAuditLog(AuditLog audit) {
-		this.getAuditLog().add(audit);
-	}
 }

@@ -10,6 +10,7 @@ import gpms.model.ProjectLocation;
 import gpms.model.ProjectType;
 import gpms.model.Proposal;
 import gpms.model.ProposalInfo;
+import gpms.model.ProposalStatusInfo;
 import gpms.model.SignatureInfo;
 import gpms.model.Status;
 import gpms.model.TypeOfRequest;
@@ -80,7 +81,7 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 		Datastore ds = getDatastore();
 		audit = new AuditLog(authorProfile, "Created proposal by "
 				+ authorProfile.getUserAccount().getUserName(), new Date());
-		newProposal.addEntryToAuditLog(audit);
+		newProposal.getAuditLog().add(audit);
 		ds.save(newProposal);
 	}
 
@@ -89,16 +90,18 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 		Datastore ds = getDatastore();
 		audit = new AuditLog(authorProfile, "Updated proposal by "
 				+ authorProfile.getUserAccount().getUserName(), new Date());
-		existingProposal.addEntryToAuditLog(audit);
+		existingProposal.getAuditLog().add(audit);
 		ds.save(existingProposal);
 	}
 
 	public void deleteProposal(Proposal proposal, UserProfile authorProfile) {
 		Datastore ds = getDatastore();
-		proposal.setProposalStatus(Status.DELETED);
+		// TODO
+		proposal.getProposalStatus().clear();
+		proposal.getProposalStatus().add(Status.DELETEDBYPI);
 		AuditLog entry = new AuditLog(authorProfile, "Deleted Proposal by "
 				+ authorProfile.getUserAccount().getUserName(), new Date());
-		proposal.addEntryToAuditLog(entry);
+		proposal.getAuditLog().add(entry);
 		ds.save(proposal);
 	}
 
@@ -131,17 +134,17 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 				}
 
 				if (auditedBy != null) {
-					if (poposalAudit.getUserProfileId().getUserAccount()
+					if (poposalAudit.getUserProfile().getUserAccount()
 							.getUserName().toLowerCase()
 							.contains(auditedBy.toLowerCase())) {
 						isAuditedByMatch = true;
-					} else if (poposalAudit.getUserProfileId().getFirstName()
+					} else if (poposalAudit.getUserProfile().getFirstName()
 							.toLowerCase().contains(auditedBy.toLowerCase())) {
 						isAuditedByMatch = true;
-					} else if (poposalAudit.getUserProfileId().getMiddleName()
+					} else if (poposalAudit.getUserProfile().getMiddleName()
 							.toLowerCase().contains(auditedBy.toLowerCase())) {
 						isAuditedByMatch = true;
-					} else if (poposalAudit.getUserProfileId().getLastName()
+					} else if (poposalAudit.getUserProfile().getLastName()
 							.toLowerCase().contains(auditedBy.toLowerCase())) {
 						isAuditedByMatch = true;
 					}
@@ -183,10 +186,10 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 
 				if (isActionMatch && isAuditedByMatch
 						&& isActivityDateFromMatch && isActivityDateToMatch) {
-					proposalAuditLog.setUserName(poposalAudit
-							.getUserProfileId().getUserAccount().getUserName());
+					proposalAuditLog.setUserName(poposalAudit.getUserProfile()
+							.getUserAccount().getUserName());
 					proposalAuditLog.setUserFullName(poposalAudit
-							.getUserProfileId().getFullName());
+							.getUserProfile().getFullName());
 					proposalAuditLog.setAction(poposalAudit.getAction());
 					proposalAuditLog.setActivityDate(poposalAudit
 							.getActivityDate());
@@ -290,7 +293,8 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 		}
 
 		if (proposalStatus != null) {
-			proposalQuery.field("proposal status").equal(proposalStatus);
+			// TODO
+			proposalQuery.field("proposal status").contains(proposalStatus);
 		}
 
 		if (usernameBy != null) {
@@ -409,9 +413,12 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 			proposal.setProjectPeriodTo(userProposal.getProjectInfo()
 					.getProjectPeriod().getTo());
 
-			proposal.setProposalStatus(userProposal.getProposalStatus());
+			for (Status status : userProposal.getProposalStatus()) {
+				proposal.getProposalStatus().add(status.toString());
+			}
 
-			if (userProposal.getProposalStatus() == Status.DELETED) {
+			// TODO
+			if (userProposal.getProposalStatus().equals(Status.DELETEDBYPI)) {
 				proposal.setDeleted(true);
 			}
 
@@ -424,7 +431,7 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 					userAuditLog.setActivityDate(userProfileAudit
 							.getActivityDate());
 					userAuditLog.setUserFullName(userProfileAudit
-							.getUserProfileId().getFullName());
+							.getUserProfile().getFullName());
 					userAuditLog.setAction(userProfileAudit.getAction());
 
 					allAuditLogs.add(userAuditLog);
@@ -480,8 +487,8 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 	}
 
 	public List<ProposalInfo> findUserProposalGrid(int offset, int limit,
-			String projectTitle, String usernameBy, String receivedOnFrom,
-			String receivedOnTo, Double totalCostsFrom, Double totalCostsTo,
+			String projectTitle, String usernameBy, String submittedOnFrom,
+			String submittedOnTo, Double totalCostsFrom, Double totalCostsTo,
 			String proposalStatus, String userRole, String userId,
 			String college, String department, String positionType,
 			String positionTitle) throws ParseException {
@@ -496,14 +503,16 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 					.containsIgnoreCase(projectTitle);
 		}
 
-		if (receivedOnFrom != null) {
-			Date receivedOnF = formatter.parse(receivedOnFrom);
-			proposalQuery.field("date received").greaterThanOrEq(receivedOnF);
+		if (submittedOnFrom != null && !submittedOnFrom.isEmpty()) {
+			Date receivedOnF = formatter.parse(submittedOnFrom);
+			proposalQuery.field("date submitted").greaterThanOrEq(receivedOnF);
 		}
-		if (receivedOnTo != null) {
-			Date receivedOnT = formatter.parse(receivedOnTo);
-			proposalQuery.field("date received").lessThanOrEq(receivedOnT);
+		if (submittedOnTo != null && !submittedOnTo.isEmpty()) {
+			Date receivedOnT = formatter.parse(submittedOnTo);
+			proposalQuery.field("date submitted").lessThanOrEq(receivedOnT);
 		}
+
+		// TODO for Date Submitted
 
 		if (totalCostsFrom != null && totalCostsFrom != 0.0) {
 			proposalQuery.field("sponsor and budget info.total costs")
@@ -514,8 +523,9 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 					.lessThanOrEq(totalCostsTo);
 		}
 
+		// TODO
 		if (proposalStatus != null) {
-			proposalQuery.field("proposal status").equal(proposalStatus);
+			proposalQuery.field("proposal status").contains(proposalStatus);
 		}
 
 		// High Level Users University Level --> University Research
@@ -760,6 +770,7 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 					.getFARate());
 
 			proposal.setDateReceived(userProposal.getDateReceived());
+			proposal.setDateSubmitted(userProposal.getDateSubmitted());
 
 			proposal.setDueDate(userProposal.getProjectInfo().getDueDate());
 			proposal.setProjectPeriodFrom(userProposal.getProjectInfo()
@@ -767,9 +778,12 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 			proposal.setProjectPeriodTo(userProposal.getProjectInfo()
 					.getProjectPeriod().getTo());
 
-			proposal.setProposalStatus(userProposal.getProposalStatus());
+			for (Status status : userProposal.getProposalStatus()) {
+				proposal.getProposalStatus().add(status.toString());
+			}
 
-			if (userProposal.getProposalStatus() == Status.DELETED) {
+			// TODO
+			if (userProposal.getProposalStatus().equals(Status.DELETEDBYPI)) {
 				proposal.setDeleted(true);
 			}
 
@@ -782,7 +796,7 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 					userAuditLog.setActivityDate(userProfileAudit
 							.getActivityDate());
 					userAuditLog.setUserFullName(userProfileAudit
-							.getUserProfileId().getFullName());
+							.getUserProfile().getFullName());
 					userAuditLog.setAction(userProfileAudit.getAction());
 
 					allAuditLogs.add(userAuditLog);
@@ -811,6 +825,10 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 				proposal.getAllUsers().add(piUserId);
 			}
 
+			if (piUserId.equals(userId)) {
+				proposal.getCurrentuserProposalRoles().add("PI");
+			}
+
 			List<InvestigatorRefAndPosition> allCoPI = userProposal
 					.getInvestigatorInfo().getCo_pi();
 			for (InvestigatorRefAndPosition coPI : allCoPI) {
@@ -818,6 +836,10 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 				proposal.getCopiUsers().add(coPIUser);
 				if (!proposal.getAllUsers().contains(coPIUser)) {
 					proposal.getAllUsers().add(coPIUser);
+				}
+
+				if (coPI.getUserProfileId().equals(userId)) {
+					proposal.getCurrentuserProposalRoles().add("CO-PI");
 				}
 			}
 
@@ -828,6 +850,11 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 				proposal.getSeniorUsers().add(seniorUser);
 				if (!proposal.getAllUsers().contains(seniorUser)) {
 					proposal.getAllUsers().add(seniorUser);
+				}
+
+				// TODO Bind Proposal Roles for the User
+				if (senior.getUserProfileId().equals(userId)) {
+					proposal.getCurrentuserProposalRoles().add("Senior");
 				}
 			}
 

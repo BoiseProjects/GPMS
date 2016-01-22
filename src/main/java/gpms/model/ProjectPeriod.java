@@ -10,7 +10,7 @@ import org.mongodb.morphia.annotations.Property;
 import com.google.gson.annotations.Expose;
 
 @Embedded
-public class ProjectPeriod {
+public class ProjectPeriod implements Cloneable {
 	@Expose
 	@Property("from")
 	private Date from = new Date();
@@ -80,10 +80,8 @@ public class ProjectPeriod {
 	@Override
 	public ProjectPeriod clone() throws CloneNotSupportedException {
 		ProjectPeriod copy = new ProjectPeriod();
-
-		copy.setFrom(new Date(this.from.getTime()));
-		copy.setTo(new Date(this.to.getTime()));
-
+		copy.setFrom(this.from);
+		copy.setTo(this.to);
 		return copy;
 	}
 

@@ -26,6 +26,7 @@ public class ProposalInfo implements Comparable<ProposalInfo> {
 
 	// Proposal
 	private Date dateReceived = new Date();
+	private Date dateSubmitted = new Date();
 
 	// ProjectInfo
 	private Date dueDate = new Date();
@@ -33,7 +34,7 @@ public class ProposalInfo implements Comparable<ProposalInfo> {
 	private Date projectPeriodTo = new Date();
 
 	// Proposal
-	private Status proposalStatus = Status.NEW;
+	private List<String> proposalStatus = new ArrayList<String>();
 
 	private Date lastAudited = new Date();
 	private String lastAuditedBy = new String();
@@ -45,6 +46,9 @@ public class ProposalInfo implements Comparable<ProposalInfo> {
 	private List<String> seniorUsers = new ArrayList<String>();
 
 	private List<String> allUsers = new ArrayList<String>();
+
+	// Proposal Roles
+	private List<String> currentuserProposalRoles = new ArrayList<String>();
 
 	private boolean isDeleted = false;
 
@@ -84,12 +88,21 @@ public class ProposalInfo implements Comparable<ProposalInfo> {
 		this.dateReceived = dateReceived;
 	}
 
-	public Status getProposalStatus() {
+	public Date getDateSubmitted() {
+		return dateSubmitted;
+	}
+
+	public void setDateSubmitted(Date dateSubmitted) {
+		this.dateSubmitted = dateSubmitted;
+	}
+
+	public List<String> getProposalStatus() {
 		return proposalStatus;
 	}
 
-	public void setProposalStatus(Status proposalStatus) {
-		this.proposalStatus = proposalStatus;
+	// TODO
+	public void setProposalStatus(List<String> proposalStatus) {
+		this.proposalStatus.addAll(proposalStatus);
 	}
 
 	public String getProjectTitle() {
@@ -242,6 +255,16 @@ public class ProposalInfo implements Comparable<ProposalInfo> {
 
 	public void setAllUsers(List<String> allUsers) {
 		this.allUsers = allUsers;
+	}
+
+	// TODO
+	public List<String> getCurrentuserProposalRoles() {
+		return currentuserProposalRoles;
+	}
+
+	public void setCurrentuserProposalRoles(
+			List<String> currentuserProposalRoles) {
+		this.currentuserProposalRoles = currentuserProposalRoles;
 	}
 
 	public boolean isDeleted() {

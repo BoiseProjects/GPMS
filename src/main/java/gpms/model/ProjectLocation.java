@@ -6,7 +6,7 @@ import org.mongodb.morphia.annotations.Property;
 import com.google.gson.annotations.Expose;
 
 @Embedded
-public class ProjectLocation {
+public class ProjectLocation implements Cloneable {
 	@Expose
 	@Property("off-campus")
 	private boolean offCampus;
@@ -76,10 +76,8 @@ public class ProjectLocation {
 	@Override
 	public ProjectLocation clone() throws CloneNotSupportedException {
 		ProjectLocation copy = new ProjectLocation();
-
 		copy.setOnCampus(this.onCampus);
 		copy.setOffCampus(this.offCampus);
-
 		return copy;
 	}
 

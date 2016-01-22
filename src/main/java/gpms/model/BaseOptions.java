@@ -6,7 +6,7 @@ import org.mongodb.morphia.annotations.Property;
 import com.google.gson.annotations.Expose;
 
 @Embedded
-public class BaseOptions {
+public class BaseOptions implements Cloneable {
 	@Expose
 	@Property("yes")
 	private boolean yes;
@@ -90,6 +90,15 @@ public class BaseOptions {
 		if (yes != other.yes)
 			return false;
 		return true;
+	}
+
+	@Override
+	protected BaseOptions clone() throws CloneNotSupportedException {
+		BaseOptions copy = new BaseOptions();
+		copy.setYes(this.yes);
+		copy.setNo(this.no);
+		copy.setNotApplicable(this.notApplicable);
+		return copy;
 	}
 
 }

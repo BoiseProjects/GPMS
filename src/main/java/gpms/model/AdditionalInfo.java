@@ -6,15 +6,15 @@ import org.mongodb.morphia.annotations.Property;
 import com.google.gson.annotations.Expose;
 
 @Embedded
-public class AdditionalInfo {
+public class AdditionalInfo implements Cloneable{
 	@Expose
 	@Property("anticipates foreign nationals payment")
 	private boolean anticipatesForeignNationalsPayment;
-	
+
 	@Expose
 	@Property("anticipates course release time")
 	private boolean anticipatesCourseReleaseTime;
-	
+
 	@Expose
 	@Property("related to center for advanced energy studies")
 	private boolean relatedToCenterForAdvancedEnergyStudies;
@@ -87,6 +87,15 @@ public class AdditionalInfo {
 		if (relatedToCenterForAdvancedEnergyStudies != other.relatedToCenterForAdvancedEnergyStudies)
 			return false;
 		return true;
-	}	
+	}
+
+	@Override
+	protected AdditionalInfo clone() throws CloneNotSupportedException {
+		AdditionalInfo copy = new AdditionalInfo();
+		copy.setAnticipatesForeignNationalsPayment(this.anticipatesForeignNationalsPayment);
+		copy.setAnticipatesCourseReleaseTime(this.anticipatesCourseReleaseTime);
+		copy.setAnticipatesCourseReleaseTime(this.anticipatesCourseReleaseTime);
+		return copy;
+	}
 
 }

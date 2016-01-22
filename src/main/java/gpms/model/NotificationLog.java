@@ -14,7 +14,7 @@ import com.google.gson.annotations.Expose;
 
 @Entity(value = NotificationDAO.COLLECTION_NAME, noClassnameStored = true)
 public class NotificationLog extends BaseEntity implements
-		Comparable<NotificationLog> {
+		Comparable<NotificationLog>, Cloneable {
 
 	@Expose
 	@Property("type")

@@ -8,7 +8,7 @@ import org.mongodb.morphia.annotations.Property;
 import com.google.gson.annotations.Expose;
 
 @Embedded
-public class SignatureInfo {
+public class SignatureInfo implements Cloneable {
 	@Expose
 	@Property("user profile id")
 	private String userProfileId = new String();
@@ -28,6 +28,10 @@ public class SignatureInfo {
 	@Expose
 	@Property("signed date")
 	private Date signedDate = null;
+
+	@Expose
+	@Property("note")
+	private String note = new String();
 
 	@Expose
 	@Property("is delegated")
@@ -80,6 +84,14 @@ public class SignatureInfo {
 		this.signedDate = signedDate;
 	}
 
+	public String getNote() {
+		return note;
+	}
+
+	public void setNote(String note) {
+		this.note = note;
+	}
+
 	public boolean isDelegated() {
 		return isDelegated;
 	}
@@ -100,8 +112,8 @@ public class SignatureInfo {
 	public String toString() {
 		return "SignatureInfo [userProfileId=" + userProfileId + ", fullName="
 				+ fullName + ", signature=" + signature + ", positionTitle="
-				+ positionTitle + ", signedDate=" + signedDate
-				+ ", isDelegated=" + isDelegated + ", delegatedAs="
+				+ positionTitle + ", signedDate=" + signedDate + ", note="
+				+ note + ", isDelegated=" + isDelegated + ", delegatedAs="
 				+ delegatedAs + "]";
 	}
 
@@ -114,6 +126,7 @@ public class SignatureInfo {
 		result = prime * result
 				+ ((fullName == null) ? 0 : fullName.hashCode());
 		result = prime * result + (isDelegated ? 1231 : 1237);
+		result = prime * result + ((note == null) ? 0 : note.hashCode());
 		result = prime * result
 				+ ((positionTitle == null) ? 0 : positionTitle.hashCode());
 		result = prime * result
@@ -146,6 +159,11 @@ public class SignatureInfo {
 			return false;
 		if (isDelegated != other.isDelegated)
 			return false;
+		if (note == null) {
+			if (other.note != null)
+				return false;
+		} else if (!note.equals(other.note))
+			return false;
 		if (positionTitle == null) {
 			if (other.positionTitle != null)
 				return false;
@@ -167,6 +185,20 @@ public class SignatureInfo {
 		} else if (!userProfileId.equals(other.userProfileId))
 			return false;
 		return true;
+	}
+
+	@Override
+	protected SignatureInfo clone() throws CloneNotSupportedException {
+		SignatureInfo copy = new SignatureInfo();
+		copy.setUserProfileId(this.userProfileId);
+		copy.setFullName(this.fullName);
+		copy.setSignature(this.signature);
+		copy.setPositionTitle(this.positionTitle);
+		copy.setSignedDate(this.signedDate);
+		copy.setNote(this.note);
+		copy.setDelegated(this.isDelegated);
+		copy.setDelegatedAs(this.delegatedAs);
+		return copy;
 	}
 
 }

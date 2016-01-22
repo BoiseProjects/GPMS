@@ -78,7 +78,7 @@ public class Create10UsersTest {
 			}
 
 			newProfile.setLastName(lastName);
-			newProfile.setUserId(newAccount);
+			newProfile.setUserAccount(newAccount);
 			newProfile.getHomeNumbers().add("2084661200");
 			newProfile.getOfficeNumbers().add("2084947492");
 			newProfile.getMobileNumbers().add("2087024522");

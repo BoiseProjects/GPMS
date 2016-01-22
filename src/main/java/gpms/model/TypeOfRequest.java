@@ -8,7 +8,7 @@ import org.mongodb.morphia.annotations.Property;
 import com.google.gson.annotations.Expose;
 
 @Embedded
-public class TypeOfRequest {
+public class TypeOfRequest implements Cloneable {
 	@Expose
 	@Property("pre-proposal")
 	private boolean isPreProposal;
@@ -124,12 +124,10 @@ public class TypeOfRequest {
 	@Override
 	public TypeOfRequest clone() throws CloneNotSupportedException {
 		TypeOfRequest copy = new TypeOfRequest();
-
 		copy.setContinuation(this.isContinuation);
 		copy.setNewProposal(this.isNewProposal);
 		copy.setPreProposal(this.isPreProposal);
 		copy.setSupplement(this.isSupplement);
-
 		return copy;
 	}
 

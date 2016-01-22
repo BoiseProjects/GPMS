@@ -8,7 +8,7 @@ import org.mongodb.morphia.annotations.Property;
 import com.google.gson.annotations.Expose;
 
 @Embedded
-public class ProjectType {
+public class ProjectType implements Cloneable {
 	@Expose
 	@Property("research-basic")
 	private boolean isResearchBasic;
@@ -151,13 +151,11 @@ public class ProjectType {
 	@Override
 	public ProjectType clone() throws CloneNotSupportedException {
 		ProjectType copy = new ProjectType();
-
 		copy.setIsResearchBasic(this.isResearchBasic);
 		copy.setIsResearchApplied(this.isResearchApplied);
 		copy.setIsResearchDevelopment(this.isResearchDevelopment);
 		copy.setIsInstruction(this.isInstruction);
 		copy.setIsOtherSponsoredActivity(this.isOtherSponsoredActivity);
-
 		return copy;
 	}
 

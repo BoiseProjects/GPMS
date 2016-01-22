@@ -8,7 +8,7 @@ import org.mongodb.morphia.annotations.Property;
 import com.google.gson.annotations.Expose;
 
 @Embedded
-public class ConflictOfInterest {
+public class ConflictOfInterest implements Cloneable {
 	// c_o_i == conflict_of_interest
 	@Expose
 	@Property("financial COI")
@@ -84,6 +84,15 @@ public class ConflictOfInterest {
 		if (financialCOI != other.financialCOI)
 			return false;
 		return true;
+	}
+
+	@Override
+	protected ConflictOfInterest clone() throws CloneNotSupportedException {
+		ConflictOfInterest copy = new ConflictOfInterest();
+		copy.setFinancialCOI(this.financialCOI);
+		copy.setConflictDisclosed(this.conflictDisclosed);
+		copy.setDisclosureFormChange(this.disclosureFormChange);
+		return clone();
 	}
 
 }

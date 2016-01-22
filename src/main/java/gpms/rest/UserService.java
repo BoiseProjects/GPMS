@@ -811,7 +811,7 @@ public class UserService {
 		}
 
 		if (userID.equals("0")) {
-			newProfile.setUserId(newAccount);
+			newProfile.setUserAccount(newAccount);
 		}
 
 		if (userInfo != null && userInfo.has("FirstName")) {
@@ -1205,7 +1205,7 @@ public class UserService {
 				newAccount.setPassword(userInfo.get("Password").getTextValue());
 			}
 
-			newProfile.setUserId(newAccount);
+			newProfile.setUserAccount(newAccount);
 
 			if (userInfo != null && userInfo.has("FirstName")) {
 				newProfile.setFirstName(userInfo.get("FirstName")

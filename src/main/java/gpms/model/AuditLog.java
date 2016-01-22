@@ -12,10 +12,10 @@ import org.mongodb.morphia.utils.IndexDirection;
 @Embedded
 // @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class,
 // property = "id")
-public class AuditLog implements Comparable<AuditLog> {
+public class AuditLog implements Comparable<AuditLog>, Cloneable {
 	// @Expose
-	@Reference(value = "user id", lazy = true)
-	private UserProfile userProfileId = new UserProfile();
+	@Reference(value = "author info", lazy = true)
+	private UserProfile userProfile = new UserProfile();
 
 	// @Expose
 	@Property("action")
@@ -30,17 +30,17 @@ public class AuditLog implements Comparable<AuditLog> {
 	}
 
 	public AuditLog(UserProfile authorProfile, String action, Date activityDate) {
-		this.userProfileId = authorProfile;
+		this.userProfile = authorProfile;
 		this.action = action;
 		this.activityDate = activityDate;
 	}
 
-	public UserProfile getUserProfileId() {
-		return userProfileId;
+	public UserProfile getUserProfile() {
+		return userProfile;
 	}
 
-	public void setUserProfileId(UserProfile userProfileId) {
-		this.userProfileId = userProfileId;
+	public void setUserProfile(UserProfile userProfileId) {
+		this.userProfile = userProfileId;
 	}
 
 	public String getAction() {
@@ -75,7 +75,7 @@ public class AuditLog implements Comparable<AuditLog> {
 		result = prime * result
 				+ ((activityDate == null) ? 0 : activityDate.hashCode());
 		result = prime * result
-				+ ((userProfileId == null) ? 0 : userProfileId.hashCode());
+				+ ((userProfile == null) ? 0 : userProfile.hashCode());
 		return result;
 	}
 
@@ -98,11 +98,21 @@ public class AuditLog implements Comparable<AuditLog> {
 				return false;
 		} else if (!activityDate.equals(other.activityDate))
 			return false;
-		if (userProfileId == null) {
-			if (other.userProfileId != null)
+		if (userProfile == null) {
+			if (other.userProfile != null)
 				return false;
-		} else if (!userProfileId.equals(other.userProfileId))
+		} else if (!userProfile.equals(other.userProfile))
 			return false;
 		return true;
 	}
+
+	@Override
+	protected AuditLog clone() throws CloneNotSupportedException {
+		AuditLog copy = new AuditLog();
+		copy.setUserProfile(this.userProfile.clone());
+		copy.setAction(this.action);
+		copy.setActivityDate(this.activityDate);
+		return copy;
+	}
+
 }

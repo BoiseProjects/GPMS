@@ -35,6 +35,10 @@ public class Accesscontrol {
 		// this.attrSpreadSheet = new
 		// AttributeSpreadSheet("XACML Data sheet.xls");
 
+		// String fileName = "/XACML Data sheet.xls"; // use forward slash to
+		// recognize your file
+		// String path = this.getClass().getResource(fileName).toString();
+
 		InputStream stream = Thread.currentThread().getContextClassLoader()
 				.getResourceAsStream("XACML Data sheet.xls");
 		this.attrSpreadSheet = new AttributeSpreadSheet(stream);

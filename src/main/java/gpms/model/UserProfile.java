@@ -23,7 +23,7 @@ import com.google.gson.annotations.Expose;
 @Entity(value = UserProfileDAO.COLLECTION_NAME, noClassnameStored = true)
 // @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class,
 // property = "id")
-public class UserProfile extends BaseEntity {
+public class UserProfile extends BaseEntity implements Cloneable {
 	@Expose
 	@Property("first name")
 	@Indexed(value = IndexDirection.ASC, name = "firstNameIndex")
@@ -225,10 +225,6 @@ public class UserProfile extends BaseEntity {
 		this.isDeleted = isDeleted;
 	}
 
-	public void setUserId(UserAccount newUserAccount) {
-		userAccount = newUserAccount;
-	}
-
 	/**
 	 * toString returns full user name
 	 * 
@@ -388,7 +384,7 @@ public class UserProfile extends BaseEntity {
 			copy.getOtherNumbers().add(phone);
 		}
 		for (Address address : this.addresses) {
-			copy.getAddresses().add(address);
+			copy.getAddresses().add(address.clone());
 		}
 		for (String email : this.workEmails) {
 			copy.getWorkEmails().add(email);
@@ -396,13 +392,13 @@ public class UserProfile extends BaseEntity {
 		for (String email : this.personalEmails) {
 			copy.getPersonalEmails().add(email);
 		}
-		copy.setUserId(this.userAccount.clone());
+		copy.setUserAccount(this.userAccount.clone());
 		copy.setDeleted(this.isDeleted());
-		copy.setId(this.getId());
-		copy.setVersion(this.getVersion());
-		for (AuditLog entry : this.getAuditLog()) {
-			copy.addEntryToAuditLog(entry);
-		}
+		// copy.setId(this.getId());
+		// copy.setVersion(this.getVersion());
+		// for (AuditLog entry : this.getAuditLog()) {
+		// copy.addEntryToAuditLog(entry);
+		// }
 
 		return copy;
 	}

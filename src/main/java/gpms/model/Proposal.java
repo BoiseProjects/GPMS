@@ -15,7 +15,7 @@ import org.mongodb.morphia.utils.IndexDirection;
 import com.google.gson.annotations.Expose;
 
 @Entity(value = ProposalDAO.COLLECTION_NAME, noClassnameStored = true)
-public class Proposal extends BaseEntity {
+public class Proposal extends BaseEntity implements Cloneable {
 	@Expose
 	@Property("proposal no")
 	@Indexed(value = IndexDirection.ASC, name = "proposalNoIndex", unique = true)
@@ -26,8 +26,12 @@ public class Proposal extends BaseEntity {
 	private Date dateReceived = new Date();
 
 	@Expose
+	@Property("date submitted")
+	private Date dateSubmitted = null;
+
+	@Expose
 	@Property("proposal status")
-	private Status proposalStatus = Status.NEW;
+	private List<Status> proposalStatus = new ArrayList<Status>();
 
 	@Expose
 	@Embedded("investigator info")
@@ -102,26 +106,26 @@ public class Proposal extends BaseEntity {
 		}
 	}
 
-	public Status getProposalStatus() {
+	public Date getDateSubmitted() {
+		return dateSubmitted;
+	}
+
+	public void setDateSubmitted(Date dateSubmitted) {
+		this.dateSubmitted = dateSubmitted;
+	}
+
+	public List<Status> getProposalStatus() {
 		return proposalStatus;
 	}
 
-	public void setProposalStatus(Status status) {
-		this.proposalStatus = status;
+	public void setProposalStatus(List<Status> proposalStatus) {
+		this.proposalStatus = proposalStatus;
 	}
 
 	public InvestigatorInfo getInvestigatorInfo() {
 		return investigatorInfo;
 	}
 
-	/**
-	 * When Investigator info is set, we will add a uniquely generated id to
-	 * everyone involved at the creation of the proposal this id is the
-	 * proposalKey, which is an ObjectId object, but we run the toString to make
-	 * it more manageable for our purposes.
-	 * 
-	 * @param investigatorInfo
-	 */
 	public void setInvestigatorInfo(InvestigatorInfo investigatorInfo) {
 		this.investigatorInfo = investigatorInfo;
 	}
@@ -219,10 +223,11 @@ public class Proposal extends BaseEntity {
 	@Override
 	public String toString() {
 		return "Proposal [proposalNo=" + proposalNo + ", dateReceived="
-				+ dateReceived + ", proposalStatus=" + proposalStatus
-				+ ", investigatorInfo=" + investigatorInfo + ", projectInfo="
-				+ projectInfo + ", sponsorAndBudgetInfo="
-				+ sponsorAndBudgetInfo + ", costShareInfo=" + costShareInfo
+				+ dateReceived + ", dateSubmitted=" + dateSubmitted
+				+ ", proposalStatus=" + proposalStatus + ", investigatorInfo="
+				+ investigatorInfo + ", projectInfo=" + projectInfo
+				+ ", sponsorAndBudgetInfo=" + sponsorAndBudgetInfo
+				+ ", costShareInfo=" + costShareInfo
 				+ ", universityCommitments=" + universityCommitments
 				+ ", conflicOfInterest=" + conflicOfInterest
 				+ ", complianceInfo=" + complianceInfo + ", additionalInfo="
@@ -255,6 +260,8 @@ public class Proposal extends BaseEntity {
 				+ ((costShareInfo == null) ? 0 : costShareInfo.hashCode());
 		result = prime * result
 				+ ((dateReceived == null) ? 0 : dateReceived.hashCode());
+		result = prime * result
+				+ ((dateSubmitted == null) ? 0 : dateSubmitted.hashCode());
 		result = prime
 				* result
 				+ ((investigatorInfo == null) ? 0 : investigatorInfo.hashCode());
@@ -322,6 +329,11 @@ public class Proposal extends BaseEntity {
 				return false;
 		} else if (!dateReceived.equals(other.dateReceived))
 			return false;
+		if (dateSubmitted == null) {
+			if (other.dateSubmitted != null)
+				return false;
+		} else if (!dateSubmitted.equals(other.dateSubmitted))
+			return false;
 		if (investigatorInfo == null) {
 			if (other.investigatorInfo != null)
 				return false;
@@ -339,7 +351,10 @@ public class Proposal extends BaseEntity {
 			return false;
 		if (proposalNo != other.proposalNo)
 			return false;
-		if (proposalStatus != other.proposalStatus)
+		if (proposalStatus == null) {
+			if (other.proposalStatus != null)
+				return false;
+		} else if (!proposalStatus.equals(other.proposalStatus))
 			return false;
 		if (signatureInfo == null) {
 			if (other.signatureInfo != null)
@@ -362,33 +377,36 @@ public class Proposal extends BaseEntity {
 	@Override
 	public Proposal clone() throws CloneNotSupportedException {
 		Proposal copy = new Proposal();
-		copy.setProposalNo(proposalNo);
-		copy.setDateReceived(dateReceived);
-		copy.setProposalStatus(proposalStatus);
-		copy.setInvestigatorInfo(investigatorInfo);
-		copy.setProjectInfo(projectInfo);
-		copy.setSponsorAndBudgetInfo(sponsorAndBudgetInfo);
-		copy.setCostShareInfo(costShareInfo);
-		copy.setUniversityCommitments(universityCommitments);
-		copy.setConflicOfInterest(conflicOfInterest);
-		copy.setComplianceInfo(complianceInfo);
-		copy.setAdditionalInfo(additionalInfo);
-		copy.setCollaborationInfo(collaborationInfo);
-		copy.setConfidentialInfo(confidentialInfo);
-		copy.setoSPSectionInfo(oSPSectionInfo);
-		copy.setSignatureInfo(signatureInfo);
+		copy.setProposalNo(this.proposalNo);
+		copy.setDateReceived(this.dateReceived);
+		copy.setDateSubmitted(this.dateSubmitted);
 
-		copy.setId(this.getId());
-		copy.setVersion(this.getVersion());
-		for (AuditLog entry : this.getAuditLog()) {
-			copy.addEntryToAuditLog(entry);
+		copy.getProposalStatus().addAll(this.proposalStatus);
+
+		copy.setInvestigatorInfo(this.investigatorInfo.clone());
+		copy.setProjectInfo(this.projectInfo.clone());
+		copy.setSponsorAndBudgetInfo(this.sponsorAndBudgetInfo.clone());
+		copy.setCostShareInfo(this.costShareInfo.clone());
+		copy.setUniversityCommitments(this.universityCommitments.clone());
+		copy.setConflicOfInterest(this.conflicOfInterest.clone());
+		copy.setComplianceInfo(this.complianceInfo.clone());
+		copy.setAdditionalInfo(this.additionalInfo.clone());
+		copy.setCollaborationInfo(this.collaborationInfo.clone());
+		copy.setConfidentialInfo(this.confidentialInfo.clone());
+		copy.setoSPSectionInfo(this.oSPSectionInfo.clone());
+
+		// copy.getSignatureInfo().addAll(this.signatureInfo);
+		for (SignatureInfo signature : this.signatureInfo) {
+			copy.getSignatureInfo().add(signature.clone());
 		}
 
-		return copy;
-	}
+		// copy.setId(this.getId());
+		// copy.setVersion(this.getVersion());
+		// for (AuditLog entry : this.getAuditLog()) {
+		// copy.getAuditLog().add(entry);
+		// }
 
-	public void addEntryToAuditLog(AuditLog audit) {
-		this.getAuditLog().add(audit);
+		return copy;
 	}
 
 }

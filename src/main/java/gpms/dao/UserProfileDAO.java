@@ -176,7 +176,7 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 						userAuditLog.setActivityDate(userAccountAudit
 								.getActivityDate());
 						userAuditLog.setUserFullName(userAccountAudit
-								.getUserProfileId().getFullName());
+								.getUserProfile().getFullName());
 						userAuditLog.setAction(userAccountAudit.getAction());
 
 						allAuditLogs.add(userAuditLog);
@@ -189,7 +189,7 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 					userAuditLog.setActivityDate(userProfileAudit
 							.getActivityDate());
 					userAuditLog.setUserFullName(userProfileAudit
-							.getUserProfileId().getFullName());
+							.getUserProfile().getFullName());
 					userAuditLog.setAction(userProfileAudit.getAction());
 
 					allAuditLogs.add(userAuditLog);
@@ -253,19 +253,19 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 				}
 
 				if (auditedBy != null) {
-					if (userProfileAudit.getUserProfileId().getUserAccount()
+					if (userProfileAudit.getUserProfile().getUserAccount()
 							.getUserName().toLowerCase()
 							.contains(auditedBy.toLowerCase())) {
 						isAuditedByMatch = true;
-					} else if (userProfileAudit.getUserProfileId()
+					} else if (userProfileAudit.getUserProfile()
 							.getFirstName().toLowerCase()
 							.contains(auditedBy.toLowerCase())) {
 						isAuditedByMatch = true;
-					} else if (userProfileAudit.getUserProfileId()
+					} else if (userProfileAudit.getUserProfile()
 							.getMiddleName().toLowerCase()
 							.contains(auditedBy.toLowerCase())) {
 						isAuditedByMatch = true;
-					} else if (userProfileAudit.getUserProfileId()
+					} else if (userProfileAudit.getUserProfile()
 							.getLastName().toLowerCase()
 							.contains(auditedBy.toLowerCase())) {
 						isAuditedByMatch = true;
@@ -310,9 +310,9 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 				if (isActionMatch && isAuditedByMatch
 						&& isActivityDateFromMatch && isActivityDateToMatch) {
 					userAuditLog.setUserName(userProfileAudit
-							.getUserProfileId().getUserAccount().getUserName());
+							.getUserProfile().getUserAccount().getUserName());
 					userAuditLog.setUserFullName(userProfileAudit
-							.getUserProfileId().getFullName());
+							.getUserProfile().getFullName());
 					userAuditLog.setAction(userProfileAudit.getAction());
 					userAuditLog.setActivityDate(userProfileAudit
 							.getActivityDate());
@@ -341,19 +341,19 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 				}
 
 				if (auditedBy != null) {
-					if (userAccountAudit.getUserProfileId().getUserAccount()
+					if (userAccountAudit.getUserProfile().getUserAccount()
 							.getUserName().toLowerCase()
 							.contains(auditedBy.toLowerCase())) {
 						isAuditedByMatch = true;
-					} else if (userAccountAudit.getUserProfileId()
+					} else if (userAccountAudit.getUserProfile()
 							.getFirstName().toLowerCase()
 							.contains(auditedBy.toLowerCase())) {
 						isAuditedByMatch = true;
-					} else if (userAccountAudit.getUserProfileId()
+					} else if (userAccountAudit.getUserProfile()
 							.getMiddleName().toLowerCase()
 							.contains(auditedBy.toLowerCase())) {
 						isAuditedByMatch = true;
-					} else if (userAccountAudit.getUserProfileId()
+					} else if (userAccountAudit.getUserProfile()
 							.getLastName().toLowerCase()
 							.contains(auditedBy.toLowerCase())) {
 						isAuditedByMatch = true;
@@ -398,9 +398,9 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 				if (isActionMatch && isAuditedByMatch
 						&& isActivityDateFromMatch && isActivityDateToMatch) {
 					userAuditLog.setUserName(userAccountAudit
-							.getUserProfileId().getUserAccount().getUserName());
+							.getUserProfile().getUserAccount().getUserName());
 					userAuditLog.setUserFullName(userAccountAudit
-							.getUserProfileId().getFullName());
+							.getUserProfile().getFullName());
 					userAuditLog.setAction(userAccountAudit.getAction());
 					userAuditLog.setActivityDate(userAccountAudit
 							.getActivityDate());

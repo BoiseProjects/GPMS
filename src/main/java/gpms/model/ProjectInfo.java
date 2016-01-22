@@ -15,7 +15,7 @@ import com.google.gson.annotations.Expose;
 //import org.mongodb.morphia.annotations.Id;
 
 @Embedded
-public class ProjectInfo {
+public class ProjectInfo implements Cloneable {
 	@Expose
 	@Property("project title")
 	@Indexed(value = IndexDirection.ASC, name = "proposalTitleIndex", unique = true)
@@ -172,14 +172,12 @@ public class ProjectInfo {
 	@Override
 	public ProjectInfo clone() throws CloneNotSupportedException {
 		ProjectInfo copy = new ProjectInfo();
-
 		copy.setProjectTitle(this.projectTitle);
 		copy.setProjectType(this.projectType.clone());
 		copy.setTypeOfRequest(this.typeOfRequest.clone());
-		copy.setDueDate(new Date(this.dueDate.getTime()));
+		copy.setDueDate(this.dueDate);
 		copy.setProjectPeriod(this.projectPeriod.clone());
 		copy.setProjectLocation(this.projectLocation.clone());
-
 		return copy;
 	}
 

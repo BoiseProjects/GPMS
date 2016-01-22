@@ -6,7 +6,7 @@ import org.mongodb.morphia.annotations.Property;
 import com.google.gson.annotations.Expose;
 
 @Embedded
-public class FundingSource {
+public class FundingSource implements Cloneable {
 	@Expose
 	@Property("federal")
 	private boolean federal;
@@ -205,6 +205,23 @@ public class FundingSource {
 		if (tirbalGovernment != other.tirbalGovernment)
 			return false;
 		return true;
+	}
+
+	@Override
+	protected FundingSource clone() throws CloneNotSupportedException {
+		FundingSource copy = new FundingSource();
+		copy.setFederal(this.federal);
+		copy.setFederalFlowThrough(this.federalFlowThrough);
+		copy.setStateOfIdahoEntity(this.stateOfIdahoEntity);
+		copy.setPrivateForProfit(this.privateForProfit);
+		copy.setNonProfitOrganization(this.nonProfitOrganization);
+		copy.setNonIdahoStateEntity(this.nonIdahoStateEntity);
+		copy.setCollegeOrUniversity(this.collegeOrUniversity);
+		copy.setLocalEntity(this.localEntity);
+		copy.setNonIdahoLocalEntity(this.nonIdahoLocalEntity);
+		copy.setTirbalGovernment(this.tirbalGovernment);
+		copy.setForeign(this.foreign);
+		return copy;
 	}
 
 }

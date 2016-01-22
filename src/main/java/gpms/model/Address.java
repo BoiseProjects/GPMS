@@ -6,7 +6,7 @@ import org.mongodb.morphia.annotations.Property;
 import com.google.gson.annotations.Expose;
 
 @Embedded
-public class Address {
+public class Address implements Cloneable {
 	@Expose
 	@Property("street")
 	private String street = new String();
@@ -158,6 +158,18 @@ public class Address {
 		} else if (!zipcode.equals(other.zipcode))
 			return false;
 		return true;
+	}
+
+	@Override
+	protected Address clone() throws CloneNotSupportedException {
+		Address copy = new Address();
+		copy.setStreet(this.street);
+		copy.setApt(this.apt);
+		copy.setCity(this.city);
+		copy.setState(this.state);
+		copy.setZipcode(this.zipcode);
+		copy.setCountry(this.country);
+		return copy;
 	}
 
 }

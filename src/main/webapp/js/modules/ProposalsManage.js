@@ -462,8 +462,8 @@ $(function() {
 		SearchProposals : function() {
 			var projectTitle = $.trim($("#txtSearchProjectTitle").val());
 			var usernameBy = $.trim($("#txtSearchUserName").val());
-			var receivedOnFrom = $.trim($("#txtSearchReceivedOnFrom").val());
-			var receivedOnTo = $.trim($("#txtSearchReceivedOnTo").val());
+			var submittedOnFrom = $.trim($("#txtSearchSubmittedOnFrom").val());
+			var submittedOnTo = $.trim($("#txtSearchSubmittedOnTo").val());
 			var totalCostsFrom = $.trim($("#txtSearchTotalCostsFrom")
 					.autoNumeric('get'));
 			var totalCostsTo = $.trim($("#txtSearchTotalCostsTo").autoNumeric(
@@ -489,20 +489,20 @@ $(function() {
 			if (totalCostsTo.length < 1) {
 				totalCostsTo = null;
 			}
-			if (receivedOnFrom.length < 1) {
-				receivedOnFrom = null;
+			if (submittedOnFrom.length < 1) {
+				submittedOnFrom = null;
 			}
-			if (receivedOnTo.length < 1) {
-				receivedOnTo = null;
+			if (submittedOnTo.length < 1) {
+				submittedOnTo = null;
 			}
 
 			proposalsManage.BindProposalGrid(projectTitle, usernameBy,
-					receivedOnFrom, receivedOnTo, totalCostsFrom, totalCostsTo,
+					submittedOnFrom, submittedOnTo, totalCostsFrom, totalCostsTo,
 					proposalStatus, userRole);
 		},
 
-		BindProposalGrid : function(projectTitle, usernameBy, receivedOnFrom,
-				receivedOnTo, totalCostsFrom, totalCostsTo, proposalStatus,
+		BindProposalGrid : function(projectTitle, usernameBy, submittedOnFrom,
+				submittedOnTo, totalCostsFrom, totalCostsTo, proposalStatus,
 				userRole) {
 			this.config.url = this.config.baseURL;
 			this.config.method = "GetProposalsList";
@@ -514,8 +514,8 @@ $(function() {
 			var proposalBindObj = {
 				ProjectTitle : projectTitle,
 				UsernameBy : usernameBy,
-				ReceivedOnFrom : receivedOnFrom,
-				ReceivedOnTo : receivedOnTo,
+				SubmittedOnFrom : submittedOnFrom,
+				SubmittedOnTo : submittedOnTo,
 				TotalCostsFrom : totalCostsFrom,
 				TotalCostsTo : totalCostsTo,
 				ProposalStatus : proposalStatus,
@@ -1329,15 +1329,6 @@ $(function() {
 			} else {
 				$("#ddlCheckedExcludedPartyList").prop("selectedIndex", 0);
 			}
-
-			$("#txtProposalNotes").val(response.oSPSectionInfo.proposalNotes);
-
-			$("#chkDF").prop("checked",
-					response.oSPSectionInfo.researchAdministrator.DF);
-			$("#chkLG").prop("checked",
-					response.oSPSectionInfo.researchAdministrator.LG);
-			$("#chkLN").prop("checked",
-					response.oSPSectionInfo.researchAdministrator.LN);
 		},
 
 		BindInvestigatorInfo : function(investigatorInfo) {
@@ -2342,13 +2333,7 @@ $(function() {
 									.val(),
 							ConflictOfInterestForms : $("#ddlCOIForms").val(),
 							ExcludedPartyListChecked : $(
-									"#ddlCheckedExcludedPartyList").val(),
-							proposalNotes : $
-									.trim($("#txtProposalNotes").val()),
-
-							DF : $("#chkDF").prop("checked"),
-							LG : $("#chkLG").prop("checked"),
-							LN : $("#chkLN").prop("checked")
+									"#ddlCheckedExcludedPartyList").val()
 						};
 
 						if ($("#ddlSubrecipients").val() == "1") {
@@ -2699,9 +2684,10 @@ $(function() {
 				$('#ddlProposalStatus option').length = 1;
 
 				$.each(msg, function(index, item) {
-					$('#ddlSearchProposalStatus')
-							.append(new Option(item, item));
-					$('#ddlProposalStatus').append(new Option(item, item));
+					$('#ddlSearchProposalStatus').append(
+							new Option(item.statusValue, item.statusKey));
+					$('#ddlProposalStatus').append(
+							new Option(item.statusValue, item.statusKey));
 				});
 				break;
 
@@ -2926,25 +2912,25 @@ $(function() {
 
 		init : function(config) {
 			proposalsManage.InitializeAccordion();
-			$("#txtSearchReceivedOnFrom").datepicker(
+			$("#txtSearchSubmittedOnFrom").datepicker(
 					{
 						dateFormat : 'yy-mm-dd',
 						changeMonth : true,
 						changeYear : true,
 						onSelect : function(selectedDate) {
-							$("#txtSearchReceivedOnTo").datepicker("option",
+							$("#txtSearchSubmittedOnTo").datepicker("option",
 									"minDate", selectedDate);
 						}
 					}).mask("9999-99-99", {
 				placeholder : "yyyy-mm-dd"
 			});
-			$("#txtSearchReceivedOnTo").datepicker(
+			$("#txtSearchSubmittedOnTo").datepicker(
 					{
 						dateFormat : 'yy-mm-dd',
 						changeMonth : true,
 						changeYear : true,
 						onSelect : function(selectedDate) {
-							$("#txtSearchReceivedOnFrom").datepicker("option",
+							$("#txtSearchSubmittedOnFrom").datepicker("option",
 									"maxDate", selectedDate);
 						}
 					}).mask("9999-99-99", {
@@ -3548,7 +3534,7 @@ $(function() {
 			});
 
 			$(
-					'#txtSearchProjectTitle,#txtSearchUserName,#txtSearchReceivedOnFrom,#txtSearchReceivedOnTo,#txtSearchTotalCostsFrom,#txtSearchTotalCostsTo,#ddlSearchProposalStatus',
+					'#txtSearchProjectTitle,#txtSearchUserName,#txtSearchSubmittedOnFrom,#txtSearchSubmittedOnTo,#txtSearchTotalCostsFrom,#txtSearchTotalCostsTo,#ddlSearchProposalStatus',
 					'#ddlSearchUserRole').keyup(function(event) {
 				if (event.keyCode == 13) {
 					$("#btnSearchProposal").click();
