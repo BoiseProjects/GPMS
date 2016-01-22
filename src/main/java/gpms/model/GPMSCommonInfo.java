@@ -1,6 +1,6 @@
 package gpms.model;
 
-public class GPMSCommonInfo implements Cloneable {
+public class GPMSCommonInfo {
 	private String userProfileID;
 	private String userName;
 	private boolean userIsAdmin;
