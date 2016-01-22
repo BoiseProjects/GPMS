@@ -6,7 +6,7 @@ import org.mongodb.morphia.annotations.Property;
 
 import com.google.gson.annotations.Expose;
 
-public class BasePIEligibilityOptions implements Cloneable, Serializable {
+public class BasePIEligibilityOptions implements Serializable {
 	@Expose
 	@Property("yes")
 	private boolean yes;
@@ -139,18 +139,6 @@ public class BasePIEligibilityOptions implements Cloneable, Serializable {
 		if (yes != other.yes)
 			return false;
 		return true;
-	}
-
-	@Override
-	protected BasePIEligibilityOptions clone()
-			throws CloneNotSupportedException {
-		BasePIEligibilityOptions copy = new BasePIEligibilityOptions();
-		copy.setYes(this.yes);
-		copy.setNo(this.no);
-		copy.setNotApplicable(this.notApplicable);
-		copy.setThisProposalOnly(this.thisProposalOnly);
-		copy.setBlanket(this.blanket);
-		return copy;
 	}
 
 }

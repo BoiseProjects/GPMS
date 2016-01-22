@@ -1,8 +1,5 @@
-//Edited by: Hector C. Ortiz
-
 package gpms.model;
 
-//import org.mongodb.morphia.annotations.Id;
 import java.io.Serializable;
 
 import org.mongodb.morphia.annotations.Embedded;
@@ -11,7 +8,7 @@ import org.mongodb.morphia.annotations.Property;
 import com.google.gson.annotations.Expose;
 
 @Embedded
-public class PositionDetails implements Cloneable, Serializable {
+public class PositionDetails implements Serializable {
 	@Expose
 	@Property("position title")
 	private String positionTitle = new String();
@@ -131,14 +128,5 @@ public class PositionDetails implements Cloneable, Serializable {
 			return false;
 		return true;
 	}
-
-	@Override
-	public PositionDetails clone() throws CloneNotSupportedException {
-		PositionDetails copy = new PositionDetails();
-		copy.setCollege(this.college);
-		copy.setDepartment(this.department);
-		copy.setPositionType(this.positionType);
-		copy.setPositionTitle(this.positionTitle);
-		return copy;
-	}
+	
 }

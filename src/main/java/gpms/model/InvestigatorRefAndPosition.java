@@ -9,7 +9,7 @@ import org.mongodb.morphia.annotations.Reference;
 import com.google.gson.annotations.Expose;
 
 @Embedded
-public class InvestigatorRefAndPosition implements Cloneable, Serializable {
+public class InvestigatorRefAndPosition implements Serializable {
 	@Expose
 	@Reference(value = "user profile" /* , lazy = true */)
 	UserProfile userRef = new UserProfile();
@@ -151,18 +151,6 @@ public class InvestigatorRefAndPosition implements Cloneable, Serializable {
 		} else if (!userRef.equals(other.userRef))
 			return false;
 		return true;
-	}
-
-	@Override
-	public InvestigatorRefAndPosition clone() throws CloneNotSupportedException {
-		InvestigatorRefAndPosition copy = new InvestigatorRefAndPosition();
-		copy.setUserRef(this.userRef.clone());
-		copy.setUserProfileId(this.userProfileId);
-		copy.setCollege(this.college);
-		copy.setDepartment(this.department);
-		copy.setPositionType(this.positionType);
-		copy.setPositionTitle(this.positionTitle);
-		return copy;
 	}
 
 }

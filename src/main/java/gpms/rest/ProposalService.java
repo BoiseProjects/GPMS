@@ -37,14 +37,9 @@ import gpms.model.TypeOfRequest;
 import gpms.model.UniversityCommitments;
 import gpms.model.UserAccount;
 import gpms.model.UserProfile;
+import gpms.utils.SerializationHelper;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
-import java.io.Serializable;
 import java.net.UnknownHostException;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -721,7 +716,8 @@ public class ProposalService {
 						existingProposal = proposalDAO
 								.findProposalByProposalID(proposalId);
 						// using our serializable method for cloning
-						oldProposal = cloneThroughSerialize(existingProposal);
+						oldProposal = SerializationHelper
+								.cloneThroughSerialize(existingProposal);
 					}
 				}
 
@@ -2499,28 +2495,6 @@ public class ProposalService {
 			notification.setPositionType(senior.getPositionType());
 			notification.setPositionTitle(senior.getPositionTitle());
 			notificationDAO.save(notification);
-		}
-	}
-
-	@SuppressWarnings("unchecked")
-	public static <T> T cloneThroughSerialize(T t) throws Exception {
-		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		serializeToOutputStream((Serializable) t, bos);
-		byte[] bytes = bos.toByteArray();
-		ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(
-				bytes));
-		return (T) ois.readObject();
-	}
-
-	private static void serializeToOutputStream(Serializable ser,
-			OutputStream os) throws IOException {
-		ObjectOutputStream oos = null;
-		try {
-			oos = new ObjectOutputStream(os);
-			oos.writeObject(ser);
-			oos.flush();
-		} finally {
-			oos.close();
 		}
 	}
 

@@ -1,8 +1,3 @@
-//Edited by: Hector C. Ortiz
-/**
- * @author Thomas Volz
- */
-
 package gpms.model;
 
 import gpms.dao.UserProfileDAO;
@@ -24,7 +19,7 @@ import com.google.gson.annotations.Expose;
 @Entity(value = UserProfileDAO.COLLECTION_NAME, noClassnameStored = true)
 // @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class,
 // property = "id")
-public class UserProfile extends BaseEntity implements Cloneable, Serializable {
+public class UserProfile extends BaseEntity implements Serializable {
 	@Expose
 	@Property("first name")
 	@Indexed(value = IndexDirection.ASC, name = "firstNameIndex")
@@ -360,50 +355,6 @@ public class UserProfile extends BaseEntity implements Cloneable, Serializable {
 		return true;
 	}
 
-	@Override
-	public UserProfile clone() throws CloneNotSupportedException {
-		UserProfile copy = new UserProfile();
-		copy.setFirstName(firstName);
-		copy.setMiddleName(middleName);
-		copy.setLastName(lastName);
-		copy.setDateOfBirth(dateOfBirth);
-		copy.setGender(gender);
-
-		for (PositionDetails pd : this.details) {
-			copy.getDetails().add(pd.clone());
-		}
-		for (String phone : this.officeNumbers) {
-			copy.getOfficeNumbers().add(phone);
-		}
-		for (String phone : this.mobileNumbers) {
-			copy.getMobileNumbers().add(phone);
-		}
-		for (String phone : this.homeNumbers) {
-			copy.getHomeNumbers().add(phone);
-		}
-		for (String phone : this.otherNumbers) {
-			copy.getOtherNumbers().add(phone);
-		}
-		for (Address address : this.addresses) {
-			copy.getAddresses().add(address.clone());
-		}
-		for (String email : this.workEmails) {
-			copy.getWorkEmails().add(email);
-		}
-		for (String email : this.personalEmails) {
-			copy.getPersonalEmails().add(email);
-		}
-		copy.setUserAccount(this.userAccount.clone());
-		copy.setDeleted(this.isDeleted());
-		// copy.setId(this.getId());
-		// copy.setVersion(this.getVersion());
-		// for (AuditLog entry : this.getAuditLog()) {
-		// copy.addEntryToAuditLog(entry);
-		// }
-
-		return copy;
-	}
-
 	public String getFullName() {
 		if (this.middleName != null && !this.middleName.isEmpty())
 			return this.firstName + " " + this.middleName + " " + this.lastName;
@@ -411,8 +362,5 @@ public class UserProfile extends BaseEntity implements Cloneable, Serializable {
 			return this.firstName + " " + this.lastName;
 
 	}
-
-	public void addEntryToAuditLog(AuditLog audit) {
-		this.getAuditLog().add(audit);
-	}
+	
 }

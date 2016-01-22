@@ -9,7 +9,7 @@ import org.mongodb.morphia.annotations.Property;
 import com.google.gson.annotations.Expose;
 
 @Embedded
-public class SignatureInfo implements Cloneable, Serializable {
+public class SignatureInfo implements Serializable {
 	@Expose
 	@Property("user profile id")
 	private String userProfileId = new String();
@@ -186,20 +186,6 @@ public class SignatureInfo implements Cloneable, Serializable {
 		} else if (!userProfileId.equals(other.userProfileId))
 			return false;
 		return true;
-	}
-
-	@Override
-	protected SignatureInfo clone() throws CloneNotSupportedException {
-		SignatureInfo copy = new SignatureInfo();
-		copy.setUserProfileId(this.userProfileId);
-		copy.setFullName(this.fullName);
-		copy.setSignature(this.signature);
-		copy.setPositionTitle(this.positionTitle);
-		copy.setSignedDate(this.signedDate);
-		copy.setNote(this.note);
-		copy.setDelegated(this.isDelegated);
-		copy.setDelegatedAs(this.delegatedAs);
-		return copy;
 	}
 
 }

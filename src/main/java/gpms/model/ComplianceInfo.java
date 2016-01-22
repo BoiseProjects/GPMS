@@ -8,7 +8,7 @@ import org.mongodb.morphia.annotations.Property;
 import com.google.gson.annotations.Expose;
 
 @Embedded
-public class ComplianceInfo implements Cloneable, Serializable {
+public class ComplianceInfo implements Serializable {
 	@Expose
 	@Property("involve use of human subjects")
 	private boolean involveUseOfHumanSubjects;
@@ -205,22 +205,6 @@ public class ComplianceInfo implements Cloneable, Serializable {
 		if (involveUseOfVertebrateAnimals != other.involveUseOfVertebrateAnimals)
 			return false;
 		return true;
-	}
-
-	@Override
-	protected ComplianceInfo clone() throws CloneNotSupportedException {
-		ComplianceInfo copy = new ComplianceInfo();
-		copy.setInvolveUseOfHumanSubjects(this.involveUseOfHumanSubjects);
-		copy.setIRB(this.IRB);
-		copy.setIRBPending(this.IRBPending);
-		copy.setInvolveUseOfVertebrateAnimals(this.involveUseOfVertebrateAnimals);
-		copy.setIACUC(this.IACUC);
-		copy.setIACUCPending(this.IACUCPending);
-		copy.setInvolveBiosafetyConcerns(this.involveBiosafetyConcerns);
-		copy.setIBC(this.IBC);
-		copy.setIBCPending(this.IBCPending);
-		copy.setInvolveEnvironmentalHealthAndSafetyConcerns(this.involveEnvironmentalHealthAndSafetyConcerns);
-		return copy;
 	}
 
 }

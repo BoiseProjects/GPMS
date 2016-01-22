@@ -16,7 +16,7 @@ import org.mongodb.morphia.utils.IndexDirection;
 import com.google.gson.annotations.Expose;
 
 @Entity(value = ProposalDAO.COLLECTION_NAME, noClassnameStored = true)
-public class Proposal extends BaseEntity implements Cloneable, Serializable {
+public class Proposal extends BaseEntity implements Serializable {
 	@Expose
 	@Property("proposal no")
 	@Indexed(value = IndexDirection.ASC, name = "proposalNoIndex", unique = true)
@@ -373,41 +373,6 @@ public class Proposal extends BaseEntity implements Cloneable, Serializable {
 		} else if (!universityCommitments.equals(other.universityCommitments))
 			return false;
 		return true;
-	}
-
-	@Override
-	public Proposal clone() throws CloneNotSupportedException {
-		Proposal copy = new Proposal();
-		copy.setProposalNo(this.proposalNo);
-		copy.setDateReceived(this.dateReceived);
-		copy.setDateSubmitted(this.dateSubmitted);
-
-		copy.getProposalStatus().addAll(this.proposalStatus);
-
-		copy.setInvestigatorInfo(this.investigatorInfo.clone());
-		copy.setProjectInfo(this.projectInfo.clone());
-		copy.setSponsorAndBudgetInfo(this.sponsorAndBudgetInfo.clone());
-		copy.setCostShareInfo(this.costShareInfo.clone());
-		copy.setUniversityCommitments(this.universityCommitments.clone());
-		copy.setConflicOfInterest(this.conflicOfInterest.clone());
-		copy.setComplianceInfo(this.complianceInfo.clone());
-		copy.setAdditionalInfo(this.additionalInfo.clone());
-		copy.setCollaborationInfo(this.collaborationInfo.clone());
-		copy.setConfidentialInfo(this.confidentialInfo.clone());
-		copy.setoSPSectionInfo(this.oSPSectionInfo.clone());
-
-		// copy.getSignatureInfo().addAll(this.signatureInfo);
-		for (SignatureInfo signature : this.signatureInfo) {
-			copy.getSignatureInfo().add(signature.clone());
-		}
-
-		copy.setId(this.getId());
-		copy.setVersion(this.getVersion());
-		// for (AuditLog entry : this.getAuditLog()) {
-		// copy.getAuditLog().add(entry);
-		// }
-
-		return copy;
 	}
 
 }

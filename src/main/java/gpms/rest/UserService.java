@@ -15,14 +15,9 @@ import gpms.model.UserAccount;
 import gpms.model.UserInfo;
 import gpms.model.UserProfile;
 import gpms.utils.MultimapAdapter;
+import gpms.utils.SerializationHelper;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
-import java.io.Serializable;
 import java.net.URISyntaxException;
 import java.net.UnknownHostException;
 import java.text.DateFormat;
@@ -734,7 +729,8 @@ public class UserService {
 				ObjectId id = new ObjectId(userID);
 				existingUserProfile = userProfileDAO
 						.findUserDetailsByProfileID(id);
-				oldUserProfile = cloneThroughSerialize(existingUserProfile);
+				oldUserProfile = SerializationHelper
+						.cloneThroughSerialize(existingUserProfile);
 			} else {
 				newAccount.setAddedOn(new Date());
 			}
@@ -1565,25 +1561,4 @@ public class UserService {
 		return userPositions;
 	}
 
-	@SuppressWarnings("unchecked")
-	public static <T> T cloneThroughSerialize(T t) throws Exception {
-		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		serializeToOutputStream((Serializable) t, bos);
-		byte[] bytes = bos.toByteArray();
-		ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(
-				bytes));
-		return (T) ois.readObject();
-	}
-
-	private static void serializeToOutputStream(Serializable ser,
-			OutputStream os) throws IOException {
-		ObjectOutputStream oos = null;
-		try {
-			oos = new ObjectOutputStream(os);
-			oos.writeObject(ser);
-			oos.flush();
-		} finally {
-			oos.close();
-		}
-	}
 }

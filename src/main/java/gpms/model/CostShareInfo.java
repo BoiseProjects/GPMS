@@ -1,5 +1,3 @@
-//Written by: Hector C. Ortiz
-
 package gpms.model;
 
 import java.io.Serializable;
@@ -11,7 +9,7 @@ import org.mongodb.morphia.annotations.Property;
 import com.google.gson.annotations.Expose;
 
 @Embedded
-public class CostShareInfo implements Cloneable, Serializable {
+public class CostShareInfo implements Serializable {
 	@Expose
 	@Property("institutional committed")
 	boolean institutionalCommitted;
@@ -70,14 +68,6 @@ public class CostShareInfo implements Cloneable, Serializable {
 		if (thirdPartyCommitted != other.thirdPartyCommitted)
 			return false;
 		return true;
-	}
-
-	@Override
-	protected CostShareInfo clone() throws CloneNotSupportedException {
-		CostShareInfo copy = new CostShareInfo();
-		copy.setInstitutionalCommitted(this.institutionalCommitted);
-		copy.setThirdPartyCommitted(this.thirdPartyCommitted);
-		return copy;
 	}
 
 }

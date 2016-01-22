@@ -1,11 +1,5 @@
 package gpms.dao;
 
-/**
- * @author Thomas Volz
- * 
- * @author Milson Munakami
- */
-
 import gpms.DAL.MongoDBConnector;
 import gpms.model.AuditLog;
 import gpms.model.AuditLogInfo;
@@ -257,17 +251,15 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 							.getUserName().toLowerCase()
 							.contains(auditedBy.toLowerCase())) {
 						isAuditedByMatch = true;
-					} else if (userProfileAudit.getUserProfile()
-							.getFirstName().toLowerCase()
-							.contains(auditedBy.toLowerCase())) {
+					} else if (userProfileAudit.getUserProfile().getFirstName()
+							.toLowerCase().contains(auditedBy.toLowerCase())) {
 						isAuditedByMatch = true;
 					} else if (userProfileAudit.getUserProfile()
 							.getMiddleName().toLowerCase()
 							.contains(auditedBy.toLowerCase())) {
 						isAuditedByMatch = true;
-					} else if (userProfileAudit.getUserProfile()
-							.getLastName().toLowerCase()
-							.contains(auditedBy.toLowerCase())) {
+					} else if (userProfileAudit.getUserProfile().getLastName()
+							.toLowerCase().contains(auditedBy.toLowerCase())) {
 						isAuditedByMatch = true;
 					}
 				} else {
@@ -309,8 +301,8 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 
 				if (isActionMatch && isAuditedByMatch
 						&& isActivityDateFromMatch && isActivityDateToMatch) {
-					userAuditLog.setUserName(userProfileAudit
-							.getUserProfile().getUserAccount().getUserName());
+					userAuditLog.setUserName(userProfileAudit.getUserProfile()
+							.getUserAccount().getUserName());
 					userAuditLog.setUserFullName(userProfileAudit
 							.getUserProfile().getFullName());
 					userAuditLog.setAction(userProfileAudit.getAction());
@@ -345,17 +337,15 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 							.getUserName().toLowerCase()
 							.contains(auditedBy.toLowerCase())) {
 						isAuditedByMatch = true;
-					} else if (userAccountAudit.getUserProfile()
-							.getFirstName().toLowerCase()
-							.contains(auditedBy.toLowerCase())) {
+					} else if (userAccountAudit.getUserProfile().getFirstName()
+							.toLowerCase().contains(auditedBy.toLowerCase())) {
 						isAuditedByMatch = true;
 					} else if (userAccountAudit.getUserProfile()
 							.getMiddleName().toLowerCase()
 							.contains(auditedBy.toLowerCase())) {
 						isAuditedByMatch = true;
-					} else if (userAccountAudit.getUserProfile()
-							.getLastName().toLowerCase()
-							.contains(auditedBy.toLowerCase())) {
+					} else if (userAccountAudit.getUserProfile().getLastName()
+							.toLowerCase().contains(auditedBy.toLowerCase())) {
 						isAuditedByMatch = true;
 					}
 				} else {
@@ -397,8 +387,8 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 
 				if (isActionMatch && isAuditedByMatch
 						&& isActivityDateFromMatch && isActivityDateToMatch) {
-					userAuditLog.setUserName(userAccountAudit
-							.getUserProfile().getUserAccount().getUserName());
+					userAuditLog.setUserName(userAccountAudit.getUserProfile()
+							.getUserAccount().getUserName());
 					userAuditLog.setUserFullName(userAccountAudit
 							.getUserProfile().getFullName());
 					userAuditLog.setAction(userAccountAudit.getAction());
@@ -463,13 +453,12 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 				.equal(userAccount).get();
 	}
 
-	public void saveUser(UserProfile newProfile,
-			UserProfile authorProfile) {
+	public void saveUser(UserProfile newProfile, UserProfile authorProfile) {
 		Datastore ds = getDatastore();
 		audit = new AuditLog(authorProfile,
 				"Created user account and profile of "
 						+ newProfile.getUserAccount().getUserName(), new Date());
-		newProfile.addEntryToAuditLog(audit);
+		newProfile.getAuditLog().add(audit);
 		ds.save(newProfile);
 	}
 
@@ -480,7 +469,7 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 				"Updated user account and profile of "
 						+ existingUserProfile.getUserAccount().getUserName(),
 				new Date());
-		existingUserProfile.addEntryToAuditLog(audit);
+		existingUserProfile.getAuditLog().add(audit);
 		ds.save(existingUserProfile);
 	}
 
@@ -489,7 +478,7 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 		Datastore ds = getDatastore();
 		audit = new AuditLog(authorProfile, "Deleted user profile of "
 				+ userProfile.getFullName(), new Date());
-		userProfile.addEntryToAuditLog(audit);
+		userProfile.getAuditLog().add(audit);
 
 		userProfile.setDeleted(true);
 		ds.save(userProfile);
@@ -500,7 +489,7 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 		Datastore ds = getDatastore();
 		audit = new AuditLog(authorProfile, "Activated user profile of "
 				+ userProfile.getFullName(), new Date());
-		userProfile.addEntryToAuditLog(audit);
+		userProfile.getAuditLog().add(audit);
 
 		userProfile.setDeleted(!isActive);
 		ds.save(userProfile);

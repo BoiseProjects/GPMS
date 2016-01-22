@@ -1,6 +1,8 @@
 package gpms.model;
 
-public class GPMSCommonInfo implements Cloneable {
+import java.io.Serializable;
+
+public class GPMSCommonInfo implements Serializable {
 	private String userProfileID;
 	private String userName;
 	private boolean userIsAdmin;

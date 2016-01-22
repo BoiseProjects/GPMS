@@ -1,5 +1,3 @@
-//Written by: Hector C. Ortiz
-
 package gpms.model;
 
 import java.io.Serializable;
@@ -11,7 +9,7 @@ import org.mongodb.morphia.annotations.Property;
 import com.google.gson.annotations.Expose;
 
 @Embedded
-public class ProjectPeriod implements Cloneable, Serializable {
+public class ProjectPeriod implements Serializable {
 	@Expose
 	@Property("from")
 	private Date from = new Date();
@@ -76,14 +74,6 @@ public class ProjectPeriod implements Cloneable, Serializable {
 		} else if (!to.equals(other.to))
 			return false;
 		return true;
-	}
-
-	@Override
-	public ProjectPeriod clone() throws CloneNotSupportedException {
-		ProjectPeriod copy = new ProjectPeriod();
-		copy.setFrom(this.from);
-		copy.setTo(this.to);
-		return copy;
 	}
 
 }

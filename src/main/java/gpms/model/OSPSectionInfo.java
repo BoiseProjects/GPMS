@@ -8,7 +8,7 @@ import org.mongodb.morphia.annotations.Property;
 import com.google.gson.annotations.Expose;
 
 @Embedded
-public class OSPSectionInfo implements Cloneable, Serializable {
+public class OSPSectionInfo implements Serializable {
 	@Expose
 	@Property("list agency")
 	private String listAgency = new String();
@@ -432,31 +432,6 @@ public class OSPSectionInfo implements Cloneable, Serializable {
 			BaseOptions conflictOfInterestForms,
 			BaseOptions excludedPartyListChecked, String proposalNotes) {
 
-	}
-
-	@Override
-	protected OSPSectionInfo clone() throws CloneNotSupportedException {
-		OSPSectionInfo copy = new OSPSectionInfo();
-		copy.setListAgency(this.listAgency);
-		copy.setFundingSource(this.fundingSource.clone());
-		copy.setCFDANo(this.CFDANo);
-		copy.setProgramNo(this.programNo);
-		copy.setProgramTitle(this.programTitle);
-		copy.setRecovery(this.recovery.clone());
-		copy.setBaseInfo(this.baseInfo.clone());
-		copy.setPISalaryIncluded(this.isPISalaryIncluded);
-		copy.setPISalary(this.PISalary);
-		copy.setPIFringe(this.PIFringe);
-		copy.setDepartmentId(this.departmentId);
-		copy.setInstitutionalCostDocumented(this.institutionalCostDocumented
-				.clone());
-		copy.setThirdPartyCostDocumented(this.thirdPartyCostDocumented.clone());
-		copy.setAnticipatedSubRecipients(this.isAnticipatedSubRecipients);
-		copy.setAnticipatedSubRecipientsNames(this.anticipatedSubRecipientsNames);
-		copy.setPIEligibilityWaiver(this.PIEligibilityWaiver.clone());
-		copy.setConflictOfInterestForms(this.conflictOfInterestForms.clone());
-		copy.setExcludedPartyListChecked(this.excludedPartyListChecked.clone());
-		return copy;
 	}
 
 }

@@ -12,7 +12,7 @@ import com.google.gson.annotations.Expose;
 //import org.bson.types.ObjectId;
 
 @Embedded
-public class SponsorAndBudgetInfo implements Cloneable, Serializable {
+public class SponsorAndBudgetInfo implements Serializable {
 	@Expose
 	@Property("granting agency")
 	private List<String> grantingAgency = new ArrayList<String>();
@@ -136,19 +136,6 @@ public class SponsorAndBudgetInfo implements Cloneable, Serializable {
 				.doubleToLongBits(other.totalCosts))
 			return false;
 		return true;
-	}
-
-	@Override
-	public SponsorAndBudgetInfo clone() throws CloneNotSupportedException {
-		SponsorAndBudgetInfo copy = new SponsorAndBudgetInfo();
-		for (String agency : this.grantingAgency) {
-			copy.addGrantingAgency(agency);
-		}
-		copy.setDirectCosts(this.directCosts);
-		copy.setFACosts(this.FACosts);
-		copy.setTotalCosts(this.totalCosts);
-		copy.setFARate(this.FARate);
-		return copy;
 	}
 
 }

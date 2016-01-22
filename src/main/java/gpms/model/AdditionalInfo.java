@@ -8,7 +8,7 @@ import org.mongodb.morphia.annotations.Property;
 import com.google.gson.annotations.Expose;
 
 @Embedded
-public class AdditionalInfo implements Cloneable, Serializable {
+public class AdditionalInfo implements Serializable {
 	@Expose
 	@Property("anticipates foreign nationals payment")
 	private boolean anticipatesForeignNationalsPayment;
@@ -90,14 +90,5 @@ public class AdditionalInfo implements Cloneable, Serializable {
 			return false;
 		return true;
 	}
-
-	@Override
-	protected AdditionalInfo clone() throws CloneNotSupportedException {
-		AdditionalInfo copy = new AdditionalInfo();
-		copy.setAnticipatesForeignNationalsPayment(this.anticipatesForeignNationalsPayment);
-		copy.setAnticipatesCourseReleaseTime(this.anticipatesCourseReleaseTime);
-		copy.setAnticipatesCourseReleaseTime(this.anticipatesCourseReleaseTime);
-		return copy;
-	}
-
+	
 }

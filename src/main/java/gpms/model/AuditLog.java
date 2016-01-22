@@ -1,4 +1,3 @@
-//Written by : Hector C. Ortiz
 package gpms.model;
 
 import java.util.Date;
@@ -12,7 +11,7 @@ import org.mongodb.morphia.utils.IndexDirection;
 @Embedded
 // @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class,
 // property = "id")
-public class AuditLog implements Comparable<AuditLog>, Cloneable {
+public class AuditLog implements Comparable<AuditLog>{
 	// @Expose
 	@Reference(value = "author info", lazy = true)
 	private UserProfile userProfile = new UserProfile();
@@ -104,15 +103,6 @@ public class AuditLog implements Comparable<AuditLog>, Cloneable {
 		} else if (!userProfile.equals(other.userProfile))
 			return false;
 		return true;
-	}
-
-	@Override
-	protected AuditLog clone() throws CloneNotSupportedException {
-		AuditLog copy = new AuditLog();
-		copy.setUserProfile(this.userProfile.clone());
-		copy.setAction(this.action);
-		copy.setActivityDate(this.activityDate);
-		return copy;
 	}
 
 }

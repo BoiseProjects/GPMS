@@ -1,5 +1,3 @@
-//Written by: Hector C. Ortiz
-
 package gpms.model;
 
 import java.io.Serializable;
@@ -10,7 +8,7 @@ import org.mongodb.morphia.annotations.Property;
 import com.google.gson.annotations.Expose;
 
 @Embedded
-public class UniversityCommitments implements Cloneable, Serializable {
+public class UniversityCommitments implements Serializable {
 	@Expose
 	@Property("new renovated facilities required")
 	private boolean newRenovatedFacilitiesRequired;
@@ -88,15 +86,6 @@ public class UniversityCommitments implements Cloneable, Serializable {
 		if (rentalSpaceRequired != other.rentalSpaceRequired)
 			return false;
 		return true;
-	}
-
-	@Override
-	protected UniversityCommitments clone() throws CloneNotSupportedException {
-		UniversityCommitments copy = new UniversityCommitments();
-		copy.setNewRenovatedFacilitiesRequired(this.newRenovatedFacilitiesRequired);
-		copy.setRentalSpaceRequired(this.rentalSpaceRequired);
-		copy.setInstitutionalCommitmentRequired(this.institutionalCommitmentRequired);
-		return copy;
 	}
 
 }

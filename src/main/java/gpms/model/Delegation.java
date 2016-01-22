@@ -2,6 +2,7 @@ package gpms.model;
 
 import gpms.dao.DelegationDAO;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import org.mongodb.morphia.annotations.Entity;
@@ -11,7 +12,7 @@ import org.mongodb.morphia.annotations.Reference;
 import com.google.gson.annotations.Expose;
 
 @Entity(value = DelegationDAO.COLLECTION_NAME, noClassnameStored = true)
-public class Delegation extends BaseEntity implements Cloneable {
+public class Delegation extends BaseEntity implements Serializable {
 	@Expose
 	@Reference(value = "user profile"/* , lazy = true */)
 	private UserProfile userProfile = new UserProfile();
@@ -209,21 +210,6 @@ public class Delegation extends BaseEntity implements Cloneable {
 				+ department + ", positionType=" + positionType
 				+ ", positionTitle=" + positionTitle + ", proposalId="
 				+ proposalId + ", from=" + from + ", to=" + to + "]";
-	}
-
-	@Override
-	protected Delegation clone() throws CloneNotSupportedException {
-		Delegation copy = new Delegation();
-		copy.setUserProfile(this.userProfile.clone());
-		copy.setAssignedId(this.assignedId);
-		copy.setCollege(this.college);
-		copy.setDepartment(this.department);
-		copy.setPositionType(this.positionType);
-		copy.setPositionTitle(this.positionTitle);
-		copy.setProposalId(this.proposalId);
-		copy.setFrom(this.from);
-		copy.setTo(this.to);
-		return copy;
 	}
 
 }

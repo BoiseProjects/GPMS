@@ -1,5 +1,3 @@
-//Written by: Hector C. Ortiz
-
 package gpms.model;
 
 import java.io.Serializable;
@@ -10,7 +8,7 @@ import org.mongodb.morphia.annotations.Property;
 import com.google.gson.annotations.Expose;
 
 @Embedded
-public class ProjectType implements Cloneable, Serializable {
+public class ProjectType implements Serializable {
 	@Expose
 	@Property("research-basic")
 	private boolean isResearchBasic;
@@ -148,17 +146,6 @@ public class ProjectType implements Cloneable, Serializable {
 		if (isResearchDevelopment != other.isResearchDevelopment)
 			return false;
 		return true;
-	}
-
-	@Override
-	public ProjectType clone() throws CloneNotSupportedException {
-		ProjectType copy = new ProjectType();
-		copy.setIsResearchBasic(this.isResearchBasic);
-		copy.setIsResearchApplied(this.isResearchApplied);
-		copy.setIsResearchDevelopment(this.isResearchDevelopment);
-		copy.setIsInstruction(this.isInstruction);
-		copy.setIsOtherSponsoredActivity(this.isOtherSponsoredActivity);
-		return copy;
 	}
 
 }

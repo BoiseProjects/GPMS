@@ -1,8 +1,4 @@
-//Edited by: Hector C. Ortiz
-
 package gpms.model;
-
-//import java.util.Date;
 
 import gpms.dao.UserAccountDAO;
 

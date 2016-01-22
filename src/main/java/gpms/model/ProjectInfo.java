@@ -1,11 +1,8 @@
-//Edited by: Hector C. Ortiz
-
 package gpms.model;
 
 import java.io.Serializable;
 import java.util.Date;
 
-//import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Indexed;
 import org.mongodb.morphia.annotations.Property;
@@ -16,7 +13,7 @@ import com.google.gson.annotations.Expose;
 //import org.mongodb.morphia.annotations.Id;
 
 @Embedded
-public class ProjectInfo implements Cloneable, Serializable {
+public class ProjectInfo implements Serializable {
 	@Expose
 	@Property("project title")
 	@Indexed(value = IndexDirection.ASC, name = "proposalTitleIndex", unique = true)
@@ -168,18 +165,6 @@ public class ProjectInfo implements Cloneable, Serializable {
 		} else if (!typeOfRequest.equals(other.typeOfRequest))
 			return false;
 		return true;
-	}
-
-	@Override
-	public ProjectInfo clone() throws CloneNotSupportedException {
-		ProjectInfo copy = new ProjectInfo();
-		copy.setProjectTitle(this.projectTitle);
-		copy.setProjectType(this.projectType.clone());
-		copy.setTypeOfRequest(this.typeOfRequest.clone());
-		copy.setDueDate(this.dueDate);
-		copy.setProjectPeriod(this.projectPeriod.clone());
-		copy.setProjectLocation(this.projectLocation.clone());
-		return copy;
 	}
 
 }

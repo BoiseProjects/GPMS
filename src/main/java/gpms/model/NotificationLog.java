@@ -2,6 +2,7 @@ package gpms.model;
 
 import gpms.dao.NotificationDAO;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import org.mongodb.morphia.annotations.Entity;
@@ -14,7 +15,7 @@ import com.google.gson.annotations.Expose;
 
 @Entity(value = NotificationDAO.COLLECTION_NAME, noClassnameStored = true)
 public class NotificationLog extends BaseEntity implements
-		Comparable<NotificationLog>, Cloneable {
+		Comparable<NotificationLog>, Serializable {
 
 	@Expose
 	@Property("type")

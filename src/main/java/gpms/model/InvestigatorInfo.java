@@ -1,18 +1,15 @@
-//Edited by: Hector C. Ortiz
-
 package gpms.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-//import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.Embedded;
 
 import com.google.gson.annotations.Expose;
 
 @Embedded
-public class InvestigatorInfo implements Cloneable, Serializable {
+public class InvestigatorInfo implements Cloneable {
 	@Expose
 	@Embedded("PI")
 	private InvestigatorRefAndPosition pi = new InvestigatorRefAndPosition();
@@ -93,20 +90,6 @@ public class InvestigatorInfo implements Cloneable, Serializable {
 		} else if (!seniorPersonnel.equals(other.seniorPersonnel))
 			return false;
 		return true;
-	}
-
-	@Override
-	public InvestigatorInfo clone() throws CloneNotSupportedException {
-		InvestigatorInfo copy = new InvestigatorInfo();
-		copy.setPi(this.pi.clone());
-
-		for (InvestigatorRefAndPosition coPi : this.co_pi) {
-			copy.getCo_pi().add(coPi.clone());
-		}
-		for (InvestigatorRefAndPosition seniorPersonnel : this.seniorPersonnel) {
-			copy.getSeniorPersonnel().add(seniorPersonnel.clone());
-		}
-		return copy;
 	}
 
 }
