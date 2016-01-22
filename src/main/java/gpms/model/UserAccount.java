@@ -6,6 +6,7 @@ package gpms.model;
 
 import gpms.dao.UserAccountDAO;
 
+import java.io.Serializable;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Date;
@@ -20,7 +21,7 @@ import com.google.gson.annotations.Expose;
 @Entity(value = UserAccountDAO.COLLECTION_NAME, noClassnameStored = true)
 // @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class,
 // property = "_id")
-public class UserAccount extends BaseEntity implements Cloneable {
+public class UserAccount extends BaseEntity implements Cloneable, Serializable {
 	@Expose
 	@Property("username")
 	@Indexed(value = IndexDirection.ASC, name = "userNameIndex", unique = true)

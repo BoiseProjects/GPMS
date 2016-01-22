@@ -2,13 +2,15 @@
 
 package gpms.model;
 
+import java.io.Serializable;
+
 import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Property;
 
 import com.google.gson.annotations.Expose;
 
 @Embedded
-public class ProjectType implements Cloneable {
+public class ProjectType implements Cloneable, Serializable {
 	@Expose
 	@Property("research-basic")
 	private boolean isResearchBasic;

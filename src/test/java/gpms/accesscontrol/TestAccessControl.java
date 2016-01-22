@@ -31,13 +31,13 @@ public class TestAccessControl {
 		HashMap<String, Multimap<String, String>> attrMap = new HashMap<String, Multimap<String, String>>();
 
 		Multimap<String, String> subjectMap = ArrayListMultimap.create();
-		subjectMap.put("position-type", "Teaching faculty");
+		subjectMap.put("position-type", "Tenured/tenure-track faculty");
 		// subjectMap.put("Proposal Role", "PI");
 		attrMap.put("Subject", subjectMap);
 
 		Multimap<String, String> resourceMap = ArrayListMultimap.create();
 		resourceMap.put("proposal-section", "Whole Proposal");
-		resourceMap.put("status", "Withdraw by Research Office");
+		//resourceMap.put("status", "Withdraw by Research Office");
 		attrMap.put("Resource", resourceMap);
 
 		Multimap<String, String> actionMap = ArrayListMultimap.create();

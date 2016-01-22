@@ -1,7 +1,6 @@
-//Edited by: Hector C. Ortiz
-
 package gpms.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +12,7 @@ import com.google.gson.annotations.Expose;
 //import org.bson.types.ObjectId;
 
 @Embedded
-public class SponsorAndBudgetInfo implements Cloneable {
+public class SponsorAndBudgetInfo implements Cloneable, Serializable {
 	@Expose
 	@Property("granting agency")
 	private List<String> grantingAgency = new ArrayList<String>();

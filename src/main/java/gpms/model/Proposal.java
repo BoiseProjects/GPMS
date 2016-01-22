@@ -2,6 +2,7 @@ package gpms.model;
 
 import gpms.dao.ProposalDAO;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -15,7 +16,7 @@ import org.mongodb.morphia.utils.IndexDirection;
 import com.google.gson.annotations.Expose;
 
 @Entity(value = ProposalDAO.COLLECTION_NAME, noClassnameStored = true)
-public class Proposal extends BaseEntity implements Cloneable {
+public class Proposal extends BaseEntity implements Cloneable, Serializable {
 	@Expose
 	@Property("proposal no")
 	@Indexed(value = IndexDirection.ASC, name = "proposalNoIndex", unique = true)
@@ -400,8 +401,8 @@ public class Proposal extends BaseEntity implements Cloneable {
 			copy.getSignatureInfo().add(signature.clone());
 		}
 
-		// copy.setId(this.getId());
-		// copy.setVersion(this.getVersion());
+		copy.setId(this.getId());
+		copy.setVersion(this.getVersion());
 		// for (AuditLog entry : this.getAuditLog()) {
 		// copy.getAuditLog().add(entry);
 		// }

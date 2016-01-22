@@ -2,13 +2,15 @@
 
 package gpms.model;
 
+import java.io.Serializable;
+
 import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Property;
 
 import com.google.gson.annotations.Expose;
 
 @Embedded
-public class TypeOfRequest implements Cloneable {
+public class TypeOfRequest implements Cloneable, Serializable {
 	@Expose
 	@Property("pre-proposal")
 	private boolean isPreProposal;

@@ -1,6 +1,6 @@
-//Writen by: Hector C. Ortiz
-
 package gpms.model;
+
+import java.io.Serializable;
 
 import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Property;
@@ -8,7 +8,13 @@ import org.mongodb.morphia.annotations.Property;
 import com.google.gson.annotations.Expose;
 
 @Embedded
-public class ConflictOfInterest implements Cloneable {
+public class ConflictOfInterest implements Cloneable, Serializable {
+	@Override
+	protected ConflictOfInterest clone() throws CloneNotSupportedException {
+		// TODO Auto-generated method stub
+		return (ConflictOfInterest) super.clone();
+	}
+
 	// c_o_i == conflict_of_interest
 	@Expose
 	@Property("financial COI")
@@ -84,15 +90,6 @@ public class ConflictOfInterest implements Cloneable {
 		if (financialCOI != other.financialCOI)
 			return false;
 		return true;
-	}
-
-	@Override
-	protected ConflictOfInterest clone() throws CloneNotSupportedException {
-		ConflictOfInterest copy = new ConflictOfInterest();
-		copy.setFinancialCOI(this.financialCOI);
-		copy.setConflictDisclosed(this.conflictDisclosed);
-		copy.setDisclosureFormChange(this.disclosureFormChange);
-		return clone();
 	}
 
 }

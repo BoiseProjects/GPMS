@@ -155,4 +155,9 @@ public class NotificationService {
 				userPositionTitle, userIsAdmin);
 
 	}
+
+	// TODO : once clicked the notification count
+	public void UpdateAllNotificationAsViewed() {
+
+	}
 }

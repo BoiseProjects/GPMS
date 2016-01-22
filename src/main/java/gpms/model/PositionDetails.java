@@ -3,13 +3,15 @@
 package gpms.model;
 
 //import org.mongodb.morphia.annotations.Id;
+import java.io.Serializable;
+
 import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Property;
 
 import com.google.gson.annotations.Expose;
 
 @Embedded
-public class PositionDetails implements Cloneable {
+public class PositionDetails implements Cloneable, Serializable {
 	@Expose
 	@Property("position title")
 	private String positionTitle = new String();

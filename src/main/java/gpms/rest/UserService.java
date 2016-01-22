@@ -16,7 +16,13 @@ import gpms.model.UserInfo;
 import gpms.model.UserProfile;
 import gpms.utils.MultimapAdapter;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.io.Serializable;
 import java.net.URISyntaxException;
 import java.net.UnknownHostException;
 import java.text.DateFormat;
@@ -519,44 +525,38 @@ public class UserService {
 		NotificationLog notification = new NotificationLog();
 
 		String notificationMessage = new String();
-		Boolean needToView = false;
-
 		if (isActive) {
 			notificationMessage = "Activated user account and profile of "
 					+ userAccount.getUserName();
 		} else {
 			notificationMessage = "Deactivated user account and profile of "
 					+ userAccount.getUserName();
-			needToView = true;
 		}
 
 		// To Admin
 		notification.setType("User");
-		notification.setViewedByUser(needToView);
 		notificationDAO.save(notification);
 
 		// To All User Roles based on positions
 		if (isActive) {
 			notificationMessage = "Activated user account and profile of "
 					+ userAccount.getUserName();
+
+			for (PositionDetails positions : userProfile.getDetails()) {
+				notification = new NotificationLog();
+				notification.setType("User");
+				notification.setUserProfileId(userProfile.getId().toString());
+				notification.setCollege(positions.getCollege());
+				notification.setDepartment(positions.getDepartment());
+				notification.setPositionType(positions.getPositionType());
+				notification.setPositionTitle(positions.getPositionTitle());
+				notificationDAO.save(notification);
+			}
+
 		} else {
 			notificationMessage = "Deactivated user account and profile of "
 					+ userAccount.getUserName();
-			needToView = true;
 		}
-
-		for (PositionDetails positions : userProfile.getDetails()) {
-			notification = new NotificationLog();
-			notification.setType("User");
-			notification.setViewedByUser(needToView);
-			notification.setUserProfileId(userProfile.getId().toString());
-			notification.setCollege(positions.getCollege());
-			notification.setDepartment(positions.getDepartment());
-			notification.setPositionType(positions.getPositionType());
-			notification.setPositionTitle(positions.getPositionTitle());
-		}
-
-		notificationDAO.save(notification);
 
 		// return Response.ok("Success", MediaType.APPLICATION_JSON).build();
 
@@ -712,9 +712,7 @@ public class UserService {
 
 	@POST
 	@Path("/SaveUpdateUser")
-	public String saveUpdateUser(String message)
-			throws JsonProcessingException, IOException, ParseException,
-			CloneNotSupportedException {
+	public String saveUpdateUser(String message) throws Exception {
 		String userID = new String();
 		UserAccount newAccount = new UserAccount();
 		UserProfile newProfile = new UserProfile();
@@ -736,7 +734,7 @@ public class UserService {
 				ObjectId id = new ObjectId(userID);
 				existingUserProfile = userProfileDAO
 						.findUserDetailsByProfileID(id);
-				oldUserProfile = existingUserProfile.clone();
+				oldUserProfile = cloneThroughSerialize(existingUserProfile);
 			} else {
 				newAccount.setAddedOn(new Date());
 			}
@@ -1565,5 +1563,27 @@ public class UserService {
 		final String userPositions = gson.toJson(userProfileDAO
 				.findAllPositionDetailsForAUser(id));
 		return userPositions;
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <T> T cloneThroughSerialize(T t) throws Exception {
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		serializeToOutputStream((Serializable) t, bos);
+		byte[] bytes = bos.toByteArray();
+		ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(
+				bytes));
+		return (T) ois.readObject();
+	}
+
+	private static void serializeToOutputStream(Serializable ser,
+			OutputStream os) throws IOException {
+		ObjectOutputStream oos = null;
+		try {
+			oos = new ObjectOutputStream(os);
+			oos.writeObject(ser);
+			oos.flush();
+		} finally {
+			oos.close();
+		}
 	}
 }

@@ -2,17 +2,17 @@
 
 package gpms.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 //import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.Embedded;
-import org.mongodb.morphia.annotations.Transient;
 
 import com.google.gson.annotations.Expose;
 
 @Embedded
-public class InvestigatorInfo implements Cloneable {
+public class InvestigatorInfo implements Cloneable, Serializable {
 	@Expose
 	@Embedded("PI")
 	private InvestigatorRefAndPosition pi = new InvestigatorRefAndPosition();

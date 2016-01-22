@@ -1,12 +1,14 @@
 package gpms.model;
 
+import java.io.Serializable;
+
 import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Property;
 
 import com.google.gson.annotations.Expose;
 
 @Embedded
-public class OSPSectionInfo implements Cloneable {
+public class OSPSectionInfo implements Cloneable, Serializable {
 	@Expose
 	@Property("list agency")
 	private String listAgency = new String();
@@ -446,7 +448,8 @@ public class OSPSectionInfo implements Cloneable {
 		copy.setPISalary(this.PISalary);
 		copy.setPIFringe(this.PIFringe);
 		copy.setDepartmentId(this.departmentId);
-		copy.setInstitutionalCostDocumented(this.institutionalCostDocumented.clone());
+		copy.setInstitutionalCostDocumented(this.institutionalCostDocumented
+				.clone());
 		copy.setThirdPartyCostDocumented(this.thirdPartyCostDocumented.clone());
 		copy.setAnticipatedSubRecipients(this.isAnticipatedSubRecipients);
 		copy.setAnticipatedSubRecipientsNames(this.anticipatedSubRecipientsNames);

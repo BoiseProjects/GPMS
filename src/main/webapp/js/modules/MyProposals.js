@@ -821,15 +821,23 @@ $(function() {
 							});
 		},
 
-		ButtonHideShow : function(currentProposalRoles, proposalStatus) {
+		ButtonHideShow : function(currentProposalRoles, proposalStatus, proposalId) {
 			$("#btnReset").hide();
 			$("#btnSaveProposal").hide();
-			$("#btnSubmitProposal").hide();
 			$("#btnUpdateProposal").hide();
+			$("#btnSubmitProposal").hide();			
 			$("#btnApproveProposal").hide();
 			$("#btnDisapproveProposal").hide();
 			$("#btnWithdrawProposal").hide();
 			$("#btnArchiveProposal").hide();
+			
+			$("#btnSaveProposal").prop("name", proposalId);
+			$("#btnUpdateProposal").prop("name", proposalId);
+			$("#btnSubmitProposal").prop("name", proposalId);
+			$("#btnApproveProposal").prop("name", proposalId);
+			$("#btnDisapproveProposal").prop("name", proposalId);
+			$("#btnWithdrawProposal").prop("name", proposalId);
+			$("#btnArchiveProposal").prop("name", proposalId);
 
 			var canUpdateRoles = [ "PI", "CO-PI" ];
 			var canUpdateTitles = [ "Business Manager",
@@ -935,8 +943,7 @@ $(function() {
 				$("#lblProposalDateReceived").text(argus[12]);
 
 				myProposal.ClearForm();
-
-				$("#btnSaveProposal").prop("name", argus[0]);
+				
 				$("#txtNameOfGrantingAgency").val(argus[6]);
 
 				$("#trSignChair").show();
@@ -956,7 +963,7 @@ $(function() {
 				myProposal.BindProposalDetailsByProposalId(argus[0]);
 
 				myProposal.ButtonHideShow($.trim(argus[24]).split(', '),
-						argus[16]);
+						argus[16], argus[0]);
 
 				// Certification/ Signatures Info
 				myProposal.BindAllSignatureForAProposal(argus[0]);
@@ -1646,7 +1653,7 @@ $(function() {
 				activityOnTo = null;
 			}
 
-			var proposalId = $('#btnSaveProposal').prop("name");
+			var proposalId = $('#btnLogsBack').prop("name");
 			if (proposalId == '') {
 				proposalId = "0";
 			}
@@ -1727,6 +1734,7 @@ $(function() {
 			switch (tblID) {
 			case "gdvProposals":
 				$('#lblLogsHeading').html('View Audit Logs for: ' + argus[1]);
+				$('#btnLogsBack').prop('name', argus[0]);
 				if (argus[2] != null && argus[2] != "") {
 					$('#tblLastAuditedInfo').show();
 					$('#lblLastUpdatedOn').html(argus[2]);
@@ -2165,11 +2173,12 @@ $(function() {
 				attributeValue : "Whole Proposal"
 			});
 			if (_proposalId === "0" && _flag) { // TODO I have changed this
-				attributeArray.push({
-					attributeType : "Action",
-					attributeName : "proposal-action",
-					attributeValue : "Create"
-				});
+				 alert('create');
+				 attributeArray.push({
+				 attributeType : "Action",
+				 attributeName : "proposal-action",
+				 attributeValue : "Create"
+				 });
 			} else {
 				attributeArray.push({
 					attributeType : "Action",
@@ -2177,7 +2186,7 @@ $(function() {
 					attributeValue : "Edit"
 				});
 			}
-
+			
 			policyAttributeInfo = attributeArray;
 
 			if (validator.form()) {
@@ -2830,7 +2839,6 @@ $(function() {
 			break;
 
 		case 5: // Bind User List for Investigator Info
-			alert(rowIndex);
 			$('select[name="ddlName"]').get(rowIndex).options.length = 0;
 			$('select[name="ddlCollege"]').get(rowIndex).options.length = 0;
 			$('select[name="ddlDepartment"]').get(rowIndex).options.length = 0;
@@ -3014,10 +3022,10 @@ $(function() {
 			case 9:
 				if (editFlag != "0") {
 					csscody.error("<h2>" + 'Error Message' + "</h2><p>"
-							+ 'Failed to update proposal!' + "</p>");
+							+ 'Failed to update proposal! ' + msg.responseText + "</p>");
 				} else {
 					csscody.error("<h2>" + 'Error Message' + "</h2><p>"
-							+ 'Failed to save proposal!' + "</p>");
+							+ 'Failed to save proposal! ' + msg.responseText + "</p>");
 				}
 				break;
 			}
@@ -3277,6 +3285,18 @@ $(function() {
 				} else {
 					editFlag = "0";
 					myProposal.SaveProposal("0", true);
+				}
+				$(this).enable();
+				e.preventDefault();
+				return false;
+			});
+			
+			$('#btnUpdateProposal').click(function(e) {
+				$(this).disableWith('Updating...');
+				var proposal_id = $(this).prop("name");
+				if (proposal_id != '') {
+					editFlag = proposal_id;
+					myProposal.SaveProposal(proposal_id, false);
 				}
 				$(this).enable();
 				e.preventDefault();

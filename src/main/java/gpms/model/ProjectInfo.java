@@ -2,6 +2,7 @@
 
 package gpms.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 //import org.bson.types.ObjectId;
@@ -15,7 +16,7 @@ import com.google.gson.annotations.Expose;
 //import org.mongodb.morphia.annotations.Id;
 
 @Embedded
-public class ProjectInfo implements Cloneable {
+public class ProjectInfo implements Cloneable, Serializable {
 	@Expose
 	@Property("project title")
 	@Indexed(value = IndexDirection.ASC, name = "proposalTitleIndex", unique = true)

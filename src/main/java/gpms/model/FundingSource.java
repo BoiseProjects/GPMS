@@ -1,12 +1,14 @@
 package gpms.model;
 
+import java.io.Serializable;
+
 import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Property;
 
 import com.google.gson.annotations.Expose;
 
 @Embedded
-public class FundingSource implements Cloneable {
+public class FundingSource implements Cloneable, Serializable {
 	@Expose
 	@Property("federal")
 	private boolean federal;

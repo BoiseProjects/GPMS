@@ -1,5 +1,6 @@
 package gpms.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import org.mongodb.morphia.annotations.Embedded;
@@ -8,7 +9,7 @@ import org.mongodb.morphia.annotations.Property;
 import com.google.gson.annotations.Expose;
 
 @Embedded
-public class SignatureInfo implements Cloneable {
+public class SignatureInfo implements Cloneable, Serializable {
 	@Expose
 	@Property("user profile id")
 	private String userProfileId = new String();

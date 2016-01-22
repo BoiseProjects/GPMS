@@ -1,12 +1,14 @@
 package gpms.model;
 
+import java.io.Serializable;
+
 import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Property;
 
 import com.google.gson.annotations.Expose;
 
 @Embedded
-public class Recovery implements Cloneable {
+public class Recovery implements Cloneable, Serializable {
 	@Expose
 	@Property("full recovery")
 	private boolean fullRecovery;

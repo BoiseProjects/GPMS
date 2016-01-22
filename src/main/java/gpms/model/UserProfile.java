@@ -7,6 +7,7 @@ package gpms.model;
 
 import gpms.dao.UserProfileDAO;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -23,7 +24,7 @@ import com.google.gson.annotations.Expose;
 @Entity(value = UserProfileDAO.COLLECTION_NAME, noClassnameStored = true)
 // @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class,
 // property = "id")
-public class UserProfile extends BaseEntity implements Cloneable {
+public class UserProfile extends BaseEntity implements Cloneable, Serializable {
 	@Expose
 	@Property("first name")
 	@Indexed(value = IndexDirection.ASC, name = "firstNameIndex")

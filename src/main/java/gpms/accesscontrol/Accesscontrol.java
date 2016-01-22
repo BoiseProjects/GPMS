@@ -1,7 +1,5 @@
 package gpms.accesscontrol;
 
-import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
 import java.util.HashMap;
@@ -29,13 +27,18 @@ public class Accesscontrol {
 	private static Balana balana = null;
 	private AbstractResult ar;
 	AttributeSpreadSheet attrSpreadSheet = null;
+	private static String policyLocation = new String();
 
 	public Accesscontrol() throws Exception {
-		// Policy Attribute Mapping XLS file
-		// this.attrSpreadSheet = new
-		// AttributeSpreadSheet("XACML Data sheet.xls");
+		String file = "/XACMLDatasheet.xls";
+		InputStream inputStream = this.getClass().getResourceAsStream(file);
 
-		this.attrSpreadSheet = new AttributeSpreadSheet("/XACMLDataSheet.xls");
+		String policyFolderName = "/policy";
+		policyLocation = this.getClass().getResource(policyFolderName).toURI()
+				.getPath();
+
+		this.attrSpreadSheet = new AttributeSpreadSheet(inputStream);
+
 	}
 
 	// whatever, go knows whether we need multi-thread in the future
@@ -44,12 +47,12 @@ public class Accesscontrol {
 			synchronized (Accesscontrol.class) {
 				if (balana == null) {
 					try {
-						String policyLocation = (new File("."))
-								.getCanonicalPath() + File.separator + "policy";
+						// String policyLocation = (new File("."))
+						// .getCanonicalPath() + File.separator + "policy";
 						System.setProperty(
 								FileBasedPolicyFinderModule.POLICY_DIR_PROPERTY,
 								policyLocation);
-					} catch (IOException e) {
+					} catch (Exception e) {
 						System.err.println("Can not locate policy repository");
 					}
 					balana = Balana.getInstance();
@@ -260,23 +263,23 @@ public class Accesscontrol {
 		Multimap<String, String> actionMap = ArrayListMultimap.create();
 
 		// Test case for Rule : FacultyCreateProposal-Rule1
-		subjectMap.put("position-type", "Non-tenure-track research faculty");
-		subjectMap.put("position-title", "Assistant Research Professor");
-		subjectMap.put("proposal-role", "PI");
+		subjectMap.put("position-type", "Tenured/tenure-track faculty");
+		// subjectMap.put("position-title", "Assistant Research Professor");
+		// subjectMap.put("proposal-role", "PI");
 		attrMap.put("Subject", subjectMap);
 
 		resourceMap.put("proposal-section", "Whole Proposal");
-		resourceMap.put("status", "Withdraw by Research Office");
+		// resourceMap.put("status", "Withdraw by Research Office");
 		attrMap.put("Resource", resourceMap);
 
 		actionMap.put("proposal-action", "Create");
-		actionMap.put("proposal-section-action", "View");
+		// actionMap.put("proposal-section-action", "View");
 		attrMap.put("Action", actionMap);
 
-		Multimap<String, String> environmentMap = ArrayListMultimap.create();
-		environmentMap.put("device-type", "Android Device");
-		environmentMap.put("network-type", "Campus");
-		attrMap.put("Environment", environmentMap);
+		// Multimap<String, String> environmentMap = ArrayListMultimap.create();
+		// environmentMap.put("device-type", "Android Device");
+		// environmentMap.put("network-type", "Campus");
+		// attrMap.put("Environment", environmentMap);
 
 		ac.getXACMLdecision(attrMap);
 	}

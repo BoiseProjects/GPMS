@@ -2,13 +2,15 @@
 
 package gpms.model;
 
+import java.io.Serializable;
+
 import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Property;
 
 import com.google.gson.annotations.Expose;
 
 @Embedded
-public class UniversityCommitments implements Cloneable {
+public class UniversityCommitments implements Cloneable, Serializable {
 	@Expose
 	@Property("new renovated facilities required")
 	private boolean newRenovatedFacilitiesRequired;

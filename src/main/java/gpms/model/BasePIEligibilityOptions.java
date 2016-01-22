@@ -1,10 +1,12 @@
 package gpms.model;
 
+import java.io.Serializable;
+
 import org.mongodb.morphia.annotations.Property;
 
 import com.google.gson.annotations.Expose;
 
-public class BasePIEligibilityOptions implements Cloneable {
+public class BasePIEligibilityOptions implements Cloneable, Serializable {
 	@Expose
 	@Property("yes")
 	private boolean yes;

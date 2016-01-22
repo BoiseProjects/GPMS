@@ -1,5 +1,7 @@
 package gpms.model;
 
+import java.io.Serializable;
+
 import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Property;
 import org.mongodb.morphia.annotations.Reference;
@@ -7,7 +9,7 @@ import org.mongodb.morphia.annotations.Reference;
 import com.google.gson.annotations.Expose;
 
 @Embedded
-public class InvestigatorRefAndPosition implements Cloneable {
+public class InvestigatorRefAndPosition implements Cloneable, Serializable {
 	@Expose
 	@Reference(value = "user profile" /* , lazy = true */)
 	UserProfile userRef = new UserProfile();
