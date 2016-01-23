@@ -855,19 +855,10 @@ $(function() {
 					function(index, value) {
 						if ($.inArray(value, canSubmitRoles) !== -1
 								&& proposalStatus == "Not Submitted by PI") {
-							$("#btnSubmitProposal").show();
-
-							$("input[name=AddMore]").removeAttr('disabled')
-									.show();
-							$("input[name=DeleteOption]")
-									.removeAttr('disabled').show();
-
+							$("#btnSubmitProposal").show();	
 							return false;
 						} else {
 							$("#btnSubmitProposal").hide();
-							$("input[name=AddMore]").attr('disabled', true)
-									.hide();
-							$("input[name=DeleteOption]").remove();
 						}
 					});
 
@@ -1550,24 +1541,26 @@ $(function() {
 										} else if (userType == "Co-PI") {
 											$(this).val(1).prop('selected',
 													'selected');
-											$(this).removeAttr('disabled');
+											$(this).prop('disabled', true);
+											$(this).find('option').not(':selected').remove();
 										} else if (userType == "Senior") {
 											$(this).val(2).prop('selected',
 													'selected');
-											$(this).removeAttr('disabled');
+											$(this).prop('disabled', true);
+											$(this).find('option').not(':selected').remove();
 										}
 									} else if (this.name == "ddlName") {
 										$(this).val(userDetails.userProfileId)
 												.prop('selected', 'selected');
 
 										if (userType == "PI") {
-											$(this)
-													.prop('disabled',
-															'disabled');
+											$(this).prop('disabled', true);
 										} else if (userType == "Co-PI") {
-											$(this).removeAttr('disabled');
+											$(this).prop('disabled', true);
+											$(this).find('option').not(':selected').remove();
 										} else if (userType == "Senior") {
-											$(this).removeAttr('disabled');
+											$(this).prop('disabled', true);
+											$(this).find('option').not(':selected').remove();
 										}
 
 										myProposal.BindUserMobileNo($(
@@ -1899,6 +1892,7 @@ $(function() {
 
 		BindDefaultUserPosition : function(rowIndexVal) {
 			// For form Dropdown Binding
+			alert(rowIndexVal);
 			myProposal.BindAllPositionDetailsForAUser($(
 					'select[name="ddlName"]').eq(rowIndexVal).val());
 
@@ -1952,8 +1946,7 @@ $(function() {
 											.prop("name");
 									if (proposal_id != ''
 											&& ui.newHeader.size() != 0
-											&& ui.newPanel.size() != 0
-											&& $.trim(ui.newHeader.text()) != "Audit Logs") {
+											&& ui.newPanel.size() != 0) {
 										alert("After Activated! GO to XACML to see if he is allowed to change this panel content");
 										var allowedToEdit = true;
 										if (allowedToEdit) {
@@ -1961,55 +1954,18 @@ $(function() {
 													.trim(ui.newHeader.text());
 											alert("Allowed to EDIT this Panel "
 													+ selectedSection);
-
-											if (selectedSection == "OSP Section") {
-												$("#ui-id-24")
-														.find(
-																'input:text, select, textarea')
-														.each(
-																function() {
-																	if ($(this)
-																			.attr(
-																					'id') != "txtNamesSubrecipients") {
-																		$(this)
-																				.removeClass(
-																						"ignore");
-																	}
-																});
-											}
-											// ui.newPanel
-											// .find("input, select")
-											// .each(
-											// function() {
-											// if ($(this)
-											// .hasClass(
-											// 'AddOption')) {
-											// $(this)
-											// .show();
-											// }
-											// $(this)
-											// .removeAttr(
-											// "disabled");
-											// });
+											//TODO get the ui and find all input select and textarea then disable them 
+											//ui.newPanel
+													//.find("input, select")
+													//.each(
+															//function() {
+															//});
+													
 										} else {
 											alert("You are not Allowed to EDIT this Panel "
 													+ $.trim(ui.newHeader
 															.text()));
-											ui.newPanel
-													.find("input, select")
-													.each(
-															function() {
-																if ($(this)
-																		.hasClass(
-																				'AddOption')) {
-																	$(this)
-																			.hide();
-																}
-																$(this)
-																		.prop(
-																				"disabled",
-																				"disabled");
-															});
+											//TODO get the ui and find all input select and textarea then enabled them 
 											event.preventDefault();
 										}
 									}
@@ -2021,13 +1977,12 @@ $(function() {
 											.prop("name");
 									if (proposal_id != ''
 											&& ui.newHeader.size() != 0
-											&& ui.newPanel.size() != 0
-											&& $.trim(ui.newHeader.text()) != "Audit Logs") {
+											&& ui.newPanel.size() != 0) {
 										alert("Before Activated! need to check XACML if the user is allowed to view this panel content");
 
 										var beforeactive = $("#accordion")
-												.accordion("option", "active"); // OSP
-										// Section
+												.accordion("option", "active");
+										// OSP Section
 										if (beforeactive == 11) {
 											$("#ui-id-24")
 													.find(

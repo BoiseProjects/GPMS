@@ -153,21 +153,9 @@ public class NotificationService {
 		List<NotificationLog> notifications = notificationDAO
 				.findAllNotificationForAUser(1, 10, userProfileID, userCollege,
 						userDepartment, userPositionType, userPositionTitle,
-						userIsAdmin);
-
-		// Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd")
-		// .excludeFieldsWithoutExposeAnnotation().setPrettyPrinting()
-		// .create();
-		// response = gson.toJson(notifications, NotificationLog.class);
-		//
-		// return response;
+						userIsAdmin);	
 
 		return notifications;
-
-	}
-
-	// TODO : once clicked the notification count
-	public void UpdateAllNotificationAsViewed() {
 
 	}
 }

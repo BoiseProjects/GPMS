@@ -88,12 +88,13 @@
 			},
 			init : function() {
 				NotificationView.NotificationGetAllCount();
-				$("#linkNotifyInfo").click(function() {
-					if (!$(".cssClassNotify").is(":visible")) {
+				$("#linkNotifyInfo").click(function() {					
+					if (!$(".cssClassNotify").is(":visible")) {						
 						$(this).addClass("sfNotificationSelect");
 						NotificationView.NotificationGetAll();
 					} else {
 						$(this).removeClass("sfNotificationSelect");
+						// $('.beeperNub').hide();
 					}
 				});
 
@@ -104,7 +105,7 @@
 									'slow');
 							$('.sfNotificationSelect').removeClass(
 									"sfNotificationSelect");
-
+							$('.beeperNub').hide();
 						});
 
 				$(document).on(
@@ -138,6 +139,7 @@
 															$parentList
 																	.removeClass("sfNotificationSelect");
 															$(this).slideUp();
+															$('.beeperNub').hide();
 														}
 													});
 
@@ -208,11 +210,11 @@
 				var contentUser = "";
 				var allContent = "";
 
-				contentUser = '<div>';
+				contentUser = '<div class="beeperNubWrapper">';
 
 				if (msg.length > 0) {
 					contentUser += '<h5 class="cssClassNotifyHead">'
-							+ 'Recent Activities: ' + '</h5><ul>';
+							+ 'Notifications' + '</h5><ul>';
 					var i = 1;
 
 					var userID = "";
@@ -235,29 +237,27 @@
 											userName = strEncrypt(value.username);
 
 											contentUser += '<li '
-													+ (intNewUsers > 0 ? 'class="sfLastestNotification"'
-															: '')
-													+ '>'
-													+ '<a id="'
-													+ value.username
-													+ '" title="Click to View" href = "'
-													+ './ManageUsers.jsp?userID='
-													+ userID
-													+ "&userName="
-													+ userName
-													+ '"> '
-													+ value.username
-													+ '</a><span class="activityon">'
-													+ $.format
-															.date(
-																	value.activityDate,
-																	'yyyy/MM/dd hh:mm:ss a')
-													+ '</span><span class="'
-													+ classForAction
-													+ '"><strong>'
-													+ value.action
-													+ '</strong></span>'
-													+ ' </li>';
+												+ (intNewUsers > 0 ? 'class="sfLastestNotification"'
+														: '')
+												+ '>'
+												+ '<a id="'
+												+ value.proposalId
+												+ '" title="Click to View" href = "'
+												+ './ManageProposals.jsp?proposalID='
+												+ proposalID
+												+ '">'
+												+ value.proposalTitle
+												+ '</a><span class="activityon">'
+												+ $.format
+														.date(
+																value.activityDate,
+																'yyyy/MM/dd hh:mm:ss a')
+												+ '</span><span class="'
+												+ classForAction
+												+ '"><strong>'
+												+ value.action
+												+ '</strong></span>'
+												+ ' </li>';
 											break;
 										case 'User':
 											userID = strEncrypt(value.userProfileId);
@@ -361,11 +361,11 @@
 
 				} else {
 					contentUser += '<h5 class="cssClassNotifyHead">'
-							+ 'There are no Recent Activities!' + '</h5>';
+							+ 'There are no Notifications!' + '</h5>';
 					contentUser += '</div>';
 				}
 
-				allContent += '<div class="cssClassNotify" style="display:none">'
+				allContent += '<div class="beeperNub"></div><div class="cssClassNotify" style="display:none">'
 						+ contentUser + '</div>';
 
 				$('.notifyInfoPanel').append(allContent);

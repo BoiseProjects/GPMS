@@ -966,7 +966,7 @@ li.preview a:hover.icon-preview, li.preview a:hover.icon-preview:before,
 
 .sfTopbar ul.right li.sfquickNotification div ul li div.cssClassNotify {
 	position: absolute;
-	top: 37px;
+	top: 44px;
 	right: 0px;
 	z-index: 99;
 	width: 335px;
@@ -981,6 +981,30 @@ li.preview a:hover.icon-preview, li.preview a:hover.icon-preview:before,
 	-ms-box-shadow: 0 0 5px rgba(0, 0, 0, .1);
 	box-shadow: 0 0 5px rgba(0, 0, 0, .1);
 	-o-box-shadow: 0 0 5px rgba(0, 0, 0, .1);
+}
+
+.beeperNub::before {
+	border-bottom: 10px solid rgba(0, 0, 0, 0.15);
+	border-left: 10px solid transparent;
+	border-right: 10px solid transparent;
+	content: "";
+	display: inline-block;
+	left: 50%;
+	margin-left: -11px;
+	position: absolute;
+	top: 34px;
+}
+
+.beeperNub::after {
+	border-bottom: 9px solid #fff;
+	border-left: 9px solid transparent;
+	border-right: 9px solid transparent;
+	content: "";
+	display: inline-block;
+	left: 50%;
+	margin-left: -10px;
+	position: absolute;
+	top: 35px;
 }
 
 .sfTopbar ul.right li.sfquickNotification div ul li div.cssClassNotify:hover
@@ -1073,7 +1097,7 @@ li.preview a:hover.icon-preview, li.preview a:hover.icon-preview:before,
 	font-weight: bold;
 	cursor: pointer;
 	float: left;
-	width: 160px;
+	width: 147px;
 }
 
 .sfTopbar ul.right li.sfquickNotification div ul li div.cssClassNotify ul li a:hover

@@ -1,6 +1,7 @@
 package gpms.dao;
 
 import gpms.DAL.MongoDBConnector;
+import gpms.model.AuditLog;
 import gpms.model.NotificationLog;
 import gpms.model.Proposal;
 import gpms.model.UserAccount;
@@ -11,12 +12,14 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
 import org.mongodb.morphia.dao.BasicDAO;
 import org.mongodb.morphia.query.Query;
+import org.mongodb.morphia.query.UpdateOperations;
 
 import com.mongodb.MongoClient;
 import com.mongodb.MongoException;
@@ -91,24 +94,37 @@ public class NotificationDAO extends BasicDAO<NotificationLog, String> {
 			String userDepartment, String userPositionType,
 			String userPositionTitle, boolean isUserAdmin)
 			throws ParseException {
-
+		Datastore ds = getDatastore();
 		List<NotificationLog> notifications = new ArrayList<NotificationLog>();
 		Query<NotificationLog> notificationQuery = ds
 				.createQuery(NotificationLog.class)
-				.retrievedFields(true, "_id", "type", "action", "proposal id",
+				.retrievedFields(true, "type", "action", "proposal id",
 						"proposal title", "user profile id", "user name",
 						"college", "department", "position type",
 						"position title", "is viewed by user",
 						"is viewed by admin", "activity on", "for admin",
 						"is critical").order("-activity on");
 
+		Query<NotificationLog> removeNotifyQuery = ds.createQuery(
+				NotificationLog.class).retrievedFields(true, "type", "action",
+				"proposal id", "proposal title", "user profile id",
+				"user name", "college", "department", "position type",
+				"position title", "is viewed by user", "is viewed by admin",
+				"activity on", "for admin", "is critical");
+
 		if (isUserAdmin) {
 			// int rowTotal = notificationQuery.asList().size();
 			notifications = notificationQuery.offset(offset - 1).limit(limit)
 					.asList();
+
+			UpdateOperations<NotificationLog> ops = ds.createUpdateOperations(
+					NotificationLog.class).set("is viewed by admin", "true");
+			ds.update(removeNotifyQuery, ops);
+			// updateAllNotificationAsViewed(notifications, isUserAdmin);
 		} else {
 			notificationQuery.and(
-					// notificationQuery.criteria("isViewedByUser").equal(false),
+					// notificationQuery.criteria(""is viewed by
+					// user"").equal(false),
 					notificationQuery.criteria("user profile id").equal(
 							userProfileId),
 					notificationQuery.criteria("college").equal(userCollege),
@@ -121,7 +137,28 @@ public class NotificationDAO extends BasicDAO<NotificationLog, String> {
 
 			notifications = notificationQuery.offset(offset - 1).limit(limit)
 					.asList();
+
+			UpdateOperations<NotificationLog> ops = ds.createUpdateOperations(
+					NotificationLog.class).set("is viewed by user", "true");
+			ds.update(removeNotifyQuery, ops);
+
+			// updateAllNotificationAsViewed(notifications, isUserAdmin);
 		}
+
 		return notifications;
 	}
+
+	private void updateAllNotificationAsViewed(
+			List<NotificationLog> notifications, boolean isUserAdmin) {
+		Datastore ds = getDatastore();
+		for (NotificationLog notificationLog : notifications) {
+			if (isUserAdmin) {
+				notificationLog.setViewedByAdmin(true);
+			} else {
+				notificationLog.setViewedByUser(true);
+			}
+			ds.save(notificationLog);
+		}
+	}
+
 }
