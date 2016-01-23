@@ -69,6 +69,7 @@
 <script type="text/javascript" src="js/superfish.js"></script>
 
 <script type="text/javascript" src="js/core/json2.js"></script>
+<script type="text/javascript" src="js/GridView/jquery-dateFormat.js"></script>
 
 <script type="text/javascript" src="js/jquery-browser.js"></script>
 <script type="text/javascript" src="js/jquery.uniform.js"></script>

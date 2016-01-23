@@ -88,25 +88,27 @@
 			},
 			init : function() {
 				NotificationView.NotificationGetAllCount();
-				$("#linkNotifyInfo").click(function() {					
-					if (!$(".cssClassNotify").is(":visible")) {						
+				$('#linkNotifyInfo').click(function() {
+					if ($('.cssClassNotify').is(":hidden")) {
 						$(this).addClass("sfNotificationSelect");
+						$('.beeperNub').show();
 						NotificationView.NotificationGetAll();
+						$('.cssClassNotify').slideDown('slow');
 					} else {
-						$(this).removeClass("sfNotificationSelect");
-						// $('.beeperNub').hide();
+						$(this).removeClass("sfNotificationSelect");												
+						$('.cssClassNotify').slideUp('slow');
+						$('.beeperNub').hide();
 					}
 				});
 
-				$(".notificationsSticker").outside(
-						'click',
-						function() {
-							$('.cssClassNotify').stop(true, true).slideUp(
-									'slow');
-							$('.sfNotificationSelect').removeClass(
-									"sfNotificationSelect");
-							$('.beeperNub').hide();
-						});
+				$(".notificationsSticker").outside('click', function() {
+					if ($('.cssClassNotify').is(":visible")) {
+						$('.cssClassNotify').slideUp('slow');
+						$('#linkNotifyInfo').removeClass("sfNotificationSelect");
+						$('.beeperNub').hide();
+					}
+					return false;
+				});
 
 				$(document).on(
 						'click',
@@ -117,53 +119,6 @@
 									+ itemsku + pageExtension;
 							return false;
 						});
-
-				// Default events
-
-				$(".topopup")
-						.click(
-								function() {
-
-									$(".cssClassNotify")
-											.each(
-													function() {
-														if ($(this).is(
-																':visible')) {
-															$parentList = $(
-																	this)
-																	.parent(
-																			"li")
-																	.siblings()
-																	.find(
-																			'a :first');
-															$parentList
-																	.removeClass("sfNotificationSelect");
-															$(this).slideUp();
-															$('.beeperNub').hide();
-														}
-													});
-
-									var $t = $(this).parent().find(
-											".cssClassNotify");
-
-									if ($t.is(':visible')) {
-										$parentList = $(this).parent("li")
-												.siblings().find('a :first');
-										$parentList
-												.removeClass("sfNotificationSelect");
-										$t.slideUp();
-									} else {
-										$parentList = $(this).parent("li")
-												.siblings().find('a :first');
-										$parentList
-												.removeClass("sfNotificationSelect");
-										$(this)
-												.addClass(
-														"sfNotificationSelect");
-										$t.slideDown();
-									}
-								});
-
 			},
 			UpdateTitle : function() {
 				if (p.notificationsNumber > 0) {
@@ -237,27 +192,27 @@
 											userName = strEncrypt(value.username);
 
 											contentUser += '<li '
-												+ (intNewUsers > 0 ? 'class="sfLastestNotification"'
-														: '')
-												+ '>'
-												+ '<a id="'
-												+ value.proposalId
-												+ '" title="Click to View" href = "'
-												+ './ManageProposals.jsp?proposalID='
-												+ proposalID
-												+ '">'
-												+ value.proposalTitle
-												+ '</a><span class="activityon">'
-												+ $.format
-														.date(
-																value.activityDate,
-																'yyyy/MM/dd hh:mm:ss a')
-												+ '</span><span class="'
-												+ classForAction
-												+ '"><strong>'
-												+ value.action
-												+ '</strong></span>'
-												+ ' </li>';
+													+ (intNewUsers > 0 ? 'class="sfLastestNotification"'
+															: '')
+													+ '>'
+													+ '<a id="'
+													+ value.proposalId
+													+ '" title="Click to View" href = "'
+													+ './ManageProposals.jsp?proposalID='
+													+ proposalID
+													+ '">'
+													+ value.proposalTitle
+													+ '</a><span class="activityon">'
+													+ $.format
+															.date(
+																	value.activityDate,
+																	'yyyy/MM/dd hh:mm:ss a')
+													+ '</span><span class="'
+													+ classForAction
+													+ '"><strong>'
+													+ value.action
+													+ '</strong></span>'
+													+ ' </li>';
 											break;
 										case 'User':
 											userID = strEncrypt(value.userProfileId);
@@ -365,10 +320,9 @@
 					contentUser += '</div>';
 				}
 
-				allContent += '<div class="beeperNub"></div><div class="cssClassNotify" style="display:none">'
-						+ contentUser + '</div>';
+				allContent += contentUser;
 
-				$('.notifyInfoPanel').append(allContent);
+				$('.cssClassNotify').html(allContent);
 			}
 		};
 		NotificationView.init();

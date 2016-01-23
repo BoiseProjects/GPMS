@@ -221,7 +221,9 @@
 						class="notired" style="display: none">0</span> <a
 						id="linkNotifyInfo"
 						class="showfrindreq mesgnotfctn topopup icon-portal-management"
-						title="Click to View Recent Activities">&nbsp;</a></li>
+						title="Click to View Recent Activities">&nbsp;</a>
+						<div class="beeperNub" style="display: none;"></div>
+						<div class="cssClassNotify" style="display: none;"></div></li>
 				</ul>
 			</div>
 		</li>
