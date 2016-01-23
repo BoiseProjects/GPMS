@@ -821,16 +821,17 @@ $(function() {
 							});
 		},
 
-		ButtonHideShow : function(currentProposalRoles, proposalStatus, proposalId) {
+		ButtonHideShow : function(currentProposalRoles, proposalStatus,
+				proposalId) {
 			$("#btnReset").hide();
 			$("#btnSaveProposal").hide();
 			$("#btnUpdateProposal").hide();
-			$("#btnSubmitProposal").hide();			
+			$("#btnSubmitProposal").hide();
 			$("#btnApproveProposal").hide();
 			$("#btnDisapproveProposal").hide();
 			$("#btnWithdrawProposal").hide();
 			$("#btnArchiveProposal").hide();
-			
+
 			$("#btnSaveProposal").prop("name", proposalId);
 			$("#btnUpdateProposal").prop("name", proposalId);
 			$("#btnSubmitProposal").prop("name", proposalId);
@@ -943,7 +944,7 @@ $(function() {
 				$("#lblProposalDateReceived").text(argus[12]);
 
 				myProposal.ClearForm();
-				
+
 				$("#txtNameOfGrantingAgency").val(argus[6]);
 
 				$("#trSignChair").show();
@@ -2173,12 +2174,12 @@ $(function() {
 				attributeValue : "Whole Proposal"
 			});
 			if (_proposalId === "0" && _flag) { // TODO I have changed this
-				 alert('create');
-				 attributeArray.push({
-				 attributeType : "Action",
-				 attributeName : "proposal-action",
-				 attributeValue : "Create"
-				 });
+				alert('create');
+				attributeArray.push({
+					attributeType : "Action",
+					attributeName : "proposal-action",
+					attributeValue : "Create"
+				});
 			} else {
 				attributeArray.push({
 					attributeType : "Action",
@@ -2186,7 +2187,7 @@ $(function() {
 					attributeValue : "Edit"
 				});
 			}
-			
+
 			policyAttributeInfo = attributeArray;
 
 			if (validator.form()) {
@@ -3022,10 +3023,12 @@ $(function() {
 			case 9:
 				if (editFlag != "0") {
 					csscody.error("<h2>" + 'Error Message' + "</h2><p>"
-							+ 'Failed to update proposal! ' + msg.responseText + "</p>");
+							+ 'Failed to update proposal! ' + msg.responseText
+							+ "</p>");
 				} else {
 					csscody.error("<h2>" + 'Error Message' + "</h2><p>"
-							+ 'Failed to save proposal! ' + msg.responseText + "</p>");
+							+ 'Failed to save proposal! ' + msg.responseText
+							+ "</p>");
 				}
 				break;
 			}
@@ -3290,7 +3293,7 @@ $(function() {
 				e.preventDefault();
 				return false;
 			});
-			
+
 			$('#btnUpdateProposal').click(function(e) {
 				$(this).disableWith('Updating...');
 				var proposal_id = $(this).prop("name");

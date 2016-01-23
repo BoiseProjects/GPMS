@@ -22,7 +22,7 @@ public class AuditLog implements Comparable<AuditLog>{
 
 	// @Expose
 	@Property("activity on")
-	@Indexed(value = IndexDirection.DESC, name = "activityOnIndex")
+	@Indexed(value = IndexDirection.ASC, name = "activityOnIndex")
 	private Date activityDate = new Date();
 
 	public AuditLog() {

@@ -150,9 +150,19 @@ public class NotificationService {
 		}
 
 		// limit: 10, offset: 1
-		return notificationDAO.findAllNotificationForAUser(1, 10,
-				userProfileID, userCollege, userDepartment, userPositionType,
-				userPositionTitle, userIsAdmin);
+		List<NotificationLog> notifications = notificationDAO
+				.findAllNotificationForAUser(1, 10, userProfileID, userCollege,
+						userDepartment, userPositionType, userPositionTitle,
+						userIsAdmin);
+
+		// Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd")
+		// .excludeFieldsWithoutExposeAnnotation().setPrettyPrinting()
+		// .create();
+		// response = gson.toJson(notifications, NotificationLog.class);
+		//
+		// return response;
+
+		return notifications;
 
 	}
 

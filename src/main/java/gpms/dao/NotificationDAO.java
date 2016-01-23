@@ -2,6 +2,7 @@ package gpms.dao;
 
 import gpms.DAL.MongoDBConnector;
 import gpms.model.NotificationLog;
+import gpms.model.Proposal;
 import gpms.model.UserAccount;
 import gpms.model.UserProfile;
 
@@ -60,13 +61,15 @@ public class NotificationDAO extends BasicDAO<NotificationLog, String> {
 			String userPositionTitle, boolean isUserAdmin)
 			throws ParseException {
 		Datastore ds = getDatastore();
+		Query<NotificationLog> notificationQuery = ds
+				.createQuery(NotificationLog.class);
 
 		if (isUserAdmin) {
-			return ds.createQuery(NotificationLog.class)
-					.field("isViewedByAdmin").equal(false).countAll();
+			notificationQuery.and(notificationQuery.criteria("for admin")
+					.equal(true), notificationQuery.criteria("isViewedByAdmin")
+					.equal(false));
+			return notificationQuery.countAll();
 		} else {
-			Query<NotificationLog> notificationQuery = ds
-					.createQuery(NotificationLog.class);
 			notificationQuery.and(
 					notificationQuery.criteria("isViewedByUser").equal(false),
 					notificationQuery.criteria("user profile id").equal(
@@ -77,7 +80,8 @@ public class NotificationDAO extends BasicDAO<NotificationLog, String> {
 					notificationQuery.criteria("position type").equal(
 							userPositionType),
 					notificationQuery.criteria("position title").equal(
-							userPositionTitle));
+							userPositionTitle),
+					notificationQuery.criteria("for admin").equal(false));
 			return notificationQuery.countAll();
 		}
 	}
@@ -90,14 +94,21 @@ public class NotificationDAO extends BasicDAO<NotificationLog, String> {
 
 		List<NotificationLog> notifications = new ArrayList<NotificationLog>();
 		Query<NotificationLog> notificationQuery = ds
-				.createQuery(NotificationLog.class);
+				.createQuery(NotificationLog.class)
+				.retrievedFields(true, "_id", "type", "action", "proposal id",
+						"proposal title", "user profile id", "user name",
+						"college", "department", "position type",
+						"position title", "is viewed by user",
+						"is viewed by admin", "activity on", "for admin",
+						"is critical").order("-activity on");
+
 		if (isUserAdmin) {
 			// int rowTotal = notificationQuery.asList().size();
 			notifications = notificationQuery.offset(offset - 1).limit(limit)
 					.asList();
 		} else {
 			notificationQuery.and(
-					notificationQuery.criteria("isViewedByUser").equal(false),
+					// notificationQuery.criteria("isViewedByUser").equal(false),
 					notificationQuery.criteria("user profile id").equal(
 							userProfileId),
 					notificationQuery.criteria("college").equal(userCollege),

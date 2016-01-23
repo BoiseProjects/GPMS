@@ -65,9 +65,9 @@
 				case 1:
 					NotificationView.NotificationGetAllCountSuccess(msg);
 					break;
-					
+
 				case 2:
-					alert(msg);
+					NotificationView.NotificationGetAllSuccess(msg);
 					break;
 				}
 			},
@@ -79,7 +79,7 @@
 					// Show csscody alert with apt message
 					csscody.error('<h2>' + 'Error Message' + '</h2><p>'
 							+ 'Failed to load Notifications.' + '</p>');
-					break;					
+					break;
 				case 2:
 					csscody.error('<h2>' + 'Error Message' + '</h2><p>'
 							+ 'Failed to load Notifications details.' + '</p>');
@@ -190,7 +190,7 @@
 				} else {
 					$("#spanNotifyInfo").hide();
 				}
-				
+
 				// NotificationView.UpdateTitle();
 			},
 			NotificationGetAll : function() {
@@ -206,18 +206,18 @@
 			},
 			NotificationGetAllSuccess : function(msg) {
 				var contentUser = "";
-				var contentSubscription = "";
-				var userData = "";
+				var allContent = "";
 
 				contentUser = '<div>';
+
 				if (msg.length > 0) {
 					contentUser += '<h5 class="cssClassNotifyHead">'
-							+ 'Recently Registered and Subscribed Users:'
-							+ '</h5><ul>';
+							+ 'Recent Activities: ' + '</h5><ul>';
 					var i = 1;
 
+					var userID = "";
 					var userName = "";
-					var customerID = "";
+					var proposalID = "";
 
 					var intNewUsers = parseInt($('#spanNotifyInfo').text());
 
@@ -225,48 +225,129 @@
 							.each(
 									msg,
 									function(index, value) {
-										userName = strEncrypt(value.UserName);
-										customerID = strEncrypt(value.CustomerID);
-										if (value.SubscriptionEmail != '') {
-											contentUser += '<li '
-													+ (intNewUsers > 0 ? 'class="sfLastestNotification"'
-															: '')
-													+ '>'
-													+ (value.UserName != '' ? "<a class='subsribedName'>"
-															+ value.UserName
-															+ "</a>"
-															: '')
-													+ (value.SubscriptionEmail != "INSUFFICIENT_PARAMS" ? "<span class='subsribedEmail'>"
-															+ value.SubscriptionEmail
-															+ "</span>"
-															: "")
-													+ "<span class='status subscribed'><strong>"
-													+ 'subscribed on:'
-													+ "</strong>"
-													+ value.AddedOn
-													+ "</span></li>";
-										} else {
+										var classForAction = "status registered";
+										if (value.critical) {
+											classForAction = "status outOfStock";
+										}
+										switch (value.type) {
+										case 'Investigator':
+											userID = strEncrypt(value.userProfileId);
+											userName = strEncrypt(value.username);
+
 											contentUser += '<li '
 													+ (intNewUsers > 0 ? 'class="sfLastestNotification"'
 															: '')
 													+ '>'
 													+ '<a id="'
-													+ value.UserName
-													+ '" class="registeredName" title="Click to View User Profile" href = "'
-													+ aspxRedirectPath
-													+ 'Admin/AspxCommerce/Customers/Manage-Customers'
-													+ pageExtension
-													+ "?customerID="
-													+ customerID
+													+ value.username
+													+ '" title="Click to View" href = "'
+													+ './ManageUsers.jsp?userID='
+													+ userID
 													+ "&userName="
 													+ userName
 													+ '"> '
-													+ value.UserName
-													+ ' </a><span class="status registered"><strong>'
-													+ 'registered on:'
-													+ '</strong>'
-													+ value.AddedOn + '</span>'
+													+ value.username
+													+ '</a><span class="activityon">'
+													+ $.format
+															.date(
+																	value.activityDate,
+																	'yyyy/MM/dd hh:mm:ss a')
+													+ '</span><span class="'
+													+ classForAction
+													+ '"><strong>'
+													+ value.action
+													+ '</strong></span>'
 													+ ' </li>';
+											break;
+										case 'User':
+											userID = strEncrypt(value.userProfileId);
+											userName = strEncrypt(value.username);
+
+											contentUser += '<li '
+													+ (intNewUsers > 0 ? 'class="sfLastestNotification"'
+															: '')
+													+ '>'
+													+ '<a id="'
+													+ value.username
+													+ '" title="Click to View" href = "'
+													+ './ManageUsers.jsp?userID='
+													+ userID
+													+ "&userName="
+													+ userName
+													+ '"> '
+													+ value.username
+													+ '</a><span class="activityon">'
+													+ $.format
+															.date(
+																	value.activityDate,
+																	'yyyy/MM/dd hh:mm:ss a')
+													+ '</span><span class="'
+													+ classForAction
+													+ '"><strong>'
+													+ value.action
+													+ '</strong></span>'
+													+ ' </li>';
+											break;
+										case 'Proposal':
+											proposalID = strEncrypt(value.proposalId);
+											// userID =
+											// strEncrypt(value.userProfileId);
+											// userName =
+											// strEncrypt(value.username);
+
+											contentUser += '<li '
+													+ (intNewUsers > 0 ? 'class="sfLastestNotification"'
+															: '')
+													+ '>'
+													+ '<a id="'
+													+ value.proposalId
+													+ '" title="Click to View" href = "'
+													+ './ManageProposals.jsp?proposalID='
+													+ proposalID
+													+ '">'
+													+ value.proposalTitle
+													+ '</a><span class="activityon">'
+													+ $.format
+															.date(
+																	value.activityDate,
+																	'yyyy/MM/dd hh:mm:ss a')
+													+ '</span><span class="'
+													+ classForAction
+													+ '"><strong>'
+													+ value.action
+													+ '</strong></span>'
+													+ ' </li>';
+											break;
+										case 'Signature':
+											userID = strEncrypt(value.userProfileId);
+											userName = strEncrypt(value.username);
+											proposalID = strEncrypt(value.proposalId);
+
+											contentUser += '<li '
+													+ (intNewUsers > 0 ? 'class="sfLastestNotification"'
+															: '')
+													+ '>'
+													+ '<a id="'
+													+ value.proposalId
+													+ '" title="Click to View" href = "'
+													+ './ManageProposals.jsp?proposalID='
+													+ proposalID
+													+ '">'
+													+ value.proposalTitle
+													+ '</a><span class="activityon">'
+													+ $.format
+															.date(
+																	value.activityDate,
+																	'yyyy/MM/dd hh:mm:ss a')
+													+ '</span><span class="'
+													+ classForAction
+													+ '"><strong>'
+													+ value.action
+													+ '</strong></span>'
+													+ ' </li>';
+											break;
+										default:
+											break;
 										}
 
 										if (intNewUsers > 0) {
@@ -276,19 +357,18 @@
 					contentUser += '</ul></div>';
 
 					p.notificationsNumber -= parseInt(msg.length);
-					NotificationView.UpdateTitle();
+					// NotificationView.UpdateTitle();
 
 				} else {
 					contentUser += '<h5 class="cssClassNotifyHead">'
-							+ 'There are no Recently Registered or Subscribed Users:'
-							+ '</h5>';
+							+ 'There are no Recent Activities!' + '</h5>';
 					contentUser += '</div>';
 				}
 
-				userData += '<div class="cssClassNotify" style="display:none">'
+				allContent += '<div class="cssClassNotify" style="display:none">'
 						+ contentUser + '</div>';
 
-				$('.notifyInfoPanel').append(userData);
+				$('.notifyInfoPanel').append(allContent);
 			}
 		};
 		NotificationView.init();

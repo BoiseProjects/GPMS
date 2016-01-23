@@ -969,7 +969,7 @@ li.preview a:hover.icon-preview, li.preview a:hover.icon-preview:before,
 	top: 37px;
 	right: 0px;
 	z-index: 99;
-	width: 320px;
+	width: 335px;
 	height: 277px;
 	overflow: hidden;
 	border: solid 1px #f4f4f4;
@@ -1042,7 +1042,7 @@ li.preview a:hover.icon-preview, li.preview a:hover.icon-preview:before,
 	color: orange;
 	position: absolute;
 	top: 11px;
-	left: 288px;
+	left: 302px;
 	font-size: 12px;
 	font-family: "aspx";
 	font-style: normal !important;
@@ -1072,6 +1072,8 @@ li.preview a:hover.icon-preview, li.preview a:hover.icon-preview:before,
 	color: #3b6391;
 	font-weight: bold;
 	cursor: pointer;
+	float: left;
+	width: 160px;
 }
 
 .sfTopbar ul.right li.sfquickNotification div ul li div.cssClassNotify ul li a:hover
@@ -1094,6 +1096,11 @@ li.preview a:hover.icon-preview, li.preview a:hover.icon-preview:before,
 	-moz-border-radius: 3px;
 	-msborder-radius: 3px;
 	-o-border-radius: 3px;
+}
+
+.sfTopbar ul.right li.sfquickNotification div ul li div.cssClassNotify ul li span.activityon
+	{
+	font-size: 11px !important;
 }
 
 .sfTopbar ul.right li.sfquickNotification div ul li div.cssClassNotify ul li span.status.subscribed strong,

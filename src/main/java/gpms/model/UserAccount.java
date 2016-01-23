@@ -17,7 +17,7 @@ import com.google.gson.annotations.Expose;
 @Entity(value = UserAccountDAO.COLLECTION_NAME, noClassnameStored = true)
 // @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class,
 // property = "_id")
-public class UserAccount extends BaseEntity implements Cloneable, Serializable {
+public class UserAccount extends BaseEntity implements Serializable {
 	@Expose
 	@Property("username")
 	@Indexed(value = IndexDirection.ASC, name = "userNameIndex", unique = true)
@@ -162,24 +162,6 @@ public class UserAccount extends BaseEntity implements Cloneable, Serializable {
 		} else if (!userName.equals(other.userName))
 			return false;
 		return true;
-	}
-
-	@Override
-	public UserAccount clone() throws CloneNotSupportedException {
-		UserAccount copy = new UserAccount(this.userName);
-		copy.setUserName(this.userName);
-		copy.setPassword(this.password);
-		copy.setActive(this.isActive);
-		copy.setAdmin(this.isAdmin);
-		copy.setAddedOn(this.addedOn);
-		copy.setDeleted(this.isDeleted());
-
-		// copy.setId(this.getId());
-		// copy.setVersion(this.getVersion());
-		// for (AuditLog entry : this.getAuditLog()) {
-		// copy.getAuditLog().add(entry);
-		// }
-		return copy;
 	}
 
 }

@@ -355,9 +355,11 @@ public class UserService {
 
 		NotificationLog notification = new NotificationLog();
 		notification.setType("User");
-		notification.setAction("Deleted user account and profile of "
-				+ userAccount.getUserName());
-		// notification.setUserProfileId(userProfile.getId().toString());
+		notification.setAction("account is deleted.");
+		notification.setUserProfileId(userProfile.getId().toString());
+		notification.setUsername(userAccount.getUserName());
+		notification.setForAdmin(true);
+		notification.setCritical(true);
 		// notification.isViewedByUser(true);
 		notificationDAO.save(notification);
 
@@ -441,10 +443,11 @@ public class UserService {
 
 			NotificationLog notification = new NotificationLog();
 			notification.setType("User");
-			notification.setAction("Deleted user account and profile of "
-					+ userAccount.getUserName());
-			// notification.setUserProfileId(userProfile.getId().toString());
-			// notification.isViewedByUser(true);
+			notification.setAction("account is deleted.");
+			notification.setUserProfileId(userProfile.getId().toString());
+			notification.setUsername(userAccount.getUserName());
+			notification.setForAdmin(true);
+			notification.setCritical(true);
 			notificationDAO.save(notification);
 		}
 		response = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(
@@ -521,26 +524,30 @@ public class UserService {
 
 		String notificationMessage = new String();
 		if (isActive) {
-			notificationMessage = "Activated user account and profile of "
-					+ userAccount.getUserName();
+			notificationMessage = "account is activated.";
 		} else {
-			notificationMessage = "Deactivated user account and profile of "
-					+ userAccount.getUserName();
+			notificationMessage = "account is deactivated.";
+			notification.setCritical(true);
 		}
 
 		// To Admin
 		notification.setType("User");
+		notification.setAction(notificationMessage);
+		notification.setUserProfileId(userProfile.getId().toString());
+		notification.setUsername(userAccount.getUserName());
+		notification.setForAdmin(true);
 		notificationDAO.save(notification);
 
 		// To All User Roles based on positions
 		if (isActive) {
-			notificationMessage = "Activated user account and profile of "
-					+ userAccount.getUserName();
+			notificationMessage = "account is activated.";
 
 			for (PositionDetails positions : userProfile.getDetails()) {
 				notification = new NotificationLog();
 				notification.setType("User");
+				notification.setAction(notificationMessage);
 				notification.setUserProfileId(userProfile.getId().toString());
+				notification.setUsername(userAccount.getUserName());
 				notification.setCollege(positions.getCollege());
 				notification.setDepartment(positions.getDepartment());
 				notification.setPositionType(positions.getPositionType());
@@ -549,8 +556,21 @@ public class UserService {
 			}
 
 		} else {
-			notificationMessage = "Deactivated user account and profile of "
-					+ userAccount.getUserName();
+			notificationMessage = "account is deactivated.";
+
+			for (PositionDetails positions : userProfile.getDetails()) {
+				notification = new NotificationLog();
+				notification.setType("User");
+				notification.setAction(notificationMessage);
+				notification.setUserProfileId(userProfile.getId().toString());
+				notification.setUsername(userAccount.getUserName());
+				notification.setCollege(positions.getCollege());
+				notification.setDepartment(positions.getDepartment());
+				notification.setPositionType(positions.getPositionType());
+				notification.setPositionTitle(positions.getPositionTitle());
+				notification.setCritical(true);
+				notificationDAO.save(notification);
+			}
 		}
 
 		// return Response.ok("Success", MediaType.APPLICATION_JSON).build();
@@ -1109,8 +1129,12 @@ public class UserService {
 				// For Admin
 				notification = new NotificationLog();
 				notification.setType("User");
-				notification.setAction("Updated user account and profile of "
-						+ existingUserProfile.getUserAccount().getUserName());
+				notification.setAction("account is updated.");
+				notification.setUserProfileId(existingUserProfile.getId()
+						.toString());
+				notification.setUsername(existingUserProfile.getUserAccount()
+						.getUserName());
+				notification.setForAdmin(true);
 				notificationDAO.save(notification);
 
 				// For all Roles of the User
@@ -1118,13 +1142,12 @@ public class UserService {
 						.getDetails()) {
 					notification = new NotificationLog();
 					notification.setType("User");
-					notification
-							.setAction("Updated user account and profile of "
-									+ existingUserProfile.getUserAccount()
-											.getUserName());
+					notification.setAction("account is updated.");
 
 					notification.setUserProfileId(existingUserProfile.getId()
 							.toString());
+					notification.setUsername(existingUserProfile
+							.getUserAccount().getUserName());
 					notification.setCollege(positions.getCollege());
 					notification.setDepartment(positions.getDepartment());
 					notification.setPositionType(positions.getPositionType());
@@ -1138,17 +1161,20 @@ public class UserService {
 			// For Admin
 			notification = new NotificationLog();
 			notification.setType("User");
-			notification.setAction("Created user account and profile of "
-					+ newProfile.getUserAccount().getUserName());
+			notification.setAction("account is created.");
+			notification.setUserProfileId(newProfile.getId().toString());
+			notification.setUsername(newProfile.getUserAccount().getUserName());
+			notification.setForAdmin(true);
 			notificationDAO.save(notification);
 
 			// For Roles of the user notify
 			for (PositionDetails positions : newProfile.getDetails()) {
 				notification = new NotificationLog();
 				notification.setType("User");
-				notification.setAction("Created user account and profile of "
-						+ newProfile.getUserAccount().getUserName());
+				notification.setAction("account is created.");
 				notification.setUserProfileId(newProfile.getId().toString());
+				notification.setUsername(newProfile.getUserAccount()
+						.getUserName());
 				notification.setCollege(positions.getCollege());
 				notification.setDepartment(positions.getDepartment());
 				notification.setPositionType(positions.getPositionType());
@@ -1265,9 +1291,10 @@ public class UserService {
 
 			NotificationLog notification = new NotificationLog();
 			notification.setType("User");
-			notification.setAction("Signed Up by " + newAccount.getUserName());
-			// notification.setUserProfileId(newProfile.getId().toString());
-			// notification.setViewedByUser(true);
+			notification.setAction("signed up.");
+			notification.setUserProfileId(newAccount.getId().toString());
+			notification.setUsername(newAccount.getUserName());
+			notification.setForAdmin(true);
 			notificationDAO.save(notification);
 		}
 

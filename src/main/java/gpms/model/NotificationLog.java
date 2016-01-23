@@ -5,10 +5,11 @@ import gpms.dao.NotificationDAO;
 import java.io.Serializable;
 import java.util.Date;
 
+import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Indexed;
+import org.mongodb.morphia.annotations.PrePersist;
 import org.mongodb.morphia.annotations.Property;
-import org.mongodb.morphia.annotations.Reference;
 import org.mongodb.morphia.utils.IndexDirection;
 
 import com.google.gson.annotations.Expose;
@@ -30,8 +31,16 @@ public class NotificationLog extends BaseEntity implements
 	private String proposalId = new String();
 
 	@Expose
+	@Property("proposal title")
+	private String proposalTitle = new String();
+
+	@Expose
 	@Property("user profile id")
 	private String userProfileId = new String();
+
+	@Expose
+	@Property("user name")
+	private String username = new String();
 
 	@Expose
 	@Property("college")
@@ -58,8 +67,16 @@ public class NotificationLog extends BaseEntity implements
 	private boolean isViewedByAdmin = false;
 
 	@Property("activity on")
-	@Indexed(value = IndexDirection.DESC, name = "activityDateIndex")
+	@Indexed(value = IndexDirection.ASC, name = "activityDateIndex")
 	private Date activityDate = new Date();
+
+	@Expose
+	@Property("for admin")
+	private boolean isForAdmin = false;
+
+	@Expose
+	@Property("is critical")
+	private boolean isCritical = false;
 
 	public NotificationLog() {
 	}
@@ -88,12 +105,28 @@ public class NotificationLog extends BaseEntity implements
 		this.proposalId = proposalId;
 	}
 
+	public String getProposalTitle() {
+		return proposalTitle;
+	}
+
+	public void setProposalTitle(String proposalTitle) {
+		this.proposalTitle = proposalTitle;
+	}
+
 	public String getUserProfileId() {
 		return userProfileId;
 	}
 
 	public void setUserProfileId(String userProfileId) {
 		this.userProfileId = userProfileId;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public String getCollege() {
@@ -152,15 +185,20 @@ public class NotificationLog extends BaseEntity implements
 		this.activityDate = activityDate;
 	}
 
-	@Override
-	public String toString() {
-		return "NotificationLog [type=" + type + ", action=" + action
-				+ ", proposalId=" + proposalId + ", userProfileId="
-				+ userProfileId + ", college=" + college + ", department="
-				+ department + ", positionType=" + positionType
-				+ ", positionTitle=" + positionTitle + ", isViewedByUser="
-				+ isViewedByUser + ", isViewedByAdmin=" + isViewedByAdmin
-				+ ", activityDate=" + activityDate + "]";
+	public boolean isForAdmin() {
+		return isForAdmin;
+	}
+
+	public void setForAdmin(boolean isForAdmin) {
+		this.isForAdmin = isForAdmin;
+	}
+
+	public boolean isCritical() {
+		return isCritical;
+	}
+
+	public void setCritical(boolean isCritical) {
+		this.isCritical = isCritical;
 	}
 
 	@Override
@@ -173,6 +211,8 @@ public class NotificationLog extends BaseEntity implements
 		result = prime * result + ((college == null) ? 0 : college.hashCode());
 		result = prime * result
 				+ ((department == null) ? 0 : department.hashCode());
+		result = prime * result + (isCritical ? 1231 : 1237);
+		result = prime * result + (isForAdmin ? 1231 : 1237);
 		result = prime * result + (isViewedByAdmin ? 1231 : 1237);
 		result = prime * result + (isViewedByUser ? 1231 : 1237);
 		result = prime * result
@@ -181,9 +221,13 @@ public class NotificationLog extends BaseEntity implements
 				+ ((positionType == null) ? 0 : positionType.hashCode());
 		result = prime * result
 				+ ((proposalId == null) ? 0 : proposalId.hashCode());
+		result = prime * result
+				+ ((proposalTitle == null) ? 0 : proposalTitle.hashCode());
 		result = prime * result + ((type == null) ? 0 : type.hashCode());
 		result = prime * result
 				+ ((userProfileId == null) ? 0 : userProfileId.hashCode());
+		result = prime * result
+				+ ((username == null) ? 0 : username.hashCode());
 		return result;
 	}
 
@@ -216,6 +260,10 @@ public class NotificationLog extends BaseEntity implements
 				return false;
 		} else if (!department.equals(other.department))
 			return false;
+		if (isCritical != other.isCritical)
+			return false;
+		if (isForAdmin != other.isForAdmin)
+			return false;
 		if (isViewedByAdmin != other.isViewedByAdmin)
 			return false;
 		if (isViewedByUser != other.isViewedByUser)
@@ -235,6 +283,11 @@ public class NotificationLog extends BaseEntity implements
 				return false;
 		} else if (!proposalId.equals(other.proposalId))
 			return false;
+		if (proposalTitle == null) {
+			if (other.proposalTitle != null)
+				return false;
+		} else if (!proposalTitle.equals(other.proposalTitle))
+			return false;
 		if (type == null) {
 			if (other.type != null)
 				return false;
@@ -245,15 +298,38 @@ public class NotificationLog extends BaseEntity implements
 				return false;
 		} else if (!userProfileId.equals(other.userProfileId))
 			return false;
+		if (username == null) {
+			if (other.username != null)
+				return false;
+		} else if (!username.equals(other.username))
+			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "NotificationLog [type=" + type + ", action=" + action
+				+ ", proposalId=" + proposalId + ", proposalTitle="
+				+ proposalTitle + ", userProfileId=" + userProfileId
+				+ ", username=" + username + ", college=" + college
+				+ ", department=" + department + ", positionType="
+				+ positionType + ", positionTitle=" + positionTitle
+				+ ", isViewedByUser=" + isViewedByUser + ", isViewedByAdmin="
+				+ isViewedByAdmin + ", activityDate=" + activityDate
+				+ ", isForAdmin=" + isForAdmin + ", isCritical=" + isCritical
+				+ "]";
 	}
 
 	@Override
 	public int compareTo(NotificationLog o) {
 		if (getActivityDate() == null || o.getActivityDate() == null)
 			return 0;
-		// return getActivityDate().compareTo(o.getActivityDate()); // Ascending
+		// return getActivityDate().compareTo(o.getActivityDate()); //Ascending
 		return o.getActivityDate().compareTo(getActivityDate()); // Descending
 	}
 
+	@PrePersist
+	public void prePersist() {
+		this.activityDate = (activityDate == null) ? new Date() : activityDate;
+	}
 }

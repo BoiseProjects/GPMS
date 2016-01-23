@@ -9,7 +9,7 @@ import org.mongodb.morphia.annotations.Embedded;
 import com.google.gson.annotations.Expose;
 
 @Embedded
-public class InvestigatorInfo implements Cloneable {
+public class InvestigatorInfo implements Serializable {
 	@Expose
 	@Embedded("PI")
 	private InvestigatorRefAndPosition pi = new InvestigatorRefAndPosition();
