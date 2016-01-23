@@ -255,45 +255,42 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 	}
 
 	public List<ProposalInfo> findAllForProposalGrid(int offset, int limit,
-			String projectTitle, String usernameBy, String receivedOnFrom,
-			String receivedOnTo, Double totalCostsFrom, Double totalCostsTo,
+			String projectTitle, String usernameBy, String submittedOnFrom,
+			String submittedOnTo, Double totalCostsFrom, Double totalCostsTo,
 			String proposalStatus, String userRole) throws ParseException {
 		Datastore ds = getDatastore();
 		ArrayList<ProposalInfo> proposals = new ArrayList<ProposalInfo>();
 
 		Query<Proposal> proposalQuery = ds.createQuery(Proposal.class);
 		Query<UserProfile> profileQuery = ds.createQuery(UserProfile.class);
-		// Query<UserAccount> accountQuery = ds.createQuery(UserAccount.class);
 
 		if (projectTitle != null) {
 			proposalQuery.field("project info.project title")
 					.containsIgnoreCase(projectTitle);
 		}
 
-		if (receivedOnFrom != null) {
-			Date receivedOnF = formatter.parse(receivedOnFrom);
-			proposalQuery.field("date received").greaterThanOrEq(receivedOnF);
+		if (submittedOnFrom != null && !submittedOnFrom.isEmpty()) {
+			Date receivedOnF = formatter.parse(submittedOnFrom);
+			proposalQuery.field("date submitted").greaterThanOrEq(receivedOnF);
 		}
-		if (receivedOnTo != null) {
-			Date receivedOnT = formatter.parse(receivedOnTo);
-			proposalQuery.field("date received").lessThanOrEq(receivedOnT);
+		if (submittedOnTo != null && !submittedOnTo.isEmpty()) {
+			Date receivedOnT = formatter.parse(submittedOnTo);
+			proposalQuery.field("date submitted").lessThanOrEq(receivedOnT);
 		}
 
+		// TODO for Date Submitted
+
 		if (totalCostsFrom != null && totalCostsFrom != 0.0) {
-			// proposalQuery.filter("sponsor and budget info.total costs >",
-			// totalCostsFrom);
 			proposalQuery.field("sponsor and budget info.total costs")
 					.greaterThanOrEq(totalCostsFrom);
 		}
 		if (totalCostsTo != null && totalCostsTo != 0.0) {
-			// proposalQuery.filter("sponsor and budget info.total costs <=",
-			// totalCostsTo);
 			proposalQuery.field("sponsor and budget info.total costs")
 					.lessThanOrEq(totalCostsTo);
 		}
 
+		// TODO
 		if (proposalStatus != null) {
-			// TODO
 			proposalQuery.field("proposal status").contains(proposalStatus);
 		}
 
@@ -406,6 +403,7 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 					.getFARate());
 
 			proposal.setDateReceived(userProposal.getDateReceived());
+			proposal.setDateSubmitted(userProposal.getDateSubmitted());
 
 			proposal.setDueDate(userProposal.getProjectInfo().getDueDate());
 			proposal.setProjectPeriodFrom(userProposal.getProjectInfo()

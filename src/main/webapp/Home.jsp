@@ -53,7 +53,7 @@
 	var userPositionType = '<%=session.getAttribute("userPositionType")%>';
 	var	userPositionTitle = '<%=session.getAttribute("userPositionTitle")%>';
 	var userDepartment = '<%=session.getAttribute("userDepartment")%>';
-	var userCollege = '<%=session.getAttribute("userCollege")%>';
+	var userCollege = '<%=session.getAttribute("userCollege")%>';%>';
 
 	var gpmsServicePath = "REST/";
 	var gpmsRootPath = "http://localhost:8181/GPMS/";	

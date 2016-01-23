@@ -87,7 +87,7 @@ public class NotificationService {
 			userName = commonObj.get("UserName").getTextValue();
 		}
 		if (commonObj != null && commonObj.has("UserIsAdmin")) {
-			userIsAdmin = commonObj.get("UserIsAdmin").getBooleanValue();
+			userIsAdmin = Boolean.parseBoolean(commonObj.get("UserIsAdmin").getTextValue());
 		}
 		if (commonObj != null && commonObj.has("UserCollege")) {
 			userCollege = commonObj.get("UserCollege").getTextValue();
@@ -133,7 +133,7 @@ public class NotificationService {
 			userName = commonObj.get("UserName").getTextValue();
 		}
 		if (commonObj != null && commonObj.has("UserIsAdmin")) {
-			userIsAdmin = commonObj.get("UserIsAdmin").getBooleanValue();
+			userIsAdmin = Boolean.parseBoolean(commonObj.get("UserIsAdmin").getTextValue());
 		}
 		if (commonObj != null && commonObj.has("UserCollege")) {
 			userCollege = commonObj.get("UserCollege").getTextValue();

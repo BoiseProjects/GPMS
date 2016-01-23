@@ -2,8 +2,7 @@
 	$.NotificationViewList = function(p) {
 		p = $.extend({
 			modulePath : GPMS.utils.GetGPMSServicePath(),
-			notificationsNumber : 0,
-			originaltitle : $('title').text()
+			notificationsNumber : 0
 		}, p);
 		var gpmsCommonInfo = {
 			UserProfileID : GPMS.utils.GetUserProfileID(),
@@ -119,15 +118,6 @@
 									+ itemsku + pageExtension;
 							return false;
 						});
-			},
-			UpdateTitle : function() {
-				if (p.notificationsNumber > 0) {
-					$('title').text(
-							$('title').text() + " (" + p.notificationsNumber
-									+ ")");
-				} else {
-					$('title').text(originaltitle);
-				}
 			},
 			NotificationGetAllCount : function() {
 				this.config.method = "NotificationGetAllCount";

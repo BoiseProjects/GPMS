@@ -553,6 +553,7 @@ $(function() {
 									align : 'center',
 									checkFor : '25',
 									elemClass : 'attrChkbox',
+									elemDefault : false,
 									controlclass : 'attribHeaderChkbox'
 								}, {
 									display : 'Proposal No',
@@ -673,7 +674,8 @@ $(function() {
 									coltype : 'label',
 									align : 'left',
 									type : 'date',
-									format : 'yyyy/MM/dd hh:mm:ss a'
+									format : 'yyyy/MM/dd hh:mm:ss a',
+									hide : true
 								}, {
 									display : 'Project Period To',
 									name : 'project_period_to',
@@ -682,7 +684,8 @@ $(function() {
 									coltype : 'label',
 									align : 'left',
 									type : 'date',
-									format : 'yyyy/MM/dd hh:mm:ss a'
+									format : 'yyyy/MM/dd hh:mm:ss a',
+									hide : true
 								}, {
 									display : 'Status',
 									name : 'proposal_status',

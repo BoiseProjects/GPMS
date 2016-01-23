@@ -18,7 +18,7 @@
 			ajaxCallMode : 0,
 			arr : [],
 			arrModules : [],
-			baseURL : '/aspx'
+			baseURL : '/gpms'
 					+ '/Modules/Dashboard/Services/DashboardWebService.asmx/',
 			PortalID : 1,
 			Path : '/aspx' + '/Modules/Dashboard/',

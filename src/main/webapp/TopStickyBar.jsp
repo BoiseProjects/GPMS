@@ -3,7 +3,7 @@
     var topStickyBar ='';
     
     $(function () {     
-        var userProfileId = '<%=session.getAttribute("userProfileId")%>';
+    	var userProfileId = '<%=session.getAttribute("userProfileId")%>';
 		var gpmsUserName = '<%=session.getAttribute("gpmsUserName")%>';
 		var isAdmin = '<%=session.getAttribute("isAdmin")%>';
 		var userPositionType = '<%=session.getAttribute("userPositionType")%>';

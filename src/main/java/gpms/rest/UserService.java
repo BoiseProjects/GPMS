@@ -162,7 +162,7 @@ public class UserService {
 
 		if (userObj != null && userObj.has("IsActive")) {
 			if (!userObj.get("IsActive").isNull()) {
-				isActive = userObj.get("IsActive").getBooleanValue();
+				isActive = Boolean.parseBoolean(userObj.get("IsActive").getTextValue());
 			} else {
 				isActive = null;
 			}
@@ -322,7 +322,7 @@ public class UserService {
 			userName = commonObj.get("UserName").getTextValue();
 		}
 		if (commonObj != null && commonObj.has("UserIsAdmin")) {
-			userIsAdmin = commonObj.get("UserIsAdmin").getBooleanValue();
+			userIsAdmin = Boolean.parseBoolean(commonObj.get("UserIsAdmin").getTextValue());
 		}
 		if (commonObj != null && commonObj.has("UserCollege")) {
 			userCollege = commonObj.get("UserCollege").getTextValue();
@@ -407,7 +407,7 @@ public class UserService {
 			userName = commonObj.get("UserName").getTextValue();
 		}
 		if (commonObj != null && commonObj.has("UserIsAdmin")) {
-			userIsAdmin = commonObj.get("UserIsAdmin").getBooleanValue();
+			userIsAdmin = Boolean.parseBoolean(commonObj.get("UserIsAdmin").getTextValue());
 		}
 		if (commonObj != null && commonObj.has("UserCollege")) {
 			userCollege = commonObj.get("UserCollege").getTextValue();
@@ -471,7 +471,7 @@ public class UserService {
 		}
 
 		if (root != null && root.has("isActive")) {
-			isActive = root.get("isActive").getBooleanValue();
+			isActive = Boolean.parseBoolean(root.get("isActive").getTextValue());
 		}
 
 		String userProfileID = new String();
@@ -490,7 +490,7 @@ public class UserService {
 			userName = commonObj.get("UserName").getTextValue();
 		}
 		if (commonObj != null && commonObj.has("UserIsAdmin")) {
-			userIsAdmin = commonObj.get("UserIsAdmin").getBooleanValue();
+			userIsAdmin = Boolean.parseBoolean(commonObj.get("UserIsAdmin").getTextValue());
 		}
 		if (commonObj != null && commonObj.has("UserCollege")) {
 			userCollege = commonObj.get("UserCollege").getTextValue();
@@ -616,7 +616,7 @@ public class UserService {
 			userName = commonObj.get("UserName").getTextValue();
 		}
 		if (commonObj != null && commonObj.has("UserIsAdmin")) {
-			userIsAdmin = commonObj.get("UserIsAdmin").getBooleanValue();
+			userIsAdmin = Boolean.parseBoolean(commonObj.get("UserIsAdmin").getTextValue());
 		}
 		if (commonObj != null && commonObj.has("UserCollege")) {
 			userCollege = commonObj.get("UserCollege").getTextValue();
@@ -689,7 +689,7 @@ public class UserService {
 			userName = commonObj.get("UserName").getTextValue();
 		}
 		if (commonObj != null && commonObj.has("UserIsAdmin")) {
-			userIsAdmin = commonObj.get("UserIsAdmin").getBooleanValue();
+			userIsAdmin = Boolean.parseBoolean(commonObj.get("UserIsAdmin").getTextValue());
 		}
 		if (commonObj != null && commonObj.has("UserCollege")) {
 			userCollege = commonObj.get("UserCollege").getTextValue();
@@ -782,24 +782,24 @@ public class UserService {
 
 		if (userInfo != null && userInfo.has("IsActive")) {
 			if (!userID.equals("0")) {
-				if (existingUserAccount.isActive() != userInfo.get("IsActive")
-						.getBooleanValue()) {
-					existingUserAccount.setActive(userInfo.get("IsActive")
-							.getBooleanValue());
+				if (existingUserAccount.isActive() != Boolean.parseBoolean(userInfo.get("IsActive")
+						.getTextValue())) {
+					existingUserAccount.setActive(Boolean.parseBoolean(userInfo.get("IsActive")
+							.getTextValue()));
 				}
 			} else {
 				newAccount
-						.setActive(userInfo.get("IsActive").getBooleanValue());
+						.setActive(Boolean.parseBoolean(userInfo.get("IsActive").getTextValue()));
 			}
 			if (!userID.equals("0")) {
-				if (existingUserAccount.isDeleted() != !userInfo
-						.get("IsActive").getBooleanValue()) {
-					existingUserAccount.setDeleted(!userInfo.get("IsActive")
-							.getBooleanValue());
+				if (existingUserAccount.isDeleted() != !Boolean.parseBoolean(userInfo
+						.get("IsActive").getTextValue())) {
+					existingUserAccount.setDeleted(!Boolean.parseBoolean(userInfo.get("IsActive")
+							.getTextValue()));
 				}
 			} else {
-				newAccount.setDeleted(!userInfo.get("IsActive")
-						.getBooleanValue());
+				newAccount.setDeleted(!Boolean.parseBoolean(userInfo.get("IsActive")
+						.getTextValue()));
 			}
 
 			// TODO: Check the old ways to do this
@@ -813,14 +813,14 @@ public class UserService {
 			// }
 
 			if (!userID.equals("0")) {
-				if (existingUserProfile.isDeleted() != !userInfo
-						.get("IsActive").getBooleanValue()) {
-					existingUserProfile.setDeleted(!userInfo.get("IsActive")
-							.getBooleanValue());
+				if (existingUserProfile.isDeleted() != !Boolean.parseBoolean(userInfo
+						.get("IsActive").getTextValue())) {
+					existingUserProfile.setDeleted(!Boolean.parseBoolean(userInfo.get("IsActive")
+							.getTextValue()));
 				}
 			} else {
-				newProfile.setDeleted(!userInfo.get("IsActive")
-						.getBooleanValue());
+				newProfile.setDeleted(!Boolean.parseBoolean(userInfo.get("IsActive")
+						.getTextValue()));
 			}
 		}
 
@@ -1093,7 +1093,7 @@ public class UserService {
 			userName = commonObj.get("UserName").getTextValue();
 		}
 		if (commonObj != null && commonObj.has("UserIsAdmin")) {
-			userIsAdmin = commonObj.get("UserIsAdmin").getBooleanValue();
+			userIsAdmin = Boolean.parseBoolean(commonObj.get("UserIsAdmin").getTextValue());
 		}
 		if (commonObj != null && commonObj.has("UserCollege")) {
 			userCollege = commonObj.get("UserCollege").getTextValue();
@@ -1375,7 +1375,8 @@ public class UserService {
 			String positionType = new String();
 			String positionTitle = new String();
 			userName = root.get("userName").getTextValue();
-			isAdminUser = root.get("isAdminUser").getBooleanValue();
+			isAdminUser = Boolean.parseBoolean(root.get("isAdminUser")
+					.getTextValue());
 
 			if (root != null && root.has("college")) {
 				college = root.get("college").getTextValue();

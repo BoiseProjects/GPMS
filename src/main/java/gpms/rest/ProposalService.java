@@ -275,7 +275,8 @@ public class ProposalService {
 			userName = commonObj.get("UserName").getTextValue();
 		}
 		if (commonObj != null && commonObj.has("UserIsAdmin")) {
-			userIsAdmin = commonObj.get("UserIsAdmin").getBooleanValue();
+			userIsAdmin = Boolean.parseBoolean(commonObj.get("UserIsAdmin")
+					.getTextValue());
 		}
 		if (commonObj != null && commonObj.has("UserCollege")) {
 			userCollege = commonObj.get("UserCollege").getTextValue();
@@ -341,7 +342,8 @@ public class ProposalService {
 			userName = commonObj.get("UserName").getTextValue();
 		}
 		if (commonObj != null && commonObj.has("UserIsAdmin")) {
-			userIsAdmin = commonObj.get("UserIsAdmin").getBooleanValue();
+			userIsAdmin = Boolean.parseBoolean(commonObj.get("UserIsAdmin")
+					.getTextValue());
 		}
 		if (commonObj != null && commonObj.has("UserCollege")) {
 			userCollege = commonObj.get("UserCollege").getTextValue();
@@ -411,7 +413,8 @@ public class ProposalService {
 			userName = commonObj.get("UserName").getTextValue();
 		}
 		if (commonObj != null && commonObj.has("UserIsAdmin")) {
-			userIsAdmin = commonObj.get("UserIsAdmin").getBooleanValue();
+			userIsAdmin = Boolean.parseBoolean(commonObj.get("UserIsAdmin")
+					.getTextValue());
 		}
 		if (commonObj != null && commonObj.has("UserCollege")) {
 			userCollege = commonObj.get("UserCollege").getTextValue();
@@ -571,7 +574,8 @@ public class ProposalService {
 			userName = commonObj.get("UserName").getTextValue();
 		}
 		if (commonObj != null && commonObj.has("UserIsAdmin")) {
-			userIsAdmin = commonObj.get("UserIsAdmin").getBooleanValue();
+			userIsAdmin = Boolean.parseBoolean(commonObj.get("UserIsAdmin")
+					.getTextValue());
 		}
 		if (commonObj != null && commonObj.has("UserCollege")) {
 			userCollege = commonObj.get("UserCollege").getTextValue();
@@ -1339,14 +1343,15 @@ public class ProposalService {
 						}
 						if (confidentialInfo != null
 								&& confidentialInfo.has("Patentable")) {
-							newConfidentialInfo.setPatentable(confidentialInfo
-									.get("Patentable").getBooleanValue());
+							newConfidentialInfo.setPatentable(Boolean
+									.parseBoolean(confidentialInfo.get(
+											"Patentable").getTextValue()));
 						}
 						if (confidentialInfo != null
 								&& confidentialInfo.has("Copyrightable")) {
-							newConfidentialInfo
-									.setCopyrightable(confidentialInfo.get(
-											"Copyrightable").getBooleanValue());
+							newConfidentialInfo.setCopyrightable(Boolean
+									.parseBoolean(confidentialInfo.get(
+											"Copyrightable").getTextValue()));
 						}
 						break;
 					case "2":
@@ -1586,66 +1591,77 @@ public class ProposalService {
 
 				FundingSource newFundingSource = new FundingSource();
 				if (oSPSectionInfo != null && oSPSectionInfo.has("Federal")) {
-					newFundingSource.setFederal(oSPSectionInfo.get("Federal")
-							.getBooleanValue());
+					newFundingSource.setFederal(Boolean
+							.parseBoolean(oSPSectionInfo.get("Federal")
+									.getTextValue()));
 				}
 
 				if (oSPSectionInfo != null
 						&& oSPSectionInfo.has("FederalFlowThrough")) {
-					newFundingSource.setFederalFlowThrough(oSPSectionInfo.get(
-							"FederalFlowThrough").getBooleanValue());
+					newFundingSource.setFederalFlowThrough(Boolean
+							.parseBoolean(oSPSectionInfo.get(
+									"FederalFlowThrough").getTextValue()));
 				}
 
 				if (oSPSectionInfo != null
 						&& oSPSectionInfo.has("StateOfIdahoEntity")) {
-					newFundingSource.setStateOfIdahoEntity(oSPSectionInfo.get(
-							"StateOfIdahoEntity").getBooleanValue());
+					newFundingSource.setStateOfIdahoEntity(Boolean
+							.parseBoolean(oSPSectionInfo.get(
+									"StateOfIdahoEntity").getTextValue()));
 				}
 
 				if (oSPSectionInfo != null
 						&& oSPSectionInfo.has("PrivateForProfit")) {
-					newFundingSource.setPrivateForProfit(oSPSectionInfo.get(
-							"PrivateForProfit").getBooleanValue());
+					newFundingSource.setPrivateForProfit(Boolean
+							.parseBoolean(oSPSectionInfo
+									.get("PrivateForProfit").getTextValue()));
 				}
 
 				if (oSPSectionInfo != null
 						&& oSPSectionInfo.has("NonProfitOrganization")) {
-					newFundingSource.setNonProfitOrganization(oSPSectionInfo
-							.get("NonProfitOrganization").getBooleanValue());
+					newFundingSource.setNonProfitOrganization(Boolean
+							.parseBoolean(oSPSectionInfo.get(
+									"NonProfitOrganization").getTextValue()));
 				}
 
 				if (oSPSectionInfo != null
 						&& oSPSectionInfo.has("NonIdahoStateEntity")) {
-					newFundingSource.setNonIdahoStateEntity(oSPSectionInfo.get(
-							"NonIdahoStateEntity").getBooleanValue());
+					newFundingSource.setNonIdahoStateEntity(Boolean
+							.parseBoolean(oSPSectionInfo.get(
+									"NonIdahoStateEntity").getTextValue()));
 				}
 
 				if (oSPSectionInfo != null
 						&& oSPSectionInfo.has("CollegeOrUniversity")) {
-					newFundingSource.setCollegeOrUniversity(oSPSectionInfo.get(
-							"CollegeOrUniversity").getBooleanValue());
+					newFundingSource.setCollegeOrUniversity(Boolean
+							.parseBoolean(oSPSectionInfo.get(
+									"CollegeOrUniversity").getTextValue()));
 				}
 
 				if (oSPSectionInfo != null && oSPSectionInfo.has("LocalEntity")) {
-					newFundingSource.setLocalEntity(oSPSectionInfo.get(
-							"LocalEntity").getBooleanValue());
+					newFundingSource.setLocalEntity(Boolean
+							.parseBoolean(oSPSectionInfo.get("LocalEntity")
+									.getTextValue()));
 				}
 
 				if (oSPSectionInfo != null
 						&& oSPSectionInfo.has("NonIdahoLocalEntity")) {
-					newFundingSource.setNonIdahoLocalEntity(oSPSectionInfo.get(
-							"NonIdahoLocalEntity").getBooleanValue());
+					newFundingSource.setNonIdahoLocalEntity(Boolean
+							.parseBoolean(oSPSectionInfo.get(
+									"NonIdahoLocalEntity").getTextValue()));
 				}
 
 				if (oSPSectionInfo != null
 						&& oSPSectionInfo.has("TirbalGovernment")) {
-					newFundingSource.setTirbalGovernment(oSPSectionInfo.get(
-							"TirbalGovernment").getBooleanValue());
+					newFundingSource.setTirbalGovernment(Boolean
+							.parseBoolean(oSPSectionInfo
+									.get("TirbalGovernment").getTextValue()));
 				}
 
 				if (oSPSectionInfo != null && oSPSectionInfo.has("Foreign")) {
-					newFundingSource.setForeign(oSPSectionInfo.get("Foreign")
-							.getBooleanValue());
+					newFundingSource.setForeign(Boolean
+							.parseBoolean(oSPSectionInfo.get("Foreign")
+									.getTextValue()));
 				}
 
 				if (!proposalID.equals("0")) {
@@ -1703,44 +1719,47 @@ public class ProposalService {
 					Recovery newRecovery = new Recovery();
 					if (oSPSectionInfo != null
 							&& oSPSectionInfo.has("FullRecovery")) {
-						newRecovery.setFullRecovery(oSPSectionInfo.get(
-								"FullRecovery").getBooleanValue());
+						newRecovery.setFullRecovery(Boolean
+								.parseBoolean(oSPSectionInfo
+										.get("FullRecovery").getTextValue()));
 					}
 
 					if (oSPSectionInfo != null
 							&& oSPSectionInfo
 									.has("NoRecoveryNormalSponsorPolicy")) {
-						newRecovery
-								.setNoRecoveryNormalSponsorPolicy(oSPSectionInfo
-										.get("NoRecoveryNormalSponsorPolicy")
-										.getBooleanValue());
+						newRecovery.setNoRecoveryNormalSponsorPolicy(Boolean
+								.parseBoolean(oSPSectionInfo.get(
+										"NoRecoveryNormalSponsorPolicy")
+										.getTextValue()));
 					}
 
 					if (oSPSectionInfo != null
 							&& oSPSectionInfo
 									.has("NoRecoveryInstitutionalWaiver")) {
-						newRecovery
-								.setNoRecoveryInstitutionalWaiver(oSPSectionInfo
-										.get("NoRecoveryInstitutionalWaiver")
-										.getBooleanValue());
+						newRecovery.setNoRecoveryInstitutionalWaiver(Boolean
+								.parseBoolean(oSPSectionInfo.get(
+										"NoRecoveryInstitutionalWaiver")
+										.getTextValue()));
 					}
 
 					if (oSPSectionInfo != null
 							&& oSPSectionInfo
 									.has("LimitedRecoveryNormalSponsorPolicy")) {
 						newRecovery
-								.setLimitedRecoveryNormalSponsorPolicy(oSPSectionInfo
-										.get("LimitedRecoveryNormalSponsorPolicy")
-										.getBooleanValue());
+								.setLimitedRecoveryNormalSponsorPolicy(Boolean
+										.parseBoolean(oSPSectionInfo
+												.get("LimitedRecoveryNormalSponsorPolicy")
+												.getTextValue()));
 					}
 
 					if (oSPSectionInfo != null
 							&& oSPSectionInfo
 									.has("LimitedRecoveryInstitutionalWaiver")) {
 						newRecovery
-								.setLimitedRecoveryInstitutionalWaiver(oSPSectionInfo
-										.get("LimitedRecoveryInstitutionalWaiver")
-										.getBooleanValue());
+								.setLimitedRecoveryInstitutionalWaiver(Boolean
+										.parseBoolean(oSPSectionInfo
+												.get("LimitedRecoveryInstitutionalWaiver")
+												.getTextValue()));
 					}
 					if (!proposalID.equals("0")) {
 						if (!existingProposal.getoSPSectionInfo().getRecovery()
@@ -1752,29 +1771,31 @@ public class ProposalService {
 
 					BaseInfo newBaseInfo = new BaseInfo();
 					if (oSPSectionInfo != null && oSPSectionInfo.has("MTDC")) {
-						newBaseInfo.setMTDC(oSPSectionInfo.get("MTDC")
-								.getBooleanValue());
+						newBaseInfo.setMTDC(Boolean.parseBoolean(oSPSectionInfo
+								.get("MTDC").getTextValue()));
 					}
 
 					if (oSPSectionInfo != null && oSPSectionInfo.has("TDC")) {
-						newBaseInfo.setTDC(oSPSectionInfo.get("TDC")
-								.getBooleanValue());
+						newBaseInfo.setTDC(Boolean.parseBoolean(oSPSectionInfo
+								.get("TDC").getTextValue()));
 					}
 
 					if (oSPSectionInfo != null && oSPSectionInfo.has("TC")) {
-						newBaseInfo.setTC(oSPSectionInfo.get("TC")
-								.getBooleanValue());
+						newBaseInfo.setTC(Boolean.parseBoolean(oSPSectionInfo
+								.get("TC").getTextValue()));
 					}
 
 					if (oSPSectionInfo != null && oSPSectionInfo.has("Other")) {
-						newBaseInfo.setOther(oSPSectionInfo.get("Other")
-								.getBooleanValue());
+						newBaseInfo.setOther(Boolean
+								.parseBoolean(oSPSectionInfo.get("Other")
+										.getTextValue()));
 					}
 
 					if (oSPSectionInfo != null
 							&& oSPSectionInfo.has("NotApplicable")) {
-						newBaseInfo.setNotApplicable(oSPSectionInfo.get(
-								"NotApplicable").getBooleanValue());
+						newBaseInfo.setNotApplicable(Boolean
+								.parseBoolean(oSPSectionInfo.get(
+										"NotApplicable").getTextValue()));
 					}
 					if (!proposalID.equals("0")) {
 						if (!existingProposal.getoSPSectionInfo().getBaseInfo()
@@ -2104,7 +2125,8 @@ public class ProposalService {
 				userName = commonObj.get("UserName").getTextValue();
 			}
 			if (commonObj != null && commonObj.has("UserIsAdmin")) {
-				userIsAdmin = commonObj.get("UserIsAdmin").getBooleanValue();
+				userIsAdmin = Boolean.parseBoolean(commonObj.get("UserIsAdmin")
+						.getTextValue());
 			}
 			if (commonObj != null && commonObj.has("UserCollege")) {
 				userCollege = commonObj.get("UserCollege").getTextValue();
@@ -2287,7 +2309,8 @@ public class ProposalService {
 					Date signedDate = signatureInfo.getSignedDate();
 					notification = new NotificationLog();
 					notification.setType("Signature");
-					notification.setAction("signed by " + signFullName + " as " + position + ".");
+					notification.setAction("signed by " + signFullName + " as "
+							+ position + ".");
 
 					notification.setProposalId(currentProposal.getId()
 							.toString());
@@ -2297,7 +2320,8 @@ public class ProposalService {
 
 					notification = new NotificationLog();
 					notification.setType("Signature");
-					notification.setAction("signed by " + signFullName + " as " + position + ".");
+					notification.setAction("signed by " + signFullName + " as "
+							+ position + ".");
 					notification.setProposalId(currentProposal.getId()
 							.toString());
 					notification.setProposalTitle(projectTitle);
@@ -2320,8 +2344,8 @@ public class ProposalService {
 							.getInvestigatorInfo().getCo_pi()) {
 						notification = new NotificationLog();
 						notification.setType("Signature");
-						notification
-								.setAction("signed by " + signFullName + " as " + position + ".");
+						notification.setAction("signed by " + signFullName
+								+ " as " + position + ".");
 						notification.setProposalId(currentProposal.getId()
 								.toString());
 						notification.setProposalTitle(projectTitle);
@@ -2339,8 +2363,8 @@ public class ProposalService {
 							.getInvestigatorInfo().getSeniorPersonnel()) {
 						notification = new NotificationLog();
 						notification.setType("Signature");
-						notification
-								.setAction("signed by " + signFullName + " as " + position + ".");
+						notification.setAction("signed by " + signFullName
+								+ " as " + position + ".");
 						notification.setProposalId(currentProposal.getId()
 								.toString());
 						notification.setProposalTitle(projectTitle);

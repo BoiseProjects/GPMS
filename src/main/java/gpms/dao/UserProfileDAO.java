@@ -657,18 +657,28 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 				.retrievedFields(true, "_id", "user id", "details.college",
 						"details.department", "details.position type",
 						"details.position title");
-		profileQuery.and(
-				profileQuery.criteria("_id").equal(id),
-				profileQuery.and(profileQuery.criteria("user id").in(
-						accountQuery.asKeyList())),
-				profileQuery.criteria("details").notEqual(null),
-				profileQuery.criteria("details.college").equal(college),
-				profileQuery.criteria("details.department").equal(department),
-				profileQuery.criteria("details.positionType").equal(
-						positionType),
-				profileQuery.criteria("details.positionTitle").equal(
-						positionTitle), profileQuery.criteria("is deleted")
-						.equal(false));
+		if (isAdminUser) {
+			profileQuery.and(
+					profileQuery.criteria("_id").equal(id),
+					profileQuery.and(profileQuery.criteria("user id").in(
+							accountQuery.asKeyList())),
+					profileQuery.criteria("is deleted").equal(false));
+
+		} else {
+			profileQuery.and(
+					profileQuery.criteria("_id").equal(id),
+					profileQuery.and(profileQuery.criteria("user id").in(
+							accountQuery.asKeyList())),
+					profileQuery.criteria("details").notEqual(null),
+					profileQuery.criteria("details.college").equal(college),
+					profileQuery.criteria("details.department").equal(
+							department),
+					profileQuery.criteria("details.positionType").equal(
+							positionType),
+					profileQuery.criteria("details.positionTitle").equal(
+							positionTitle), profileQuery.criteria("is deleted")
+							.equal(false));
+		}
 
 		return profileQuery.get();
 	}
