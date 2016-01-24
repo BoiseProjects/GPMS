@@ -54,7 +54,8 @@
 				case 0:
 					break;
 				case 1:
-					alert("Successful to set your session");
+					//successfully set the Session for admin
+					return false;
 					break;
 				}
 			},
