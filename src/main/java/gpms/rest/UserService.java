@@ -355,7 +355,7 @@ public class UserService {
 
 		NotificationLog notification = new NotificationLog();
 		notification.setType("User");
-		notification.setAction("account is deleted.");
+		notification.setAction("Account is deleted.");
 		notification.setUserProfileId(userProfile.getId().toString());
 		notification.setUsername(userAccount.getUserName());
 		notification.setForAdmin(true);
@@ -443,7 +443,7 @@ public class UserService {
 
 			NotificationLog notification = new NotificationLog();
 			notification.setType("User");
-			notification.setAction("account is deleted.");
+			notification.setAction("Account is deleted.");
 			notification.setUserProfileId(userProfile.getId().toString());
 			notification.setUsername(userAccount.getUserName());
 			notification.setForAdmin(true);
@@ -524,9 +524,9 @@ public class UserService {
 
 		String notificationMessage = new String();
 		if (isActive) {
-			notificationMessage = "account is activated.";
+			notificationMessage = "Account is activated.";
 		} else {
-			notificationMessage = "account is deactivated.";
+			notificationMessage = "Account is deactivated.";
 			notification.setCritical(true);
 		}
 
@@ -540,7 +540,7 @@ public class UserService {
 
 		// To All User Roles based on positions
 		if (isActive) {
-			notificationMessage = "account is activated.";
+			notificationMessage = "Account is activated.";
 
 			for (PositionDetails positions : userProfile.getDetails()) {
 				notification = new NotificationLog();
@@ -556,7 +556,7 @@ public class UserService {
 			}
 
 		} else {
-			notificationMessage = "account is deactivated.";
+			notificationMessage = "Account is deactivated.";
 
 			for (PositionDetails positions : userProfile.getDetails()) {
 				notification = new NotificationLog();
@@ -782,8 +782,10 @@ public class UserService {
 
 		if (userInfo != null && userInfo.has("IsActive")) {
 			if (!userID.equals("0")) {
-				if (existingUserAccount.isActive() != userInfo.get("IsActive").getBooleanValue()) {
-					existingUserAccount.setActive(userInfo.get("IsActive").getBooleanValue());
+				if (existingUserAccount.isActive() != userInfo.get("IsActive")
+						.getBooleanValue()) {
+					existingUserAccount.setActive(userInfo.get("IsActive")
+							.getBooleanValue());
 				}
 			} else {
 				newAccount
@@ -1127,7 +1129,7 @@ public class UserService {
 				// For Admin
 				notification = new NotificationLog();
 				notification.setType("User");
-				notification.setAction("account is updated.");
+				notification.setAction("Account is updated.");
 				notification.setUserProfileId(existingUserProfile.getId()
 						.toString());
 				notification.setUsername(existingUserProfile.getUserAccount()
@@ -1140,7 +1142,7 @@ public class UserService {
 						.getDetails()) {
 					notification = new NotificationLog();
 					notification.setType("User");
-					notification.setAction("account is updated.");
+					notification.setAction("Account is updated.");
 
 					notification.setUserProfileId(existingUserProfile.getId()
 							.toString());
@@ -1159,7 +1161,7 @@ public class UserService {
 			// For Admin
 			notification = new NotificationLog();
 			notification.setType("User");
-			notification.setAction("account is created.");
+			notification.setAction("Account is created.");
 			notification.setUserProfileId(newProfile.getId().toString());
 			notification.setUsername(newProfile.getUserAccount().getUserName());
 			notification.setForAdmin(true);
@@ -1169,7 +1171,7 @@ public class UserService {
 			for (PositionDetails positions : newProfile.getDetails()) {
 				notification = new NotificationLog();
 				notification.setType("User");
-				notification.setAction("account is created.");
+				notification.setAction("Account is created.");
 				notification.setUserProfileId(newProfile.getId().toString());
 				notification.setUsername(newProfile.getUserAccount()
 						.getUserName());
@@ -1289,7 +1291,7 @@ public class UserService {
 
 			NotificationLog notification = new NotificationLog();
 			notification.setType("User");
-			notification.setAction("signed up.");
+			notification.setAction("Signed up.");
 			notification.setUserProfileId(newAccount.getId().toString());
 			notification.setUsername(newAccount.getUserName());
 			notification.setForAdmin(true);

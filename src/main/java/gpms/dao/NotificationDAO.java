@@ -116,17 +116,27 @@ public class NotificationDAO extends BasicDAO<NotificationLog, String> {
 
 		if (isUserAdmin) {
 			// int rowTotal = notificationQuery.asList().size();
+			notificationQuery.and(
+					notificationQuery.criteria("is viewed by admin").equal(
+							false), notificationQuery.criteria("for admin")
+							.equal(true));
+
+			removeNotifyQuery.and(
+					removeNotifyQuery.criteria("is viewed by admin").equal(
+							false), removeNotifyQuery.criteria("for admin")
+							.equal(true));
+
 			notifications = notificationQuery.offset(offset - 1).limit(limit)
 					.asList();
 
 			UpdateOperations<NotificationLog> ops = ds.createUpdateOperations(
 					NotificationLog.class).set("is viewed by admin", true);
 			ds.update(removeNotifyQuery, ops);
-			// updateAllNotificationAsViewed(notifications, isUserAdmin);
 		} else {
 			notificationQuery.and(
-					// notificationQuery.criteria(""is viewed by
-					// user"").equal(false),
+					notificationQuery.criteria("for admin").equal(false),
+					notificationQuery.criteria("is viewed by user")
+							.equal(false),
 					notificationQuery.criteria("user profile id").equal(
 							userProfileId),
 					notificationQuery.criteria("college").equal(userCollege),
@@ -138,6 +148,9 @@ public class NotificationDAO extends BasicDAO<NotificationLog, String> {
 							userPositionTitle));
 
 			removeNotifyQuery.and(
+					removeNotifyQuery.criteria("for admin").equal(false),
+					removeNotifyQuery.criteria("is viewed by user")
+							.equal(false),
 					removeNotifyQuery.criteria("user profile id").equal(
 							userProfileId),
 					removeNotifyQuery.criteria("college").equal(userCollege),
@@ -154,8 +167,6 @@ public class NotificationDAO extends BasicDAO<NotificationLog, String> {
 			UpdateOperations<NotificationLog> ops = ds.createUpdateOperations(
 					NotificationLog.class).set("is viewed by user", true);
 			ds.update(removeNotifyQuery, ops);
-
-			// updateAllNotificationAsViewed(notifications, isUserAdmin);
 		}
 
 		return notifications;
