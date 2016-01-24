@@ -1343,15 +1343,13 @@ public class ProposalService {
 						}
 						if (confidentialInfo != null
 								&& confidentialInfo.has("Patentable")) {
-							newConfidentialInfo.setPatentable(Boolean
-									.parseBoolean(confidentialInfo.get(
-											"Patentable").getTextValue()));
+							newConfidentialInfo.setPatentable(confidentialInfo.get(
+											"Patentable").getBooleanValue());
 						}
 						if (confidentialInfo != null
 								&& confidentialInfo.has("Copyrightable")) {
-							newConfidentialInfo.setCopyrightable(Boolean
-									.parseBoolean(confidentialInfo.get(
-											"Copyrightable").getTextValue()));
+							newConfidentialInfo.setCopyrightable(confidentialInfo.get(
+											"Copyrightable").getBooleanValue());
 						}
 						break;
 					case "2":
@@ -1591,77 +1589,65 @@ public class ProposalService {
 
 				FundingSource newFundingSource = new FundingSource();
 				if (oSPSectionInfo != null && oSPSectionInfo.has("Federal")) {
-					newFundingSource.setFederal(Boolean
-							.parseBoolean(oSPSectionInfo.get("Federal")
-									.getTextValue()));
+					newFundingSource.setFederal(oSPSectionInfo.get("Federal")
+									.getBooleanValue());
 				}
 
 				if (oSPSectionInfo != null
 						&& oSPSectionInfo.has("FederalFlowThrough")) {
-					newFundingSource.setFederalFlowThrough(Boolean
-							.parseBoolean(oSPSectionInfo.get(
-									"FederalFlowThrough").getTextValue()));
+					newFundingSource.setFederalFlowThrough(oSPSectionInfo.get(
+									"FederalFlowThrough").getBooleanValue());
 				}
 
 				if (oSPSectionInfo != null
 						&& oSPSectionInfo.has("StateOfIdahoEntity")) {
-					newFundingSource.setStateOfIdahoEntity(Boolean
-							.parseBoolean(oSPSectionInfo.get(
-									"StateOfIdahoEntity").getTextValue()));
+					newFundingSource.setStateOfIdahoEntity(oSPSectionInfo.get(
+									"StateOfIdahoEntity").getBooleanValue());
 				}
 
 				if (oSPSectionInfo != null
 						&& oSPSectionInfo.has("PrivateForProfit")) {
-					newFundingSource.setPrivateForProfit(Boolean
-							.parseBoolean(oSPSectionInfo
-									.get("PrivateForProfit").getTextValue()));
+					newFundingSource.setPrivateForProfit(oSPSectionInfo
+									.get("PrivateForProfit").getBooleanValue());
 				}
 
 				if (oSPSectionInfo != null
 						&& oSPSectionInfo.has("NonProfitOrganization")) {
-					newFundingSource.setNonProfitOrganization(Boolean
-							.parseBoolean(oSPSectionInfo.get(
-									"NonProfitOrganization").getTextValue()));
+					newFundingSource.setNonProfitOrganization(oSPSectionInfo.get(
+									"NonProfitOrganization").getBooleanValue());
 				}
 
 				if (oSPSectionInfo != null
 						&& oSPSectionInfo.has("NonIdahoStateEntity")) {
-					newFundingSource.setNonIdahoStateEntity(Boolean
-							.parseBoolean(oSPSectionInfo.get(
-									"NonIdahoStateEntity").getTextValue()));
+					newFundingSource.setNonIdahoStateEntity(oSPSectionInfo.get(
+									"NonIdahoStateEntity").getBooleanValue());
 				}
 
 				if (oSPSectionInfo != null
 						&& oSPSectionInfo.has("CollegeOrUniversity")) {
-					newFundingSource.setCollegeOrUniversity(Boolean
-							.parseBoolean(oSPSectionInfo.get(
-									"CollegeOrUniversity").getTextValue()));
+					newFundingSource.setCollegeOrUniversity(oSPSectionInfo.get(
+									"CollegeOrUniversity").getBooleanValue());
 				}
 
 				if (oSPSectionInfo != null && oSPSectionInfo.has("LocalEntity")) {
-					newFundingSource.setLocalEntity(Boolean
-							.parseBoolean(oSPSectionInfo.get("LocalEntity")
-									.getTextValue()));
+					newFundingSource.setLocalEntity(oSPSectionInfo.get("LocalEntity")
+									.getBooleanValue());
 				}
 
 				if (oSPSectionInfo != null
 						&& oSPSectionInfo.has("NonIdahoLocalEntity")) {
-					newFundingSource.setNonIdahoLocalEntity(Boolean
-							.parseBoolean(oSPSectionInfo.get(
-									"NonIdahoLocalEntity").getTextValue()));
+					newFundingSource.setNonIdahoLocalEntity(oSPSectionInfo.get(
+									"NonIdahoLocalEntity").getBooleanValue());
 				}
 
 				if (oSPSectionInfo != null
 						&& oSPSectionInfo.has("TirbalGovernment")) {
-					newFundingSource.setTirbalGovernment(Boolean
-							.parseBoolean(oSPSectionInfo
-									.get("TirbalGovernment").getTextValue()));
+					newFundingSource.setTirbalGovernment(oSPSectionInfo
+									.get("TirbalGovernment").getBooleanValue());
 				}
 
 				if (oSPSectionInfo != null && oSPSectionInfo.has("Foreign")) {
-					newFundingSource.setForeign(Boolean
-							.parseBoolean(oSPSectionInfo.get("Foreign")
-									.getTextValue()));
+					newFundingSource.setForeign(oSPSectionInfo.get("Foreign").getBooleanValue());
 				}
 
 				if (!proposalID.equals("0")) {
@@ -1719,47 +1705,38 @@ public class ProposalService {
 					Recovery newRecovery = new Recovery();
 					if (oSPSectionInfo != null
 							&& oSPSectionInfo.has("FullRecovery")) {
-						newRecovery.setFullRecovery(Boolean
-								.parseBoolean(oSPSectionInfo
-										.get("FullRecovery").getTextValue()));
+						newRecovery.setFullRecovery(oSPSectionInfo
+										.get("FullRecovery").getBooleanValue());
 					}
 
 					if (oSPSectionInfo != null
 							&& oSPSectionInfo
 									.has("NoRecoveryNormalSponsorPolicy")) {
-						newRecovery.setNoRecoveryNormalSponsorPolicy(Boolean
-								.parseBoolean(oSPSectionInfo.get(
-										"NoRecoveryNormalSponsorPolicy")
-										.getTextValue()));
+						newRecovery.setNoRecoveryNormalSponsorPolicy(oSPSectionInfo.get(
+										"NoRecoveryNormalSponsorPolicy").getBooleanValue());
 					}
 
 					if (oSPSectionInfo != null
 							&& oSPSectionInfo
 									.has("NoRecoveryInstitutionalWaiver")) {
-						newRecovery.setNoRecoveryInstitutionalWaiver(Boolean
-								.parseBoolean(oSPSectionInfo.get(
-										"NoRecoveryInstitutionalWaiver")
-										.getTextValue()));
+						newRecovery.setNoRecoveryInstitutionalWaiver(oSPSectionInfo.get(
+										"NoRecoveryInstitutionalWaiver").getBooleanValue());
 					}
 
 					if (oSPSectionInfo != null
 							&& oSPSectionInfo
 									.has("LimitedRecoveryNormalSponsorPolicy")) {
 						newRecovery
-								.setLimitedRecoveryNormalSponsorPolicy(Boolean
-										.parseBoolean(oSPSectionInfo
-												.get("LimitedRecoveryNormalSponsorPolicy")
-												.getTextValue()));
+								.setLimitedRecoveryNormalSponsorPolicy(oSPSectionInfo
+												.get("LimitedRecoveryNormalSponsorPolicy").getBooleanValue());
 					}
 
 					if (oSPSectionInfo != null
 							&& oSPSectionInfo
 									.has("LimitedRecoveryInstitutionalWaiver")) {
 						newRecovery
-								.setLimitedRecoveryInstitutionalWaiver(Boolean
-										.parseBoolean(oSPSectionInfo
-												.get("LimitedRecoveryInstitutionalWaiver")
-												.getTextValue()));
+								.setLimitedRecoveryInstitutionalWaiver(oSPSectionInfo
+												.get("LimitedRecoveryInstitutionalWaiver").getBooleanValue());
 					}
 					if (!proposalID.equals("0")) {
 						if (!existingProposal.getoSPSectionInfo().getRecovery()
@@ -1771,31 +1748,28 @@ public class ProposalService {
 
 					BaseInfo newBaseInfo = new BaseInfo();
 					if (oSPSectionInfo != null && oSPSectionInfo.has("MTDC")) {
-						newBaseInfo.setMTDC(Boolean.parseBoolean(oSPSectionInfo
-								.get("MTDC").getTextValue()));
+						newBaseInfo.setMTDC(oSPSectionInfo
+								.get("MTDC").getBooleanValue());
 					}
 
 					if (oSPSectionInfo != null && oSPSectionInfo.has("TDC")) {
-						newBaseInfo.setTDC(Boolean.parseBoolean(oSPSectionInfo
-								.get("TDC").getTextValue()));
+						newBaseInfo.setTDC(oSPSectionInfo
+								.get("TDC").getBooleanValue());
 					}
 
 					if (oSPSectionInfo != null && oSPSectionInfo.has("TC")) {
-						newBaseInfo.setTC(Boolean.parseBoolean(oSPSectionInfo
-								.get("TC").getTextValue()));
+						newBaseInfo.setTC(oSPSectionInfo
+								.get("TC").getBooleanValue());
 					}
 
 					if (oSPSectionInfo != null && oSPSectionInfo.has("Other")) {
-						newBaseInfo.setOther(Boolean
-								.parseBoolean(oSPSectionInfo.get("Other")
-										.getTextValue()));
+						newBaseInfo.setOther(oSPSectionInfo.get("Other").getBooleanValue());
 					}
 
 					if (oSPSectionInfo != null
 							&& oSPSectionInfo.has("NotApplicable")) {
-						newBaseInfo.setNotApplicable(Boolean
-								.parseBoolean(oSPSectionInfo.get(
-										"NotApplicable").getTextValue()));
+						newBaseInfo.setNotApplicable(oSPSectionInfo.get(
+										"NotApplicable").getBooleanValue());
 					}
 					if (!proposalID.equals("0")) {
 						if (!existingProposal.getoSPSectionInfo().getBaseInfo()

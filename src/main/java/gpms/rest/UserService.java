@@ -162,7 +162,7 @@ public class UserService {
 
 		if (userObj != null && userObj.has("IsActive")) {
 			if (!userObj.get("IsActive").isNull()) {
-				isActive = Boolean.parseBoolean(userObj.get("IsActive").getTextValue());
+				isActive = userObj.get("IsActive").getBooleanValue();
 			} else {
 				isActive = null;
 			}
@@ -471,7 +471,7 @@ public class UserService {
 		}
 
 		if (root != null && root.has("isActive")) {
-			isActive = Boolean.parseBoolean(root.get("isActive").getTextValue());
+			isActive = root.get("isActive").getBooleanValue();
 		}
 
 		String userProfileID = new String();
@@ -782,45 +782,43 @@ public class UserService {
 
 		if (userInfo != null && userInfo.has("IsActive")) {
 			if (!userID.equals("0")) {
-				if (existingUserAccount.isActive() != Boolean.parseBoolean(userInfo.get("IsActive")
-						.getTextValue())) {
-					existingUserAccount.setActive(Boolean.parseBoolean(userInfo.get("IsActive")
-							.getTextValue()));
+				if (existingUserAccount.isActive() != userInfo.get("IsActive").getBooleanValue()) {
+					existingUserAccount.setActive(userInfo.get("IsActive").getBooleanValue());
 				}
 			} else {
 				newAccount
-						.setActive(Boolean.parseBoolean(userInfo.get("IsActive").getTextValue()));
+						.setActive(userInfo.get("IsActive").getBooleanValue());
 			}
 			if (!userID.equals("0")) {
-				if (existingUserAccount.isDeleted() != !Boolean.parseBoolean(userInfo
-						.get("IsActive").getTextValue())) {
-					existingUserAccount.setDeleted(!Boolean.parseBoolean(userInfo.get("IsActive")
-							.getTextValue()));
+				if (existingUserAccount.isDeleted() != !userInfo
+						.get("IsActive").getBooleanValue()) {
+					existingUserAccount.setDeleted(!userInfo.get("IsActive")
+							.getBooleanValue());
 				}
 			} else {
-				newAccount.setDeleted(!Boolean.parseBoolean(userInfo.get("IsActive")
-						.getTextValue()));
+				newAccount.setDeleted(!userInfo.get("IsActive")
+						.getBooleanValue());
 			}
 
 			// TODO: Check the old ways to do this
 			// if (userInfo != null && userInfo.has("IsActive")) {
-			// newAccount.setActive(Boolean.parseBoolean(userInfo.get(
-			// "IsActive").getTextValue()));
-			// newAccount.setDeleted(!Boolean.parseBoolean(userInfo.get(
-			// "IsActive").getTextValue()));
-			// newProfile.setDeleted(!Boolean.parseBoolean(userInfo.get(
-			// "IsActive").getTextValue()));
+			// newAccount.setActive(userInfo.get(
+			// "IsActive").getBooleanValue());
+			// newAccount.setDeleted(!userInfo.get(
+			// "IsActive").getBooleanValue());
+			// newProfile.setDeleted(!userInfo.get(
+			// "IsActive").getBooleanValue());
 			// }
 
 			if (!userID.equals("0")) {
-				if (existingUserProfile.isDeleted() != !Boolean.parseBoolean(userInfo
-						.get("IsActive").getTextValue())) {
-					existingUserProfile.setDeleted(!Boolean.parseBoolean(userInfo.get("IsActive")
-							.getTextValue()));
+				if (existingUserProfile.isDeleted() != !userInfo
+						.get("IsActive").getBooleanValue()) {
+					existingUserProfile.setDeleted(!userInfo.get("IsActive")
+							.getBooleanValue());
 				}
 			} else {
-				newProfile.setDeleted(!Boolean.parseBoolean(userInfo.get("IsActive")
-						.getTextValue()));
+				newProfile.setDeleted(!userInfo.get("IsActive")
+						.getBooleanValue());
 			}
 		}
 
