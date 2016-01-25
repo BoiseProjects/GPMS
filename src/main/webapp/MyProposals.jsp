@@ -161,12 +161,12 @@
 																<span class="icon-addnew">Add New Proposal</span>
 															</button>
 														</p>
-														<p>
-															<button title="Delete All Selected" type="button"
-																id="btnDeleteSelected" class="sfBtn">
-																<span class="icon-delete">Delete All Selected</span>
-															</button>
-														</p>
+														<!-- 														<p> -->
+														<!-- 															<button title="Delete All Selected" type="button" -->
+														<!-- 																id="btnDeleteSelected" class="sfBtn"> -->
+														<!-- 																<span class="icon-delete">Delete All Selected</span> -->
+														<!-- 															</button> -->
+														<!-- 														</p> -->
 														<p>
 															<button title="Export to Excel" type="button"
 																id="btnExportToExcel" class="sfBtn">
@@ -1413,6 +1413,7 @@
 															<!-- 																		id="txtProposalNotes" placeholder="Proposal Notes" -->
 															<!-- 																		required></textarea></td> -->
 															<!-- 															</tr> -->
+															Research Administrator Put sign here
 															<!-- 															<tr> -->
 															<!-- 																<td><span class="cssClassLabel">Research -->
 															<!-- 																		Administrator:</span> <span class="cssClassRequired">*</span></td> -->
@@ -1462,7 +1463,7 @@
 													</button>
 												</p>
 												<p>
-													<button title="Submit Proposal" type="button"
+													<button title="Update Proposal" type="button"
 														id="btnUpdateProposal" class="sfBtn">
 														<span class="icon-save">Update</span>
 													</button>

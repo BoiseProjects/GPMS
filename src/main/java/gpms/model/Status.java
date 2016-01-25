@@ -11,14 +11,17 @@ public enum Status {
 
 	NOTSUBMITTEDBYPI("Not Submitted by PI"), WAITINGFORCHAIRAPPROVAL(
 			"Waiting for Chair Approval"), WAITINGFORDEANAPPROVAL(
-			"Waiting for Dean's Approval"), DELETEDBYPI(
+			"Waiting for Dean's Approval"), WAITINGFORUNIVERSITYRESEARCHOFFICEAPPROVAL(
+			"Waiting for University Research Office's Approval"), DELETEDBYPI(
 			"Deleted by PI"), REVIEWEDBYRESEARCHOFFICE(
 			"Reviewed by Research Office"), SUBMITTEDBYRESEARCHOFFICE(
 			"Submitted by Research Office"), AWARDED("Awarded"), WITHDRAWBYRESEARCHOFFICE(
 			"Withdraw by Research Office"), PIHASGRANTEDTHEPERMISSION(
-			"PI has granted the permission"), APPROVEDBYDEPARTMENTCHAIR(
-			"Approved by Department Chair"), APPROVEDBYBUSINESSMANAGER(
-			"Approved by Business Manager");
+			"PI has granted the permission"), APPROVEDBYBUSINESSMANAGER(
+			"Approved by Business Manager"), APPROVEDBYDEPARTMENTCHAIR(
+			"Approved by Department Chair"), APPROVEDBYDEAN("Approved by Dean"), APPROVEDBYUNIVERSITYRESEARCHDIRECTOR(
+			"Approved by University Research Director"), ARCHIVEDBYUNIVERSITYRESEARCHDIRECTOR(
+			"Archived by University Research Director");
 
 	private final String name;
 

@@ -45,6 +45,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -307,12 +308,22 @@ public class ProposalService {
 			throws JsonProcessingException, IOException {
 		String response = new String();
 		String proposalId = new String();
+		String proposalRoles = new String();
+		String proposalUserTitle = new String();
 
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode root = mapper.readTree(message);
 
 		if (root != null && root.has("proposalId")) {
 			proposalId = root.get("proposalId").getTextValue();
+		}
+
+		if (root != null && root.has("proposalRoles")) {
+			proposalRoles = root.get("proposalRoles").getTextValue();
+		}
+
+		if (root != null && root.has("proposalUserTitle")) {
+			proposalUserTitle = root.get("proposalUserTitle").getTextValue();
 		}
 
 		/*
@@ -367,11 +378,12 @@ public class ProposalService {
 
 		Proposal proposal = proposalDAO.findProposalByProposalID(id);
 
-		proposalDAO.deleteProposal(proposal, authorProfile);
+		proposalDAO.deleteProposal(proposal, proposalRoles, proposalUserTitle,
+				authorProfile);
 
 		String authorUserName = authorProfile.getUserAccount().getUserName();
 		String projectTitle = proposal.getProjectInfo().getProjectTitle();
-		String notificationMessage = "deleted by " + authorUserName + ".";
+		String notificationMessage = "Deleted by " + authorUserName + ".";
 		NotifyAllExistingInvestigators(proposalId, projectTitle, proposal,
 				notificationMessage, "Proposal", true);
 
@@ -437,12 +449,13 @@ public class ProposalService {
 		for (String proposalId : proposals) {
 			ObjectId id = new ObjectId(proposalId);
 			Proposal proposal = proposalDAO.findProposalByProposalID(id);
-			proposalDAO.deleteProposal(proposal, authorProfile);
+			proposalDAO.deleteProposal(proposal, "", userPositionTitle,
+					authorProfile);
 
 			String authorUserName = authorProfile.getUserAccount()
 					.getUserName();
 			String projectTitle = proposal.getProjectInfo().getProjectTitle();
-			String notificationMessage = "deleted by " + authorUserName + ".";
+			String notificationMessage = "Deleted by " + authorUserName + ".";
 			NotifyAllExistingInvestigators(proposalId, projectTitle, proposal,
 					notificationMessage, "Proposal", true);
 		}
@@ -720,6 +733,206 @@ public class ProposalService {
 					// using our serializable method for cloning
 					oldProposal = SerializationHelper
 							.cloneThroughSerialize(existingProposal);
+				}
+
+				// var canDisApproveTitles = [ "Department Chair", "Dean",
+				// "University Research Director" ];
+				// var canWithDrawTitles = [ "Research Administrator" ];
+				// var canArchiveTitles = [ "University Research Director" ];
+
+				// For Proposal User Title : for Dean, Chair and Manager
+				JsonNode proposalUserTitle = root.get("proposalUserTitle");
+				if (proposalUserTitle != null) {
+					// For Proposal Roles : PI, Co-PI, Senior
+					JsonNode proposalRoles = root.get("proposalRoles");
+					if (proposalRoles != null) {
+						// For Proposal Status
+						JsonNode buttonType = root.get("buttonType");
+						if (buttonType != null) {
+							switch (buttonType.getTextValue()) {
+							case "Save As Draft":
+								if (!proposalID.equals("0")) {
+									if (!existingProposal.getProposalStatus()
+											.contains(Status.NOTSUBMITTEDBYPI)
+											&& proposalRoles.toString()
+													.equalsIgnoreCase("PI")) {
+										// TODO check if clear is necessary or
+										// not!
+										existingProposal.getProposalStatus()
+												.clear();
+										existingProposal.getProposalStatus()
+												.add(Status.NOTSUBMITTEDBYPI);
+									}
+								} else {
+									newProposal.getProposalStatus().clear();
+									newProposal.getProposalStatus().add(
+											Status.NOTSUBMITTEDBYPI);
+								}
+								break;
+							case "Update":
+								// var canUpdateRoles = [ "PI", "CO-PI",
+								// "Senior" ];
+								// var canUpdateTitles = [ "Business Manager",
+								// "Research Administrator", "Department Chair",
+								// "Dean" ]
+								break;
+							case "Submit":
+								// var canSubmitRoles = [ "PI" ];
+								if (!proposalID.equals("0")) {
+									if (existingProposal.getProposalStatus()
+											.contains(Status.NOTSUBMITTEDBYPI)
+											&& proposalRoles.toString()
+													.equalsIgnoreCase("PI")) {
+										existingProposal.getProposalStatus()
+												.clear();
+										existingProposal
+												.getProposalStatus()
+												.add(Status.WAITINGFORCHAIRAPPROVAL);
+									}
+								}
+								break;
+							case "Approve":
+								// var canApproveTitles = [ "Business Manager",
+								// "Department Chair",
+								// "Dean","University Research Director" ];
+								List<String> canApproveTitles = Arrays.asList(
+										"Business Manager", "Department Chair",
+										"Dean", "University Research Director");
+								if (!proposalID.equals("0")
+										&& canApproveTitles
+												.contains(proposalUserTitle
+														.getTextValue())) {
+									existingProposal.getProposalStatus()
+											.clear();
+									if (proposalUserTitle.getTextValue()
+											.equals("Business Manager")
+											&& !existingProposal
+													.getProposalStatus()
+													.contains(
+															Status.APPROVEDBYBUSINESSMANAGER)) {
+										existingProposal
+												.getProposalStatus()
+												.add(Status.APPROVEDBYBUSINESSMANAGER);
+									} else if (proposalUserTitle.getTextValue()
+											.equals("Department Chair")
+											&& existingProposal
+													.getProposalStatus()
+													.contains(
+															Status.WAITINGFORCHAIRAPPROVAL)
+											&& !existingProposal
+													.getProposalStatus()
+													.contains(
+															Status.APPROVEDBYDEPARTMENTCHAIR)) {
+										existingProposal
+												.getProposalStatus()
+												.add(Status.APPROVEDBYDEPARTMENTCHAIR);
+									} else if (proposalUserTitle.getTextValue()
+											.equals("Dean")
+											&& existingProposal
+													.getProposalStatus()
+													.contains(
+															Status.WAITINGFORDEANAPPROVAL)
+											&& !existingProposal
+													.getProposalStatus()
+													.contains(
+															Status.APPROVEDBYDEAN)) {
+										existingProposal.getProposalStatus()
+												.add(Status.APPROVEDBYDEAN);
+									} else if (proposalUserTitle
+											.getTextValue()
+											.equals("University Research Director")
+											&& existingProposal
+													.getProposalStatus()
+													.contains(
+															Status.WAITINGFORUNIVERSITYRESEARCHOFFICEAPPROVAL)
+											&& !existingProposal
+													.getProposalStatus()
+													.contains(
+															Status.APPROVEDBYUNIVERSITYRESEARCHDIRECTOR)) {
+										existingProposal
+												.getProposalStatus()
+												.add(Status.APPROVEDBYUNIVERSITYRESEARCHDIRECTOR);
+									}
+
+								}
+								break;
+							case "Disapprove":
+								// var canDisApproveTitles = [
+								// "Business Manager",
+								// "Department Chair",
+								// "Dean", "University Research Director" ];
+								List<String> canDisApproveTitles = Arrays
+										.asList("Business Manager",
+												"Department Chair", "Dean",
+												"University Research Director");
+								if (!proposalID.equals("0")
+										&& canDisApproveTitles
+												.contains(proposalUserTitle
+														.getTextValue())) {
+									// TODO
+									// existingProposal.getProposalStatus().clear();
+									// if (proposalUserTitle
+									// .equals("Business Manager")) {
+									// existingProposal
+									// .getProposalStatus()
+									// .add(Status.DISAPPROVEDBYBUSINESSMANAGER);
+									// } else if (proposalUserTitle
+									// .equals("Department Chair")) {
+									// existingProposal
+									// .getProposalStatus()
+									// .add(Status.DISAPPROVEDBYDEPARTMENTCHAIR);
+									// } else if
+									// (proposalUserTitle.equals("Dean"))
+									// {
+									// existingProposal.getProposalStatus().add(
+									// Status.DISAPPROVEDBYDEAN);
+									// } else if (proposalUserTitle
+									// .equals("University Research Director"))
+									// {
+									// existingProposal
+									// .getProposalStatus()
+									// .add(Status.DISAPPROVEDBYUNIVERSITYRESEARCHDIRECTOR);
+									// }
+
+								}
+								break;
+							case "Withdraw":
+								// var canWithDrawTitles = [
+								// "Research Administrator" ];
+								List<String> canWithDrawTitles = Arrays
+										.asList("Research Administrator");
+								if (!proposalID.equals("0")
+										&& canWithDrawTitles
+												.contains(proposalUserTitle
+														.getTextValue())) {
+									existingProposal.getProposalStatus()
+											.clear();
+									existingProposal.getProposalStatus().add(
+											Status.WITHDRAWBYRESEARCHOFFICE);
+								}
+								break;
+							case "Archive":
+								// var canArchiveTitles = [
+								// "University Research Director" ];
+								List<String> canArchiveTitles = Arrays
+										.asList("University Research Director");
+								if (!proposalID.equals("0")
+										&& canArchiveTitles
+												.contains(proposalUserTitle
+														.getTextValue())) {
+									existingProposal.getProposalStatus()
+											.clear();
+									existingProposal
+											.getProposalStatus()
+											.add(Status.ARCHIVEDBYUNIVERSITYRESEARCHDIRECTOR);
+								}
+								break;
+
+							default:
+								break;
+							}
+						}
+					}
 				}
 			}
 

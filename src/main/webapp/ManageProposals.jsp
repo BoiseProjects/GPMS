@@ -219,17 +219,17 @@
 																	<!-- 																		</select></td> -->
 
 																	<td style="width: 180px; float: left;"><label
-																		class="cssClassLabel">Received On:</label>
+																		class="cssClassLabel">Submitted On:</label>
 																		<div>
 																			<span class="cssClassLabel">From:</span> <input
 																				type="text" title="Received On From"
-																				id="txtSearchReceivedOnFrom" class="sfTextBoxFix"
+																				id="txtSearchSubmittedOnFrom" class="sfTextBoxFix"
 																				placeholder="From">
 																		</div>
 																		<div>
 																			<span class="cssClassLabel">To:</span> <input
 																				type="text" title="Received On To"
-																				id="txtSearchReceivedOnTo" class="sfTextBoxFix"
+																				id="txtSearchSubmittedOnTo" class="sfTextBoxFix"
 																				placeholder="To">
 																		</div></td>
 
@@ -312,9 +312,9 @@
 												<span class="cssClassRequired">*</span> <span
 													class="cssClassLabelTitle">indicates required fields</span>
 												<div id="accordion-expand-holder" style="display: none;">
-													<button type="button" class="open sfBtn">Expand
+													<button type="button" class="expandAll sfBtn">Expand
 														all</button>
-													<button type="button" class="close sfBtn">Collapse
+													<button type="button" class="collapseAll sfBtn">Collapse
 														all</button>
 												</div>
 											</div>
@@ -1401,7 +1401,6 @@
 																<td class="cssClassTableRightCol" colspan="3"><select
 																	title="Choose Proposal Status" name="proposalStatus"
 																	id="ddlProposalStatus">
-																		<option value="">Choose Proposal Status</option>
 																</select></td>
 															</tr>
 
@@ -1442,78 +1441,6 @@
 															final copy of the Porposal Data Sheet.</span>
 													</div>
 												</div>
-
-												<h3>
-													<span id="lblSection13">Audit Logs</span>
-												</h3>
-												<div id="divProposalAuditGrid">
-													<div class="cssClassCommonBox Curve">
-														<div class="sfGridwrapper">
-															<div class="sfGridWrapperContent">
-																<div class="sfFormwrapper sfTableOption">
-																	<table width="100%" cellspacing="0" cellpadding="0"
-																		border="0">
-																		<tbody>
-																			<tr>
-																				<td><label class="cssClassLabel">
-																						Action:</label> <input title="Action" type="text"
-																					class="sfInputbox" id="txtSearchAction"
-																					placeholder="Action" /></td>
-																				<td><label class="cssClassLabel">
-																						Audited By:</label> <input title="Audited By" type="text"
-																					class="sfInputbox" id="txtSearchAuditedBy"
-																					placeholder="Audited By" /></td>
-																				<td><label class="cssClassLabel">
-																						Activity On From:</label> <input title="Activity On From"
-																					type="text" class="sfTextBoxSmall"
-																					id="txtSearchActivityOnFrom" placeholder="From" /></td>
-																				<td><label class="cssClassLabel">
-																						Activity On To:</label> <input title="Activity On To"
-																					type="text" class="sfTextBoxSmall"
-																					id="txtSearchActivityOnTo" placeholder="To" /></td>
-																				<td><label class="cssClassLabel"> </label>
-																					<button title="Search Audit Log" class="sfBtn"
-																						id="btnSearchProposalAuditLog" type="button">
-																						<span class="icon-search">Search</span>
-																					</button></td>
-																			</tr>
-																		</tbody>
-																	</table>
-																</div>
-																<div class="loading">
-																	<img id="ajaxLoader" src="" alt="Loading..."
-																		title="Loading..." />
-																</div>
-																<div class="log"></div>
-																<table id="gdvProposalsAuditLog" cellspacing="0"
-																	cellpadding="0" border="0" width="100%"></table>
-															</div>
-														</div>
-													</div>
-													<table id="tblLastAuditedInfo" cellspacing="0"
-														cellpadding="0" border="0">
-														<tbody>
-															<tr>
-																<td><span class="cssClassLabelTitle">Last
-																		Audited On:&nbsp;</span></td>
-																<td class="cssClassTableRightCol"><span
-																	id="lblLastUpdatedOn" class="cssClassLabel"></span></td>
-															</tr>
-															<tr>
-																<td><span class="cssClassLabelTitle">Last
-																		Audited By:&nbsp;</span></td>
-																<td class="cssClassTableRightCol"><span
-																	id="lblLastUpdatedBy" class="cssClassLabel"></span></td>
-															</tr>
-															<tr>
-																<td><span class="cssClassLabelTitle">Last
-																		Activity:&nbsp;</span></td>
-																<td class="cssClassTableRightCol"><span
-																	id="lblActivity" class="cssClassLabel"></span></td>
-															</tr>
-														</tbody>
-													</table>
-												</div>
 											</div>
 
 											<div class="sfButtonwrapper">
@@ -1530,15 +1457,134 @@
 													</button>
 												</p>
 												<p>
-													<button title="Save Proposal" type="button"
+													<button title="Save Proposal As Draft" type="button"
 														id="btnSaveProposal" class="sfBtn">
-														<span class="icon-save">Save</span>
+														<span class="icon-save">Save As Draft</span>
+													</button>
+												</p>
+												<p>
+													<button title="Update Proposal" type="button"
+														id="btnUpdateProposal" class="sfBtn">
+														<span class="icon-save">Update</span>
+													</button>
+												</p>
+												<p>
+													<button title="Submit Proposal" type="button"
+														id="btnSubmitProposal" class="sfBtn">
+														<span class="icon-save">Submit</span>
+													</button>
+												</p>
+												<p>
+													<button title="Approve Proposal" type="button"
+														id="btnApproveProposal" class="sfBtn">
+														<span class="icon-save">Approve</span>
+													</button>
+												</p>
+												<p>
+													<button title="Disapprove Proposal" type="button"
+														id="btnDisapproveProposal" class="sfBtn">
+														<span class="icon-save">Disapprove</span>
+													</button>
+												</p>
+												<p>
+													<button title="Withdraw Proposal" type="button"
+														id="btnWithdrawProposal" class="sfBtn">
+														<span class="icon-save">Withdraw</span>
+													</button>
+												</p>
+												<p>
+													<button title="Archive Proposal" type="button"
+														id="btnArchiveProposal" class="sfBtn">
+														<span class="icon-save">Archive</span>
 													</button>
 												</p>
 											</div>
 										</div>
-										<!-- End form -->
 									</div>
+									<!-- End form -->
+
+									<!-- Start Change Log Grid -->
+									<div id="divProposalAuditGrid" style="display: none">
+										<div class="cssClassCommonBox Curve">
+											<div class="cssClassHeader">
+												<h1>
+													<span id="lblLogsHeading"></span>
+												</h1>
+											</div>
+											<div class="sfGridwrapper">
+												<div class="sfGridWrapperContent">
+													<div class="sfFormwrapper sfTableOption">
+														<table width="100%" cellspacing="0" cellpadding="0"
+															border="0">
+															<tbody>
+																<tr>
+																	<td><label class="cssClassLabel"> Action:</label>
+																		<input title="Action" type="text" class="sfInputbox"
+																		id="txtSearchAction" placeholder="Action" /></td>
+																	<td><label class="cssClassLabel"> Audited
+																			By:</label> <input title="Audited By" type="text"
+																		class="sfInputbox" id="txtSearchAuditedBy"
+																		placeholder="Audited By" /></td>
+																	<td><label class="cssClassLabel"> Activity
+																			On From:</label> <input title="Activity On From" type="text"
+																		class="sfTextBoxSmall" id="txtSearchActivityOnFrom"
+																		placeholder="From" /></td>
+																	<td><label class="cssClassLabel"> Activity
+																			On To:</label> <input title="Activity On To" type="text"
+																		class="sfTextBoxSmall" id="txtSearchActivityOnTo"
+																		placeholder="To" /></td>
+																	<td><label class="cssClassLabel"> </label>
+																		<button title="Search Audit Log" class="sfBtn"
+																			id="btnSearchProposalAuditLog" type="button">
+																			<span class="icon-search">Search</span>
+																		</button></td>
+																</tr>
+															</tbody>
+														</table>
+													</div>
+													<div class="loading">
+														<img id="ajaxLoader" src="" alt="Loading..."
+															title="Loading..." />
+													</div>
+													<div class="log"></div>
+													<table id="gdvProposalsAuditLog" cellspacing="0"
+														cellpadding="0" border="0" width="100%"></table>
+												</div>
+											</div>
+										</div>
+										<table id="tblLastAuditedInfo" cellspacing="0" cellpadding="0"
+											border="0">
+											<tbody>
+												<tr>
+													<td><span class="cssClassLabelTitle">Last
+															Audited On:&nbsp;</span></td>
+													<td class="cssClassTableRightCol"><span
+														id="lblLastUpdatedOn" class="cssClassLabel"></span></td>
+												</tr>
+												<tr>
+													<td><span class="cssClassLabelTitle">Last
+															Audited By:&nbsp;</span></td>
+													<td class="cssClassTableRightCol"><span
+														id="lblLastUpdatedBy" class="cssClassLabel"></span></td>
+												</tr>
+												<tr>
+													<td><span class="cssClassLabelTitle">Last
+															Activity:&nbsp;</span></td>
+													<td class="cssClassTableRightCol"><span
+														id="lblActivity" class="cssClassLabel"></span></td>
+												</tr>
+											</tbody>
+										</table>
+										<div class="sfButtonwrapper">
+											<p>
+												<button class="sfBtn" id="btnLogsBack" type="button"
+													title="Go Back">
+													<span class="icon-arrow-slim-w">Back</span>
+												</button>
+											</p>
+										</div>
+									</div>
+									<!-- End Change Log Grid-->
 								</div>
 							</div>
 							<!-- END sfMaincontent -->

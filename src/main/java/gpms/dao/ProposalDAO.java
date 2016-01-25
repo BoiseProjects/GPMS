@@ -94,11 +94,15 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 		ds.save(existingProposal);
 	}
 
-	public void deleteProposal(Proposal proposal, UserProfile authorProfile) {
+	public void deleteProposal(Proposal proposal, String proposalRoles,
+			String proposalUserTitle, UserProfile authorProfile) {
 		Datastore ds = getDatastore();
 		// TODO
-		proposal.getProposalStatus().clear();
-		proposal.getProposalStatus().add(Status.DELETEDBYPI);
+		if (proposalRoles.equalsIgnoreCase("PI")
+				&& !proposal.getProposalStatus().contains(Status.DELETEDBYPI)) {
+			proposal.getProposalStatus().clear();
+			proposal.getProposalStatus().add(Status.DELETEDBYPI);
+		}
 		AuditLog entry = new AuditLog(authorProfile, "Deleted Proposal by "
 				+ authorProfile.getUserAccount().getUserName(), new Date());
 		proposal.getAuditLog().add(entry);
