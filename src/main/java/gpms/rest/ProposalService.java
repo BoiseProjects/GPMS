@@ -683,7 +683,7 @@ public class ProposalService {
 
 			// var canDisApproveTitles = [ "Department Chair", "Dean",
 			// "University Research Director" ];
-			// var canWithDrawTitles = [ "Research Administrator" ];
+			// var canWithDrawTitles = [ "University Research Administrator" ];
 			// var canArchiveTitles = [ "University Research Director" ];
 
 			// For Proposal User Title : for Dean, Chair and Manager
@@ -840,9 +840,9 @@ public class ProposalService {
 							break;
 						case "Withdraw":
 							// var canWithDrawTitles = [
-							// "Research Administrator" ];
+							// "University Research Administrator" ];
 							List<String> canWithDrawTitles = Arrays
-									.asList("Research Administrator");
+									.asList("University Research Administrator");
 							if (!proposalID.equals("0")
 									&& canWithDrawTitles
 											.contains(proposalUserTitle
@@ -2610,13 +2610,13 @@ public class ProposalService {
 			// .findUserDetailsByProfileID(authorId);
 
 			String decision = ac.getXACMLdecision(attrMap);
-			if (decision.equals("Permit")) {
+			//if (decision.equals("Permit")) {
 				return Response.status(200).type(MediaType.APPLICATION_JSON)
 						.entity(true).build();
-			} else {
-				return Response.status(403).type(MediaType.APPLICATION_JSON)
-						.entity("Your permission is: " + decision).build();
-			}
+			// } else {
+			// return Response.status(403).type(MediaType.APPLICATION_JSON)
+			// .entity("Your permission is: " + decision).build();
+			// }
 		} else {
 			return Response.status(403).type(MediaType.APPLICATION_JSON)
 					.entity("No User Permission Attributes are send!").build();

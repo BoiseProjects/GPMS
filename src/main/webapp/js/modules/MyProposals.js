@@ -445,7 +445,8 @@ $(function() {
 			ajaxCallMode : 0,
 			proposalId : "0",
 			proposalRoles : "",
-			buttonType : ""
+			buttonType : "",
+			arguments : []
 		},
 
 		ajaxCall : function(config) {
@@ -514,7 +515,6 @@ $(function() {
 			this.config.url = this.config.baseURL
 					+ "CheckPermissionForAProposal";
 			this.config.data = JSON2.stringify({
-				proposalId : proposal_id,
 				policyInfo : attributeArray,
 				gpmsCommonObj : gpmsCommonObj()
 			});
@@ -920,7 +920,7 @@ $(function() {
 					"Dean", "University Research Director" ];
 			var canDisApproveTitles = [ "Business Manager", "Department Chair",
 					"Dean", "University Research Director" ];
-			var canWithDrawTitles = [ "Research Administrator" ];
+			var canWithDrawTitles = [ "University Research Administrator" ];
 			var canArchiveTitles = [ "University Research Director" ];
 
 			currentProposalRoles = currentProposalRoles.split(', ');
@@ -987,44 +987,10 @@ $(function() {
 		EditProposal : function(tblID, argus) {
 			switch (tblID) {
 			case "gdvProposals":
-
-				// TODO
-				// $('#accordion-expand-holder').show();
-				$("#accordion").accordion("option", "active", false);
-
-				$('#lblFormHeading').html(
-						'Edit Proposal Details for: ' + argus[2]);
-
-				$("#lblProposalDateReceived").text(argus[13]);
-
-				myProposal.ClearForm();
-
-				$("#txtNameOfGrantingAgency").val(argus[6]);
-
-				$("#trSignChair").show();
-				$("#trSignDean").show();
-				$("#trSignBusinessManager").show();
-
-				// OSP Section
-				$('#ui-id-23').show();
-
-				$('#ddlProposalStatus option').length = 0;
-				$('#ddlProposalStatus')
-						.append(new Option(argus[16], argus[16])).prop(
-								'disabled', true);
-
-				myProposal.BindUserPositionDetailsForAProposal(argus[23]);
-
-				myProposal.BindProposalDetailsByProposalId(argus[0]);
-
-				myProposal.ButtonHideShow($.trim(argus[24]), argus[16],
-						argus[0]);
-
-				// Certification/ Signatures Info
-				myProposal.BindAllSignatureForAProposal(argus[0]);
-
-				// Delegation Info
-
+				myProposal.config.ajaxCallMode = 13;
+				myProposal.config.arguments = argus;
+				myProposal.CheckUserPermission("View", argus[24], argus[0],
+						myProposal.config);
 				break;
 			default:
 				break;
@@ -1966,7 +1932,6 @@ $(function() {
 
 		BindDefaultUserPosition : function(rowIndexVal) {
 			// For form Dropdown Binding
-			alert(rowIndexVal);
 			myProposal.BindAllPositionDetailsForAUser($(
 					'select[name="ddlName"]').eq(rowIndexVal).val());
 
@@ -2118,9 +2083,10 @@ $(function() {
 								function() {
 									var optionsText = $(this).val();
 									if (optionsText
-											&& $(this).prop("name") != "signaturedate") {
+											&& $(this).attr("data-for") != "signaturedate") {
 
-										signatureInfo += $(this).prop("name")
+										signatureInfo += $(this).attr(
+												"data-value")
 												+ "!#!"; // UserProfileID
 
 										signatureInfo += optionsText + "!#!"; // Signature
@@ -2915,7 +2881,9 @@ $(function() {
 										+ item.delegated
 										+ '">'
 										+ item.fullName
-										+ '</span></td><td><input title="'
+										+ '</span></td><td><input data-for="signature" data-value="'
+										+ item.userProfileId
+										+ '" title="'
 										+ item.positionTitle
 										+ '\'s Signature" class="sfInputbox" placeholder="'
 										+ item.positionTitle
@@ -2924,10 +2892,14 @@ $(function() {
 										+ '"'
 										+ ' name="'
 										+ item.userProfileId
+										+ item.positionTitle
 										+ '" '
 										+ readOnly
 										+ '>'
-										+ '</td><td><input name="signaturedate" title="Signed Date" class="sfInputbox" placeholder="Signed Date" type="text" readonly="true" '
+										+ '</td><td><input data-for="signaturedate" name="signaturedate'
+										+ item.userProfileId
+										+ item.positionTitle
+										+ '" title="Signed Date" class="sfInputbox" placeholder="Signed Date" type="text" readonly="true" '
 										+ focusMethod
 										+ ' value="'
 										+ $.format.date(signedDate,
@@ -2966,8 +2938,37 @@ $(function() {
 			// $("#accordion").accordion("option", "active", 0);
 
 			if (editFlag != "0") {
+				var changeMade = "Updated";
+				switch (myProposal.config.buttonType) {
+				case "Update":
+					changeMade = "Updated";
+					break;
+
+				case "Submit":
+					changeMade = "Submitted";
+					break;
+
+				case "Approve":
+					changeMade = "Approved";
+					break;
+				case "Disapprove":
+					changeMade = "Disapproved";
+					break;
+
+				case "Withdraw":
+					changeMade = "Withdrawn";
+					break;
+
+				case "Archive":
+					changeMade = "Archived";
+					break;
+
+				default:
+					break;
+				}
 				csscody.info("<h2>" + 'Successful Message' + "</h2><p>"
-						+ 'Proposal has been updated successfully.' + "</p>");
+						+ 'Proposal has been ' + changeMade + ' successfully.'
+						+ "</p>");
 			} else {
 				csscody.info("<h2>" + 'Successful Message' + "</h2><p>"
 						+ 'Proposal has been saved successfully.' + "</p>");
@@ -2979,24 +2980,103 @@ $(function() {
 			break;
 
 		case 10:
-			myProposal.DeleteProposalById(myProposal.config.proposalId,
-					myProposal.config.proposalRoles);
+			if (myProposal.config.proposalId != '0') {
+				myProposal.DeleteProposalById(myProposal.config.proposalId,
+						myProposal.config.proposalRoles);
+			} else {
+				csscody.error('<h2>' + 'Error Message' + '</h2><p>'
+						+ 'Failed to load Proposal.' + '</p>');
+			}
 			break;
 
 		case 11:
-			if (myProposal.config.proposalId != '') {
+			if (myProposal.config.proposalId != '0') {
 				editFlag = myProposal.config.proposalId;
 				myProposal.SaveProposal(myProposal.config.buttonType,
 						myProposal.config.proposalRoles,
 						myProposal.config.proposalId, false);
 			} else {
 				editFlag = "0";
-				myProposal.config.proposalId = "0";
 				myProposal.SaveProposal(myProposal.config.buttonType, "", "0",
 						true);
 			}
 
 			break;
+
+		case 12:
+			if (myProposal.config.proposalId == '0') {
+				$('#lblFormHeading').html('New Proposal Details');
+
+				$("#btnReset").show();
+				$("#btnUpdateProposal").hide();
+				$("#btnSaveProposal").show();
+				$("#btnSubmitProposal").show();
+
+				// For Admin user only
+				$("#btnApproveProposal").hide();
+				$("#btnDisapproveProposal").hide();
+				$("#btnWithdrawProposal").hide();
+				$("#btnArchiveProposal").hide();
+
+				$('#ui-id-23').hide();
+
+				$('select[name=ddlName]').eq(0).val(
+						GPMS.utils.GetUserProfileID()).prop('selected',
+						'selected').prop('disabled', 'disabled');
+
+				myProposal.ClearForm();
+				myProposal.BindDefaultUserPosition(0);
+				myProposal.BindPICoPISignatures();
+
+				$('#divProposalGrid').hide();
+				$('#divProposalForm').show();
+				$('#divProposalAuditGrid').hide();
+				$("#accordion").accordion("option", "active", 0);
+			}
+			break;
+
+		case 13:
+			if (myProposal.config.proposalId != '0') {
+				var argus = myProposal.config.arguments;
+				// TODO
+				// $('#accordion-expand-holder').show();
+				$("#accordion").accordion("option", "active", false);
+
+				$('#lblFormHeading').html(
+						'Edit Proposal Details for: ' + argus[2]);
+
+				$("#lblProposalDateReceived").text(argus[13]);
+
+				myProposal.ClearForm();
+
+				$("#txtNameOfGrantingAgency").val(argus[6]);
+
+				$("#trSignChair").show();
+				$("#trSignDean").show();
+				$("#trSignBusinessManager").show();
+
+				// OSP Section
+				$('#ui-id-23').show();
+
+				$('#ddlProposalStatus option').length = 0;
+				$('#ddlProposalStatus')
+						.append(new Option(argus[16], argus[16])).prop(
+								'disabled', true);
+
+				myProposal.BindUserPositionDetailsForAProposal(argus[23]);
+
+				myProposal.BindProposalDetailsByProposalId(argus[0]);
+
+				myProposal.ButtonHideShow($.trim(argus[24]), argus[16],
+						argus[0]);
+
+				// Certification/ Signatures Info
+				myProposal.BindAllSignatureForAProposal(argus[0]);
+
+				// Delegation Info
+			}
+			break;
+
 		}
 	},
 
@@ -3058,9 +3138,22 @@ $(function() {
 						+ 'You are not allowed to DELETE this proposal! '
 						+ msg.responseText + '</p>');
 				break;
+
 			case 11:
 				csscody.error('<h2>' + 'Error Message' + '</h2><p>'
 						+ 'You are not allowed to perform this OPERATION! '
+						+ msg.responseText + '</p>');
+				break;
+
+			case 12:
+				csscody.error('<h2>' + 'Error Message' + '</h2><p>'
+						+ 'You are not allowed to CREATE a Proposal! '
+						+ msg.responseText + '</p>');
+				break;
+
+			case 13:
+				csscody.error('<h2>' + 'Error Message' + '</h2><p>'
+						+ 'You are not allowed to VIEW this Proposal! '
 						+ msg.responseText + '</p>');
 				break;
 			}
@@ -3266,38 +3359,11 @@ $(function() {
 			$('#btnAddNew').on(
 					"click",
 					function() {
-						// myProposal.InitializeAccordion();
+						myProposal.config.ajaxCallMode = 12;
 
-						// TODO call the XACML to check whether the current user
-						// is allowed to create - action whole proposal or not
+						myProposal.CheckUserPermission("Create", "", "",
+								myProposal.config);
 
-						$('#lblFormHeading').html('New Proposal Details');
-
-						$("#btnReset").show();
-						$("#btnUpdateProposal").hide();
-						$("#btnSaveProposal").show();
-						$("#btnSubmitProposal").show();
-
-						// For Admin user only
-						$("#btnApproveProposal").hide();
-						$("#btnDisapproveProposal").hide();
-						$("#btnWithdrawProposal").hide();
-						$("#btnArchiveProposal").hide();
-
-						$('#ui-id-23').hide();
-
-						$('select[name=ddlName]').eq(0).val(
-								GPMS.utils.GetUserProfileID()).prop('selected',
-								'selected').prop('disabled', 'disabled');
-
-						myProposal.ClearForm();
-						myProposal.BindDefaultUserPosition(0);
-						myProposal.BindPICoPISignatures();
-
-						$('#divProposalGrid').hide();
-						$('#divProposalForm').show();
-						$('#divProposalAuditGrid').hide();
-						$("#accordion").accordion("option", "active", 0);
 					});
 
 			$('#btnBack').on("click", function() {
@@ -3532,10 +3598,6 @@ $(function() {
 													$(this).prop("title",
 															"Delete");
 												}
-												$(this).parent('td').find(
-														'span').removeClass(
-														'error');
-												$(this).removeClass('error');
 											});
 									$(cloneRow)
 											.find("select")
@@ -3561,11 +3623,6 @@ $(function() {
 																			function(
 																					k) {
 																				$(
-																						this)
-																						.prop(
-																								"disabled",
-																								true);
-																				$(
 																						cloneRow)
 																						.find(
 																								'option[value='
@@ -3581,13 +3638,21 @@ $(function() {
 																.removeAttr(
 																		"selected");
 													});
-									$(cloneRow).appendTo("#dataTable").hide()
-											.fadeIn(1200);
 
-									rowIndex = $('#dataTable > tbody tr')
-											.size() - 1;
-									myProposal
-											.BindDefaultUserPosition(rowIndex);
+									if ($(cloneRow).find(
+											"select[name='ddlName'] option").length > 0) {
+										$('#dataTable tr:last').find(
+												"select[name='ddlName']").prop(
+												"disabled", true);
+
+										$(cloneRow).appendTo("#dataTable")
+												.hide().fadeIn(1200);
+
+										rowIndex = $('#dataTable > tbody tr')
+												.size() - 1;
+										myProposal
+												.BindDefaultUserPosition(rowIndex);
+									}
 								}
 							});
 
