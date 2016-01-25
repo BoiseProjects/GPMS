@@ -1960,10 +1960,14 @@ $(function() {
 					"option:selected").text();
 			var cloneRow = '<tr allowchange="true" allowsign="true"><td><span class="cssClassLabel" name ="fullname" role="PI" delegated="false">'
 					+ fullName
-					+ '</span></td><td><input id="pi_signature" title="PI\'s Signature" class="sfInputbox" placeholder="PI\'s Signature" type="text" required="true" name="'
+					+ '</span></td><td><input id="pi_signature" data-for="signature" data-value="'
 					+ $('select[name="ddlName"]').eq(0).val()
-					+ '">'
-					+ '</td><td><input id="pi_signaturedate" name="signaturedate" title="Signed Date" class="sfInputbox" placeholder="Signed Date" type="text" required="true" readonly="true" onfocus="myProposal.BindCurrentDateTime(this);"></td></tr>';
+					+ '" title="PI\'s Signature" class="sfInputbox" placeholder="PI\'s Signature" type="text" required="true" name="'
+					+ $('select[name="ddlName"]').eq(0).val()
+					+ 'PI">'
+					+ '</td><td><input id="pi_signaturedate" data-for="signaturedate" name="signaturedate'
+					+ $('select[name="ddlName"]').eq(0).val()
+					+ 'PI" title="Signed Date" class="sfInputbox" placeholder="Signed Date" type="text" required="true" readonly="true" onfocus="myProposal.BindCurrentDateTime(this);"></td></tr>';
 			$(cloneRow).appendTo("#trSignPICOPI tbody");
 		},
 
