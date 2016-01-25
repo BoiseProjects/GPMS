@@ -312,135 +312,71 @@ public class ProposalService {
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode root = mapper.readTree(message);
 
-		JsonNode policyInfo = root.get("policyInfo");
-		if (policyInfo != null && policyInfo.isArray()) {
-			Accesscontrol ac = new Accesscontrol();
-			HashMap<String, Multimap<String, String>> attrMap = new HashMap<String, Multimap<String, String>>();
-
-			Multimap<String, String> subjectMap = ArrayListMultimap.create();
-			Multimap<String, String> resourceMap = ArrayListMultimap.create();
-			Multimap<String, String> actionMap = ArrayListMultimap.create();
-			Multimap<String, String> environmentMap = ArrayListMultimap
-					.create();
-			for (JsonNode node : policyInfo) {
-				String attributeName = node.path("attributeName").asText();
-				String attributeValue = node.path("attributeValue").asText();
-				String attributeType = node.path("attributeType").asText();
-				switch (attributeType) {
-				case "Subject":
-					subjectMap.put(attributeName, attributeValue);
-					attrMap.put("Subject", subjectMap);
-					break;
-				case "Resource":
-					resourceMap.put(attributeName, attributeValue);
-					attrMap.put("Resource", resourceMap);
-					break;
-				case "Action":
-					actionMap.put(attributeName, attributeValue);
-					attrMap.put("Action", actionMap);
-					break;
-				case "Environment":
-					environmentMap.put(attributeName, attributeValue);
-					attrMap.put("Environment", environmentMap);
-					break;
-				default:
-					break;
-				}
-			}
-
-			String decision = ac.getXACMLdecision(attrMap);
-			if (decision.equals("Permit")) {
-
-				if (root != null && root.has("proposalId")) {
-					proposalId = root.get("proposalId").getTextValue();
-				}
-
-				if (root != null && root.has("proposalRoles")) {
-					proposalRoles = root.get("proposalRoles").getTextValue();
-				}
-
-				if (root != null && root.has("proposalUserTitle")) {
-					proposalUserTitle = root.get("proposalUserTitle")
-							.getTextValue();
-				}
-
-				/*
-				 * TODO CheckXACMLPOLICY Call the accesscontrol with the
-				 * 
-				 * if this person is the PI, then String isPI = PI if not then
-				 * String isPI = NOT policyEval(isPI, Proposal, Delete)
-				 * 
-				 * getPIname, getPIId, getProposalID, callPolicyMethod(PINAME,
-				 * PIID, PROPOSALID) if policy returns permit, continue if
-				 * policy returns deny do not continue
-				 */
-
-				String userProfileID = new String();
-				String userName = new String();
-				Boolean userIsAdmin = false;
-				String userCollege = new String();
-				String userDepartment = new String();
-				String userPositionType = new String();
-				String userPositionTitle = new String();
-
-				JsonNode commonObj = root.get("gpmsCommonObj");
-				if (commonObj != null && commonObj.has("UserProfileID")) {
-					userProfileID = commonObj.get("UserProfileID")
-							.getTextValue();
-				}
-				if (commonObj != null && commonObj.has("UserName")) {
-					userName = commonObj.get("UserName").getTextValue();
-				}
-				if (commonObj != null && commonObj.has("UserIsAdmin")) {
-					userIsAdmin = Boolean.parseBoolean(commonObj.get(
-							"UserIsAdmin").getTextValue());
-				}
-				if (commonObj != null && commonObj.has("UserCollege")) {
-					userCollege = commonObj.get("UserCollege").getTextValue();
-				}
-				if (commonObj != null && commonObj.has("UserDepartment")) {
-					userDepartment = commonObj.get("UserDepartment")
-							.getTextValue();
-				}
-				if (commonObj != null && commonObj.has("UserPositionType")) {
-					userPositionType = commonObj.get("UserPositionType")
-							.getTextValue();
-				}
-				if (commonObj != null && commonObj.has("UserPositionTitle")) {
-					userPositionTitle = commonObj.get("UserPositionTitle")
-							.getTextValue();
-				}
-
-				ObjectId id = new ObjectId(proposalId);
-
-				ObjectId authorId = new ObjectId(userProfileID);
-				UserProfile authorProfile = userProfileDAO
-						.findUserDetailsByProfileID(authorId);
-
-				Proposal proposal = proposalDAO.findProposalByProposalID(id);
-
-				proposalDAO.deleteProposal(proposal, proposalRoles,
-						proposalUserTitle, authorProfile);
-
-				String authorUserName = authorProfile.getUserAccount()
-						.getUserName();
-				String projectTitle = proposal.getProjectInfo()
-						.getProjectTitle();
-				String notificationMessage = "Deleted by " + authorUserName
-						+ ".";
-				NotifyAllExistingInvestigators(proposalId, projectTitle,
-						proposal, notificationMessage, "Proposal", true);
-
-				return Response.status(200).type(MediaType.APPLICATION_JSON)
-						.entity(true).build();
-			} else {
-				return Response.status(403).type(MediaType.APPLICATION_JSON)
-						.entity("Your permission is: " + decision).build();
-			}
-		} else {
-			return Response.status(403).type(MediaType.APPLICATION_JSON)
-					.entity("No User Permission Attributes send!").build();
+		if (root != null && root.has("proposalId")) {
+			proposalId = root.get("proposalId").getTextValue();
 		}
+
+		if (root != null && root.has("proposalRoles")) {
+			proposalRoles = root.get("proposalRoles").getTextValue();
+		}
+
+		if (root != null && root.has("proposalUserTitle")) {
+			proposalUserTitle = root.get("proposalUserTitle").getTextValue();
+		}
+
+		String userProfileID = new String();
+		String userName = new String();
+		Boolean userIsAdmin = false;
+		String userCollege = new String();
+		String userDepartment = new String();
+		String userPositionType = new String();
+		String userPositionTitle = new String();
+
+		JsonNode commonObj = root.get("gpmsCommonObj");
+		if (commonObj != null && commonObj.has("UserProfileID")) {
+			userProfileID = commonObj.get("UserProfileID").getTextValue();
+		}
+		if (commonObj != null && commonObj.has("UserName")) {
+			userName = commonObj.get("UserName").getTextValue();
+		}
+		if (commonObj != null && commonObj.has("UserIsAdmin")) {
+			userIsAdmin = Boolean.parseBoolean(commonObj.get("UserIsAdmin")
+					.getTextValue());
+		}
+		if (commonObj != null && commonObj.has("UserCollege")) {
+			userCollege = commonObj.get("UserCollege").getTextValue();
+		}
+		if (commonObj != null && commonObj.has("UserDepartment")) {
+			userDepartment = commonObj.get("UserDepartment").getTextValue();
+		}
+		if (commonObj != null && commonObj.has("UserPositionType")) {
+			userPositionType = commonObj.get("UserPositionType").getTextValue();
+		}
+		if (commonObj != null && commonObj.has("UserPositionTitle")) {
+			userPositionTitle = commonObj.get("UserPositionTitle")
+					.getTextValue();
+		}
+
+		ObjectId id = new ObjectId(proposalId);
+
+		ObjectId authorId = new ObjectId(userProfileID);
+		UserProfile authorProfile = userProfileDAO
+				.findUserDetailsByProfileID(authorId);
+
+		Proposal proposal = proposalDAO.findProposalByProposalID(id);
+
+		proposalDAO.deleteProposal(proposal, proposalRoles, proposalUserTitle,
+				authorProfile);
+
+		String authorUserName = authorProfile.getUserAccount().getUserName();
+		String projectTitle = proposal.getProjectInfo().getProjectTitle();
+		String notificationMessage = "Deleted by " + authorUserName + ".";
+		NotifyAllExistingInvestigators(proposalId, projectTitle, proposal,
+				notificationMessage, "Proposal", true);
+
+		return Response.status(200).type(MediaType.APPLICATION_JSON)
+				.entity(true).build();
+
 	}
 
 	@POST
@@ -838,6 +774,9 @@ public class ProposalService {
 										existingProposal
 												.getProposalStatus()
 												.add(Status.WAITINGFORCHAIRAPPROVAL);
+
+										existingProposal
+												.setDateSubmitted(new Date());
 									}
 								}
 								break;
@@ -2725,6 +2664,100 @@ public class ProposalService {
 			notification.setPositionType(senior.getPositionType());
 			notification.setPositionTitle(senior.getPositionTitle());
 			notificationDAO.save(notification);
+		}
+	}
+
+	@POST
+	@Path("/CheckPermissionForAProposal")
+	public Response checkUserPermissionForAProposal(String message)
+			throws Exception {
+		ObjectMapper mapper = new ObjectMapper();
+		JsonNode root = mapper.readTree(message);
+
+		JsonNode policyInfo = root.get("policyInfo");
+		if (policyInfo != null && policyInfo.isArray()) {
+			Accesscontrol ac = new Accesscontrol();
+			HashMap<String, Multimap<String, String>> attrMap = new HashMap<String, Multimap<String, String>>();
+
+			Multimap<String, String> subjectMap = ArrayListMultimap.create();
+			Multimap<String, String> resourceMap = ArrayListMultimap.create();
+			Multimap<String, String> actionMap = ArrayListMultimap.create();
+			Multimap<String, String> environmentMap = ArrayListMultimap
+					.create();
+			for (JsonNode node : policyInfo) {
+				String attributeName = node.path("attributeName").asText();
+				String attributeValue = node.path("attributeValue").asText();
+				String attributeType = node.path("attributeType").asText();
+				switch (attributeType) {
+				case "Subject":
+					subjectMap.put(attributeName, attributeValue);
+					attrMap.put("Subject", subjectMap);
+					break;
+				case "Resource":
+					resourceMap.put(attributeName, attributeValue);
+					attrMap.put("Resource", resourceMap);
+					break;
+				case "Action":
+					actionMap.put(attributeName, attributeValue);
+					attrMap.put("Action", actionMap);
+					break;
+				case "Environment":
+					environmentMap.put(attributeName, attributeValue);
+					attrMap.put("Environment", environmentMap);
+					break;
+				default:
+					break;
+				}
+			}
+
+			String userProfileID = new String();
+			String userName = new String();
+			Boolean userIsAdmin = false;
+			String userCollege = new String();
+			String userDepartment = new String();
+			String userPositionType = new String();
+			String userPositionTitle = new String();
+
+			JsonNode commonObj = root.get("gpmsCommonObj");
+			if (commonObj != null && commonObj.has("UserProfileID")) {
+				userProfileID = commonObj.get("UserProfileID").getTextValue();
+			}
+			if (commonObj != null && commonObj.has("UserName")) {
+				userName = commonObj.get("UserName").getTextValue();
+			}
+			if (commonObj != null && commonObj.has("UserIsAdmin")) {
+				userIsAdmin = commonObj.get("UserIsAdmin").getBooleanValue();
+			}
+			if (commonObj != null && commonObj.has("UserCollege")) {
+				userCollege = commonObj.get("UserCollege").getTextValue();
+			}
+			if (commonObj != null && commonObj.has("UserDepartment")) {
+				userDepartment = commonObj.get("UserDepartment").getTextValue();
+			}
+			if (commonObj != null && commonObj.has("UserPositionType")) {
+				userPositionType = commonObj.get("UserPositionType")
+						.getTextValue();
+			}
+			if (commonObj != null && commonObj.has("UserPositionTitle")) {
+				userPositionTitle = commonObj.get("UserPositionTitle")
+						.getTextValue();
+			}
+
+			// ObjectId authorId = new ObjectId(userProfileID);
+			// UserProfile authorProfile = userProfileDAO
+			// .findUserDetailsByProfileID(authorId);
+
+			String decision = ac.getXACMLdecision(attrMap);
+			// if (decision.equals("Permit")) {
+			return Response.status(200).type(MediaType.APPLICATION_JSON)
+					.entity(true).build();
+			// } else {
+			// return Response.status(403).type(MediaType.APPLICATION_JSON)
+			// .entity("Your permission is: " + decision).build();
+			// }
+		} else {
+			return Response.status(403).type(MediaType.APPLICATION_JSON)
+					.entity("No User Permission Attributes are send!").build();
 		}
 	}
 
