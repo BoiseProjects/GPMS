@@ -443,9 +443,9 @@ $(function() {
 			method : "",
 			url : "",
 			ajaxCallMode : 0,
-			proposalId : 0,
+			proposalId : "0",
 			proposalRoles : "",
-			userTitle : ""
+			buttonType : ""
 		},
 
 		ajaxCall : function(config) {
@@ -1815,7 +1815,6 @@ $(function() {
 					myProposal.config.ajaxCallMode = 10;
 					myProposal.config.proposalId = argus[0];
 					myProposal.config.proposalRoles = proposalRoles;
-					myProposal.config.userTitle = proposalUserTitle;
 					myProposal.ajaxCall(myProposal.config);
 					return false;
 				} else {
@@ -1829,12 +1828,11 @@ $(function() {
 			}
 		},
 
-		DeleteProposalById : function(_proposalId, _proposalRoles,
-				_proposalUserTitle) {
+		DeleteProposalById : function(_proposalId, _proposalRoles) {
 			var properties = {
 				onComplete : function(e) {
 					myProposal.ConfirmSingleDelete(_proposalId, _proposalRoles,
-							_proposalUserTitle, e);
+							e);
 				}
 			};
 			csscody.confirm(
@@ -1864,22 +1862,19 @@ $(function() {
 			return false;
 		},
 
-		ConfirmSingleDelete : function(proposal_id, proposalRoles,
-				proposalUserTitle, event) {
+		ConfirmSingleDelete : function(proposal_id, proposalRoles, event) {
 			if (event) {
-				myProposal.DeleteSingleUser(proposal_id, proposalRoles,
-						proposalUserTitle);
+				myProposal.DeleteSingleUser(proposal_id, proposalRoles);
 			}
 		},
 
-		DeleteSingleUser : function(_proposalId, _proposalRoles,
-				_proposalUserTitle) {
+		DeleteSingleUser : function(_proposalId, _proposalRoles) {
 			this.config.url = this.config.baseURL
 					+ "DeleteProposalByProposalID";
 			this.config.data = JSON2.stringify({
 				proposalId : _proposalId,
 				proposalRoles : _proposalRoles,
-				proposalUserTitle : _proposalUserTitle,
+				proposalUserTitle : GPMS.utils.GetUserPositionTitle(),
 				gpmsCommonObj : gpmsCommonObj()
 			});
 			this.config.ajaxCallMode = 2;
@@ -2183,46 +2178,7 @@ $(function() {
 			return projectTitleIsUnique;
 		},
 
-		/**
-		 * Save Proposal
-		 */
 		SaveProposal : function(_buttonType, _proposalRoles, _proposalId, _flag) {
-			var policyAttributeInfo = {};
-			var _proposalUserTitle = GPMS.utils.GetUserPositionTitle();
-
-			var attributeArray = [];
-			attributeArray.push({
-				attributeType : "Subject",
-				attributeName : "position-title",
-				attributeValue : _proposalUserTitle
-			});
-
-			attributeArray.push({
-				attributeType : "Subject",
-				attributeName : "position-type",
-				attributeValue : GPMS.utils.GetUserPositionType()
-			});
-
-			attributeArray.push({
-				attributeType : "Subject",
-				attributeName : "proposal-role",
-				attributeValue : _proposalRoles
-			});
-
-			attributeArray.push({
-				attributeType : "Resource",
-				attributeName : "proposal-section",
-				attributeValue : "Whole Proposal"
-			});
-
-			attributeArray.push({
-				attributeType : "Action",
-				attributeName : "proposal-action",
-				attributeValue : _buttonType
-			});
-
-			policyAttributeInfo = attributeArray;
-
 			if (validator.form()) {
 				var $projectTitle = $('#txtProjectTitle');
 				var projectTitle = $.trim($projectTitle.val());
@@ -2496,8 +2452,7 @@ $(function() {
 					}
 
 					myProposal.AddProposalInfo(_buttonType, _proposalRoles,
-							_proposalUserTitle, proposalInfo,
-							policyAttributeInfo);
+							proposalInfo);
 
 				}
 			} else {
@@ -2505,16 +2460,14 @@ $(function() {
 			}
 		},
 
-		AddProposalInfo : function(buttonClicked, _proposalRoles,
-				_proposalUserTitle, info, policyAttr) {
+		AddProposalInfo : function(buttonClicked, _proposalRoles, info) {
 			alert(buttonClicked);
 			this.config.url = this.config.baseURL + "SaveUpdateProposal";
 			this.config.data = JSON2.stringify({
 				buttonType : buttonClicked,
 				proposalRoles : _proposalRoles,
-				proposalUserTitle : _proposalUserTitle,
+				proposalUserTitle : GPMS.utils.GetUserPositionTitle(),
 				proposalInfo : info,
-				policyInfo : policyAttr,
 				gpmsCommonObj : gpmsCommonObj()
 			});
 			this.config.ajaxCallMode = 9;
@@ -3018,8 +2971,22 @@ $(function() {
 
 		case 10:
 			myProposal.DeleteProposalById(myProposal.config.proposalId,
-					myProposal.config.proposalRoles,
-					myProposal.config.userTitle);
+					myProposal.config.proposalRoles);
+			break;
+
+		case 11:
+			if (myProposal.config.proposalId != '') {
+				editFlag = myProposal.config.proposalId;
+				myProposal.SaveProposal(myProposal.config.buttonType,
+						myProposal.config.proposalRoles,
+						myProposal.config.proposalId, false);
+			} else {
+				editFlag = "0";
+				myProposal.config.proposalId = "0";
+				myProposal.SaveProposal(myProposal.config.buttonType, "", "0",
+						true);
+			}
+
 			break;
 		}
 	},
@@ -3080,6 +3047,11 @@ $(function() {
 			case 10:
 				csscody.error('<h2>' + 'Error Message' + '</h2><p>'
 						+ 'You are not allowed to DELETE this proposal! '
+						+ msg.responseText + '</p>');
+				break;
+			case 11:
+				csscody.error('<h2>' + 'Error Message' + '</h2><p>'
+						+ 'You are not allowed to perform this OPERATION! '
 						+ msg.responseText + '</p>');
 				break;
 			}
@@ -3338,132 +3310,505 @@ $(function() {
 			$('#btnSaveProposal')
 					.click(
 							function(e) {
-								var $buttonType = $.trim($(this).text());
-								$(this).disableWith('Saving As Draft...');
-								var proposal_id = $(this).prop("name");
-								var proposal_roles = $(this).prop(
-										"data-proproles");
-								if (proposal_id != '') {
-									editFlag = proposal_id;
-									myProposal.SaveProposal($buttonType,
-											proposal_roles, proposal_id, false);
+								if (validator.form()) {
+									var $buttonType = $.trim($(this).text());
+									$(this).disableWith('Saving As Draft...');
+
+									var proposal_id = $(this).prop("name");
+									var proposal_roles = $(this).prop(
+											"data-proproles");
+
+									var attributeArray = [];
+									attributeArray.push({
+										attributeType : "Subject",
+										attributeName : "position-title",
+										attributeValue : GPMS.utils
+												.GetUserPositionTitle()
+									});
+
+									attributeArray.push({
+										attributeType : "Subject",
+										attributeName : "position-type",
+										attributeValue : GPMS.utils
+												.GetUserPositionType()
+									});
+
+									attributeArray.push({
+										attributeType : "Subject",
+										attributeName : "proposal-role",
+										attributeValue : proposal_roles
+									});
+
+									attributeArray.push({
+										attributeType : "Resource",
+										attributeName : "proposal-section",
+										attributeValue : "Whole Proposal"
+									});
+
+									attributeArray.push({
+										attributeType : "Action",
+										attributeName : "proposal-action",
+										attributeValue : $buttonType
+									});
+
+									if (proposal_id != '') {
+										myProposal.config.proposalId = proposal_id;
+									} else {
+										myProposal.config.proposalId = "0";
+									}
+
+									myProposal.config.url = myProposal.config.baseURL
+											+ "CheckPermissionForAProposal";
+									myProposal.config.data = JSON2.stringify({
+										proposalId : proposal_id,
+										policyInfo : attributeArray,
+										gpmsCommonObj : gpmsCommonObj()
+									});
+									myProposal.config.ajaxCallMode = 11;
+
+									myProposal.config.proposalRoles = proposal_roles;
+									myProposal.config.buttonType = $buttonType;
+									myProposal.ajaxCall(myProposal.config);
+
+									$(this).enable();
+									e.preventDefault();
+									return false;
 								} else {
-									editFlag = "0";
-									myProposal.SaveProposal($buttonType, "",
-											"0", true);
+									myProposal.focusTabWithErrors("#accordion");
 								}
-								$(this).enable();
-								e.preventDefault();
-								return false;
 							});
 
 			// Update
-			$('#btnUpdateProposal').click(
-					function(e) {
-						var $buttonType = $.trim($(this).text());
-						$(this).disableWith('Updating...');
-						var proposal_id = $(this).prop("name");
-						var proposal_roles = $(this).prop("data-proproles");
-						if (proposal_id != '') {
-							editFlag = proposal_id;
-							myProposal.SaveProposal($buttonType,
-									proposal_roles, proposal_id, false);
-						}
-						$(this).enable();
-						e.preventDefault();
-						return false;
-					});
+			$('#btnUpdateProposal')
+					.click(
+							function(e) {
+								if (validator.form()) {
+									var $buttonType = $.trim($(this).text());
+									$(this).disableWith('Updating...');
+
+									var proposal_id = $(this).prop("name");
+									var proposal_roles = $(this).prop(
+											"data-proproles");
+
+									var attributeArray = [];
+									attributeArray.push({
+										attributeType : "Subject",
+										attributeName : "position-title",
+										attributeValue : GPMS.utils
+												.GetUserPositionTitle()
+									});
+
+									attributeArray.push({
+										attributeType : "Subject",
+										attributeName : "position-type",
+										attributeValue : GPMS.utils
+												.GetUserPositionType()
+									});
+
+									attributeArray.push({
+										attributeType : "Subject",
+										attributeName : "proposal-role",
+										attributeValue : proposal_roles
+									});
+
+									attributeArray.push({
+										attributeType : "Resource",
+										attributeName : "proposal-section",
+										attributeValue : "Whole Proposal"
+									});
+
+									attributeArray.push({
+										attributeType : "Action",
+										attributeName : "proposal-action",
+										attributeValue : $buttonType
+									});
+
+									if (proposal_id != '') {
+										myProposal.config.proposalId = proposal_id;
+									} else {
+										myProposal.config.proposalId = "0";
+									}
+
+									myProposal.config.url = myProposal.config.baseURL
+											+ "CheckPermissionForAProposal";
+									myProposal.config.data = JSON2.stringify({
+										proposalId : proposal_id,
+										policyInfo : attributeArray,
+										gpmsCommonObj : gpmsCommonObj()
+									});
+									myProposal.config.ajaxCallMode = 11;
+
+									myProposal.config.proposalRoles = proposal_roles;
+									myProposal.config.buttonType = $buttonType;
+									myProposal.ajaxCall(myProposal.config);
+
+									$(this).enable();
+									e.preventDefault();
+									return false;
+								} else {
+									myProposal.focusTabWithErrors("#accordion");
+								}
+							});
 
 			// Submit
 			$('#btnSubmitProposal')
 					.click(
 							function(e) {
-								var $buttonType = $.trim($(this).text());
-								$(this).disableWith('Submitting...');
-								var proposal_id = $(this).prop("name");
-								var proposal_roles = $(this).prop(
-										"data-proproles");
-								if (proposal_id != '') {
-									editFlag = proposal_id;
-									myProposal.SaveProposal($buttonType,
-											proposal_roles, proposal_id, false);
+								if (validator.form()) {
+									var $buttonType = $.trim($(this).text());
+									$(this).disableWith('Submitting...');
+
+									var proposal_id = $(this).prop("name");
+									var proposal_roles = $(this).prop(
+											"data-proproles");
+
+									var attributeArray = [];
+									attributeArray.push({
+										attributeType : "Subject",
+										attributeName : "position-title",
+										attributeValue : GPMS.utils
+												.GetUserPositionTitle()
+									});
+
+									attributeArray.push({
+										attributeType : "Subject",
+										attributeName : "position-type",
+										attributeValue : GPMS.utils
+												.GetUserPositionType()
+									});
+
+									attributeArray.push({
+										attributeType : "Subject",
+										attributeName : "proposal-role",
+										attributeValue : proposal_roles
+									});
+
+									attributeArray.push({
+										attributeType : "Resource",
+										attributeName : "proposal-section",
+										attributeValue : "Whole Proposal"
+									});
+
+									attributeArray.push({
+										attributeType : "Action",
+										attributeName : "proposal-action",
+										attributeValue : $buttonType
+									});
+
+									if (proposal_id != '') {
+										myProposal.config.proposalId = proposal_id;
+									} else {
+										myProposal.config.proposalId = "0";
+									}
+
+									myProposal.config.url = myProposal.config.baseURL
+											+ "CheckPermissionForAProposal";
+									myProposal.config.data = JSON2.stringify({
+										proposalId : proposal_id,
+										policyInfo : attributeArray,
+										gpmsCommonObj : gpmsCommonObj()
+									});
+									myProposal.config.ajaxCallMode = 11;
+
+									myProposal.config.proposalRoles = proposal_roles;
+									myProposal.config.buttonType = $buttonType;
+									myProposal.ajaxCall(myProposal.config);
+
+									$(this).enable();
+									e.preventDefault();
+									return false;
 								} else {
-									editFlag = "0";
-									myProposal.SaveProposal($buttonType, "",
-											"0", true);
+									myProposal.focusTabWithErrors("#accordion");
 								}
-								$(this).enable();
-								e.preventDefault();
-								return false;
 							});
 
 			// Approve
-			$('#btnApproveProposal').click(
-					function(e) {
-						var $buttonType = $.trim($(this).text());
-						$(this).disableWith('Approving...');
-						var proposal_id = $(this).prop("name");
-						var proposal_roles = $(this).prop("data-proproles");
-						if (proposal_id != '') {
-							editFlag = proposal_id;
-							myProposal.SaveProposal($buttonType,
-									proposal_roles, proposal_id, false);
-						}
-						$(this).enable();
-						e.preventDefault();
-						return false;
-					});
+			$('#btnApproveProposal')
+					.click(
+							function(e) {
+								if (validator.form()) {
+									var $buttonType = $.trim($(this).text());
+									$(this).disableWith('Approving...');
+
+									var proposal_id = $(this).prop("name");
+									var proposal_roles = $(this).prop(
+											"data-proproles");
+
+									var attributeArray = [];
+									attributeArray.push({
+										attributeType : "Subject",
+										attributeName : "position-title",
+										attributeValue : GPMS.utils
+												.GetUserPositionTitle()
+									});
+
+									attributeArray.push({
+										attributeType : "Subject",
+										attributeName : "position-type",
+										attributeValue : GPMS.utils
+												.GetUserPositionType()
+									});
+
+									attributeArray.push({
+										attributeType : "Subject",
+										attributeName : "proposal-role",
+										attributeValue : proposal_roles
+									});
+
+									attributeArray.push({
+										attributeType : "Resource",
+										attributeName : "proposal-section",
+										attributeValue : "Whole Proposal"
+									});
+
+									attributeArray.push({
+										attributeType : "Action",
+										attributeName : "proposal-action",
+										attributeValue : $buttonType
+									});
+
+									if (proposal_id != '') {
+										myProposal.config.proposalId = proposal_id;
+									} else {
+										myProposal.config.proposalId = "0";
+									}
+
+									myProposal.config.url = myProposal.config.baseURL
+											+ "CheckPermissionForAProposal";
+									myProposal.config.data = JSON2.stringify({
+										proposalId : proposal_id,
+										policyInfo : attributeArray,
+										gpmsCommonObj : gpmsCommonObj()
+									});
+									myProposal.config.ajaxCallMode = 11;
+
+									myProposal.config.proposalRoles = proposal_roles;
+									myProposal.config.buttonType = $buttonType;
+									myProposal.ajaxCall(myProposal.config);
+
+									$(this).enable();
+									e.preventDefault();
+									return false;
+								} else {
+									myProposal.focusTabWithErrors("#accordion");
+								}
+							});
 
 			// Disapprove
-			$('#btnDisapproveProposal').click(
-					function(e) {
-						var $buttonType = $.trim($(this).text());
-						$(this).disableWith('Disapproving...');
-						var proposal_id = $(this).prop("name");
-						var proposal_roles = $(this).prop("data-proproles");
-						if (proposal_id != '') {
-							editFlag = proposal_id;
-							myProposal.SaveProposal($buttonType,
-									proposal_roles, proposal_id, false);
-						}
-						$(this).enable();
-						e.preventDefault();
-						return false;
-					});
+			$('#btnDisapproveProposal')
+					.click(
+							function(e) {
+								if (validator.form()) {
+									var $buttonType = $.trim($(this).text());
+									$(this).disableWith('Disapproving...');
+
+									var proposal_id = $(this).prop("name");
+									var proposal_roles = $(this).prop(
+											"data-proproles");
+
+									var attributeArray = [];
+									attributeArray.push({
+										attributeType : "Subject",
+										attributeName : "position-title",
+										attributeValue : GPMS.utils
+												.GetUserPositionTitle()
+									});
+
+									attributeArray.push({
+										attributeType : "Subject",
+										attributeName : "position-type",
+										attributeValue : GPMS.utils
+												.GetUserPositionType()
+									});
+
+									attributeArray.push({
+										attributeType : "Subject",
+										attributeName : "proposal-role",
+										attributeValue : proposal_roles
+									});
+
+									attributeArray.push({
+										attributeType : "Resource",
+										attributeName : "proposal-section",
+										attributeValue : "Whole Proposal"
+									});
+
+									attributeArray.push({
+										attributeType : "Action",
+										attributeName : "proposal-action",
+										attributeValue : $buttonType
+									});
+
+									if (proposal_id != '') {
+										myProposal.config.proposalId = proposal_id;
+									} else {
+										myProposal.config.proposalId = "0";
+									}
+
+									myProposal.config.url = myProposal.config.baseURL
+											+ "CheckPermissionForAProposal";
+									myProposal.config.data = JSON2.stringify({
+										proposalId : proposal_id,
+										policyInfo : attributeArray,
+										gpmsCommonObj : gpmsCommonObj()
+									});
+									myProposal.config.ajaxCallMode = 11;
+
+									myProposal.config.proposalRoles = proposal_roles;
+									myProposal.config.buttonType = $buttonType;
+									myProposal.ajaxCall(myProposal.config);
+
+									$(this).enable();
+									e.preventDefault();
+									return false;
+								} else {
+									myProposal.focusTabWithErrors("#accordion");
+								}
+							});
 
 			// Withdraw
-			$('#btnWithdrawProposal').click(
-					function(e) {
-						var $buttonType = $.trim($(this).text());
-						$(this).disableWith('Withdrawing...');
-						var proposal_id = $(this).prop("name");
-						var proposal_roles = $(this).prop("data-proproles");
-						if (proposal_id != '') {
-							editFlag = proposal_id;
-							myProposal.SaveProposal($buttonType,
-									proposal_roles, proposal_id, false);
-						}
-						$(this).enable();
-						e.preventDefault();
-						return false;
-					});
+			$('#btnWithdrawProposal')
+					.click(
+							function(e) {
+								if (validator.form()) {
+									var $buttonType = $.trim($(this).text());
+									$(this).disableWith('Withdrawing...');
+
+									var proposal_id = $(this).prop("name");
+									var proposal_roles = $(this).prop(
+											"data-proproles");
+
+									var attributeArray = [];
+									attributeArray.push({
+										attributeType : "Subject",
+										attributeName : "position-title",
+										attributeValue : GPMS.utils
+												.GetUserPositionTitle()
+									});
+
+									attributeArray.push({
+										attributeType : "Subject",
+										attributeName : "position-type",
+										attributeValue : GPMS.utils
+												.GetUserPositionType()
+									});
+
+									attributeArray.push({
+										attributeType : "Subject",
+										attributeName : "proposal-role",
+										attributeValue : proposal_roles
+									});
+
+									attributeArray.push({
+										attributeType : "Resource",
+										attributeName : "proposal-section",
+										attributeValue : "Whole Proposal"
+									});
+
+									attributeArray.push({
+										attributeType : "Action",
+										attributeName : "proposal-action",
+										attributeValue : $buttonType
+									});
+
+									if (proposal_id != '') {
+										myProposal.config.proposalId = proposal_id;
+									} else {
+										myProposal.config.proposalId = "0";
+									}
+
+									myProposal.config.url = myProposal.config.baseURL
+											+ "CheckPermissionForAProposal";
+									myProposal.config.data = JSON2.stringify({
+										proposalId : proposal_id,
+										policyInfo : attributeArray,
+										gpmsCommonObj : gpmsCommonObj()
+									});
+									myProposal.config.ajaxCallMode = 11;
+
+									myProposal.config.proposalRoles = proposal_roles;
+									myProposal.config.buttonType = $buttonType;
+									myProposal.ajaxCall(myProposal.config);
+
+									$(this).enable();
+									e.preventDefault();
+									return false;
+								} else {
+									myProposal.focusTabWithErrors("#accordion");
+								}
+							});
 
 			// Archive
-			$('#btnArchiveProposal').click(
-					function(e) {
-						var $buttonType = $.trim($(this).text());
-						$(this).disableWith('Archiving...');
-						var proposal_id = $(this).prop("name");
-						var proposal_roles = $(this).prop("data-proproles");
-						if (proposal_id != '') {
-							editFlag = proposal_id;
-							myProposal.SaveProposal($buttonType,
-									proposal_roles, proposal_id, false);
-						}
-						$(this).enable();
-						e.preventDefault();
-						return false;
-					});
+			$('#btnArchiveProposal')
+					.click(
+							function(e) {
+								if (validator.form()) {
+									var $buttonType = $.trim($(this).text());
+									$(this).disableWith('Archiving...');
+
+									var proposal_id = $(this).prop("name");
+									var proposal_roles = $(this).prop(
+											"data-proproles");
+
+									var attributeArray = [];
+									attributeArray.push({
+										attributeType : "Subject",
+										attributeName : "position-title",
+										attributeValue : GPMS.utils
+												.GetUserPositionTitle()
+									});
+
+									attributeArray.push({
+										attributeType : "Subject",
+										attributeName : "position-type",
+										attributeValue : GPMS.utils
+												.GetUserPositionType()
+									});
+
+									attributeArray.push({
+										attributeType : "Subject",
+										attributeName : "proposal-role",
+										attributeValue : proposal_roles
+									});
+
+									attributeArray.push({
+										attributeType : "Resource",
+										attributeName : "proposal-section",
+										attributeValue : "Whole Proposal"
+									});
+
+									attributeArray.push({
+										attributeType : "Action",
+										attributeName : "proposal-action",
+										attributeValue : $buttonType
+									});
+
+									if (proposal_id != '') {
+										myProposal.config.proposalId = proposal_id;
+									} else {
+										myProposal.config.proposalId = "0";
+									}
+
+									myProposal.config.url = myProposal.config.baseURL
+											+ "CheckPermissionForAProposal";
+									myProposal.config.data = JSON2.stringify({
+										proposalId : proposal_id,
+										policyInfo : attributeArray,
+										gpmsCommonObj : gpmsCommonObj()
+									});
+									myProposal.config.ajaxCallMode = 11;
+
+									myProposal.config.proposalRoles = proposal_roles;
+									myProposal.config.buttonType = $buttonType;
+									myProposal.ajaxCall(myProposal.config);
+
+									$(this).enable();
+									e.preventDefault();
+									return false;
+								} else {
+									myProposal.focusTabWithErrors("#accordion");
+								}
+							});
 
 			$('#txtProjectTitle').on("focus", function() {
 				$(this).siblings('.cssClassRight').hide();

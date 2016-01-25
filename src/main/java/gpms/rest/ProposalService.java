@@ -664,1927 +664,1789 @@ public class ProposalService {
 		Proposal existingProposal = new Proposal();
 		Proposal oldProposal = new Proposal();
 
-		String response = new String();
 		ObjectId proposalId = new ObjectId();
 
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode root = mapper.readTree(message);
 
-		JsonNode policyInfo = root.get("policyInfo");
-		if (policyInfo != null && policyInfo.isArray()) {
-			Accesscontrol ac = new Accesscontrol();
-			HashMap<String, Multimap<String, String>> attrMap = new HashMap<String, Multimap<String, String>>();
+		JsonNode proposalInfo = root.get("proposalInfo");
+		if (proposalInfo != null && proposalInfo.has("ProposalID")) {
+			proposalID = proposalInfo.get("ProposalID").getTextValue();
+			if (!proposalID.equals("0")) {
+				proposalId = new ObjectId(proposalID);
+				existingProposal = proposalDAO
+						.findProposalByProposalID(proposalId);
+				// using our serializable method for cloning
+				oldProposal = SerializationHelper
+						.cloneThroughSerialize(existingProposal);
+			}
 
-			Multimap<String, String> subjectMap = ArrayListMultimap.create();
-			Multimap<String, String> resourceMap = ArrayListMultimap.create();
-			Multimap<String, String> actionMap = ArrayListMultimap.create();
-			Multimap<String, String> environmentMap = ArrayListMultimap
-					.create();
-			for (JsonNode node : policyInfo) {
-				String attributeName = node.path("attributeName").asText();
-				String attributeValue = node.path("attributeValue").asText();
-				String attributeType = node.path("attributeType").asText();
-				switch (attributeType) {
-				case "Subject":
-					subjectMap.put(attributeName, attributeValue);
-					attrMap.put("Subject", subjectMap);
+			// var canDisApproveTitles = [ "Department Chair", "Dean",
+			// "University Research Director" ];
+			// var canWithDrawTitles = [ "Research Administrator" ];
+			// var canArchiveTitles = [ "University Research Director" ];
+
+			// For Proposal User Title : for Dean, Chair and Manager
+			JsonNode proposalUserTitle = root.get("proposalUserTitle");
+			if (proposalUserTitle != null) {
+				// For Proposal Roles : PI, Co-PI, Senior
+				JsonNode proposalRoles = root.get("proposalRoles");
+				if (proposalRoles != null) {
+					// For Proposal Status
+					JsonNode buttonType = root.get("buttonType");
+					if (buttonType != null) {
+						switch (buttonType.getTextValue()) {
+						case "Save As Draft":
+							if (!proposalID.equals("0")) {
+								if (!existingProposal.getProposalStatus()
+										.contains(Status.NOTSUBMITTEDBYPI)
+										&& proposalRoles.toString()
+												.equalsIgnoreCase("PI")) {
+									// TODO check if clear is necessary or
+									// not!
+									existingProposal.getProposalStatus()
+											.clear();
+									existingProposal.getProposalStatus().add(
+											Status.NOTSUBMITTEDBYPI);
+								}
+							} else {
+								newProposal.getProposalStatus().clear();
+								newProposal.getProposalStatus().add(
+										Status.NOTSUBMITTEDBYPI);
+							}
+							break;
+						case "Update":
+							// var canUpdateRoles = [ "PI", "CO-PI",
+							// "Senior" ];
+							// var canUpdateTitles = [ "Business Manager",
+							// "Research Administrator", "Department Chair",
+							// "Dean" ]
+							break;
+						case "Submit":
+							// var canSubmitRoles = [ "PI" ];
+							if (!proposalID.equals("0")) {
+								if (existingProposal.getProposalStatus()
+										.contains(Status.NOTSUBMITTEDBYPI)
+										&& proposalRoles.toString()
+												.equalsIgnoreCase("PI")) {
+									existingProposal.getProposalStatus()
+											.clear();
+									existingProposal.getProposalStatus().add(
+											Status.WAITINGFORCHAIRAPPROVAL);
+
+									existingProposal
+											.setDateSubmitted(new Date());
+								}
+							}
+							break;
+						case "Approve":
+							// var canApproveTitles = [ "Business Manager",
+							// "Department Chair",
+							// "Dean","University Research Director" ];
+							List<String> canApproveTitles = Arrays.asList(
+									"Business Manager", "Department Chair",
+									"Dean", "University Research Director");
+							if (!proposalID.equals("0")
+									&& canApproveTitles
+											.contains(proposalUserTitle
+													.getTextValue())) {
+								existingProposal.getProposalStatus().clear();
+								if (proposalUserTitle.getTextValue().equals(
+										"Business Manager")
+										&& !existingProposal
+												.getProposalStatus()
+												.contains(
+														Status.APPROVEDBYBUSINESSMANAGER)) {
+									existingProposal.getProposalStatus().add(
+											Status.APPROVEDBYBUSINESSMANAGER);
+								} else if (proposalUserTitle.getTextValue()
+										.equals("Department Chair")
+										&& existingProposal
+												.getProposalStatus()
+												.contains(
+														Status.WAITINGFORCHAIRAPPROVAL)
+										&& !existingProposal
+												.getProposalStatus()
+												.contains(
+														Status.APPROVEDBYDEPARTMENTCHAIR)) {
+									existingProposal.getProposalStatus().add(
+											Status.APPROVEDBYDEPARTMENTCHAIR);
+								} else if (proposalUserTitle.getTextValue()
+										.equals("Dean")
+										&& existingProposal
+												.getProposalStatus()
+												.contains(
+														Status.WAITINGFORDEANAPPROVAL)
+										&& !existingProposal
+												.getProposalStatus().contains(
+														Status.APPROVEDBYDEAN)) {
+									existingProposal.getProposalStatus().add(
+											Status.APPROVEDBYDEAN);
+								} else if (proposalUserTitle.getTextValue()
+										.equals("University Research Director")
+										&& existingProposal
+												.getProposalStatus()
+												.contains(
+														Status.WAITINGFORUNIVERSITYRESEARCHOFFICEAPPROVAL)
+										&& !existingProposal
+												.getProposalStatus()
+												.contains(
+														Status.APPROVEDBYUNIVERSITYRESEARCHDIRECTOR)) {
+									existingProposal
+											.getProposalStatus()
+											.add(Status.APPROVEDBYUNIVERSITYRESEARCHDIRECTOR);
+								}
+
+							}
+							break;
+						case "Disapprove":
+							// var canDisApproveTitles = [
+							// "Business Manager",
+							// "Department Chair",
+							// "Dean", "University Research Director" ];
+							List<String> canDisApproveTitles = Arrays.asList(
+									"Business Manager", "Department Chair",
+									"Dean", "University Research Director");
+							if (!proposalID.equals("0")
+									&& canDisApproveTitles
+											.contains(proposalUserTitle
+													.getTextValue())) {
+								// TODO
+								// existingProposal.getProposalStatus().clear();
+								// if (proposalUserTitle
+								// .equals("Business Manager")) {
+								// existingProposal
+								// .getProposalStatus()
+								// .add(Status.DISAPPROVEDBYBUSINESSMANAGER);
+								// } else if (proposalUserTitle
+								// .equals("Department Chair")) {
+								// existingProposal
+								// .getProposalStatus()
+								// .add(Status.DISAPPROVEDBYDEPARTMENTCHAIR);
+								// } else if
+								// (proposalUserTitle.equals("Dean"))
+								// {
+								// existingProposal.getProposalStatus().add(
+								// Status.DISAPPROVEDBYDEAN);
+								// } else if (proposalUserTitle
+								// .equals("University Research Director"))
+								// {
+								// existingProposal
+								// .getProposalStatus()
+								// .add(Status.DISAPPROVEDBYUNIVERSITYRESEARCHDIRECTOR);
+								// }
+
+							}
+							break;
+						case "Withdraw":
+							// var canWithDrawTitles = [
+							// "Research Administrator" ];
+							List<String> canWithDrawTitles = Arrays
+									.asList("Research Administrator");
+							if (!proposalID.equals("0")
+									&& canWithDrawTitles
+											.contains(proposalUserTitle
+													.getTextValue())) {
+								existingProposal.getProposalStatus().clear();
+								existingProposal.getProposalStatus().add(
+										Status.WITHDRAWBYRESEARCHOFFICE);
+							}
+							break;
+						case "Archive":
+							// var canArchiveTitles = [
+							// "University Research Director" ];
+							List<String> canArchiveTitles = Arrays
+									.asList("University Research Director");
+							if (!proposalID.equals("0")
+									&& canArchiveTitles
+											.contains(proposalUserTitle
+													.getTextValue())) {
+								existingProposal.getProposalStatus().clear();
+								existingProposal
+										.getProposalStatus()
+										.add(Status.ARCHIVEDBYUNIVERSITYRESEARCHDIRECTOR);
+							}
+							break;
+
+						default:
+							break;
+						}
+					}
+				}
+			}
+		}
+
+		ProjectInfo newProjectInfo = new ProjectInfo();
+
+		if (proposalInfo != null && proposalInfo.has("ProjectInfo")) {
+			JsonNode projectInfo = proposalInfo.get("ProjectInfo");
+			if (projectInfo != null && projectInfo.has("ProjectTitle")) {
+				if (proposalID.equals("0")) {
+					newProjectInfo.setProjectTitle(projectInfo.get(
+							"ProjectTitle").getTextValue());
+				}
+			}
+
+			if (projectInfo != null && projectInfo.has("ProjectType")) {
+				ProjectType projectType = new ProjectType();
+				switch (projectInfo.get("ProjectType").getTextValue()) {
+				case "1":
+					projectType.setIsResearchBasic(true);
 					break;
-				case "Resource":
-					resourceMap.put(attributeName, attributeValue);
-					attrMap.put("Resource", resourceMap);
+				case "2":
+					projectType.setIsResearchApplied(true);
 					break;
-				case "Action":
-					actionMap.put(attributeName, attributeValue);
-					attrMap.put("Action", actionMap);
+				case "3":
+					projectType.setIsResearchDevelopment(true);
 					break;
-				case "Environment":
-					environmentMap.put(attributeName, attributeValue);
-					attrMap.put("Environment", environmentMap);
+				case "4":
+					projectType.setIsInstruction(true);
+					break;
+				case "5":
+					projectType.setIsOtherSponsoredActivity(true);
+					break;
+				default:
+					break;
+				}
+
+				if (!proposalID.equals("0")) {
+					if (!existingProposal.getProjectInfo().getProjectType()
+							.equals(projectType)) {
+						existingProposal.getProjectInfo().setProjectType(
+								projectType);
+					}
+				} else {
+					newProjectInfo.setProjectType(projectType);
+				}
+			}
+
+			if (projectInfo != null && projectInfo.has("TypeOfRequest")) {
+				TypeOfRequest typeOfRequest = new TypeOfRequest();
+				switch (projectInfo.get("TypeOfRequest").getTextValue()) {
+				case "1":
+					typeOfRequest.setPreProposal(true);
+					break;
+				case "2":
+					typeOfRequest.setNewProposal(true);
+					break;
+				case "3":
+					typeOfRequest.setContinuation(true);
+					break;
+				case "4":
+					typeOfRequest.setSupplement(true);
+					break;
+				default:
+					break;
+				}
+				if (!proposalID.equals("0")) {
+					if (!existingProposal.getProjectInfo().getTypeOfRequest()
+							.equals(typeOfRequest)) {
+						existingProposal.getProjectInfo().setTypeOfRequest(
+								typeOfRequest);
+					}
+				} else {
+					newProjectInfo.setTypeOfRequest(typeOfRequest);
+				}
+			}
+
+			if (projectInfo != null && projectInfo.has("ProjectLocation")) {
+				ProjectLocation projectLocation = new ProjectLocation();
+				switch (projectInfo.get("ProjectLocation").getTextValue()) {
+				case "1":
+					projectLocation.setOffCampus(true);
+					break;
+				case "2":
+					projectLocation.setOnCampus(true);
+					break;
+				default:
+					break;
+				}
+				if (!proposalID.equals("0")) {
+					if (!existingProposal.getProjectInfo().getProjectLocation()
+							.equals(projectLocation)) {
+						existingProposal.getProjectInfo().setProjectLocation(
+								projectLocation);
+					}
+				} else {
+					newProjectInfo.setProjectLocation(projectLocation);
+				}
+			}
+
+			if (projectInfo != null && projectInfo.has("DueDate")) {
+				Date dueDate = formatter.parse(projectInfo.get("DueDate")
+						.getTextValue());
+				if (!proposalID.equals("0")) {
+					if (!existingProposal.getProjectInfo().getDueDate()
+							.equals(dueDate)) {
+						existingProposal.getProjectInfo().setDueDate(dueDate);
+					}
+				} else {
+					newProjectInfo.setDueDate(dueDate);
+				}
+			}
+
+			ProjectPeriod projectPeriod = new ProjectPeriod();
+
+			if (projectInfo != null && projectInfo.has("ProjectPeriodFrom")) {
+				Date periodFrom = formatter.parse(projectInfo.get(
+						"ProjectPeriodFrom").getTextValue());
+				projectPeriod.setFrom(periodFrom);
+			}
+
+			if (projectInfo != null && projectInfo.has("ProjectPeriodTo")) {
+				Date periodTo = formatter.parse(projectInfo.get(
+						"ProjectPeriodTo").getTextValue());
+				projectPeriod.setTo(periodTo);
+			}
+			if (!proposalID.equals("0")) {
+				if (!existingProposal.getProjectInfo().getProjectPeriod()
+						.equals(projectPeriod)) {
+					existingProposal.getProjectInfo().setProjectPeriod(
+							projectPeriod);
+				}
+			} else {
+				newProjectInfo.setProjectPeriod(projectPeriod);
+			}
+		}
+
+		// ProjectInfo
+		if (proposalID.equals("0")) {
+			newProposal.setProjectInfo(newProjectInfo);
+		}
+
+		SponsorAndBudgetInfo newSponsorAndBudgetInfo = new SponsorAndBudgetInfo();
+		if (proposalInfo != null && proposalInfo.has("SponsorAndBudgetInfo")) {
+			JsonNode sponsorAndBudgetInfo = proposalInfo
+					.get("SponsorAndBudgetInfo");
+			if (sponsorAndBudgetInfo != null
+					&& sponsorAndBudgetInfo.has("GrantingAgency")) {
+				for (String grantingAgency : sponsorAndBudgetInfo
+						.get("GrantingAgency").getTextValue().split(", ")) {
+					newSponsorAndBudgetInfo.getGrantingAgency().add(
+							grantingAgency);
+				}
+			}
+
+			if (sponsorAndBudgetInfo != null
+					&& sponsorAndBudgetInfo.has("DirectCosts")) {
+				newSponsorAndBudgetInfo.setDirectCosts(Double
+						.parseDouble(sponsorAndBudgetInfo.get("DirectCosts")
+								.getTextValue()));
+			}
+
+			if (sponsorAndBudgetInfo != null
+					&& sponsorAndBudgetInfo.has("FACosts")) {
+				newSponsorAndBudgetInfo.setFACosts(Double
+						.parseDouble(sponsorAndBudgetInfo.get("FACosts")
+								.getTextValue()));
+			}
+
+			if (sponsorAndBudgetInfo != null
+					&& sponsorAndBudgetInfo.has("TotalCosts")) {
+				newSponsorAndBudgetInfo.setTotalCosts(Double
+						.parseDouble(sponsorAndBudgetInfo.get("TotalCosts")
+								.getTextValue()));
+			}
+
+			if (sponsorAndBudgetInfo != null
+					&& sponsorAndBudgetInfo.has("FARate")) {
+				newSponsorAndBudgetInfo.setFARate(Double
+						.parseDouble(sponsorAndBudgetInfo.get("FARate")
+								.getTextValue()));
+			}
+		}
+
+		// SponsorAndBudgetInfo
+		if (!proposalID.equals("0")) {
+			if (!existingProposal.getSponsorAndBudgetInfo().equals(
+					newSponsorAndBudgetInfo)) {
+				existingProposal
+						.setSponsorAndBudgetInfo(newSponsorAndBudgetInfo);
+			}
+		} else {
+			newProposal.setSponsorAndBudgetInfo(newSponsorAndBudgetInfo);
+		}
+
+		CostShareInfo newCostShareInfo = new CostShareInfo();
+		if (proposalInfo != null && proposalInfo.has("CostShareInfo")) {
+			JsonNode costShareInfo = proposalInfo.get("CostShareInfo");
+			if (costShareInfo != null
+					&& costShareInfo.has("InstitutionalCommitted")) {
+				switch (costShareInfo.get("InstitutionalCommitted")
+						.getTextValue()) {
+				case "1":
+					newCostShareInfo.setInstitutionalCommitted(true);
+					break;
+				case "2":
+					newCostShareInfo.setInstitutionalCommitted(false);
 					break;
 				default:
 					break;
 				}
 			}
 
-			String decision = ac.getXACMLdecision(attrMap);
-			// if (decision.equals("Permit")) {
-
-			JsonNode proposalInfo = root.get("proposalInfo");
-			if (proposalInfo != null && proposalInfo.has("ProposalID")) {
-				proposalID = proposalInfo.get("ProposalID").getTextValue();
-				if (!proposalID.equals("0")) {
-					proposalId = new ObjectId(proposalID);
-					existingProposal = proposalDAO
-							.findProposalByProposalID(proposalId);
-					// using our serializable method for cloning
-					oldProposal = SerializationHelper
-							.cloneThroughSerialize(existingProposal);
+			if (costShareInfo != null
+					&& costShareInfo.has("ThirdPartyCommitted")) {
+				switch (costShareInfo.get("ThirdPartyCommitted").getTextValue()) {
+				case "1":
+					newCostShareInfo.setThirdPartyCommitted(true);
+					break;
+				case "2":
+					newCostShareInfo.setThirdPartyCommitted(false);
+					break;
+				default:
+					break;
 				}
+			}
+		}
+		// CostShareInfo
+		if (!proposalID.equals("0")) {
+			if (!existingProposal.getCostShareInfo().equals(newCostShareInfo)) {
+				existingProposal.setCostShareInfo(newCostShareInfo);
+			}
+		} else {
+			newProposal.setCostShareInfo(newCostShareInfo);
+		}
 
-				// var canDisApproveTitles = [ "Department Chair", "Dean",
-				// "University Research Director" ];
-				// var canWithDrawTitles = [ "Research Administrator" ];
-				// var canArchiveTitles = [ "University Research Director" ];
-
-				// For Proposal User Title : for Dean, Chair and Manager
-				JsonNode proposalUserTitle = root.get("proposalUserTitle");
-				if (proposalUserTitle != null) {
-					// For Proposal Roles : PI, Co-PI, Senior
-					JsonNode proposalRoles = root.get("proposalRoles");
-					if (proposalRoles != null) {
-						// For Proposal Status
-						JsonNode buttonType = root.get("buttonType");
-						if (buttonType != null) {
-							switch (buttonType.getTextValue()) {
-							case "Save As Draft":
-								if (!proposalID.equals("0")) {
-									if (!existingProposal.getProposalStatus()
-											.contains(Status.NOTSUBMITTEDBYPI)
-											&& proposalRoles.toString()
-													.equalsIgnoreCase("PI")) {
-										// TODO check if clear is necessary or
-										// not!
-										existingProposal.getProposalStatus()
-												.clear();
-										existingProposal.getProposalStatus()
-												.add(Status.NOTSUBMITTEDBYPI);
-									}
-								} else {
-									newProposal.getProposalStatus().clear();
-									newProposal.getProposalStatus().add(
-											Status.NOTSUBMITTEDBYPI);
-								}
-								break;
-							case "Update":
-								// var canUpdateRoles = [ "PI", "CO-PI",
-								// "Senior" ];
-								// var canUpdateTitles = [ "Business Manager",
-								// "Research Administrator", "Department Chair",
-								// "Dean" ]
-								break;
-							case "Submit":
-								// var canSubmitRoles = [ "PI" ];
-								if (!proposalID.equals("0")) {
-									if (existingProposal.getProposalStatus()
-											.contains(Status.NOTSUBMITTEDBYPI)
-											&& proposalRoles.toString()
-													.equalsIgnoreCase("PI")) {
-										existingProposal.getProposalStatus()
-												.clear();
-										existingProposal
-												.getProposalStatus()
-												.add(Status.WAITINGFORCHAIRAPPROVAL);
-
-										existingProposal
-												.setDateSubmitted(new Date());
-									}
-								}
-								break;
-							case "Approve":
-								// var canApproveTitles = [ "Business Manager",
-								// "Department Chair",
-								// "Dean","University Research Director" ];
-								List<String> canApproveTitles = Arrays.asList(
-										"Business Manager", "Department Chair",
-										"Dean", "University Research Director");
-								if (!proposalID.equals("0")
-										&& canApproveTitles
-												.contains(proposalUserTitle
-														.getTextValue())) {
-									existingProposal.getProposalStatus()
-											.clear();
-									if (proposalUserTitle.getTextValue()
-											.equals("Business Manager")
-											&& !existingProposal
-													.getProposalStatus()
-													.contains(
-															Status.APPROVEDBYBUSINESSMANAGER)) {
-										existingProposal
-												.getProposalStatus()
-												.add(Status.APPROVEDBYBUSINESSMANAGER);
-									} else if (proposalUserTitle.getTextValue()
-											.equals("Department Chair")
-											&& existingProposal
-													.getProposalStatus()
-													.contains(
-															Status.WAITINGFORCHAIRAPPROVAL)
-											&& !existingProposal
-													.getProposalStatus()
-													.contains(
-															Status.APPROVEDBYDEPARTMENTCHAIR)) {
-										existingProposal
-												.getProposalStatus()
-												.add(Status.APPROVEDBYDEPARTMENTCHAIR);
-									} else if (proposalUserTitle.getTextValue()
-											.equals("Dean")
-											&& existingProposal
-													.getProposalStatus()
-													.contains(
-															Status.WAITINGFORDEANAPPROVAL)
-											&& !existingProposal
-													.getProposalStatus()
-													.contains(
-															Status.APPROVEDBYDEAN)) {
-										existingProposal.getProposalStatus()
-												.add(Status.APPROVEDBYDEAN);
-									} else if (proposalUserTitle
-											.getTextValue()
-											.equals("University Research Director")
-											&& existingProposal
-													.getProposalStatus()
-													.contains(
-															Status.WAITINGFORUNIVERSITYRESEARCHOFFICEAPPROVAL)
-											&& !existingProposal
-													.getProposalStatus()
-													.contains(
-															Status.APPROVEDBYUNIVERSITYRESEARCHDIRECTOR)) {
-										existingProposal
-												.getProposalStatus()
-												.add(Status.APPROVEDBYUNIVERSITYRESEARCHDIRECTOR);
-									}
-
-								}
-								break;
-							case "Disapprove":
-								// var canDisApproveTitles = [
-								// "Business Manager",
-								// "Department Chair",
-								// "Dean", "University Research Director" ];
-								List<String> canDisApproveTitles = Arrays
-										.asList("Business Manager",
-												"Department Chair", "Dean",
-												"University Research Director");
-								if (!proposalID.equals("0")
-										&& canDisApproveTitles
-												.contains(proposalUserTitle
-														.getTextValue())) {
-									// TODO
-									// existingProposal.getProposalStatus().clear();
-									// if (proposalUserTitle
-									// .equals("Business Manager")) {
-									// existingProposal
-									// .getProposalStatus()
-									// .add(Status.DISAPPROVEDBYBUSINESSMANAGER);
-									// } else if (proposalUserTitle
-									// .equals("Department Chair")) {
-									// existingProposal
-									// .getProposalStatus()
-									// .add(Status.DISAPPROVEDBYDEPARTMENTCHAIR);
-									// } else if
-									// (proposalUserTitle.equals("Dean"))
-									// {
-									// existingProposal.getProposalStatus().add(
-									// Status.DISAPPROVEDBYDEAN);
-									// } else if (proposalUserTitle
-									// .equals("University Research Director"))
-									// {
-									// existingProposal
-									// .getProposalStatus()
-									// .add(Status.DISAPPROVEDBYUNIVERSITYRESEARCHDIRECTOR);
-									// }
-
-								}
-								break;
-							case "Withdraw":
-								// var canWithDrawTitles = [
-								// "Research Administrator" ];
-								List<String> canWithDrawTitles = Arrays
-										.asList("Research Administrator");
-								if (!proposalID.equals("0")
-										&& canWithDrawTitles
-												.contains(proposalUserTitle
-														.getTextValue())) {
-									existingProposal.getProposalStatus()
-											.clear();
-									existingProposal.getProposalStatus().add(
-											Status.WITHDRAWBYRESEARCHOFFICE);
-								}
-								break;
-							case "Archive":
-								// var canArchiveTitles = [
-								// "University Research Director" ];
-								List<String> canArchiveTitles = Arrays
-										.asList("University Research Director");
-								if (!proposalID.equals("0")
-										&& canArchiveTitles
-												.contains(proposalUserTitle
-														.getTextValue())) {
-									existingProposal.getProposalStatus()
-											.clear();
-									existingProposal
-											.getProposalStatus()
-											.add(Status.ARCHIVEDBYUNIVERSITYRESEARCHDIRECTOR);
-								}
-								break;
-
-							default:
-								break;
-							}
-						}
-					}
+		UniversityCommitments newUnivCommitments = new UniversityCommitments();
+		if (proposalInfo != null && proposalInfo.has("UnivCommitments")) {
+			JsonNode univCommitments = proposalInfo.get("UnivCommitments");
+			if (univCommitments != null
+					&& univCommitments.has("NewRenovatedFacilitiesRequired")) {
+				switch (univCommitments.get("NewRenovatedFacilitiesRequired")
+						.getTextValue()) {
+				case "1":
+					newUnivCommitments.setNewRenovatedFacilitiesRequired(true);
+					break;
+				case "2":
+					newUnivCommitments.setNewRenovatedFacilitiesRequired(false);
+					break;
+				default:
+					break;
 				}
 			}
 
-			ProjectInfo newProjectInfo = new ProjectInfo();
-
-			if (proposalInfo != null && proposalInfo.has("ProjectInfo")) {
-				JsonNode projectInfo = proposalInfo.get("ProjectInfo");
-				if (projectInfo != null && projectInfo.has("ProjectTitle")) {
-					if (proposalID.equals("0")) {
-						newProjectInfo.setProjectTitle(projectInfo.get(
-								"ProjectTitle").getTextValue());
-					}
-				}
-
-				if (projectInfo != null && projectInfo.has("ProjectType")) {
-					ProjectType projectType = new ProjectType();
-					switch (projectInfo.get("ProjectType").getTextValue()) {
-					case "1":
-						projectType.setIsResearchBasic(true);
-						break;
-					case "2":
-						projectType.setIsResearchApplied(true);
-						break;
-					case "3":
-						projectType.setIsResearchDevelopment(true);
-						break;
-					case "4":
-						projectType.setIsInstruction(true);
-						break;
-					case "5":
-						projectType.setIsOtherSponsoredActivity(true);
-						break;
-					default:
-						break;
-					}
-
-					if (!proposalID.equals("0")) {
-						if (!existingProposal.getProjectInfo().getProjectType()
-								.equals(projectType)) {
-							existingProposal.getProjectInfo().setProjectType(
-									projectType);
-						}
-					} else {
-						newProjectInfo.setProjectType(projectType);
-					}
-				}
-
-				if (projectInfo != null && projectInfo.has("TypeOfRequest")) {
-					TypeOfRequest typeOfRequest = new TypeOfRequest();
-					switch (projectInfo.get("TypeOfRequest").getTextValue()) {
-					case "1":
-						typeOfRequest.setPreProposal(true);
-						break;
-					case "2":
-						typeOfRequest.setNewProposal(true);
-						break;
-					case "3":
-						typeOfRequest.setContinuation(true);
-						break;
-					case "4":
-						typeOfRequest.setSupplement(true);
-						break;
-					default:
-						break;
-					}
-					if (!proposalID.equals("0")) {
-						if (!existingProposal.getProjectInfo()
-								.getTypeOfRequest().equals(typeOfRequest)) {
-							existingProposal.getProjectInfo().setTypeOfRequest(
-									typeOfRequest);
-						}
-					} else {
-						newProjectInfo.setTypeOfRequest(typeOfRequest);
-					}
-				}
-
-				if (projectInfo != null && projectInfo.has("ProjectLocation")) {
-					ProjectLocation projectLocation = new ProjectLocation();
-					switch (projectInfo.get("ProjectLocation").getTextValue()) {
-					case "1":
-						projectLocation.setOffCampus(true);
-						break;
-					case "2":
-						projectLocation.setOnCampus(true);
-						break;
-					default:
-						break;
-					}
-					if (!proposalID.equals("0")) {
-						if (!existingProposal.getProjectInfo()
-								.getProjectLocation().equals(projectLocation)) {
-							existingProposal.getProjectInfo()
-									.setProjectLocation(projectLocation);
-						}
-					} else {
-						newProjectInfo.setProjectLocation(projectLocation);
-					}
-				}
-
-				if (projectInfo != null && projectInfo.has("DueDate")) {
-					Date dueDate = formatter.parse(projectInfo.get("DueDate")
-							.getTextValue());
-					if (!proposalID.equals("0")) {
-						if (!existingProposal.getProjectInfo().getDueDate()
-								.equals(dueDate)) {
-							existingProposal.getProjectInfo().setDueDate(
-									dueDate);
-						}
-					} else {
-						newProjectInfo.setDueDate(dueDate);
-					}
-				}
-
-				ProjectPeriod projectPeriod = new ProjectPeriod();
-
-				if (projectInfo != null && projectInfo.has("ProjectPeriodFrom")) {
-					Date periodFrom = formatter.parse(projectInfo.get(
-							"ProjectPeriodFrom").getTextValue());
-					projectPeriod.setFrom(periodFrom);
-				}
-
-				if (projectInfo != null && projectInfo.has("ProjectPeriodTo")) {
-					Date periodTo = formatter.parse(projectInfo.get(
-							"ProjectPeriodTo").getTextValue());
-					projectPeriod.setTo(periodTo);
-				}
-				if (!proposalID.equals("0")) {
-					if (!existingProposal.getProjectInfo().getProjectPeriod()
-							.equals(projectPeriod)) {
-						existingProposal.getProjectInfo().setProjectPeriod(
-								projectPeriod);
-					}
-				} else {
-					newProjectInfo.setProjectPeriod(projectPeriod);
+			if (univCommitments != null
+					&& univCommitments.has("RentalSpaceRequired")) {
+				switch (univCommitments.get("RentalSpaceRequired")
+						.getTextValue()) {
+				case "1":
+					newUnivCommitments.setRentalSpaceRequired(true);
+					break;
+				case "2":
+					newUnivCommitments.setRentalSpaceRequired(false);
+					break;
+				default:
+					break;
 				}
 			}
 
-			// ProjectInfo
-			if (proposalID.equals("0")) {
-				newProposal.setProjectInfo(newProjectInfo);
+			if (univCommitments != null
+					&& univCommitments.has("InstitutionalCommitmentRequired")) {
+				switch (univCommitments.get("InstitutionalCommitmentRequired")
+						.getTextValue()) {
+				case "1":
+					newUnivCommitments.setInstitutionalCommitmentRequired(true);
+					break;
+				case "2":
+					newUnivCommitments
+							.setInstitutionalCommitmentRequired(false);
+					break;
+				default:
+					break;
+				}
 			}
+		}
+		// UnivCommitments
+		if (!proposalID.equals("0")) {
+			if (!existingProposal.getUniversityCommitments().equals(
+					newUnivCommitments)) {
+				existingProposal.setUniversityCommitments(newUnivCommitments);
+			}
+		} else {
+			newProposal.setUniversityCommitments(newUnivCommitments);
+		}
 
-			SponsorAndBudgetInfo newSponsorAndBudgetInfo = new SponsorAndBudgetInfo();
-			if (proposalInfo != null
-					&& proposalInfo.has("SponsorAndBudgetInfo")) {
-				JsonNode sponsorAndBudgetInfo = proposalInfo
-						.get("SponsorAndBudgetInfo");
-				if (sponsorAndBudgetInfo != null
-						&& sponsorAndBudgetInfo.has("GrantingAgency")) {
-					for (String grantingAgency : sponsorAndBudgetInfo
-							.get("GrantingAgency").getTextValue().split(", ")) {
-						newSponsorAndBudgetInfo.getGrantingAgency().add(
-								grantingAgency);
-					}
-				}
-
-				if (sponsorAndBudgetInfo != null
-						&& sponsorAndBudgetInfo.has("DirectCosts")) {
-					newSponsorAndBudgetInfo.setDirectCosts(Double
-							.parseDouble(sponsorAndBudgetInfo
-									.get("DirectCosts").getTextValue()));
-				}
-
-				if (sponsorAndBudgetInfo != null
-						&& sponsorAndBudgetInfo.has("FACosts")) {
-					newSponsorAndBudgetInfo.setFACosts(Double
-							.parseDouble(sponsorAndBudgetInfo.get("FACosts")
-									.getTextValue()));
-				}
-
-				if (sponsorAndBudgetInfo != null
-						&& sponsorAndBudgetInfo.has("TotalCosts")) {
-					newSponsorAndBudgetInfo.setTotalCosts(Double
-							.parseDouble(sponsorAndBudgetInfo.get("TotalCosts")
-									.getTextValue()));
-				}
-
-				if (sponsorAndBudgetInfo != null
-						&& sponsorAndBudgetInfo.has("FARate")) {
-					newSponsorAndBudgetInfo.setFARate(Double
-							.parseDouble(sponsorAndBudgetInfo.get("FARate")
-									.getTextValue()));
+		ConflictOfInterest newConflictOfInterest = new ConflictOfInterest();
+		if (proposalInfo != null && proposalInfo.has("ConflicOfInterestInfo")) {
+			JsonNode conflicOfInterestInfo = proposalInfo
+					.get("ConflicOfInterestInfo");
+			if (conflicOfInterestInfo != null
+					&& conflicOfInterestInfo.has("FinancialCOI")) {
+				switch (conflicOfInterestInfo.get("FinancialCOI")
+						.getTextValue()) {
+				case "1":
+					newConflictOfInterest.setFinancialCOI(true);
+					break;
+				case "2":
+					newConflictOfInterest.setFinancialCOI(false);
+					break;
+				default:
+					break;
 				}
 			}
 
-			// SponsorAndBudgetInfo
-			if (!proposalID.equals("0")) {
-				if (!existingProposal.getSponsorAndBudgetInfo().equals(
-						newSponsorAndBudgetInfo)) {
-					existingProposal
-							.setSponsorAndBudgetInfo(newSponsorAndBudgetInfo);
-				}
-			} else {
-				newProposal.setSponsorAndBudgetInfo(newSponsorAndBudgetInfo);
-			}
-
-			CostShareInfo newCostShareInfo = new CostShareInfo();
-			if (proposalInfo != null && proposalInfo.has("CostShareInfo")) {
-				JsonNode costShareInfo = proposalInfo.get("CostShareInfo");
-				if (costShareInfo != null
-						&& costShareInfo.has("InstitutionalCommitted")) {
-					switch (costShareInfo.get("InstitutionalCommitted")
-							.getTextValue()) {
-					case "1":
-						newCostShareInfo.setInstitutionalCommitted(true);
-						break;
-					case "2":
-						newCostShareInfo.setInstitutionalCommitted(false);
-						break;
-					default:
-						break;
-					}
-				}
-
-				if (costShareInfo != null
-						&& costShareInfo.has("ThirdPartyCommitted")) {
-					switch (costShareInfo.get("ThirdPartyCommitted")
-							.getTextValue()) {
-					case "1":
-						newCostShareInfo.setThirdPartyCommitted(true);
-						break;
-					case "2":
-						newCostShareInfo.setThirdPartyCommitted(false);
-						break;
-					default:
-						break;
-					}
-				}
-			}
-			// CostShareInfo
-			if (!proposalID.equals("0")) {
-				if (!existingProposal.getCostShareInfo().equals(
-						newCostShareInfo)) {
-					existingProposal.setCostShareInfo(newCostShareInfo);
-				}
-			} else {
-				newProposal.setCostShareInfo(newCostShareInfo);
-			}
-
-			UniversityCommitments newUnivCommitments = new UniversityCommitments();
-			if (proposalInfo != null && proposalInfo.has("UnivCommitments")) {
-				JsonNode univCommitments = proposalInfo.get("UnivCommitments");
-				if (univCommitments != null
-						&& univCommitments
-								.has("NewRenovatedFacilitiesRequired")) {
-					switch (univCommitments.get(
-							"NewRenovatedFacilitiesRequired").getTextValue()) {
-					case "1":
-						newUnivCommitments
-								.setNewRenovatedFacilitiesRequired(true);
-						break;
-					case "2":
-						newUnivCommitments
-								.setNewRenovatedFacilitiesRequired(false);
-						break;
-					default:
-						break;
-					}
-				}
-
-				if (univCommitments != null
-						&& univCommitments.has("RentalSpaceRequired")) {
-					switch (univCommitments.get("RentalSpaceRequired")
-							.getTextValue()) {
-					case "1":
-						newUnivCommitments.setRentalSpaceRequired(true);
-						break;
-					case "2":
-						newUnivCommitments.setRentalSpaceRequired(false);
-						break;
-					default:
-						break;
-					}
-				}
-
-				if (univCommitments != null
-						&& univCommitments
-								.has("InstitutionalCommitmentRequired")) {
-					switch (univCommitments.get(
-							"InstitutionalCommitmentRequired").getTextValue()) {
-					case "1":
-						newUnivCommitments
-								.setInstitutionalCommitmentRequired(true);
-						break;
-					case "2":
-						newUnivCommitments
-								.setInstitutionalCommitmentRequired(false);
-						break;
-					default:
-						break;
-					}
-				}
-			}
-			// UnivCommitments
-			if (!proposalID.equals("0")) {
-				if (!existingProposal.getUniversityCommitments().equals(
-						newUnivCommitments)) {
-					existingProposal
-							.setUniversityCommitments(newUnivCommitments);
-				}
-			} else {
-				newProposal.setUniversityCommitments(newUnivCommitments);
-			}
-
-			ConflictOfInterest newConflictOfInterest = new ConflictOfInterest();
-			if (proposalInfo != null
-					&& proposalInfo.has("ConflicOfInterestInfo")) {
-				JsonNode conflicOfInterestInfo = proposalInfo
-						.get("ConflicOfInterestInfo");
-				if (conflicOfInterestInfo != null
-						&& conflicOfInterestInfo.has("FinancialCOI")) {
-					switch (conflicOfInterestInfo.get("FinancialCOI")
-							.getTextValue()) {
-					case "1":
-						newConflictOfInterest.setFinancialCOI(true);
-						break;
-					case "2":
-						newConflictOfInterest.setFinancialCOI(false);
-						break;
-					default:
-						break;
-					}
-				}
-
-				if (conflicOfInterestInfo != null
-						&& conflicOfInterestInfo.has("ConflictDisclosed")) {
-					switch (conflicOfInterestInfo.get("ConflictDisclosed")
-							.getTextValue()) {
-					case "1":
-						newConflictOfInterest.setConflictDisclosed(true);
-						break;
-					case "2":
-						newConflictOfInterest.setConflictDisclosed(false);
-						break;
-					default:
-						break;
-					}
-				}
-
-				if (conflicOfInterestInfo != null
-						&& conflicOfInterestInfo.has("DisclosureFormChange")) {
-					switch (conflicOfInterestInfo.get("DisclosureFormChange")
-							.getTextValue()) {
-					case "1":
-						newConflictOfInterest.setDisclosureFormChange(true);
-						break;
-					case "2":
-						newConflictOfInterest.setDisclosureFormChange(false);
-						break;
-					default:
-						break;
-					}
-				}
-			}
-			// ConflicOfInterestInfo
-			if (!proposalID.equals("0")) {
-				if (!existingProposal.getConflicOfInterest().equals(
-						newConflictOfInterest)) {
-					existingProposal
-							.setConflicOfInterest(newConflictOfInterest);
-				}
-			} else {
-				newProposal.setConflicOfInterest(newConflictOfInterest);
-			}
-
-			ComplianceInfo newComplianceInfo = new ComplianceInfo();
-			if (proposalInfo != null && proposalInfo.has("ComplianceInfo")) {
-				JsonNode complianceInfo = proposalInfo.get("ComplianceInfo");
-				if (complianceInfo != null
-						&& complianceInfo.has("InvolveUseOfHumanSubjects")) {
-					switch (complianceInfo.get("InvolveUseOfHumanSubjects")
-							.getTextValue()) {
-					case "1":
-						newComplianceInfo.setInvolveUseOfHumanSubjects(true);
-						if (complianceInfo != null
-								&& complianceInfo.has("IRBPending")) {
-							switch (complianceInfo.get("IRBPending")
-									.getTextValue()) {
-							case "1":
-								newComplianceInfo.setIRBPending(false);
-								if (complianceInfo != null
-										&& complianceInfo.has("IRB")) {
-									newComplianceInfo.setIRB(complianceInfo
-											.get("IRB").getTextValue());
-								}
-								break;
-							case "2":
-								newComplianceInfo.setIRBPending(true);
-								break;
-							default:
-								break;
-							}
-						}
-						break;
-					case "2":
-						newComplianceInfo.setInvolveUseOfHumanSubjects(false);
-						break;
-					default:
-						break;
-					}
-				}
-
-				if (complianceInfo != null
-						&& complianceInfo.has("InvolveUseOfVertebrateAnimals")) {
-					switch (complianceInfo.get("InvolveUseOfVertebrateAnimals")
-							.getTextValue()) {
-					case "1":
-						newComplianceInfo
-								.setInvolveUseOfVertebrateAnimals(true);
-						if (complianceInfo != null
-								&& complianceInfo.has("IACUCPending")) {
-							switch (complianceInfo.get("IACUCPending")
-									.getTextValue()) {
-							case "1":
-								newComplianceInfo.setIACUCPending(false);
-								if (complianceInfo != null
-										&& complianceInfo.has("IACUC")) {
-									newComplianceInfo.setIACUC(complianceInfo
-											.get("IACUC").getTextValue());
-								}
-								break;
-							case "2":
-								newComplianceInfo.setIACUCPending(true);
-								break;
-							default:
-								break;
-							}
-						}
-						break;
-					case "2":
-						newComplianceInfo
-								.setInvolveUseOfVertebrateAnimals(false);
-						break;
-					default:
-						break;
-					}
-				}
-
-				if (complianceInfo != null
-						&& complianceInfo.has("InvolveBiosafetyConcerns")) {
-					switch (complianceInfo.get("InvolveBiosafetyConcerns")
-							.getTextValue()) {
-					case "1":
-						newComplianceInfo.setInvolveBiosafetyConcerns(true);
-						if (complianceInfo != null
-								&& complianceInfo.has("IBCPending")) {
-							switch (complianceInfo.get("IBCPending")
-									.getTextValue()) {
-							case "1":
-								newComplianceInfo.setIBCPending(false);
-								if (complianceInfo != null
-										&& complianceInfo.has("IBC")) {
-									newComplianceInfo.setIBC(complianceInfo
-											.get("IBC").getTextValue());
-								}
-								break;
-							case "2":
-								newComplianceInfo.setIBCPending(true);
-								break;
-							default:
-								break;
-							}
-						}
-						break;
-					case "2":
-						newComplianceInfo.setInvolveBiosafetyConcerns(false);
-						break;
-					default:
-						break;
-					}
-				}
-
-				if (complianceInfo != null
-						&& complianceInfo
-								.has("InvolveEnvironmentalHealthAndSafetyConcerns")) {
-					switch (complianceInfo.get(
-							"InvolveEnvironmentalHealthAndSafetyConcerns")
-							.getTextValue()) {
-					case "1":
-						newComplianceInfo
-								.setInvolveEnvironmentalHealthAndSafetyConcerns(true);
-						break;
-					case "2":
-						newComplianceInfo
-								.setInvolveEnvironmentalHealthAndSafetyConcerns(false);
-						break;
-					default:
-						break;
-					}
-				}
-			}
-			// ComplianceInfo
-			if (!proposalID.equals("0")) {
-				if (!existingProposal.getComplianceInfo().equals(
-						newComplianceInfo)) {
-					existingProposal.setComplianceInfo(newComplianceInfo);
-				}
-			} else {
-				newProposal.setComplianceInfo(newComplianceInfo);
-			}
-
-			AdditionalInfo newAdditionalInfo = new AdditionalInfo();
-			if (proposalInfo != null && proposalInfo.has("AdditionalInfo")) {
-				JsonNode additionalInfo = proposalInfo.get("AdditionalInfo");
-				if (additionalInfo != null
-						&& additionalInfo
-								.has("AnticipatesForeignNationalsPayment")) {
-					switch (additionalInfo.get(
-							"AnticipatesForeignNationalsPayment")
-							.getTextValue()) {
-					case "1":
-						newAdditionalInfo
-								.setAnticipatesForeignNationalsPayment(true);
-						break;
-					case "2":
-						newAdditionalInfo
-								.setAnticipatesForeignNationalsPayment(false);
-						break;
-					default:
-						break;
-					}
-				}
-
-				if (additionalInfo != null
-						&& additionalInfo.has("AnticipatesCourseReleaseTime")) {
-					switch (additionalInfo.get("AnticipatesCourseReleaseTime")
-							.getTextValue()) {
-					case "1":
-						newAdditionalInfo.setAnticipatesCourseReleaseTime(true);
-						break;
-					case "2":
-						newAdditionalInfo
-								.setAnticipatesCourseReleaseTime(false);
-						break;
-					default:
-						break;
-					}
-				}
-
-				if (additionalInfo != null
-						&& additionalInfo
-								.has("RelatedToCenterForAdvancedEnergyStudies")) {
-					switch (additionalInfo.get(
-							"RelatedToCenterForAdvancedEnergyStudies")
-							.getTextValue()) {
-					case "1":
-						newAdditionalInfo
-								.setRelatedToCenterForAdvancedEnergyStudies(true);
-						break;
-					case "2":
-						newAdditionalInfo
-								.setRelatedToCenterForAdvancedEnergyStudies(false);
-						break;
-					default:
-						break;
-					}
-				}
-			}
-			// AdditionalInfo
-			if (!proposalID.equals("0")) {
-				if (!existingProposal.getAdditionalInfo().equals(
-						newAdditionalInfo)) {
-					existingProposal.setAdditionalInfo(newAdditionalInfo);
-				}
-			} else {
-				newProposal.setAdditionalInfo(newAdditionalInfo);
-			}
-
-			CollaborationInfo newCollaborationInfo = new CollaborationInfo();
-			if (proposalInfo != null && proposalInfo.has("CollaborationInfo")) {
-				JsonNode collaborationInfo = proposalInfo
-						.get("CollaborationInfo");
-				if (collaborationInfo != null
-						&& collaborationInfo.has("InvolveNonFundedCollab")) {
-					switch (collaborationInfo.get("InvolveNonFundedCollab")
-							.getTextValue()) {
-					case "1":
-						newCollaborationInfo.setInvolveNonFundedCollab(true);
-						if (collaborationInfo != null
-								&& collaborationInfo.has("Collaborators")) {
-							newCollaborationInfo
-									.setInvolvedCollaborators(collaborationInfo
-											.get("Collaborators")
-											.getTextValue());
-						}
-						break;
-					case "2":
-						newCollaborationInfo.setInvolveNonFundedCollab(false);
-						break;
-					default:
-						break;
-					}
-				}
-			}
-			// CollaborationInfo
-			if (!proposalID.equals("0")) {
-				if (!existingProposal.getCollaborationInfo().equals(
-						newCollaborationInfo)) {
-					existingProposal.setCollaborationInfo(newCollaborationInfo);
-				}
-			} else {
-				newProposal.setCollaborationInfo(newCollaborationInfo);
-			}
-
-			ConfidentialInfo newConfidentialInfo = new ConfidentialInfo();
-			if (proposalInfo != null && proposalInfo.has("ConfidentialInfo")) {
-				JsonNode confidentialInfo = proposalInfo
-						.get("ConfidentialInfo");
-				if (confidentialInfo != null
-						&& confidentialInfo
-								.has("ContainConfidentialInformation")) {
-					switch (confidentialInfo.get(
-							"ContainConfidentialInformation").getTextValue()) {
-					case "1":
-						newConfidentialInfo
-								.setContainConfidentialInformation(true);
-						if (confidentialInfo != null
-								&& confidentialInfo.has("OnPages")) {
-							newConfidentialInfo.setOnPages(confidentialInfo
-									.get("OnPages").getTextValue());
-						}
-						if (confidentialInfo != null
-								&& confidentialInfo.has("Patentable")) {
-							newConfidentialInfo.setPatentable(confidentialInfo
-									.get("Patentable").getBooleanValue());
-						}
-						if (confidentialInfo != null
-								&& confidentialInfo.has("Copyrightable")) {
-							newConfidentialInfo
-									.setCopyrightable(confidentialInfo.get(
-											"Copyrightable").getBooleanValue());
-						}
-						break;
-					case "2":
-						newConfidentialInfo
-								.setContainConfidentialInformation(false);
-						break;
-					default:
-						break;
-					}
-				}
-
-				if (confidentialInfo != null
-						&& confidentialInfo.has("InvolveIntellectualProperty")) {
-					switch (confidentialInfo.get("InvolveIntellectualProperty")
-							.getTextValue()) {
-					case "1":
-						newConfidentialInfo
-								.setInvolveIntellectualProperty(true);
-						break;
-					case "2":
-						newConfidentialInfo
-								.setInvolveIntellectualProperty(false);
-						break;
-					default:
-						break;
-					}
-				}
-			}
-			// ConfidentialInfo
-			if (!proposalID.equals("0")) {
-				if (!existingProposal.getConfidentialInfo().equals(
-						newConfidentialInfo)) {
-					existingProposal.setConfidentialInfo(newConfidentialInfo);
-				}
-			} else {
-				newProposal.setConfidentialInfo(newConfidentialInfo);
-			}
-
-			// To hold all new Investigators list to get notified
-			InvestigatorInfo addedInvestigators = new InvestigatorInfo();
-			InvestigatorInfo existingInvestigators = new InvestigatorInfo();
-			InvestigatorInfo deletedInvestigators = new InvestigatorInfo();
-
-			if (proposalInfo != null && proposalInfo.has("InvestigatorInfo")) {
-				if (!proposalID.equals("0")) {
-					// Existing Investigator Info to compare
-					existingInvestigators = oldProposal.getInvestigatorInfo();
-
-					// MUST Clear all co-PI and Seniors
-					existingProposal.getInvestigatorInfo().getCo_pi().clear();
-					existingProposal.getInvestigatorInfo().getSeniorPersonnel()
-							.clear();
-				}
-
-				String[] rows = proposalInfo.get("InvestigatorInfo")
-						.getTextValue().split("#!#");
-
-				InvestigatorInfo newInvestigatorInfo = new InvestigatorInfo();
-
-				for (String col : rows) {
-					String[] cols = col.split("!#!");
-					InvestigatorRefAndPosition investigatorRefAndPosition = new InvestigatorRefAndPosition();
-					ObjectId id = new ObjectId(cols[1]);
-					UserProfile userRef = userProfileDAO
-							.findUserDetailsByProfileID(id);
-					investigatorRefAndPosition.setUserRef(userRef);
-					investigatorRefAndPosition.setUserProfileId(cols[1]);
-					investigatorRefAndPosition.setCollege(cols[2]);
-					investigatorRefAndPosition.setDepartment(cols[3]);
-					investigatorRefAndPosition.setPositionType(cols[4]);
-					investigatorRefAndPosition.setPositionTitle(cols[5]);
-					switch (cols[0]) {
-					case "0":
-						if (!proposalID.equals("0")) {
-							if (!existingProposal.getInvestigatorInfo().getPi()
-									.equals(investigatorRefAndPosition)) {
-								existingProposal.getInvestigatorInfo().setPi(
-										investigatorRefAndPosition);
-								if (!addedInvestigators.getPi().equals(
-										investigatorRefAndPosition)) {
-									addedInvestigators
-											.setPi(investigatorRefAndPosition);
-								}
-							}
-						} else {
-							newInvestigatorInfo
-									.setPi(investigatorRefAndPosition);
-						}
-						break;
-					case "1":
-						if (!proposalID.equals("0")) {
-							if (!existingProposal.getInvestigatorInfo()
-									.getCo_pi()
-									.contains(investigatorRefAndPosition)) {
-								existingProposal.getInvestigatorInfo()
-										.getCo_pi()
-										.add(investigatorRefAndPosition);
-							}
-							if (!existingInvestigators.getCo_pi().contains(
-									investigatorRefAndPosition)) {
-								if (!addedInvestigators.getCo_pi().contains(
-										investigatorRefAndPosition)) {
-									addedInvestigators.getCo_pi().add(
-											investigatorRefAndPosition);
-								}
-							}
-						} else {
-							newInvestigatorInfo.getCo_pi().add(
-									investigatorRefAndPosition);
-						}
-						break;
-					case "2":
-						if (!proposalID.equals("0")) {
-							if (!existingProposal.getInvestigatorInfo()
-									.getSeniorPersonnel()
-									.contains(investigatorRefAndPosition)) {
-								existingProposal.getInvestigatorInfo()
-										.getSeniorPersonnel()
-										.add(investigatorRefAndPosition);
-							}
-							if (!existingInvestigators.getSeniorPersonnel()
-									.contains(investigatorRefAndPosition)) {
-								if (!addedInvestigators.getSeniorPersonnel()
-										.contains(investigatorRefAndPosition)) {
-									addedInvestigators.getSeniorPersonnel()
-											.add(investigatorRefAndPosition);
-								}
-							}
-						} else {
-							newInvestigatorInfo.getSeniorPersonnel().add(
-									investigatorRefAndPosition);
-						}
-						break;
-					default:
-						break;
-					}
-				}
-
-				// InvestigatorInfo
-				if (proposalID.equals("0")) {
-					newProposal.setInvestigatorInfo(newInvestigatorInfo);
-					addedInvestigators = newInvestigatorInfo;
-				} else {
-					// TO see the deleted from addedInvestigators vs
-					// existingInvestigators
-
-					if (!existingProposal.getInvestigatorInfo().getPi()
-							.equals(existingInvestigators.getPi())) {
-						if (!deletedInvestigators.getPi().equals(
-								existingInvestigators.getPi())) {
-							deletedInvestigators.setPi(existingInvestigators
-									.getPi());
-						}
-					}
-
-					for (InvestigatorRefAndPosition coPI : existingInvestigators
-							.getCo_pi()) {
-						if (!existingProposal.getInvestigatorInfo().getCo_pi()
-								.contains(coPI)) {
-							deletedInvestigators.getCo_pi().add(coPI);
-						}
-					}
-
-					for (InvestigatorRefAndPosition senior : existingInvestigators
-							.getSeniorPersonnel()) {
-						if (!existingProposal.getInvestigatorInfo()
-								.getSeniorPersonnel().contains(senior)) {
-							deletedInvestigators.getSeniorPersonnel().add(
-									senior);
-						}
-					}
+			if (conflicOfInterestInfo != null
+					&& conflicOfInterestInfo.has("ConflictDisclosed")) {
+				switch (conflicOfInterestInfo.get("ConflictDisclosed")
+						.getTextValue()) {
+				case "1":
+					newConflictOfInterest.setConflictDisclosed(true);
+					break;
+				case "2":
+					newConflictOfInterest.setConflictDisclosed(false);
+					break;
+				default:
+					break;
 				}
 			}
 
-			// To hold all new Investigators list to get notified
-			List<SignatureInfo> addedSignatures = new ArrayList<SignatureInfo>();
-
-			if (proposalInfo != null && proposalInfo.has("SignatureInfo")) {
-				String[] rows = proposalInfo.get("SignatureInfo")
-						.getTextValue().split("#!#");
-
-				List<SignatureInfo> newSignatureInfo = new ArrayList<SignatureInfo>();
-				// UserProfileID!#!Signature!#!SignedDate!#!FullName!#!PositionTitle!#!Delegated#!#
-				DateFormat format = new SimpleDateFormat(
-						"yyyy/MM/dd hh:mm:ss a");
-
-				for (String col : rows) {
-					String[] cols = col.split("!#!");
-					SignatureInfo signatureInfo = new SignatureInfo();
-					signatureInfo.setUserProfileId(cols[0]);
-					signatureInfo.setSignature(cols[1]);
-					signatureInfo.setSignedDate(format.parse(cols[2]));
-					signatureInfo.setFullName(cols[3]);
-					signatureInfo.setPositionTitle(cols[4]);
-					signatureInfo.setDelegated(Boolean.parseBoolean(cols[5]));
-
-					boolean alreadyExist = false;
-					for (SignatureInfo sign : existingProposal
-							.getSignatureInfo()) {
-						if (sign.equals(signatureInfo)) {
-							alreadyExist = true;
-							break;
-						}
-					}
-					if (!alreadyExist) {
-						newSignatureInfo.add(signatureInfo);
-					}
-				}
-				// SignatureInfo
-				addedSignatures = newSignatureInfo;
-				if (!proposalID.equals("0")) {
-					for (SignatureInfo signatureInfo : newSignatureInfo) {
-						existingProposal.getSignatureInfo().add(signatureInfo);
-					}
-				} else {
-					newProposal.setSignatureInfo(newSignatureInfo);
+			if (conflicOfInterestInfo != null
+					&& conflicOfInterestInfo.has("DisclosureFormChange")) {
+				switch (conflicOfInterestInfo.get("DisclosureFormChange")
+						.getTextValue()) {
+				case "1":
+					newConflictOfInterest.setDisclosureFormChange(true);
+					break;
+				case "2":
+					newConflictOfInterest.setDisclosureFormChange(false);
+					break;
+				default:
+					break;
 				}
 			}
+		}
+		// ConflicOfInterestInfo
+		if (!proposalID.equals("0")) {
+			if (!existingProposal.getConflicOfInterest().equals(
+					newConflictOfInterest)) {
+				existingProposal.setConflicOfInterest(newConflictOfInterest);
+			}
+		} else {
+			newProposal.setConflicOfInterest(newConflictOfInterest);
+		}
 
-			OSPSectionInfo newOSPSectionInfo = new OSPSectionInfo();
-			if (proposalInfo != null && proposalInfo.has("OSPSectionInfo")) {
-				JsonNode oSPSectionInfo = proposalInfo.get("OSPSectionInfo");
-
-				if (oSPSectionInfo != null && oSPSectionInfo.has("ListAgency")) {
-					if (!proposalID.equals("0")) {
-						if (!existingProposal
-								.getoSPSectionInfo()
-								.getListAgency()
-								.equals(oSPSectionInfo.get("ListAgency")
-										.getTextValue())) {
-							existingProposal.getoSPSectionInfo().setListAgency(
-									oSPSectionInfo.get("ListAgency")
-											.getTextValue());
-						}
-					}
-				}
-
-				FundingSource newFundingSource = new FundingSource();
-				if (oSPSectionInfo != null && oSPSectionInfo.has("Federal")) {
-					newFundingSource.setFederal(oSPSectionInfo.get("Federal")
-							.getBooleanValue());
-				}
-
-				if (oSPSectionInfo != null
-						&& oSPSectionInfo.has("FederalFlowThrough")) {
-					newFundingSource.setFederalFlowThrough(oSPSectionInfo.get(
-							"FederalFlowThrough").getBooleanValue());
-				}
-
-				if (oSPSectionInfo != null
-						&& oSPSectionInfo.has("StateOfIdahoEntity")) {
-					newFundingSource.setStateOfIdahoEntity(oSPSectionInfo.get(
-							"StateOfIdahoEntity").getBooleanValue());
-				}
-
-				if (oSPSectionInfo != null
-						&& oSPSectionInfo.has("PrivateForProfit")) {
-					newFundingSource.setPrivateForProfit(oSPSectionInfo.get(
-							"PrivateForProfit").getBooleanValue());
-				}
-
-				if (oSPSectionInfo != null
-						&& oSPSectionInfo.has("NonProfitOrganization")) {
-					newFundingSource.setNonProfitOrganization(oSPSectionInfo
-							.get("NonProfitOrganization").getBooleanValue());
-				}
-
-				if (oSPSectionInfo != null
-						&& oSPSectionInfo.has("NonIdahoStateEntity")) {
-					newFundingSource.setNonIdahoStateEntity(oSPSectionInfo.get(
-							"NonIdahoStateEntity").getBooleanValue());
-				}
-
-				if (oSPSectionInfo != null
-						&& oSPSectionInfo.has("CollegeOrUniversity")) {
-					newFundingSource.setCollegeOrUniversity(oSPSectionInfo.get(
-							"CollegeOrUniversity").getBooleanValue());
-				}
-
-				if (oSPSectionInfo != null && oSPSectionInfo.has("LocalEntity")) {
-					newFundingSource.setLocalEntity(oSPSectionInfo.get(
-							"LocalEntity").getBooleanValue());
-				}
-
-				if (oSPSectionInfo != null
-						&& oSPSectionInfo.has("NonIdahoLocalEntity")) {
-					newFundingSource.setNonIdahoLocalEntity(oSPSectionInfo.get(
-							"NonIdahoLocalEntity").getBooleanValue());
-				}
-
-				if (oSPSectionInfo != null
-						&& oSPSectionInfo.has("TirbalGovernment")) {
-					newFundingSource.setTirbalGovernment(oSPSectionInfo.get(
-							"TirbalGovernment").getBooleanValue());
-				}
-
-				if (oSPSectionInfo != null && oSPSectionInfo.has("Foreign")) {
-					newFundingSource.setForeign(oSPSectionInfo.get("Foreign")
-							.getBooleanValue());
-				}
-
-				if (!proposalID.equals("0")) {
-					if (!existingProposal.getoSPSectionInfo()
-							.getFundingSource().equals(newFundingSource)) {
-						existingProposal.getoSPSectionInfo().setFundingSource(
-								newFundingSource);
-					}
-				}
-
-				if (oSPSectionInfo != null && oSPSectionInfo.has("CFDANo")) {
-					if (!proposalID.equals("0")) {
-						if (!existingProposal
-								.getoSPSectionInfo()
-								.getCFDANo()
-								.equals(oSPSectionInfo.get("CFDANo")
-										.getTextValue())) {
-							existingProposal.getoSPSectionInfo()
-									.setCFDANo(
-											oSPSectionInfo.get("CFDANo")
-													.getTextValue());
-						}
-					}
-				}
-
-				if (oSPSectionInfo != null && oSPSectionInfo.has("ProgramNo")) {
-					if (!proposalID.equals("0")) {
-						if (!existingProposal
-								.getoSPSectionInfo()
-								.getProgramNo()
-								.equals(oSPSectionInfo.get("ProgramNo")
-										.getTextValue())) {
-							existingProposal.getoSPSectionInfo().setProgramNo(
-									oSPSectionInfo.get("ProgramNo")
-											.getTextValue());
-						}
-					}
-				}
-
-				if (oSPSectionInfo != null
-						&& oSPSectionInfo.has("ProgramTitle")) {
-					if (!proposalID.equals("0")) {
-						if (!existingProposal
-								.getoSPSectionInfo()
-								.getProgramTitle()
-								.equals(oSPSectionInfo.get("ProgramTitle")
-										.getTextValue())) {
-							existingProposal.getoSPSectionInfo()
-									.setProgramTitle(
-											oSPSectionInfo.get("ProgramTitle")
-													.getTextValue());
-						}
-					}
-
-					Recovery newRecovery = new Recovery();
-					if (oSPSectionInfo != null
-							&& oSPSectionInfo.has("FullRecovery")) {
-						newRecovery.setFullRecovery(oSPSectionInfo.get(
-								"FullRecovery").getBooleanValue());
-					}
-
-					if (oSPSectionInfo != null
-							&& oSPSectionInfo
-									.has("NoRecoveryNormalSponsorPolicy")) {
-						newRecovery
-								.setNoRecoveryNormalSponsorPolicy(oSPSectionInfo
-										.get("NoRecoveryNormalSponsorPolicy")
-										.getBooleanValue());
-					}
-
-					if (oSPSectionInfo != null
-							&& oSPSectionInfo
-									.has("NoRecoveryInstitutionalWaiver")) {
-						newRecovery
-								.setNoRecoveryInstitutionalWaiver(oSPSectionInfo
-										.get("NoRecoveryInstitutionalWaiver")
-										.getBooleanValue());
-					}
-
-					if (oSPSectionInfo != null
-							&& oSPSectionInfo
-									.has("LimitedRecoveryNormalSponsorPolicy")) {
-						newRecovery
-								.setLimitedRecoveryNormalSponsorPolicy(oSPSectionInfo
-										.get("LimitedRecoveryNormalSponsorPolicy")
-										.getBooleanValue());
-					}
-
-					if (oSPSectionInfo != null
-							&& oSPSectionInfo
-									.has("LimitedRecoveryInstitutionalWaiver")) {
-						newRecovery
-								.setLimitedRecoveryInstitutionalWaiver(oSPSectionInfo
-										.get("LimitedRecoveryInstitutionalWaiver")
-										.getBooleanValue());
-					}
-					if (!proposalID.equals("0")) {
-						if (!existingProposal.getoSPSectionInfo().getRecovery()
-								.equals(newRecovery)) {
-							existingProposal.getoSPSectionInfo().setRecovery(
-									newRecovery);
-						}
-					}
-
-					BaseInfo newBaseInfo = new BaseInfo();
-					if (oSPSectionInfo != null && oSPSectionInfo.has("MTDC")) {
-						newBaseInfo.setMTDC(oSPSectionInfo.get("MTDC")
-								.getBooleanValue());
-					}
-
-					if (oSPSectionInfo != null && oSPSectionInfo.has("TDC")) {
-						newBaseInfo.setTDC(oSPSectionInfo.get("TDC")
-								.getBooleanValue());
-					}
-
-					if (oSPSectionInfo != null && oSPSectionInfo.has("TC")) {
-						newBaseInfo.setTC(oSPSectionInfo.get("TC")
-								.getBooleanValue());
-					}
-
-					if (oSPSectionInfo != null && oSPSectionInfo.has("Other")) {
-						newBaseInfo.setOther(oSPSectionInfo.get("Other")
-								.getBooleanValue());
-					}
-
-					if (oSPSectionInfo != null
-							&& oSPSectionInfo.has("NotApplicable")) {
-						newBaseInfo.setNotApplicable(oSPSectionInfo.get(
-								"NotApplicable").getBooleanValue());
-					}
-					if (!proposalID.equals("0")) {
-						if (!existingProposal.getoSPSectionInfo().getBaseInfo()
-								.equals(newBaseInfo)) {
-							existingProposal.getoSPSectionInfo().setBaseInfo(
-									newBaseInfo);
-						}
-					}
-
-					if (oSPSectionInfo != null
-							&& oSPSectionInfo.has("IsPISalaryIncluded")) {
-						switch (oSPSectionInfo.get("IsPISalaryIncluded")
-								.getTextValue()) {
+		ComplianceInfo newComplianceInfo = new ComplianceInfo();
+		if (proposalInfo != null && proposalInfo.has("ComplianceInfo")) {
+			JsonNode complianceInfo = proposalInfo.get("ComplianceInfo");
+			if (complianceInfo != null
+					&& complianceInfo.has("InvolveUseOfHumanSubjects")) {
+				switch (complianceInfo.get("InvolveUseOfHumanSubjects")
+						.getTextValue()) {
+				case "1":
+					newComplianceInfo.setInvolveUseOfHumanSubjects(true);
+					if (complianceInfo != null
+							&& complianceInfo.has("IRBPending")) {
+						switch (complianceInfo.get("IRBPending").getTextValue()) {
 						case "1":
-							newOSPSectionInfo.setPISalaryIncluded(true);
+							newComplianceInfo.setIRBPending(false);
+							if (complianceInfo != null
+									&& complianceInfo.has("IRB")) {
+								newComplianceInfo.setIRB(complianceInfo.get(
+										"IRB").getTextValue());
+							}
 							break;
 						case "2":
-							newOSPSectionInfo.setPISalaryIncluded(false);
+							newComplianceInfo.setIRBPending(true);
 							break;
 						default:
 							break;
 						}
 					}
+					break;
+				case "2":
+					newComplianceInfo.setInvolveUseOfHumanSubjects(false);
+					break;
+				default:
+					break;
+				}
+			}
 
-					if (!proposalID.equals("0")) {
-						if (existingProposal.getoSPSectionInfo()
-								.isPISalaryIncluded() != newOSPSectionInfo
-								.isPISalaryIncluded()) {
-							existingProposal.getoSPSectionInfo()
-									.setPISalaryIncluded(
-											newOSPSectionInfo
-													.isPISalaryIncluded());
+			if (complianceInfo != null
+					&& complianceInfo.has("InvolveUseOfVertebrateAnimals")) {
+				switch (complianceInfo.get("InvolveUseOfVertebrateAnimals")
+						.getTextValue()) {
+				case "1":
+					newComplianceInfo.setInvolveUseOfVertebrateAnimals(true);
+					if (complianceInfo != null
+							&& complianceInfo.has("IACUCPending")) {
+						switch (complianceInfo.get("IACUCPending")
+								.getTextValue()) {
+						case "1":
+							newComplianceInfo.setIACUCPending(false);
+							if (complianceInfo != null
+									&& complianceInfo.has("IACUC")) {
+								newComplianceInfo.setIACUC(complianceInfo.get(
+										"IACUC").getTextValue());
+							}
+							break;
+						case "2":
+							newComplianceInfo.setIACUCPending(true);
+							break;
+						default:
+							break;
 						}
 					}
+					break;
+				case "2":
+					newComplianceInfo.setInvolveUseOfVertebrateAnimals(false);
+					break;
+				default:
+					break;
+				}
+			}
 
-					if (oSPSectionInfo != null
-							&& oSPSectionInfo.has("PISalary")) {
-						if (!proposalID.equals("0")) {
-							if (existingProposal.getoSPSectionInfo()
-									.getPISalary() != Double
-									.parseDouble(oSPSectionInfo.get("PISalary")
-											.getTextValue())) {
-								existingProposal
-										.getoSPSectionInfo()
-										.setPISalary(
-												Double.parseDouble(oSPSectionInfo
-														.get("PISalary")
-														.getTextValue()));
+			if (complianceInfo != null
+					&& complianceInfo.has("InvolveBiosafetyConcerns")) {
+				switch (complianceInfo.get("InvolveBiosafetyConcerns")
+						.getTextValue()) {
+				case "1":
+					newComplianceInfo.setInvolveBiosafetyConcerns(true);
+					if (complianceInfo != null
+							&& complianceInfo.has("IBCPending")) {
+						switch (complianceInfo.get("IBCPending").getTextValue()) {
+						case "1":
+							newComplianceInfo.setIBCPending(false);
+							if (complianceInfo != null
+									&& complianceInfo.has("IBC")) {
+								newComplianceInfo.setIBC(complianceInfo.get(
+										"IBC").getTextValue());
+							}
+							break;
+						case "2":
+							newComplianceInfo.setIBCPending(true);
+							break;
+						default:
+							break;
+						}
+					}
+					break;
+				case "2":
+					newComplianceInfo.setInvolveBiosafetyConcerns(false);
+					break;
+				default:
+					break;
+				}
+			}
+
+			if (complianceInfo != null
+					&& complianceInfo
+							.has("InvolveEnvironmentalHealthAndSafetyConcerns")) {
+				switch (complianceInfo.get(
+						"InvolveEnvironmentalHealthAndSafetyConcerns")
+						.getTextValue()) {
+				case "1":
+					newComplianceInfo
+							.setInvolveEnvironmentalHealthAndSafetyConcerns(true);
+					break;
+				case "2":
+					newComplianceInfo
+							.setInvolveEnvironmentalHealthAndSafetyConcerns(false);
+					break;
+				default:
+					break;
+				}
+			}
+		}
+		// ComplianceInfo
+		if (!proposalID.equals("0")) {
+			if (!existingProposal.getComplianceInfo().equals(newComplianceInfo)) {
+				existingProposal.setComplianceInfo(newComplianceInfo);
+			}
+		} else {
+			newProposal.setComplianceInfo(newComplianceInfo);
+		}
+
+		AdditionalInfo newAdditionalInfo = new AdditionalInfo();
+		if (proposalInfo != null && proposalInfo.has("AdditionalInfo")) {
+			JsonNode additionalInfo = proposalInfo.get("AdditionalInfo");
+			if (additionalInfo != null
+					&& additionalInfo.has("AnticipatesForeignNationalsPayment")) {
+				switch (additionalInfo
+						.get("AnticipatesForeignNationalsPayment")
+						.getTextValue()) {
+				case "1":
+					newAdditionalInfo
+							.setAnticipatesForeignNationalsPayment(true);
+					break;
+				case "2":
+					newAdditionalInfo
+							.setAnticipatesForeignNationalsPayment(false);
+					break;
+				default:
+					break;
+				}
+			}
+
+			if (additionalInfo != null
+					&& additionalInfo.has("AnticipatesCourseReleaseTime")) {
+				switch (additionalInfo.get("AnticipatesCourseReleaseTime")
+						.getTextValue()) {
+				case "1":
+					newAdditionalInfo.setAnticipatesCourseReleaseTime(true);
+					break;
+				case "2":
+					newAdditionalInfo.setAnticipatesCourseReleaseTime(false);
+					break;
+				default:
+					break;
+				}
+			}
+
+			if (additionalInfo != null
+					&& additionalInfo
+							.has("RelatedToCenterForAdvancedEnergyStudies")) {
+				switch (additionalInfo.get(
+						"RelatedToCenterForAdvancedEnergyStudies")
+						.getTextValue()) {
+				case "1":
+					newAdditionalInfo
+							.setRelatedToCenterForAdvancedEnergyStudies(true);
+					break;
+				case "2":
+					newAdditionalInfo
+							.setRelatedToCenterForAdvancedEnergyStudies(false);
+					break;
+				default:
+					break;
+				}
+			}
+		}
+		// AdditionalInfo
+		if (!proposalID.equals("0")) {
+			if (!existingProposal.getAdditionalInfo().equals(newAdditionalInfo)) {
+				existingProposal.setAdditionalInfo(newAdditionalInfo);
+			}
+		} else {
+			newProposal.setAdditionalInfo(newAdditionalInfo);
+		}
+
+		CollaborationInfo newCollaborationInfo = new CollaborationInfo();
+		if (proposalInfo != null && proposalInfo.has("CollaborationInfo")) {
+			JsonNode collaborationInfo = proposalInfo.get("CollaborationInfo");
+			if (collaborationInfo != null
+					&& collaborationInfo.has("InvolveNonFundedCollab")) {
+				switch (collaborationInfo.get("InvolveNonFundedCollab")
+						.getTextValue()) {
+				case "1":
+					newCollaborationInfo.setInvolveNonFundedCollab(true);
+					if (collaborationInfo != null
+							&& collaborationInfo.has("Collaborators")) {
+						newCollaborationInfo
+								.setInvolvedCollaborators(collaborationInfo
+										.get("Collaborators").getTextValue());
+					}
+					break;
+				case "2":
+					newCollaborationInfo.setInvolveNonFundedCollab(false);
+					break;
+				default:
+					break;
+				}
+			}
+		}
+		// CollaborationInfo
+		if (!proposalID.equals("0")) {
+			if (!existingProposal.getCollaborationInfo().equals(
+					newCollaborationInfo)) {
+				existingProposal.setCollaborationInfo(newCollaborationInfo);
+			}
+		} else {
+			newProposal.setCollaborationInfo(newCollaborationInfo);
+		}
+
+		ConfidentialInfo newConfidentialInfo = new ConfidentialInfo();
+		if (proposalInfo != null && proposalInfo.has("ConfidentialInfo")) {
+			JsonNode confidentialInfo = proposalInfo.get("ConfidentialInfo");
+			if (confidentialInfo != null
+					&& confidentialInfo.has("ContainConfidentialInformation")) {
+				switch (confidentialInfo.get("ContainConfidentialInformation")
+						.getTextValue()) {
+				case "1":
+					newConfidentialInfo.setContainConfidentialInformation(true);
+					if (confidentialInfo != null
+							&& confidentialInfo.has("OnPages")) {
+						newConfidentialInfo.setOnPages(confidentialInfo.get(
+								"OnPages").getTextValue());
+					}
+					if (confidentialInfo != null
+							&& confidentialInfo.has("Patentable")) {
+						newConfidentialInfo.setPatentable(confidentialInfo.get(
+								"Patentable").getBooleanValue());
+					}
+					if (confidentialInfo != null
+							&& confidentialInfo.has("Copyrightable")) {
+						newConfidentialInfo.setCopyrightable(confidentialInfo
+								.get("Copyrightable").getBooleanValue());
+					}
+					break;
+				case "2":
+					newConfidentialInfo
+							.setContainConfidentialInformation(false);
+					break;
+				default:
+					break;
+				}
+			}
+
+			if (confidentialInfo != null
+					&& confidentialInfo.has("InvolveIntellectualProperty")) {
+				switch (confidentialInfo.get("InvolveIntellectualProperty")
+						.getTextValue()) {
+				case "1":
+					newConfidentialInfo.setInvolveIntellectualProperty(true);
+					break;
+				case "2":
+					newConfidentialInfo.setInvolveIntellectualProperty(false);
+					break;
+				default:
+					break;
+				}
+			}
+		}
+		// ConfidentialInfo
+		if (!proposalID.equals("0")) {
+			if (!existingProposal.getConfidentialInfo().equals(
+					newConfidentialInfo)) {
+				existingProposal.setConfidentialInfo(newConfidentialInfo);
+			}
+		} else {
+			newProposal.setConfidentialInfo(newConfidentialInfo);
+		}
+
+		// To hold all new Investigators list to get notified
+		InvestigatorInfo addedInvestigators = new InvestigatorInfo();
+		InvestigatorInfo existingInvestigators = new InvestigatorInfo();
+		InvestigatorInfo deletedInvestigators = new InvestigatorInfo();
+
+		if (proposalInfo != null && proposalInfo.has("InvestigatorInfo")) {
+			if (!proposalID.equals("0")) {
+				// Existing Investigator Info to compare
+				existingInvestigators = oldProposal.getInvestigatorInfo();
+
+				// MUST Clear all co-PI and Seniors
+				existingProposal.getInvestigatorInfo().getCo_pi().clear();
+				existingProposal.getInvestigatorInfo().getSeniorPersonnel()
+						.clear();
+			}
+
+			String[] rows = proposalInfo.get("InvestigatorInfo").getTextValue()
+					.split("#!#");
+
+			InvestigatorInfo newInvestigatorInfo = new InvestigatorInfo();
+
+			for (String col : rows) {
+				String[] cols = col.split("!#!");
+				InvestigatorRefAndPosition investigatorRefAndPosition = new InvestigatorRefAndPosition();
+				ObjectId id = new ObjectId(cols[1]);
+				UserProfile userRef = userProfileDAO
+						.findUserDetailsByProfileID(id);
+				investigatorRefAndPosition.setUserRef(userRef);
+				investigatorRefAndPosition.setUserProfileId(cols[1]);
+				investigatorRefAndPosition.setCollege(cols[2]);
+				investigatorRefAndPosition.setDepartment(cols[3]);
+				investigatorRefAndPosition.setPositionType(cols[4]);
+				investigatorRefAndPosition.setPositionTitle(cols[5]);
+				switch (cols[0]) {
+				case "0":
+					if (!proposalID.equals("0")) {
+						if (!existingProposal.getInvestigatorInfo().getPi()
+								.equals(investigatorRefAndPosition)) {
+							existingProposal.getInvestigatorInfo().setPi(
+									investigatorRefAndPosition);
+							if (!addedInvestigators.getPi().equals(
+									investigatorRefAndPosition)) {
+								addedInvestigators
+										.setPi(investigatorRefAndPosition);
 							}
 						}
+					} else {
+						newInvestigatorInfo.setPi(investigatorRefAndPosition);
 					}
+					break;
+				case "1":
+					if (!proposalID.equals("0")) {
+						if (!existingProposal.getInvestigatorInfo().getCo_pi()
+								.contains(investigatorRefAndPosition)) {
+							existingProposal.getInvestigatorInfo().getCo_pi()
+									.add(investigatorRefAndPosition);
+						}
+						if (!existingInvestigators.getCo_pi().contains(
+								investigatorRefAndPosition)) {
+							if (!addedInvestigators.getCo_pi().contains(
+									investigatorRefAndPosition)) {
+								addedInvestigators.getCo_pi().add(
+										investigatorRefAndPosition);
+							}
+						}
+					} else {
+						newInvestigatorInfo.getCo_pi().add(
+								investigatorRefAndPosition);
+					}
+					break;
+				case "2":
+					if (!proposalID.equals("0")) {
+						if (!existingProposal.getInvestigatorInfo()
+								.getSeniorPersonnel()
+								.contains(investigatorRefAndPosition)) {
+							existingProposal.getInvestigatorInfo()
+									.getSeniorPersonnel()
+									.add(investigatorRefAndPosition);
+						}
+						if (!existingInvestigators.getSeniorPersonnel()
+								.contains(investigatorRefAndPosition)) {
+							if (!addedInvestigators.getSeniorPersonnel()
+									.contains(investigatorRefAndPosition)) {
+								addedInvestigators.getSeniorPersonnel().add(
+										investigatorRefAndPosition);
+							}
+						}
+					} else {
+						newInvestigatorInfo.getSeniorPersonnel().add(
+								investigatorRefAndPosition);
+					}
+					break;
+				default:
+					break;
+				}
+			}
 
-					if (oSPSectionInfo != null
-							&& oSPSectionInfo.has("PIFringe")) {
-						if (existingProposal.getoSPSectionInfo().getPIFringe() != Double
-								.parseDouble(oSPSectionInfo.get("PIFringe")
+			// InvestigatorInfo
+			if (proposalID.equals("0")) {
+				newProposal.setInvestigatorInfo(newInvestigatorInfo);
+				addedInvestigators = newInvestigatorInfo;
+			} else {
+				// TO see the deleted from addedInvestigators vs
+				// existingInvestigators
+
+				if (!existingProposal.getInvestigatorInfo().getPi()
+						.equals(existingInvestigators.getPi())) {
+					if (!deletedInvestigators.getPi().equals(
+							existingInvestigators.getPi())) {
+						deletedInvestigators.setPi(existingInvestigators
+								.getPi());
+					}
+				}
+
+				for (InvestigatorRefAndPosition coPI : existingInvestigators
+						.getCo_pi()) {
+					if (!existingProposal.getInvestigatorInfo().getCo_pi()
+							.contains(coPI)) {
+						deletedInvestigators.getCo_pi().add(coPI);
+					}
+				}
+
+				for (InvestigatorRefAndPosition senior : existingInvestigators
+						.getSeniorPersonnel()) {
+					if (!existingProposal.getInvestigatorInfo()
+							.getSeniorPersonnel().contains(senior)) {
+						deletedInvestigators.getSeniorPersonnel().add(senior);
+					}
+				}
+			}
+		}
+
+		// To hold all new Investigators list to get notified
+		List<SignatureInfo> addedSignatures = new ArrayList<SignatureInfo>();
+
+		if (proposalInfo != null && proposalInfo.has("SignatureInfo")) {
+			String[] rows = proposalInfo.get("SignatureInfo").getTextValue()
+					.split("#!#");
+
+			List<SignatureInfo> newSignatureInfo = new ArrayList<SignatureInfo>();
+			// UserProfileID!#!Signature!#!SignedDate!#!FullName!#!PositionTitle!#!Delegated#!#
+			DateFormat format = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss a");
+
+			for (String col : rows) {
+				String[] cols = col.split("!#!");
+				SignatureInfo signatureInfo = new SignatureInfo();
+				signatureInfo.setUserProfileId(cols[0]);
+				signatureInfo.setSignature(cols[1]);
+				signatureInfo.setSignedDate(format.parse(cols[2]));
+				signatureInfo.setFullName(cols[3]);
+				signatureInfo.setPositionTitle(cols[4]);
+				signatureInfo.setDelegated(Boolean.parseBoolean(cols[5]));
+
+				boolean alreadyExist = false;
+				for (SignatureInfo sign : existingProposal.getSignatureInfo()) {
+					if (sign.equals(signatureInfo)) {
+						alreadyExist = true;
+						break;
+					}
+				}
+				if (!alreadyExist) {
+					newSignatureInfo.add(signatureInfo);
+				}
+			}
+			// SignatureInfo
+			addedSignatures = newSignatureInfo;
+			if (!proposalID.equals("0")) {
+				for (SignatureInfo signatureInfo : newSignatureInfo) {
+					existingProposal.getSignatureInfo().add(signatureInfo);
+				}
+			} else {
+				newProposal.setSignatureInfo(newSignatureInfo);
+			}
+		}
+
+		OSPSectionInfo newOSPSectionInfo = new OSPSectionInfo();
+		if (proposalInfo != null && proposalInfo.has("OSPSectionInfo")) {
+			JsonNode oSPSectionInfo = proposalInfo.get("OSPSectionInfo");
+
+			if (oSPSectionInfo != null && oSPSectionInfo.has("ListAgency")) {
+				if (!proposalID.equals("0")) {
+					if (!existingProposal
+							.getoSPSectionInfo()
+							.getListAgency()
+							.equals(oSPSectionInfo.get("ListAgency")
+									.getTextValue())) {
+						existingProposal.getoSPSectionInfo()
+								.setListAgency(
+										oSPSectionInfo.get("ListAgency")
+												.getTextValue());
+					}
+				}
+			}
+
+			FundingSource newFundingSource = new FundingSource();
+			if (oSPSectionInfo != null && oSPSectionInfo.has("Federal")) {
+				newFundingSource.setFederal(oSPSectionInfo.get("Federal")
+						.getBooleanValue());
+			}
+
+			if (oSPSectionInfo != null
+					&& oSPSectionInfo.has("FederalFlowThrough")) {
+				newFundingSource.setFederalFlowThrough(oSPSectionInfo.get(
+						"FederalFlowThrough").getBooleanValue());
+			}
+
+			if (oSPSectionInfo != null
+					&& oSPSectionInfo.has("StateOfIdahoEntity")) {
+				newFundingSource.setStateOfIdahoEntity(oSPSectionInfo.get(
+						"StateOfIdahoEntity").getBooleanValue());
+			}
+
+			if (oSPSectionInfo != null
+					&& oSPSectionInfo.has("PrivateForProfit")) {
+				newFundingSource.setPrivateForProfit(oSPSectionInfo.get(
+						"PrivateForProfit").getBooleanValue());
+			}
+
+			if (oSPSectionInfo != null
+					&& oSPSectionInfo.has("NonProfitOrganization")) {
+				newFundingSource.setNonProfitOrganization(oSPSectionInfo.get(
+						"NonProfitOrganization").getBooleanValue());
+			}
+
+			if (oSPSectionInfo != null
+					&& oSPSectionInfo.has("NonIdahoStateEntity")) {
+				newFundingSource.setNonIdahoStateEntity(oSPSectionInfo.get(
+						"NonIdahoStateEntity").getBooleanValue());
+			}
+
+			if (oSPSectionInfo != null
+					&& oSPSectionInfo.has("CollegeOrUniversity")) {
+				newFundingSource.setCollegeOrUniversity(oSPSectionInfo.get(
+						"CollegeOrUniversity").getBooleanValue());
+			}
+
+			if (oSPSectionInfo != null && oSPSectionInfo.has("LocalEntity")) {
+				newFundingSource.setLocalEntity(oSPSectionInfo.get(
+						"LocalEntity").getBooleanValue());
+			}
+
+			if (oSPSectionInfo != null
+					&& oSPSectionInfo.has("NonIdahoLocalEntity")) {
+				newFundingSource.setNonIdahoLocalEntity(oSPSectionInfo.get(
+						"NonIdahoLocalEntity").getBooleanValue());
+			}
+
+			if (oSPSectionInfo != null
+					&& oSPSectionInfo.has("TirbalGovernment")) {
+				newFundingSource.setTirbalGovernment(oSPSectionInfo.get(
+						"TirbalGovernment").getBooleanValue());
+			}
+
+			if (oSPSectionInfo != null && oSPSectionInfo.has("Foreign")) {
+				newFundingSource.setForeign(oSPSectionInfo.get("Foreign")
+						.getBooleanValue());
+			}
+
+			if (!proposalID.equals("0")) {
+				if (!existingProposal.getoSPSectionInfo().getFundingSource()
+						.equals(newFundingSource)) {
+					existingProposal.getoSPSectionInfo().setFundingSource(
+							newFundingSource);
+				}
+			}
+
+			if (oSPSectionInfo != null && oSPSectionInfo.has("CFDANo")) {
+				if (!proposalID.equals("0")) {
+					if (!existingProposal
+							.getoSPSectionInfo()
+							.getCFDANo()
+							.equals(oSPSectionInfo.get("CFDANo").getTextValue())) {
+						existingProposal.getoSPSectionInfo().setCFDANo(
+								oSPSectionInfo.get("CFDANo").getTextValue());
+					}
+				}
+			}
+
+			if (oSPSectionInfo != null && oSPSectionInfo.has("ProgramNo")) {
+				if (!proposalID.equals("0")) {
+					if (!existingProposal
+							.getoSPSectionInfo()
+							.getProgramNo()
+							.equals(oSPSectionInfo.get("ProgramNo")
+									.getTextValue())) {
+						existingProposal.getoSPSectionInfo().setProgramNo(
+								oSPSectionInfo.get("ProgramNo").getTextValue());
+					}
+				}
+			}
+
+			if (oSPSectionInfo != null && oSPSectionInfo.has("ProgramTitle")) {
+				if (!proposalID.equals("0")) {
+					if (!existingProposal
+							.getoSPSectionInfo()
+							.getProgramTitle()
+							.equals(oSPSectionInfo.get("ProgramTitle")
+									.getTextValue())) {
+						existingProposal.getoSPSectionInfo().setProgramTitle(
+								oSPSectionInfo.get("ProgramTitle")
+										.getTextValue());
+					}
+				}
+
+				Recovery newRecovery = new Recovery();
+				if (oSPSectionInfo != null
+						&& oSPSectionInfo.has("FullRecovery")) {
+					newRecovery.setFullRecovery(oSPSectionInfo.get(
+							"FullRecovery").getBooleanValue());
+				}
+
+				if (oSPSectionInfo != null
+						&& oSPSectionInfo.has("NoRecoveryNormalSponsorPolicy")) {
+					newRecovery.setNoRecoveryNormalSponsorPolicy(oSPSectionInfo
+							.get("NoRecoveryNormalSponsorPolicy")
+							.getBooleanValue());
+				}
+
+				if (oSPSectionInfo != null
+						&& oSPSectionInfo.has("NoRecoveryInstitutionalWaiver")) {
+					newRecovery.setNoRecoveryInstitutionalWaiver(oSPSectionInfo
+							.get("NoRecoveryInstitutionalWaiver")
+							.getBooleanValue());
+				}
+
+				if (oSPSectionInfo != null
+						&& oSPSectionInfo
+								.has("LimitedRecoveryNormalSponsorPolicy")) {
+					newRecovery
+							.setLimitedRecoveryNormalSponsorPolicy(oSPSectionInfo
+									.get("LimitedRecoveryNormalSponsorPolicy")
+									.getBooleanValue());
+				}
+
+				if (oSPSectionInfo != null
+						&& oSPSectionInfo
+								.has("LimitedRecoveryInstitutionalWaiver")) {
+					newRecovery
+							.setLimitedRecoveryInstitutionalWaiver(oSPSectionInfo
+									.get("LimitedRecoveryInstitutionalWaiver")
+									.getBooleanValue());
+				}
+				if (!proposalID.equals("0")) {
+					if (!existingProposal.getoSPSectionInfo().getRecovery()
+							.equals(newRecovery)) {
+						existingProposal.getoSPSectionInfo().setRecovery(
+								newRecovery);
+					}
+				}
+
+				BaseInfo newBaseInfo = new BaseInfo();
+				if (oSPSectionInfo != null && oSPSectionInfo.has("MTDC")) {
+					newBaseInfo.setMTDC(oSPSectionInfo.get("MTDC")
+							.getBooleanValue());
+				}
+
+				if (oSPSectionInfo != null && oSPSectionInfo.has("TDC")) {
+					newBaseInfo.setTDC(oSPSectionInfo.get("TDC")
+							.getBooleanValue());
+				}
+
+				if (oSPSectionInfo != null && oSPSectionInfo.has("TC")) {
+					newBaseInfo.setTC(oSPSectionInfo.get("TC")
+							.getBooleanValue());
+				}
+
+				if (oSPSectionInfo != null && oSPSectionInfo.has("Other")) {
+					newBaseInfo.setOther(oSPSectionInfo.get("Other")
+							.getBooleanValue());
+				}
+
+				if (oSPSectionInfo != null
+						&& oSPSectionInfo.has("NotApplicable")) {
+					newBaseInfo.setNotApplicable(oSPSectionInfo.get(
+							"NotApplicable").getBooleanValue());
+				}
+				if (!proposalID.equals("0")) {
+					if (!existingProposal.getoSPSectionInfo().getBaseInfo()
+							.equals(newBaseInfo)) {
+						existingProposal.getoSPSectionInfo().setBaseInfo(
+								newBaseInfo);
+					}
+				}
+
+				if (oSPSectionInfo != null
+						&& oSPSectionInfo.has("IsPISalaryIncluded")) {
+					switch (oSPSectionInfo.get("IsPISalaryIncluded")
+							.getTextValue()) {
+					case "1":
+						newOSPSectionInfo.setPISalaryIncluded(true);
+						break;
+					case "2":
+						newOSPSectionInfo.setPISalaryIncluded(false);
+						break;
+					default:
+						break;
+					}
+				}
+
+				if (!proposalID.equals("0")) {
+					if (existingProposal.getoSPSectionInfo()
+							.isPISalaryIncluded() != newOSPSectionInfo
+							.isPISalaryIncluded()) {
+						existingProposal.getoSPSectionInfo()
+								.setPISalaryIncluded(
+										newOSPSectionInfo.isPISalaryIncluded());
+					}
+				}
+
+				if (oSPSectionInfo != null && oSPSectionInfo.has("PISalary")) {
+					if (!proposalID.equals("0")) {
+						if (existingProposal.getoSPSectionInfo().getPISalary() != Double
+								.parseDouble(oSPSectionInfo.get("PISalary")
 										.getTextValue())) {
-							existingProposal.getoSPSectionInfo().setPIFringe(
+							existingProposal.getoSPSectionInfo().setPISalary(
 									Double.parseDouble(oSPSectionInfo.get(
-											"PIFringe").getTextValue()));
+											"PISalary").getTextValue()));
 						}
-					} else {
-						newOSPSectionInfo.setPIFringe(Double
-								.parseDouble(oSPSectionInfo.get("PIFringe")
-										.getTextValue()));
 					}
 				}
 
-				if (oSPSectionInfo != null
-						&& oSPSectionInfo.has("DepartmentId")) {
+				if (oSPSectionInfo != null && oSPSectionInfo.has("PIFringe")) {
+					if (existingProposal.getoSPSectionInfo().getPIFringe() != Double
+							.parseDouble(oSPSectionInfo.get("PIFringe")
+									.getTextValue())) {
+						existingProposal.getoSPSectionInfo().setPIFringe(
+								Double.parseDouble(oSPSectionInfo.get(
+										"PIFringe").getTextValue()));
+					}
+				} else {
+					newOSPSectionInfo.setPIFringe(Double
+							.parseDouble(oSPSectionInfo.get("PIFringe")
+									.getTextValue()));
+				}
+			}
+
+			if (oSPSectionInfo != null && oSPSectionInfo.has("DepartmentId")) {
+				if (oSPSectionInfo != null && oSPSectionInfo.has("PIFringe")) {
+					if (!existingProposal
+							.getoSPSectionInfo()
+							.getDepartmentId()
+							.equals(oSPSectionInfo.get("DepartmentId")
+									.getTextValue())) {
+						existingProposal.getoSPSectionInfo().setDepartmentId(
+								oSPSectionInfo.get("DepartmentId")
+										.getTextValue());
+					}
+				} else {
+					newOSPSectionInfo.setDepartmentId(oSPSectionInfo.get(
+							"DepartmentId").getTextValue());
+				}
+			}
+
+			BaseOptions newBaseOptions = new BaseOptions();
+
+			if (oSPSectionInfo != null
+					&& oSPSectionInfo.has("InstitutionalCostDocumented")) {
+				switch (oSPSectionInfo.get("InstitutionalCostDocumented")
+						.getTextValue()) {
+				case "1":
+					newBaseOptions.setYes(true);
+					break;
+				case "2":
+					newBaseOptions.setNo(true);
+					break;
+				case "3":
+					newBaseOptions.setNotApplicable(true);
+					break;
+				default:
+					break;
+				}
+			}
+			if (!proposalID.equals("0")) {
+				if (!existingProposal.getoSPSectionInfo()
+						.getInstitutionalCostDocumented()
+						.equals(newBaseOptions)) {
+					existingProposal.getoSPSectionInfo()
+							.setInstitutionalCostDocumented(newBaseOptions);
+				}
+			}
+
+			newBaseOptions = new BaseOptions();
+			if (oSPSectionInfo != null
+					&& oSPSectionInfo.has("ThirdPartyCostDocumented")) {
+				switch (oSPSectionInfo.get("ThirdPartyCostDocumented")
+						.getTextValue()) {
+				case "1":
+					newBaseOptions.setYes(true);
+					break;
+				case "2":
+					newBaseOptions.setNo(true);
+					break;
+				case "3":
+					newBaseOptions.setNotApplicable(true);
+					break;
+				default:
+					break;
+				}
+			}
+			if (!proposalID.equals("0")) {
+				if (!existingProposal.getoSPSectionInfo()
+						.getThirdPartyCostDocumented().equals(newBaseOptions)) {
+					existingProposal.getoSPSectionInfo()
+							.setThirdPartyCostDocumented(newBaseOptions);
+				}
+			}
+
+			if (oSPSectionInfo != null
+					&& oSPSectionInfo.has("IsAnticipatedSubRecipients")) {
+				switch (oSPSectionInfo.get("IsAnticipatedSubRecipients")
+						.getTextValue()) {
+				case "1":
+					newOSPSectionInfo.setAnticipatedSubRecipients(true);
 					if (oSPSectionInfo != null
-							&& oSPSectionInfo.has("PIFringe")) {
-						if (!existingProposal
-								.getoSPSectionInfo()
-								.getDepartmentId()
-								.equals(oSPSectionInfo.get("DepartmentId")
-										.getTextValue())) {
-							existingProposal.getoSPSectionInfo()
-									.setDepartmentId(
-											oSPSectionInfo.get("DepartmentId")
-													.getTextValue());
-						}
-					} else {
-						newOSPSectionInfo.setDepartmentId(oSPSectionInfo.get(
-								"DepartmentId").getTextValue());
+							&& oSPSectionInfo
+									.has("AnticipatedSubRecipientsNames")) {
+						newOSPSectionInfo
+								.setAnticipatedSubRecipientsNames(oSPSectionInfo
+										.get("AnticipatedSubRecipientsNames")
+										.getTextValue());
 					}
+					break;
+				case "2":
+					newOSPSectionInfo.setAnticipatedSubRecipients(false);
+					break;
+				default:
+					break;
+				}
+			}
+
+			if (!proposalID.equals("0")) {
+				if (existingProposal.getoSPSectionInfo()
+						.isAnticipatedSubRecipients() != newOSPSectionInfo
+						.isAnticipatedSubRecipients()) {
+					existingProposal.getoSPSectionInfo()
+							.setAnticipatedSubRecipients(
+									newOSPSectionInfo
+											.isAnticipatedSubRecipients());
 				}
 
-				BaseOptions newBaseOptions = new BaseOptions();
-
-				if (oSPSectionInfo != null
-						&& oSPSectionInfo.has("InstitutionalCostDocumented")) {
-					switch (oSPSectionInfo.get("InstitutionalCostDocumented")
-							.getTextValue()) {
-					case "1":
-						newBaseOptions.setYes(true);
-						break;
-					case "2":
-						newBaseOptions.setNo(true);
-						break;
-					case "3":
-						newBaseOptions.setNotApplicable(true);
-						break;
-					default:
-						break;
-					}
-				}
-				if (!proposalID.equals("0")) {
-					if (!existingProposal.getoSPSectionInfo()
-							.getInstitutionalCostDocumented()
-							.equals(newBaseOptions)) {
-						existingProposal.getoSPSectionInfo()
-								.setInstitutionalCostDocumented(newBaseOptions);
-					}
-				}
-
-				newBaseOptions = new BaseOptions();
-				if (oSPSectionInfo != null
-						&& oSPSectionInfo.has("ThirdPartyCostDocumented")) {
-					switch (oSPSectionInfo.get("ThirdPartyCostDocumented")
-							.getTextValue()) {
-					case "1":
-						newBaseOptions.setYes(true);
-						break;
-					case "2":
-						newBaseOptions.setNo(true);
-						break;
-					case "3":
-						newBaseOptions.setNotApplicable(true);
-						break;
-					default:
-						break;
-					}
-				}
-				if (!proposalID.equals("0")) {
-					if (!existingProposal.getoSPSectionInfo()
-							.getThirdPartyCostDocumented()
-							.equals(newBaseOptions)) {
-						existingProposal.getoSPSectionInfo()
-								.setThirdPartyCostDocumented(newBaseOptions);
-					}
-				}
-
-				if (oSPSectionInfo != null
-						&& oSPSectionInfo.has("IsAnticipatedSubRecipients")) {
-					switch (oSPSectionInfo.get("IsAnticipatedSubRecipients")
-							.getTextValue()) {
-					case "1":
-						newOSPSectionInfo.setAnticipatedSubRecipients(true);
-						if (oSPSectionInfo != null
-								&& oSPSectionInfo
-										.has("AnticipatedSubRecipientsNames")) {
-							newOSPSectionInfo
-									.setAnticipatedSubRecipientsNames(oSPSectionInfo
-											.get("AnticipatedSubRecipientsNames")
-											.getTextValue());
-						}
-						break;
-					case "2":
-						newOSPSectionInfo.setAnticipatedSubRecipients(false);
-						break;
-					default:
-						break;
-					}
-				}
-
-				if (!proposalID.equals("0")) {
-					if (existingProposal.getoSPSectionInfo()
-							.isAnticipatedSubRecipients() != newOSPSectionInfo
-							.isAnticipatedSubRecipients()) {
-						existingProposal.getoSPSectionInfo()
-								.setAnticipatedSubRecipients(
-										newOSPSectionInfo
-												.isAnticipatedSubRecipients());
-					}
-
-					if (existingProposal.getoSPSectionInfo()
-							.getAnticipatedSubRecipientsNames() != null) {
-						if (!existingProposal
-								.getoSPSectionInfo()
-								.getAnticipatedSubRecipientsNames()
-								.equals(newOSPSectionInfo
-										.getAnticipatedSubRecipientsNames())) {
-							existingProposal
-									.getoSPSectionInfo()
-									.setAnticipatedSubRecipientsNames(
-											newOSPSectionInfo
-													.getAnticipatedSubRecipientsNames());
-						}
-					} else {
+				if (existingProposal.getoSPSectionInfo()
+						.getAnticipatedSubRecipientsNames() != null) {
+					if (!existingProposal
+							.getoSPSectionInfo()
+							.getAnticipatedSubRecipientsNames()
+							.equals(newOSPSectionInfo
+									.getAnticipatedSubRecipientsNames())) {
 						existingProposal
 								.getoSPSectionInfo()
 								.setAnticipatedSubRecipientsNames(
 										newOSPSectionInfo
 												.getAnticipatedSubRecipientsNames());
 					}
-				}
-
-				BasePIEligibilityOptions newBasePIEligibilityOptions = new BasePIEligibilityOptions();
-				if (oSPSectionInfo != null
-						&& oSPSectionInfo.has("PIEligibilityWaiver")) {
-					switch (oSPSectionInfo.get("PIEligibilityWaiver")
-							.getTextValue()) {
-					case "1":
-						newBasePIEligibilityOptions.setYes(true);
-						break;
-					case "2":
-						newBasePIEligibilityOptions.setNo(true);
-						break;
-					case "3":
-						newBasePIEligibilityOptions.setNotApplicable(true);
-						break;
-					case "4":
-						newBasePIEligibilityOptions.setThisProposalOnly(true);
-						break;
-					case "5":
-						newBasePIEligibilityOptions.setBlanket(true);
-						break;
-					default:
-						break;
-					}
-				}
-				if (!proposalID.equals("0")) {
-					if (!existingProposal.getoSPSectionInfo()
-							.getPIEligibilityWaiver()
-							.equals(newBasePIEligibilityOptions)) {
-						existingProposal.getoSPSectionInfo()
-								.setPIEligibilityWaiver(
-										newBasePIEligibilityOptions);
-					}
-				}
-
-				newBaseOptions = new BaseOptions();
-				if (oSPSectionInfo != null
-						&& oSPSectionInfo.has("ConflictOfInterestForms")) {
-					switch (oSPSectionInfo.get("ConflictOfInterestForms")
-							.getTextValue()) {
-					case "1":
-						newBaseOptions.setYes(true);
-						break;
-					case "2":
-						newBaseOptions.setNo(true);
-						break;
-					case "3":
-						newBaseOptions.setNotApplicable(true);
-						break;
-					default:
-						break;
-					}
-				}
-				if (!proposalID.equals("0")) {
-					if (!existingProposal.getoSPSectionInfo()
-							.getConflictOfInterestForms()
-							.equals(newBaseOptions)) {
-						existingProposal.getoSPSectionInfo()
-								.setConflictOfInterestForms(newBaseOptions);
-					}
-				}
-
-				newBaseOptions = new BaseOptions();
-				if (oSPSectionInfo != null
-						&& oSPSectionInfo.has("ExcludedPartyListChecked")) {
-					switch (oSPSectionInfo.get("ExcludedPartyListChecked")
-							.getTextValue()) {
-					case "1":
-						newBaseOptions.setYes(true);
-						break;
-					case "2":
-						newBaseOptions.setNo(true);
-						break;
-					case "3":
-						newBaseOptions.setNotApplicable(true);
-						break;
-					default:
-						break;
-					}
-				}
-				if (!proposalID.equals("0")) {
-					if (!existingProposal.getoSPSectionInfo()
-							.getExcludedPartyListChecked()
-							.equals(newBaseOptions)) {
-						existingProposal.getoSPSectionInfo()
-								.setExcludedPartyListChecked(newBaseOptions);
-					}
+				} else {
+					existingProposal
+							.getoSPSectionInfo()
+							.setAnticipatedSubRecipientsNames(
+									newOSPSectionInfo
+											.getAnticipatedSubRecipientsNames());
 				}
 			}
 
-			if (proposalInfo != null && !proposalInfo.has("ProposalNo")
-					&& proposalID.equals("0")) {
-				newProposal
-						.setProposalNo(proposalDAO.findLatestProposalNo() + 1);
-			}
-
-			if (proposalInfo != null && !proposalInfo.has("ReceivedDate")
-					&& proposalID.equals("0")) {
-				newProposal.setDateReceived(new Date());
-			}
-
-			if (proposalInfo != null && proposalInfo.has("ProposalStatus")) {
-				if (!proposalID.equals("0")) {
-					if (!existingProposal.getProposalStatus().equals(
-							Status.valueOf(proposalInfo.get("ProposalStatus")
-									.getTextValue()))) {
-
-						// TODO Need to clear all Proposal Status Before
-						// exists!
-						existingProposal.getProposalStatus().add(
-								Status.valueOf(proposalInfo.get(
-										"ProposalStatus").getTextValue()));
-					}
+			BasePIEligibilityOptions newBasePIEligibilityOptions = new BasePIEligibilityOptions();
+			if (oSPSectionInfo != null
+					&& oSPSectionInfo.has("PIEligibilityWaiver")) {
+				switch (oSPSectionInfo.get("PIEligibilityWaiver")
+						.getTextValue()) {
+				case "1":
+					newBasePIEligibilityOptions.setYes(true);
+					break;
+				case "2":
+					newBasePIEligibilityOptions.setNo(true);
+					break;
+				case "3":
+					newBasePIEligibilityOptions.setNotApplicable(true);
+					break;
+				case "4":
+					newBasePIEligibilityOptions.setThisProposalOnly(true);
+					break;
+				case "5":
+					newBasePIEligibilityOptions.setBlanket(true);
+					break;
+				default:
+					break;
 				}
 			}
-
-			String userProfileID = new String();
-			String userName = new String();
-			Boolean userIsAdmin = false;
-			String userCollege = new String();
-			String userDepartment = new String();
-			String userPositionType = new String();
-			String userPositionTitle = new String();
-
-			JsonNode commonObj = root.get("gpmsCommonObj");
-			if (commonObj != null && commonObj.has("UserProfileID")) {
-				userProfileID = commonObj.get("UserProfileID").getTextValue();
-			}
-			if (commonObj != null && commonObj.has("UserName")) {
-				userName = commonObj.get("UserName").getTextValue();
-			}
-			if (commonObj != null && commonObj.has("UserIsAdmin")) {
-				userIsAdmin = commonObj.get("UserIsAdmin").getBooleanValue();
-			}
-			if (commonObj != null && commonObj.has("UserCollege")) {
-				userCollege = commonObj.get("UserCollege").getTextValue();
-			}
-			if (commonObj != null && commonObj.has("UserDepartment")) {
-				userDepartment = commonObj.get("UserDepartment").getTextValue();
-			}
-			if (commonObj != null && commonObj.has("UserPositionType")) {
-				userPositionType = commonObj.get("UserPositionType")
-						.getTextValue();
-			}
-			if (commonObj != null && commonObj.has("UserPositionTitle")) {
-				userPositionTitle = commonObj.get("UserPositionTitle")
-						.getTextValue();
-			}
-
-			ObjectId authorId = new ObjectId(userProfileID);
-			UserProfile authorProfile = userProfileDAO
-					.findUserDetailsByProfileID(authorId);
-
-			// Save the Proposal
-			Proposal currentProposal = new Proposal();
-			String authorUserName = authorProfile.getUserAccount()
-					.getUserName();
-			String notificationMessage = new String();
-
 			if (!proposalID.equals("0")) {
-				// TODO get clone rather again calling db
-				// Proposal oldProposal = proposalDAO
-				// .findProposalByProposalID(proposalId);
-
-				if (!existingProposal.equals(oldProposal)) {
-					proposalDAO.updateProposal(existingProposal, authorProfile);
-					currentProposal = existingProposal;
-
-					// TODO update notification for all users but
-					// need to check the duplicate notification cause there
-					// going to be update as well as added as PI, Co-PI,
-					// Senior?
-					notificationMessage = "Updated by " + authorUserName + ".";
-					NotifyAllExistingInvestigators(existingProposal.getId()
-							.toString(), existingProposal.getProjectInfo()
-							.getProjectTitle(), existingProposal,
-							notificationMessage, "Proposal", false);
-				}
-			} else {
-				proposalDAO.saveProposal(newProposal, authorProfile);
-				currentProposal = newProposal;
-
-				// TODO create notification for all users
-				notificationMessage = "Created by " + authorUserName + ".";
-				NotifyAllExistingInvestigators(newProposal.getId().toString(),
-						newProposal.getProjectInfo().getProjectTitle(),
-						newProposal, notificationMessage, "Proposal", false);
-			}
-
-			// Added Investigators Notify
-			NotificationLog notification = new NotificationLog();
-			InvestigatorRefAndPosition addedPI = addedInvestigators.getPi();
-			String projectTitle = currentProposal.getProjectInfo()
-					.getProjectTitle();
-			if (addedPI.getUserRef().getId() != null) {
-				notification = new NotificationLog();
-
-				notification.setType("Investigator");
-				notification
-						.setAction("Added as PI by " + authorUserName + ".");
-				notification.setProposalId(currentProposal.getId().toString());
-				notification.setProposalTitle(projectTitle);
-				notification.setUserProfileId(addedPI.getUserProfileId());
-				notification.setUsername(addedPI.getUserRef().getUserAccount()
-						.getUserName());
-				notification.setCollege(addedPI.getCollege());
-				notification.setDepartment(addedPI.getDepartment());
-				notification.setPositionType(addedPI.getPositionType());
-				notification.setPositionTitle(addedPI.getPositionTitle());
-				notificationDAO.save(notification);
-			}
-
-			for (InvestigatorRefAndPosition copi : addedInvestigators
-					.getCo_pi()) {
-				notification = new NotificationLog();
-				notification.setType("Investigator");
-				notification.setAction("Added as CO-PI by " + authorUserName
-						+ ".");
-				notification.setProposalId(currentProposal.getId().toString());
-				notification.setProposalTitle(projectTitle);
-				notification.setUserProfileId(copi.getUserProfileId());
-				notification.setUsername(copi.getUserRef().getUserAccount()
-						.getUserName());
-				notification.setCollege(copi.getCollege());
-				notification.setDepartment(copi.getDepartment());
-				notification.setPositionType(copi.getPositionType());
-				notification.setPositionTitle(copi.getPositionTitle());
-				notificationDAO.save(notification);
-			}
-
-			for (InvestigatorRefAndPosition senior : addedInvestigators
-					.getSeniorPersonnel()) {
-				notification = new NotificationLog();
-				notification.setType("Investigator");
-				notification.setAction("Added as Senior Personnel by "
-						+ authorUserName + ".");
-				notification.setProposalId(currentProposal.getId().toString());
-				notification.setProposalTitle(projectTitle);
-				notification.setUserProfileId(senior.getUserProfileId());
-				notification.setUsername(senior.getUserRef().getUserAccount()
-						.getUserName());
-				notification.setCollege(senior.getCollege());
-				notification.setDepartment(senior.getDepartment());
-				notification.setPositionType(senior.getPositionType());
-				notification.setPositionTitle(senior.getPositionTitle());
-				notificationDAO.save(notification);
-			}
-
-			// Deleted Users Notify
-			InvestigatorRefAndPosition deletedPI = deletedInvestigators.getPi();
-			if (!deletedPI.getUserProfileId().equals("")) {
-				notification = new NotificationLog();
-
-				notification.setType("Investigator");
-				notification.setAction("Deleted as PI by " + authorUserName
-						+ ".");
-				notification.setProposalId(currentProposal.getId().toString());
-				notification.setProposalTitle(projectTitle);
-				notification.setUserProfileId(deletedPI.getUserProfileId());
-				notification.setUsername(deletedPI.getUserRef()
-						.getUserAccount().getUserName());
-				notification.setCollege(deletedPI.getCollege());
-				notification.setDepartment(deletedPI.getDepartment());
-				notification.setPositionType(deletedPI.getPositionType());
-				notification.setPositionTitle(deletedPI.getPositionTitle());
-				notification.setCritical(true);
-				notificationDAO.save(notification);
-			}
-
-			for (InvestigatorRefAndPosition copi : deletedInvestigators
-					.getCo_pi()) {
-				notification = new NotificationLog();
-				notification.setType("Investigator");
-				notification.setAction("Deleted as CO-PI by " + authorUserName
-						+ ".");
-				notification.setProposalId(currentProposal.getId().toString());
-				notification.setProposalTitle(projectTitle);
-				notification.setUserProfileId(copi.getUserProfileId());
-				notification.setUsername(copi.getUserRef().getUserAccount()
-						.getUserName());
-				notification.setCollege(copi.getCollege());
-				notification.setDepartment(copi.getDepartment());
-				notification.setPositionType(copi.getPositionType());
-				notification.setPositionTitle(copi.getPositionTitle());
-				notification.setCritical(true);
-				notificationDAO.save(notification);
-			}
-
-			for (InvestigatorRefAndPosition senior : deletedInvestigators
-					.getSeniorPersonnel()) {
-				notification = new NotificationLog();
-				notification.setType("Investigator");
-				notification.setAction("Deleted as Senior Personnel by "
-						+ authorUserName + ".");
-				notification.setProposalId(currentProposal.getId().toString());
-				notification.setProposalTitle(projectTitle);
-				notification.setUserProfileId(senior.getUserProfileId());
-				notification.setUsername(senior.getUserRef().getUserAccount()
-						.getUserName());
-				notification.setCollege(senior.getCollege());
-				notification.setDepartment(senior.getDepartment());
-				notification.setPositionType(senior.getPositionType());
-				notification.setPositionTitle(senior.getPositionTitle());
-				notification.setCritical(true);
-				notificationDAO.save(notification);
-			}
-
-			// New Signatures Notify
-			if (addedSignatures.size() != 0) {
-				for (SignatureInfo signatureInfo : addedSignatures) {
-					String signFullName = signatureInfo.getFullName();
-					String position = signatureInfo.getPositionTitle();
-					Date signedDate = signatureInfo.getSignedDate();
-					notification = new NotificationLog();
-					notification.setType("Signature");
-					notification.setAction("Signed by " + signFullName + " as "
-							+ position + ".");
-
-					notification.setProposalId(currentProposal.getId()
-							.toString());
-					notification.setProposalTitle(projectTitle);
-					notification.setForAdmin(true);
-					notificationDAO.save(notification);
-
-					notification = new NotificationLog();
-					notification.setType("Signature");
-					notification.setAction("Signed by " + signFullName + " as "
-							+ position + ".");
-					notification.setProposalId(currentProposal.getId()
-							.toString());
-					notification.setProposalTitle(projectTitle);
-					notification.setUserProfileId(currentProposal
-							.getInvestigatorInfo().getPi().getUserProfileId());
-					notification.setUsername(currentProposal
-							.getInvestigatorInfo().getPi().getUserRef()
-							.getUserAccount().getUserName());
-					notification.setCollege(currentProposal
-							.getInvestigatorInfo().getPi().getCollege());
-					notification.setDepartment(currentProposal
-							.getInvestigatorInfo().getPi().getDepartment());
-					notification.setPositionType(currentProposal
-							.getInvestigatorInfo().getPi().getPositionType());
-					notification.setPositionTitle(currentProposal
-							.getInvestigatorInfo().getPi().getPositionTitle());
-					notificationDAO.save(notification);
-
-					for (InvestigatorRefAndPosition copi : currentProposal
-							.getInvestigatorInfo().getCo_pi()) {
-						notification = new NotificationLog();
-						notification.setType("Signature");
-						notification.setAction("Signed by " + signFullName
-								+ " as " + position + ".");
-						notification.setProposalId(currentProposal.getId()
-								.toString());
-						notification.setProposalTitle(projectTitle);
-						notification.setUserProfileId(copi.getUserProfileId());
-						notification.setUsername(copi.getUserRef()
-								.getUserAccount().getUserName());
-						notification.setCollege(copi.getCollege());
-						notification.setDepartment(copi.getDepartment());
-						notification.setPositionType(copi.getPositionType());
-						notification.setPositionTitle(copi.getPositionTitle());
-						notificationDAO.save(notification);
-					}
-
-					for (InvestigatorRefAndPosition senior : currentProposal
-							.getInvestigatorInfo().getSeniorPersonnel()) {
-						notification = new NotificationLog();
-						notification.setType("Signature");
-						notification.setAction("Signed by " + signFullName
-								+ " as " + position + ".");
-						notification.setProposalId(currentProposal.getId()
-								.toString());
-						notification.setProposalTitle(projectTitle);
-						notification
-								.setUserProfileId(senior.getUserProfileId());
-						notification.setUsername(senior.getUserRef()
-								.getUserAccount().getUserName());
-						notification.setCollege(senior.getCollege());
-						notification.setDepartment(senior.getDepartment());
-						notification.setPositionType(senior.getPositionType());
-						notification
-								.setPositionTitle(senior.getPositionTitle());
-						notificationDAO.save(notification);
-					}
+				if (!existingProposal.getoSPSectionInfo()
+						.getPIEligibilityWaiver()
+						.equals(newBasePIEligibilityOptions)) {
+					existingProposal
+							.getoSPSectionInfo()
+							.setPIEligibilityWaiver(newBasePIEligibilityOptions);
 				}
 			}
-			// return Response.ok("Success", MediaType.APPLICATION_JSON)
-			// .entity(true).build();
-			// return Response.status(200).type(MediaType.APPLICATION_JSON)
-			// .entity(true).build();
-			// response = mapper.writerWithDefaultPrettyPrinter()
-			// .writeValueAsString("Success");
 
+			newBaseOptions = new BaseOptions();
+			if (oSPSectionInfo != null
+					&& oSPSectionInfo.has("ConflictOfInterestForms")) {
+				switch (oSPSectionInfo.get("ConflictOfInterestForms")
+						.getTextValue()) {
+				case "1":
+					newBaseOptions.setYes(true);
+					break;
+				case "2":
+					newBaseOptions.setNo(true);
+					break;
+				case "3":
+					newBaseOptions.setNotApplicable(true);
+					break;
+				default:
+					break;
+				}
+			}
+			if (!proposalID.equals("0")) {
+				if (!existingProposal.getoSPSectionInfo()
+						.getConflictOfInterestForms().equals(newBaseOptions)) {
+					existingProposal.getoSPSectionInfo()
+							.setConflictOfInterestForms(newBaseOptions);
+				}
+			}
+
+			newBaseOptions = new BaseOptions();
+			if (oSPSectionInfo != null
+					&& oSPSectionInfo.has("ExcludedPartyListChecked")) {
+				switch (oSPSectionInfo.get("ExcludedPartyListChecked")
+						.getTextValue()) {
+				case "1":
+					newBaseOptions.setYes(true);
+					break;
+				case "2":
+					newBaseOptions.setNo(true);
+					break;
+				case "3":
+					newBaseOptions.setNotApplicable(true);
+					break;
+				default:
+					break;
+				}
+			}
+			if (!proposalID.equals("0")) {
+				if (!existingProposal.getoSPSectionInfo()
+						.getExcludedPartyListChecked().equals(newBaseOptions)) {
+					existingProposal.getoSPSectionInfo()
+							.setExcludedPartyListChecked(newBaseOptions);
+				}
+			}
 		}
-		// else {
-		// return Response.status(403).type(MediaType.APPLICATION_JSON)
-		// .entity("Your permission is: " + decision).build();
-		// // response = mapper.writerWithDefaultPrettyPrinter()
-		// // .writeValueAsString("Your permission is :" + decision);
-		// }
-		// } else {
-		// return Response.status(403).type(MediaType.APPLICATION_JSON)
-		// .entity("No policy is passed!").build();
-		// // response = mapper.writerWithDefaultPrettyPrinter()
-		// // .writeValueAsString("No policy is passed!");
-		// }
+
+		if (proposalInfo != null && !proposalInfo.has("ProposalNo")
+				&& proposalID.equals("0")) {
+			newProposal.setProposalNo(proposalDAO.findLatestProposalNo() + 1);
+		}
+
+		if (proposalInfo != null && !proposalInfo.has("ReceivedDate")
+				&& proposalID.equals("0")) {
+			newProposal.setDateReceived(new Date());
+		}
+
+		if (proposalInfo != null && proposalInfo.has("ProposalStatus")) {
+			if (!proposalID.equals("0")) {
+				if (!existingProposal.getProposalStatus().equals(
+						Status.valueOf(proposalInfo.get("ProposalStatus")
+								.getTextValue()))) {
+
+					// TODO Need to clear all Proposal Status Before
+					// exists!
+					existingProposal.getProposalStatus().add(
+							Status.valueOf(proposalInfo.get("ProposalStatus")
+									.getTextValue()));
+				}
+			}
+		}
+
+		String userProfileID = new String();
+		String userName = new String();
+		Boolean userIsAdmin = false;
+		String userCollege = new String();
+		String userDepartment = new String();
+		String userPositionType = new String();
+		String userPositionTitle = new String();
+
+		JsonNode commonObj = root.get("gpmsCommonObj");
+		if (commonObj != null && commonObj.has("UserProfileID")) {
+			userProfileID = commonObj.get("UserProfileID").getTextValue();
+		}
+		if (commonObj != null && commonObj.has("UserName")) {
+			userName = commonObj.get("UserName").getTextValue();
+		}
+		if (commonObj != null && commonObj.has("UserIsAdmin")) {
+			userIsAdmin = commonObj.get("UserIsAdmin").getBooleanValue();
+		}
+		if (commonObj != null && commonObj.has("UserCollege")) {
+			userCollege = commonObj.get("UserCollege").getTextValue();
+		}
+		if (commonObj != null && commonObj.has("UserDepartment")) {
+			userDepartment = commonObj.get("UserDepartment").getTextValue();
+		}
+		if (commonObj != null && commonObj.has("UserPositionType")) {
+			userPositionType = commonObj.get("UserPositionType").getTextValue();
+		}
+		if (commonObj != null && commonObj.has("UserPositionTitle")) {
+			userPositionTitle = commonObj.get("UserPositionTitle")
+					.getTextValue();
+		}
+
+		ObjectId authorId = new ObjectId(userProfileID);
+		UserProfile authorProfile = userProfileDAO
+				.findUserDetailsByProfileID(authorId);
+
+		// Save the Proposal
+		Proposal currentProposal = new Proposal();
+		String authorUserName = authorProfile.getUserAccount().getUserName();
+		String notificationMessage = new String();
+
+		if (!proposalID.equals("0")) {
+			// TODO get clone rather again calling db
+			// Proposal oldProposal = proposalDAO
+			// .findProposalByProposalID(proposalId);
+
+			if (!existingProposal.equals(oldProposal)) {
+				proposalDAO.updateProposal(existingProposal, authorProfile);
+				currentProposal = existingProposal;
+
+				// TODO update notification for all users but
+				// need to check the duplicate notification cause there
+				// going to be update as well as added as PI, Co-PI,
+				// Senior?
+				notificationMessage = "Updated by " + authorUserName + ".";
+				NotifyAllExistingInvestigators(existingProposal.getId()
+						.toString(), existingProposal.getProjectInfo()
+						.getProjectTitle(), existingProposal,
+						notificationMessage, "Proposal", false);
+			}
+		} else {
+			proposalDAO.saveProposal(newProposal, authorProfile);
+			currentProposal = newProposal;
+
+			// TODO create notification for all users
+			notificationMessage = "Created by " + authorUserName + ".";
+			NotifyAllExistingInvestigators(newProposal.getId().toString(),
+					newProposal.getProjectInfo().getProjectTitle(),
+					newProposal, notificationMessage, "Proposal", false);
+		}
+
+		// Added Investigators Notify
+		NotificationLog notification = new NotificationLog();
+		InvestigatorRefAndPosition addedPI = addedInvestigators.getPi();
+		String projectTitle = currentProposal.getProjectInfo()
+				.getProjectTitle();
+		if (addedPI.getUserRef().getId() != null) {
+			notification = new NotificationLog();
+
+			notification.setType("Investigator");
+			notification.setAction("Added as PI by " + authorUserName + ".");
+			notification.setProposalId(currentProposal.getId().toString());
+			notification.setProposalTitle(projectTitle);
+			notification.setUserProfileId(addedPI.getUserProfileId());
+			notification.setUsername(addedPI.getUserRef().getUserAccount()
+					.getUserName());
+			notification.setCollege(addedPI.getCollege());
+			notification.setDepartment(addedPI.getDepartment());
+			notification.setPositionType(addedPI.getPositionType());
+			notification.setPositionTitle(addedPI.getPositionTitle());
+			notificationDAO.save(notification);
+		}
+
+		for (InvestigatorRefAndPosition copi : addedInvestigators.getCo_pi()) {
+			notification = new NotificationLog();
+			notification.setType("Investigator");
+			notification.setAction("Added as CO-PI by " + authorUserName + ".");
+			notification.setProposalId(currentProposal.getId().toString());
+			notification.setProposalTitle(projectTitle);
+			notification.setUserProfileId(copi.getUserProfileId());
+			notification.setUsername(copi.getUserRef().getUserAccount()
+					.getUserName());
+			notification.setCollege(copi.getCollege());
+			notification.setDepartment(copi.getDepartment());
+			notification.setPositionType(copi.getPositionType());
+			notification.setPositionTitle(copi.getPositionTitle());
+			notificationDAO.save(notification);
+		}
+
+		for (InvestigatorRefAndPosition senior : addedInvestigators
+				.getSeniorPersonnel()) {
+			notification = new NotificationLog();
+			notification.setType("Investigator");
+			notification.setAction("Added as Senior Personnel by "
+					+ authorUserName + ".");
+			notification.setProposalId(currentProposal.getId().toString());
+			notification.setProposalTitle(projectTitle);
+			notification.setUserProfileId(senior.getUserProfileId());
+			notification.setUsername(senior.getUserRef().getUserAccount()
+					.getUserName());
+			notification.setCollege(senior.getCollege());
+			notification.setDepartment(senior.getDepartment());
+			notification.setPositionType(senior.getPositionType());
+			notification.setPositionTitle(senior.getPositionTitle());
+			notificationDAO.save(notification);
+		}
+
+		// Deleted Users Notify
+		InvestigatorRefAndPosition deletedPI = deletedInvestigators.getPi();
+		if (!deletedPI.getUserProfileId().equals("")) {
+			notification = new NotificationLog();
+
+			notification.setType("Investigator");
+			notification.setAction("Deleted as PI by " + authorUserName + ".");
+			notification.setProposalId(currentProposal.getId().toString());
+			notification.setProposalTitle(projectTitle);
+			notification.setUserProfileId(deletedPI.getUserProfileId());
+			notification.setUsername(deletedPI.getUserRef().getUserAccount()
+					.getUserName());
+			notification.setCollege(deletedPI.getCollege());
+			notification.setDepartment(deletedPI.getDepartment());
+			notification.setPositionType(deletedPI.getPositionType());
+			notification.setPositionTitle(deletedPI.getPositionTitle());
+			notification.setCritical(true);
+			notificationDAO.save(notification);
+		}
+
+		for (InvestigatorRefAndPosition copi : deletedInvestigators.getCo_pi()) {
+			notification = new NotificationLog();
+			notification.setType("Investigator");
+			notification.setAction("Deleted as CO-PI by " + authorUserName
+					+ ".");
+			notification.setProposalId(currentProposal.getId().toString());
+			notification.setProposalTitle(projectTitle);
+			notification.setUserProfileId(copi.getUserProfileId());
+			notification.setUsername(copi.getUserRef().getUserAccount()
+					.getUserName());
+			notification.setCollege(copi.getCollege());
+			notification.setDepartment(copi.getDepartment());
+			notification.setPositionType(copi.getPositionType());
+			notification.setPositionTitle(copi.getPositionTitle());
+			notification.setCritical(true);
+			notificationDAO.save(notification);
+		}
+
+		for (InvestigatorRefAndPosition senior : deletedInvestigators
+				.getSeniorPersonnel()) {
+			notification = new NotificationLog();
+			notification.setType("Investigator");
+			notification.setAction("Deleted as Senior Personnel by "
+					+ authorUserName + ".");
+			notification.setProposalId(currentProposal.getId().toString());
+			notification.setProposalTitle(projectTitle);
+			notification.setUserProfileId(senior.getUserProfileId());
+			notification.setUsername(senior.getUserRef().getUserAccount()
+					.getUserName());
+			notification.setCollege(senior.getCollege());
+			notification.setDepartment(senior.getDepartment());
+			notification.setPositionType(senior.getPositionType());
+			notification.setPositionTitle(senior.getPositionTitle());
+			notification.setCritical(true);
+			notificationDAO.save(notification);
+		}
+
+		// New Signatures Notify
+		if (addedSignatures.size() != 0) {
+			for (SignatureInfo signatureInfo : addedSignatures) {
+				String signFullName = signatureInfo.getFullName();
+				String position = signatureInfo.getPositionTitle();
+				Date signedDate = signatureInfo.getSignedDate();
+				notification = new NotificationLog();
+				notification.setType("Signature");
+				notification.setAction("Signed by " + signFullName + " as "
+						+ position + ".");
+
+				notification.setProposalId(currentProposal.getId().toString());
+				notification.setProposalTitle(projectTitle);
+				notification.setForAdmin(true);
+				notificationDAO.save(notification);
+
+				notification = new NotificationLog();
+				notification.setType("Signature");
+				notification.setAction("Signed by " + signFullName + " as "
+						+ position + ".");
+				notification.setProposalId(currentProposal.getId().toString());
+				notification.setProposalTitle(projectTitle);
+				notification.setUserProfileId(currentProposal
+						.getInvestigatorInfo().getPi().getUserProfileId());
+				notification.setUsername(currentProposal.getInvestigatorInfo()
+						.getPi().getUserRef().getUserAccount().getUserName());
+				notification.setCollege(currentProposal.getInvestigatorInfo()
+						.getPi().getCollege());
+				notification.setDepartment(currentProposal
+						.getInvestigatorInfo().getPi().getDepartment());
+				notification.setPositionType(currentProposal
+						.getInvestigatorInfo().getPi().getPositionType());
+				notification.setPositionTitle(currentProposal
+						.getInvestigatorInfo().getPi().getPositionTitle());
+				notificationDAO.save(notification);
+
+				for (InvestigatorRefAndPosition copi : currentProposal
+						.getInvestigatorInfo().getCo_pi()) {
+					notification = new NotificationLog();
+					notification.setType("Signature");
+					notification.setAction("Signed by " + signFullName + " as "
+							+ position + ".");
+					notification.setProposalId(currentProposal.getId()
+							.toString());
+					notification.setProposalTitle(projectTitle);
+					notification.setUserProfileId(copi.getUserProfileId());
+					notification.setUsername(copi.getUserRef().getUserAccount()
+							.getUserName());
+					notification.setCollege(copi.getCollege());
+					notification.setDepartment(copi.getDepartment());
+					notification.setPositionType(copi.getPositionType());
+					notification.setPositionTitle(copi.getPositionTitle());
+					notificationDAO.save(notification);
+				}
+
+				for (InvestigatorRefAndPosition senior : currentProposal
+						.getInvestigatorInfo().getSeniorPersonnel()) {
+					notification = new NotificationLog();
+					notification.setType("Signature");
+					notification.setAction("Signed by " + signFullName + " as "
+							+ position + ".");
+					notification.setProposalId(currentProposal.getId()
+							.toString());
+					notification.setProposalTitle(projectTitle);
+					notification.setUserProfileId(senior.getUserProfileId());
+					notification.setUsername(senior.getUserRef()
+							.getUserAccount().getUserName());
+					notification.setCollege(senior.getCollege());
+					notification.setDepartment(senior.getDepartment());
+					notification.setPositionType(senior.getPositionType());
+					notification.setPositionTitle(senior.getPositionTitle());
+					notificationDAO.save(notification);
+				}
+			}
+		}
 		return Response.status(200).type(MediaType.APPLICATION_JSON)
 				.entity(true).build();
 	}
@@ -2748,13 +2610,13 @@ public class ProposalService {
 			// .findUserDetailsByProfileID(authorId);
 
 			String decision = ac.getXACMLdecision(attrMap);
-			// if (decision.equals("Permit")) {
-			return Response.status(200).type(MediaType.APPLICATION_JSON)
-					.entity(true).build();
-			// } else {
-			// return Response.status(403).type(MediaType.APPLICATION_JSON)
-			// .entity("Your permission is: " + decision).build();
-			// }
+			if (decision.equals("Permit")) {
+				return Response.status(200).type(MediaType.APPLICATION_JSON)
+						.entity(true).build();
+			} else {
+				return Response.status(403).type(MediaType.APPLICATION_JSON)
+						.entity("Your permission is: " + decision).build();
+			}
 		} else {
 			return Response.status(403).type(MediaType.APPLICATION_JSON)
 					.entity("No User Permission Attributes are send!").build();
