@@ -472,6 +472,58 @@ $(function() {
 					});
 		},
 
+		CheckUserPermission : function(buttonType, proposal_roles, proposal_id,
+				config) {
+			var attributeArray = [];
+			attributeArray.push({
+				attributeType : "Subject",
+				attributeName : "position-title",
+				attributeValue : GPMS.utils.GetUserPositionTitle()
+			});
+
+			attributeArray.push({
+				attributeType : "Subject",
+				attributeName : "position-type",
+				attributeValue : GPMS.utils.GetUserPositionType()
+			});
+
+			attributeArray.push({
+				attributeType : "Subject",
+				attributeName : "proposal-role",
+				attributeValue : proposal_roles
+			});
+
+			attributeArray.push({
+				attributeType : "Resource",
+				attributeName : "proposal-section",
+				attributeValue : "Whole Proposal"
+			});
+
+			attributeArray.push({
+				attributeType : "Action",
+				attributeName : "proposal-action",
+				attributeValue : buttonType
+			});
+
+			if (proposal_id != '') {
+				this.config.proposalId = proposal_id;
+			} else {
+				this.config.proposalId = "0";
+			}
+
+			this.config.url = this.config.baseURL
+					+ "CheckPermissionForAProposal";
+			this.config.data = JSON2.stringify({
+				proposalId : proposal_id,
+				policyInfo : attributeArray,
+				gpmsCommonObj : gpmsCommonObj()
+			});
+
+			this.config.proposalRoles = proposal_roles;
+			this.config.buttonType = buttonType;
+			this.ajaxCall(this.config);
+		},
+
 		SearchProposals : function() {
 			var projectTitle = $.trim($("#txtSearchProjectTitle").val());
 			var usernameBy = $.trim($("#txtSearchUserName").val());
@@ -1768,54 +1820,11 @@ $(function() {
 		DeleteProposal : function(tblID, argus) {
 			switch (tblID) {
 			case "gdvProposals":
-				var proposalRoles = $.trim(argus[1]);
-				var proposalUserTitle = GPMS.utils.GetUserPositionTitle();
+				var proposal_roles = $.trim(argus[1]);
 				if (argus[2].toLowerCase() != "yes") {
-
-					var policyAttributeInfo = {};
-
-					var attributeArray = [];
-					attributeArray.push({
-						attributeType : "Subject",
-						attributeName : "position-title",
-						attributeValue : proposalUserTitle
-					});
-
-					attributeArray.push({
-						attributeType : "Subject",
-						attributeName : "position-type",
-						attributeValue : GPMS.utils.GetUserPositionType()
-					});
-
-					attributeArray.push({
-						attributeType : "Subject",
-						attributeName : "proposal-role",
-						attributeValue : proposalRoles
-					});
-
-					attributeArray.push({
-						attributeType : "Resource",
-						attributeName : "proposal-section",
-						attributeValue : "Whole Proposal"
-					});
-
-					attributeArray.push({
-						attributeType : "Action",
-						attributeName : "proposal-action",
-						attributeValue : "Delete"
-					});
-
-					myProposal.config.url = myProposal.config.baseURL
-							+ "CheckPermissionForAProposal";
-					myProposal.config.data = JSON2.stringify({
-						proposalId : argus[0],
-						policyInfo : attributeArray,
-						gpmsCommonObj : gpmsCommonObj()
-					});
 					myProposal.config.ajaxCallMode = 10;
-					myProposal.config.proposalId = argus[0];
-					myProposal.config.proposalRoles = proposalRoles;
-					myProposal.ajaxCall(myProposal.config);
+					myProposal.CheckUserPermission("Delete", proposal_roles,
+							argus[0], myProposal.config);
 					return false;
 				} else {
 					csscody.alert('<h2>' + 'Information Alert' + '</h2><p>'
@@ -3317,58 +3326,11 @@ $(function() {
 									var proposal_id = $(this).prop("name");
 									var proposal_roles = $(this).prop(
 											"data-proproles");
-
-									var attributeArray = [];
-									attributeArray.push({
-										attributeType : "Subject",
-										attributeName : "position-title",
-										attributeValue : GPMS.utils
-												.GetUserPositionTitle()
-									});
-
-									attributeArray.push({
-										attributeType : "Subject",
-										attributeName : "position-type",
-										attributeValue : GPMS.utils
-												.GetUserPositionType()
-									});
-
-									attributeArray.push({
-										attributeType : "Subject",
-										attributeName : "proposal-role",
-										attributeValue : proposal_roles
-									});
-
-									attributeArray.push({
-										attributeType : "Resource",
-										attributeName : "proposal-section",
-										attributeValue : "Whole Proposal"
-									});
-
-									attributeArray.push({
-										attributeType : "Action",
-										attributeName : "proposal-action",
-										attributeValue : $buttonType
-									});
-
-									if (proposal_id != '') {
-										myProposal.config.proposalId = proposal_id;
-									} else {
-										myProposal.config.proposalId = "0";
-									}
-
-									myProposal.config.url = myProposal.config.baseURL
-											+ "CheckPermissionForAProposal";
-									myProposal.config.data = JSON2.stringify({
-										proposalId : proposal_id,
-										policyInfo : attributeArray,
-										gpmsCommonObj : gpmsCommonObj()
-									});
 									myProposal.config.ajaxCallMode = 11;
 
-									myProposal.config.proposalRoles = proposal_roles;
-									myProposal.config.buttonType = $buttonType;
-									myProposal.ajaxCall(myProposal.config);
+									myProposal.CheckUserPermission($buttonType,
+											proposal_roles, proposal_id,
+											myProposal.config);
 
 									$(this).enable();
 									e.preventDefault();
@@ -3389,58 +3351,11 @@ $(function() {
 									var proposal_id = $(this).prop("name");
 									var proposal_roles = $(this).prop(
 											"data-proproles");
-
-									var attributeArray = [];
-									attributeArray.push({
-										attributeType : "Subject",
-										attributeName : "position-title",
-										attributeValue : GPMS.utils
-												.GetUserPositionTitle()
-									});
-
-									attributeArray.push({
-										attributeType : "Subject",
-										attributeName : "position-type",
-										attributeValue : GPMS.utils
-												.GetUserPositionType()
-									});
-
-									attributeArray.push({
-										attributeType : "Subject",
-										attributeName : "proposal-role",
-										attributeValue : proposal_roles
-									});
-
-									attributeArray.push({
-										attributeType : "Resource",
-										attributeName : "proposal-section",
-										attributeValue : "Whole Proposal"
-									});
-
-									attributeArray.push({
-										attributeType : "Action",
-										attributeName : "proposal-action",
-										attributeValue : $buttonType
-									});
-
-									if (proposal_id != '') {
-										myProposal.config.proposalId = proposal_id;
-									} else {
-										myProposal.config.proposalId = "0";
-									}
-
-									myProposal.config.url = myProposal.config.baseURL
-											+ "CheckPermissionForAProposal";
-									myProposal.config.data = JSON2.stringify({
-										proposalId : proposal_id,
-										policyInfo : attributeArray,
-										gpmsCommonObj : gpmsCommonObj()
-									});
 									myProposal.config.ajaxCallMode = 11;
 
-									myProposal.config.proposalRoles = proposal_roles;
-									myProposal.config.buttonType = $buttonType;
-									myProposal.ajaxCall(myProposal.config);
+									myProposal.CheckUserPermission($buttonType,
+											proposal_roles, proposal_id,
+											myProposal.config);
 
 									$(this).enable();
 									e.preventDefault();
@@ -3461,58 +3376,11 @@ $(function() {
 									var proposal_id = $(this).prop("name");
 									var proposal_roles = $(this).prop(
 											"data-proproles");
-
-									var attributeArray = [];
-									attributeArray.push({
-										attributeType : "Subject",
-										attributeName : "position-title",
-										attributeValue : GPMS.utils
-												.GetUserPositionTitle()
-									});
-
-									attributeArray.push({
-										attributeType : "Subject",
-										attributeName : "position-type",
-										attributeValue : GPMS.utils
-												.GetUserPositionType()
-									});
-
-									attributeArray.push({
-										attributeType : "Subject",
-										attributeName : "proposal-role",
-										attributeValue : proposal_roles
-									});
-
-									attributeArray.push({
-										attributeType : "Resource",
-										attributeName : "proposal-section",
-										attributeValue : "Whole Proposal"
-									});
-
-									attributeArray.push({
-										attributeType : "Action",
-										attributeName : "proposal-action",
-										attributeValue : $buttonType
-									});
-
-									if (proposal_id != '') {
-										myProposal.config.proposalId = proposal_id;
-									} else {
-										myProposal.config.proposalId = "0";
-									}
-
-									myProposal.config.url = myProposal.config.baseURL
-											+ "CheckPermissionForAProposal";
-									myProposal.config.data = JSON2.stringify({
-										proposalId : proposal_id,
-										policyInfo : attributeArray,
-										gpmsCommonObj : gpmsCommonObj()
-									});
 									myProposal.config.ajaxCallMode = 11;
 
-									myProposal.config.proposalRoles = proposal_roles;
-									myProposal.config.buttonType = $buttonType;
-									myProposal.ajaxCall(myProposal.config);
+									myProposal.CheckUserPermission($buttonType,
+											proposal_roles, proposal_id,
+											myProposal.config);
 
 									$(this).enable();
 									e.preventDefault();
@@ -3533,58 +3401,11 @@ $(function() {
 									var proposal_id = $(this).prop("name");
 									var proposal_roles = $(this).prop(
 											"data-proproles");
-
-									var attributeArray = [];
-									attributeArray.push({
-										attributeType : "Subject",
-										attributeName : "position-title",
-										attributeValue : GPMS.utils
-												.GetUserPositionTitle()
-									});
-
-									attributeArray.push({
-										attributeType : "Subject",
-										attributeName : "position-type",
-										attributeValue : GPMS.utils
-												.GetUserPositionType()
-									});
-
-									attributeArray.push({
-										attributeType : "Subject",
-										attributeName : "proposal-role",
-										attributeValue : proposal_roles
-									});
-
-									attributeArray.push({
-										attributeType : "Resource",
-										attributeName : "proposal-section",
-										attributeValue : "Whole Proposal"
-									});
-
-									attributeArray.push({
-										attributeType : "Action",
-										attributeName : "proposal-action",
-										attributeValue : $buttonType
-									});
-
-									if (proposal_id != '') {
-										myProposal.config.proposalId = proposal_id;
-									} else {
-										myProposal.config.proposalId = "0";
-									}
-
-									myProposal.config.url = myProposal.config.baseURL
-											+ "CheckPermissionForAProposal";
-									myProposal.config.data = JSON2.stringify({
-										proposalId : proposal_id,
-										policyInfo : attributeArray,
-										gpmsCommonObj : gpmsCommonObj()
-									});
 									myProposal.config.ajaxCallMode = 11;
 
-									myProposal.config.proposalRoles = proposal_roles;
-									myProposal.config.buttonType = $buttonType;
-									myProposal.ajaxCall(myProposal.config);
+									myProposal.CheckUserPermission($buttonType,
+											proposal_roles, proposal_id,
+											myProposal.config);
 
 									$(this).enable();
 									e.preventDefault();
@@ -3605,58 +3426,11 @@ $(function() {
 									var proposal_id = $(this).prop("name");
 									var proposal_roles = $(this).prop(
 											"data-proproles");
-
-									var attributeArray = [];
-									attributeArray.push({
-										attributeType : "Subject",
-										attributeName : "position-title",
-										attributeValue : GPMS.utils
-												.GetUserPositionTitle()
-									});
-
-									attributeArray.push({
-										attributeType : "Subject",
-										attributeName : "position-type",
-										attributeValue : GPMS.utils
-												.GetUserPositionType()
-									});
-
-									attributeArray.push({
-										attributeType : "Subject",
-										attributeName : "proposal-role",
-										attributeValue : proposal_roles
-									});
-
-									attributeArray.push({
-										attributeType : "Resource",
-										attributeName : "proposal-section",
-										attributeValue : "Whole Proposal"
-									});
-
-									attributeArray.push({
-										attributeType : "Action",
-										attributeName : "proposal-action",
-										attributeValue : $buttonType
-									});
-
-									if (proposal_id != '') {
-										myProposal.config.proposalId = proposal_id;
-									} else {
-										myProposal.config.proposalId = "0";
-									}
-
-									myProposal.config.url = myProposal.config.baseURL
-											+ "CheckPermissionForAProposal";
-									myProposal.config.data = JSON2.stringify({
-										proposalId : proposal_id,
-										policyInfo : attributeArray,
-										gpmsCommonObj : gpmsCommonObj()
-									});
 									myProposal.config.ajaxCallMode = 11;
 
-									myProposal.config.proposalRoles = proposal_roles;
-									myProposal.config.buttonType = $buttonType;
-									myProposal.ajaxCall(myProposal.config);
+									myProposal.CheckUserPermission($buttonType,
+											proposal_roles, proposal_id,
+											myProposal.config);
 
 									$(this).enable();
 									e.preventDefault();
@@ -3677,58 +3451,11 @@ $(function() {
 									var proposal_id = $(this).prop("name");
 									var proposal_roles = $(this).prop(
 											"data-proproles");
-
-									var attributeArray = [];
-									attributeArray.push({
-										attributeType : "Subject",
-										attributeName : "position-title",
-										attributeValue : GPMS.utils
-												.GetUserPositionTitle()
-									});
-
-									attributeArray.push({
-										attributeType : "Subject",
-										attributeName : "position-type",
-										attributeValue : GPMS.utils
-												.GetUserPositionType()
-									});
-
-									attributeArray.push({
-										attributeType : "Subject",
-										attributeName : "proposal-role",
-										attributeValue : proposal_roles
-									});
-
-									attributeArray.push({
-										attributeType : "Resource",
-										attributeName : "proposal-section",
-										attributeValue : "Whole Proposal"
-									});
-
-									attributeArray.push({
-										attributeType : "Action",
-										attributeName : "proposal-action",
-										attributeValue : $buttonType
-									});
-
-									if (proposal_id != '') {
-										myProposal.config.proposalId = proposal_id;
-									} else {
-										myProposal.config.proposalId = "0";
-									}
-
-									myProposal.config.url = myProposal.config.baseURL
-											+ "CheckPermissionForAProposal";
-									myProposal.config.data = JSON2.stringify({
-										proposalId : proposal_id,
-										policyInfo : attributeArray,
-										gpmsCommonObj : gpmsCommonObj()
-									});
 									myProposal.config.ajaxCallMode = 11;
 
-									myProposal.config.proposalRoles = proposal_roles;
-									myProposal.config.buttonType = $buttonType;
-									myProposal.ajaxCall(myProposal.config);
+									myProposal.CheckUserPermission($buttonType,
+											proposal_roles, proposal_id,
+											myProposal.config);
 
 									$(this).enable();
 									e.preventDefault();
@@ -3749,58 +3476,11 @@ $(function() {
 									var proposal_id = $(this).prop("name");
 									var proposal_roles = $(this).prop(
 											"data-proproles");
-
-									var attributeArray = [];
-									attributeArray.push({
-										attributeType : "Subject",
-										attributeName : "position-title",
-										attributeValue : GPMS.utils
-												.GetUserPositionTitle()
-									});
-
-									attributeArray.push({
-										attributeType : "Subject",
-										attributeName : "position-type",
-										attributeValue : GPMS.utils
-												.GetUserPositionType()
-									});
-
-									attributeArray.push({
-										attributeType : "Subject",
-										attributeName : "proposal-role",
-										attributeValue : proposal_roles
-									});
-
-									attributeArray.push({
-										attributeType : "Resource",
-										attributeName : "proposal-section",
-										attributeValue : "Whole Proposal"
-									});
-
-									attributeArray.push({
-										attributeType : "Action",
-										attributeName : "proposal-action",
-										attributeValue : $buttonType
-									});
-
-									if (proposal_id != '') {
-										myProposal.config.proposalId = proposal_id;
-									} else {
-										myProposal.config.proposalId = "0";
-									}
-
-									myProposal.config.url = myProposal.config.baseURL
-											+ "CheckPermissionForAProposal";
-									myProposal.config.data = JSON2.stringify({
-										proposalId : proposal_id,
-										policyInfo : attributeArray,
-										gpmsCommonObj : gpmsCommonObj()
-									});
 									myProposal.config.ajaxCallMode = 11;
 
-									myProposal.config.proposalRoles = proposal_roles;
-									myProposal.config.buttonType = $buttonType;
-									myProposal.ajaxCall(myProposal.config);
+									myProposal.CheckUserPermission($buttonType,
+											proposal_roles, proposal_id,
+											myProposal.config);
 
 									$(this).enable();
 									e.preventDefault();
