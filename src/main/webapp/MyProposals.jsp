@@ -468,8 +468,7 @@
 												</div>
 
 												<h3>
-													<span id="lblSection3">Sponsor And Budget
-														Information</span>
+													<span id="lblSection3">Sponsor And Budget Information</span>
 												</h3>
 												<div class="sfFormwrapper ui-tabs-panel">
 													<table cellspacing="0" cellpadding="0" border="0">
@@ -609,8 +608,7 @@
 												</div>
 
 												<h3>
-													<span id="lblSection6">Conflict of Interest And
-														Commitment Information</span>
+													<span id="lblSection6">Conflict of Interest And Commitment Information</span>
 												</h3>
 												<div class="sfFormwrapper ui-tabs-panel">
 													<table cellspacing="0" cellpadding="0" border="0">
@@ -873,8 +871,7 @@
 												</div>
 
 												<h3>
-													<span id="lblSection10">Proprietary/Confidential
-														Information</span>
+													<span id="lblSection10">Proprietary/Confidential Information</span>
 												</h3>
 												<div class="sfFormwrapper ui-tabs-panel">
 													<table cellspacing="0" cellpadding="0" border="0">

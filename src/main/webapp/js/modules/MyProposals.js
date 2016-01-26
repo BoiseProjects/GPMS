@@ -446,7 +446,8 @@ $(function() {
 			proposalId : "0",
 			proposalRoles : "",
 			buttonType : "",
-			arguments : []
+			arguments : [],
+			events : ""
 		},
 
 		ajaxCall : function(config) {
@@ -474,7 +475,7 @@ $(function() {
 		},
 
 		CheckUserPermission : function(buttonType, proposal_roles, proposal_id,
-				config) {
+				proposalSection, config) {
 			var attributeArray = [];
 			attributeArray.push({
 				attributeType : "Subject",
@@ -497,7 +498,7 @@ $(function() {
 			attributeArray.push({
 				attributeType : "Resource",
 				attributeName : "proposal-section",
-				attributeValue : "Whole Proposal"
+				attributeValue : proposalSection
 			});
 
 			attributeArray.push({
@@ -990,7 +991,7 @@ $(function() {
 				myProposal.config.ajaxCallMode = 13;
 				myProposal.config.arguments = argus;
 				myProposal.CheckUserPermission("View", argus[24], argus[0],
-						myProposal.config);
+						"Whole Proposal", myProposal.config);
 				break;
 			default:
 				break;
@@ -1760,6 +1761,11 @@ $(function() {
 		ViewChangeLogs : function(tblID, argus) {
 			switch (tblID) {
 			case "gdvProposals":
+				alert(argus);
+				// myProposal.config.ajaxCallMode = 16;
+				// myProposal.CheckUserPermission("View", proposal_roles,
+				// argus[1], "Audit Log", myProposal.config);
+
 				$('#lblLogsHeading').html('View Audit Logs for: ' + argus[1]);
 				$('#btnLogsBack').prop('name', argus[0]);
 				if (argus[2] != null && argus[2] != "") {
@@ -1790,7 +1796,7 @@ $(function() {
 				if (argus[2].toLowerCase() != "yes") {
 					myProposal.config.ajaxCallMode = 10;
 					myProposal.CheckUserPermission("Delete", proposal_roles,
-							argus[0], myProposal.config);
+							argus[0], "Whole Proposal", myProposal.config);
 					return false;
 				} else {
 					csscody.alert('<h2>' + 'Information Alert' + '</h2><p>'
@@ -1977,81 +1983,35 @@ $(function() {
 				activeHeader : "ui-icon-circle-arrow-s"
 			};
 
-			var $accordion = $("#accordion")
-					.accordion(
-							{
-								heightStyle : "content",
-								icons : icons,
-								active : false,
-								collapsible : true,
-								activate : function(event, ui) {
-									var proposal_id = $("#btnSaveProposal")
-											.prop("name");
-									if (proposal_id != ''
-											&& ui.newHeader.size() != 0
-											&& ui.newPanel.size() != 0) {
-										alert("After Activated! GO to XACML to see if he is allowed to change this panel content");
-										var allowedToEdit = true;
-										if (allowedToEdit) {
-											var selectedSection = $
-													.trim(ui.newHeader.text());
-											alert("Allowed to EDIT this Panel "
-													+ selectedSection);
-											// TODO get the ui and find all
-											// input select and textarea then
-											// disable them
-											// ui.newPanel
-											// .find("input, select")
-											// .each(
-											// function() {
-											// });
-
-										} else {
-											alert("You are not Allowed to EDIT this Panel "
-													+ $.trim(ui.newHeader
-															.text()));
-											// TODO get the ui and find all
-											// input select and textarea then
-											// enabled them
-											event.preventDefault();
-										}
-									}
-								},
-								beforeActivate : function(event, ui) {
-									// Size = 0 --> collapsing
-									// Size = 1 --> Expanding
-									var proposal_id = $("#btnSaveProposal")
-											.prop("name");
-									if (proposal_id != ''
-											&& ui.newHeader.size() != 0
-											&& ui.newPanel.size() != 0) {
-										alert("Before Activated! need to check XACML if the user is allowed to view this panel content");
-
-										var beforeactive = $("#accordion")
-												.accordion("option", "active");
-										// OSP Section
-										if (beforeactive == 11) {
-											$("#ui-id-24")
-													.find(
-															'input:text, select, textarea')
-													.each(
-															function() {
-																$(this)
-																		.addClass(
-																				"ignore");
-															});
-										}
-
-										var allowedToView = true;
-										if (allowedToView) {
-											alert("Allowed to VIEW this Panel");
-										} else {
-											alert("You are not Allowed to VIEW this Panel");
-											event.preventDefault();
-										}
-									}
-								}
-							});
+			var $accordion = $("#accordion").accordion(
+					{
+						heightStyle : "content",
+						icons : icons,
+						active : false,
+						collapsible : true,
+						activate : function(event, ui) {
+							alert($.trim(ui.newHeader.text()));
+							myProposal.config.ajaxCallMode = 15;
+							myProposal.config.event = event;
+							myProposal.CheckUserPermission("Edit",
+									myProposal.config.proposalRoles,
+									myProposal.config.proposalId, $
+											.trim(ui.newHeader.text()),
+									myProposal.config);
+						},
+						beforeActivate : function(event, ui) {
+							// Size = 0 --> collapsing
+							// Size = 1 --> Expanding
+							alert($.trim(ui.newHeader.text()));
+							myProposal.config.ajaxCallMode = 14;
+							myProposal.config.event = event;
+							myProposal.CheckUserPermission("View",
+									myProposal.config.proposalRoles,
+									myProposal.config.proposalId, $
+											.trim(ui.newHeader.text()),
+									myProposal.config);
+						}
+					});
 			// myProposal.SelectFirstAccordion();
 			// $("#accordion").accordion("option", "active", 0);
 			return false;
@@ -3081,6 +3041,18 @@ $(function() {
 			}
 			break;
 
+		case 14:
+			if (myProposal.config.proposalId != '0') {
+				alert("You are allowed to View this Section!");
+			}
+			break;
+
+		case 15:
+			if (myProposal.config.proposalId != '0') {
+				alert("You are allowed to Edit this Section!");
+			}
+			break;
+
 		}
 	},
 
@@ -3159,6 +3131,20 @@ $(function() {
 				csscody.error('<h2>' + 'Error Message' + '</h2><p>'
 						+ 'You are not allowed to VIEW this Proposal! '
 						+ msg.responseText + '</p>');
+				break;
+
+			case 14:
+				csscody.error('<h2>' + 'Error Message' + '</h2><p>'
+						+ 'You are not Allowed to View this Section! '
+						+ msg.responseText + '</p>');
+				myProposal.config.event.preventDefault();
+				break;
+
+			case 15:
+				csscody.error('<h2>' + 'Error Message' + '</h2><p>'
+						+ 'You are not Allowed to EDIT this Section! '
+						+ msg.responseText + '</p>');
+				myProposal.config.event.preventDefault();
 				break;
 			}
 		},
@@ -3366,7 +3352,7 @@ $(function() {
 						myProposal.config.ajaxCallMode = 12;
 
 						myProposal.CheckUserPermission("Create", "", "",
-								myProposal.config);
+								"Whole Proposal", myProposal.config);
 
 					});
 
@@ -3398,9 +3384,12 @@ $(function() {
 											"data-proproles");
 									myProposal.config.ajaxCallMode = 11;
 
-									myProposal.CheckUserPermission($buttonType,
-											proposal_roles, proposal_id,
-											myProposal.config);
+									myProposal
+											.CheckUserPermission($buttonType,
+													proposal_roles,
+													proposal_id,
+													"Whole Proposal",
+													myProposal.config);
 
 									$(this).enable();
 									e.preventDefault();
@@ -3423,9 +3412,12 @@ $(function() {
 											"data-proproles");
 									myProposal.config.ajaxCallMode = 11;
 
-									myProposal.CheckUserPermission($buttonType,
-											proposal_roles, proposal_id,
-											myProposal.config);
+									myProposal
+											.CheckUserPermission($buttonType,
+													proposal_roles,
+													proposal_id,
+													"Whole Proposal",
+													myProposal.config);
 
 									$(this).enable();
 									e.preventDefault();
@@ -3448,9 +3440,12 @@ $(function() {
 											"data-proproles");
 									myProposal.config.ajaxCallMode = 11;
 
-									myProposal.CheckUserPermission($buttonType,
-											proposal_roles, proposal_id,
-											myProposal.config);
+									myProposal
+											.CheckUserPermission($buttonType,
+													proposal_roles,
+													proposal_id,
+													"Whole Proposal",
+													myProposal.config);
 
 									$(this).enable();
 									e.preventDefault();
@@ -3473,9 +3468,12 @@ $(function() {
 											"data-proproles");
 									myProposal.config.ajaxCallMode = 11;
 
-									myProposal.CheckUserPermission($buttonType,
-											proposal_roles, proposal_id,
-											myProposal.config);
+									myProposal
+											.CheckUserPermission($buttonType,
+													proposal_roles,
+													proposal_id,
+													"Whole Proposal",
+													myProposal.config);
 
 									$(this).enable();
 									e.preventDefault();
@@ -3498,9 +3496,12 @@ $(function() {
 											"data-proproles");
 									myProposal.config.ajaxCallMode = 11;
 
-									myProposal.CheckUserPermission($buttonType,
-											proposal_roles, proposal_id,
-											myProposal.config);
+									myProposal
+											.CheckUserPermission($buttonType,
+													proposal_roles,
+													proposal_id,
+													"Whole Proposal",
+													myProposal.config);
 
 									$(this).enable();
 									e.preventDefault();
@@ -3523,9 +3524,12 @@ $(function() {
 											"data-proproles");
 									myProposal.config.ajaxCallMode = 11;
 
-									myProposal.CheckUserPermission($buttonType,
-											proposal_roles, proposal_id,
-											myProposal.config);
+									myProposal
+											.CheckUserPermission($buttonType,
+													proposal_roles,
+													proposal_id,
+													"Whole Proposal",
+													myProposal.config);
 
 									$(this).enable();
 									e.preventDefault();
@@ -3548,9 +3552,12 @@ $(function() {
 											"data-proproles");
 									myProposal.config.ajaxCallMode = 11;
 
-									myProposal.CheckUserPermission($buttonType,
-											proposal_roles, proposal_id,
-											myProposal.config);
+									myProposal
+											.CheckUserPermission($buttonType,
+													proposal_roles,
+													proposal_id,
+													"Whole Proposal",
+													myProposal.config);
 
 									$(this).enable();
 									e.preventDefault();
