@@ -403,7 +403,7 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 			proposal.setFaRate(userProposal.getSponsorAndBudgetInfo()
 					.getFARate());
 
-			proposal.setDateReceived(userProposal.getDateReceived());
+			proposal.setDateCreated(userProposal.getDateCreated());
 			proposal.setDateSubmitted(userProposal.getDateSubmitted());
 
 			proposal.setDueDate(userProposal.getProjectInfo().getDueDate());
@@ -768,7 +768,7 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 			proposal.setFaRate(userProposal.getSponsorAndBudgetInfo()
 					.getFARate());
 
-			proposal.setDateReceived(userProposal.getDateReceived());
+			proposal.setDateCreated(userProposal.getDateCreated());
 			proposal.setDateSubmitted(userProposal.getDateSubmitted());
 
 			proposal.setDueDate(userProposal.getProjectInfo().getDueDate());

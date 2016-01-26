@@ -243,9 +243,6 @@ $(function() {
 							},
 							checkedExcludedPartyList : {
 								required : true
-							},
-							proposalNotes : {
-								required : true
 							}
 						},
 						errorElement : "span",
@@ -448,7 +445,7 @@ $(function() {
 			buttonType : "",
 			arguments : [],
 			events : "",
-			content: []
+			content : []
 		},
 
 		ajaxCall : function(config) {
@@ -1764,10 +1761,10 @@ $(function() {
 			case "gdvProposals":
 				alert(argus);
 				var proposal_roles = $.trim(argus[5]);
-				 myProposal.config.ajaxCallMode = 16;
-				 myProposal.config.arguments = argus;
-				 myProposal.CheckUserPermission("View", proposal_roles,
-						 argus[0], "Audit Log", myProposal.config);				
+				myProposal.config.ajaxCallMode = 16;
+				myProposal.config.arguments = argus;
+				myProposal.CheckUserPermission("View", proposal_roles,
+						argus[0], "Audit Log", myProposal.config);
 				break;
 			default:
 				break;
@@ -1882,15 +1879,15 @@ $(function() {
 			// For Signature Section
 			$("#trSignChair").hide();
 			$("#trSignBusinessManager").hide();
-			$("#trSignDean").hide();			
+			$("#trSignDean").hide();
 			$("#trSignAdministrator").hide();
 			$("#trSignDirector").hide();
 			signatureInfo = '';
 			$("#trSignPICOPI tbody").empty();
 			$("#trSignChair tbody").empty();
 			$("#trSignBusinessManager tbody").empty();
-			$("#trSignDean tbody").empty();			
-			$("#trSignAdministrator tbody").empty();	
+			$("#trSignDean tbody").empty();
+			$("#trSignAdministrator tbody").empty();
 			$("#trSignDirector tbody").empty();
 
 			$("#btnSaveProposal").removeAttr("name");
@@ -1909,7 +1906,7 @@ $(function() {
 				$(this).val('');
 				$(this).val($(this).find('option').first().val());
 			});
-			$(".AddOption").val("[+] Add");			
+			$(".AddOption").val("[+] Add");
 			return false;
 		},
 
@@ -1969,7 +1966,8 @@ $(function() {
 						active : false,
 						collapsible : true,
 						activate : function(event, ui) {
-							if(myProposal.config.proposalId!="0" && ui.newHeader.length !=0){
+							if (myProposal.config.proposalId != "0"
+									&& ui.newHeader.length != 0) {
 								alert($.trim(ui.newHeader.text()));
 								myProposal.config.ajaxCallMode = 15;
 								// myProposal.config.event = event;
@@ -1984,7 +1982,8 @@ $(function() {
 						beforeActivate : function(event, ui) {
 							// Size = 0 --> collapsing
 							// Size = 1 --> Expanding
-							if(myProposal.config.proposalId!="0" && ui.newHeader.length !=0){
+							if (myProposal.config.proposalId != "0"
+									&& ui.newHeader.length != 0) {
 								alert($.trim(ui.newHeader.text()));
 								myProposal.config.ajaxCallMode = 14;
 								myProposal.config.event = event;
@@ -2042,12 +2041,9 @@ $(function() {
 										signatureInfo += optionsText + "!#!"; // SignedDate
 									}
 								});
-				obj
-				.find("textarea")
-				.each(
-						function() {
-							signatureInfo += $(this).val() + "!#!"; // Note
-						});
+				obj.find("textarea").each(function() {
+					signatureInfo += $(this).val() + "!#!"; // Note
+				});
 
 				signatureInfo += obj.find('span.cssClassLabel').text() + "!#!"; // FullName
 				signatureInfo += obj.find('span.cssClassLabel').attr("role")
@@ -2862,10 +2858,9 @@ $(function() {
 										+ item.userProfileId
 										+ item.positionTitle
 										+ '" '
-										+ readOnly 
-										+' title="Proposal Notes" class="cssClassTextArea" >'
-										+ item.note
-										+ '</textarea></td></tr>';
+										+ readOnly
+										+ ' title="Proposal Notes" class="cssClassTextArea" >'
+										+ item.note + '</textarea></td></tr>';
 
 								switch (item.positionTitle) {
 								case "PI":
@@ -2873,7 +2868,7 @@ $(function() {
 								case "Senior":
 									$(cloneRow).appendTo("#trSignPICOPI tbody");
 									break;
-								case "Department Chair":								
+								case "Department Chair":
 									$(cloneRow).appendTo("#trSignChair tbody");
 									break;
 								case "Dean":
@@ -2883,12 +2878,12 @@ $(function() {
 									$(cloneRow).appendTo(
 											"#trSignBusinessManager tbody");
 									break;
-									
+
 								case "Research Administrator":
 									$(cloneRow).appendTo(
 											"#trSignAdministrator tbody");
-									break;					
-																		
+									break;
+
 								case "University Research Director":
 									$(cloneRow).appendTo(
 											"#trSignDirector tbody");
@@ -2989,6 +2984,10 @@ $(function() {
 				$("#btnArchiveProposal").hide();
 
 				$('#ui-id-23').hide();
+				$('#ui-id-24').find('input, select, textarea').each(function() {
+					// $(this).addClass("ignore");
+					$(this).prop('disabled', true);
+				});
 
 				$('select[name=ddlName]').eq(0).val(
 						GPMS.utils.GetUserProfileID()).prop('selected',
@@ -3023,12 +3022,16 @@ $(function() {
 
 				$("#trSignChair").show();
 				$("#trSignBusinessManager").show();
-				$("#trSignDean").show();				
+				$("#trSignDean").show();
 				$("#trSignAdministrator").show();
 				$("#trSignDirector").show();
 
 				// OSP Section
 				$('#ui-id-23').show();
+				$('#ui-id-24').find('input, select, textarea').each(function() {
+					// $(this).addClass("ignore");
+					$(this).prop('disabled', false);
+				});
 
 				$('#ddlProposalStatus option').length = 0;
 				$('#ddlProposalStatus')
@@ -3058,9 +3061,14 @@ $(function() {
 		case 15:
 			if (myProposal.config.proposalId != '0') {
 				alert("You are allowed to Edit this Section!");
+				$(myProposal.config.content).find('input, select, textarea')
+						.each(function() {
+							// $(this).addClass("ignore");
+							$(this).prop('disabled', false);
+						});
 			}
 			break;
-			
+
 		case 16:
 			if (myProposal.config.proposalId != '0') {
 				var argus = myProposal.config.arguments;
@@ -3077,7 +3085,7 @@ $(function() {
 				// Get Audit Logs
 				// $("#gdvProposalsAuditLog").empty();
 				// $("#gdvProposalsAuditLog_Pagination").remove();
-				
+
 				myProposal.BindProposalAuditLogGrid(argus[0], null, null, null,
 						null);
 
@@ -3180,13 +3188,13 @@ $(function() {
 						+ msg.responseText + '</p>');
 				// myProposal.config.event.preventDefault();
 				alert(myProposal.config.content);
-				$(myProposal.config.content).find('input, select, textarea').each(
-						function() {
+				$(myProposal.config.content).find('input, select, textarea')
+						.each(function() {
 							// $(this).addClass("ignore");
 							$(this).prop('disabled', true);
 						});
 				break;
-				
+
 			case 16:
 				csscody.error('<h2>' + 'Error Message' + '</h2><p>'
 						+ 'You are not Allowed to VIEW Audit Logs! '

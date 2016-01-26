@@ -25,7 +25,7 @@ public class ProposalInfo implements Comparable<ProposalInfo> {
 	private double faRate;
 
 	// Proposal
-	private Date dateReceived = new Date();
+	private Date dateCreated = new Date();
 	private Date dateSubmitted = new Date();
 
 	// ProjectInfo
@@ -80,12 +80,12 @@ public class ProposalInfo implements Comparable<ProposalInfo> {
 		this.proposalNo = proposalNo;
 	}
 
-	public Date getDateReceived() {
-		return dateReceived;
+	public Date getDateCreated() {
+		return dateCreated;
 	}
 
-	public void setDateReceived(Date dateReceived) {
-		this.dateReceived = dateReceived;
+	public void setDateCreated(Date dateCreated) {
+		this.dateCreated = dateCreated;
 	}
 
 	public Date getDateSubmitted() {

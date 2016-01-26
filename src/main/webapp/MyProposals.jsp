@@ -219,7 +219,7 @@
 																	<!-- 																		</select></td> -->
 
 																	<td style="width: 180px; float: left;"><label
-																		class="cssClassLabel">Submitted On:</label>
+																		class="cssClassLabel">Recieved On:</label>
 																		<div>
 																			<span class="cssClassLabel">From:</span> <input
 																				type="text" title="Received On From"

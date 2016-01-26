@@ -23,8 +23,8 @@ public class Proposal extends BaseEntity implements Serializable {
 	private int proposalNo = 0;
 
 	@Expose
-	@Property("date received")
-	private Date dateReceived = new Date();
+	@Property("date created")
+	private Date dateCreated = new Date();
 
 	@Expose
 	@Property("date submitted")
@@ -96,14 +96,14 @@ public class Proposal extends BaseEntity implements Serializable {
 		this.proposalNo = proposalNo;
 	}
 
-	public Date getDateReceived() {
-		return dateReceived;
+	public Date getDateCreated() {
+		return dateCreated;
 	}
 
-	public void setDateReceived(Date dateReceived) {
+	public void setDateCreated(Date dateCreated) {
 		Date currDate = new Date();
-		if (dateReceived.equals(currDate) || dateReceived.after(currDate)) {
-			this.dateReceived = dateReceived;
+		if (dateCreated.equals(currDate) || dateCreated.after(currDate)) {
+			this.dateCreated = dateCreated;
 		}
 	}
 
@@ -223,8 +223,8 @@ public class Proposal extends BaseEntity implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Proposal [proposalNo=" + proposalNo + ", dateReceived="
-				+ dateReceived + ", dateSubmitted=" + dateSubmitted
+		return "Proposal [proposalNo=" + proposalNo + ", dateCreated="
+				+ dateCreated + ", dateSubmitted=" + dateSubmitted
 				+ ", proposalStatus=" + proposalStatus + ", investigatorInfo="
 				+ investigatorInfo + ", projectInfo=" + projectInfo
 				+ ", sponsorAndBudgetInfo=" + sponsorAndBudgetInfo
@@ -260,7 +260,7 @@ public class Proposal extends BaseEntity implements Serializable {
 		result = prime * result
 				+ ((costShareInfo == null) ? 0 : costShareInfo.hashCode());
 		result = prime * result
-				+ ((dateReceived == null) ? 0 : dateReceived.hashCode());
+				+ ((dateCreated == null) ? 0 : dateCreated.hashCode());
 		result = prime * result
 				+ ((dateSubmitted == null) ? 0 : dateSubmitted.hashCode());
 		result = prime
@@ -325,10 +325,10 @@ public class Proposal extends BaseEntity implements Serializable {
 				return false;
 		} else if (!costShareInfo.equals(other.costShareInfo))
 			return false;
-		if (dateReceived == null) {
-			if (other.dateReceived != null)
+		if (dateCreated == null) {
+			if (other.dateCreated != null)
 				return false;
-		} else if (!dateReceived.equals(other.dateReceived))
+		} else if (!dateCreated.equals(other.dateCreated))
 			return false;
 		if (dateSubmitted == null) {
 			if (other.dateSubmitted != null)

@@ -2167,27 +2167,7 @@ public class ProposalService {
 		if (proposalInfo != null && !proposalInfo.has("ProposalNo")
 				&& proposalID.equals("0")) {
 			newProposal.setProposalNo(proposalDAO.findLatestProposalNo() + 1);
-		}
-
-		if (proposalInfo != null && !proposalInfo.has("ReceivedDate")
-				&& proposalID.equals("0")) {
-			newProposal.setDateReceived(new Date());
-		}
-
-		if (proposalInfo != null && proposalInfo.has("ProposalStatus")) {
-			if (!proposalID.equals("0")) {
-				if (!existingProposal.getProposalStatus().equals(
-						Status.valueOf(proposalInfo.get("ProposalStatus")
-								.getTextValue()))) {
-
-					// TODO Need to clear all Proposal Status Before
-					// exists!
-					existingProposal.getProposalStatus().add(
-							Status.valueOf(proposalInfo.get("ProposalStatus")
-									.getTextValue()));
-				}
-			}
-		}
+		}		
 
 		String userProfileID = new String();
 		String userName = new String();
