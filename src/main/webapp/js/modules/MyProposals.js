@@ -447,7 +447,8 @@ $(function() {
 			proposalRoles : "",
 			buttonType : "",
 			arguments : [],
-			events : ""
+			events : "",
+			content: []
 		},
 
 		ajaxCall : function(config) {
@@ -1880,16 +1881,17 @@ $(function() {
 
 			// For Signature Section
 			$("#trSignChair").hide();
-			$("#trSignDean").hide();
 			$("#trSignBusinessManager").hide();
+			$("#trSignDean").hide();			
+			$("#trSignAdministrator").hide();
+			$("#trSignDirector").hide();
 			signatureInfo = '';
 			$("#trSignPICOPI tbody").empty();
 			$("#trSignChair tbody").empty();
-			$("#trSignDean tbody").empty();
 			$("#trSignBusinessManager tbody").empty();
-
-			$("#gdvProposalsAuditLog").empty();
-			$("#gdvProposalsAuditLog_Pagination").remove();
+			$("#trSignDean tbody").empty();			
+			$("#trSignAdministrator tbody").empty();	
+			$("#trSignDirector tbody").empty();
 
 			$("#btnSaveProposal").removeAttr("name");
 			$('#txtProjectTitle').removeAttr('disabled');
@@ -1907,16 +1909,7 @@ $(function() {
 				$(this).val('');
 				$(this).val($(this).find('option').first().val());
 			});
-			$(".AddOption").val("[+] Add");
-
-			// TODO: I suppose by default the OSP Admin section don't need any
-			// validation default only activate validation once it is clicked
-			// and allowed to edit is set true
-
-			$("#ui-id-24").find('input:text, select, textarea').each(
-					function() {
-						$(this).addClass("ignore");
-					});
+			$(".AddOption").val("[+] Add");			
 			return false;
 		},
 
@@ -1957,7 +1950,9 @@ $(function() {
 					+ 'PI">'
 					+ '</td><td><input id="pi_signaturedate" data-for="signaturedate" name="signaturedate'
 					+ $('select[name="ddlName"]').eq(0).val()
-					+ 'PI" title="Signed Date" class="sfInputbox" placeholder="Signed Date" type="text" required="true" readonly="true" onfocus="myProposal.BindCurrentDateTime(this);"></td></tr>';
+					+ 'PI" title="Signed Date" class="sfInputbox" placeholder="Signed Date" type="text" required="true" readonly="true" onfocus="myProposal.BindCurrentDateTime(this);"></td><td><textarea rows="2" cols="26" name="proposalNotes'
+					+ $('select[name="ddlName"]').eq(0).val()
+					+ 'PI" required="true" title="Proposal Notes" class="cssClassTextArea"></textarea></td></tr>';
 			$(cloneRow).appendTo("#trSignPICOPI tbody");
 		},
 
@@ -1974,26 +1969,31 @@ $(function() {
 						active : false,
 						collapsible : true,
 						activate : function(event, ui) {
-							alert($.trim(ui.newHeader.text()));
-							myProposal.config.ajaxCallMode = 15;
-							myProposal.config.event = event;
-							myProposal.CheckUserPermission("Edit",
-									myProposal.config.proposalRoles,
-									myProposal.config.proposalId, $
-											.trim(ui.newHeader.text()),
-									myProposal.config);
+							if(myProposal.config.proposalId!="0" && ui.newHeader.length !=0){
+								alert($.trim(ui.newHeader.text()));
+								myProposal.config.ajaxCallMode = 15;
+								// myProposal.config.event = event;
+								myProposal.config.content = ui.newPanel;
+								myProposal.CheckUserPermission("Edit",
+										myProposal.config.proposalRoles,
+										myProposal.config.proposalId, $
+												.trim(ui.newHeader.text()),
+										myProposal.config);
+							}
 						},
 						beforeActivate : function(event, ui) {
 							// Size = 0 --> collapsing
 							// Size = 1 --> Expanding
-							alert($.trim(ui.newHeader.text()));
-							myProposal.config.ajaxCallMode = 14;
-							myProposal.config.event = event;
-							myProposal.CheckUserPermission("View",
-									myProposal.config.proposalRoles,
-									myProposal.config.proposalId, $
-											.trim(ui.newHeader.text()),
-									myProposal.config);
+							if(myProposal.config.proposalId!="0" && ui.newHeader.length !=0){
+								alert($.trim(ui.newHeader.text()));
+								myProposal.config.ajaxCallMode = 14;
+								myProposal.config.event = event;
+								myProposal.CheckUserPermission("View",
+										myProposal.config.proposalRoles,
+										myProposal.config.proposalId, $
+												.trim(ui.newHeader.text()),
+										myProposal.config);
+							}
 						}
 					});
 			// myProposal.SelectFirstAccordion();
@@ -2042,6 +2042,12 @@ $(function() {
 										signatureInfo += optionsText + "!#!"; // SignedDate
 									}
 								});
+				obj
+				.find("textarea")
+				.each(
+						function() {
+							signatureInfo += $(this).val() + "!#!"; // Note
+						});
 
 				signatureInfo += obj.find('span.cssClassLabel').text() + "!#!"; // FullName
 				signatureInfo += obj.find('span.cssClassLabel').attr("role")
@@ -2150,7 +2156,7 @@ $(function() {
 					signatureInfo = '';
 
 					$(
-							'#trSignPICOPI > tbody  > tr, #trSignChair > tbody  > tr, #trSignDean > tbody  > tr, #trSignBusinessManager > tbody  > tr')
+							'#trSignPICOPI > tbody  > tr, #trSignChair > tbody  > tr, #trSignDean > tbody  > tr, #trSignBusinessManager > tbody  > tr, #trSignAdministrator > tbody  > tr, #trSignDirector > tbody  > tr')
 							.each(function() {
 								myProposal.GetUserSignature($(this));
 							});
@@ -2852,7 +2858,14 @@ $(function() {
 										+ ' value="'
 										+ $.format.date(signedDate,
 												'yyyy/MM/dd hh:mm:ss a')
-										+ '"></td></tr>';
+										+ '"></td><td><textarea rows="2" cols="26" name="proposalNotes'
+										+ item.userProfileId
+										+ item.positionTitle
+										+ '" '
+										+ readOnly 
+										+' title="Proposal Notes" class="cssClassTextArea" >'
+										+ item.note
+										+ '</textarea></td></tr>';
 
 								switch (item.positionTitle) {
 								case "PI":
@@ -2860,8 +2873,7 @@ $(function() {
 								case "Senior":
 									$(cloneRow).appendTo("#trSignPICOPI tbody");
 									break;
-								case "Department Chair":
-								case "Research Director":
+								case "Department Chair":								
 									$(cloneRow).appendTo("#trSignChair tbody");
 									break;
 								case "Dean":
@@ -2870,6 +2882,16 @@ $(function() {
 								case "Business Manager":
 									$(cloneRow).appendTo(
 											"#trSignBusinessManager tbody");
+									break;
+									
+								case "Research Administrator":
+									$(cloneRow).appendTo(
+											"#trSignAdministrator tbody");
+									break;					
+																		
+								case "University Research Director":
+									$(cloneRow).appendTo(
+											"#trSignDirector tbody");
 									break;
 								default:
 									break;
@@ -3000,8 +3022,10 @@ $(function() {
 				$("#txtNameOfGrantingAgency").val(argus[6]);
 
 				$("#trSignChair").show();
-				$("#trSignDean").show();
 				$("#trSignBusinessManager").show();
+				$("#trSignDean").show();				
+				$("#trSignAdministrator").show();
+				$("#trSignDirector").show();
 
 				// OSP Section
 				$('#ui-id-23').show();
@@ -3051,6 +3075,9 @@ $(function() {
 					$('#tblLastAuditedInfo').hide();
 				}
 				// Get Audit Logs
+				// $("#gdvProposalsAuditLog").empty();
+				// $("#gdvProposalsAuditLog_Pagination").remove();
+				
 				myProposal.BindProposalAuditLogGrid(argus[0], null, null, null,
 						null);
 
@@ -3151,10 +3178,16 @@ $(function() {
 				csscody.error('<h2>' + 'Error Message' + '</h2><p>'
 						+ 'You are not Allowed to EDIT this Section! '
 						+ msg.responseText + '</p>');
-				myProposal.config.event.preventDefault();
+				// myProposal.config.event.preventDefault();
+				alert(myProposal.config.content);
+				$(myProposal.config.content).find('input, select, textarea').each(
+						function() {
+							// $(this).addClass("ignore");
+							$(this).prop('disabled', true);
+						});
 				break;
 				
-			case 15:
+			case 16:
 				csscody.error('<h2>' + 'Error Message' + '</h2><p>'
 						+ 'You are not Allowed to VIEW Audit Logs! '
 						+ msg.responseText + '</p>');

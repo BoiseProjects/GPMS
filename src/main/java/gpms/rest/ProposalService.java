@@ -1654,7 +1654,7 @@ public class ProposalService {
 					.split("#!#");
 
 			List<SignatureInfo> newSignatureInfo = new ArrayList<SignatureInfo>();
-			// UserProfileID!#!Signature!#!SignedDate!#!FullName!#!PositionTitle!#!Delegated#!#
+			// UserProfileID!#!Signature!#!SignedDate!#!Note!#!FullName!#!PositionTitle!#!Delegated#!#
 			DateFormat format = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss a");
 
 			for (String col : rows) {
@@ -1663,9 +1663,10 @@ public class ProposalService {
 				signatureInfo.setUserProfileId(cols[0]);
 				signatureInfo.setSignature(cols[1]);
 				signatureInfo.setSignedDate(format.parse(cols[2]));
-				signatureInfo.setFullName(cols[3]);
-				signatureInfo.setPositionTitle(cols[4]);
-				signatureInfo.setDelegated(Boolean.parseBoolean(cols[5]));
+				signatureInfo.setNote(cols[3]);
+				signatureInfo.setFullName(cols[4]);
+				signatureInfo.setPositionTitle(cols[5]);
+				signatureInfo.setDelegated(Boolean.parseBoolean(cols[6]));
 
 				boolean alreadyExist = false;
 				for (SignatureInfo sign : existingProposal.getSignatureInfo()) {
@@ -2622,5 +2623,4 @@ public class ProposalService {
 					.entity("No User Permission Attributes are send!").build();
 		}
 	}
-
 }

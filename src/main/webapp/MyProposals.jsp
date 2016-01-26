@@ -948,7 +948,7 @@
 														<tbody>
 															<tr>
 																<td><span class="cssClassLabel"><b>Investigators,
-																			department chairs directors, deans</b> certify that 1)
+																			department chairs, directors, deans</b> certify that 1)
 																		the proposed activities are appropriate to the
 																		research, instruction and public service mission of
 																		the University; 2) if funded all necessary resources
@@ -997,9 +997,10 @@
 														id="trSignPICOPI">
 														<thead>
 															<tr>
-																<th><span class="cssClassLabelTitle">Principal/Co-Investigator(s)</span></th>
+																<th><span class="cssClassLabelTitle">Principal/Co-Investigator(s)/Senior Personnel(s)</span></th>
 																<th><span class="cssClassLabelTitle">Signature(s)</span></th>
 																<th><span class="cssClassLabelTitle">Date</span></th>
+																<th><span class="cssClassLabelTitle">Note</span></th>
 															</tr>
 														</thead>
 														<tbody>
@@ -1011,9 +1012,10 @@
 														<thead>
 															<tr>
 																<th><span class="cssClassLabelTitle">Department
-																		Chair(s) or Director(s)</span></th>
+																		Chair(s)</span></th>
 																<th><span class="cssClassLabelTitle">Signature(s)</span></th>
 																<th><span class="cssClassLabelTitle">Date</span></th>
+																<th><span class="cssClassLabelTitle">Note</span></th>
 															</tr>
 														</thead>
 														<tbody>
@@ -1027,6 +1029,35 @@
 																<th><span class="cssClassLabelTitle">Dean(s)</span></th>
 																<th><span class="cssClassLabelTitle">Name(s)</span></th>
 																<th><span class="cssClassLabelTitle">Date</span></th>
+																<th><span class="cssClassLabelTitle">Note</span></th>
+															</tr>
+														</thead>
+														<tbody>
+														</tbody>
+													</table>
+													
+													<table cellspacing="0" cellpadding="0" border="0"
+														id="trSignAdministrator">
+														<thead>
+															<tr>
+																<th><span class="cssClassLabelTitle">Research Administrator</span></th>
+																<th><span class="cssClassLabelTitle">Signature</span></th>
+																<th><span class="cssClassLabelTitle">Date</span></th>
+																<th><span class="cssClassLabelTitle">Note</span></th>
+															</tr>
+														</thead>
+														<tbody>
+														</tbody>
+													</table>
+													
+													<table cellspacing="0" cellpadding="0" border="0"
+														id="trSignDirector">
+														<thead>
+															<tr>
+																<th><span class="cssClassLabelTitle">Research Director</span></th>
+																<th><span class="cssClassLabelTitle">Signature</span></th>
+																<th><span class="cssClassLabelTitle">Date</span></th>
+																<th><span class="cssClassLabelTitle">Note</span></th>
 															</tr>
 														</thead>
 														<tbody>
@@ -1037,11 +1068,10 @@
 														id="trSignBusinessManager">
 														<thead>
 															<tr>
-																<th><span class="cssClassLabelTitle">Business
-																		Manager (if applicable) has reviewed this proposal.</span></th>
-																<th><span class="cssClassLabelTitle">Initials:</span>
-																	<span class="cssClassRequired">*</span></th>
-																<th></th>
+																<th><span class="cssClassLabelTitle">Business Manager</span>(if applicable) has reviewed this proposal.</th>
+																<th><span class="cssClassLabelTitle">Signature</span>																	
+																<th><span class="cssClassLabelTitle">Date</span></th>
+																<th><span class="cssClassLabelTitle">Note</span></th>
 															</tr>
 														</thead>
 														<tbody>
@@ -1409,8 +1439,7 @@
 															<!-- 																		cols="26" rows="2" name="proposalNotes" -->
 															<!-- 																		id="txtProposalNotes" placeholder="Proposal Notes" -->
 															<!-- 																		required></textarea></td> -->
-															<!-- 															</tr> -->
-															Research Administrator Put sign here
+															<!-- 							
 															<!-- 															<tr> -->
 															<!-- 																<td><span class="cssClassLabel">Research -->
 															<!-- 																		Administrator:</span> <span class="cssClassRequired">*</span></td> -->

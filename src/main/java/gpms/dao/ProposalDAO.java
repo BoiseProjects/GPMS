@@ -4,17 +4,14 @@ import gpms.DAL.MongoDBConnector;
 import gpms.model.AuditLog;
 import gpms.model.AuditLogInfo;
 import gpms.model.InvestigatorRefAndPosition;
-import gpms.model.NotificationLog;
 import gpms.model.PositionDetails;
 import gpms.model.ProjectLocation;
 import gpms.model.ProjectType;
 import gpms.model.Proposal;
 import gpms.model.ProposalInfo;
-import gpms.model.ProposalStatusInfo;
 import gpms.model.SignatureInfo;
 import gpms.model.Status;
 import gpms.model.TypeOfRequest;
-import gpms.model.UserAccount;
 import gpms.model.UserProfile;
 
 import java.net.UnknownHostException;
@@ -894,6 +891,7 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 				piSign.setFullName(signature.getFullName());
 				piSign.setSignature(signature.getSignature());
 				piSign.setSignedDate(signature.getSignedDate());
+				piSign.setNote(signature.getNote());
 				piSign.setPositionTitle(signature.getPositionTitle());
 				piSign.setDelegated(signature.isDelegated());
 				boolean piAlreadyExist = false;
@@ -915,6 +913,7 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 			piSign.setUserProfileId(PI.getUserRef().getId().toString());
 			piSign.setFullName(PI.getUserRef().getFullName());
 			piSign.setSignature("");
+			piSign.setNote("");
 			piSign.setPositionTitle("PI");
 			piSign.setDelegated(false);
 			boolean piAlreadyExist = false;
@@ -951,6 +950,7 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 					coPISign.setFullName(signature.getFullName());
 					coPISign.setSignature(signature.getSignature());
 					coPISign.setSignedDate(signature.getSignedDate());
+					coPISign.setNote(signature.getNote());
 					coPISign.setPositionTitle(signature.getPositionTitle());
 					coPISign.setDelegated(signature.isDelegated());
 					boolean coPIAlreadyExist = false;
@@ -973,6 +973,7 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 				coPISign.setFullName(coPIs.getUserRef().getFullName());
 
 				coPISign.setSignature("");
+				coPISign.setNote("");
 				coPISign.setPositionTitle("Co-PI");
 				coPISign.setDelegated(false);
 				boolean coPIAlreadyExist = false;
@@ -1010,6 +1011,7 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 					seniorSign.setFullName(signature.getFullName());
 					seniorSign.setSignature(signature.getSignature());
 					seniorSign.setSignedDate(signature.getSignedDate());
+					seniorSign.setNote(signature.getNote());
 					seniorSign.setPositionTitle(signature.getPositionTitle());
 					seniorSign.setDelegated(signature.isDelegated());
 					if (!signatures.contains(seniorSign)) {
@@ -1035,6 +1037,7 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 						.toString());
 				seniorSign.setFullName(seniors.getUserRef().getFullName());
 				seniorSign.setSignature("");
+				seniorSign.setNote("");
 				seniorSign.setPositionTitle("Senior");
 				seniorSign.setDelegated(false);
 				boolean seniorAlreadyExist = false;
@@ -1060,18 +1063,20 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 		// }
 		// 2. Get all Users filter using College in<> and Department in <> and
 		// Position Title equal <>
-		// Business Manager
-		// University Research Director
-		// Dean
 		// Department Chair
+		// Business Manager
+		// Dean
+		// University Research Director
+		// Research Administrator
 
 		Query<UserProfile> profileQuery = ds.createQuery(UserProfile.class);
 
 		List<String> positions = new ArrayList<String>();
 		// positions.add("Department Chair");
-		positions.add("University Research Director");
-		positions.add("Dean");
 		positions.add("Business Manager");
+		positions.add("Dean");
+		positions.add("Research Administrator");
+		positions.add("University Research Director");
 
 		final CriteriaContainer container = profileQuery.or();
 		if (colleges != null && !colleges.isEmpty()) {
@@ -1093,6 +1098,43 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 		for (UserProfile user : userProfile) {
 			for (PositionDetails posDetails : user.getDetails()) {
 				if (posDetails.getPositionTitle().equalsIgnoreCase(
+						"Research Administrator")) {
+					SignatureInfo signAdmin = new SignatureInfo();
+
+					boolean adminAlreadySigned = false;
+					for (SignatureInfo signature : proposal.getSignatureInfo()) {
+						if (user.getId().toString()
+								.equals(signature.getUserProfileId())
+								&& signature.getPositionTitle().equals(
+										"Research Administrator")) {
+							signAdmin.setUserProfileId(signature
+									.getUserProfileId());
+							signAdmin.setFullName(signature.getFullName());
+							signAdmin.setSignature(signature.getSignature());
+							signAdmin.setSignedDate(signature.getSignedDate());
+							signAdmin.setNote(signature.getNote());
+							signAdmin
+									.setPositionTitle("Research Administrator");
+							signAdmin.setDelegated(signature.isDelegated());
+							if (!signatures.contains(signAdmin)) {
+								signatures.add(signAdmin);
+							}
+							adminAlreadySigned = true;
+						}
+					}
+
+					if (!adminAlreadySigned) {
+						signAdmin.setUserProfileId(user.getId().toString());
+						signAdmin.setFullName(user.getFullName());
+						signAdmin.setSignature("");
+						signAdmin.setNote("");
+						signAdmin.setPositionTitle("Research Administrator");
+						signAdmin.setDelegated(false);
+						if (!signatures.contains(signAdmin)) {
+							signatures.add(signAdmin);
+						}
+					}
+				} else if (posDetails.getPositionTitle().equalsIgnoreCase(
 						"University Research Director")) {
 					SignatureInfo signDirector = new SignatureInfo();
 
@@ -1101,14 +1143,16 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 						if (user.getId().toString()
 								.equals(signature.getUserProfileId())
 								&& signature.getPositionTitle().equals(
-										"Research Director")) {
+										"University Research Director")) {
 							signDirector.setUserProfileId(signature
 									.getUserProfileId());
 							signDirector.setFullName(signature.getFullName());
 							signDirector.setSignature(signature.getSignature());
 							signDirector.setSignedDate(signature
 									.getSignedDate());
-							signDirector.setPositionTitle("Research Director");
+							signDirector.setNote(signature.getNote());
+							signDirector
+									.setPositionTitle("University Research Director");
 							signDirector.setDelegated(signature.isDelegated());
 							if (!signatures.contains(signDirector)) {
 								signatures.add(signDirector);
@@ -1121,7 +1165,9 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 						signDirector.setUserProfileId(user.getId().toString());
 						signDirector.setFullName(user.getFullName());
 						signDirector.setSignature("");
-						signDirector.setPositionTitle("Research Director");
+						signDirector.setNote("");
+						signDirector
+								.setPositionTitle("University Research Director");
 						signDirector.setDelegated(false);
 						if (!signatures.contains(signDirector)) {
 							signatures.add(signDirector);
@@ -1141,6 +1187,7 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 							signDean.setFullName(signature.getFullName());
 							signDean.setSignature(signature.getSignature());
 							signDean.setSignedDate(signature.getSignedDate());
+							signDean.setNote(signature.getNote());
 							signDean.setPositionTitle(signature
 									.getPositionTitle());
 							signDean.setDelegated(signature.isDelegated());
@@ -1155,6 +1202,7 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 						signDean.setUserProfileId(user.getId().toString());
 						signDean.setFullName(user.getFullName());
 						signDean.setSignature("");
+						signDean.setNote("");
 						signDean.setPositionTitle("Dean");
 						signDean.setDelegated(false);
 						if (!signatures.contains(signDean)) {
@@ -1179,6 +1227,7 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 									.getSignature());
 							signBusinessMgr.setSignedDate(signature
 									.getSignedDate());
+							signBusinessMgr.setNote(signature.getNote());
 							signBusinessMgr.setPositionTitle(signature
 									.getPositionTitle());
 							signBusinessMgr.setDelegated(signature
@@ -1195,6 +1244,7 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 								.toString());
 						signBusinessMgr.setFullName(user.getFullName());
 						signBusinessMgr.setSignature("");
+						signBusinessMgr.setNote("");
 						signBusinessMgr.setPositionTitle("Business Manager");
 						signBusinessMgr.setDelegated(false);
 						if (!signatures.contains(signBusinessMgr)) {
@@ -1218,6 +1268,7 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 									.setSignature(signature.getSignature());
 							signDeptChair.setSignedDate(signature
 									.getSignedDate());
+							signDeptChair.setNote(signature.getNote());
 							signDeptChair.setPositionTitle(signature
 									.getPositionTitle());
 							signDeptChair.setDelegated(signature.isDelegated());
@@ -1232,6 +1283,7 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 						signDeptChair.setUserProfileId(user.getId().toString());
 						signDeptChair.setFullName(user.getFullName());
 						signDeptChair.setSignature("");
+						signDeptChair.setNote("");
 						signDeptChair.setPositionTitle("Department Chair");
 						signDeptChair.setDelegated(false);
 						if (!signatures.contains(signDeptChair)) {
