@@ -206,7 +206,7 @@ public class Create10Proposals {
 
 			newProposal.setProjectInfo(newProjInf);
 
-			newProposal.setDateReceived(new Date());
+			newProposal.setDateCreated(new Date());
 
 			newProposal.getProposalStatus().add(Status.NOTSUBMITTEDBYPI);
 
