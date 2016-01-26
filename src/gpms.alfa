@@ -1,0 +1,2 @@
+namespace test { policy testpolicy { target clause Attributes.subjectId ==
+"alice" apply permitOverrides rule { permit } } }
