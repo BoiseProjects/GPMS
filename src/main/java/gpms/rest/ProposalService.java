@@ -683,7 +683,7 @@ public class ProposalService {
 
 			// var canDisApproveTitles = [ "Department Chair", "Dean",
 			// "University Research Director" ];
-			// var canWithDrawTitles = [ "University Research Administrator" ];
+			// var canWithDrawTitles = [ "Research Administrator" ];
 			// var canArchiveTitles = [ "University Research Director" ];
 
 			// For Proposal User Title : for Dean, Chair and Manager
@@ -840,9 +840,9 @@ public class ProposalService {
 							break;
 						case "Withdraw":
 							// var canWithDrawTitles = [
-							// "University Research Administrator" ];
+							// "Research Administrator" ];
 							List<String> canWithDrawTitles = Arrays
-									.asList("University Research Administrator");
+									.asList("Research Administrator");
 							if (!proposalID.equals("0")
 									&& canWithDrawTitles
 											.contains(proposalUserTitle
@@ -2610,9 +2610,9 @@ public class ProposalService {
 			// .findUserDetailsByProfileID(authorId);
 
 			String decision = ac.getXACMLdecision(attrMap);
-			//if (decision.equals("Permit")) {
-				return Response.status(200).type(MediaType.APPLICATION_JSON)
-						.entity(true).build();
+			// if (decision.equals("Permit")) {
+			return Response.status(200).type(MediaType.APPLICATION_JSON)
+					.entity(true).build();
 			// } else {
 			// return Response.status(403).type(MediaType.APPLICATION_JSON)
 			// .entity("Your permission is: " + decision).build();

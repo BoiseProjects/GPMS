@@ -49,62 +49,62 @@ public class DepartmentsPositionsCollection {
 		administratorStaff.add("Research Administrator");
 		administratorStaff.add("University Research Director");
 
-		HashMap<String, ArrayList<String>> TypeTitleHtCS = new HashMap<String, ArrayList<String>>();
-		TypeTitleHtCS.put("Tenured/tenure-track faculty", tenuredTitles);
-		TypeTitleHtCS
+		HashMap<String, ArrayList<String>> positionTypeCS = new HashMap<String, ArrayList<String>>();
+		positionTypeCS.put("Tenured/tenure-track faculty", tenuredTitles);
+		positionTypeCS
 				.put("Non-tenure-track research faculty", nonTenuredTitles);
-		TypeTitleHtCS.put("Teaching faculty", teachingFaculty);
-		TypeTitleHtCS.put("Research staff", researchStaff);
-		TypeTitleHtCS.put("Professional staff", professionalStaff);
-		TypeTitleHtCS.put("Administrator", administratorStaff);
+		positionTypeCS.put("Teaching faculty", teachingFaculty);
+		positionTypeCS.put("Research staff", researchStaff);
+		positionTypeCS.put("Professional staff", professionalStaff);
+		positionTypeCS.put("Administrator", administratorStaff);
 
-		HashMap<String, ArrayList<String>> TypeTitleHtEE = new HashMap<String, ArrayList<String>>();
-		TypeTitleHtEE.put("Tenured/tenure-track faculty", tenuredTitles);
-		TypeTitleHtEE
+		HashMap<String, ArrayList<String>> positionTypeEE = new HashMap<String, ArrayList<String>>();
+		positionTypeEE.put("Tenured/tenure-track faculty", tenuredTitles);
+		positionTypeEE
 				.put("Non-tenure-track research faculty", nonTenuredTitles);
-		TypeTitleHtEE.put("Teaching faculty", teachingFaculty);
-		TypeTitleHtEE.put("Research staff", researchStaff);
-		TypeTitleHtEE.put("Professional staff", professionalStaff);
-		TypeTitleHtEE.put("Administrator", administratorStaff);
+		positionTypeEE.put("Teaching faculty", teachingFaculty);
+		positionTypeEE.put("Research staff", researchStaff);
+		positionTypeEE.put("Professional staff", professionalStaff);
+		positionTypeEE.put("Administrator", administratorStaff);
 
-		HashMap<String, ArrayList<String>> TypeTitleHtCE = new HashMap<String, ArrayList<String>>();
-		TypeTitleHtCE.put("Tenured/tenure-track faculty", tenuredTitles);
-		TypeTitleHtCE
+		HashMap<String, ArrayList<String>> positionTypeCE = new HashMap<String, ArrayList<String>>();
+		positionTypeCE.put("Tenured/tenure-track faculty", tenuredTitles);
+		positionTypeCE
 				.put("Non-tenure-track research faculty", nonTenuredTitles);
-		TypeTitleHtCE.put("Teaching faculty", teachingFaculty);
-		TypeTitleHtCE.put("Research staff", researchStaff);
-		TypeTitleHtCE.put("Professional staff", professionalStaff);
-		TypeTitleHtCE.put("Administrator", administratorStaff);
+		positionTypeCE.put("Teaching faculty", teachingFaculty);
+		positionTypeCE.put("Research staff", researchStaff);
+		positionTypeCE.put("Professional staff", professionalStaff);
+		positionTypeCE.put("Administrator", administratorStaff);
 
-		HashMap<String, ArrayList<String>> TypeTitleHtFis = new HashMap<String, ArrayList<String>>();
-		TypeTitleHtFis.put("Tenured/tenure-track faculty", tenuredTitles);
-		TypeTitleHtFis.put("Non-tenure-track research faculty",
+		HashMap<String, ArrayList<String>> positionTypePhysics = new HashMap<String, ArrayList<String>>();
+		positionTypePhysics.put("Tenured/tenure-track faculty", tenuredTitles);
+		positionTypePhysics.put("Non-tenure-track research faculty",
 				nonTenuredTitles);
-		TypeTitleHtFis.put("Teaching faculty", teachingFaculty);
-		TypeTitleHtFis.put("Research staff", researchStaff);
-		TypeTitleHtFis.put("Professional staff", professionalStaff);
-		TypeTitleHtFis.put("Administrator", administratorStaff);
+		positionTypePhysics.put("Teaching faculty", teachingFaculty);
+		positionTypePhysics.put("Research staff", researchStaff);
+		positionTypePhysics.put("Professional staff", professionalStaff);
+		positionTypePhysics.put("Administrator", administratorStaff);
 
-		HashMap<String, ArrayList<String>> TypeTitleHtChe = new HashMap<String, ArrayList<String>>();
-		TypeTitleHtChe.put("Tenured/tenure-track faculty", tenuredTitles);
-		TypeTitleHtChe.put("Non-tenure-track research faculty",
+		HashMap<String, ArrayList<String>> positionTypeChemistry = new HashMap<String, ArrayList<String>>();
+		positionTypeChemistry.put("Tenured/tenure-track faculty", tenuredTitles);
+		positionTypeChemistry.put("Non-tenure-track research faculty",
 				nonTenuredTitles);
-		TypeTitleHtChe.put("Teaching faculty", teachingFaculty);
-		TypeTitleHtChe.put("Research staff", researchStaff);
-		TypeTitleHtChe.put("Professional staff", professionalStaff);
-		TypeTitleHtChe.put("Administrator", administratorStaff);
+		positionTypeChemistry.put("Teaching faculty", teachingFaculty);
+		positionTypeChemistry.put("Research staff", researchStaff);
+		positionTypeChemistry.put("Professional staff", professionalStaff);
+		positionTypeChemistry.put("Administrator", administratorStaff);
 
-		HashMap<String, HashMap<String, ArrayList<String>>> departmentTypeHtEng = new HashMap<String, HashMap<String, ArrayList<String>>>();
-		departmentTypeHtEng.put("Computer Science", TypeTitleHtCS);
-		departmentTypeHtEng.put("Electrical Engineering", TypeTitleHtEE);
-		departmentTypeHtEng.put("Computer Engineering", TypeTitleHtCE);
+		HashMap<String, HashMap<String, ArrayList<String>>> departmentEngineering = new HashMap<String, HashMap<String, ArrayList<String>>>();
+		departmentEngineering.put("Computer Science", positionTypeCS);
+		departmentEngineering.put("Electrical Engineering", positionTypeEE);
+		departmentEngineering.put("Computer Engineering", positionTypeCE);
 
-		HashMap<String, HashMap<String, ArrayList<String>>> departmentTypeHtSci = new HashMap<String, HashMap<String, ArrayList<String>>>();
-		departmentTypeHtSci.put("Physics", TypeTitleHtFis);
-		departmentTypeHtSci.put("Chemistry", TypeTitleHtChe);
+		HashMap<String, HashMap<String, ArrayList<String>>> departmentScience = new HashMap<String, HashMap<String, ArrayList<String>>>();
+		departmentScience.put("Physics", positionTypePhysics);
+		departmentScience.put("Chemistry", positionTypeChemistry);
 
-		ht.put("Engineering", departmentTypeHtEng);
-		ht.put("Science", departmentTypeHtSci);
+		ht.put("Engineering", departmentEngineering);
+		ht.put("Science", departmentScience);
 	}
 
 	public HashMap<String, HashMap<String, HashMap<String, ArrayList<String>>>> getAvailableDepartmentsAndPositions() {

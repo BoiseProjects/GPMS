@@ -860,7 +860,7 @@ $(function() {
 											_event : 'click',
 											trigger : '3',
 											callMethod : 'myProposal.ViewChangeLogs',
-											arguments : '2,17,18,19'
+											arguments : '2,17,18,19,24'
 										} ],
 								rp : perpage,
 								nomsg : 'No Records Found!',
@@ -921,7 +921,7 @@ $(function() {
 					"Dean", "University Research Director" ];
 			var canDisApproveTitles = [ "Business Manager", "Department Chair",
 					"Dean", "University Research Director" ];
-			var canWithDrawTitles = [ "University Research Administrator" ];
+			var canWithDrawTitles = [ "Research Administrator" ];
 			var canArchiveTitles = [ "University Research Director" ];
 
 			currentProposalRoles = currentProposalRoles.split(', ');
@@ -1762,27 +1762,11 @@ $(function() {
 			switch (tblID) {
 			case "gdvProposals":
 				alert(argus);
-				// myProposal.config.ajaxCallMode = 16;
-				// myProposal.CheckUserPermission("View", proposal_roles,
-				// argus[1], "Audit Log", myProposal.config);
-
-				$('#lblLogsHeading').html('View Audit Logs for: ' + argus[1]);
-				$('#btnLogsBack').prop('name', argus[0]);
-				if (argus[2] != null && argus[2] != "") {
-					$('#tblLastAuditedInfo').show();
-					$('#lblLastUpdatedOn').html(argus[2]);
-					$('#lblLastUpdatedBy').html(argus[3]);
-					$('#lblActivity').html(argus[4]);
-				} else {
-					$('#tblLastAuditedInfo').hide();
-				}
-				// Get Audit Logs
-				myProposal.BindProposalAuditLogGrid(argus[0], null, null, null,
-						null);
-
-				$('#divProposalGrid').hide();
-				$('#divProposalForm').hide();
-				$('#divProposalAuditGrid').show();
+				var proposal_roles = $.trim(argus[5]);
+				 myProposal.config.ajaxCallMode = 16;
+				 myProposal.config.arguments = argus;
+				 myProposal.CheckUserPermission("View", proposal_roles,
+						 argus[0], "Audit Log", myProposal.config);				
 				break;
 			default:
 				break;
@@ -3052,6 +3036,29 @@ $(function() {
 				alert("You are allowed to Edit this Section!");
 			}
 			break;
+			
+		case 16:
+			if (myProposal.config.proposalId != '0') {
+				var argus = myProposal.config.arguments;
+				$('#lblLogsHeading').html('View Audit Logs for: ' + argus[1]);
+				$('#btnLogsBack').prop('name', argus[0]);
+				if (argus[2] != null && argus[2] != "") {
+					$('#tblLastAuditedInfo').show();
+					$('#lblLastUpdatedOn').html(argus[2]);
+					$('#lblLastUpdatedBy').html(argus[3]);
+					$('#lblActivity').html(argus[4]);
+				} else {
+					$('#tblLastAuditedInfo').hide();
+				}
+				// Get Audit Logs
+				myProposal.BindProposalAuditLogGrid(argus[0], null, null, null,
+						null);
+
+				$('#divProposalGrid').hide();
+				$('#divProposalForm').hide();
+				$('#divProposalAuditGrid').show();
+			}
+			break;
 
 		}
 	},
@@ -3145,6 +3152,12 @@ $(function() {
 						+ 'You are not Allowed to EDIT this Section! '
 						+ msg.responseText + '</p>');
 				myProposal.config.event.preventDefault();
+				break;
+				
+			case 15:
+				csscody.error('<h2>' + 'Error Message' + '</h2><p>'
+						+ 'You are not Allowed to VIEW Audit Logs! '
+						+ msg.responseText + '</p>');
 				break;
 			}
 		},
