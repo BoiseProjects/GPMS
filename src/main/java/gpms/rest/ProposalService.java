@@ -2167,7 +2167,7 @@ public class ProposalService {
 		if (proposalInfo != null && !proposalInfo.has("ProposalNo")
 				&& proposalID.equals("0")) {
 			newProposal.setProposalNo(proposalDAO.findLatestProposalNo() + 1);
-		}		
+		}
 
 		String userProfileID = new String();
 		String userName = new String();
@@ -2591,13 +2591,13 @@ public class ProposalService {
 			// .findUserDetailsByProfileID(authorId);
 
 			String decision = ac.getXACMLdecision(attrMap);
-			// if (decision.equals("Permit")) {
-			return Response.status(200).type(MediaType.APPLICATION_JSON)
-					.entity(true).build();
-			// } else {
-			// return Response.status(403).type(MediaType.APPLICATION_JSON)
-			// .entity("Your permission is: " + decision).build();
-			// }
+			if (decision.equals("Permit")) {
+				return Response.status(200).type(MediaType.APPLICATION_JSON)
+						.entity(true).build();
+			} else {
+				return Response.status(403).type(MediaType.APPLICATION_JSON)
+						.entity("Your permission is: " + decision).build();
+			}
 		} else {
 			return Response.status(403).type(MediaType.APPLICATION_JSON)
 					.entity("No User Permission Attributes are send!").build();
