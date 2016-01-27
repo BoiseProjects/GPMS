@@ -28,7 +28,6 @@
 			return gpmsCommonInfo;
 		};
 
-		var popupStatus = 0;
 		NotificationView = {
 			config : {
 				isPostBack : false,

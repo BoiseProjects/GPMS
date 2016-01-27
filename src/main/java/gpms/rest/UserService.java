@@ -14,6 +14,7 @@ import gpms.model.PositionDetails;
 import gpms.model.UserAccount;
 import gpms.model.UserInfo;
 import gpms.model.UserProfile;
+import gpms.model.UserProposalCount;
 import gpms.utils.MultimapAdapter;
 import gpms.utils.SerializationHelper;
 
@@ -322,7 +323,8 @@ public class UserService {
 			userName = commonObj.get("UserName").getTextValue();
 		}
 		if (commonObj != null && commonObj.has("UserIsAdmin")) {
-			userIsAdmin = Boolean.parseBoolean(commonObj.get("UserIsAdmin").getTextValue());
+			userIsAdmin = Boolean.parseBoolean(commonObj.get("UserIsAdmin")
+					.getTextValue());
 		}
 		if (commonObj != null && commonObj.has("UserCollege")) {
 			userCollege = commonObj.get("UserCollege").getTextValue();
@@ -407,7 +409,8 @@ public class UserService {
 			userName = commonObj.get("UserName").getTextValue();
 		}
 		if (commonObj != null && commonObj.has("UserIsAdmin")) {
-			userIsAdmin = Boolean.parseBoolean(commonObj.get("UserIsAdmin").getTextValue());
+			userIsAdmin = Boolean.parseBoolean(commonObj.get("UserIsAdmin")
+					.getTextValue());
 		}
 		if (commonObj != null && commonObj.has("UserCollege")) {
 			userCollege = commonObj.get("UserCollege").getTextValue();
@@ -490,7 +493,8 @@ public class UserService {
 			userName = commonObj.get("UserName").getTextValue();
 		}
 		if (commonObj != null && commonObj.has("UserIsAdmin")) {
-			userIsAdmin = Boolean.parseBoolean(commonObj.get("UserIsAdmin").getTextValue());
+			userIsAdmin = Boolean.parseBoolean(commonObj.get("UserIsAdmin")
+					.getTextValue());
 		}
 		if (commonObj != null && commonObj.has("UserCollege")) {
 			userCollege = commonObj.get("UserCollege").getTextValue();
@@ -616,7 +620,8 @@ public class UserService {
 			userName = commonObj.get("UserName").getTextValue();
 		}
 		if (commonObj != null && commonObj.has("UserIsAdmin")) {
-			userIsAdmin = Boolean.parseBoolean(commonObj.get("UserIsAdmin").getTextValue());
+			userIsAdmin = Boolean.parseBoolean(commonObj.get("UserIsAdmin")
+					.getTextValue());
 		}
 		if (commonObj != null && commonObj.has("UserCollege")) {
 			userCollege = commonObj.get("UserCollege").getTextValue();
@@ -689,7 +694,8 @@ public class UserService {
 			userName = commonObj.get("UserName").getTextValue();
 		}
 		if (commonObj != null && commonObj.has("UserIsAdmin")) {
-			userIsAdmin = Boolean.parseBoolean(commonObj.get("UserIsAdmin").getTextValue());
+			userIsAdmin = Boolean.parseBoolean(commonObj.get("UserIsAdmin")
+					.getTextValue());
 		}
 		if (commonObj != null && commonObj.has("UserCollege")) {
 			userCollege = commonObj.get("UserCollege").getTextValue();
@@ -1093,7 +1099,8 @@ public class UserService {
 			userName = commonObj.get("UserName").getTextValue();
 		}
 		if (commonObj != null && commonObj.has("UserIsAdmin")) {
-			userIsAdmin = Boolean.parseBoolean(commonObj.get("UserIsAdmin").getTextValue());
+			userIsAdmin = Boolean.parseBoolean(commonObj.get("UserIsAdmin")
+					.getTextValue());
 		}
 		if (commonObj != null && commonObj.has("UserCollege")) {
 			userCollege = commonObj.get("UserCollege").getTextValue();
@@ -1589,4 +1596,48 @@ public class UserService {
 		return userPositions;
 	}
 
+	@POST
+	@Path("/GetAllProposalCountForAUser")
+	public UserProposalCount getAllProposalCountForAUser(String message)
+			throws JsonProcessingException, IOException {
+
+		ObjectMapper mapper = new ObjectMapper();
+		JsonNode root = mapper.readTree(message);
+
+		String userProfileID = new String();
+		String userName = new String();
+		Boolean userIsAdmin = false;
+		String userCollege = new String();
+		String userDepartment = new String();
+		String userPositionType = new String();
+		String userPositionTitle = new String();
+
+		JsonNode commonObj = root.get("gpmsCommonObj");
+		if (commonObj != null && commonObj.has("UserProfileID")) {
+			userProfileID = commonObj.get("UserProfileID").getTextValue();
+		}
+		if (commonObj != null && commonObj.has("UserName")) {
+			userName = commonObj.get("UserName").getTextValue();
+		}
+		if (commonObj != null && commonObj.has("UserIsAdmin")) {
+			userIsAdmin = Boolean.parseBoolean(commonObj.get("UserIsAdmin")
+					.getTextValue());
+		}
+		if (commonObj != null && commonObj.has("UserCollege")) {
+			userCollege = commonObj.get("UserCollege").getTextValue();
+		}
+		if (commonObj != null && commonObj.has("UserDepartment")) {
+			userDepartment = commonObj.get("UserDepartment").getTextValue();
+		}
+		if (commonObj != null && commonObj.has("UserPositionType")) {
+			userPositionType = commonObj.get("UserPositionType").getTextValue();
+		}
+		if (commonObj != null && commonObj.has("UserPositionTitle")) {
+			userPositionTitle = commonObj.get("UserPositionTitle")
+					.getTextValue();
+		}
+
+		return userProfileDAO.getUserProposalCounts(userProfileID, userCollege,
+				userDepartment, userPositionType, userPositionTitle);
+	}
 }

@@ -51,7 +51,7 @@ public class Create10UsersTest {
 		int creationCounter = 0;
 
 		while (creationCounter < MAXIMUM_PROFILES) {
-			String userProfile = "userName" + creationCounter;
+			// String userProfile = "userName" + creationCounter;
 			String userAccount = "userAccount" + creationCounter;
 			String firstName = "firstName" + creationCounter;
 			String middleName = "middleName" + creationCounter;

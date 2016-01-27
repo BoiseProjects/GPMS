@@ -45,6 +45,7 @@
 
 <script type="text/javascript">
 	//<![CDATA[
+	           
 	var gpmsAppPath = "";
 	
 	var userProfileId = '<%=session.getAttribute("userProfileId")%>';
@@ -56,8 +57,8 @@
 	var userCollege = '<%=session.getAttribute("userCollege")%>';
 
 	var gpmsServicePath = "REST/";
-	var gpmsRootPath = "http://localhost:8181/GPMS/";	
-	
+	var gpmsRootPath = "http://localhost:8181/GPMS/";
+
 	//]]>
 </script>
 
@@ -138,13 +139,14 @@
 								<h2>Overall Activities</h2>
 								<ul>
 									<li>Total: <a href="./MyProposals.jsp"
-										id="recentProposalCount"><span>100 proposals</span></a></li>
-									<li>As PI: <a href="#"><span id="recentPICount">100
-												proposals</span></a></li>
-									<li>As CO-PI: <a href="#"><span id="recentCoPICount">100
-												proposals</span></a></li>
+										id="recentProposalCount"><span id="spanTotalProposal"></span>
+											proposal(s)</a></li>
+									<li>As PI: <a href="#"><span id="spanPICount"></span>
+											proposal(s)</a></li>
+									<li>As CO-PI: <a href="#"><span id="spanCoPICount"></span>
+											proposal(s)</a></li>
 									<li>As Senior Personnel: <a href="#"><span
-											id="recentSeniorCount">100 proposals</span></a></li>
+											id="spanSeniorCount"></span> proposal(s)</a></li>
 								</ul>
 							</div>
 							<div class="welcomeWrap clearfix">

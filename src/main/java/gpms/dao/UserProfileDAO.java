@@ -9,6 +9,7 @@ import gpms.model.Proposal;
 import gpms.model.UserAccount;
 import gpms.model.UserInfo;
 import gpms.model.UserProfile;
+import gpms.model.UserProposalCount;
 
 import java.net.UnknownHostException;
 import java.text.DateFormat;
@@ -39,9 +40,11 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 	private static Datastore ds;
 	private AuditLog audit = new AuditLog();
 
-	private static Morphia getMorphia() throws UnknownHostException, MongoException {
+	private static Morphia getMorphia() throws UnknownHostException,
+			MongoException {
 		if (morphia == null) {
-			morphia = new Morphia().map(UserProfile.class).map(UserAccount.class);
+			morphia = new Morphia().map(UserProfile.class).map(
+					UserAccount.class);
 		}
 		return morphia;
 	}
@@ -50,7 +53,8 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 	public Datastore getDatastore() {
 		if (ds == null) {
 			try {
-				ds = getMorphia().createDatastore(MongoDBConnector.getMongo(), DBNAME);
+				ds = getMorphia().createDatastore(MongoDBConnector.getMongo(),
+						DBNAME);
 			} catch (UnknownHostException | MongoException e) {
 				e.printStackTrace();
 			}
@@ -73,9 +77,11 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 		return ds.createQuery(UserProfile.class).asList();
 	}
 
-	public List<UserProfile> findAllUsersWithPosition() throws UnknownHostException {
+	public List<UserProfile> findAllUsersWithPosition()
+			throws UnknownHostException {
 		Datastore ds = getDatastore();
-		return ds.createQuery(UserProfile.class).field("details").notEqual(null).asList();
+		return ds.createQuery(UserProfile.class).field("details")
+				.notEqual(null).asList();
 	}
 
 	public List<UserProfile> findAllActiveUsers() throws UnknownHostException {
@@ -86,19 +92,24 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 
 		accountQuery.and(accountQuery.criteria("is deleted").equal(false),
 				accountQuery.criteria("is active").equal(true));
-		profileQuery.and(profileQuery.criteria("details").notEqual(null),
-				profileQuery.and(profileQuery.criteria("user id").in(accountQuery.asKeyList())),
+		profileQuery.and(
+				profileQuery.criteria("details").notEqual(null),
+				profileQuery.and(profileQuery.criteria("user id").in(
+						accountQuery.asKeyList())),
 				profileQuery.criteria("is deleted").equal(false));
 
-		return profileQuery.retrievedFields(true, "_id", "first name", "middle name", "last name").asList();
+		return profileQuery.retrievedFields(true, "_id", "first name",
+				"middle name", "last name").asList();
 	}
 
 	/*
 	 * This is example format for grid Info object bind that is customized to
 	 * bind in grid
 	 */
-	public List<UserInfo> findAllForUserGrid(int offset, int limit, String userName, String college, String department,
-			String positionType, String positionTitle, Boolean isActive) throws UnknownHostException {
+	public List<UserInfo> findAllForUserGrid(int offset, int limit,
+			String userName, String college, String department,
+			String positionType, String positionTitle, Boolean isActive)
+			throws UnknownHostException {
 		Datastore ds = getDatastore();
 		ArrayList<UserInfo> users = new ArrayList<UserInfo>();
 
@@ -125,12 +136,14 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 			profileQuery.criteria("details.position type").equal(positionType);
 		}
 		if (positionTitle != null) {
-			profileQuery.criteria("details.position title").equal(positionTitle);
+			profileQuery.criteria("details.position title")
+					.equal(positionTitle);
 		}
 
 		int rowTotal = profileQuery.asList().size();
 		// profileQuery.and(profileQuery.criteria("_id").notEqual(id)
-		List<UserProfile> userProfiles = profileQuery.offset(offset - 1).limit(limit).asList();
+		List<UserProfile> userProfiles = profileQuery.offset(offset - 1)
+				.limit(limit).asList();
 
 		for (UserProfile userProfile : userProfiles) {
 			UserInfo user = new UserInfo();
@@ -147,14 +160,18 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 
 			ArrayList<AuditLogInfo> allAuditLogs = new ArrayList<AuditLogInfo>();
 
-			if (userProfile.getAuditLog() != null && userProfile.getAuditLog().size() != 0) {
+			if (userProfile.getAuditLog() != null
+					&& userProfile.getAuditLog().size() != 0) {
 				if (userProfile.getUserAccount().getAuditLog() != null
 						&& userProfile.getUserAccount().getAuditLog().size() != 0) {
-					for (AuditLog userAccountAudit : userProfile.getUserAccount().getAuditLog()) {
+					for (AuditLog userAccountAudit : userProfile
+							.getUserAccount().getAuditLog()) {
 						AuditLogInfo userAuditLog = new AuditLogInfo();
 
-						userAuditLog.setActivityDate(userAccountAudit.getActivityDate());
-						userAuditLog.setUserFullName(userAccountAudit.getUserProfile().getFullName());
+						userAuditLog.setActivityDate(userAccountAudit
+								.getActivityDate());
+						userAuditLog.setUserFullName(userAccountAudit
+								.getUserProfile().getFullName());
 						userAuditLog.setAction(userAccountAudit.getAction());
 
 						allAuditLogs.add(userAuditLog);
@@ -164,8 +181,10 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 
 				for (AuditLog userProfileAudit : userProfile.getAuditLog()) {
 					AuditLogInfo userAuditLog = new AuditLogInfo();
-					userAuditLog.setActivityDate(userProfileAudit.getActivityDate());
-					userAuditLog.setUserFullName(userProfileAudit.getUserProfile().getFullName());
+					userAuditLog.setActivityDate(userProfileAudit
+							.getActivityDate());
+					userAuditLog.setUserFullName(userProfileAudit
+							.getUserProfile().getFullName());
 					userAuditLog.setAction(userProfileAudit.getAction());
 
 					allAuditLogs.add(userAuditLog);
@@ -198,8 +217,10 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 		return users;
 	}
 
-	public List<AuditLogInfo> findAllForUserAuditLogGrid(int offset, int limit, ObjectId userId, String action,
-			String auditedBy, String activityOnFrom, String activityOnTo) throws ParseException, UnknownHostException {
+	public List<AuditLogInfo> findAllForUserAuditLogGrid(int offset, int limit,
+			ObjectId userId, String action, String auditedBy,
+			String activityOnFrom, String activityOnTo) throws ParseException,
+			UnknownHostException {
 
 		Datastore ds = getDatastore();
 
@@ -218,7 +239,8 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 				boolean isActivityDateToMatch = false;
 
 				if (action != null) {
-					if (userProfileAudit.getAction().toLowerCase().contains(action.toLowerCase())) {
+					if (userProfileAudit.getAction().toLowerCase()
+							.contains(action.toLowerCase())) {
 						isActionMatch = true;
 					}
 				} else {
@@ -226,17 +248,19 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 				}
 
 				if (auditedBy != null) {
-					if (userProfileAudit.getUserProfile().getUserAccount().getUserName().toLowerCase()
+					if (userProfileAudit.getUserProfile().getUserAccount()
+							.getUserName().toLowerCase()
 							.contains(auditedBy.toLowerCase())) {
 						isAuditedByMatch = true;
-					} else if (userProfileAudit.getUserProfile().getFirstName().toLowerCase()
+					} else if (userProfileAudit.getUserProfile().getFirstName()
+							.toLowerCase().contains(auditedBy.toLowerCase())) {
+						isAuditedByMatch = true;
+					} else if (userProfileAudit.getUserProfile()
+							.getMiddleName().toLowerCase()
 							.contains(auditedBy.toLowerCase())) {
 						isAuditedByMatch = true;
-					} else if (userProfileAudit.getUserProfile().getMiddleName().toLowerCase()
-							.contains(auditedBy.toLowerCase())) {
-						isAuditedByMatch = true;
-					} else if (userProfileAudit.getUserProfile().getLastName().toLowerCase()
-							.contains(auditedBy.toLowerCase())) {
+					} else if (userProfileAudit.getUserProfile().getLastName()
+							.toLowerCase().contains(auditedBy.toLowerCase())) {
 						isAuditedByMatch = true;
 					}
 				} else {
@@ -246,11 +270,14 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 				DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 				if (activityOnFrom != null) {
 					Date activityDateFrom = formatter.parse(activityOnFrom);
-					if (userProfileAudit.getActivityDate().compareTo(activityDateFrom) > 0) {
+					if (userProfileAudit.getActivityDate().compareTo(
+							activityDateFrom) > 0) {
 						isActivityDateFromMatch = true;
-					} else if (userProfileAudit.getActivityDate().compareTo(activityDateFrom) < 0) {
+					} else if (userProfileAudit.getActivityDate().compareTo(
+							activityDateFrom) < 0) {
 						isActivityDateFromMatch = false;
-					} else if (userProfileAudit.getActivityDate().compareTo(activityDateFrom) == 0) {
+					} else if (userProfileAudit.getActivityDate().compareTo(
+							activityDateFrom) == 0) {
 						isActivityDateFromMatch = true;
 					}
 				} else {
@@ -259,29 +286,37 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 
 				if (activityOnTo != null) {
 					Date activityDateTo = formatter.parse(activityOnTo);
-					if (userProfileAudit.getActivityDate().compareTo(activityDateTo) > 0) {
+					if (userProfileAudit.getActivityDate().compareTo(
+							activityDateTo) > 0) {
 						isActivityDateToMatch = false;
-					} else if (userProfileAudit.getActivityDate().compareTo(activityDateTo) < 0) {
+					} else if (userProfileAudit.getActivityDate().compareTo(
+							activityDateTo) < 0) {
 						isActivityDateToMatch = true;
-					} else if (userProfileAudit.getActivityDate().compareTo(activityDateTo) == 0) {
+					} else if (userProfileAudit.getActivityDate().compareTo(
+							activityDateTo) == 0) {
 						isActivityDateToMatch = true;
 					}
 				} else {
 					isActivityDateToMatch = true;
 				}
 
-				if (isActionMatch && isAuditedByMatch && isActivityDateFromMatch && isActivityDateToMatch) {
-					userAuditLog.setUserName(userProfileAudit.getUserProfile().getUserAccount().getUserName());
-					userAuditLog.setUserFullName(userProfileAudit.getUserProfile().getFullName());
+				if (isActionMatch && isAuditedByMatch
+						&& isActivityDateFromMatch && isActivityDateToMatch) {
+					userAuditLog.setUserName(userProfileAudit.getUserProfile()
+							.getUserAccount().getUserName());
+					userAuditLog.setUserFullName(userProfileAudit
+							.getUserProfile().getFullName());
 					userAuditLog.setAction(userProfileAudit.getAction());
-					userAuditLog.setActivityDate(userProfileAudit.getActivityDate());
+					userAuditLog.setActivityDate(userProfileAudit
+							.getActivityDate());
 
 					allAuditLogs.add(userAuditLog);
 				}
 			}
 		}
 
-		if (q.getUserAccount().getAuditLog() != null && q.getUserAccount().getAuditLog().size() != 0) {
+		if (q.getUserAccount().getAuditLog() != null
+				&& q.getUserAccount().getAuditLog().size() != 0) {
 			for (AuditLog userAccountAudit : q.getUserAccount().getAuditLog()) {
 				AuditLogInfo userAuditLog = new AuditLogInfo();
 				boolean isActionMatch = false;
@@ -290,7 +325,8 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 				boolean isActivityDateToMatch = false;
 
 				if (action != null) {
-					if (userAccountAudit.getAction().toLowerCase().contains(action.toLowerCase())) {
+					if (userAccountAudit.getAction().toLowerCase()
+							.contains(action.toLowerCase())) {
 						isActionMatch = true;
 					}
 				} else {
@@ -298,17 +334,19 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 				}
 
 				if (auditedBy != null) {
-					if (userAccountAudit.getUserProfile().getUserAccount().getUserName().toLowerCase()
+					if (userAccountAudit.getUserProfile().getUserAccount()
+							.getUserName().toLowerCase()
 							.contains(auditedBy.toLowerCase())) {
 						isAuditedByMatch = true;
-					} else if (userAccountAudit.getUserProfile().getFirstName().toLowerCase()
+					} else if (userAccountAudit.getUserProfile().getFirstName()
+							.toLowerCase().contains(auditedBy.toLowerCase())) {
+						isAuditedByMatch = true;
+					} else if (userAccountAudit.getUserProfile()
+							.getMiddleName().toLowerCase()
 							.contains(auditedBy.toLowerCase())) {
 						isAuditedByMatch = true;
-					} else if (userAccountAudit.getUserProfile().getMiddleName().toLowerCase()
-							.contains(auditedBy.toLowerCase())) {
-						isAuditedByMatch = true;
-					} else if (userAccountAudit.getUserProfile().getLastName().toLowerCase()
-							.contains(auditedBy.toLowerCase())) {
+					} else if (userAccountAudit.getUserProfile().getLastName()
+							.toLowerCase().contains(auditedBy.toLowerCase())) {
 						isAuditedByMatch = true;
 					}
 				} else {
@@ -318,11 +356,14 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 				DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 				if (activityOnFrom != null) {
 					Date activityDateFrom = formatter.parse(activityOnFrom);
-					if (userAccountAudit.getActivityDate().compareTo(activityDateFrom) > 0) {
+					if (userAccountAudit.getActivityDate().compareTo(
+							activityDateFrom) > 0) {
 						isActivityDateFromMatch = true;
-					} else if (userAccountAudit.getActivityDate().compareTo(activityDateFrom) < 0) {
+					} else if (userAccountAudit.getActivityDate().compareTo(
+							activityDateFrom) < 0) {
 						isActivityDateFromMatch = false;
-					} else if (userAccountAudit.getActivityDate().compareTo(activityDateFrom) == 0) {
+					} else if (userAccountAudit.getActivityDate().compareTo(
+							activityDateFrom) == 0) {
 						isActivityDateFromMatch = true;
 					}
 				} else {
@@ -331,22 +372,29 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 
 				if (activityOnTo != null) {
 					Date activityDateTo = formatter.parse(activityOnTo);
-					if (userAccountAudit.getActivityDate().compareTo(activityDateTo) > 0) {
+					if (userAccountAudit.getActivityDate().compareTo(
+							activityDateTo) > 0) {
 						isActivityDateToMatch = false;
-					} else if (userAccountAudit.getActivityDate().compareTo(activityDateTo) < 0) {
+					} else if (userAccountAudit.getActivityDate().compareTo(
+							activityDateTo) < 0) {
 						isActivityDateToMatch = true;
-					} else if (userAccountAudit.getActivityDate().compareTo(activityDateTo) == 0) {
+					} else if (userAccountAudit.getActivityDate().compareTo(
+							activityDateTo) == 0) {
 						isActivityDateToMatch = true;
 					}
 				} else {
 					isActivityDateToMatch = true;
 				}
 
-				if (isActionMatch && isAuditedByMatch && isActivityDateFromMatch && isActivityDateToMatch) {
-					userAuditLog.setUserName(userAccountAudit.getUserProfile().getUserAccount().getUserName());
-					userAuditLog.setUserFullName(userAccountAudit.getUserProfile().getFullName());
+				if (isActionMatch && isAuditedByMatch
+						&& isActivityDateFromMatch && isActivityDateToMatch) {
+					userAuditLog.setUserName(userAccountAudit.getUserProfile()
+							.getUserAccount().getUserName());
+					userAuditLog.setUserFullName(userAccountAudit
+							.getUserProfile().getFullName());
 					userAuditLog.setAction(userAccountAudit.getAction());
-					userAuditLog.setActivityDate(userAccountAudit.getActivityDate());
+					userAuditLog.setActivityDate(userAccountAudit
+							.getActivityDate());
 
 					allAuditLogs.add(userAuditLog);
 				}
@@ -372,19 +420,22 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 
 	private int countPIProposal(UserProfile userProfile) {
 		Datastore ds = getDatastore();
-		return ds.createQuery(Proposal.class).field("investigator info.PI.user profile").equal(userProfile).asList()
-				.size();
+		return ds.createQuery(Proposal.class)
+				.field("investigator info.PI.user profile").equal(userProfile)
+				.asList().size();
 	}
 
 	private int countCoPIProposal(UserProfile userProfile) {
 		Datastore ds = getDatastore();
-		return ds.createQuery(Proposal.class).field("investigator info.CO-PI.user profile").equal(userProfile).asList()
-				.size();
+		return ds.createQuery(Proposal.class)
+				.field("investigator info.CO-PI.user profile")
+				.equal(userProfile).asList().size();
 	}
 
 	private int countSeniorPersonnel(UserProfile userProfile) {
 		Datastore ds = getDatastore();
-		return ds.createQuery(Proposal.class).field("investigator info.senior personnel.user profile")
+		return ds.createQuery(Proposal.class)
+				.field("investigator info.senior personnel.user profile")
 				.equal(userProfile).asList().size();
 	}
 
@@ -399,38 +450,46 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 		// UserProfile temp = query.field("user id.$id").equal(id).get();
 		// UserProfile tempUser = ds.createQuery(UserProfile.class);
 		// .field("user id.id").equal(id).get();
-		return ds.createQuery(UserProfile.class).field("user id").equal(userAccount).get();
+		return ds.createQuery(UserProfile.class).field("user id")
+				.equal(userAccount).get();
 	}
 
 	public void saveUser(UserProfile newProfile, UserProfile authorProfile) {
 		Datastore ds = getDatastore();
 		audit = new AuditLog(authorProfile,
-				"Created user account and profile of " + newProfile.getUserAccount().getUserName(), new Date());
+				"Created user account and profile of "
+						+ newProfile.getUserAccount().getUserName(), new Date());
 		newProfile.getAuditLog().add(audit);
 		ds.save(newProfile);
 	}
 
-	public void updateUser(UserProfile existingUserProfile, UserProfile authorProfile) {
+	public void updateUser(UserProfile existingUserProfile,
+			UserProfile authorProfile) {
 		Datastore ds = getDatastore();
 		audit = new AuditLog(authorProfile,
-				"Updated user account and profile of " + existingUserProfile.getUserAccount().getUserName(),
+				"Updated user account and profile of "
+						+ existingUserProfile.getUserAccount().getUserName(),
 				new Date());
 		existingUserProfile.getAuditLog().add(audit);
 		ds.save(existingUserProfile);
 	}
 
-	public void deleteUserProfileByUserID(UserProfile userProfile, UserProfile authorProfile) {
+	public void deleteUserProfileByUserID(UserProfile userProfile,
+			UserProfile authorProfile) {
 		Datastore ds = getDatastore();
-		audit = new AuditLog(authorProfile, "Deleted user profile of " + userProfile.getFullName(), new Date());
+		audit = new AuditLog(authorProfile, "Deleted user profile of "
+				+ userProfile.getFullName(), new Date());
 		userProfile.getAuditLog().add(audit);
 
 		userProfile.setDeleted(true);
 		ds.save(userProfile);
 	}
 
-	public void activateUserProfileByUserID(UserProfile userProfile, UserProfile authorProfile, Boolean isActive) {
+	public void activateUserProfileByUserID(UserProfile userProfile,
+			UserProfile authorProfile, Boolean isActive) {
 		Datastore ds = getDatastore();
-		audit = new AuditLog(authorProfile, "Activated user profile of " + userProfile.getFullName(), new Date());
+		audit = new AuditLog(authorProfile, "Activated user profile of "
+				+ userProfile.getFullName(), new Date());
 		userProfile.getAuditLog().add(audit);
 
 		userProfile.setDeleted(!isActive);
@@ -450,7 +509,8 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 		// c.lower(x);
 		//
 
-		Pattern pattern = Pattern.compile("^" + userName + "$", Pattern.CASE_INSENSITIVE);
+		Pattern pattern = Pattern.compile("^" + userName + "$",
+				Pattern.CASE_INSENSITIVE);
 
 		accountQuery.criteria("username").containsIgnoreCase(pattern.pattern());
 
@@ -465,7 +525,8 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 		Query<UserProfile> profileQuery = ds.createQuery(UserProfile.class);
 		Query<UserAccount> accountQuery = ds.createQuery(UserAccount.class);
 
-		Pattern pattern = Pattern.compile("^" + newUserName + "$", Pattern.CASE_INSENSITIVE);
+		Pattern pattern = Pattern.compile("^" + newUserName + "$",
+				Pattern.CASE_INSENSITIVE);
 
 		accountQuery.criteria("username").containsIgnoreCase(pattern.pattern());
 		profileQuery.criteria("user id").in(accountQuery.asKeyList());
@@ -476,9 +537,13 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 		Datastore ds = getDatastore();
 
 		Query<UserProfile> profileQuery = ds.createQuery(UserProfile.class);
-		profileQuery.and(profileQuery.criteria("_id").notEqual(id),
-				profileQuery.or(profileQuery.criteria("work email").hasThisOne(newEmail.toString()),
-						profileQuery.criteria("personal email").hasThisOne(newEmail.toString())));
+		profileQuery.and(
+				profileQuery.criteria("_id").notEqual(id),
+				profileQuery.or(
+						profileQuery.criteria("work email").hasThisOne(
+								newEmail.toString()),
+						profileQuery.criteria("personal email").hasThisOne(
+								newEmail.toString())));
 		return profileQuery.get();
 	}
 
@@ -489,17 +554,25 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 
 		// Pattern pattern = Pattern.compile("^" + newEmail + "$",
 		// Pattern.CASE_INSENSITIVE);
-		profileQuery.or(profileQuery.criteria("work email").hasThisOne(newEmail.toString()),
-				profileQuery.criteria("personal email").hasThisOne(newEmail.toString()));
+		profileQuery.or(
+				profileQuery.criteria("work email").hasThisOne(
+						newEmail.toString()),
+				profileQuery.criteria("personal email").hasThisOne(
+						newEmail.toString()));
 		return profileQuery.get();
 	}
 
-	public List<InvestigatorUsersAndPositions> findAllPositionDetailsForAUser(ObjectId id) {
+	public List<InvestigatorUsersAndPositions> findAllPositionDetailsForAUser(
+			ObjectId id) {
 		Datastore ds = getDatastore();
 		ArrayList<InvestigatorUsersAndPositions> userPositions = new ArrayList<InvestigatorUsersAndPositions>();
 
-		Query<UserProfile> q = ds.createQuery(UserProfile.class).field("_id").equal(id).retrievedFields(true, "_id",
-				"first name", "middle name", "last name", "details", "mobile number");
+		Query<UserProfile> q = ds
+				.createQuery(UserProfile.class)
+				.field("_id")
+				.equal(id)
+				.retrievedFields(true, "_id", "first name", "middle name",
+						"last name", "details", "mobile number");
 		List<UserProfile> userProfile = q.asList();
 
 		for (UserProfile user : userProfile) {
@@ -511,11 +584,15 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 			userPosition.setMobileNumber(user.getMobileNumbers().get(0));
 
 			for (PositionDetails userDetails : user.getDetails()) {
-				Multimap<String, Object> mapTypeTitle = ArrayListMultimap.create();
-				Multimap<String, Object> mapDeptType = ArrayListMultimap.create();
+				Multimap<String, Object> mapTypeTitle = ArrayListMultimap
+						.create();
+				Multimap<String, Object> mapDeptType = ArrayListMultimap
+						.create();
 
-				mapTypeTitle.put(userDetails.getPositionType(), userDetails.getPositionTitle());
-				mapDeptType.put(userDetails.getDepartment(), mapTypeTitle.asMap());
+				mapTypeTitle.put(userDetails.getPositionType(),
+						userDetails.getPositionTitle());
+				mapDeptType.put(userDetails.getDepartment(),
+						mapTypeTitle.asMap());
 
 				htUser.put(userDetails.getCollege(), mapDeptType.asMap());
 				userPosition.setPositions(htUser);
@@ -525,12 +602,17 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 		return userPositions;
 	}
 
-	public List<InvestigatorUsersAndPositions> findUserPositionDetailsForAProposal(List<ObjectId> userIds) {
+	public List<InvestigatorUsersAndPositions> findUserPositionDetailsForAProposal(
+			List<ObjectId> userIds) {
 		Datastore ds = getDatastore();
 		ArrayList<InvestigatorUsersAndPositions> userPositions = new ArrayList<InvestigatorUsersAndPositions>();
 
-		Query<UserProfile> q = ds.createQuery(UserProfile.class).field("_id").in(userIds).retrievedFields(true, "_id",
-				"first name", "middle name", "last name", "details", "mobile number");
+		Query<UserProfile> q = ds
+				.createQuery(UserProfile.class)
+				.field("_id")
+				.in(userIds)
+				.retrievedFields(true, "_id", "first name", "middle name",
+						"last name", "details", "mobile number");
 		List<UserProfile> userProfile = q.asList();
 
 		for (UserProfile user : userProfile) {
@@ -542,11 +624,15 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 			userPosition.setMobileNumber(user.getMobileNumbers().get(0));
 
 			for (PositionDetails userDetails : user.getDetails()) {
-				Multimap<String, Object> mapTypeTitle = ArrayListMultimap.create();
-				Multimap<String, Object> mapDeptType = ArrayListMultimap.create();
+				Multimap<String, Object> mapTypeTitle = ArrayListMultimap
+						.create();
+				Multimap<String, Object> mapDeptType = ArrayListMultimap
+						.create();
 
-				mapTypeTitle.put(userDetails.getPositionType(), userDetails.getPositionTitle());
-				mapDeptType.put(userDetails.getDepartment(), mapTypeTitle.asMap());
+				mapTypeTitle.put(userDetails.getPositionType(),
+						userDetails.getPositionTitle());
+				mapDeptType.put(userDetails.getDepartment(),
+						mapTypeTitle.asMap());
 
 				htUser.put(userDetails.getCollege(), mapDeptType.asMap());
 				userPosition.setPositions(htUser);
@@ -556,156 +642,147 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 		return userPositions;
 	}
 
-	public UserProfile findMatchedUserDetails(ObjectId id, String userName, Boolean isAdminUser, String college,
-			String department, String positionType, String positionTitle) {
+	public UserProfile findMatchedUserDetails(ObjectId id, String userName,
+			Boolean isAdminUser, String college, String department,
+			String positionType, String positionTitle) {
 		Datastore ds = getDatastore();
 
 		Query<UserAccount> accountQuery = ds.createQuery(UserAccount.class);
 
 		accountQuery.and(accountQuery.criteria("is deleted").equal(false),
-				accountQuery.criteria("is active").equal(true), accountQuery.criteria("username").equal(userName),
-				accountQuery.criteria("is admin").equal(isAdminUser));
+				accountQuery.criteria("is active").equal(true), accountQuery
+						.criteria("username").equal(userName), accountQuery
+						.criteria("is admin").equal(isAdminUser));
 
-		Query<UserProfile> profileQuery = ds.createQuery(UserProfile.class).retrievedFields(true, "_id", "user id",
-				"details.college", "details.department", "details.position type", "details.position title");
+		Query<UserProfile> profileQuery = ds.createQuery(UserProfile.class)
+				.retrievedFields(true, "_id", "user id", "details.college",
+						"details.department", "details.position type",
+						"details.position title");
 		if (isAdminUser) {
-			profileQuery.and(profileQuery.criteria("_id").equal(id),
-					profileQuery.and(profileQuery.criteria("user id").in(accountQuery.asKeyList())),
+			profileQuery.and(
+					profileQuery.criteria("_id").equal(id),
+					profileQuery.and(profileQuery.criteria("user id").in(
+							accountQuery.asKeyList())),
 					profileQuery.criteria("is deleted").equal(false));
 
 		} else {
-			profileQuery.and(profileQuery.criteria("_id").equal(id),
-					profileQuery.and(profileQuery.criteria("user id").in(accountQuery.asKeyList())),
+			profileQuery.and(
+					profileQuery.criteria("_id").equal(id),
+					profileQuery.and(profileQuery.criteria("user id").in(
+							accountQuery.asKeyList())),
 					profileQuery.criteria("details").notEqual(null),
 					profileQuery.criteria("details.college").equal(college),
-					profileQuery.criteria("details.department").equal(department),
-					profileQuery.criteria("details.positionType").equal(positionType),
-					profileQuery.criteria("details.positionTitle").equal(positionTitle),
-					profileQuery.criteria("is deleted").equal(false));
+					profileQuery.criteria("details.department").equal(
+							department),
+					profileQuery.criteria("details.positionType").equal(
+							positionType),
+					profileQuery.criteria("details.positionTitle").equal(
+							positionTitle), profileQuery.criteria("is deleted")
+							.equal(false));
 		}
 
 		return profileQuery.get();
 	}
 
-	public int countByRoleTotalProposal(UserProfile userProfile, String College, String Department, String PositionType,
-			String PositionTitle) {
+	public UserProposalCount getUserProposalCounts(String userProfileId,
+			String college, String department, String positionType,
+			String positionTitle) {
 		Datastore ds = getDatastore();
-		String ProfileID = userProfile.getId().toString();
+		UserProposalCount userProposalCount = new UserProposalCount();
+
 		Query<Proposal> proposalQuery = ds.createQuery(Proposal.class);
+		proposalQuery.or(proposalQuery.and(
+				proposalQuery.criteria("investigator info.PI.user profile id")
+						.equal(userProfileId),
+				proposalQuery.criteria("investigator info.PI.college").equal(
+						college),
+				proposalQuery.criteria("investigator info.PI.department")
+						.equal(department),
+				proposalQuery.criteria("investigator info.PI.position type")
+						.equal(positionType),
+				proposalQuery.criteria("investigator info.PI.position title")
+						.equal(positionTitle)), proposalQuery.and(
+				proposalQuery.criteria(
+						"investigator info.CO-PI.user profile id").equal(
+						userProfileId),
+				proposalQuery.criteria("investigator info.CO-PI.college")
+						.equal(college),
+				proposalQuery.criteria("investigator info.CO-PI.department")
+						.equal(department),
+				proposalQuery.criteria("investigator info.CO-PI.position type")
+						.equal(positionType),
+				proposalQuery
+						.criteria("investigator info.CO-PI.position title")
+						.equal(positionTitle)), proposalQuery.and(
+				proposalQuery.criteria(
+						"investigator info.senior personnel.user profile id")
+						.equal(userProfileId),
+				proposalQuery.criteria(
+						"investigator info.senior personnel.college").equal(
+						college),
+				proposalQuery.criteria(
+						"investigator info.senior personnel.department").equal(
+						department),
+				proposalQuery.criteria(
+						"investigator info.senior personnel.position type")
+						.equal(positionType),
+				proposalQuery.criteria(
+						"investigator info.senior personnel.position title")
+						.equal(positionTitle)));
 
-		if (PositionTitle.equals("Dean")) {
-			proposalQuery.or(proposalQuery.criteria("investigator info.PI.college").equal(College),
-					proposalQuery.criteria("investigator info.CO-PI.college").equal(College),
-					proposalQuery.criteria("investigator info.senior personnel.college").equal(College));
+		userProposalCount.setTotalProposalCount(proposalQuery.asList().size());
 
-		} else if (PositionTitle.equals("Department Chair")) {
-			proposalQuery.and(
-					proposalQuery.or(proposalQuery.criteria("investigator info.PI.college").equal(College),
-							proposalQuery.criteria("investigator info.CO-PI.college").equal(College),
-							proposalQuery.criteria("investigator info.senior personnel.college").equal(College)),
-					proposalQuery.or(proposalQuery.criteria("investigator info.PI.department").equal(Department),
-							proposalQuery.criteria("investigator info.CO-PI.department").equal(Department),
-							proposalQuery.criteria("investigator info.senior personnel.department").equal(Department)));
+		proposalQuery = ds.createQuery(Proposal.class);
 
-		} else {
-			proposalQuery.and(
-					proposalQuery.or(proposalQuery.criteria("investigator info.PI.college").equal(College),
-							proposalQuery.criteria("investigator info.CO-PI.college").equal(College),
-							proposalQuery.criteria("investigator info.senior personnel.college").equal(College)),
-					proposalQuery.or(proposalQuery.criteria("investigator info.PI.department").equal(Department),
-							proposalQuery.criteria("investigator info.CO-PI.department").equal(Department),
-							proposalQuery.criteria("investigator info.senior personnel.department").equal(Department)),
-					proposalQuery.or(proposalQuery.criteria("investigator info.PI.position type").equal(PositionType),
-							proposalQuery.criteria("investigator info.CO-PI.position type").equal(PositionType),
-							proposalQuery.criteria("investigator info.senior personnel.position type")
-									.equal(PositionType)),
-					proposalQuery.or(proposalQuery.criteria("investigator info.PI.position title").equal(PositionTitle),
-							proposalQuery.criteria("investigator info.CO-PI.position title").equal(PositionTitle),
-							proposalQuery.criteria("investigator info.senior personnel.position title")
-									.equal(PositionTitle)),
-					proposalQuery.or(proposalQuery.criteria("investigator info.PI.user profile id").equal(ProfileID),
-							proposalQuery.criteria("investigator info.CO-PI.user profile id").equal(ProfileID),
-							proposalQuery.criteria("investigator info.senior personnel.user profile id")
-									.equal(ProfileID)));
-		}
+		proposalQuery.and(
+				proposalQuery.criteria("investigator info.PI.user profile id")
+						.equal(userProfileId),
+				proposalQuery.criteria("investigator info.PI.college").equal(
+						college),
+				proposalQuery.criteria("investigator info.PI.department")
+						.equal(department),
+				proposalQuery.criteria("investigator info.PI.position type")
+						.equal(positionType),
+				proposalQuery.criteria("investigator info.PI.position title")
+						.equal(positionTitle));
+		userProposalCount.setPiCount(proposalQuery.asList().size());
 
-		return proposalQuery.asList().size();
+		proposalQuery = ds.createQuery(Proposal.class);
+		proposalQuery.and(
+				proposalQuery.criteria(
+						"investigator info.CO-PI.user profile id").equal(
+						userProfileId),
+				proposalQuery.criteria("investigator info.CO-PI.college")
+						.equal(college),
+				proposalQuery.criteria("investigator info.CO-PI.department")
+						.equal(department),
+				proposalQuery.criteria("investigator info.CO-PI.position type")
+						.equal(positionType),
+				proposalQuery
+						.criteria("investigator info.CO-PI.position title")
+						.equal(positionTitle));
+		userProposalCount.setCoPICount(proposalQuery.asList().size());
+
+		proposalQuery = ds.createQuery(Proposal.class);
+		proposalQuery.and(
+				proposalQuery.criteria(
+						"investigator info.senior personnel.user profile id")
+						.equal(userProfileId),
+				proposalQuery.criteria(
+						"investigator info.senior personnel.college").equal(
+						college),
+				proposalQuery.criteria(
+						"investigator info.senior personnel.department").equal(
+						department),
+				proposalQuery.criteria(
+						"investigator info.senior personnel.position type")
+						.equal(positionType),
+				proposalQuery.criteria(
+						"investigator info.senior personnel.position title")
+						.equal(positionTitle));
+		userProposalCount.setSeniorCount(proposalQuery.asList().size());
+
+		return userProposalCount;
 	}
-
-	public int countByRolePIProposal(UserProfile userProfile, String College, String Department, String PositionType,
-			String PositionTitle) {
-		Datastore ds = getDatastore();
-		String ProfileID = userProfile.getId().toString();
-		Query<Proposal> proposalQuery = ds.createQuery(Proposal.class);
-
-		if (PositionTitle.equals("Dean")) {
-			proposalQuery.or(proposalQuery.criteria("investigator info.PI.college").equal(College));
-
-		} else if (PositionTitle.equals("Department Chair")) {
-			proposalQuery.and(proposalQuery.or(proposalQuery.criteria("investigator info.PI.college").equal(College)),
-					proposalQuery.or(proposalQuery.criteria("investigator info.PI.department").equal(Department)));
-
-		} else {
-			proposalQuery.and(proposalQuery.criteria("investigator info.PI.college").equal(College),
-					proposalQuery.criteria("investigator info.PI.department").equal(Department),
-					proposalQuery.criteria("investigator info.PI.position type").equal(PositionType),
-					proposalQuery.criteria("investigator info.PI.position title").equal(PositionTitle),
-					proposalQuery.criteria("investigator info.PI.user profile id").equal(ProfileID));
-		}
-
-		return proposalQuery.asList().size();
-	}
-
-	public int countByRoleCoPIProposal(UserProfile userProfile, String College, String Department, String PositionType,
-			String PositionTitle) {
-		Datastore ds = getDatastore();
-		String ProfileID = userProfile.getId().toString();
-		Query<Proposal> proposalQuery = ds.createQuery(Proposal.class);
-
-		if (PositionTitle.equals("Dean")) {
-			proposalQuery.or(proposalQuery.criteria("investigator info.CO-PI.college").equal(College));
-
-		} else if (PositionTitle.equals("Department Chair")) {
-			proposalQuery.and(
-					proposalQuery.or(proposalQuery.criteria("investigator info.CO-PI.college").equal(College)),
-					proposalQuery.or(proposalQuery.criteria("investigator info.CO-PI.department").equal(Department)));
-
-		} else {
-			proposalQuery.and(proposalQuery.criteria("investigator info.CO-PI.college").equal(College),
-					proposalQuery.criteria("investigator info.CO-PI.department").equal(Department),
-					proposalQuery.criteria("investigator info.CO-PI.position type").equal(PositionType),
-					proposalQuery.criteria("investigator info.CO-PI.position title").equal(PositionTitle),
-					proposalQuery.criteria("investigator info.CO-PI.user profile id").equal(ProfileID));
-		}
-
-		return proposalQuery.asList().size();
-	}
-
-	public int countByRoleSeniorProposal(UserProfile userProfile, String College, String Department,
-			String PositionType, String PositionTitle) {
-		Datastore ds = getDatastore();
-		String ProfileID = userProfile.getId().toString();
-		Query<Proposal> proposalQuery = ds.createQuery(Proposal.class);
-
-		if (PositionTitle.equals("Dean")) {
-			proposalQuery.or(proposalQuery.criteria("investigator info.senior personnel.college").equal(College));
-
-		} else if (PositionTitle.equals("Department Chair")) {
-			proposalQuery.and(
-					proposalQuery
-							.or(proposalQuery.criteria("investigator info.senior personnel.college").equal(College)),
-					proposalQuery.or(
-							proposalQuery.criteria("investigator info.senior personnel.department").equal(Department)));
-
-		} else {
-			proposalQuery.and(proposalQuery.criteria("investigator info.senior personnel.college").equal(College),
-					proposalQuery.criteria("investigator info.senior personnel.department").equal(Department),
-					proposalQuery.criteria("investigator info.senior personnel.position type").equal(PositionType),
-					proposalQuery.criteria("investigator info.senior personnel.position title").equal(PositionTitle),
-					proposalQuery.criteria("investigator info.senior personnel.user profile id").equal(ProfileID));
-		}
-
-		return proposalQuery.asList().size();
-	}
-
+	
 }
