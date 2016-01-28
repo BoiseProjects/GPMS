@@ -19,6 +19,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -91,19 +92,49 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 		ds.save(existingProposal);
 	}
 
-	public void deleteProposal(Proposal proposal, String proposalRoles,
+	public boolean deleteProposal(Proposal proposal, String proposalRoles,
 			String proposalUserTitle, UserProfile authorProfile) {
 		Datastore ds = getDatastore();
-		// TODO
-		if (proposalRoles.equalsIgnoreCase("PI")
+
+		boolean isDeleted = false;
+
+		List<Status> canPIDeleteStatus = Arrays.asList(Status.NOTSUBMITTEDBYPI,
+				Status.RETURNEDBYCHAIR, Status.DISAPPROVEDBYBUSINESSMANAGER,
+				Status.DISAPPROVEDBYIRB, Status.RETURNEDBYDEAN,
+				Status.DISAPPROVEDBYRESEARCHADMIN,
+				Status.DISAPPROVEDBYRESEARCHDIRECTOR);
+
+		if (canPIDeleteStatus.contains(proposal.getProposalStatus().get(0))
+				&& proposalRoles.contains("PI")
+				&& !proposalUserTitle.equals("University Research Director")
 				&& !proposal.getProposalStatus().contains(Status.DELETEDBYPI)) {
 			proposal.getProposalStatus().clear();
 			proposal.getProposalStatus().add(Status.DELETEDBYPI);
+
+			AuditLog entry = new AuditLog(authorProfile, "Deleted Proposal by "
+					+ authorProfile.getUserAccount().getUserName(), new Date());
+			proposal.getAuditLog().add(entry);
+			ds.save(proposal);
+			isDeleted = true;
+		} else if (proposal.getProposalStatus().contains(
+				Status.SUBMITTEDTORESEARCHDIRECTOR)
+				&& !proposalRoles.contains("PI")
+				&& proposalUserTitle.equals("University Research Director")
+				&& !proposal.getProposalStatus().contains(
+						Status.DELETEDBYRESEARCHDIRECTOR)) {
+			proposal.getProposalStatus().clear();
+			proposal.getProposalStatus().add(Status.DELETEDBYRESEARCHDIRECTOR);
+
+			AuditLog entry = new AuditLog(authorProfile, "Deleted Proposal by "
+					+ authorProfile.getUserAccount().getUserName(), new Date());
+			proposal.getAuditLog().add(entry);
+			ds.save(proposal);
+			isDeleted = true;
+		} else {
+			// This user is both PI and University
+			// Research Director
 		}
-		AuditLog entry = new AuditLog(authorProfile, "Deleted Proposal by "
-				+ authorProfile.getUserAccount().getUserName(), new Date());
-		proposal.getAuditLog().add(entry);
-		ds.save(proposal);
+		return isDeleted;
 	}
 
 	public List<AuditLogInfo> findAllForProposalAuditLogGrid(int offset,

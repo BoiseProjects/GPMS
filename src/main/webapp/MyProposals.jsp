@@ -347,34 +347,34 @@
 														<tbody>
 															<tr>
 																<td><select title="Choose Role" class="sfListmenu"
-																	name="ddlRole" style="width: 55px;">
+																	name="ddlRole" style="width: 55px;" required="true">
 																		<option value="0">PI</option>
 																		<option value="1">Co-PI</option>
 																		<option value="2">Senior Personnel</option>
 																</select></td>
 																<td><select title="Choose Full Name"
-																	class="sfListmenu" name="ddlName" style="width: 140px;">
+																	class="sfListmenu" name="ddlName" style="width: 140px;" required="true">
 																</select></td>
 																<td><select title="Choose College Name"
 																	class="sfListmenu" name="ddlCollege"
-																	style="width: 90px;">
+																	style="width: 90px;" required="true">
 																</select></td>
 																<td><select title="Choose Department Name"
 																	class="sfListmenu" name="ddlDepartment"
-																	style="width: 126px;">
+																	style="width: 126px;" required="true">
 																</select></td>
 																<td><select title="Choose Position Type"
 																	class="sfListmenu" name="ddlPositionType"
-																	style="width: 122px;">
+																	style="width: 122px;" required="true">
 																</select></td>
 																<td><select title="Choose Position Title"
 																	class="sfListmenu" name="ddlPositionTitle"
-																	style="width: 169px;">
+																	style="width: 169px;" required="true">
 																</select></td>
 																<td><input title="Phone #" type="text"
 																	readonly="readonly" class="sfTextBoxSmall"
 																	name="txtPhoneNo" placeholder="Phone #"
-																	style="width: 90px !important" /></td>
+																	style="width: 90px !important" required="true" /></td>
 																<td><input type="Button" value="Add More"
 																	name="AddMore" class="AddOption cssClassButtonSubmit" /></td>
 															</tr>

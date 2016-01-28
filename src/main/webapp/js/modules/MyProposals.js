@@ -915,61 +915,24 @@ $(function() {
 
 			var currentPositionTitle = GPMS.utils.GetUserPositionTitle();
 
-			var canSubmitRoles = [ "PI" ];
-			var canSubmitTitles = [ "Research Administrator" ];
-
-			var canUpdateRoles = [ "PI", "CO-PI", "Senior" ];
-			// var canUpdateTitles = [ "Business Manager",
-			// "Research Administrator", "Department Chair", "Dean" ];
-
-			var canApproveTitles = [ "Department Chair", "Business Manager",
-					"IRB", "Dean", "Research Administrator",
-					"University Research Director" ];
-
-			var canDisApproveTitles = [ "Department Chair", "Business Manager",
-					"IRB", "Dean", "Research Administrator",
-					"University Research Director" ];
-
-			var canWithDrawTitles = [ "Research Administrator" ];
-
-			var canArchiveTitles = [ "University Research Director" ];
-
-			var canDeleteRoles = [ "PI" ];
-			var canDeleteTitles = [ "University Research Director" ];
-
 			currentProposalRoles = currentProposalRoles.split(', ');
 
-			$
-					.each(
-							currentProposalRoles,
-							function(index, value) {
-								if (($.inArray(value, canSubmitRoles) !== -1 || $
-										.inArray(currentPositionTitle,
-												canSubmitTitles) !== -1)
-										&& ($.inArray(value, canSubmitRoles) !== -1 && $
-												.inArray(currentPositionTitle,
-														canSubmitTitles) !== -1)
-										&& proposalStatus != ""
-										// 1,5,7,9,11,13,17,15
+								if (proposalStatus != "" && (($.inArray("PI", currentProposalRoles) !== -1 										
 										&& (proposalStatus == "Not Submitted by PI"
 												|| proposalStatus == "Returned by Chair"
 												|| proposalStatus == "Disapproved by Business Manager"
 												|| proposalStatus == "Disapproved by IRB"
 												|| proposalStatus == "Returned by Dean"
 												|| proposalStatus == "Disapproved by Research Administrator"
-												|| proposalStatus == "Disapproved by University Research Director" || proposalStatus == "Ready for submission")) {
+												|| proposalStatus == "Disapproved by University Research Director"))
+									|| (currentPositionTitle == "Research Administrator" && proposalStatus == "Ready for submission"))) {
 									$("#btnSubmitProposal").show();
 								} else {
 									$("#btnSubmitProposal").hide();
 								}
-							});
 
-			$
-					.each(
-							currentProposalRoles,
-							function(index, value) {
-								if ($.inArray(value, canUpdateRoles) !== -1
-										&& proposalStatus != ""
+								if (proposalStatus != "" && ($.inArray("PI", currentProposalRoles) !== -1
+										|| $.inArray("CO-PI", currentProposalRoles) !== -1 || $.inArray("Senior", currentProposalRoles) !== -1)
 										&& (proposalStatus == "Not Submitted by PI"
 												|| proposalStatus == "Waiting for Chair's Approval"
 												|| proposalStatus == "Returned by Chair"
@@ -981,65 +944,50 @@ $(function() {
 								} else {
 									$("#btnUpdateProposal").hide();
 								}
-							});
+			
+			$
+			.each(
+					currentProposalRoles,
+					function(index, value) {
+						if (proposalStatus != "" && (($.inArray("PI", currentProposalRoles) !== -1 								
+								&& (proposalStatus == "Not Submitted by PI"
+									|| proposalStatus == "Waiting for Chair's Approval"
+										|| proposalStatus == "Returned by Chair"
+										|| proposalStatus == "Disapproved by Business Manager"
+										|| proposalStatus == "Disapproved by IRB"
+										|| proposalStatus == "Returned by Dean"
+										|| proposalStatus == "Disapproved by Research Administrator" || proposalStatus == "Disapproved by University Research Director"))
+							|| (currentPositionTitle == "University Research Director" && proposalStatus == "Submitted to Research Director"))) {
+							$("#btnDeleteProposal").show();
+						} else {
+							$("#btnDeleteProposal").hide();
+						}
+					});
 
-			if ($.inArray(currentPositionTitle, canApproveTitles) !== -1
-					&& proposalStatus != ""
-					&& (proposalStatus == "Waiting for Chair's Approval"
-							|| proposalStatus == "Ready for Review"
-							|| proposalStatus == "Reviewed by Business Manager"
-							|| proposalStatus == "Approved by IRB"
-							|| proposalStatus == "Approved by Dean" || proposalStatus == "Submitted to Research Director")) {
+			if(proposalStatus != "" && ((currentPositionTitle == "Department Chair" && proposalStatus == "Waiting for Chair's Approval") ||
+					(currentPositionTitle == "Business Manager" && (proposalStatus == "Ready for Review"||proposalStatus == "Approved by IRB"))||
+					(currentPositionTitle == "IRB" && (proposalStatus == "Ready for Review" ||proposalStatus == "Reviewed by Business Manager"))|| 
+					(currentPositionTitle == "Dean" && (proposalStatus == "Ready for Review" || proposalStatus == "Reviewed by Business Manager" || proposalStatus == "Approved by IRB"))
+							||(currentPositionTitle == "Research Administrator" && proposalStatus == "Approved by Dean")	||
+							(currentPositionTitle == "University Research Director" && proposalStatus == "Submitted to Research Director"))){
 				$("#btnApproveProposal").show();
-			} else {
-				$("#btnApproveProposal").hide();
-			}
-
-			if ($.inArray(currentPositionTitle, canDisApproveTitles) !== -1
-					&& proposalStatus != ""
-					&& (proposalStatus == "Waiting for Chair's Approval"
-							|| proposalStatus == "Ready for Review"
-							|| proposalStatus == "Reviewed by Business Manager"
-							|| proposalStatus == "Approved by IRB"
-							|| proposalStatus == "Approved by Dean" || proposalStatus == "Submitted to Research Director")) {
 				$("#btnDisapproveProposal").show();
 			} else {
+				$("#btnApproveProposal").hide();
 				$("#btnDisapproveProposal").hide();
-			}
+			}			
 
-			if ($.inArray(currentPositionTitle, canWithDrawTitles) !== -1
-					&& proposalStatus != ""
-					&& proposalStatus == "Approved by Dean") {
+			if(proposalStatus != "" && (currentPositionTitle == "Research Administrator" && proposalStatus == "Approved by Dean")){
 				$("#btnWithdrawProposal").show();
 			} else {
 				$("#btnWithdrawProposal").hide();
 			}
-
-			if ($.inArray(currentPositionTitle, canArchiveTitles) !== -1
-					&& proposalStatus != ""
-					&& proposalStatus == "Submitted by University Research Administrator") {
+			
+			if(proposalStatus != "" && (currentPositionTitle == "University Research Director" && proposalStatus == "Submitted by University Research Administrator")){
 				$("#btnArchiveProposal").show();
 			} else {
 				$("#btnArchiveProposal").hide();
-			}
-
-			$
-					.each(
-							currentProposalRoles,
-							function(index, value) {
-								if (($.inArray(value, canDeleteRoles) !== -1 || $
-										.inArray(currentPositionTitle,
-												canDeleteTitles) !== -1)
-										&& ($.inArray(value, canDeleteRoles) !== -1 && $
-												.inArray(currentPositionTitle,
-														canDeleteTitles) !== -1)
-										&& proposalStatus != ""
-										&& proposalStatus == "Submitted to Research Director") {
-									$("#btnDeleteProposal").show();
-								} else {
-									$("#btnDeleteProposal").hide();
-								}
-							});
+			}			
 		},
 
 		EditProposal : function(tblID, argus) {
@@ -1950,6 +1898,22 @@ $(function() {
 			$("#trSignDirector tbody").empty();
 
 			$("#btnSaveProposal").removeAttr("name");
+			$("#btnUpdateProposal").removeAttr("name");
+			$("#btnDeleteProposal").removeAttr("name");
+			$("#btnSubmitProposal").removeAttr("name");
+			$("#btnApproveProposal").removeAttr("name");
+			$("#btnDisapproveProposal").removeAttr("name");
+			$("#btnWithdrawProposal").removeAttr("name");
+			$("#btnArchiveProposal").removeAttr("name");
+			
+			$("#btnSaveProposal").removeAttr("data-proproles");
+			$("#btnUpdateProposal").removeAttr("data-proproles");
+			$("#btnDeleteProposal").removeAttr("data-proproles");
+			$("#btnSubmitProposal").removeAttr("data-proproles");
+			$("#btnApproveProposal").removeAttr("data-proproles");
+			$("#btnDisapproveProposal").removeAttr("data-proproles");
+			$("#btnWithdrawProposal").removeAttr("data-proproles");
+			$("#btnArchiveProposal").removeAttr("data-proproles");
 			$('#txtProjectTitle').removeAttr('disabled');
 
 			rowIndex = 0;
@@ -2959,6 +2923,22 @@ $(function() {
 					null, null);
 			$('#divProposalGrid').show();
 			$("#btnSaveProposal").removeAttr("name");
+			$("#btnUpdateProposal").removeAttr("name");
+			$("#btnDeleteProposal").removeAttr("name");
+			$("#btnSubmitProposal").removeAttr("name");
+			$("#btnApproveProposal").removeAttr("name");
+			$("#btnDisapproveProposal").removeAttr("name");
+			$("#btnWithdrawProposal").removeAttr("name");
+			$("#btnArchiveProposal").removeAttr("name");
+			
+			$("#btnSaveProposal").removeAttr("data-proproles");
+			$("#btnUpdateProposal").removeAttr("data-proproles");
+			$("#btnDeleteProposal").removeAttr("data-proproles");
+			$("#btnSubmitProposal").removeAttr("data-proproles");
+			$("#btnApproveProposal").removeAttr("data-proproles");
+			$("#btnDisapproveProposal").removeAttr("data-proproles");
+			$("#btnWithdrawProposal").removeAttr("data-proproles");
+			$("#btnArchiveProposal").removeAttr("data-proproles");
 			// $("#accordion").accordion("option", "active", 0);
 
 			if (editFlag != "0") {
@@ -3089,10 +3069,17 @@ $(function() {
 
 				// OSP Section
 				$('#ui-id-23').show();
-				$('#ui-id-24').find('input, select, textarea').each(function() {
-					// $(this).addClass("ignore");
-					$(this).prop('disabled', false);
-				});
+				if(GPMS.utils.GetUserPositionTitle() == "Research Administrator"||GPMS.utils.GetUserPositionTitle() == "University Research Director"){
+					$('#ui-id-24').find('input, select, textarea').each(function() {
+						// $(this).addClass("ignore");
+						$(this).prop('disabled', false);
+					});
+				}else{
+					$('#ui-id-24').find('input, select, textarea').each(function() {
+						// $(this).addClass("ignore");
+						$(this).prop('disabled', true);
+					});
+				}
 
 				$('#ddlProposalStatus option').length = 0;
 				$('#ddlProposalStatus')
@@ -3476,6 +3463,23 @@ $(function() {
 				$('#divProposalForm').hide();
 				$('#divProposalAuditGrid').hide();
 				$("#btnSaveProposal").removeAttr("name");
+				$("#btnUpdateProposal").removeAttr("name");
+				$("#btnDeleteProposal").removeAttr("name");
+				$("#btnSubmitProposal").removeAttr("name");
+				$("#btnApproveProposal").removeAttr("name");
+				$("#btnDisapproveProposal").removeAttr("name");
+				$("#btnWithdrawProposal").removeAttr("name");
+				$("#btnArchiveProposal").removeAttr("name");
+				
+				$("#btnSaveProposal").removeAttr("data-proproles");
+				$("#btnUpdateProposal").removeAttr("data-proproles");
+				$("#btnDeleteProposal").removeAttr("data-proproles");
+				$("#btnSubmitProposal").removeAttr("data-proproles");
+				$("#btnApproveProposal").removeAttr("data-proproles");
+				$("#btnDisapproveProposal").removeAttr("data-proproles");
+				$("#btnWithdrawProposal").removeAttr("data-proproles");
+				$("#btnArchiveProposal").removeAttr("data-proproles");
+				
 				// $("#accordion").accordion("option", "active", 0);
 			});
 
@@ -3493,15 +3497,13 @@ $(function() {
 								if (validator.form()) {
 									var $buttonType = $.trim($(this).text());
 									$(this).disableWith('Saving As Draft...');
-
+								
 									var proposal_id = $(this).prop("name");
-									var proposal_roles = $(this).prop(
-											"data-proproles");
 									myProposal.config.ajaxCallMode = 11;
-
+									
 									myProposal
 											.CheckUserPermission($buttonType,
-													proposal_roles,
+													"",
 													proposal_id,
 													"Whole Proposal",
 													myProposal.config);
@@ -3526,6 +3528,37 @@ $(function() {
 									var proposal_roles = $(this).prop(
 											"data-proproles");
 									myProposal.config.ajaxCallMode = 11;
+
+									myProposal
+											.CheckUserPermission($buttonType,
+													proposal_roles,
+													proposal_id,
+													"Whole Proposal",
+													myProposal.config);
+
+									$(this).enable();
+									e.preventDefault();
+									return false;
+								} else {
+									myProposal.focusTabWithErrors("#accordion");
+								}
+							});
+			
+			// Delete
+			$('#btnDeleteProposal')
+					.click(
+							function(e) {
+								if (validator.form()) {
+									var $buttonType = $.trim($(this).text());
+									$(this).disableWith('Deleting...');
+
+									var proposal_id = $(this).prop("name");
+									var proposal_roles = $(this).prop(
+											"data-proproles");
+									myProposal.config.proposalId =proposal_id;
+									myProposal.config.proposalRoles =proposal_roles;
+									
+									myProposal.config.ajaxCallMode = 10;
 
 									myProposal
 											.CheckUserPermission($buttonType,
@@ -3731,6 +3764,8 @@ $(function() {
 													function(j) {
 														$(this).removeAttr(
 																"disabled");
+														$(this).removeAttr(
+														"required");
 														// Remove PI option
 														// after first row
 														if (j == 0) {
