@@ -2757,9 +2757,23 @@ public class ProposalService {
 						.getTextValue();
 			}
 
-			// ObjectId authorId = new ObjectId(userProfileID);
-			// UserProfile authorProfile = userProfileDAO
-			// .findUserDetailsByProfileID(authorId);
+			// TODO only check this for required not all XACML call
+			String proposalId = new String();
+			JsonNode proposal_Id = root.get("proposalId");
+			if (proposal_Id != null) {
+				proposalId = proposal_Id.getTextValue();
+			}
+			ObjectId id = new ObjectId(proposalId);
+			Proposal proposal = proposalDAO.findProposalByProposalID(id);
+			resourceMap.put("status", proposal.getProposalStatus().get(0)
+					.toString());
+			attrMap.put("Resource", resourceMap);
+
+			// Need to add Environment to detect the Campus or outside network
+			// network-type
+
+			// Device type
+			// device-type
 
 			String decision = ac.getXACMLdecision(attrMap);
 			// if (decision.equals("Permit")) {

@@ -515,7 +515,8 @@ $(function() {
 					+ "CheckPermissionForAProposal";
 			this.config.data = JSON2.stringify({
 				policyInfo : attributeArray,
-				gpmsCommonObj : gpmsCommonObj()
+				gpmsCommonObj : gpmsCommonObj(),
+				proposalId: proposal_id
 			});
 
 			this.config.proposalRoles = proposal_roles;
