@@ -208,7 +208,7 @@ public class Create10Proposals {
 
 			newProposal.setDateCreated(new Date());
 
-			newProposal.getProposalStatus().add(Status.NOTSUBMITTEDBYPI);
+			//newProposal.getProposalStatus().add(Status.NOTSUBMITTEDBYPI);
 
 			newProposalDAO.save(newProposal);
 
