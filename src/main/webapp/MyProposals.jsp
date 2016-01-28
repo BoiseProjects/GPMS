@@ -1495,6 +1495,12 @@
 													</button>
 												</p>
 												<p>
+													<button title="Delete Proposal" type="button"
+														id="btnDeleteProposal" class="sfBtn">
+														<span class="icon-delete">Delete</span>
+													</button>
+												</p>
+												<p>
 													<button title="Submit Proposal" type="button"
 														id="btnSubmitProposal" class="sfBtn">
 														<span class="icon-save">Submit</span>

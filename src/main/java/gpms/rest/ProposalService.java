@@ -681,199 +681,376 @@ public class ProposalService {
 						.cloneThroughSerialize(existingProposal);
 			}
 
-			// var canDisApproveTitles = [ "Department Chair", "Dean",
-			// "University Research Director" ];
-			// var canWithDrawTitles = [ "Research Administrator" ];
-			// var canArchiveTitles = [ "University Research Director" ];
-
 			// For Proposal User Title : for Dean, Chair and Manager
 			JsonNode proposalUserTitle = root.get("proposalUserTitle");
 			if (proposalUserTitle != null) {
 				// For Proposal Roles : PI, Co-PI, Senior
 				JsonNode proposalRoles = root.get("proposalRoles");
 				if (proposalRoles != null) {
+					// TODO
+					List<String> currentProposalRoles = Arrays
+							.asList(proposalRoles.getTextValue().split(", "));
+
 					// For Proposal Status
 					JsonNode buttonType = root.get("buttonType");
+
 					if (buttonType != null) {
 						switch (buttonType.getTextValue()) {
 						case "Save As Draft":
 							if (!proposalID.equals("0")) {
 								if (!existingProposal.getProposalStatus()
 										.contains(Status.NOTSUBMITTEDBYPI)
-										&& proposalRoles.toString()
-												.equalsIgnoreCase("PI")) {
-									// TODO check if clear is necessary or
-									// not!
+										&& currentProposalRoles.contains("PI")) {
 									existingProposal.getProposalStatus()
 											.clear();
 									existingProposal.getProposalStatus().add(
 											Status.NOTSUBMITTEDBYPI);
 								}
-							} else {
-								newProposal.getProposalStatus().clear();
-								newProposal.getProposalStatus().add(
-										Status.NOTSUBMITTEDBYPI);
 							}
 							break;
-						case "Update":
-							// var canUpdateRoles = [ "PI", "CO-PI",
-							// "Senior" ];
-							// var canUpdateTitles = [ "Business Manager",
-							// "Research Administrator", "Department Chair",
-							// "Dean" ]
+
+						case "Delete":
+							// var canDeleteRoles = [ "PI" ];
+							// var canDeleteTitles = [
+							// "University Research Director" ];
+							if (!proposalID.equals("0")) {
+
+								List<Status> canDeleteStatus = Arrays
+										.asList(Status.SUBMITTEDTORESEARCHDIRECTOR);
+
+								if (canDeleteStatus.contains(existingProposal
+										.getProposalStatus())
+										&& currentProposalRoles.contains("PI")
+										&& !proposalUserTitle
+												.getTextValue()
+												.equals("University Research Director")) {
+									existingProposal.getProposalStatus()
+											.clear();
+									existingProposal.getProposalStatus().add(
+											Status.DELETEDBYPI);
+								} else if (canDeleteStatus
+										.contains(existingProposal
+												.getProposalStatus())
+										&& !currentProposalRoles.contains("PI")
+										&& proposalUserTitle
+												.getTextValue()
+												.equals("University Research Director")) {
+									existingProposal.getProposalStatus()
+											.clear();
+									existingProposal.getProposalStatus().add(
+											Status.DELETEDBYRESEARCHDIRECTOR);
+								} else {
+									// This user is both PI and University
+									// Research Director
+								}
+
+							}
 							break;
+
 						case "Submit":
 							// var canSubmitRoles = [ "PI" ];
+							// var canSubmitTitles = [ "Research Administrator"
+							// ];
 							if (!proposalID.equals("0")) {
-								if (existingProposal.getProposalStatus()
-										.contains(Status.NOTSUBMITTEDBYPI)
-										&& proposalRoles.toString()
-												.equalsIgnoreCase("PI")) {
+
+								List<Status> canSubmitStatus = Arrays.asList(
+										Status.NOTSUBMITTEDBYPI,
+										Status.RETURNEDBYCHAIR,
+										Status.DISAPPROVEDBYBUSINESSMANAGER,
+										Status.DISAPPROVEDBYIRB,
+										Status.RETURNEDBYDEAN,
+										Status.DISAPPROVEDBYRESEARCHADMIN,
+										Status.DISAPPROVEDBYRESEARCHDIRECTOR,
+										Status.READYFORSUBMISSION);
+								if (canSubmitStatus.contains(existingProposal
+										.getProposalStatus())
+										&& currentProposalRoles.contains("PI")
+										&& !proposalUserTitle
+												.getTextValue()
+												.equals("Research Administrator")) {
 									existingProposal.getProposalStatus()
 											.clear();
 									existingProposal.getProposalStatus().add(
 											Status.WAITINGFORCHAIRAPPROVAL);
-
-									existingProposal
-											.setDateSubmitted(new Date());
+								} else if (canSubmitStatus
+										.contains(existingProposal
+												.getProposalStatus())
+										&& !currentProposalRoles.contains("PI")
+										&& proposalUserTitle
+												.getTextValue()
+												.equals("Research Administrator")) {
+									existingProposal.getProposalStatus()
+											.clear();
+									existingProposal.getProposalStatus().add(
+											Status.SUBMITTEDBYRESEARCHADMIN);
+								} else {
+									// This user is both PI and Research
+									// Administrator
 								}
 							}
+
 							break;
+
+						case "Update":
+							// var canUpdateRoles = [ "PI", "CO-PI", "Senior" ];
+
+							if (!proposalID.equals("0")) {
+								List<Status> canUpdateStatus = Arrays.asList(
+										Status.NOTSUBMITTEDBYPI,
+										Status.WAITINGFORCHAIRAPPROVAL,
+										Status.RETURNEDBYCHAIR,
+										Status.DISAPPROVEDBYBUSINESSMANAGER,
+										Status.DISAPPROVEDBYIRB,
+										Status.RETURNEDBYDEAN,
+										Status.DISAPPROVEDBYRESEARCHADMIN,
+										Status.DISAPPROVEDBYRESEARCHDIRECTOR);
+
+								if (canUpdateStatus.contains(existingProposal
+										.getProposalStatus())
+										&& currentProposalRoles.contains("PI")) {
+
+								} else if (canUpdateStatus
+										.contains(existingProposal
+												.getProposalStatus())
+										&& currentProposalRoles
+												.contains("CO-PI")) {
+
+								} else if (canUpdateStatus
+										.contains(existingProposal
+												.getProposalStatus())
+										&& currentProposalRoles
+												.contains("Senior")) {
+
+								} else {
+									// You are not allowed to UPDATE the
+									// Proposal
+								}
+
+							}
+
+							break;
+
 						case "Approve":
-							// var canApproveTitles = [ "Business Manager",
-							// "Department Chair",
-							// "Dean","University Research Director" ];
-							List<String> canApproveTitles = Arrays.asList(
-									"Business Manager", "Department Chair",
-									"Dean", "University Research Director");
-							if (!proposalID.equals("0")
-									&& canApproveTitles
-											.contains(proposalUserTitle
-													.getTextValue())) {
-								existingProposal.getProposalStatus().clear();
-								if (proposalUserTitle.getTextValue().equals(
-										"Business Manager")
-										&& !existingProposal
-												.getProposalStatus()
-												.contains(
-														Status.APPROVEDBYBUSINESSMANAGER)) {
+							if (!proposalID.equals("0")) {
+								// var canApproveTitles = [ "Department Chair",
+								// "Business Manager",
+								// "IRB", "Dean", "Research Administrator",
+								// "University Research Director" ];
+
+								List<Status> canApproveStatus = Arrays.asList(
+										Status.WAITINGFORCHAIRAPPROVAL,
+										Status.READYFORREVIEW,
+										Status.REVIEWEDBYBUSINESSMANAGER,
+										Status.APPROVEDBYIRB,
+										Status.APPROVEDBYDEAN,
+										Status.SUBMITTEDTORESEARCHDIRECTOR);
+
+								if (canApproveStatus.contains(existingProposal
+										.getProposalStatus())
+										&& proposalUserTitle.getTextValue()
+												.equals("Department Chair")) {
+									existingProposal.getProposalStatus()
+											.clear();
+									// Ready for Review
 									existingProposal.getProposalStatus().add(
-											Status.APPROVEDBYBUSINESSMANAGER);
-								} else if (proposalUserTitle.getTextValue()
-										.equals("Department Chair")
-										&& existingProposal
-												.getProposalStatus()
-												.contains(
-														Status.WAITINGFORCHAIRAPPROVAL)
-										&& !existingProposal
-												.getProposalStatus()
-												.contains(
-														Status.APPROVEDBYDEPARTMENTCHAIR)) {
+											Status.READYFORREVIEW);
+
+								} else if (canApproveStatus
+										.contains(existingProposal
+												.getProposalStatus())
+										&& proposalUserTitle.getTextValue()
+												.equals("Business Manager")) {
+									// Reviewed by Business Manager
+									existingProposal.getProposalStatus()
+											.clear();
 									existingProposal.getProposalStatus().add(
-											Status.APPROVEDBYDEPARTMENTCHAIR);
-								} else if (proposalUserTitle.getTextValue()
-										.equals("Dean")
-										&& existingProposal
-												.getProposalStatus()
-												.contains(
-														Status.WAITINGFORDEANAPPROVAL)
-										&& !existingProposal
-												.getProposalStatus().contains(
-														Status.APPROVEDBYDEAN)) {
+											Status.REVIEWEDBYBUSINESSMANAGER);
+
+								} else if (canApproveStatus
+										.contains(existingProposal
+												.getProposalStatus())
+										&& proposalUserTitle.getTextValue()
+												.equals("IRB")) {
+									// Approved by IRB
+									existingProposal.getProposalStatus()
+											.clear();
+									existingProposal.getProposalStatus().add(
+											Status.APPROVEDBYIRB);
+
+								} else if (canApproveStatus
+										.contains(existingProposal
+												.getProposalStatus())
+										&& proposalUserTitle.getTextValue()
+												.equals("Dean")) {
+									// Approved by Dean
+									existingProposal.getProposalStatus()
+											.clear();
 									existingProposal.getProposalStatus().add(
 											Status.APPROVEDBYDEAN);
-								} else if (proposalUserTitle.getTextValue()
-										.equals("University Research Director")
-										&& existingProposal
-												.getProposalStatus()
-												.contains(
-														Status.WAITINGFORUNIVERSITYRESEARCHOFFICEAPPROVAL)
-										&& !existingProposal
-												.getProposalStatus()
-												.contains(
-														Status.APPROVEDBYUNIVERSITYRESEARCHDIRECTOR)) {
+
+								} else if (canApproveStatus
+										.contains(existingProposal
+												.getProposalStatus())
+										&& proposalUserTitle
+												.getTextValue()
+												.equals("Research Administrator")) {
+									// Submitted to Research Director
+									existingProposal.getProposalStatus()
+											.clear();
+									existingProposal.getProposalStatus().add(
+											Status.SUBMITTEDTORESEARCHDIRECTOR);
+
+								} else if (canApproveStatus
+										.contains(existingProposal
+												.getProposalStatus())
+										&& proposalUserTitle
+												.getTextValue()
+												.equals("University Research Director")) {
+									// Ready for submission
+									existingProposal.getProposalStatus()
+											.clear();
+									existingProposal.getProposalStatus().add(
+											Status.READYFORSUBMISSION);
+								} else {
+									// You are not allowed to APPROVE the
+									// Proposal
+								}
+							}
+
+							break;
+
+						case "Disapprove":
+							if (!proposalID.equals("0")) {
+
+								List<Status> canDisApproveStatus = Arrays
+										.asList(Status.WAITINGFORCHAIRAPPROVAL,
+												Status.READYFORREVIEW,
+												Status.REVIEWEDBYBUSINESSMANAGER,
+												Status.APPROVEDBYIRB,
+												Status.APPROVEDBYDEAN,
+												Status.SUBMITTEDTORESEARCHDIRECTOR);
+
+								if (canDisApproveStatus
+										.contains(existingProposal
+												.getProposalStatus())
+										&& proposalUserTitle.getTextValue()
+												.equals("Department Chair")) {
+									existingProposal.getProposalStatus()
+											.clear();
+									// Returned by Chair
+									existingProposal.getProposalStatus()
+											.clear();
+									existingProposal.getProposalStatus().add(
+											Status.RETURNEDBYCHAIR);
+
+								} else if (canDisApproveStatus
+										.contains(existingProposal
+												.getProposalStatus())
+										&& proposalUserTitle.getTextValue()
+												.equals("Business Manager")) {
+									// Disapproved by Business Manager
+									existingProposal.getProposalStatus()
+											.clear();
 									existingProposal
 											.getProposalStatus()
-											.add(Status.APPROVEDBYUNIVERSITYRESEARCHDIRECTOR);
+											.add(Status.DISAPPROVEDBYBUSINESSMANAGER);
+								} else if (canDisApproveStatus
+										.contains(existingProposal
+												.getProposalStatus())
+										&& proposalUserTitle.getTextValue()
+												.equals("IRB")) {
+									// Disapproved by IRB
+									existingProposal.getProposalStatus()
+											.clear();
+									existingProposal.getProposalStatus().add(
+											Status.DISAPPROVEDBYIRB);
+								} else if (canDisApproveStatus
+										.contains(existingProposal
+												.getProposalStatus())
+										&& proposalUserTitle.getTextValue()
+												.equals("Dean")) {
+									// Returned by Dean
+									existingProposal.getProposalStatus()
+											.clear();
+									existingProposal.getProposalStatus().add(
+											Status.RETURNEDBYDEAN);
+								} else if (canDisApproveStatus
+										.contains(existingProposal
+												.getProposalStatus())
+										&& proposalUserTitle
+												.getTextValue()
+												.equals("Research Administrator")) {
+									// Disapproved by Research Administrator
+									existingProposal.getProposalStatus()
+											.clear();
+									existingProposal.getProposalStatus().add(
+											Status.DISAPPROVEDBYRESEARCHADMIN);
+								} else if (canDisApproveStatus
+										.contains(existingProposal
+												.getProposalStatus())
+										&& proposalUserTitle
+												.getTextValue()
+												.equals("University Research Director")) {
+									// Disapproved by University Research
+									// Director
+									existingProposal.getProposalStatus()
+											.clear();
+									existingProposal
+											.getProposalStatus()
+											.add(Status.DISAPPROVEDBYRESEARCHDIRECTOR);
+
+								} else {
+									// You are not allowed to DISAPPROVE the
+									// Proposal
 								}
-
 							}
 							break;
-						case "Disapprove":
-							// var canDisApproveTitles = [
-							// "Business Manager",
-							// "Department Chair",
-							// "Dean", "University Research Director" ];
-							List<String> canDisApproveTitles = Arrays.asList(
-									"Business Manager", "Department Chair",
-									"Dean", "University Research Director");
-							if (!proposalID.equals("0")
-									&& canDisApproveTitles
-											.contains(proposalUserTitle
-													.getTextValue())) {
-								// TODO
-								// existingProposal.getProposalStatus().clear();
-								// if (proposalUserTitle
-								// .equals("Business Manager")) {
-								// existingProposal
-								// .getProposalStatus()
-								// .add(Status.DISAPPROVEDBYBUSINESSMANAGER);
-								// } else if (proposalUserTitle
-								// .equals("Department Chair")) {
-								// existingProposal
-								// .getProposalStatus()
-								// .add(Status.DISAPPROVEDBYDEPARTMENTCHAIR);
-								// } else if
-								// (proposalUserTitle.equals("Dean"))
-								// {
-								// existingProposal.getProposalStatus().add(
-								// Status.DISAPPROVEDBYDEAN);
-								// } else if (proposalUserTitle
-								// .equals("University Research Director"))
-								// {
-								// existingProposal
-								// .getProposalStatus()
-								// .add(Status.DISAPPROVEDBYUNIVERSITYRESEARCHDIRECTOR);
-								// }
 
-							}
-							break;
 						case "Withdraw":
-							// var canWithDrawTitles = [
-							// "Research Administrator" ];
-							List<String> canWithDrawTitles = Arrays
-									.asList("Research Administrator");
-							if (!proposalID.equals("0")
-									&& canWithDrawTitles
-											.contains(proposalUserTitle
-													.getTextValue())) {
-								existingProposal.getProposalStatus().clear();
-								existingProposal.getProposalStatus().add(
-										Status.WITHDRAWBYRESEARCHOFFICE);
+							if (!proposalID.equals("0")) {
+								List<Status> canWithdrawStatus = Arrays
+										.asList(Status.APPROVEDBYDEAN);
+								if (canWithdrawStatus.contains(existingProposal
+										.getProposalStatus())
+										&& proposalUserTitle
+												.getTextValue()
+												.equals("Research Administrator")) {
+									existingProposal.getProposalStatus()
+											.clear();
+									existingProposal.getProposalStatus().add(
+											Status.WITHDRAWBYRESEARCHADMIN);
+								}
 							}
 							break;
+
 						case "Archive":
-							// var canArchiveTitles = [
-							// "University Research Director" ];
-							List<String> canArchiveTitles = Arrays
-									.asList("University Research Director");
-							if (!proposalID.equals("0")
-									&& canArchiveTitles
-											.contains(proposalUserTitle
-													.getTextValue())) {
-								existingProposal.getProposalStatus().clear();
-								existingProposal
-										.getProposalStatus()
-										.add(Status.ARCHIVEDBYUNIVERSITYRESEARCHDIRECTOR);
+							if (!proposalID.equals("0")) {
+								List<Status> canArchiveStatus = Arrays
+										.asList(Status.SUBMITTEDBYRESEARCHADMIN);
+								if (canArchiveStatus.contains(existingProposal
+										.getProposalStatus())
+										&& proposalUserTitle
+												.getTextValue()
+												.equals("University Research Director")) {
+									existingProposal.getProposalStatus()
+											.clear();
+
+									existingProposal.getProposalStatus().add(
+											Status.ARCHIVEDBYRESEARCHDIRECTOR);
+
+								}
 							}
 							break;
 
 						default:
+
 							break;
 						}
 					}
 				}
+
 			}
+
 		}
 
 		ProjectInfo newProjectInfo = new ProjectInfo();
@@ -2591,13 +2768,13 @@ public class ProposalService {
 			// .findUserDetailsByProfileID(authorId);
 
 			String decision = ac.getXACMLdecision(attrMap);
-			if (decision.equals("Permit")) {
-				return Response.status(200).type(MediaType.APPLICATION_JSON)
-						.entity(true).build();
-			} else {
-				return Response.status(403).type(MediaType.APPLICATION_JSON)
-						.entity("Your permission is: " + decision).build();
-			}
+			// if (decision.equals("Permit")) {
+			return Response.status(200).type(MediaType.APPLICATION_JSON)
+					.entity(true).build();
+			// } else {
+			// return Response.status(403).type(MediaType.APPLICATION_JSON)
+			// .entity("Your permission is: " + decision).build();
+			// }
 		} else {
 			return Response.status(403).type(MediaType.APPLICATION_JSON)
 					.entity("No User Permission Attributes are send!").build();

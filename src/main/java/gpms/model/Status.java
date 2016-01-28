@@ -9,18 +9,20 @@ public enum Status {
 	// granted the permission,Approved by Department Chair, Approved by Business
 	// manager
 
-	NOTSUBMITTEDBYPI("Not Submitted by PI"), WAITINGFORCHAIRAPPROVAL(
-			"Waiting for Chair Approval"), WAITINGFORDEANAPPROVAL(
-			"Waiting for Dean's Approval"), WAITINGFORUNIVERSITYRESEARCHOFFICEAPPROVAL(
-			"Waiting for University Research Office's Approval"), DELETEDBYPI(
-			"Deleted by PI"), REVIEWEDBYRESEARCHOFFICE(
-			"Reviewed by Research Office"), SUBMITTEDBYRESEARCHOFFICE(
-			"Submitted by Research Office"), AWARDED("Awarded"), WITHDRAWBYRESEARCHOFFICE(
-			"Withdraw by Research Office"), PIHASGRANTEDTHEPERMISSION(
-			"PI has granted the permission"), APPROVEDBYBUSINESSMANAGER(
-			"Approved by Business Manager"), APPROVEDBYDEPARTMENTCHAIR(
-			"Approved by Department Chair"), APPROVEDBYDEAN("Approved by Dean"), APPROVEDBYUNIVERSITYRESEARCHDIRECTOR(
-			"Approved by University Research Director"), ARCHIVEDBYUNIVERSITYRESEARCHDIRECTOR(
+	NOTSUBMITTEDBYPI("Not Submitted by PI"), DELETEDBYPI("Deleted by PI"), WAITINGFORCHAIRAPPROVAL(
+			"Waiting for Chair's Approval"), READYFORREVIEW("Ready for Review"), RETURNEDBYCHAIR(
+			"Returned by Chair"), REVIEWEDBYBUSINESSMANAGER(
+			"Reviewed by Business Manager"), DISAPPROVEDBYBUSINESSMANAGER(
+			"Disapproved by Business Manager"), APPROVEDBYIRB("Approved by IRB"), DISAPPROVEDBYIRB(
+			"Disapproved by IRB"), APPROVEDBYDEAN("Approved by Dean"), RETURNEDBYDEAN(
+			"Returned by Dean"), SUBMITTEDTORESEARCHDIRECTOR(
+			"Submitted to Research Director"), DISAPPROVEDBYRESEARCHADMIN(
+			"Disapproved by Research Administrator"), WITHDRAWBYRESEARCHADMIN(
+			"Withdrawn by Research Administrator"), READYFORSUBMISSION(
+			"Ready for submission"), DELETEDBYRESEARCHDIRECTOR(
+			"Deleted by University Research Director"), DISAPPROVEDBYRESEARCHDIRECTOR(
+			"Disapproved by University Research Director"), SUBMITTEDBYRESEARCHADMIN(
+			"Submitted by University Research Administrator"), ARCHIVEDBYRESEARCHDIRECTOR(
 			"Archived by University Research Director");
 
 	private final String name;

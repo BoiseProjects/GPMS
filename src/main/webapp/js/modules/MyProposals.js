@@ -881,6 +881,7 @@ $(function() {
 			$("#btnReset").hide();
 			$("#btnSaveProposal").hide();
 			$("#btnUpdateProposal").hide();
+			$("#btnDeleteProposal").hide();
 			$("#btnSubmitProposal").hide();
 			$("#btnApproveProposal").hide();
 			$("#btnDisapproveProposal").hide();
@@ -889,6 +890,7 @@ $(function() {
 
 			$("#btnSaveProposal").prop("name", proposalId);
 			$("#btnUpdateProposal").prop("name", proposalId);
+			$("#btnDeleteProposal").prop("name", proposalId);
 			$("#btnSubmitProposal").prop("name", proposalId);
 			$("#btnApproveProposal").prop("name", proposalId);
 			$("#btnDisapproveProposal").prop("name", proposalId);
@@ -897,6 +899,8 @@ $(function() {
 
 			$("#btnSaveProposal").prop("data-proproles", currentProposalRoles);
 			$("#btnUpdateProposal")
+					.prop("data-proproles", currentProposalRoles);
+			$("#btnDeleteProposal")
 					.prop("data-proproles", currentProposalRoles);
 			$("#btnSubmitProposal")
 					.prop("data-proproles", currentProposalRoles);
@@ -911,76 +915,131 @@ $(function() {
 
 			var currentPositionTitle = GPMS.utils.GetUserPositionTitle();
 
-			var canUpdateRoles = [ "PI", "CO-PI", "Senior" ];
-			var canUpdateTitles = [ "Business Manager",
-					"Research Administrator", "Department Chair", "Dean" ];
 			var canSubmitRoles = [ "PI" ];
-			var canApproveTitles = [ "Business Manager", "Department Chair",
-					"Dean", "University Research Director" ];
-			var canDisApproveTitles = [ "Business Manager", "Department Chair",
-					"Dean", "University Research Director" ];
+			var canSubmitTitles = [ "Research Administrator" ];
+
+			var canUpdateRoles = [ "PI", "CO-PI", "Senior" ];
+			// var canUpdateTitles = [ "Business Manager",
+			// "Research Administrator", "Department Chair", "Dean" ];
+
+			var canApproveTitles = [ "Department Chair", "Business Manager",
+					"IRB", "Dean", "Research Administrator",
+					"University Research Director" ];
+
+			var canDisApproveTitles = [ "Department Chair", "Business Manager",
+					"IRB", "Dean", "Research Administrator",
+					"University Research Director" ];
+
 			var canWithDrawTitles = [ "Research Administrator" ];
+
 			var canArchiveTitles = [ "University Research Director" ];
+
+			var canDeleteRoles = [ "PI" ];
+			var canDeleteTitles = [ "University Research Director" ];
 
 			currentProposalRoles = currentProposalRoles.split(', ');
 
-			$.each(currentProposalRoles, function(index, value) {
-				if ($.inArray(value, canSubmitRoles) !== -1
-						&& proposalStatus == "Not Submitted by PI") {
-					$("#btnSubmitProposal").show();
-				} else {
-					$("#btnSubmitProposal").hide();
-				}
-			});
+			$
+					.each(
+							currentProposalRoles,
+							function(index, value) {
+								if (($.inArray(value, canSubmitRoles) !== -1 || $
+										.inArray(currentPositionTitle,
+												canSubmitTitles) !== -1)
+										&& ($.inArray(value, canSubmitRoles) !== -1 && $
+												.inArray(currentPositionTitle,
+														canSubmitTitles) !== -1)
+										&& proposalStatus != ""
+										// 1,5,7,9,11,13,17,15
+										&& (proposalStatus == "Not Submitted by PI"
+												|| proposalStatus == "Returned by Chair"
+												|| proposalStatus == "Disapproved by Business Manager"
+												|| proposalStatus == "Disapproved by IRB"
+												|| proposalStatus == "Returned by Dean"
+												|| proposalStatus == "Disapproved by Research Administrator"
+												|| proposalStatus == "Disapproved by University Research Director" || proposalStatus == "Ready for submission")) {
+									$("#btnSubmitProposal").show();
+								} else {
+									$("#btnSubmitProposal").hide();
+								}
+							});
 
-			if ($.inArray(currentPositionTitle, canUpdateTitles) !== -1) {
-				$("#btnUpdateProposal").show();
-			} else {
-				$.each(currentProposalRoles, function(index, value) {
-					if ($.inArray(value, canUpdateRoles) !== -1) {
-						$("#btnUpdateProposal").show();
-						// return false;
-					} else {
-						$("#btnUpdateProposal").hide();
-					}
-				});
-			}
+			$
+					.each(
+							currentProposalRoles,
+							function(index, value) {
+								if ($.inArray(value, canUpdateRoles) !== -1
+										&& proposalStatus != ""
+										&& (proposalStatus == "Not Submitted by PI"
+												|| proposalStatus == "Waiting for Chair's Approval"
+												|| proposalStatus == "Returned by Chair"
+												|| proposalStatus == "Disapproved by Business Manager"
+												|| proposalStatus == "Disapproved by IRB"
+												|| proposalStatus == "Returned by Dean"
+												|| proposalStatus == "Disapproved by Research Administrator" || proposalStatus == "Disapproved by University Research Director")) {
+									$("#btnUpdateProposal").show();
+								} else {
+									$("#btnUpdateProposal").hide();
+								}
+							});
 
-			if ($.inArray(currentPositionTitle, canUpdateTitles) !== -1) {
-				$("#btnUpdateProposal").show();
-			} else {
-				$.each(currentProposalRoles, function(index, value) {
-					if ($.inArray(value, canUpdateRoles) !== -1) {
-						$("#btnUpdateProposal").show();
-					} else {
-						$("#btnUpdateProposal").hide();
-					}
-				});
-			}
-
-			if ($.inArray(currentPositionTitle, canApproveTitles) !== -1) {
+			if ($.inArray(currentPositionTitle, canApproveTitles) !== -1
+					&& proposalStatus != ""
+					&& (proposalStatus == "Waiting for Chair's Approval"
+							|| proposalStatus == "Ready for Review"
+							|| proposalStatus == "Reviewed by Business Manager"
+							|| proposalStatus == "Approved by IRB"
+							|| proposalStatus == "Approved by Dean" || proposalStatus == "Submitted to Research Director")) {
 				$("#btnApproveProposal").show();
 			} else {
 				$("#btnApproveProposal").hide();
 			}
 
-			if ($.inArray(currentPositionTitle, canDisApproveTitles) !== -1) {
+			if ($.inArray(currentPositionTitle, canDisApproveTitles) !== -1
+					&& proposalStatus != ""
+					&& (proposalStatus == "Waiting for Chair's Approval"
+							|| proposalStatus == "Ready for Review"
+							|| proposalStatus == "Reviewed by Business Manager"
+							|| proposalStatus == "Approved by IRB"
+							|| proposalStatus == "Approved by Dean" || proposalStatus == "Submitted to Research Director")) {
 				$("#btnDisapproveProposal").show();
 			} else {
 				$("#btnDisapproveProposal").hide();
 			}
 
-			if ($.inArray(currentPositionTitle, canWithDrawTitles) !== -1) {
+			if ($.inArray(currentPositionTitle, canWithDrawTitles) !== -1
+					&& proposalStatus != ""
+					&& proposalStatus == "Approved by Dean") {
 				$("#btnWithdrawProposal").show();
 			} else {
 				$("#btnWithdrawProposal").hide();
 			}
 
-			if ($.inArray(currentPositionTitle, canArchiveTitles) !== -1) {
+			if ($.inArray(currentPositionTitle, canArchiveTitles) !== -1
+					&& proposalStatus != ""
+					&& proposalStatus == "Submitted by University Research Administrator") {
 				$("#btnArchiveProposal").show();
 			} else {
 				$("#btnArchiveProposal").hide();
 			}
+
+			$
+					.each(
+							currentProposalRoles,
+							function(index, value) {
+								if (($.inArray(value, canDeleteRoles) !== -1 || $
+										.inArray(currentPositionTitle,
+												canDeleteTitles) !== -1)
+										&& ($.inArray(value, canDeleteRoles) !== -1 && $
+												.inArray(currentPositionTitle,
+														canDeleteTitles) !== -1)
+										&& proposalStatus != ""
+										&& proposalStatus == "Submitted to Research Director") {
+									$("#btnDeleteProposal").show();
+								} else {
+									$("#btnDeleteProposal").hide();
+								}
+							});
 		},
 
 		EditProposal : function(tblID, argus) {
@@ -2973,8 +3032,10 @@ $(function() {
 				$('#lblFormHeading').html('New Proposal Details');
 
 				$("#btnReset").show();
-				$("#btnUpdateProposal").hide();
 				$("#btnSaveProposal").show();
+				$("#btnUpdateProposal").hide();
+				$("#btnDeleteProposal").hide();
+
 				$("#btnSubmitProposal").show();
 
 				// For Admin user only

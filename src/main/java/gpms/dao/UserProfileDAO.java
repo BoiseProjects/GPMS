@@ -80,8 +80,15 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 	public List<UserProfile> findAllUsersWithPosition()
 			throws UnknownHostException {
 		Datastore ds = getDatastore();
-		return ds.createQuery(UserProfile.class).field("details")
-				.notEqual(null).asList();
+		Query<UserProfile> profileQuery = ds.createQuery(UserProfile.class);
+		profileQuery.and(
+				profileQuery.criteria("details").notEqual(null),
+				profileQuery.criteria("details.position type").notEqual(
+						"Professional staff"),
+				profileQuery.criteria("details.position type").notEqual(
+						"Administrator"));
+		return profileQuery.retrievedFields(true, "_id", "first name",
+				"middle name", "last name").asList();
 	}
 
 	public List<UserProfile> findAllActiveUsers() throws UnknownHostException {
@@ -784,5 +791,5 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 
 		return userProposalCount;
 	}
-	
+
 }

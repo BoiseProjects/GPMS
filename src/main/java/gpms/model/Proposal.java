@@ -4,6 +4,7 @@ import gpms.dao.ProposalDAO;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -32,7 +33,8 @@ public class Proposal extends BaseEntity implements Serializable {
 
 	@Expose
 	@Property("proposal status")
-	private List<Status> proposalStatus = new ArrayList<Status>();
+	private List<Status> proposalStatus = new ArrayList<>(
+			Arrays.asList(Status.NOTSUBMITTEDBYPI));
 
 	@Expose
 	@Embedded("investigator info")
