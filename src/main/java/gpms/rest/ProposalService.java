@@ -2760,14 +2760,16 @@ public class ProposalService {
 			// TODO only check this for required not all XACML call
 			String proposalId = new String();
 			JsonNode proposal_Id = root.get("proposalId");
-			if (proposal_Id != null) {
-				proposalId = proposal_Id.getTextValue();
+
+			proposalId = proposal_Id.getTextValue();
+			if (proposal_Id != null && !proposalId.equals("")) {
+
+				ObjectId id = new ObjectId(proposalId);
+				Proposal proposal = proposalDAO.findProposalByProposalID(id);
+				resourceMap.put("status", proposal.getProposalStatus().get(0)
+						.toString());
+				attrMap.put("Resource", resourceMap);
 			}
-			ObjectId id = new ObjectId(proposalId);
-			Proposal proposal = proposalDAO.findProposalByProposalID(id);
-			resourceMap.put("status", proposal.getProposalStatus().get(0)
-					.toString());
-			attrMap.put("Resource", resourceMap);
 
 			// Need to add Environment to detect the Campus or outside network
 			// network-type
