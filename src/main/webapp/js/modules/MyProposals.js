@@ -2423,6 +2423,20 @@ $(function() {
 			this.ajaxCall(this.config);
 			return false;
 		},
+		
+		UpdateProposalStatus : function(buttonClicked, _proposalId) {
+			alert(buttonClicked);
+			this.config.url = this.config.baseURL + "UpdateProposalStatus";
+			this.config.data = JSON2.stringify({
+				buttonType : buttonClicked,
+				proposalUserTitle : GPMS.utils.GetUserPositionTitle(),
+				proposalId : _proposalId,
+				gpmsCommonObj : gpmsCommonObj()
+			});
+			this.config.ajaxCallMode = 9;
+			this.ajaxCall(this.config);
+			return false;
+		},
 
 		BindProposalStatus : function() {
 			this.config.url = this.config.baseURL + "GetProposalStatusList";
@@ -2831,10 +2845,11 @@ $(function() {
 								if (GPMS.utils.GetUserProfileID() != item.userProfileId) {
 									readOnly = 'readonly="true"';
 								} else if (GPMS.utils.GetUserProfileID() == item.userProfileId) {
-									if (item.signature != ""
-											&& item.signedDate != null) {
-										readOnly = 'readonly="true"';
-									} else if (item.signedDate == null) {
+// if (item.signature != ""
+// && item.signedDate != null) {
+// readOnly = 'readonly="true"';
+// } else
+									if (item.signedDate == null) {
 										focusMethod = 'onfocus="myProposal.BindCurrentDateTime(this);" required="true"';
 										readOnly = 'required="true"';
 										allowedSign = true;
@@ -3143,6 +3158,15 @@ $(function() {
 				$('#divProposalAuditGrid').show();
 			}
 			break;
+			
+		case 17:
+			if (myProposal.config.proposalId != '0') {
+				editFlag = myProposal.config.proposalId;
+				myProposal.UpdateProposalStatus(myProposal.config.buttonType,
+						myProposal.config.proposalId);
+			}
+
+			break;
 
 		}
 	},
@@ -3247,6 +3271,12 @@ $(function() {
 			case 16:
 				csscody.error('<h2>' + 'Error Message' + '</h2><p>'
 						+ 'You are not Allowed to VIEW Audit Logs! '
+						+ msg.responseText + '</p>');
+				break;
+				
+			case 17:
+				csscody.error('<h2>' + 'Error Message' + '</h2><p>'
+						+ 'You are not allowed to perform this OPERATION! '
 						+ msg.responseText + '</p>');
 				break;
 			}
@@ -3671,7 +3701,7 @@ $(function() {
 									var proposal_id = $(this).prop("name");
 									var proposal_roles = $(this).prop(
 											"data-proproles");
-									myProposal.config.ajaxCallMode = 11;
+									myProposal.config.ajaxCallMode = 17;
 
 									myProposal
 											.CheckUserPermission($buttonType,
@@ -3699,7 +3729,7 @@ $(function() {
 									var proposal_id = $(this).prop("name");
 									var proposal_roles = $(this).prop(
 											"data-proproles");
-									myProposal.config.ajaxCallMode = 11;
+									myProposal.config.ajaxCallMode = 17;
 
 									myProposal
 											.CheckUserPermission($buttonType,

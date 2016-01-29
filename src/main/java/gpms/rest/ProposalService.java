@@ -663,6 +663,149 @@ public class ProposalService {
 	}
 
 	@POST
+	@Path("/UpdateProposalStatus")
+	public Response updateProposalStatus(String message) throws Exception {
+		String proposalID = new String();
+		Proposal existingProposal = new Proposal();
+
+		ObjectId id = new ObjectId();
+
+		ObjectMapper mapper = new ObjectMapper();
+		JsonNode root = mapper.readTree(message);
+
+		JsonNode proposalId = root.get("proposalId");
+
+		if (proposalId != null) {
+			proposalID = proposalId.getTextValue();
+			if (!proposalID.equals("0") && !proposalID.equals("")) {
+				id = new ObjectId(proposalID);
+				existingProposal = proposalDAO.findProposalByProposalID(id);
+
+				// For Proposal User Title : for Research Administrator and
+				// University Research Director
+				JsonNode proposalUserTitle = root.get("proposalUserTitle");
+				if (proposalUserTitle != null) {
+					// For Proposal Status
+					JsonNode buttonType = root.get("buttonType");
+
+					if (buttonType != null) {
+						String changeDone = new String();
+
+						switch (buttonType.getTextValue()) {
+						case "Withdraw":
+							if (!proposalID.equals("0")) {
+								if (existingProposal.getProposalStatus()
+										.contains(Status.APPROVEDBYDEAN)
+										&& proposalUserTitle
+												.getTextValue()
+												.equals("Research Administrator")
+										&& !existingProposal
+												.getProposalStatus()
+												.contains(
+														Status.WITHDRAWBYRESEARCHADMIN)) {
+									existingProposal.getProposalStatus()
+											.clear();
+									existingProposal.getProposalStatus().add(
+											Status.WITHDRAWBYRESEARCHADMIN);
+									changeDone = "Withdrawn";
+								}
+							}
+							break;
+
+						case "Archive":
+							if (!proposalID.equals("0")) {
+								if (existingProposal
+										.getProposalStatus()
+										.contains(
+												Status.SUBMITTEDBYRESEARCHADMIN)
+										&& proposalUserTitle
+												.getTextValue()
+												.equals("University Research Director")
+										&& !existingProposal
+												.getProposalStatus()
+												.contains(
+														Status.ARCHIVEDBYRESEARCHDIRECTOR)) {
+									existingProposal.getProposalStatus()
+											.clear();
+									existingProposal.getProposalStatus().add(
+											Status.ARCHIVEDBYRESEARCHDIRECTOR);
+									changeDone = "Archived";
+								}
+							}
+							break;
+
+						default:
+
+							break;
+						}
+
+						String userProfileID = new String();
+						String userName = new String();
+						Boolean userIsAdmin = false;
+						String userCollege = new String();
+						String userDepartment = new String();
+						String userPositionType = new String();
+						String userPositionTitle = new String();
+
+						JsonNode commonObj = root.get("gpmsCommonObj");
+						if (commonObj != null && commonObj.has("UserProfileID")) {
+							userProfileID = commonObj.get("UserProfileID")
+									.getTextValue();
+						}
+						if (commonObj != null && commonObj.has("UserName")) {
+							userName = commonObj.get("UserName").getTextValue();
+						}
+						if (commonObj != null && commonObj.has("UserIsAdmin")) {
+							userIsAdmin = commonObj.get("UserIsAdmin")
+									.getBooleanValue();
+						}
+						if (commonObj != null && commonObj.has("UserCollege")) {
+							userCollege = commonObj.get("UserCollege")
+									.getTextValue();
+						}
+						if (commonObj != null
+								&& commonObj.has("UserDepartment")) {
+							userDepartment = commonObj.get("UserDepartment")
+									.getTextValue();
+						}
+						if (commonObj != null
+								&& commonObj.has("UserPositionType")) {
+							userPositionType = commonObj
+									.get("UserPositionType").getTextValue();
+						}
+						if (commonObj != null
+								&& commonObj.has("UserPositionTitle")) {
+							userPositionTitle = commonObj.get(
+									"UserPositionTitle").getTextValue();
+						}
+
+						ObjectId authorId = new ObjectId(userProfileID);
+						UserProfile authorProfile = userProfileDAO
+								.findUserDetailsByProfileID(authorId);
+
+						// Save the Proposal
+						String authorUserName = authorProfile.getUserAccount()
+								.getUserName();
+
+						proposalDAO.updateProposalStatus(existingProposal,
+								authorProfile);
+
+						String notificationMessage = changeDone + " by "
+								+ authorUserName + ".";
+
+						NotifyAllExistingInvestigators(existingProposal.getId()
+								.toString(), existingProposal.getProjectInfo()
+								.getProjectTitle(), existingProposal,
+								notificationMessage, "Proposal", false);
+					}
+
+				}
+			}
+		}
+		return null;
+	}
+
+	@POST
 	@Path("/SaveUpdateProposal")
 	public Response saveUpdateProposal(String message) throws Exception {
 		String proposalID = new String();
@@ -983,46 +1126,6 @@ public class ProposalService {
 								} else {
 									// You are not allowed to DISAPPROVE the
 									// Proposal
-								}
-							}
-							break;
-
-						case "Withdraw":
-							if (!proposalID.equals("0")) {
-								if (existingProposal.getProposalStatus()
-										.contains(Status.APPROVEDBYDEAN)
-										&& proposalUserTitle
-												.getTextValue()
-												.equals("Research Administrator")
-										&& !existingProposal
-												.getProposalStatus()
-												.contains(
-														Status.WITHDRAWBYRESEARCHADMIN)) {
-									existingProposal.getProposalStatus()
-											.clear();
-									existingProposal.getProposalStatus().add(
-											Status.WITHDRAWBYRESEARCHADMIN);
-								}
-							}
-							break;
-
-						case "Archive":
-							if (!proposalID.equals("0")) {
-								if (existingProposal
-										.getProposalStatus()
-										.contains(
-												Status.SUBMITTEDBYRESEARCHADMIN)
-										&& proposalUserTitle
-												.getTextValue()
-												.equals("University Research Director")
-										&& !existingProposal
-												.getProposalStatus()
-												.contains(
-														Status.ARCHIVEDBYRESEARCHDIRECTOR)) {
-									existingProposal.getProposalStatus()
-											.clear();
-									existingProposal.getProposalStatus().add(
-											Status.ARCHIVEDBYRESEARCHDIRECTOR);
 								}
 							}
 							break;
