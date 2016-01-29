@@ -19,6 +19,7 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.Mongo;
 import com.mongodb.MongoClient;
+import com.mongodb.MongoClientURI;
 import com.mongodb.MongoException;
 
 /*
@@ -78,7 +79,7 @@ public class MongoDBConnector {
 						+ port + "]");
 
 				// MongoClientURI uri = new MongoClientURI(
-				// "mongodb://milstein:milstein@ds042888.mongolab.com:42888/db_gpms");
+				// "mongodb://milstein:milstein@ds060478.mongolab.com:60478/db_gpms");
 				// mongo = new MongoClient(uri);
 
 			} catch (MongoException e) {

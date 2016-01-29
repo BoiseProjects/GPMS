@@ -516,7 +516,7 @@ $(function() {
 			this.config.data = JSON2.stringify({
 				policyInfo : attributeArray,
 				gpmsCommonObj : gpmsCommonObj(),
-				proposalId: proposal_id
+				proposalId : proposal_id
 			});
 
 			this.config.proposalRoles = proposal_roles;
@@ -918,77 +918,80 @@ $(function() {
 
 			currentProposalRoles = currentProposalRoles.split(', ');
 
-								if (proposalStatus != "" && (($.inArray("PI", currentProposalRoles) !== -1 										
-										&& (proposalStatus == "Not Submitted by PI"
-												|| proposalStatus == "Returned by Chair"
-												|| proposalStatus == "Disapproved by Business Manager"
-												|| proposalStatus == "Disapproved by IRB"
-												|| proposalStatus == "Returned by Dean"
-												|| proposalStatus == "Disapproved by Research Administrator"
-												|| proposalStatus == "Disapproved by University Research Director"))
-									|| (currentPositionTitle == "Research Administrator" && proposalStatus == "Ready for submission"))) {
-									$("#btnSubmitProposal").show();
-								} else {
-									$("#btnSubmitProposal").hide();
-								}
+			if (proposalStatus != ""
+					&& (($.inArray("PI", currentProposalRoles) !== -1 && (proposalStatus == "Not Submitted by PI"
+							|| proposalStatus == "Returned by Chair"
+							|| proposalStatus == "Disapproved by Business Manager"
+							|| proposalStatus == "Disapproved by IRB"
+							|| proposalStatus == "Returned by Dean"
+							|| proposalStatus == "Disapproved by Research Administrator" || proposalStatus == "Disapproved by University Research Director")) || (currentPositionTitle == "Research Administrator" && proposalStatus == "Ready for submission"))) {
+				$("#btnSubmitProposal").show();
+			} else {
+				$("#btnSubmitProposal").hide();
+			}
 
-								if (proposalStatus != "" && ($.inArray("PI", currentProposalRoles) !== -1
-										|| $.inArray("CO-PI", currentProposalRoles) !== -1 || $.inArray("Senior", currentProposalRoles) !== -1)
-										&& (proposalStatus == "Not Submitted by PI"
+			if (proposalStatus != ""
+					&& ($.inArray("PI", currentProposalRoles) !== -1
+							|| $.inArray("CO-PI", currentProposalRoles) !== -1 || $
+							.inArray("Senior", currentProposalRoles) !== -1)
+					&& (proposalStatus == "Not Submitted by PI"
+							|| proposalStatus == "Waiting for Chair's Approval"
+							|| proposalStatus == "Returned by Chair"
+							|| proposalStatus == "Disapproved by Business Manager"
+							|| proposalStatus == "Disapproved by IRB"
+							|| proposalStatus == "Returned by Dean"
+							|| proposalStatus == "Disapproved by Research Administrator" || proposalStatus == "Disapproved by University Research Director")) {
+				$("#btnUpdateProposal").show();
+			} else {
+				$("#btnUpdateProposal").hide();
+			}
+
+			$
+					.each(
+							currentProposalRoles,
+							function(index, value) {
+								if (proposalStatus != ""
+										&& (($.inArray("PI",
+												currentProposalRoles) !== -1 && (proposalStatus == "Not Submitted by PI"
 												|| proposalStatus == "Waiting for Chair's Approval"
 												|| proposalStatus == "Returned by Chair"
 												|| proposalStatus == "Disapproved by Business Manager"
 												|| proposalStatus == "Disapproved by IRB"
 												|| proposalStatus == "Returned by Dean"
-												|| proposalStatus == "Disapproved by Research Administrator" || proposalStatus == "Disapproved by University Research Director")) {
-									$("#btnUpdateProposal").show();
+												|| proposalStatus == "Disapproved by Research Administrator" || proposalStatus == "Disapproved by University Research Director")) || (currentPositionTitle == "University Research Director" && proposalStatus == "Submitted to Research Director"))) {
+									$("#btnDeleteProposal").show();
 								} else {
-									$("#btnUpdateProposal").hide();
+									$("#btnDeleteProposal").hide();
 								}
-			
-			$
-			.each(
-					currentProposalRoles,
-					function(index, value) {
-						if (proposalStatus != "" && (($.inArray("PI", currentProposalRoles) !== -1 								
-								&& (proposalStatus == "Not Submitted by PI"
-									|| proposalStatus == "Waiting for Chair's Approval"
-										|| proposalStatus == "Returned by Chair"
-										|| proposalStatus == "Disapproved by Business Manager"
-										|| proposalStatus == "Disapproved by IRB"
-										|| proposalStatus == "Returned by Dean"
-										|| proposalStatus == "Disapproved by Research Administrator" || proposalStatus == "Disapproved by University Research Director"))
-							|| (currentPositionTitle == "University Research Director" && proposalStatus == "Submitted to Research Director"))) {
-							$("#btnDeleteProposal").show();
-						} else {
-							$("#btnDeleteProposal").hide();
-						}
-					});
+							});
 
-			if(proposalStatus != "" && ((currentPositionTitle == "Department Chair" && proposalStatus == "Waiting for Chair's Approval") ||
-					(currentPositionTitle == "Business Manager" && (proposalStatus == "Ready for Review"||proposalStatus == "Approved by IRB"))||
-					(currentPositionTitle == "IRB" && (proposalStatus == "Ready for Review" ||proposalStatus == "Reviewed by Business Manager"))|| 
-					(currentPositionTitle == "Dean" && (proposalStatus == "Ready for Review" || proposalStatus == "Reviewed by Business Manager" || proposalStatus == "Approved by IRB"))
-							||(currentPositionTitle == "Research Administrator" && proposalStatus == "Approved by Dean")	||
-							(currentPositionTitle == "University Research Director" && proposalStatus == "Submitted to Research Director"))){
+			if (proposalStatus != ""
+					&& ((currentPositionTitle == "Department Chair" && proposalStatus == "Waiting for Chair's Approval")
+							|| (currentPositionTitle == "Business Manager" && (proposalStatus == "Ready for Review" || proposalStatus == "Approved by IRB"))
+							|| (currentPositionTitle == "IRB" && (proposalStatus == "Ready for Review" || proposalStatus == "Reviewed by Business Manager"))
+							|| (currentPositionTitle == "Dean" && (proposalStatus == "Ready for Review"
+									|| proposalStatus == "Reviewed by Business Manager" || proposalStatus == "Approved by IRB"))
+							|| (currentPositionTitle == "Research Administrator" && proposalStatus == "Approved by Dean") || (currentPositionTitle == "University Research Director" && proposalStatus == "Submitted to Research Director"))) {
 				$("#btnApproveProposal").show();
 				$("#btnDisapproveProposal").show();
 			} else {
 				$("#btnApproveProposal").hide();
 				$("#btnDisapproveProposal").hide();
-			}			
+			}
 
-			if(proposalStatus != "" && (currentPositionTitle == "Research Administrator" && proposalStatus == "Approved by Dean")){
+			if (proposalStatus != ""
+					&& (currentPositionTitle == "Research Administrator" && proposalStatus == "Approved by Dean")) {
 				$("#btnWithdrawProposal").show();
 			} else {
 				$("#btnWithdrawProposal").hide();
 			}
-			
-			if(proposalStatus != "" && (currentPositionTitle == "University Research Director" && proposalStatus == "Submitted by University Research Administrator")){
+
+			if (proposalStatus != ""
+					&& (currentPositionTitle == "University Research Director" && proposalStatus == "Submitted by University Research Administrator")) {
 				$("#btnArchiveProposal").show();
 			} else {
 				$("#btnArchiveProposal").hide();
-			}			
+			}
 		},
 
 		EditProposal : function(tblID, argus) {
@@ -1906,7 +1909,7 @@ $(function() {
 			$("#btnDisapproveProposal").removeAttr("name");
 			$("#btnWithdrawProposal").removeAttr("name");
 			$("#btnArchiveProposal").removeAttr("name");
-			
+
 			$("#btnSaveProposal").removeAttr("data-proproles");
 			$("#btnUpdateProposal").removeAttr("data-proproles");
 			$("#btnDeleteProposal").removeAttr("data-proproles");
@@ -2946,7 +2949,7 @@ $(function() {
 			$("#btnDisapproveProposal").removeAttr("name");
 			$("#btnWithdrawProposal").removeAttr("name");
 			$("#btnArchiveProposal").removeAttr("name");
-			
+
 			$("#btnSaveProposal").removeAttr("data-proproles");
 			$("#btnUpdateProposal").removeAttr("data-proproles");
 			$("#btnDeleteProposal").removeAttr("data-proproles");
@@ -3085,16 +3088,19 @@ $(function() {
 
 				// OSP Section
 				$('#ui-id-23').show();
-				if(GPMS.utils.GetUserPositionTitle() == "Research Administrator"||GPMS.utils.GetUserPositionTitle() == "University Research Director"){
-					$('#ui-id-24').find('input, select, textarea').each(function() {
-						// $(this).addClass("ignore");
-						$(this).prop('disabled', false);
-					});
-				}else{
-					$('#ui-id-24').find('input, select, textarea').each(function() {
-						// $(this).addClass("ignore");
-						$(this).prop('disabled', true);
-					});
+				if (GPMS.utils.GetUserPositionTitle() == "Research Administrator"
+						|| GPMS.utils.GetUserPositionTitle() == "University Research Director") {
+					$('#ui-id-24').find('input, select, textarea').each(
+							function() {
+								// $(this).addClass("ignore");
+								$(this).prop('disabled', false);
+							});
+				} else {
+					$('#ui-id-24').find('input, select, textarea').each(
+							function() {
+								// $(this).addClass("ignore");
+								$(this).prop('disabled', true);
+							});
 				}
 
 				$('#ddlProposalStatus option').length = 0;
@@ -3501,7 +3507,7 @@ $(function() {
 				$("#btnDisapproveProposal").removeAttr("name");
 				$("#btnWithdrawProposal").removeAttr("name");
 				$("#btnArchiveProposal").removeAttr("name");
-				
+
 				$("#btnSaveProposal").removeAttr("data-proproles");
 				$("#btnUpdateProposal").removeAttr("data-proproles");
 				$("#btnDeleteProposal").removeAttr("data-proproles");
@@ -3510,7 +3516,7 @@ $(function() {
 				$("#btnDisapproveProposal").removeAttr("data-proproles");
 				$("#btnWithdrawProposal").removeAttr("data-proproles");
 				$("#btnArchiveProposal").removeAttr("data-proproles");
-				
+
 				// $("#accordion").accordion("option", "active", 0);
 			});
 
@@ -3522,30 +3528,26 @@ $(function() {
 			});
 
 			// Save As Draft
-			$('#btnSaveProposal')
-					.click(
-							function(e) {
-								if (validator.form()) {
-									var $buttonType = $.trim($(this).text());
-									$(this).disableWith('Saving As Draft...');
-								
-									var proposal_id = $(this).prop("name");
-									myProposal.config.ajaxCallMode = 11;
-									
-									myProposal
-											.CheckUserPermission($buttonType,
-													"",
-													proposal_id,
-													"Whole Proposal",
-													myProposal.config);
+			$('#btnSaveProposal').click(
+					function(e) {
+						if (validator.form()) {
+							var $buttonType = $.trim($(this).text());
+							$(this).disableWith('Saving As Draft...');
 
-									$(this).enable();
-									e.preventDefault();
-									return false;
-								} else {
-									myProposal.focusTabWithErrors("#accordion");
-								}
-							});
+							var proposal_id = $(this).prop("name");
+							myProposal.config.ajaxCallMode = 11;
+
+							myProposal.CheckUserPermission($buttonType, "",
+									proposal_id, "Whole Proposal",
+									myProposal.config);
+
+							$(this).enable();
+							e.preventDefault();
+							return false;
+						} else {
+							myProposal.focusTabWithErrors("#accordion");
+						}
+					});
 
 			// Update
 			$('#btnUpdateProposal')
@@ -3574,7 +3576,7 @@ $(function() {
 									myProposal.focusTabWithErrors("#accordion");
 								}
 							});
-			
+
 			// Delete
 			$('#btnDeleteProposal')
 					.click(
@@ -3586,9 +3588,9 @@ $(function() {
 									var proposal_id = $(this).prop("name");
 									var proposal_roles = $(this).prop(
 											"data-proproles");
-									myProposal.config.proposalId =proposal_id;
-									myProposal.config.proposalRoles =proposal_roles;
-									
+									myProposal.config.proposalId = proposal_id;
+									myProposal.config.proposalRoles = proposal_roles;
+
 									myProposal.config.ajaxCallMode = 10;
 
 									myProposal
@@ -3796,7 +3798,7 @@ $(function() {
 														$(this).removeAttr(
 																"disabled");
 														$(this).removeAttr(
-														"required");
+																"required");
 														// Remove PI option
 														// after first row
 														if (j == 0) {
