@@ -3189,6 +3189,16 @@ $(function() {
 			}
 			break;
 
+		// Withdraw/ Archive
+		case 13:
+			if (myProposal.config.proposalId != '0') {
+				editFlag = myProposal.config.proposalId;
+				myProposal.UpdateProposalStatus(myProposal.config.buttonType,
+						myProposal.config.proposalId);
+			}
+
+			break;
+
 		case 14:
 			if (myProposal.config.proposalId != '0') {
 				alert("You are allowed to View this Section!");
@@ -3230,15 +3240,6 @@ $(function() {
 				$('#divProposalForm').hide();
 				$('#divProposalAuditGrid').show();
 			}
-			break;
-
-		case 17:
-			if (myProposal.config.proposalId != '0') {
-				editFlag = myProposal.config.proposalId;
-				myProposal.UpdateProposalStatus(myProposal.config.buttonType,
-						myProposal.config.proposalId);
-			}
-
 			break;
 
 		}
@@ -3317,7 +3318,7 @@ $(function() {
 
 			case 13:
 				csscody.error('<h2>' + 'Error Message' + '</h2><p>'
-						+ 'You are not allowed to VIEW this Proposal! '
+						+ 'You are not allowed to perform this OPERATION! '
 						+ msg.responseText + '</p>');
 				break;
 
@@ -3347,11 +3348,6 @@ $(function() {
 						+ msg.responseText + '</p>');
 				break;
 
-			case 17:
-				csscody.error('<h2>' + 'Error Message' + '</h2><p>'
-						+ 'You are not allowed to perform this OPERATION! '
-						+ msg.responseText + '</p>');
-				break;
 			}
 		},
 
@@ -3768,7 +3764,7 @@ $(function() {
 							$(this).disableWith('Withdrawing...');
 
 							var proposal_id = $(this).prop("name");
-							myProposal.config.ajaxCallMode = 17;
+							myProposal.config.ajaxCallMode = 13;
 
 							myProposal.CheckUserPermissionWithPositionTitle(
 									$buttonType, proposal_id, "Whole Proposal",
@@ -3790,7 +3786,7 @@ $(function() {
 							$(this).disableWith('Archiving...');
 
 							var proposal_id = $(this).prop("name");
-							myProposal.config.ajaxCallMode = 17;
+							myProposal.config.ajaxCallMode = 13;
 
 							myProposal.CheckUserPermissionWithPositionTitle(
 									$buttonType, proposal_id, "Whole Proposal",
