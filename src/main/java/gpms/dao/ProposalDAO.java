@@ -114,7 +114,7 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 				Status.DISAPPROVEDBYRESEARCHDIRECTOR);
 
 		if (canPIDeleteStatus.contains(proposal.getProposalStatus().get(0))
-				&& proposalRoles.contains("PI")
+				&& proposalRoles.equals("PI")
 				&& !proposalUserTitle.equals("University Research Director")
 				&& !proposal.getProposalStatus().contains(Status.DELETEDBYPI)) {
 			proposal.getProposalStatus().clear();
@@ -127,7 +127,7 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 			isDeleted = true;
 		} else if (proposal.getProposalStatus().contains(
 				Status.SUBMITTEDTORESEARCHDIRECTOR)
-				&& !proposalRoles.contains("PI")
+				&& !proposalRoles.equals("PI")
 				&& proposalUserTitle.equals("University Research Director")
 				&& !proposal.getProposalStatus().contains(
 						Status.DELETEDBYRESEARCHDIRECTOR)) {
