@@ -140,32 +140,34 @@ public class UserService {
 			limit = root.get("limit").getIntValue();
 		}
 
-		JsonNode userObj = root.get("userBindObj");
-		if (userObj != null && userObj.has("UserName")) {
-			userName = userObj.get("UserName").getTextValue();
-		}
+		if (root != null && root.has("userBindObj")) {
+			JsonNode userObj = root.get("userBindObj");
+			if (userObj != null && userObj.has("UserName")) {
+				userName = userObj.get("UserName").getTextValue();
+			}
 
-		if (userObj != null && userObj.has("College")) {
-			college = userObj.get("College").getTextValue();
-		}
+			if (userObj != null && userObj.has("College")) {
+				college = userObj.get("College").getTextValue();
+			}
 
-		if (userObj != null && userObj.has("Department")) {
-			department = userObj.get("Department").getTextValue();
-		}
+			if (userObj != null && userObj.has("Department")) {
+				department = userObj.get("Department").getTextValue();
+			}
 
-		if (userObj != null && userObj.has("PositionType")) {
-			positionType = userObj.get("PositionType").getTextValue();
-		}
+			if (userObj != null && userObj.has("PositionType")) {
+				positionType = userObj.get("PositionType").getTextValue();
+			}
 
-		if (userObj != null && userObj.has("PositionTitle")) {
-			positionTitle = userObj.get("PositionTitle").getTextValue();
-		}
+			if (userObj != null && userObj.has("PositionTitle")) {
+				positionTitle = userObj.get("PositionTitle").getTextValue();
+			}
 
-		if (userObj != null && userObj.has("IsActive")) {
-			if (!userObj.get("IsActive").isNull()) {
-				isActive = userObj.get("IsActive").getBooleanValue();
-			} else {
-				isActive = null;
+			if (userObj != null && userObj.has("IsActive")) {
+				if (!userObj.get("IsActive").isNull()) {
+					isActive = userObj.get("IsActive").getBooleanValue();
+				} else {
+					isActive = null;
+				}
 			}
 		}
 
@@ -256,22 +258,26 @@ public class UserService {
 			profileId = root.get("userId").getTextValue();
 		}
 
-		JsonNode auditLogBindObj = root.get("auditLogBindObj");
-		if (auditLogBindObj != null && auditLogBindObj.has("Action")) {
-			action = auditLogBindObj.get("Action").getTextValue();
-		}
+		if (root != null && root.has("auditLogBindObj")) {
+			JsonNode auditLogBindObj = root.get("auditLogBindObj");
+			if (auditLogBindObj != null && auditLogBindObj.has("Action")) {
+				action = auditLogBindObj.get("Action").getTextValue();
+			}
 
-		if (auditLogBindObj != null && auditLogBindObj.has("AuditedBy")) {
-			auditedBy = auditLogBindObj.get("AuditedBy").getTextValue();
-		}
+			if (auditLogBindObj != null && auditLogBindObj.has("AuditedBy")) {
+				auditedBy = auditLogBindObj.get("AuditedBy").getTextValue();
+			}
 
-		if (auditLogBindObj != null && auditLogBindObj.has("ActivityOnFrom")) {
-			activityOnFrom = auditLogBindObj.get("ActivityOnFrom")
-					.getTextValue();
-		}
+			if (auditLogBindObj != null
+					&& auditLogBindObj.has("ActivityOnFrom")) {
+				activityOnFrom = auditLogBindObj.get("ActivityOnFrom")
+						.getTextValue();
+			}
 
-		if (auditLogBindObj != null && auditLogBindObj.has("ActivityOnTo")) {
-			activityOnTo = auditLogBindObj.get("ActivityOnTo").getTextValue();
+			if (auditLogBindObj != null && auditLogBindObj.has("ActivityOnTo")) {
+				activityOnTo = auditLogBindObj.get("ActivityOnTo")
+						.getTextValue();
+			}
 		}
 
 		ObjectId userId = new ObjectId(profileId);
@@ -315,29 +321,32 @@ public class UserService {
 		String userPositionType = new String();
 		String userPositionTitle = new String();
 
-		JsonNode commonObj = root.get("gpmsCommonObj");
-		if (commonObj != null && commonObj.has("UserProfileID")) {
-			userProfileID = commonObj.get("UserProfileID").getTextValue();
-		}
-		if (commonObj != null && commonObj.has("UserName")) {
-			userName = commonObj.get("UserName").getTextValue();
-		}
-		if (commonObj != null && commonObj.has("UserIsAdmin")) {
-			userIsAdmin = Boolean.parseBoolean(commonObj.get("UserIsAdmin")
-					.getTextValue());
-		}
-		if (commonObj != null && commonObj.has("UserCollege")) {
-			userCollege = commonObj.get("UserCollege").getTextValue();
-		}
-		if (commonObj != null && commonObj.has("UserDepartment")) {
-			userDepartment = commonObj.get("UserDepartment").getTextValue();
-		}
-		if (commonObj != null && commonObj.has("UserPositionType")) {
-			userPositionType = commonObj.get("UserPositionType").getTextValue();
-		}
-		if (commonObj != null && commonObj.has("UserPositionTitle")) {
-			userPositionTitle = commonObj.get("UserPositionTitle")
-					.getTextValue();
+		if (root != null && root.has("gpmsCommonObj")) {
+			JsonNode commonObj = root.get("gpmsCommonObj");
+			if (commonObj != null && commonObj.has("UserProfileID")) {
+				userProfileID = commonObj.get("UserProfileID").getTextValue();
+			}
+			if (commonObj != null && commonObj.has("UserName")) {
+				userName = commonObj.get("UserName").getTextValue();
+			}
+			if (commonObj != null && commonObj.has("UserIsAdmin")) {
+				userIsAdmin = Boolean.parseBoolean(commonObj.get("UserIsAdmin")
+						.getTextValue());
+			}
+			if (commonObj != null && commonObj.has("UserCollege")) {
+				userCollege = commonObj.get("UserCollege").getTextValue();
+			}
+			if (commonObj != null && commonObj.has("UserDepartment")) {
+				userDepartment = commonObj.get("UserDepartment").getTextValue();
+			}
+			if (commonObj != null && commonObj.has("UserPositionType")) {
+				userPositionType = commonObj.get("UserPositionType")
+						.getTextValue();
+			}
+			if (commonObj != null && commonObj.has("UserPositionTitle")) {
+				userPositionTitle = commonObj.get("UserPositionTitle")
+						.getTextValue();
+			}
 		}
 
 		ObjectId authorId = new ObjectId(userProfileID);
@@ -401,29 +410,32 @@ public class UserService {
 		String userPositionType = new String();
 		String userPositionTitle = new String();
 
-		JsonNode commonObj = root.get("gpmsCommonObj");
-		if (commonObj != null && commonObj.has("UserProfileID")) {
-			userProfileID = commonObj.get("UserProfileID").getTextValue();
-		}
-		if (commonObj != null && commonObj.has("UserName")) {
-			userName = commonObj.get("UserName").getTextValue();
-		}
-		if (commonObj != null && commonObj.has("UserIsAdmin")) {
-			userIsAdmin = Boolean.parseBoolean(commonObj.get("UserIsAdmin")
-					.getTextValue());
-		}
-		if (commonObj != null && commonObj.has("UserCollege")) {
-			userCollege = commonObj.get("UserCollege").getTextValue();
-		}
-		if (commonObj != null && commonObj.has("UserDepartment")) {
-			userDepartment = commonObj.get("UserDepartment").getTextValue();
-		}
-		if (commonObj != null && commonObj.has("UserPositionType")) {
-			userPositionType = commonObj.get("UserPositionType").getTextValue();
-		}
-		if (commonObj != null && commonObj.has("UserPositionTitle")) {
-			userPositionTitle = commonObj.get("UserPositionTitle")
-					.getTextValue();
+		if (root != null && root.has("gpmsCommonObj")) {
+			JsonNode commonObj = root.get("gpmsCommonObj");
+			if (commonObj != null && commonObj.has("UserProfileID")) {
+				userProfileID = commonObj.get("UserProfileID").getTextValue();
+			}
+			if (commonObj != null && commonObj.has("UserName")) {
+				userName = commonObj.get("UserName").getTextValue();
+			}
+			if (commonObj != null && commonObj.has("UserIsAdmin")) {
+				userIsAdmin = Boolean.parseBoolean(commonObj.get("UserIsAdmin")
+						.getTextValue());
+			}
+			if (commonObj != null && commonObj.has("UserCollege")) {
+				userCollege = commonObj.get("UserCollege").getTextValue();
+			}
+			if (commonObj != null && commonObj.has("UserDepartment")) {
+				userDepartment = commonObj.get("UserDepartment").getTextValue();
+			}
+			if (commonObj != null && commonObj.has("UserPositionType")) {
+				userPositionType = commonObj.get("UserPositionType")
+						.getTextValue();
+			}
+			if (commonObj != null && commonObj.has("UserPositionTitle")) {
+				userPositionTitle = commonObj.get("UserPositionTitle")
+						.getTextValue();
+			}
 		}
 
 		ObjectId authorId = new ObjectId(userProfileID);
@@ -485,29 +497,32 @@ public class UserService {
 		String userPositionType = new String();
 		String userPositionTitle = new String();
 
-		JsonNode commonObj = root.get("gpmsCommonObj");
-		if (commonObj != null && commonObj.has("UserProfileID")) {
-			userProfileID = commonObj.get("UserProfileID").getTextValue();
-		}
-		if (commonObj != null && commonObj.has("UserName")) {
-			userName = commonObj.get("UserName").getTextValue();
-		}
-		if (commonObj != null && commonObj.has("UserIsAdmin")) {
-			userIsAdmin = Boolean.parseBoolean(commonObj.get("UserIsAdmin")
-					.getTextValue());
-		}
-		if (commonObj != null && commonObj.has("UserCollege")) {
-			userCollege = commonObj.get("UserCollege").getTextValue();
-		}
-		if (commonObj != null && commonObj.has("UserDepartment")) {
-			userDepartment = commonObj.get("UserDepartment").getTextValue();
-		}
-		if (commonObj != null && commonObj.has("UserPositionType")) {
-			userPositionType = commonObj.get("UserPositionType").getTextValue();
-		}
-		if (commonObj != null && commonObj.has("UserPositionTitle")) {
-			userPositionTitle = commonObj.get("UserPositionTitle")
-					.getTextValue();
+		if (root != null && root.has("gpmsCommonObj")) {
+			JsonNode commonObj = root.get("gpmsCommonObj");
+			if (commonObj != null && commonObj.has("UserProfileID")) {
+				userProfileID = commonObj.get("UserProfileID").getTextValue();
+			}
+			if (commonObj != null && commonObj.has("UserName")) {
+				userName = commonObj.get("UserName").getTextValue();
+			}
+			if (commonObj != null && commonObj.has("UserIsAdmin")) {
+				userIsAdmin = Boolean.parseBoolean(commonObj.get("UserIsAdmin")
+						.getTextValue());
+			}
+			if (commonObj != null && commonObj.has("UserCollege")) {
+				userCollege = commonObj.get("UserCollege").getTextValue();
+			}
+			if (commonObj != null && commonObj.has("UserDepartment")) {
+				userDepartment = commonObj.get("UserDepartment").getTextValue();
+			}
+			if (commonObj != null && commonObj.has("UserPositionType")) {
+				userPositionType = commonObj.get("UserPositionType")
+						.getTextValue();
+			}
+			if (commonObj != null && commonObj.has("UserPositionTitle")) {
+				userPositionTitle = commonObj.get("UserPositionTitle")
+						.getTextValue();
+			}
 		}
 
 		ObjectId authorId = new ObjectId(userProfileID);
@@ -595,13 +610,15 @@ public class UserService {
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode root = mapper.readTree(message);
 
-		JsonNode userUniqueObj = root.get("userUniqueObj");
-		if (userUniqueObj != null && userUniqueObj.has("UserID")) {
-			userID = userUniqueObj.get("UserID").getTextValue();
-		}
+		if (root != null && root.has("userUniqueObj")) {
+			JsonNode userUniqueObj = root.get("userUniqueObj");
+			if (userUniqueObj != null && userUniqueObj.has("UserID")) {
+				userID = userUniqueObj.get("UserID").getTextValue();
+			}
 
-		if (userUniqueObj != null && userUniqueObj.has("NewUserName")) {
-			newUserName = userUniqueObj.get("NewUserName").getTextValue();
+			if (userUniqueObj != null && userUniqueObj.has("NewUserName")) {
+				newUserName = userUniqueObj.get("NewUserName").getTextValue();
+			}
 		}
 
 		String userProfileID = new String();
@@ -612,29 +629,32 @@ public class UserService {
 		String userPositionType = new String();
 		String userPositionTitle = new String();
 
-		JsonNode commonObj = root.get("gpmsCommonObj");
-		if (commonObj != null && commonObj.has("UserProfileID")) {
-			userProfileID = commonObj.get("UserProfileID").getTextValue();
-		}
-		if (commonObj != null && commonObj.has("UserName")) {
-			userName = commonObj.get("UserName").getTextValue();
-		}
-		if (commonObj != null && commonObj.has("UserIsAdmin")) {
-			userIsAdmin = Boolean.parseBoolean(commonObj.get("UserIsAdmin")
-					.getTextValue());
-		}
-		if (commonObj != null && commonObj.has("UserCollege")) {
-			userCollege = commonObj.get("UserCollege").getTextValue();
-		}
-		if (commonObj != null && commonObj.has("UserDepartment")) {
-			userDepartment = commonObj.get("UserDepartment").getTextValue();
-		}
-		if (commonObj != null && commonObj.has("UserPositionType")) {
-			userPositionType = commonObj.get("UserPositionType").getTextValue();
-		}
-		if (commonObj != null && commonObj.has("UserPositionTitle")) {
-			userPositionTitle = commonObj.get("UserPositionTitle")
-					.getTextValue();
+		if (root != null && root.has("gpmsCommonObj")) {
+			JsonNode commonObj = root.get("gpmsCommonObj");
+			if (commonObj != null && commonObj.has("UserProfileID")) {
+				userProfileID = commonObj.get("UserProfileID").getTextValue();
+			}
+			if (commonObj != null && commonObj.has("UserName")) {
+				userName = commonObj.get("UserName").getTextValue();
+			}
+			if (commonObj != null && commonObj.has("UserIsAdmin")) {
+				userIsAdmin = Boolean.parseBoolean(commonObj.get("UserIsAdmin")
+						.getTextValue());
+			}
+			if (commonObj != null && commonObj.has("UserCollege")) {
+				userCollege = commonObj.get("UserCollege").getTextValue();
+			}
+			if (commonObj != null && commonObj.has("UserDepartment")) {
+				userDepartment = commonObj.get("UserDepartment").getTextValue();
+			}
+			if (commonObj != null && commonObj.has("UserPositionType")) {
+				userPositionType = commonObj.get("UserPositionType")
+						.getTextValue();
+			}
+			if (commonObj != null && commonObj.has("UserPositionTitle")) {
+				userPositionTitle = commonObj.get("UserPositionTitle")
+						.getTextValue();
+			}
 		}
 
 		ObjectId id = new ObjectId();
@@ -669,13 +689,15 @@ public class UserService {
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode root = mapper.readTree(message);
 
-		JsonNode userUniqueObj = root.get("userUniqueObj");
-		if (userUniqueObj != null && userUniqueObj.has("UserID")) {
-			userID = userUniqueObj.get("UserID").getTextValue();
-		}
+		if (root != null && root.has("userUniqueObj")) {
+			JsonNode userUniqueObj = root.get("userUniqueObj");
+			if (userUniqueObj != null && userUniqueObj.has("UserID")) {
+				userID = userUniqueObj.get("UserID").getTextValue();
+			}
 
-		if (userUniqueObj != null && userUniqueObj.has("NewEmail")) {
-			newEmail = userUniqueObj.get("NewEmail").getTextValue();
+			if (userUniqueObj != null && userUniqueObj.has("NewEmail")) {
+				newEmail = userUniqueObj.get("NewEmail").getTextValue();
+			}
 		}
 
 		String userProfileID = new String();
@@ -686,29 +708,32 @@ public class UserService {
 		String userPositionType = new String();
 		String userPositionTitle = new String();
 
-		JsonNode commonObj = root.get("gpmsCommonObj");
-		if (commonObj != null && commonObj.has("UserProfileID")) {
-			userProfileID = commonObj.get("UserProfileID").getTextValue();
-		}
-		if (commonObj != null && commonObj.has("UserName")) {
-			userName = commonObj.get("UserName").getTextValue();
-		}
-		if (commonObj != null && commonObj.has("UserIsAdmin")) {
-			userIsAdmin = Boolean.parseBoolean(commonObj.get("UserIsAdmin")
-					.getTextValue());
-		}
-		if (commonObj != null && commonObj.has("UserCollege")) {
-			userCollege = commonObj.get("UserCollege").getTextValue();
-		}
-		if (commonObj != null && commonObj.has("UserDepartment")) {
-			userDepartment = commonObj.get("UserDepartment").getTextValue();
-		}
-		if (commonObj != null && commonObj.has("UserPositionType")) {
-			userPositionType = commonObj.get("UserPositionType").getTextValue();
-		}
-		if (commonObj != null && commonObj.has("UserPositionTitle")) {
-			userPositionTitle = commonObj.get("UserPositionTitle")
-					.getTextValue();
+		if (root != null && root.has("gpmsCommonObj")) {
+			JsonNode commonObj = root.get("gpmsCommonObj");
+			if (commonObj != null && commonObj.has("UserProfileID")) {
+				userProfileID = commonObj.get("UserProfileID").getTextValue();
+			}
+			if (commonObj != null && commonObj.has("UserName")) {
+				userName = commonObj.get("UserName").getTextValue();
+			}
+			if (commonObj != null && commonObj.has("UserIsAdmin")) {
+				userIsAdmin = Boolean.parseBoolean(commonObj.get("UserIsAdmin")
+						.getTextValue());
+			}
+			if (commonObj != null && commonObj.has("UserCollege")) {
+				userCollege = commonObj.get("UserCollege").getTextValue();
+			}
+			if (commonObj != null && commonObj.has("UserDepartment")) {
+				userDepartment = commonObj.get("UserDepartment").getTextValue();
+			}
+			if (commonObj != null && commonObj.has("UserPositionType")) {
+				userPositionType = commonObj.get("UserPositionType")
+						.getTextValue();
+			}
+			if (commonObj != null && commonObj.has("UserPositionTitle")) {
+				userPositionTitle = commonObj.get("UserPositionTitle")
+						.getTextValue();
+			}
 		}
 
 		ObjectId id = new ObjectId();
@@ -747,338 +772,344 @@ public class UserService {
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode root = mapper.readTree(message);
 
-		JsonNode userInfo = root.get("userInfo");
+		if (root != null && root.has("userInfo")) {
+			JsonNode userInfo = root.get("userInfo");
 
-		if (userInfo != null && userInfo.has("UserID")) {
-			userID = userInfo.get("UserID").getTextValue();
-			if (!userID.equals("0")) {
-				ObjectId id = new ObjectId(userID);
-				existingUserProfile = userProfileDAO
-						.findUserDetailsByProfileID(id);
-				oldUserProfile = SerializationHelper
-						.cloneThroughSerialize(existingUserProfile);
-			} else {
-				newAccount.setAddedOn(new Date());
-			}
-		}
-
-		if (userInfo != null && userInfo.has("UserName")) {
-			String userNameOf = userInfo.get("UserName").getTextValue();
-			if (!userID.equals("0") && existingUserProfile != null) {
-				existingUserAccount = existingUserProfile.getUserAccount();
-				if (!existingUserAccount.getUserName().equals(userNameOf)) {
-					existingUserAccount = null;
+			if (userInfo != null && userInfo.has("UserID")) {
+				userID = userInfo.get("UserID").getTextValue();
+				if (!userID.equals("0")) {
+					ObjectId id = new ObjectId(userID);
+					existingUserProfile = userProfileDAO
+							.findUserDetailsByProfileID(id);
+					oldUserProfile = SerializationHelper
+							.cloneThroughSerialize(existingUserProfile);
+				} else {
+					newAccount.setAddedOn(new Date());
 				}
-			} else {
-				newAccount.setUserName(userNameOf);
 			}
-		}
 
-		if (userInfo != null && userInfo.has("Password")) {
-			if (!userID.equals("0")) {
-				if (!existingUserAccount.getPassword().equals(
-						userInfo.get("Password").getTextValue())) {
-					existingUserAccount.setPassword(userInfo.get("Password")
+			if (userInfo != null && userInfo.has("UserName")) {
+				String userNameOf = userInfo.get("UserName").getTextValue();
+				if (!userID.equals("0") && existingUserProfile != null) {
+					existingUserAccount = existingUserProfile.getUserAccount();
+					if (!existingUserAccount.getUserName().equals(userNameOf)) {
+						existingUserAccount = null;
+					}
+				} else {
+					newAccount.setUserName(userNameOf);
+				}
+			}
+
+			if (userInfo != null && userInfo.has("Password")) {
+				if (!userID.equals("0")) {
+					if (!existingUserAccount.getPassword().equals(
+							userInfo.get("Password").getTextValue())) {
+						existingUserAccount.setPassword(userInfo
+								.get("Password").getTextValue());
+					}
+				} else {
+					newAccount.setPassword(userInfo.get("Password")
 							.getTextValue());
 				}
-			} else {
-				newAccount.setPassword(userInfo.get("Password").getTextValue());
 			}
-		}
 
-		if (userInfo != null && userInfo.has("IsActive")) {
-			if (!userID.equals("0")) {
-				if (existingUserAccount.isActive() != userInfo.get("IsActive")
-						.getBooleanValue()) {
-					existingUserAccount.setActive(userInfo.get("IsActive")
+			if (userInfo != null && userInfo.has("IsActive")) {
+				if (!userID.equals("0")) {
+					if (existingUserAccount.isActive() != userInfo.get(
+							"IsActive").getBooleanValue()) {
+						existingUserAccount.setActive(userInfo.get("IsActive")
+								.getBooleanValue());
+					}
+				} else {
+					newAccount.setActive(userInfo.get("IsActive")
 							.getBooleanValue());
 				}
-			} else {
-				newAccount
-						.setActive(userInfo.get("IsActive").getBooleanValue());
-			}
-			if (!userID.equals("0")) {
-				if (existingUserAccount.isDeleted() != !userInfo
-						.get("IsActive").getBooleanValue()) {
-					existingUserAccount.setDeleted(!userInfo.get("IsActive")
+				if (!userID.equals("0")) {
+					if (existingUserAccount.isDeleted() != !userInfo.get(
+							"IsActive").getBooleanValue()) {
+						existingUserAccount.setDeleted(!userInfo
+								.get("IsActive").getBooleanValue());
+					}
+				} else {
+					newAccount.setDeleted(!userInfo.get("IsActive")
 							.getBooleanValue());
 				}
-			} else {
-				newAccount.setDeleted(!userInfo.get("IsActive")
-						.getBooleanValue());
-			}
 
-			// TODO: Check the old ways to do this
-			// if (userInfo != null && userInfo.has("IsActive")) {
-			// newAccount.setActive(userInfo.get(
-			// "IsActive").getBooleanValue());
-			// newAccount.setDeleted(!userInfo.get(
-			// "IsActive").getBooleanValue());
-			// newProfile.setDeleted(!userInfo.get(
-			// "IsActive").getBooleanValue());
-			// }
+				// TODO: Check the old ways to do this
+				// if (userInfo != null && userInfo.has("IsActive")) {
+				// newAccount.setActive(userInfo.get(
+				// "IsActive").getBooleanValue());
+				// newAccount.setDeleted(!userInfo.get(
+				// "IsActive").getBooleanValue());
+				// newProfile.setDeleted(!userInfo.get(
+				// "IsActive").getBooleanValue());
+				// }
 
-			if (!userID.equals("0")) {
-				if (existingUserProfile.isDeleted() != !userInfo
-						.get("IsActive").getBooleanValue()) {
-					existingUserProfile.setDeleted(!userInfo.get("IsActive")
+				if (!userID.equals("0")) {
+					if (existingUserProfile.isDeleted() != !userInfo.get(
+							"IsActive").getBooleanValue()) {
+						existingUserProfile.setDeleted(!userInfo
+								.get("IsActive").getBooleanValue());
+					}
+				} else {
+					newProfile.setDeleted(!userInfo.get("IsActive")
 							.getBooleanValue());
 				}
-			} else {
-				newProfile.setDeleted(!userInfo.get("IsActive")
-						.getBooleanValue());
 			}
-		}
 
-		if (userID.equals("0")) {
-			newProfile.setUserAccount(newAccount);
-		}
+			if (userID.equals("0")) {
+				newProfile.setUserAccount(newAccount);
+			}
 
-		if (userInfo != null && userInfo.has("FirstName")) {
-			if (!userID.equals("0")) {
-				if (!existingUserProfile.getFirstName().equals(
-						userInfo.get("FirstName").getTextValue())) {
-					existingUserProfile.setFirstName(userInfo.get("FirstName")
+			if (userInfo != null && userInfo.has("FirstName")) {
+				if (!userID.equals("0")) {
+					if (!existingUserProfile.getFirstName().equals(
+							userInfo.get("FirstName").getTextValue())) {
+						existingUserProfile.setFirstName(userInfo.get(
+								"FirstName").getTextValue());
+					}
+				} else {
+					newProfile.setFirstName(userInfo.get("FirstName")
 							.getTextValue());
 				}
-			} else {
-				newProfile.setFirstName(userInfo.get("FirstName")
-						.getTextValue());
 			}
-		}
 
-		if (userInfo != null && userInfo.has("MiddleName")) {
-			if (!userID.equals("0")) {
-				if (!existingUserProfile.getMiddleName().equals(
-						userInfo.get("MiddleName").getTextValue())) {
-					existingUserProfile.setMiddleName(userInfo
-							.get("MiddleName").getTextValue());
-				}
-			} else {
-				newProfile.setMiddleName(userInfo.get("MiddleName")
-						.getTextValue());
-			}
-		}
-
-		if (userInfo != null && userInfo.has("LastName")) {
-			if (!userID.equals("0")) {
-				if (!existingUserProfile.getLastName().equals(
-						userInfo.get("LastName").getTextValue())) {
-					existingUserProfile.setLastName(userInfo.get("LastName")
+			if (userInfo != null && userInfo.has("MiddleName")) {
+				if (!userID.equals("0")) {
+					if (!existingUserProfile.getMiddleName().equals(
+							userInfo.get("MiddleName").getTextValue())) {
+						existingUserProfile.setMiddleName(userInfo.get(
+								"MiddleName").getTextValue());
+					}
+				} else {
+					newProfile.setMiddleName(userInfo.get("MiddleName")
 							.getTextValue());
 				}
-			} else {
-				newProfile.setLastName(userInfo.get("LastName").getTextValue());
 			}
-		}
 
-		if (userInfo != null && userInfo.has("DOB")) {
-			Date dob = formatter.parse(userInfo.get("DOB").getTextValue());
-			if (!userID.equals("0")) {
-				if (!existingUserProfile.getDateOfBirth().equals(dob)) {
-					existingUserProfile.setDateOfBirth(dob);
-				}
-			} else {
-				newProfile.setDateOfBirth(dob);
-			}
-		}
-
-		if (userInfo != null && userInfo.has("Gender")) {
-			if (!userID.equals("0")) {
-				if (!existingUserProfile.getGender().equals(
-						userInfo.get("Gender").getTextValue())) {
-					existingUserProfile.setGender(userInfo.get("Gender")
+			if (userInfo != null && userInfo.has("LastName")) {
+				if (!userID.equals("0")) {
+					if (!existingUserProfile.getLastName().equals(
+							userInfo.get("LastName").getTextValue())) {
+						existingUserProfile.setLastName(userInfo
+								.get("LastName").getTextValue());
+					}
+				} else {
+					newProfile.setLastName(userInfo.get("LastName")
 							.getTextValue());
 				}
-			} else {
-				newProfile.setGender(userInfo.get("Gender").getTextValue());
 			}
-		}
 
-		Address newAddress = new Address();
-
-		if (userInfo != null && userInfo.has("Street")) {
-			newAddress.setStreet(userInfo.get("Street").getTextValue());
-		}
-		if (userInfo != null && userInfo.has("Apt")) {
-			newAddress.setApt(userInfo.get("Apt").getTextValue());
-		}
-		if (userInfo != null && userInfo.has("City")) {
-			newAddress.setCity(userInfo.get("City").getTextValue());
-		}
-		if (userInfo != null && userInfo.has("State")) {
-			newAddress.setState(userInfo.get("State").getTextValue());
-		}
-		if (userInfo != null && userInfo.has("Zip")) {
-			newAddress.setZipcode(userInfo.get("Zip").getTextValue());
-		}
-		if (userInfo != null && userInfo.has("Country")) {
-			newAddress.setCountry(userInfo.get("Country").getTextValue());
-		}
-
-		if (!userID.equals("0")) {
-			boolean alreadyExist = false;
-			for (Address address : existingUserProfile.getAddresses()) {
-				if (address.equals(newAddress)) {
-					alreadyExist = true;
-					break;
+			if (userInfo != null && userInfo.has("DOB")) {
+				Date dob = formatter.parse(userInfo.get("DOB").getTextValue());
+				if (!userID.equals("0")) {
+					if (!existingUserProfile.getDateOfBirth().equals(dob)) {
+						existingUserProfile.setDateOfBirth(dob);
+					}
+				} else {
+					newProfile.setDateOfBirth(dob);
 				}
 			}
-			if (!alreadyExist) {
-				existingUserProfile.getAddresses().clear();
-				existingUserProfile.getAddresses().add(newAddress);
-			}
-		} else {
-			newProfile.getAddresses().add(newAddress);
-		}
 
-		if (userInfo != null && userInfo.has("OfficeNumber")) {
+			if (userInfo != null && userInfo.has("Gender")) {
+				if (!userID.equals("0")) {
+					if (!existingUserProfile.getGender().equals(
+							userInfo.get("Gender").getTextValue())) {
+						existingUserProfile.setGender(userInfo.get("Gender")
+								.getTextValue());
+					}
+				} else {
+					newProfile.setGender(userInfo.get("Gender").getTextValue());
+				}
+			}
+
+			Address newAddress = new Address();
+
+			if (userInfo != null && userInfo.has("Street")) {
+				newAddress.setStreet(userInfo.get("Street").getTextValue());
+			}
+			if (userInfo != null && userInfo.has("Apt")) {
+				newAddress.setApt(userInfo.get("Apt").getTextValue());
+			}
+			if (userInfo != null && userInfo.has("City")) {
+				newAddress.setCity(userInfo.get("City").getTextValue());
+			}
+			if (userInfo != null && userInfo.has("State")) {
+				newAddress.setState(userInfo.get("State").getTextValue());
+			}
+			if (userInfo != null && userInfo.has("Zip")) {
+				newAddress.setZipcode(userInfo.get("Zip").getTextValue());
+			}
+			if (userInfo != null && userInfo.has("Country")) {
+				newAddress.setCountry(userInfo.get("Country").getTextValue());
+			}
+
 			if (!userID.equals("0")) {
 				boolean alreadyExist = false;
-				for (String officeNo : existingUserProfile.getOfficeNumbers()) {
-					if (officeNo.equals(userInfo.get("OfficeNumber")
-							.getTextValue())) {
+				for (Address address : existingUserProfile.getAddresses()) {
+					if (address.equals(newAddress)) {
 						alreadyExist = true;
 						break;
 					}
 				}
 				if (!alreadyExist) {
-					existingUserProfile.getOfficeNumbers().clear();
-					existingUserProfile.getOfficeNumbers().add(
+					existingUserProfile.getAddresses().clear();
+					existingUserProfile.getAddresses().add(newAddress);
+				}
+			} else {
+				newProfile.getAddresses().add(newAddress);
+			}
+
+			if (userInfo != null && userInfo.has("OfficeNumber")) {
+				if (!userID.equals("0")) {
+					boolean alreadyExist = false;
+					for (String officeNo : existingUserProfile
+							.getOfficeNumbers()) {
+						if (officeNo.equals(userInfo.get("OfficeNumber")
+								.getTextValue())) {
+							alreadyExist = true;
+							break;
+						}
+					}
+					if (!alreadyExist) {
+						existingUserProfile.getOfficeNumbers().clear();
+						existingUserProfile.getOfficeNumbers().add(
+								userInfo.get("OfficeNumber").getTextValue());
+					}
+				} else {
+					newProfile.getOfficeNumbers().add(
 							userInfo.get("OfficeNumber").getTextValue());
 				}
-			} else {
-				newProfile.getOfficeNumbers().add(
-						userInfo.get("OfficeNumber").getTextValue());
 			}
-		}
 
-		if (userInfo != null && userInfo.has("MobileNumber")) {
-			if (!userID.equals("0")) {
-				boolean alreadyExist = false;
-				for (String mobileNo : existingUserProfile.getMobileNumbers()) {
-					if (mobileNo.equals(userInfo.get("MobileNumber")
-							.getTextValue())) {
-						alreadyExist = true;
-						break;
+			if (userInfo != null && userInfo.has("MobileNumber")) {
+				if (!userID.equals("0")) {
+					boolean alreadyExist = false;
+					for (String mobileNo : existingUserProfile
+							.getMobileNumbers()) {
+						if (mobileNo.equals(userInfo.get("MobileNumber")
+								.getTextValue())) {
+							alreadyExist = true;
+							break;
+						}
 					}
-				}
-				if (!alreadyExist) {
-					existingUserProfile.getMobileNumbers().clear();
-					existingUserProfile.getMobileNumbers().add(
+					if (!alreadyExist) {
+						existingUserProfile.getMobileNumbers().clear();
+						existingUserProfile.getMobileNumbers().add(
+								userInfo.get("MobileNumber").getTextValue());
+					}
+				} else {
+					newProfile.getMobileNumbers().add(
 							userInfo.get("MobileNumber").getTextValue());
 				}
-			} else {
-				newProfile.getMobileNumbers().add(
-						userInfo.get("MobileNumber").getTextValue());
 			}
-		}
 
-		if (userInfo != null && userInfo.has("HomeNumber")) {
-			if (!userID.equals("0")) {
-				boolean alreadyExist = false;
-				for (String homeNo : existingUserProfile.getHomeNumbers()) {
-					if (homeNo
-							.equals(userInfo.get("HomeNumber").getTextValue())) {
-						alreadyExist = true;
-						break;
+			if (userInfo != null && userInfo.has("HomeNumber")) {
+				if (!userID.equals("0")) {
+					boolean alreadyExist = false;
+					for (String homeNo : existingUserProfile.getHomeNumbers()) {
+						if (homeNo.equals(userInfo.get("HomeNumber")
+								.getTextValue())) {
+							alreadyExist = true;
+							break;
+						}
 					}
-				}
-				if (!alreadyExist) {
-					existingUserProfile.getHomeNumbers().clear();
-					existingUserProfile.getHomeNumbers().add(
+					if (!alreadyExist) {
+						existingUserProfile.getHomeNumbers().clear();
+						existingUserProfile.getHomeNumbers().add(
+								userInfo.get("HomeNumber").getTextValue());
+					}
+				} else {
+					newProfile.getHomeNumbers().add(
 							userInfo.get("HomeNumber").getTextValue());
 				}
-			} else {
-				newProfile.getHomeNumbers().add(
-						userInfo.get("HomeNumber").getTextValue());
 			}
-		}
 
-		if (userInfo != null && userInfo.has("OtherNumber")) {
-			if (!userID.equals("0")) {
-				boolean alreadyExist = false;
-				for (String otherNo : existingUserProfile.getOtherNumbers()) {
-					if (otherNo.equals(userInfo.get("OtherNumber")
-							.getTextValue())) {
-						alreadyExist = true;
-						break;
+			if (userInfo != null && userInfo.has("OtherNumber")) {
+				if (!userID.equals("0")) {
+					boolean alreadyExist = false;
+					for (String otherNo : existingUserProfile.getOtherNumbers()) {
+						if (otherNo.equals(userInfo.get("OtherNumber")
+								.getTextValue())) {
+							alreadyExist = true;
+							break;
+						}
 					}
-				}
-				if (!alreadyExist) {
-					existingUserProfile.getOtherNumbers().clear();
-					existingUserProfile.getOtherNumbers().add(
+					if (!alreadyExist) {
+						existingUserProfile.getOtherNumbers().clear();
+						existingUserProfile.getOtherNumbers().add(
+								userInfo.get("OtherNumber").getTextValue());
+					}
+				} else {
+					newProfile.getOtherNumbers().add(
 							userInfo.get("OtherNumber").getTextValue());
 				}
-			} else {
-				newProfile.getOtherNumbers().add(
-						userInfo.get("OtherNumber").getTextValue());
 			}
-		}
 
-		if (userInfo != null && userInfo.has("WorkEmail")) {
-			if (!userID.equals("0")) {
-				boolean alreadyExist = false;
-				for (String workEmail : existingUserProfile.getWorkEmails()) {
-					if (workEmail.equals(userInfo.get("WorkEmail")
-							.getTextValue())) {
-						alreadyExist = true;
-						break;
+			if (userInfo != null && userInfo.has("WorkEmail")) {
+				if (!userID.equals("0")) {
+					boolean alreadyExist = false;
+					for (String workEmail : existingUserProfile.getWorkEmails()) {
+						if (workEmail.equals(userInfo.get("WorkEmail")
+								.getTextValue())) {
+							alreadyExist = true;
+							break;
+						}
 					}
-				}
-				if (!alreadyExist) {
-					existingUserProfile.getWorkEmails().clear();
-					existingUserProfile.getWorkEmails().add(
+					if (!alreadyExist) {
+						existingUserProfile.getWorkEmails().clear();
+						existingUserProfile.getWorkEmails().add(
+								userInfo.get("WorkEmail").getTextValue());
+					}
+				} else {
+					newProfile.getWorkEmails().add(
 							userInfo.get("WorkEmail").getTextValue());
 				}
-			} else {
-				newProfile.getWorkEmails().add(
-						userInfo.get("WorkEmail").getTextValue());
 			}
-		}
 
-		if (userInfo != null && userInfo.has("PersonalEmail")) {
-			if (!userID.equals("0")) {
-				boolean alreadyExist = false;
-				for (String personalEmail : existingUserProfile
-						.getPersonalEmails()) {
-					if (personalEmail.equals(userInfo.get("PersonalEmail")
-							.getTextValue())) {
-						alreadyExist = true;
-						break;
+			if (userInfo != null && userInfo.has("PersonalEmail")) {
+				if (!userID.equals("0")) {
+					boolean alreadyExist = false;
+					for (String personalEmail : existingUserProfile
+							.getPersonalEmails()) {
+						if (personalEmail.equals(userInfo.get("PersonalEmail")
+								.getTextValue())) {
+							alreadyExist = true;
+							break;
+						}
 					}
-				}
-				if (!alreadyExist) {
-					existingUserProfile.getPersonalEmails().clear();
-					existingUserProfile.getPersonalEmails().add(
+					if (!alreadyExist) {
+						existingUserProfile.getPersonalEmails().clear();
+						existingUserProfile.getPersonalEmails().add(
+								userInfo.get("PersonalEmail").getTextValue());
+					}
+				} else {
+					newProfile.getPersonalEmails().add(
 							userInfo.get("PersonalEmail").getTextValue());
 				}
-			} else {
-				newProfile.getPersonalEmails().add(
-						userInfo.get("PersonalEmail").getTextValue());
-			}
-		}
-
-		if (userInfo != null && userInfo.has("SaveOptions")) {
-			if (!userID.equals("0")) {
-				existingUserProfile.getDetails().clear();
 			}
 
-			String[] rows = userInfo.get("SaveOptions").getTextValue()
-					.split("#!#");
-
-			for (String col : rows) {
-				String[] cols = col.split("!#!");
-				PositionDetails newDetails = new PositionDetails();
-				newDetails.setCollege(cols[0]);
-				newDetails.setDepartment(cols[1]);
-				newDetails.setPositionType(cols[2]);
-				newDetails.setPositionTitle(cols[3]);
-				newDetails.setDefault(Boolean.parseBoolean(cols[4]));
+			if (userInfo != null && userInfo.has("SaveOptions")) {
 				if (!userID.equals("0")) {
-					existingUserProfile.getDetails().add(newDetails);
-				} else {
-					newProfile.getDetails().add(newDetails);
+					existingUserProfile.getDetails().clear();
+				}
+
+				String[] rows = userInfo.get("SaveOptions").getTextValue()
+						.split("#!#");
+
+				for (String col : rows) {
+					String[] cols = col.split("!#!");
+					PositionDetails newDetails = new PositionDetails();
+					newDetails.setCollege(cols[0]);
+					newDetails.setDepartment(cols[1]);
+					newDetails.setPositionType(cols[2]);
+					newDetails.setPositionTitle(cols[3]);
+					newDetails.setDefault(Boolean.parseBoolean(cols[4]));
+					if (!userID.equals("0")) {
+						existingUserProfile.getDetails().add(newDetails);
+					} else {
+						newProfile.getDetails().add(newDetails);
+					}
 				}
 			}
 		}
@@ -1090,30 +1121,32 @@ public class UserService {
 		String userDepartment = new String();
 		String userPositionType = new String();
 		String userPositionTitle = new String();
-
-		JsonNode commonObj = root.get("gpmsCommonObj");
-		if (commonObj != null && commonObj.has("UserProfileID")) {
-			userProfileID = commonObj.get("UserProfileID").getTextValue();
-		}
-		if (commonObj != null && commonObj.has("UserName")) {
-			userName = commonObj.get("UserName").getTextValue();
-		}
-		if (commonObj != null && commonObj.has("UserIsAdmin")) {
-			userIsAdmin = Boolean.parseBoolean(commonObj.get("UserIsAdmin")
-					.getTextValue());
-		}
-		if (commonObj != null && commonObj.has("UserCollege")) {
-			userCollege = commonObj.get("UserCollege").getTextValue();
-		}
-		if (commonObj != null && commonObj.has("UserDepartment")) {
-			userDepartment = commonObj.get("UserDepartment").getTextValue();
-		}
-		if (commonObj != null && commonObj.has("UserPositionType")) {
-			userPositionType = commonObj.get("UserPositionType").getTextValue();
-		}
-		if (commonObj != null && commonObj.has("UserPositionTitle")) {
-			userPositionTitle = commonObj.get("UserPositionTitle")
-					.getTextValue();
+		if (root != null && root.has("gpmsCommonObj")) {
+			JsonNode commonObj = root.get("gpmsCommonObj");
+			if (commonObj != null && commonObj.has("UserProfileID")) {
+				userProfileID = commonObj.get("UserProfileID").getTextValue();
+			}
+			if (commonObj != null && commonObj.has("UserName")) {
+				userName = commonObj.get("UserName").getTextValue();
+			}
+			if (commonObj != null && commonObj.has("UserIsAdmin")) {
+				userIsAdmin = Boolean.parseBoolean(commonObj.get("UserIsAdmin")
+						.getTextValue());
+			}
+			if (commonObj != null && commonObj.has("UserCollege")) {
+				userCollege = commonObj.get("UserCollege").getTextValue();
+			}
+			if (commonObj != null && commonObj.has("UserDepartment")) {
+				userDepartment = commonObj.get("UserDepartment").getTextValue();
+			}
+			if (commonObj != null && commonObj.has("UserPositionType")) {
+				userPositionType = commonObj.get("UserPositionType")
+						.getTextValue();
+			}
+			if (commonObj != null && commonObj.has("UserPositionTitle")) {
+				userPositionTitle = commonObj.get("UserPositionTitle")
+						.getTextValue();
+			}
 		}
 
 		ObjectId authorId = new ObjectId(userProfileID);
@@ -1213,81 +1246,88 @@ public class UserService {
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode root = mapper.readTree(message);
 
-		JsonNode userInfo = root.get("userInfo");
+		if (root != null && root.has("userInfo")) {
+			JsonNode userInfo = root.get("userInfo");
 
-		if (userInfo != null && userInfo.has("UserID")) {
-			userID = userInfo.get("UserID").getTextValue();
-		}
-
-		if (userID.equals("0")) {
-
-			newAccount.setAddedOn(new Date());
-
-			if (userInfo != null && userInfo.has("UserName")) {
-				String loginUserName = userInfo.get("UserName").getTextValue();
-				newAccount.setUserName(loginUserName);
+			if (userInfo != null && userInfo.has("UserID")) {
+				userID = userInfo.get("UserID").getTextValue();
 			}
 
-			if (userInfo != null && userInfo.has("Password")) {
-				newAccount.setPassword(userInfo.get("Password").getTextValue());
-			}
+			if (userID.equals("0")) {
 
-			newProfile.setUserAccount(newAccount);
+				newAccount.setAddedOn(new Date());
 
-			if (userInfo != null && userInfo.has("FirstName")) {
-				newProfile.setFirstName(userInfo.get("FirstName")
-						.getTextValue());
-			}
+				if (userInfo != null && userInfo.has("UserName")) {
+					String loginUserName = userInfo.get("UserName")
+							.getTextValue();
+					newAccount.setUserName(loginUserName);
+				}
 
-			if (userInfo != null && userInfo.has("MiddleName")) {
-				newProfile.setMiddleName(userInfo.get("MiddleName")
-						.getTextValue());
-			}
+				if (userInfo != null && userInfo.has("Password")) {
+					newAccount.setPassword(userInfo.get("Password")
+							.getTextValue());
+				}
 
-			if (userInfo != null && userInfo.has("LastName")) {
-				newProfile.setLastName(userInfo.get("LastName").getTextValue());
-			}
+				newProfile.setUserAccount(newAccount);
 
-			if (userInfo != null && userInfo.has("DOB")) {
-				Date dob = formatter.parse(userInfo.get("DOB").getTextValue());
-				newProfile.setDateOfBirth(dob);
-			}
+				if (userInfo != null && userInfo.has("FirstName")) {
+					newProfile.setFirstName(userInfo.get("FirstName")
+							.getTextValue());
+				}
 
-			if (userInfo != null && userInfo.has("Gender")) {
-				newProfile.setGender(userInfo.get("Gender").getTextValue());
-			}
+				if (userInfo != null && userInfo.has("MiddleName")) {
+					newProfile.setMiddleName(userInfo.get("MiddleName")
+							.getTextValue());
+				}
 
-			Address newAddress = new Address();
+				if (userInfo != null && userInfo.has("LastName")) {
+					newProfile.setLastName(userInfo.get("LastName")
+							.getTextValue());
+				}
 
-			if (userInfo != null && userInfo.has("Street")) {
-				newAddress.setStreet(userInfo.get("Street").getTextValue());
-			}
-			if (userInfo != null && userInfo.has("Apt")) {
-				newAddress.setApt(userInfo.get("Apt").getTextValue());
-			}
-			if (userInfo != null && userInfo.has("City")) {
-				newAddress.setCity(userInfo.get("City").getTextValue());
-			}
-			if (userInfo != null && userInfo.has("State")) {
-				newAddress.setState(userInfo.get("State").getTextValue());
-			}
-			if (userInfo != null && userInfo.has("Zip")) {
-				newAddress.setZipcode(userInfo.get("Zip").getTextValue());
-			}
-			if (userInfo != null && userInfo.has("Country")) {
-				newAddress.setCountry(userInfo.get("Country").getTextValue());
-			}
+				if (userInfo != null && userInfo.has("DOB")) {
+					Date dob = formatter.parse(userInfo.get("DOB")
+							.getTextValue());
+					newProfile.setDateOfBirth(dob);
+				}
 
-			newProfile.getAddresses().add(newAddress);
+				if (userInfo != null && userInfo.has("Gender")) {
+					newProfile.setGender(userInfo.get("Gender").getTextValue());
+				}
 
-			if (userInfo != null && userInfo.has("MobileNumber")) {
-				newProfile.getMobileNumbers().add(
-						userInfo.get("MobileNumber").getTextValue());
-			}
+				Address newAddress = new Address();
 
-			if (userInfo != null && userInfo.has("WorkEmail")) {
-				newProfile.getWorkEmails().add(
-						userInfo.get("WorkEmail").getTextValue());
+				if (userInfo != null && userInfo.has("Street")) {
+					newAddress.setStreet(userInfo.get("Street").getTextValue());
+				}
+				if (userInfo != null && userInfo.has("Apt")) {
+					newAddress.setApt(userInfo.get("Apt").getTextValue());
+				}
+				if (userInfo != null && userInfo.has("City")) {
+					newAddress.setCity(userInfo.get("City").getTextValue());
+				}
+				if (userInfo != null && userInfo.has("State")) {
+					newAddress.setState(userInfo.get("State").getTextValue());
+				}
+				if (userInfo != null && userInfo.has("Zip")) {
+					newAddress.setZipcode(userInfo.get("Zip").getTextValue());
+				}
+				if (userInfo != null && userInfo.has("Country")) {
+					newAddress.setCountry(userInfo.get("Country")
+							.getTextValue());
+				}
+
+				newProfile.getAddresses().add(newAddress);
+
+				if (userInfo != null && userInfo.has("MobileNumber")) {
+					newProfile.getMobileNumbers().add(
+							userInfo.get("MobileNumber").getTextValue());
+				}
+
+				if (userInfo != null && userInfo.has("WorkEmail")) {
+					newProfile.getWorkEmails().add(
+							userInfo.get("WorkEmail").getTextValue());
+				}
 			}
 
 			// Save the User Account
@@ -1381,6 +1421,7 @@ public class UserService {
 			String department = new String();
 			String positionType = new String();
 			String positionTitle = new String();
+
 			userName = root.get("userName").getTextValue();
 			isAdminUser = Boolean.parseBoolean(root.get("isAdminUser")
 					.getTextValue());
@@ -1612,29 +1653,32 @@ public class UserService {
 		String userPositionType = new String();
 		String userPositionTitle = new String();
 
-		JsonNode commonObj = root.get("gpmsCommonObj");
-		if (commonObj != null && commonObj.has("UserProfileID")) {
-			userProfileID = commonObj.get("UserProfileID").getTextValue();
-		}
-		if (commonObj != null && commonObj.has("UserName")) {
-			userName = commonObj.get("UserName").getTextValue();
-		}
-		if (commonObj != null && commonObj.has("UserIsAdmin")) {
-			userIsAdmin = Boolean.parseBoolean(commonObj.get("UserIsAdmin")
-					.getTextValue());
-		}
-		if (commonObj != null && commonObj.has("UserCollege")) {
-			userCollege = commonObj.get("UserCollege").getTextValue();
-		}
-		if (commonObj != null && commonObj.has("UserDepartment")) {
-			userDepartment = commonObj.get("UserDepartment").getTextValue();
-		}
-		if (commonObj != null && commonObj.has("UserPositionType")) {
-			userPositionType = commonObj.get("UserPositionType").getTextValue();
-		}
-		if (commonObj != null && commonObj.has("UserPositionTitle")) {
-			userPositionTitle = commonObj.get("UserPositionTitle")
-					.getTextValue();
+		if (root != null && root.has("gpmsCommonObj")) {
+			JsonNode commonObj = root.get("gpmsCommonObj");
+			if (commonObj != null && commonObj.has("UserProfileID")) {
+				userProfileID = commonObj.get("UserProfileID").getTextValue();
+			}
+			if (commonObj != null && commonObj.has("UserName")) {
+				userName = commonObj.get("UserName").getTextValue();
+			}
+			if (commonObj != null && commonObj.has("UserIsAdmin")) {
+				userIsAdmin = Boolean.parseBoolean(commonObj.get("UserIsAdmin")
+						.getTextValue());
+			}
+			if (commonObj != null && commonObj.has("UserCollege")) {
+				userCollege = commonObj.get("UserCollege").getTextValue();
+			}
+			if (commonObj != null && commonObj.has("UserDepartment")) {
+				userDepartment = commonObj.get("UserDepartment").getTextValue();
+			}
+			if (commonObj != null && commonObj.has("UserPositionType")) {
+				userPositionType = commonObj.get("UserPositionType")
+						.getTextValue();
+			}
+			if (commonObj != null && commonObj.has("UserPositionTitle")) {
+				userPositionTitle = commonObj.get("UserPositionTitle")
+						.getTextValue();
+			}
 		}
 
 		return userProfileDAO.getUserProposalCounts(userProfileID, userCollege,

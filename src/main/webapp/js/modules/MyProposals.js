@@ -472,9 +472,43 @@ $(function() {
 					});
 		},
 
-		CheckUserPermission : function(buttonType, proposal_roles, proposal_id,
+		CheckUserPermissionWithPositionType : function(buttonType,
 				proposalSection, config) {
 			var attributeArray = [];
+
+			attributeArray.push({
+				attributeType : "Subject",
+				attributeName : "position-type",
+				attributeValue : GPMS.utils.GetUserPositionType()
+			});
+
+			attributeArray.push({
+				attributeType : "Resource",
+				attributeName : "proposal-section",
+				attributeValue : proposalSection
+			});
+
+			attributeArray.push({
+				attributeType : "Action",
+				attributeName : "proposal-action",
+				attributeValue : buttonType
+			});
+
+			this.config.url = this.config.baseURL
+					+ "CheckPermissionForAProposal";
+			this.config.data = JSON2.stringify({
+				policyInfo : attributeArray,
+				gpmsCommonObj : gpmsCommonObj()
+			});
+
+			this.config.buttonType = buttonType;
+			this.ajaxCall(this.config);
+		},
+
+		CheckUserPermissionWithPositionTitle : function(buttonType,
+				proposal_id, proposalSection, config) {
+			var attributeArray = [];
+
 			attributeArray.push({
 				attributeType : "Subject",
 				attributeName : "position-title",
@@ -482,10 +516,38 @@ $(function() {
 			});
 
 			attributeArray.push({
-				attributeType : "Subject",
-				attributeName : "position-type",
-				attributeValue : GPMS.utils.GetUserPositionType()
+				attributeType : "Resource",
+				attributeName : "proposal-section",
+				attributeValue : proposalSection
 			});
+
+			attributeArray.push({
+				attributeType : "Action",
+				attributeName : "proposal-action",
+				attributeValue : buttonType
+			});
+
+			if (proposal_id != '') {
+				this.config.proposalId = proposal_id;
+			} else {
+				this.config.proposalId = "0";
+			}
+
+			this.config.url = this.config.baseURL
+					+ "CheckPermissionForAProposal";
+			this.config.data = JSON2.stringify({
+				policyInfo : attributeArray,
+				gpmsCommonObj : gpmsCommonObj(),
+				proposalId : proposal_id
+			});
+
+			this.config.buttonType = buttonType;
+			this.ajaxCall(this.config);
+		},
+
+		CheckUserPermissionWithProposalRole : function(buttonType,
+				proposal_roles, proposal_id, proposalSection, config) {
+			var attributeArray = [];
 
 			attributeArray.push({
 				attributeType : "Subject",
@@ -889,7 +951,6 @@ $(function() {
 			$("#btnWithdrawProposal").hide();
 			$("#btnArchiveProposal").hide();
 
-			$("#btnSaveProposal").prop("name", proposalId);
 			$("#btnUpdateProposal").prop("name", proposalId);
 			$("#btnDeleteProposal").prop("name", proposalId);
 			$("#btnSubmitProposal").prop("name", proposalId);
@@ -898,21 +959,12 @@ $(function() {
 			$("#btnWithdrawProposal").prop("name", proposalId);
 			$("#btnArchiveProposal").prop("name", proposalId);
 
-			$("#btnSaveProposal").prop("data-proproles", currentProposalRoles);
 			$("#btnUpdateProposal")
 					.prop("data-proproles", currentProposalRoles);
 			$("#btnDeleteProposal")
 					.prop("data-proproles", currentProposalRoles);
 			$("#btnSubmitProposal")
 					.prop("data-proproles", currentProposalRoles);
-			$("#btnApproveProposal").prop("data-proproles",
-					currentProposalRoles);
-			$("#btnDisapproveProposal").prop("data-proproles",
-					currentProposalRoles);
-			$("#btnWithdrawProposal").prop("data-proproles",
-					currentProposalRoles);
-			$("#btnArchiveProposal").prop("data-proproles",
-					currentProposalRoles);
 
 			var currentPositionTitle = GPMS.utils.GetUserPositionTitle();
 
@@ -997,10 +1049,59 @@ $(function() {
 		EditProposal : function(tblID, argus) {
 			switch (tblID) {
 			case "gdvProposals":
-				myProposal.config.ajaxCallMode = 13;
-				myProposal.config.arguments = argus;
-				myProposal.CheckUserPermission("View", argus[24], argus[0],
-						"Whole Proposal", myProposal.config);
+				myProposal.config.proposalRoles = $.trim(argus[24]);
+				myProposal.config.proposalId = argus[0];
+				// $('#accordion-expand-holder').show();
+				$("#accordion").accordion("option", "active", false);
+
+				$('#lblFormHeading').html(
+						'Edit Proposal Details for: ' + argus[2]);
+
+				$("#lblProposalDateReceived").text(argus[13]);
+
+				myProposal.ClearForm();
+
+				$("#txtNameOfGrantingAgency").val(argus[6]);
+
+				$("#trSignChair").show();
+				$("#trSignBusinessManager").show();
+				$("#trSignDean").show();
+				$("#trSignAdministrator").show();
+				$("#trSignDirector").show();
+
+				// OSP Section
+				$('#ui-id-23').show();
+				if (GPMS.utils.GetUserPositionTitle() == "Research Administrator"
+						|| GPMS.utils.GetUserPositionTitle() == "University Research Director") {
+					$('#ui-id-24').find('input, select, textarea').each(
+							function() {
+								// $(this).addClass("ignore");
+								$(this).prop('disabled', false);
+							});
+				} else {
+					$('#ui-id-24').find('input, select, textarea').each(
+							function() {
+								// $(this).addClass("ignore");
+								$(this).prop('disabled', true);
+							});
+				}
+
+				$('#ddlProposalStatus option').length = 0;
+				$('#ddlProposalStatus')
+						.append(new Option(argus[16], argus[16])).prop(
+								'disabled', true);
+
+				myProposal.BindUserPositionDetailsForAProposal(argus[23]);
+
+				myProposal.BindProposalDetailsByProposalId(argus[0]);
+
+				myProposal.ButtonHideShow(myProposal.config.proposalRoles,
+						argus[16], argus[0]);
+
+				// Certification/ Signatures Info
+				myProposal.BindAllSignatureForAProposal(argus[0]);
+
+				// Delegation Info
 				break;
 			default:
 				break;
@@ -1774,8 +1875,9 @@ $(function() {
 				var proposal_roles = $.trim(argus[5]);
 				myProposal.config.ajaxCallMode = 16;
 				myProposal.config.arguments = argus;
-				myProposal.CheckUserPermission("View", proposal_roles,
-						argus[0], "Audit Log", myProposal.config);
+				myProposal.CheckUserPermissionWithProposalRole("View",
+						proposal_roles, argus[0], "Audit Log",
+						myProposal.config);
 				break;
 			default:
 				break;
@@ -1788,8 +1890,15 @@ $(function() {
 				var proposal_roles = $.trim(argus[1]);
 				if (argus[2].toLowerCase() != "yes") {
 					myProposal.config.ajaxCallMode = 10;
-					myProposal.CheckUserPermission("Delete", proposal_roles,
-							argus[0], "Whole Proposal", myProposal.config);
+					if (proposal_roles != "") {
+						myProposal.CheckUserPermissionWithProposalRole(
+								"Delete", proposal_roles, argus[0],
+								"Whole Proposal", myProposal.config);
+					} else {
+						myProposal.CheckUserPermissionWithPositionTitle(
+								"Delete", argus[0], "Whole Proposal",
+								myProposal.config);
+					}
 					return false;
 				} else {
 					csscody.alert('<h2>' + 'Information Alert' + '</h2><p>'
@@ -1901,7 +2010,6 @@ $(function() {
 			$("#trSignAdministrator tbody").empty();
 			$("#trSignDirector tbody").empty();
 
-			$("#btnSaveProposal").removeAttr("name");
 			$("#btnUpdateProposal").removeAttr("name");
 			$("#btnDeleteProposal").removeAttr("name");
 			$("#btnSubmitProposal").removeAttr("name");
@@ -1910,14 +2018,9 @@ $(function() {
 			$("#btnWithdrawProposal").removeAttr("name");
 			$("#btnArchiveProposal").removeAttr("name");
 
-			$("#btnSaveProposal").removeAttr("data-proproles");
 			$("#btnUpdateProposal").removeAttr("data-proproles");
 			$("#btnDeleteProposal").removeAttr("data-proproles");
 			$("#btnSubmitProposal").removeAttr("data-proproles");
-			$("#btnApproveProposal").removeAttr("data-proproles");
-			$("#btnDisapproveProposal").removeAttr("data-proproles");
-			$("#btnWithdrawProposal").removeAttr("data-proproles");
-			$("#btnArchiveProposal").removeAttr("data-proproles");
 			$('#txtProjectTitle').removeAttr('disabled');
 
 			rowIndex = 0;
@@ -1986,42 +2089,70 @@ $(function() {
 				activeHeader : "ui-icon-circle-arrow-s"
 			};
 
-			var $accordion = $("#accordion").accordion(
-					{
-						heightStyle : "content",
-						icons : icons,
-						active : false,
-						collapsible : true,
-						activate : function(event, ui) {
-							if (myProposal.config.proposalId != "0"
-									&& ui.newHeader.length != 0) {
-								alert($.trim(ui.newHeader.text()));
-								myProposal.config.ajaxCallMode = 15;
-								// myProposal.config.event = event;
-								myProposal.config.content = ui.newPanel;
-								myProposal.CheckUserPermission("Edit",
-										myProposal.config.proposalRoles,
-										myProposal.config.proposalId, $
-												.trim(ui.newHeader.text()),
-										myProposal.config);
-							}
-						},
-						beforeActivate : function(event, ui) {
-							// Size = 0 --> collapsing
-							// Size = 1 --> Expanding
-							if (myProposal.config.proposalId != "0"
-									&& ui.newHeader.length != 0) {
-								alert($.trim(ui.newHeader.text()));
-								myProposal.config.ajaxCallMode = 14;
-								myProposal.config.event = event;
-								myProposal.CheckUserPermission("View",
-										myProposal.config.proposalRoles,
-										myProposal.config.proposalId, $
-												.trim(ui.newHeader.text()),
-										myProposal.config);
-							}
-						}
-					});
+			var $accordion = $("#accordion")
+					.accordion(
+							{
+								heightStyle : "content",
+								icons : icons,
+								active : false,
+								collapsible : true,
+								activate : function(event, ui) {
+									if (myProposal.config.proposalId != "0"
+											&& ui.newHeader.length != 0) {
+										alert($.trim(ui.newHeader.text()));
+										myProposal.config.ajaxCallMode = 15;
+										// myProposal.config.event = event;
+										myProposal.config.content = ui.newPanel;
+										if (myProposal.config.proposalRoles != "") {
+											myProposal
+													.CheckUserPermissionWithProposalRole(
+															"Edit",
+															myProposal.config.proposalRoles,
+															myProposal.config.proposalId,
+															$.trim(ui.newHeader
+																	.text()),
+															myProposal.config);
+										} else {
+											myProposal
+													.CheckUserPermissionWithPositionTitle(
+															"Edit",
+															myProposal.config.proposalId,
+															$.trim(ui.newHeader
+																	.text()),
+															myProposal.config);
+										}
+									}
+								},
+								beforeActivate : function(event, ui) {
+									// Size = 0 --> collapsing
+									// Size = 1 --> Expanding
+									if (myProposal.config.proposalId != "0"
+											&& ui.newHeader.length != 0) {
+										alert($.trim(ui.newHeader.text()));
+										myProposal.config.ajaxCallMode = 14;
+										myProposal.config.event = event;
+										if (myProposal.config.proposalRoles != "") {
+											myProposal
+													.CheckUserPermissionWithProposalRole(
+															"View",
+															myProposal.config.proposalRoles,
+															myProposal.config.proposalId,
+															$.trim(ui.newHeader
+																	.text()),
+															myProposal.config);
+										} else {
+											myProposal
+													.CheckUserPermissionWithPositionTitle(
+															"View",
+															myProposal.config.proposalId,
+															$.trim(ui.newHeader
+																	.text()),
+															myProposal.config);
+										}
+
+									}
+								}
+							});
 			// myProposal.SelectFirstAccordion();
 			// $("#accordion").accordion("option", "active", 0);
 			return false;
@@ -2426,7 +2557,7 @@ $(function() {
 			this.ajaxCall(this.config);
 			return false;
 		},
-		
+
 		UpdateProposalStatus : function(buttonClicked, _proposalId) {
 			alert(buttonClicked);
 			this.config.url = this.config.baseURL + "UpdateProposalStatus";
@@ -2848,10 +2979,10 @@ $(function() {
 								if (GPMS.utils.GetUserProfileID() != item.userProfileId) {
 									readOnly = 'readonly="true"';
 								} else if (GPMS.utils.GetUserProfileID() == item.userProfileId) {
-// if (item.signature != ""
-// && item.signedDate != null) {
-// readOnly = 'readonly="true"';
-// } else
+									// if (item.signature != ""
+									// && item.signedDate != null) {
+									// readOnly = 'readonly="true"';
+									// } else
 									if (item.signedDate == null) {
 										focusMethod = 'onfocus="myProposal.BindCurrentDateTime(this);" required="true"';
 										readOnly = 'required="true"';
@@ -2941,7 +3072,6 @@ $(function() {
 			myProposal.BindProposalGrid(null, null, null, null, null, null,
 					null, null);
 			$('#divProposalGrid').show();
-			$("#btnSaveProposal").removeAttr("name");
 			$("#btnUpdateProposal").removeAttr("name");
 			$("#btnDeleteProposal").removeAttr("name");
 			$("#btnSubmitProposal").removeAttr("name");
@@ -2950,14 +3080,9 @@ $(function() {
 			$("#btnWithdrawProposal").removeAttr("name");
 			$("#btnArchiveProposal").removeAttr("name");
 
-			$("#btnSaveProposal").removeAttr("data-proproles");
 			$("#btnUpdateProposal").removeAttr("data-proproles");
 			$("#btnDeleteProposal").removeAttr("data-proproles");
 			$("#btnSubmitProposal").removeAttr("data-proproles");
-			$("#btnApproveProposal").removeAttr("data-proproles");
-			$("#btnDisapproveProposal").removeAttr("data-proproles");
-			$("#btnWithdrawProposal").removeAttr("data-proproles");
-			$("#btnArchiveProposal").removeAttr("data-proproles");
 			// $("#accordion").accordion("option", "active", 0);
 
 			if (editFlag != "0") {
@@ -3064,64 +3189,6 @@ $(function() {
 			}
 			break;
 
-		case 13:
-			if (myProposal.config.proposalId != '0') {
-				var argus = myProposal.config.arguments;
-				// TODO
-				// $('#accordion-expand-holder').show();
-				$("#accordion").accordion("option", "active", false);
-
-				$('#lblFormHeading').html(
-						'Edit Proposal Details for: ' + argus[2]);
-
-				$("#lblProposalDateReceived").text(argus[13]);
-
-				myProposal.ClearForm();
-
-				$("#txtNameOfGrantingAgency").val(argus[6]);
-
-				$("#trSignChair").show();
-				$("#trSignBusinessManager").show();
-				$("#trSignDean").show();
-				$("#trSignAdministrator").show();
-				$("#trSignDirector").show();
-
-				// OSP Section
-				$('#ui-id-23').show();
-				if (GPMS.utils.GetUserPositionTitle() == "Research Administrator"
-						|| GPMS.utils.GetUserPositionTitle() == "University Research Director") {
-					$('#ui-id-24').find('input, select, textarea').each(
-							function() {
-								// $(this).addClass("ignore");
-								$(this).prop('disabled', false);
-							});
-				} else {
-					$('#ui-id-24').find('input, select, textarea').each(
-							function() {
-								// $(this).addClass("ignore");
-								$(this).prop('disabled', true);
-							});
-				}
-
-				$('#ddlProposalStatus option').length = 0;
-				$('#ddlProposalStatus')
-						.append(new Option(argus[16], argus[16])).prop(
-								'disabled', true);
-
-				myProposal.BindUserPositionDetailsForAProposal(argus[23]);
-
-				myProposal.BindProposalDetailsByProposalId(argus[0]);
-
-				myProposal.ButtonHideShow($.trim(argus[24]), argus[16],
-						argus[0]);
-
-				// Certification/ Signatures Info
-				myProposal.BindAllSignatureForAProposal(argus[0]);
-
-				// Delegation Info
-			}
-			break;
-
 		case 14:
 			if (myProposal.config.proposalId != '0') {
 				alert("You are allowed to View this Section!");
@@ -3164,7 +3231,7 @@ $(function() {
 				$('#divProposalAuditGrid').show();
 			}
 			break;
-			
+
 		case 17:
 			if (myProposal.config.proposalId != '0') {
 				editFlag = myProposal.config.proposalId;
@@ -3279,7 +3346,7 @@ $(function() {
 						+ 'You are not Allowed to VIEW Audit Logs! '
 						+ msg.responseText + '</p>');
 				break;
-				
+
 			case 17:
 				csscody.error('<h2>' + 'Error Message' + '</h2><p>'
 						+ 'You are not allowed to perform this OPERATION! '
@@ -3490,8 +3557,8 @@ $(function() {
 					function() {
 						myProposal.config.ajaxCallMode = 12;
 
-						myProposal.CheckUserPermission("Create", "", "",
-								"Whole Proposal", myProposal.config);
+						myProposal.CheckUserPermissionWithPositionType(
+								"Create", "Whole Proposal", myProposal.config);
 
 					});
 
@@ -3499,7 +3566,6 @@ $(function() {
 				$('#divProposalGrid').show();
 				$('#divProposalForm').hide();
 				$('#divProposalAuditGrid').hide();
-				$("#btnSaveProposal").removeAttr("name");
 				$("#btnUpdateProposal").removeAttr("name");
 				$("#btnDeleteProposal").removeAttr("name");
 				$("#btnSubmitProposal").removeAttr("name");
@@ -3508,14 +3574,9 @@ $(function() {
 				$("#btnWithdrawProposal").removeAttr("name");
 				$("#btnArchiveProposal").removeAttr("name");
 
-				$("#btnSaveProposal").removeAttr("data-proproles");
 				$("#btnUpdateProposal").removeAttr("data-proproles");
 				$("#btnDeleteProposal").removeAttr("data-proproles");
 				$("#btnSubmitProposal").removeAttr("data-proproles");
-				$("#btnApproveProposal").removeAttr("data-proproles");
-				$("#btnDisapproveProposal").removeAttr("data-proproles");
-				$("#btnWithdrawProposal").removeAttr("data-proproles");
-				$("#btnArchiveProposal").removeAttr("data-proproles");
 
 				// $("#accordion").accordion("option", "active", 0);
 			});
@@ -3528,26 +3589,20 @@ $(function() {
 			});
 
 			// Save As Draft
-			$('#btnSaveProposal').click(
-					function(e) {
-						if (validator.form()) {
-							var $buttonType = $.trim($(this).text());
-							$(this).disableWith('Saving As Draft...');
+			$('#btnSaveProposal').click(function(e) {
+				if (validator.form()) {
+					var $buttonType = $.trim($(this).text());
+					$(this).disableWith('Saving As Draft...');
+					editFlag = "0";
+					myProposal.SaveProposal($buttonType, "", "0", true);
 
-							var proposal_id = $(this).prop("name");
-							myProposal.config.ajaxCallMode = 11;
-
-							myProposal.CheckUserPermission($buttonType, "",
-									proposal_id, "Whole Proposal",
-									myProposal.config);
-
-							$(this).enable();
-							e.preventDefault();
-							return false;
-						} else {
-							myProposal.focusTabWithErrors("#accordion");
-						}
-					});
+					$(this).enable();
+					e.preventDefault();
+					return false;
+				} else {
+					myProposal.focusTabWithErrors("#accordion");
+				}
+			});
 
 			// Update
 			$('#btnUpdateProposal')
@@ -3562,12 +3617,15 @@ $(function() {
 											"data-proproles");
 									myProposal.config.ajaxCallMode = 11;
 
-									myProposal
-											.CheckUserPermission($buttonType,
-													proposal_roles,
-													proposal_id,
-													"Whole Proposal",
-													myProposal.config);
+									if (proposal_roles != "") {
+										myProposal
+												.CheckUserPermissionWithProposalRole(
+														$buttonType,
+														proposal_roles,
+														proposal_id,
+														"Whole Proposal",
+														myProposal.config);
+									}
 
 									$(this).enable();
 									e.preventDefault();
@@ -3593,12 +3651,22 @@ $(function() {
 
 									myProposal.config.ajaxCallMode = 10;
 
-									myProposal
-											.CheckUserPermission($buttonType,
-													proposal_roles,
-													proposal_id,
-													"Whole Proposal",
-													myProposal.config);
+									if (proposal_roles != "") {
+										myProposal
+												.CheckUserPermissionWithProposalRole(
+														$buttonType,
+														proposal_roles,
+														proposal_id,
+														"Whole Proposal",
+														myProposal.config);
+									} else {
+										myProposal
+												.CheckUserPermissionWithPositionTitle(
+														$buttonType,
+														proposal_id,
+														"Whole Proposal",
+														myProposal.config);
+									}
 
 									$(this).enable();
 									e.preventDefault();
@@ -3621,12 +3689,22 @@ $(function() {
 											"data-proproles");
 									myProposal.config.ajaxCallMode = 11;
 
-									myProposal
-											.CheckUserPermission($buttonType,
-													proposal_roles,
-													proposal_id,
-													"Whole Proposal",
-													myProposal.config);
+									if (proposal_roles != "") {
+										myProposal
+												.CheckUserPermissionWithProposalRole(
+														$buttonType,
+														proposal_roles,
+														proposal_id,
+														"Whole Proposal",
+														myProposal.config);
+									} else {
+										myProposal
+												.CheckUserPermissionWithPositionTitle(
+														$buttonType,
+														proposal_id,
+														"Whole Proposal",
+														myProposal.config);
+									}
 
 									$(this).enable();
 									e.preventDefault();
@@ -3637,116 +3715,94 @@ $(function() {
 							});
 
 			// Approve
-			$('#btnApproveProposal')
-					.click(
-							function(e) {
-								if (validator.form()) {
-									var $buttonType = $.trim($(this).text());
-									$(this).disableWith('Approving...');
+			$('#btnApproveProposal').click(
+					function(e) {
+						if (validator.form()) {
+							var $buttonType = $.trim($(this).text());
+							$(this).disableWith('Approving...');
 
-									var proposal_id = $(this).prop("name");
-									var proposal_roles = $(this).prop(
-											"data-proproles");
-									myProposal.config.ajaxCallMode = 11;
+							var proposal_id = $(this).prop("name");
 
-									myProposal
-											.CheckUserPermission($buttonType,
-													proposal_roles,
-													proposal_id,
-													"Whole Proposal",
-													myProposal.config);
+							myProposal.config.ajaxCallMode = 11;
 
-									$(this).enable();
-									e.preventDefault();
-									return false;
-								} else {
-									myProposal.focusTabWithErrors("#accordion");
-								}
-							});
+							myProposal.CheckUserPermissionWithPositionTitle(
+									$buttonType, proposal_id, "Whole Proposal",
+									myProposal.config);
+
+							$(this).enable();
+							e.preventDefault();
+							return false;
+						} else {
+							myProposal.focusTabWithErrors("#accordion");
+						}
+					});
 
 			// Disapprove
-			$('#btnDisapproveProposal')
-					.click(
-							function(e) {
-								if (validator.form()) {
-									var $buttonType = $.trim($(this).text());
-									$(this).disableWith('Disapproving...');
+			$('#btnDisapproveProposal').click(
+					function(e) {
+						if (validator.form()) {
+							var $buttonType = $.trim($(this).text());
+							$(this).disableWith('Disapproving...');
 
-									var proposal_id = $(this).prop("name");
-									var proposal_roles = $(this).prop(
-											"data-proproles");
-									myProposal.config.ajaxCallMode = 11;
+							var proposal_id = $(this).prop("name");
 
-									myProposal
-											.CheckUserPermission($buttonType,
-													proposal_roles,
-													proposal_id,
-													"Whole Proposal",
-													myProposal.config);
+							myProposal.config.ajaxCallMode = 11;
 
-									$(this).enable();
-									e.preventDefault();
-									return false;
-								} else {
-									myProposal.focusTabWithErrors("#accordion");
-								}
-							});
+							myProposal.CheckUserPermissionWithPositionTitle(
+									$buttonType, proposal_id, "Whole Proposal",
+									myProposal.config);
+
+							$(this).enable();
+							e.preventDefault();
+							return false;
+						} else {
+							myProposal.focusTabWithErrors("#accordion");
+						}
+					});
 
 			// Withdraw
-			$('#btnWithdrawProposal')
-					.click(
-							function(e) {
-								if (validator.form()) {
-									var $buttonType = $.trim($(this).text());
-									$(this).disableWith('Withdrawing...');
+			$('#btnWithdrawProposal').click(
+					function(e) {
+						if (validator.form()) {
+							var $buttonType = $.trim($(this).text());
+							$(this).disableWith('Withdrawing...');
 
-									var proposal_id = $(this).prop("name");
-									var proposal_roles = $(this).prop(
-											"data-proproles");
-									myProposal.config.ajaxCallMode = 17;
+							var proposal_id = $(this).prop("name");
+							myProposal.config.ajaxCallMode = 17;
 
-									myProposal
-											.CheckUserPermission($buttonType,
-													proposal_roles,
-													proposal_id,
-													"Whole Proposal",
-													myProposal.config);
+							myProposal.CheckUserPermissionWithPositionTitle(
+									$buttonType, proposal_id, "Whole Proposal",
+									myProposal.config);
 
-									$(this).enable();
-									e.preventDefault();
-									return false;
-								} else {
-									myProposal.focusTabWithErrors("#accordion");
-								}
-							});
+							$(this).enable();
+							e.preventDefault();
+							return false;
+						} else {
+							myProposal.focusTabWithErrors("#accordion");
+						}
+					});
 
 			// Archive
-			$('#btnArchiveProposal')
-					.click(
-							function(e) {
-								if (validator.form()) {
-									var $buttonType = $.trim($(this).text());
-									$(this).disableWith('Archiving...');
+			$('#btnArchiveProposal').click(
+					function(e) {
+						if (validator.form()) {
+							var $buttonType = $.trim($(this).text());
+							$(this).disableWith('Archiving...');
 
-									var proposal_id = $(this).prop("name");
-									var proposal_roles = $(this).prop(
-											"data-proproles");
-									myProposal.config.ajaxCallMode = 17;
+							var proposal_id = $(this).prop("name");
+							myProposal.config.ajaxCallMode = 17;
 
-									myProposal
-											.CheckUserPermission($buttonType,
-													proposal_roles,
-													proposal_id,
-													"Whole Proposal",
-													myProposal.config);
+							myProposal.CheckUserPermissionWithPositionTitle(
+									$buttonType, proposal_id, "Whole Proposal",
+									myProposal.config);
 
-									$(this).enable();
-									e.preventDefault();
-									return false;
-								} else {
-									myProposal.focusTabWithErrors("#accordion");
-								}
-							});
+							$(this).enable();
+							e.preventDefault();
+							return false;
+						} else {
+							myProposal.focusTabWithErrors("#accordion");
+						}
+					});
 
 			$('#txtProjectTitle').on("focus", function() {
 				$(this).siblings('.cssClassRight').hide();
@@ -3754,7 +3810,7 @@ $(function() {
 					"blur",
 					function() {
 						var projectTitle = $.trim($(this).val());
-						var proposal_id = $('#btnSaveProposal').prop("name");
+						var proposal_id = $('#btnUpdateProposal').prop("name");
 						if (proposal_id == '') {
 							proposal_id = "0";
 						}

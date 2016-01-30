@@ -87,7 +87,8 @@ public class NotificationService {
 			userName = commonObj.get("UserName").getTextValue();
 		}
 		if (commonObj != null && commonObj.has("UserIsAdmin")) {
-			userIsAdmin = Boolean.parseBoolean(commonObj.get("UserIsAdmin").getTextValue());
+			userIsAdmin = Boolean.parseBoolean(commonObj.get("UserIsAdmin")
+					.getTextValue());
 		}
 		if (commonObj != null && commonObj.has("UserCollege")) {
 			userCollege = commonObj.get("UserCollege").getTextValue();
@@ -125,35 +126,39 @@ public class NotificationService {
 		String userPositionType = new String();
 		String userPositionTitle = new String();
 
-		JsonNode commonObj = root.get("gpmsCommonObj");
-		if (commonObj != null && commonObj.has("UserProfileID")) {
-			userProfileID = commonObj.get("UserProfileID").getTextValue();
-		}
-		if (commonObj != null && commonObj.has("UserName")) {
-			userName = commonObj.get("UserName").getTextValue();
-		}
-		if (commonObj != null && commonObj.has("UserIsAdmin")) {
-			userIsAdmin = Boolean.parseBoolean(commonObj.get("UserIsAdmin").getTextValue());
-		}
-		if (commonObj != null && commonObj.has("UserCollege")) {
-			userCollege = commonObj.get("UserCollege").getTextValue();
-		}
-		if (commonObj != null && commonObj.has("UserDepartment")) {
-			userDepartment = commonObj.get("UserDepartment").getTextValue();
-		}
-		if (commonObj != null && commonObj.has("UserPositionType")) {
-			userPositionType = commonObj.get("UserPositionType").getTextValue();
-		}
-		if (commonObj != null && commonObj.has("UserPositionTitle")) {
-			userPositionTitle = commonObj.get("UserPositionTitle")
-					.getTextValue();
+		if (root != null && root.has("gpmsCommonObj")) {
+			JsonNode commonObj = root.get("gpmsCommonObj");
+			if (commonObj != null && commonObj.has("UserProfileID")) {
+				userProfileID = commonObj.get("UserProfileID").getTextValue();
+			}
+			if (commonObj != null && commonObj.has("UserName")) {
+				userName = commonObj.get("UserName").getTextValue();
+			}
+			if (commonObj != null && commonObj.has("UserIsAdmin")) {
+				userIsAdmin = Boolean.parseBoolean(commonObj.get("UserIsAdmin")
+						.getTextValue());
+			}
+			if (commonObj != null && commonObj.has("UserCollege")) {
+				userCollege = commonObj.get("UserCollege").getTextValue();
+			}
+			if (commonObj != null && commonObj.has("UserDepartment")) {
+				userDepartment = commonObj.get("UserDepartment").getTextValue();
+			}
+			if (commonObj != null && commonObj.has("UserPositionType")) {
+				userPositionType = commonObj.get("UserPositionType")
+						.getTextValue();
+			}
+			if (commonObj != null && commonObj.has("UserPositionTitle")) {
+				userPositionTitle = commonObj.get("UserPositionTitle")
+						.getTextValue();
+			}
 		}
 
 		// limit: 10, offset: 1
 		List<NotificationLog> notifications = notificationDAO
 				.findAllNotificationForAUser(1, 10, userProfileID, userCollege,
 						userDepartment, userPositionType, userPositionTitle,
-						userIsAdmin);	
+						userIsAdmin);
 
 		return notifications;
 
