@@ -1846,14 +1846,21 @@ $(function() {
 		ViewChangeLogs : function(tblID, argus) {
 			switch (tblID) {
 			case "gdvProposals":
+				var proposal_roles = $.trim(argus[5]);
 				myProposal.config.proposalId = argus[0];
-				myProposal.config.proposalRoles = $.trim(argus[5]);
+				myProposal.config.proposalRoles = proposal_roles;
 				myProposal.config.ajaxCallMode = 16;
 				myProposal.config.arguments = argus;
-				myProposal.CheckUserPermissionWithProposalRole("View",
-						myProposal.config.proposalRoles,
-						myProposal.config.proposalId, "Audit Log",
-						myProposal.config);
+				if (proposal_roles != "") {
+					myProposal.CheckUserPermissionWithProposalRole("View",
+							myProposal.config.proposalRoles,
+							myProposal.config.proposalId, "Audit Log",
+							myProposal.config);
+				} else {
+					myProposal.CheckUserPermissionWithPositionTitle("View",
+							myProposal.config.proposalId, "Audit Log",
+							myProposal.config);
+				}
 				break;
 			default:
 				break;

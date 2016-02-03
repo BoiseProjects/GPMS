@@ -79,7 +79,11 @@ public class MongoDBConnector {
 						+ port + "]");
 
 				// MongoClientURI uri = new MongoClientURI(
-				// "mongodb://milstein:milstein@ds060478.mongolab.com:60478/db_gpms");
+				// "mongodb://milstein:milstein@ds055515.mongolab.com:55515/db_gpms");
+				// mongo = new MongoClient(uri);
+
+				// MongoClientURI uri = new MongoClientURI(
+				// "mongodb://mmunakami:milson@mongo.seal.boisestate.edu:27017/db_gpms");
 				// mongo = new MongoClient(uri);
 
 			} catch (MongoException e) {

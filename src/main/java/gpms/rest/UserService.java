@@ -15,6 +15,7 @@ import gpms.model.UserAccount;
 import gpms.model.UserInfo;
 import gpms.model.UserProfile;
 import gpms.model.UserProposalCount;
+import gpms.utils.EmailUtil;
 import gpms.utils.MultimapAdapter;
 import gpms.utils.SerializationHelper;
 
@@ -28,7 +29,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Properties;
 
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.ws.rs.Consumes;
@@ -1233,10 +1241,10 @@ public class UserService {
 
 	@POST
 	@Path("/signup")
-	public String signUpUser(String message) throws JsonProcessingException,
-			IOException, ParseException {
+	public String signUpUser(String message) throws Exception {
 
 		String userID = new String();
+		String userEmail = new String();
 
 		UserAccount newAccount = new UserAccount();
 		UserProfile newProfile = new UserProfile();
@@ -1325,8 +1333,9 @@ public class UserService {
 				}
 
 				if (userInfo != null && userInfo.has("WorkEmail")) {
-					newProfile.getWorkEmails().add(
-							userInfo.get("WorkEmail").getTextValue());
+					userEmail = userInfo.get("WorkEmail").getTextValue();
+
+					newProfile.getWorkEmails().add(userEmail);
 				}
 			}
 
@@ -1370,7 +1379,8 @@ public class UserService {
 								&& !user.isDeleted()
 								&& user.getUserAccount().isActive()
 								&& !user.getUserAccount().isDeleted()) {
-							isFound = true;
+							isFound = true;							
+
 							setMySessionID(req, user.getId().toString());
 							java.net.URI location = new java.net.URI(
 									"../Home.jsp");
