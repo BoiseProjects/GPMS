@@ -1379,7 +1379,7 @@ public class UserService {
 								&& !user.isDeleted()
 								&& user.getUserAccount().isActive()
 								&& !user.getUserAccount().isDeleted()) {
-							isFound = true;							
+							isFound = true;						
 
 							setMySessionID(req, user.getId().toString());
 							java.net.URI location = new java.net.URI(

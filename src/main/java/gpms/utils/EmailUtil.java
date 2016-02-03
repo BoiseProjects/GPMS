@@ -3,13 +3,16 @@ package gpms.utils;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
+import java.util.Properties;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 import javax.activation.FileDataSource;
+import javax.mail.Authenticator;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
+import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
@@ -21,6 +24,12 @@ public class EmailUtil {
 
 	private static String filePath = new String();
 
+	// Assuming you are sending email from localhost
+	final String smtpHostServer = "localhost";
+
+	// Get system properties
+	Properties properties = System.getProperties();
+
 	public static String getFilePath() {
 		return filePath;
 	}
@@ -30,17 +39,96 @@ public class EmailUtil {
 	}
 
 	public EmailUtil() {
+		// Setup mail server
+		properties.setProperty("mail.smtp.host", smtpHostServer);
 	}
 
 	public EmailUtil(String attachmentFile) throws Exception {
+		// Setup mail server
+		properties.setProperty("mail.smtp.host", smtpHostServer);
+
 		this.setFilePath(this.getClass().getResource(attachmentFile).toURI()
 				.getPath());
+	}
+
+	// Java Program to send Email using SMTP without authentication
+	public void sendMailWithoutAuth(String emailID, String subject, String body) {
+		Session session = Session.getInstance(properties, null);
+		sendEmail(session, emailID, subject, body);
+
+	}
+
+	// Java Program to Send Email with TLS Authentication
+	public void sendMailWithGmailTLS(String toEmail, String subject, String body) {
+		final String fromEmail = "noreplygpms@gmail.com"; // requires valid
+		// gmail
+		// id
+		final String password = "gpmstest"; // correct password for gmail id
+
+		// /////////////////////////////////////////////////////////////
+		// IMPORTANT NOTE //////////////////////////////////////////////
+		// /YOU MUST ENABLE LESS SECURE APPS FOR THIS TO WORK///////////
+		// https://www.google.com/settings/u/1/security/lesssecureapps//
+		// /////////////////////////////////////////////////////////////
+
+		System.out.println("TLSEmail Start");
+		properties = new Properties();
+		properties.put("mail.smtp.host", "smtp.gmail.com"); // SMTP Host
+		properties.put("mail.smtp.port", "587"); // TLS Port
+		properties.put("mail.smtp.auth", "true"); // enable authentication
+		properties.put("mail.smtp.starttls.enable", "true"); // enable STARTTLS
+
+		// props1.put("mail.smtp.starttls.required", "true");
+
+		// create Authenticator object to pass in Session.getInstance argument
+		Authenticator auth = new Authenticator() {
+			// override the getPasswordAuthentication method
+			protected PasswordAuthentication getPasswordAuthentication() {
+				return new PasswordAuthentication(fromEmail, password);
+			}
+		};
+		System.out.println("Session created");
+
+		Session session = Session.getInstance(properties, auth);
+
+		sendEmail(session, toEmail, subject, body);
+	}
+
+	public void sendMailWithGmailSSL(String toEmail, String subject, String body) {
+		final String fromEmail = "noreplygpms@gmail.com"; // requires valid
+		// gmail
+		// id
+		final String password = "gpmstest"; // correct password for gmail id
+
+		System.out.println("SSLEmail Start");
+		properties = new Properties();
+		properties.put("mail.smtp.host", "smtp.gmail.com"); // SMTP Host
+		properties.put("mail.smtp.socketFactory.port", "465"); // SSL Port
+		properties.put("mail.smtp.socketFactory.class",
+				"javax.net.ssl.SSLSocketFactory"); // SSL Factory Class
+		// props.put("mail.smtp.socketFactory.fallback", "true");
+
+		properties.put("mail.smtp.auth", "true"); // Enabling SMTP
+													// Authentication
+		properties.put("mail.smtp.port", "465"); // SMTP Port
+
+		Authenticator auth = new Authenticator() {
+			// override the getPasswordAuthentication method
+			protected PasswordAuthentication getPasswordAuthentication() {
+				return new PasswordAuthentication(fromEmail, password);
+			}
+		};
+
+		Session session = Session.getDefaultInstance(properties, auth);
+		System.out.println("Session created");
+
+		sendEmail(session, toEmail, subject, body);
+
 	}
 
 	/**
 	 * Utility method to send simple HTML email
 	 * 
-	 * @param session
 	 * @param toEmail
 	 * @param subject
 	 * @param body
@@ -48,7 +136,6 @@ public class EmailUtil {
 	public void sendEmail(Session session, String toEmail, String subject,
 			String body) {
 		try {
-
 			// Create a default MimeMessage object.
 			MimeMessage msg = new MimeMessage(session);
 
@@ -84,15 +171,18 @@ public class EmailUtil {
 	/**
 	 * Utility method to send email with attachment
 	 * 
-	 * @param session
 	 * @param toEmail
 	 * @param subject
 	 * @param body
 	 * @throws IOException
 	 */
-	public void sendAttachmentEmail(Session session, String toEmail,
-			String subject, String body, String attachName) throws IOException {
+	public void sendAttachmentEmail(String toEmail, String subject,
+			String body, String attachName) throws IOException {
 		try {
+			// Get the default Session object.
+			Session session = Session.getDefaultInstance(properties);
+			System.out.println("Session created");
+
 			MimeMessage msg = new MimeMessage(session);
 			msg.addHeader("Content-type", "text/HTML; charset=UTF-8");
 			msg.addHeader("format", "flowed");
@@ -126,7 +216,7 @@ public class EmailUtil {
 			// Second part is attachment
 			messageBodyPart = new MimeBodyPart();
 
-			messageBodyPart.attachFile(getFilePath());			
+			messageBodyPart.attachFile(getFilePath());
 			messageBodyPart.setFileName(attachName);
 			multipart.addBodyPart(messageBodyPart);
 
@@ -147,14 +237,17 @@ public class EmailUtil {
 	/**
 	 * Utility method to send image in email body
 	 * 
-	 * @param session
 	 * @param toEmail
 	 * @param subject
 	 * @param body
 	 */
-	public void sendImageEmail(Session session, String toEmail, String subject,
-			String body, String attachName) {
+	public void sendImageEmail(String toEmail, String subject, String body,
+			String attachName) {
 		try {
+			// Get the default Session object.
+			Session session = Session.getDefaultInstance(properties);
+			System.out.println("Session created");
+
 			MimeMessage msg = new MimeMessage(session);
 			msg.addHeader("Content-type", "text/HTML; charset=UTF-8");
 			msg.addHeader("format", "flowed");
