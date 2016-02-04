@@ -1,5 +1,5 @@
 ﻿(function($) {
-	$.NotificationViewList = function(p) {
+	$.AdminNotificationViewList = function(p) {
 		p = $.extend({
 			modulePath : GPMS.utils.GetGPMSServicePath(),
 			notificationsNumber : 0
@@ -28,7 +28,7 @@
 			return gpmsCommonInfo;
 		};
 
-		NotificationView = {
+		AdminNotificationView = {
 			config : {
 				isPostBack : false,
 				async : false,
@@ -56,21 +56,21 @@
 				});
 			},
 			ajaxSuccess : function(msg) {
-				switch (NotificationView.config.ajaxCallMode) {
+				switch (AdminNotificationView.config.ajaxCallMode) {
 				case 0:
 					break;
 				// your methods
 				case 1:
-					NotificationView.NotificationGetAllCountSuccess(msg);
+					AdminNotificationView.NotificationGetAllCountSuccess(msg);
 					break;
 
 				case 2:
-					NotificationView.NotificationGetAllSuccess(msg);
+					AdminNotificationView.NotificationGetAllSuccess(msg);
 					break;
 				}
 			},
 			ajaxFailure : function(msg) {
-				switch (NotificationView.config.ajaxCallMode) {
+				switch (AdminNotificationView.config.ajaxCallMode) {
 				case 0:
 					break;
 				case 1:
@@ -85,12 +85,12 @@
 				}
 			},
 			init : function() {
-				NotificationView.NotificationGetAllCount();
+				AdminNotificationView.NotificationGetAllCount();
 				$('#linkNotifyInfo').click(function() {
 					if ($('.cssClassNotify').is(":hidden")) {
 						$(this).addClass("sfNotificationSelect");
 						$('.beeperNub').show();
-						NotificationView.NotificationGetAll();
+						AdminNotificationView.NotificationGetAll();
 						$('.cssClassNotify').slideDown('slow');
 					} else {
 						$(this).removeClass("sfNotificationSelect");
@@ -140,7 +140,7 @@
 					$("#spanNotifyInfo").hide();
 				}
 
-				// NotificationView.UpdateTitle();
+				// AdminNotificationView.UpdateTitle();
 			},
 			NotificationGetAll : function() {
 				this.config.method = "NotificationGetAll";
@@ -190,7 +190,7 @@
 													+ '<a id="'
 													+ value.proposalId
 													+ '" title="Click to View" href = "'
-													+ './MyProposals.jsp?proposalID='
+													+ './ManageProposals.jsp?proposalID='
 													+ proposalID
 													+ '">'
 													+ value.proposalTitle
@@ -207,10 +207,8 @@
 													+ ' </li>';
 											break;
 										case 'User':
-											// userID =
-											// strEncrypt(value.userProfileId);
-											// userName =
-											// strEncrypt(value.username);
+											userID = strEncrypt(value.userProfileId);
+											userName = strEncrypt(value.username);
 
 											contentUser += '<li '
 													+ (intNewUsers > 0 ? 'class="sfLastestNotification"'
@@ -219,7 +217,10 @@
 													+ '<a id="'
 													+ value.username
 													+ '" title="Click to View" href = "'
-													+ './MyAccount.jsp'
+													+ './ManageUsers.jsp?userID='
+													+ userID
+													+ "&userName="
+													+ userName
 													+ '"> '
 													+ value.username
 													+ '</a><span class="activityon">'
@@ -248,7 +249,7 @@
 													+ '<a id="'
 													+ value.proposalId
 													+ '" title="Click to View" href = "'
-													+ './MyProposals.jsp?proposalID='
+													+ './ManageProposals.jsp?proposalID='
 													+ proposalID
 													+ '">'
 													+ value.proposalTitle
@@ -276,7 +277,7 @@
 													+ '<a id="'
 													+ value.proposalId
 													+ '" title="Click to View" href = "'
-													+ './MyProposals.jsp?proposalID='
+													+ './ManageProposals.jsp?proposalID='
 													+ proposalID
 													+ '">'
 													+ value.proposalTitle
@@ -303,7 +304,7 @@
 					contentUser += '</ul></div>';
 
 					p.notificationsNumber -= parseInt(msg.length);
-					// NotificationView.UpdateTitle();
+					// AdminNotificationView.UpdateTitle();
 
 				} else {
 					contentUser += '<h5 class="cssClassNotifyHead">'
@@ -316,11 +317,11 @@
 				$('.cssClassNotify').html(allContent);
 			}
 		};
-		NotificationView.init();
+		AdminNotificationView.init();
 	};
 	// initialization of class
-	$.fn.NotificationViewDetails = function(p) {
-		$.NotificationViewList(p);
+	$.fn.AdminNotificationViewDetails = function(p) {
+		$.AdminNotificationViewList(p);
 	};
 	// outside plugin inject
 	$.fn.outside = function(ename, cb) {

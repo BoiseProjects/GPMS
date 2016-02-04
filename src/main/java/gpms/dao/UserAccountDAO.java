@@ -5,9 +5,11 @@ import gpms.model.AuditLog;
 import gpms.model.GPMSCommonInfo;
 import gpms.model.UserAccount;
 import gpms.model.UserProfile;
+import gpms.utils.EmailUtil;
 
 import java.net.UnknownHostException;
 import java.util.Date;
+
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;

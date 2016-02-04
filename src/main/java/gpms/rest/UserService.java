@@ -29,14 +29,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Properties;
 
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.ws.rs.Consumes;
@@ -372,6 +365,17 @@ public class UserService {
 				.getUserAccount().getId());
 		userAccountDAO.deleteUserAccountByUserID(userAccount, authorProfile);
 
+		String messageBody = new String();
+		EmailUtil emailUtil = new EmailUtil();
+		if (userProfile.isDeleted()) {
+			messageBody = "Hello "
+					+ userProfile.getFullName()
+					+ ",<br/> Your account has been deleted to reactivate you can contact administrator: <a href='http://seal.boisestate.edu:8080/GPMS/ContactUs.jsp' title='GPMS Contact Us' target='_blank'>Contact Us</a><br/><br/>Thank you, <br/> GPMS Team";
+			emailUtil.sendMailWithoutAuth(userProfile.getWorkEmails().get(0),
+					"You have been deleted " + userProfile.getFullName(),
+					messageBody);
+		}
+
 		NotificationLog notification = new NotificationLog();
 		notification.setType("User");
 		notification.setAction("Account is deleted.");
@@ -547,14 +551,32 @@ public class UserService {
 		userAccountDAO.activateUserAccountByUserID(userAccount, authorProfile,
 				isActive);
 
+		String messageBody = new String();
+		EmailUtil emailUtil = new EmailUtil();
+
 		NotificationLog notification = new NotificationLog();
 
 		String notificationMessage = new String();
 		if (isActive) {
 			notificationMessage = "Account is activated.";
+
+			messageBody = "Hello "
+					+ userProfile.getFullName()
+					+ ",<br/><br/> Your account has been activated and you can login now using your credential: <a href='http://seal.boisestate.edu:8080/GPMS/Login.jsp' title='GPMS Login' target='_blank'>Login Here</a><br/><br/>Thank you, <br/> GPMS Team";
+			emailUtil.sendMailWithoutAuth(
+					userProfile.getWorkEmails().get(0),
+					"Successfully Activated your account "
+							+ userProfile.getFullName(), messageBody);
 		} else {
 			notificationMessage = "Account is deactivated.";
 			notification.setCritical(true);
+
+			messageBody = "Hello "
+					+ userProfile.getFullName()
+					+ ",<br/> Your account has been deactivated to reactivate you can contact administrator: <a href='http://seal.boisestate.edu:8080/GPMS/ContactUs.jsp' title='GPMS Contact Us' target='_blank'>Contact Us</a><br/><br/>Thank you, <br/> GPMS Team";
+			emailUtil.sendMailWithoutAuth(userProfile.getWorkEmails().get(0),
+					"You have been Deactivated " + userProfile.getFullName(),
+					messageBody);
 		}
 
 		// To Admin
@@ -1345,6 +1367,16 @@ public class UserService {
 			// Save the User Profile
 			userProfileDAO.save(newProfile);
 
+			// Send email to user
+			String messageBody = "Hello "
+					+ newProfile.getFullName()
+					+ ",<br/><br/> You have successfully created an account. As soon as administrator will activate and assign you on positions you will get an email and then only you can login. If you want to activate as soon as possible please contact administrator: <a href='http://seal.boisestate.edu:8080/GPMS/ContactUs.jsp' title='GPMS Contact Us' target='_blank'>Contact Us</a><br/><br/>Thank you, <br/> GPMS Team";
+			EmailUtil emailUtil = new EmailUtil();
+			emailUtil.sendMailWithoutAuth(
+					newProfile.getWorkEmails().get(0),
+					"Successfully created an account "
+							+ newProfile.getFullName(), messageBody);
+
 			NotificationLog notification = new NotificationLog();
 			notification.setType("User");
 			notification.setAction("Signed up.");
@@ -1379,7 +1411,7 @@ public class UserService {
 								&& !user.isDeleted()
 								&& user.getUserAccount().isActive()
 								&& !user.getUserAccount().isDeleted()) {
-							isFound = true;						
+							isFound = true;
 
 							setMySessionID(req, user.getId().toString());
 							java.net.URI location = new java.net.URI(

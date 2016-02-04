@@ -100,12 +100,12 @@
 		topStickyBar.init();
 
 		//for Notification
-		$(this).NotificationViewDetails();
+		$(this).AdminNotificationViewDetails();
 	});
 	//]]>
 </script>
 
-<script type="text/javascript" src="js/modules/Notifications.js"></script>
+<script type="text/javascript" src="js/modules/AdminNotifications.js"></script>
 
 <div class="sfTopbar clearfix" style="position: relative;">
 	<ul class="left">

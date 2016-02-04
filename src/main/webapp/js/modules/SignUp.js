@@ -342,7 +342,7 @@ $(function() {
 								+ $("#txtWorkEmail").val()
 								+ "</b>"
 								+ "</br>"
-								+ 'Now, go check your email.<br/>The email contains a confirmation link for account activation.'
+								+ 'Now, go check your email.<br/>The email contains information for activation.'
 								+ "</p>");
 
 				signUp.ClearForm();

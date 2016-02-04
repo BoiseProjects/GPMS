@@ -116,10 +116,7 @@ public class NotificationDAO extends BasicDAO<NotificationLog, String> {
 
 		if (isUserAdmin) {
 			// int rowTotal = notificationQuery.asList().size();
-			notificationQuery.and(
-					notificationQuery.criteria("is viewed by admin").equal(
-							false), notificationQuery.criteria("for admin")
-							.equal(true));
+			notificationQuery.criteria("for admin").equal(true);
 
 			removeNotifyQuery.and(
 					removeNotifyQuery.criteria("is viewed by admin").equal(
@@ -135,8 +132,6 @@ public class NotificationDAO extends BasicDAO<NotificationLog, String> {
 		} else {
 			notificationQuery.and(
 					notificationQuery.criteria("for admin").equal(false),
-					notificationQuery.criteria("is viewed by user")
-							.equal(false),
 					notificationQuery.criteria("user profile id").equal(
 							userProfileId),
 					notificationQuery.criteria("college").equal(userCollege),
