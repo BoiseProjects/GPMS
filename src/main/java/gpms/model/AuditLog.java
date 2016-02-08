@@ -11,7 +11,7 @@ import org.mongodb.morphia.utils.IndexDirection;
 @Embedded
 // @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class,
 // property = "id")
-public class AuditLog implements Comparable<AuditLog>{
+public class AuditLog {
 	// @Expose
 	@Reference(value = "author info", lazy = true)
 	private UserProfile userProfile = new UserProfile();
@@ -56,14 +56,6 @@ public class AuditLog implements Comparable<AuditLog>{
 
 	public void setActivityDate(Date activityDate) {
 		this.activityDate = activityDate;
-	}
-
-	@Override
-	public int compareTo(AuditLog o) {
-		if (getActivityDate() == null || o.getActivityDate() == null)
-			return 0;
-		// return getActivityDate().compareTo(o.getActivityDate()); // Ascending
-		return o.getActivityDate().compareTo(getActivityDate()); // Descending
 	}
 
 	@Override

@@ -356,14 +356,18 @@ public class UserService {
 
 		ObjectId id = new ObjectId(profileId);
 		UserProfile userProfile = userProfileDAO.findUserDetailsByProfileID(id);
-		// userProfileDAO.deleteUserProfileByUserID(userProfile, authorProfile);
 
-		userProfile.setDeleted(true);
-		userProfileDAO.save(userProfile);
+		userProfileDAO.deleteUserProfileByUserID(userProfile, authorProfile);
+		// userProfile.setDeleted(true);
+		// userProfileDAO.save(userProfile);
 
 		UserAccount userAccount = userAccountDAO.findByID(userProfile
 				.getUserAccount().getId());
-		userAccountDAO.deleteUserAccountByUserID(userAccount, authorProfile);
+
+		// userAccountDAO.deleteUserAccountByUserID(userAccount, authorProfile);
+		userAccount.setDeleted(true);
+		userAccount.setActive(false);
+		userAccountDAO.save(userAccount);
 
 		String messageBody = new String();
 		EmailUtil emailUtil = new EmailUtil();
@@ -458,15 +462,20 @@ public class UserService {
 			ObjectId id = new ObjectId(profile);
 			UserProfile userProfile = userProfileDAO
 					.findUserDetailsByProfileID(id);
-			// userProfileDAO.deleteUserProfileByUserID(userProfile,
-			// authorProfile);
-			userProfile.setDeleted(true);
-			userProfileDAO.save(userProfile);
+
+			userProfileDAO
+					.deleteUserProfileByUserID(userProfile, authorProfile);
+			// userProfile.setDeleted(true);
+			// userProfileDAO.save(userProfile);
 
 			UserAccount userAccount = userAccountDAO.findByID(userProfile
 					.getUserAccount().getId());
-			userAccountDAO
-					.deleteUserAccountByUserID(userAccount, authorProfile);
+
+			// userAccountDAO.deleteUserAccountByUserID(userAccount,
+			// authorProfile);
+			userAccount.setDeleted(true);
+			userAccount.setActive(false);
+			userAccountDAO.save(userAccount);
 
 			NotificationLog notification = new NotificationLog();
 			notification.setType("User");
@@ -544,12 +553,18 @@ public class UserService {
 		ObjectId id = new ObjectId(profileId);
 		UserProfile userProfile = userProfileDAO.findUserDetailsByProfileID(id);
 
-		userProfile.setDeleted(!isActive);
-		userProfileDAO.save(userProfile);
+		userProfileDAO.activateUserProfileByUserID(userProfile, authorProfile,
+				isActive);
+		// userProfile.setDeleted(!isActive);
+		// userProfileDAO.save(userProfile);
 
 		UserAccount userAccount = userProfile.getUserAccount();
-		userAccountDAO.activateUserAccountByUserID(userAccount, authorProfile,
-				isActive);
+		// userAccountDAO.activateUserAccountByUserID(userAccount,
+		// authorProfile,
+		// isActive);
+		userAccount.setDeleted(!isActive);
+		userAccount.setActive(isActive);
+		userAccountDAO.save(userAccount);
 
 		String messageBody = new String();
 		EmailUtil emailUtil = new EmailUtil();
@@ -557,9 +572,11 @@ public class UserService {
 		NotificationLog notification = new NotificationLog();
 
 		String notificationMessage = new String();
+		boolean isCritical = false;
 		if (isActive) {
 			notificationMessage = "Account is activated.";
 
+			// Send Email
 			messageBody = "Hello "
 					+ userProfile.getFullName()
 					+ ",<br/><br/> Your account has been activated and you can login now using your credential: <a href='http://seal.boisestate.edu:8080/GPMS/Login.jsp' title='GPMS Login' target='_blank'>Login Here</a><br/><br/>Thank you, <br/> GPMS Team";
@@ -569,7 +586,7 @@ public class UserService {
 							+ userProfile.getFullName(), messageBody);
 		} else {
 			notificationMessage = "Account is deactivated.";
-			notification.setCritical(true);
+			isCritical = true;
 
 			messageBody = "Hello "
 					+ userProfile.getFullName()
@@ -588,38 +605,18 @@ public class UserService {
 		notificationDAO.save(notification);
 
 		// To All User Roles based on positions
-		if (isActive) {
-			notificationMessage = "Account is activated.";
-
-			for (PositionDetails positions : userProfile.getDetails()) {
-				notification = new NotificationLog();
-				notification.setType("User");
-				notification.setAction(notificationMessage);
-				notification.setUserProfileId(userProfile.getId().toString());
-				notification.setUsername(userAccount.getUserName());
-				notification.setCollege(positions.getCollege());
-				notification.setDepartment(positions.getDepartment());
-				notification.setPositionType(positions.getPositionType());
-				notification.setPositionTitle(positions.getPositionTitle());
-				notificationDAO.save(notification);
-			}
-
-		} else {
-			notificationMessage = "Account is deactivated.";
-
-			for (PositionDetails positions : userProfile.getDetails()) {
-				notification = new NotificationLog();
-				notification.setType("User");
-				notification.setAction(notificationMessage);
-				notification.setUserProfileId(userProfile.getId().toString());
-				notification.setUsername(userAccount.getUserName());
-				notification.setCollege(positions.getCollege());
-				notification.setDepartment(positions.getDepartment());
-				notification.setPositionType(positions.getPositionType());
-				notification.setPositionTitle(positions.getPositionTitle());
-				notification.setCritical(true);
-				notificationDAO.save(notification);
-			}
+		for (PositionDetails positions : userProfile.getDetails()) {
+			notification = new NotificationLog();
+			notification.setType("User");
+			notification.setAction(notificationMessage);
+			notification.setUserProfileId(userProfile.getId().toString());
+			notification.setUsername(userAccount.getUserName());
+			notification.setCollege(positions.getCollege());
+			notification.setDepartment(positions.getDepartment());
+			notification.setPositionType(positions.getPositionType());
+			notification.setPositionTitle(positions.getPositionTitle());
+			notification.setCritical(isCritical);
+			notificationDAO.save(notification);
 		}
 
 		// return Response.ok("Success", MediaType.APPLICATION_JSON).build();

@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 //		"noOfPIedProposal", "noOfCoPIedProposal", "noOfSenioredProposal",
 //		"addedOn", "lastAudited", "lastAuditedBy", "lastAuditAction",
 //		"deleted", "activated", "adminUser" })
-public class UserInfo implements Comparable<UserInfo> {
+public class UserInfo {
 	private int rowTotal;
 	private String id = new String();
 	private String userName = new String();
@@ -154,10 +154,4 @@ public class UserInfo implements Comparable<UserInfo> {
 		this.adminUser = adminUser;
 	}
 
-	@Override
-	public int compareTo(UserInfo o) {
-		if (getLastAudited() == null || o.getLastAudited() == null)
-			return 0;
-		return o.getLastAudited().compareTo(getLastAudited()); // Descending
-	}
 }

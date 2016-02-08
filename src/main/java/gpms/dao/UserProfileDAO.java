@@ -151,7 +151,7 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 		int rowTotal = profileQuery.asList().size();
 		// profileQuery.and(profileQuery.criteria("_id").notEqual(id)
 		List<UserProfile> userProfiles = profileQuery.offset(offset - 1)
-				.limit(limit).asList();
+				.limit(limit).order("-audit log.activity on").asList();
 
 		for (UserProfile userProfile : userProfiles) {
 			UserInfo user = new UserInfo();
@@ -166,49 +166,36 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 
 			user.setAddedOn(userProfile.getUserAccount().getAddedOn());
 
-			ArrayList<AuditLogInfo> allAuditLogs = new ArrayList<AuditLogInfo>();
+			// ArrayList<AuditLogInfo> allAuditLogs = new
+			// ArrayList<AuditLogInfo>();
 
-			if (userProfile.getAuditLog() != null
-					&& userProfile.getAuditLog().size() != 0) {
-				if (userProfile.getUserAccount().getAuditLog() != null
-						&& userProfile.getUserAccount().getAuditLog().size() != 0) {
-					for (AuditLog userAccountAudit : userProfile
-							.getUserAccount().getAuditLog()) {
-						AuditLogInfo userAuditLog = new AuditLogInfo();
-
-						userAuditLog.setActivityDate(userAccountAudit
-								.getActivityDate());
-						userAuditLog.setUserFullName(userAccountAudit
-								.getUserProfile().getFullName());
-						userAuditLog.setAction(userAccountAudit.getAction());
-
-						allAuditLogs.add(userAuditLog);
-					}
-
-				}
-
-				for (AuditLog userProfileAudit : userProfile.getAuditLog()) {
-					AuditLogInfo userAuditLog = new AuditLogInfo();
-					userAuditLog.setActivityDate(userProfileAudit
-							.getActivityDate());
-					userAuditLog.setUserFullName(userProfileAudit
-							.getUserProfile().getFullName());
-					userAuditLog.setAction(userProfileAudit.getAction());
-
-					allAuditLogs.add(userAuditLog);
-				}
-
-			}
-
-			Collections.sort(allAuditLogs);
+			// if (userProfile.getUserAccount().getAuditLog() != null
+			// && userProfile.getUserAccount().getAuditLog().size() != 0) {
+			// for (AuditLog userAccountAudit : userProfile.getUserAccount()
+			// .getAuditLog()) {
+			// AuditLogInfo userAuditLog = new AuditLogInfo();
+			//
+			// userAuditLog.setActivityDate(userAccountAudit
+			// .getActivityDate());
+			// userAuditLog.setUserFullName(userAccountAudit
+			// .getUserProfile().getFullName());
+			// userAuditLog.setAction(userAccountAudit.getAction());
+			//
+			// allAuditLogs.add(userAuditLog);
+			// }
+			//
+			// }
 
 			Date lastAudited = null;
 			String lastAuditedBy = new String();
 			String lastAuditAction = new String();
-			if (allAuditLogs.size() > 0) {
-				AuditLogInfo auditLog = allAuditLogs.get(0);
+
+			int auditLogCount = userProfile.getAuditLog().size();
+			if (userProfile.getAuditLog() != null && auditLogCount != 0) {
+				AuditLog auditLog = userProfile.getAuditLog().get(
+						auditLogCount - 1);
 				lastAudited = auditLog.getActivityDate();
-				lastAuditedBy = auditLog.getUserFullName();
+				lastAuditedBy = auditLog.getUserProfile().getFullName();
 				lastAuditAction = auditLog.getAction();
 			}
 
@@ -221,7 +208,7 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 			user.setAdminUser(userProfile.getUserAccount().isAdmin());
 			users.add(user);
 		}
-		Collections.sort(users);
+		// Collections.sort(users);
 		return users;
 	}
 
@@ -323,92 +310,92 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 			}
 		}
 
-		if (q.getUserAccount().getAuditLog() != null
-				&& q.getUserAccount().getAuditLog().size() != 0) {
-			for (AuditLog userAccountAudit : q.getUserAccount().getAuditLog()) {
-				AuditLogInfo userAuditLog = new AuditLogInfo();
-				boolean isActionMatch = false;
-				boolean isAuditedByMatch = false;
-				boolean isActivityDateFromMatch = false;
-				boolean isActivityDateToMatch = false;
-
-				if (action != null) {
-					if (userAccountAudit.getAction().toLowerCase()
-							.contains(action.toLowerCase())) {
-						isActionMatch = true;
-					}
-				} else {
-					isActionMatch = true;
-				}
-
-				if (auditedBy != null) {
-					if (userAccountAudit.getUserProfile().getUserAccount()
-							.getUserName().toLowerCase()
-							.contains(auditedBy.toLowerCase())) {
-						isAuditedByMatch = true;
-					} else if (userAccountAudit.getUserProfile().getFirstName()
-							.toLowerCase().contains(auditedBy.toLowerCase())) {
-						isAuditedByMatch = true;
-					} else if (userAccountAudit.getUserProfile()
-							.getMiddleName().toLowerCase()
-							.contains(auditedBy.toLowerCase())) {
-						isAuditedByMatch = true;
-					} else if (userAccountAudit.getUserProfile().getLastName()
-							.toLowerCase().contains(auditedBy.toLowerCase())) {
-						isAuditedByMatch = true;
-					}
-				} else {
-					isAuditedByMatch = true;
-				}
-
-				DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-				if (activityOnFrom != null) {
-					Date activityDateFrom = formatter.parse(activityOnFrom);
-					if (userAccountAudit.getActivityDate().compareTo(
-							activityDateFrom) > 0) {
-						isActivityDateFromMatch = true;
-					} else if (userAccountAudit.getActivityDate().compareTo(
-							activityDateFrom) < 0) {
-						isActivityDateFromMatch = false;
-					} else if (userAccountAudit.getActivityDate().compareTo(
-							activityDateFrom) == 0) {
-						isActivityDateFromMatch = true;
-					}
-				} else {
-					isActivityDateFromMatch = true;
-				}
-
-				if (activityOnTo != null) {
-					Date activityDateTo = formatter.parse(activityOnTo);
-					if (userAccountAudit.getActivityDate().compareTo(
-							activityDateTo) > 0) {
-						isActivityDateToMatch = false;
-					} else if (userAccountAudit.getActivityDate().compareTo(
-							activityDateTo) < 0) {
-						isActivityDateToMatch = true;
-					} else if (userAccountAudit.getActivityDate().compareTo(
-							activityDateTo) == 0) {
-						isActivityDateToMatch = true;
-					}
-				} else {
-					isActivityDateToMatch = true;
-				}
-
-				if (isActionMatch && isAuditedByMatch
-						&& isActivityDateFromMatch && isActivityDateToMatch) {
-					userAuditLog.setUserName(userAccountAudit.getUserProfile()
-							.getUserAccount().getUserName());
-					userAuditLog.setUserFullName(userAccountAudit
-							.getUserProfile().getFullName());
-					userAuditLog.setAction(userAccountAudit.getAction());
-					userAuditLog.setActivityDate(userAccountAudit
-							.getActivityDate());
-
-					allAuditLogs.add(userAuditLog);
-				}
-			}
-
-		}
+		// if (q.getUserAccount().getAuditLog() != null
+		// && q.getUserAccount().getAuditLog().size() != 0) {
+		// for (AuditLog userAccountAudit : q.getUserAccount().getAuditLog()) {
+		// AuditLogInfo userAuditLog = new AuditLogInfo();
+		// boolean isActionMatch = false;
+		// boolean isAuditedByMatch = false;
+		// boolean isActivityDateFromMatch = false;
+		// boolean isActivityDateToMatch = false;
+		//
+		// if (action != null) {
+		// if (userAccountAudit.getAction().toLowerCase()
+		// .contains(action.toLowerCase())) {
+		// isActionMatch = true;
+		// }
+		// } else {
+		// isActionMatch = true;
+		// }
+		//
+		// if (auditedBy != null) {
+		// if (userAccountAudit.getUserProfile().getUserAccount()
+		// .getUserName().toLowerCase()
+		// .contains(auditedBy.toLowerCase())) {
+		// isAuditedByMatch = true;
+		// } else if (userAccountAudit.getUserProfile().getFirstName()
+		// .toLowerCase().contains(auditedBy.toLowerCase())) {
+		// isAuditedByMatch = true;
+		// } else if (userAccountAudit.getUserProfile()
+		// .getMiddleName().toLowerCase()
+		// .contains(auditedBy.toLowerCase())) {
+		// isAuditedByMatch = true;
+		// } else if (userAccountAudit.getUserProfile().getLastName()
+		// .toLowerCase().contains(auditedBy.toLowerCase())) {
+		// isAuditedByMatch = true;
+		// }
+		// } else {
+		// isAuditedByMatch = true;
+		// }
+		//
+		// DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		// if (activityOnFrom != null) {
+		// Date activityDateFrom = formatter.parse(activityOnFrom);
+		// if (userAccountAudit.getActivityDate().compareTo(
+		// activityDateFrom) > 0) {
+		// isActivityDateFromMatch = true;
+		// } else if (userAccountAudit.getActivityDate().compareTo(
+		// activityDateFrom) < 0) {
+		// isActivityDateFromMatch = false;
+		// } else if (userAccountAudit.getActivityDate().compareTo(
+		// activityDateFrom) == 0) {
+		// isActivityDateFromMatch = true;
+		// }
+		// } else {
+		// isActivityDateFromMatch = true;
+		// }
+		//
+		// if (activityOnTo != null) {
+		// Date activityDateTo = formatter.parse(activityOnTo);
+		// if (userAccountAudit.getActivityDate().compareTo(
+		// activityDateTo) > 0) {
+		// isActivityDateToMatch = false;
+		// } else if (userAccountAudit.getActivityDate().compareTo(
+		// activityDateTo) < 0) {
+		// isActivityDateToMatch = true;
+		// } else if (userAccountAudit.getActivityDate().compareTo(
+		// activityDateTo) == 0) {
+		// isActivityDateToMatch = true;
+		// }
+		// } else {
+		// isActivityDateToMatch = true;
+		// }
+		//
+		// if (isActionMatch && isAuditedByMatch
+		// && isActivityDateFromMatch && isActivityDateToMatch) {
+		// userAuditLog.setUserName(userAccountAudit.getUserProfile()
+		// .getUserAccount().getUserName());
+		// userAuditLog.setUserFullName(userAccountAudit
+		// .getUserProfile().getFullName());
+		// userAuditLog.setAction(userAccountAudit.getAction());
+		// userAuditLog.setActivityDate(userAccountAudit
+		// .getActivityDate());
+		//
+		// allAuditLogs.add(userAuditLog);
+		// }
+		// }
+		//
+		// }
 
 		Collections.sort(allAuditLogs);
 
@@ -524,8 +511,9 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 	public void deleteUserProfileByUserID(UserProfile userProfile,
 			UserProfile authorProfile) {
 		Datastore ds = getDatastore();
-		audit = new AuditLog(authorProfile, "Deleted user profile of "
-				+ userProfile.getFullName(), new Date());
+		audit = new AuditLog(authorProfile,
+				"Deleted user profile and account of "
+						+ userProfile.getFullName(), new Date());
 		userProfile.getAuditLog().add(audit);
 
 		userProfile.setDeleted(true);
@@ -546,13 +534,19 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 	public void activateUserProfileByUserID(UserProfile userProfile,
 			UserProfile authorProfile, Boolean isActive) {
 		Datastore ds = getDatastore();
-		audit = new AuditLog(authorProfile, "Activated user profile of "
-				+ userProfile.getFullName(), new Date());
+		if (isActive) {
+			audit = new AuditLog(authorProfile,
+					"Activated user account and profile of "
+							+ userProfile.getFullName(), new Date());
+		} else {
+			audit = new AuditLog(authorProfile,
+					"Deactivated user account and profile of "
+							+ userProfile.getFullName(), new Date());
+		}
 		userProfile.getAuditLog().add(audit);
 
 		userProfile.setDeleted(!isActive);
 		ds.save(userProfile);
-
 	}
 
 	public UserProfile findNextUserWithSameUserName(ObjectId id, String userName) {

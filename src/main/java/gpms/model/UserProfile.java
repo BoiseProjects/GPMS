@@ -362,5 +362,5 @@ public class UserProfile extends BaseEntity implements Serializable {
 			return this.firstName + " " + this.lastName;
 
 	}
-	
+
 }

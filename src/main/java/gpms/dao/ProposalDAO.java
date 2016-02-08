@@ -384,7 +384,7 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 
 		int rowTotal = proposalQuery.asList().size();
 		List<Proposal> allProposals = proposalQuery.offset(offset - 1)
-				.limit(limit).asList();
+				.limit(limit).order("-audit log.activity on").asList();
 
 		for (Proposal userProposal : allProposals) {
 			ProposalInfo proposal = new ProposalInfo();
@@ -461,30 +461,16 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 				proposal.setDeleted(true);
 			}
 
-			ArrayList<AuditLogInfo> allAuditLogs = new ArrayList<AuditLogInfo>();
-
-			if (userProposal.getAuditLog() != null
-					&& userProposal.getAuditLog().size() != 0) {
-				for (AuditLog userProfileAudit : userProposal.getAuditLog()) {
-					AuditLogInfo userAuditLog = new AuditLogInfo();
-					userAuditLog.setActivityDate(userProfileAudit
-							.getActivityDate());
-					userAuditLog.setUserFullName(userProfileAudit
-							.getUserProfile().getFullName());
-					userAuditLog.setAction(userProfileAudit.getAction());
-
-					allAuditLogs.add(userAuditLog);
-				}
-			}
-			Collections.sort(allAuditLogs);
-
 			Date lastAudited = null;
 			String lastAuditedBy = new String();
 			String lastAuditAction = new String();
-			if (allAuditLogs.size() > 0) {
-				AuditLogInfo auditLog = allAuditLogs.get(0);
+
+			int auditLogCount = userProposal.getAuditLog().size();
+			if (userProposal.getAuditLog() != null && auditLogCount != 0) {
+				AuditLog auditLog = userProposal.getAuditLog().get(
+						auditLogCount - 1);
 				lastAudited = auditLog.getActivityDate();
-				lastAuditedBy = auditLog.getUserFullName();
+				lastAuditedBy = auditLog.getUserProfile().getFullName();
 				lastAuditAction = auditLog.getAction();
 			}
 
@@ -521,7 +507,7 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 
 			proposals.add(proposal);
 		}
-		Collections.sort(proposals);
+		// Collections.sort(proposals);
 		return proposals;
 	}
 
@@ -749,7 +735,7 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 
 		int rowTotal = proposalQuery.asList().size();
 		List<Proposal> allProposals = proposalQuery.offset(offset - 1)
-				.limit(limit).asList();
+				.limit(limit).order("-audit log.activity on").asList();
 
 		for (Proposal userProposal : allProposals) {
 			ProposalInfo proposal = new ProposalInfo();
@@ -826,30 +812,16 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 				proposal.setDeleted(true);
 			}
 
-			ArrayList<AuditLogInfo> allAuditLogs = new ArrayList<AuditLogInfo>();
-
-			if (userProposal.getAuditLog() != null
-					&& userProposal.getAuditLog().size() != 0) {
-				for (AuditLog userProfileAudit : userProposal.getAuditLog()) {
-					AuditLogInfo userAuditLog = new AuditLogInfo();
-					userAuditLog.setActivityDate(userProfileAudit
-							.getActivityDate());
-					userAuditLog.setUserFullName(userProfileAudit
-							.getUserProfile().getFullName());
-					userAuditLog.setAction(userProfileAudit.getAction());
-
-					allAuditLogs.add(userAuditLog);
-				}
-			}
-			Collections.sort(allAuditLogs);
-
 			Date lastAudited = null;
 			String lastAuditedBy = new String();
 			String lastAuditAction = new String();
-			if (allAuditLogs.size() > 0) {
-				AuditLogInfo auditLog = allAuditLogs.get(0);
+
+			int auditLogCount = userProposal.getAuditLog().size();
+			if (userProposal.getAuditLog() != null && auditLogCount != 0) {
+				AuditLog auditLog = userProposal.getAuditLog().get(
+						auditLogCount - 1);
 				lastAudited = auditLog.getActivityDate();
-				lastAuditedBy = auditLog.getUserFullName();
+				lastAuditedBy = auditLog.getUserProfile().getFullName();
 				lastAuditAction = auditLog.getAction();
 			}
 
@@ -899,7 +871,7 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 
 			proposals.add(proposal);
 		}
-		Collections.sort(proposals);
+		// Collections.sort(proposals);
 		return proposals;
 	}
 
