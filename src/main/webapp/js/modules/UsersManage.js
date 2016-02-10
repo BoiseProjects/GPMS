@@ -1034,7 +1034,8 @@ $(function() {
 
 			usersManage.config.url = this.config.baseURL + "ExportExcel";
 			// usersManage.config.type = "GET";
-			usersManage.config.data = "{}";
+			// usersManage.config.data = "{}";
+			// usersManage.config.contentType = "multipart/form-data";
 			usersManage.config.ajaxCallMode = 10;
 			usersManage.ajaxCall(usersManage.config);
 			return false;
@@ -1715,7 +1716,7 @@ $(function() {
 
 			case 10:
 				alert('Fuck You!');
-				window.location.href = 'path/to/xlsfile/';
+				window.location.href = msg;
 				break;
 			}
 		},

@@ -19,8 +19,10 @@ import gpms.utils.EmailUtil;
 import gpms.utils.MultimapAdapter;
 import gpms.utils.SerializationHelper;
 
+import java.io.DataInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.UnknownHostException;
 import java.text.DateFormat;
@@ -31,7 +33,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
@@ -42,7 +47,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.ResponseBuilder;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.bson.types.ObjectId;
@@ -183,28 +187,59 @@ public class UserService {
 		return users;
 	}
 
-	@GET
+	@POST
 	@Path("/downloadFile")
 	// @Produces(MediaType.APPLICATION_OCTET_STREAM)
 	@Produces("application/vnd.ms-excel")
-	public Response downloadFile() {
-		String policyFolderName = "/uploads";
-		String policyLocation = new String();
+	public Response downloadFile(@Context HttpServletResponse response)
+			throws IOException {
+		String filePath = new String();
+		String file = "/XACMLDatasheet.xls";
+
+		InputStream inputStream = this.getClass().getResourceAsStream(file);
+
 		try {
-			policyLocation = this.getClass().getResource(policyFolderName)
-					.toURI().getPath();
+			filePath = this.getClass().getResource(file).toURI().getPath();
 		} catch (URISyntaxException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-		File file = new File(policyLocation + "Employee.xlsx");
+		File object = new File(filePath);
+		//
+		// // if (file == null || !file.exists())
+		// // throw new WebApplicationException(Status.NOT_FOUND);
+		// ResponseBuilder response = Response.ok((Object) file);
+		// response.header("Content-Disposition",
+		// "attachment; filename=test.xls");
+		// return response.build();
 
-		// if (file == null || !file.exists())
-		// throw new WebApplicationException(Status.NOT_FOUND);
-		ResponseBuilder response = Response.ok((Object) file);
-		response.header("Content-Disposition", "attachment; filename=test.xls");
-		return response.build();
+		// Get your File or Object from wherever you want...
+		// you can use the key parameter to indentify your file
+		// otherwise it can be removed
+		// let's say your file is called "object"
+		response.setContentLength((int) ((ServletRequest) object)
+				.getContentLength());
+		response.setHeader("Content-Disposition", "attachment; filename="
+				+ object.getName());
+		ServletOutputStream outStream = response.getOutputStream();
+		byte[] bbuf = new byte[(int) ((ServletRequest) object)
+				.getContentLength() + 1024];
+		DataInputStream in = new DataInputStream(inputStream);
+		int length = 0;
+		while ((in != null) && ((length = in.read(bbuf)) != -1)) {
+			outStream.write(bbuf, 0, length);
+		}
+		in.close();
+		outStream.flush();
+
+		return Response.ok().build();
+
+		// return Response
+		// .ok(object, MediaType.APPLICATION_OCTET_STREAM)
+		// .header("Content-Disposition",
+		// "attachment; filename=\"" + object.getName() + "\"") // optional
+		// .build();
 	}
 
 	@POST
