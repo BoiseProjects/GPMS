@@ -253,7 +253,7 @@ public class UserService {
 		Date date = new Date();
 		System.out.println(); // 2016/02/10 16:16:39
 
-		String filename = String.format(
+		String fileName = String.format(
 				"%s.%s",
 				RandomStringUtils.randomAlphanumeric(8) + "_"
 						+ dateFormat.format(date), "xlsx");
@@ -263,19 +263,18 @@ public class UserService {
 		// + File.separator + filename);
 		// System.out.println("Absolute Path at server=" +
 		// file.getAbsolutePath());
+		String policyLocation = this.getClass().getResource("/uploads").toURI()
+				.getPath();
 
-		try {
-			xcelite.write(new File(request.getServletContext().getAttribute(
-					"FILES_DIR")
-					+ File.separator + filename));
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		xcelite.write(new File(policyLocation + fileName));
+
+		// xcelite.write(new File(request.getServletContext().getAttribute(
+		// "FILES_DIR")
+		// + File.separator + fileName));
 
 		// return filename;
 		return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(
-				filename);
+				fileName);
 	}
 
 	@POST

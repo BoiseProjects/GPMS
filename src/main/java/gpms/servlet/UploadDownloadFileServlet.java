@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.net.URISyntaxException;
 import java.util.Iterator;
 import java.util.List;
 
@@ -41,9 +42,21 @@ public class UploadDownloadFileServlet extends HttpServlet {
 		if (fileName == null || fileName.equals("")) {
 			throw new ServletException("File Name can't be null or empty");
 		}
-		File file = new File(request.getServletContext().getAttribute(
-				"FILES_DIR")
-				+ File.separator + fileName);
+
+		String policyLocation = new String();
+		try {
+			policyLocation = this.getClass().getResource("/uploads").toURI()
+					.getPath();
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		// File file = new File(request.getServletContext().getAttribute(
+		// "FILES_DIR")
+		// + File.separator + fileName);
+
+		File file = new File(policyLocation + fileName);
 		if (!file.exists()) {
 			throw new ServletException("File doesn't exists on server.");
 		}
