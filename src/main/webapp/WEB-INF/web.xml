@@ -26,6 +26,15 @@
 		<location>/Error.jsp</location>
 	</error-page>
 
+	<context-param>
+		<param-name>tempfile.dir</param-name>
+		<param-value>tmpfiles</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>proposalupload.dir</param-name>
+		<param-value>proposalfiles</param-value>
+	</context-param>
 
 	<context-param>
 		<param-name>gpms.workers</param-name>

@@ -23,6 +23,7 @@ import java.io.DataInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
 import java.net.URISyntaxException;
 import java.net.UnknownHostException;
 import java.text.DateFormat;
@@ -31,6 +32,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.ServletOutputStream;
@@ -48,6 +50,10 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.bson.types.ObjectId;
 import org.codehaus.jackson.JsonGenerationException;
@@ -188,64 +194,9 @@ public class UserService {
 	}
 
 	@POST
-	@Path("/downloadFile")
-	// @Produces(MediaType.APPLICATION_OCTET_STREAM)
-	@Produces("application/vnd.ms-excel")
-	public Response downloadFile(@Context HttpServletResponse response)
-			throws IOException {
-		String filePath = new String();
-		String file = "/XACMLDatasheet.xls";
-
-		InputStream inputStream = this.getClass().getResourceAsStream(file);
-
-		try {
-			filePath = this.getClass().getResource(file).toURI().getPath();
-		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		File object = new File(filePath);
-		//
-		// // if (file == null || !file.exists())
-		// // throw new WebApplicationException(Status.NOT_FOUND);
-		// ResponseBuilder response = Response.ok((Object) file);
-		// response.header("Content-Disposition",
-		// "attachment; filename=test.xls");
-		// return response.build();
-
-		// Get your File or Object from wherever you want...
-		// you can use the key parameter to indentify your file
-		// otherwise it can be removed
-		// let's say your file is called "object"
-		response.setContentLength((int) ((ServletRequest) object)
-				.getContentLength());
-		response.setHeader("Content-Disposition", "attachment; filename="
-				+ object.getName());
-		ServletOutputStream outStream = response.getOutputStream();
-		byte[] bbuf = new byte[(int) ((ServletRequest) object)
-				.getContentLength() + 1024];
-		DataInputStream in = new DataInputStream(inputStream);
-		int length = 0;
-		while ((in != null) && ((length = in.read(bbuf)) != -1)) {
-			outStream.write(bbuf, 0, length);
-		}
-		in.close();
-		outStream.flush();
-
-		return Response.ok().build();
-
-		// return Response
-		// .ok(object, MediaType.APPLICATION_OCTET_STREAM)
-		// .header("Content-Disposition",
-		// "attachment; filename=\"" + object.getName() + "\"") // optional
-		// .build();
-	}
-
-	@POST
-	@Path("/ExportExcel")
-	// TODO : Export features
-	public String exportUsersJSON(String message)
+	@Path("/UsersExportToExcel")
+	public String exportUsersJSON(String message,
+			@Context HttpServletRequest request)
 			throws JsonProcessingException, IOException, URISyntaxException {
 
 		List<UserInfo> users = new ArrayList<UserInfo>();
@@ -298,15 +249,29 @@ public class UserService {
 
 		writer.write(users);
 
-		String policyFolderName = "/uploads";
-		String policyLocation = new String();
-		policyLocation = this.getClass().getResource(policyFolderName).toURI()
-				.getPath();
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy_MM_dd");
+		Date date = new Date();
+		System.out.println(); // 2016/02/10 16:16:39
 
-		String filename = String.format("%s.%s",
-				RandomStringUtils.randomAlphanumeric(8), "xlsx");
+		String filename = String.format(
+				"%s.%s",
+				RandomStringUtils.randomAlphanumeric(8) + "_"
+						+ dateFormat.format(date), "xlsx");
 
-		xcelite.write(new File(policyLocation + filename));
+		// File file = new File(request.getServletContext().getAttribute(
+		// "FILES_DIR")
+		// + File.separator + filename);
+		// System.out.println("Absolute Path at server=" +
+		// file.getAbsolutePath());
+
+		try {
+			xcelite.write(new File(request.getServletContext().getAttribute(
+					"FILES_DIR")
+					+ File.separator + filename));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		// return filename;
 		return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(

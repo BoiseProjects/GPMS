@@ -1032,10 +1032,7 @@ $(function() {
 				userBindObj : userBindObj
 			});
 
-			usersManage.config.url = this.config.baseURL + "ExportExcel";
-			// usersManage.config.type = "GET";
-			// usersManage.config.data = "{}";
-			// usersManage.config.contentType = "multipart/form-data";
+			usersManage.config.url = this.config.baseURL + "UsersExportToExcel";
 			usersManage.config.ajaxCallMode = 10;
 			usersManage.ajaxCall(usersManage.config);
 			return false;
@@ -1715,13 +1712,13 @@ $(function() {
 				break;
 
 			case 10:
-				alert('Fuck You!');
-				window.location.href = msg;
+				window.location.href = 'UploadDownloadFileServlet?fileName='
+						+ msg;
 				break;
 			}
 		},
 
-		ajaxFailure : function(msg) {
+		ajaxFailure : function(xhr, status, error) {
 			switch (usersManage.config.ajaxCallMode) {
 			case 0:
 				break;
@@ -1770,7 +1767,10 @@ $(function() {
 				break;
 
 			case 10:
-				alert('Fuck Me!' + msg);
+				csscody.error("<h2>" + 'Error Message' + "</h2><p>"
+						+ 'Cannot create and download Excel report!'
+						+ xhr.responseText + "::" + status + "::" + error
+						+ "</p>");
 				break;
 			}
 		},

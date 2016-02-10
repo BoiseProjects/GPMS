@@ -173,12 +173,12 @@
 																<span class="icon-showall">Export to Excel</span>
 															</button>
 														</p>
-														<p>
+														<!-- <p>
 															<button title="Export to CSV" type="button"
 																id="btnExportToCSV" class="sfBtn">
 																<span class="icon-showall">Export to CSV</span>
 															</button>
-														</p>
+														</p> -->
 
 														<div class="cssClassClear"></div>
 													</div>
