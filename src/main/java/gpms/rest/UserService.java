@@ -44,6 +44,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.bson.types.ObjectId;
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.JsonNode;
@@ -184,7 +185,8 @@ public class UserService {
 
 	@GET
 	@Path("/downloadFile")
-	@Produces(MediaType.APPLICATION_OCTET_STREAM)
+	// @Produces(MediaType.APPLICATION_OCTET_STREAM)
+	@Produces("application/vnd.ms-excel")
 	public Response downloadFile() {
 		String policyFolderName = "/uploads";
 		String policyLocation = new String();
@@ -207,11 +209,9 @@ public class UserService {
 
 	@POST
 	@Path("/ExportExcel")
-	// @Produces({ MediaType.APPLICATION_OCTET_STREAM })
-	@Produces("application/vnd.ms-excel")
 	// TODO : Export features
-	public Response exportUsersJSON(String message)
-			throws JsonProcessingException, IOException {
+	public String exportUsersJSON(String message)
+			throws JsonProcessingException, IOException, URISyntaxException {
 
 		List<UserInfo> users = new ArrayList<UserInfo>();
 		String userName = new String();
@@ -260,20 +260,20 @@ public class UserService {
 		Xcelite xcelite = new Xcelite();
 		XceliteSheet sheet = xcelite.createSheet("users");
 		SheetWriter<UserInfo> writer = sheet.getBeanWriter(UserInfo.class);
-		// ...fill up users
+
 		writer.write(users);
 
 		String policyFolderName = "/uploads";
 		String policyLocation = new String();
-		try {
-			policyLocation = this.getClass().getResource(policyFolderName)
-					.toURI().getPath();
-		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		policyLocation = this.getClass().getResource(policyFolderName).toURI()
+				.getPath();
 
-		xcelite.write(new File(policyLocation + "Employee.xlsx"));
+		String filename = String.format("%s.%s",
+				RandomStringUtils.randomAlphanumeric(8), "xlsx");
+
+		xcelite.write(new File(policyLocation + filename));
+
+		return filename;
 
 		// // list is a List<MyData>
 		// final ObjectMapper mapper = new ObjectMapper();
@@ -305,13 +305,13 @@ public class UserService {
 		// FileUtils.writeStringToFile(file, csv);
 
 		// return myCustomArray.toString();
-		String FILE_PATH = policyLocation + "Employee.xlsx";
-
-		File file = new File(FILE_PATH);
-		ResponseBuilder response = Response.ok((Object) file);
-		response.header("Content-Disposition",
-				"attachment; filename=new-excel-file.xls");
-		return response.build();
+		// String FILE_PATH = policyLocation + "Employee.xlsx";
+		//
+		// File file = new File(FILE_PATH);
+		// ResponseBuilder response = Response.ok((Object) file);
+		// response.header("Content-Disposition",
+		// "attachment; filename=new-excel-file.xls");
+		// return response.build();
 
 		// Response reponse = new Response();
 

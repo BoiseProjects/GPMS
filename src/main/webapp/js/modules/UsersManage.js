@@ -1028,14 +1028,14 @@ $(function() {
 				IsActive : isActive
 			};
 
-			// this.config.data = JSON2.stringify({
-			// userBindObj : userBindObj
-			// });
+			this.config.data = JSON2.stringify({
+				userBindObj : userBindObj
+			});
 
-			this.config.data = {};
+			// this.config.data = {};
 
-			this.config.url = this.config.baseURL + "downloadFile";
-			this.config.type = 'GET';
+			this.config.url = this.config.baseURL + "ExportExcel";
+			// this.config.type = 'GET';
 			this.config.ajaxCallMode = 10;
 			this.ajaxCall(this.config);
 			return false;
@@ -1716,11 +1716,12 @@ $(function() {
 
 			case 10:
 				alert('Fuck You!');
+				window.location.href = 'path/to/xlsfile/';
 				break;
 			}
 		},
 
-		ajaxFailure : function(xhr, ajaxOptions, thrownError) {
+		ajaxFailure : function(msg) {
 			switch (usersManage.config.ajaxCallMode) {
 			case 0:
 				break;
@@ -1769,9 +1770,7 @@ $(function() {
 				break;
 
 			case 10:
-				// alert('Fuck Me!' + msg);
-				alert(xhr.status);
-				alert(thrownError);
+				alert('Fuck Me!' + msg);
 				break;
 			}
 		},
