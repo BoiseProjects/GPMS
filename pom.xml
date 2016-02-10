@@ -156,6 +156,13 @@
 			<version>1.19</version>
 		</dependency>
 
+		<!-- Form Multipart -->
+		<dependency>
+			<groupId>com.sun.jersey.contribs</groupId>
+			<artifactId>jersey-multipart</artifactId>
+			<version>1.19</version>
+		</dependency>
+
 		<dependency>
 			<groupId>asm</groupId>
 			<artifactId>asm</artifactId>
@@ -269,12 +276,6 @@
 			<groupId>com.ebay</groupId>
 			<artifactId>xcelite</artifactId>
 			<version>1.0.4</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.sun.jersey.contribs</groupId>
-			<artifactId>jersey-multipart</artifactId>
-			<version>1.19</version>
 		</dependency>
 
 	</dependencies>
