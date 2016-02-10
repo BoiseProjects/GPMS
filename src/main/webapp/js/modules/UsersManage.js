@@ -1032,12 +1032,11 @@ $(function() {
 				userBindObj : userBindObj
 			});
 
-			// this.config.data = {};
-
-			this.config.url = this.config.baseURL + "ExportExcel";
-			// this.config.type = 'GET';
-			this.config.ajaxCallMode = 10;
-			this.ajaxCall(this.config);
+			usersManage.config.url = this.config.baseURL + "ExportExcel";
+			// usersManage.config.type = "GET";
+			usersManage.config.data = "{}";
+			usersManage.config.ajaxCallMode = 10;
+			usersManage.ajaxCall(usersManage.config);
 			return false;
 		},
 

@@ -273,58 +273,9 @@ public class UserService {
 
 		xcelite.write(new File(policyLocation + filename));
 
-		return filename;
-
-		// // list is a List<MyData>
-		// final ObjectMapper mapper = new ObjectMapper();
-		// final Map<String, MyData> map = new HashMap<>();
-		// for (final MyData data : list)
-		// map.put(data.fname, data);
-		// final JsonNode json = mapper.valueToTree(map);
-
-		// Gson gson = new GsonBuilder().create();
-		// JsonArray myCustomArray = gson.toJsonTree(users).getAsJsonArray();
-
-		// String csv = CDL.toString(myCustomArray);
-
-		// JSONObject json = new JSONObject(users);
-
-		// JSONArray ar = new JSONArray(users);
-		// String jsonx = ar.toString();
-
-		// System.out.println(CDL.toString(new JSONArray(json.get("userName")
-		// .toString())));
-
-		// String xml = XML.toString(myCustomArray);
-
-		// JSONObject output = new JSONObject(users);
-		// JSONArray docs = response.getJSONArray("infile");
-
-		// File file = new File("yourpath/fromJSON.csv");
-
-		// FileUtils.writeStringToFile(file, csv);
-
-		// return myCustomArray.toString();
-		// String FILE_PATH = policyLocation + "Employee.xlsx";
-		//
-		// File file = new File(FILE_PATH);
-		// ResponseBuilder response = Response.ok((Object) file);
-		// response.header("Content-Disposition",
-		// "attachment; filename=new-excel-file.xls");
-		// return response.build();
-
-		// Response reponse = new Response();
-
-		// servletResponse.setHeader("Content-Length",
-		// String.valueOf(file.length()));
-		// servletResponse.setHeader("Content-Disposition",
-		// "attachment; filename=\"" + file.getName() + "\"");
-
-		// return Response
-		// .ok(writer)
-		// .header("Content-Disposition",
-		// "attachment; filename=" + fileName).build();
-
+		// return filename;
+		return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(
+				filename);
 	}
 
 	@POST
