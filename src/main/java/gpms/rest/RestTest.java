@@ -25,7 +25,7 @@ public class RestTest {
 			@FormDataParam("file") InputStream fileInputStream,
 			@FormDataParam("file") FormDataContentDisposition fileMetaData)
 			throws Exception {
-		String UPLOAD_PATH = "c:/upload/";
+		String UPLOAD_PATH = "c:/temp/";
 		try {
 			int read = 0;
 			byte[] bytes = new byte[1024];

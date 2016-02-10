@@ -26,12 +26,12 @@ $(function() {
 	var gpmsCommonObj = function() {
 		var gpmsCommonInfo = {
 			UserProfileID : GPMS.utils.GetUserProfileID(),
-		UserName : GPMS.utils.GetUserName(),			
-		UserIsAdmin : GPMS.utils.IsAdmin(),
-		UserPositionType : GPMS.utils.GetUserPositionType(),
-		UserPositionTitle : GPMS.utils.GetUserPositionTitle(),
-		UserDepartment : GPMS.utils.GetUserDepartment(),
-		UserCollege : GPMS.utils.GetUserCollege()
+			UserName : GPMS.utils.GetUserName(),
+			UserIsAdmin : GPMS.utils.IsAdmin(),
+			UserPositionType : GPMS.utils.GetUserPositionType(),
+			UserPositionTitle : GPMS.utils.GetUserPositionTitle(),
+			UserDepartment : GPMS.utils.GetUserDepartment(),
+			UserCollege : GPMS.utils.GetUserCollege()
 		};
 		return gpmsCommonInfo;
 	};
@@ -1017,6 +1017,30 @@ $(function() {
 			return false;
 		},
 
+		ExportToExcel : function(userName, college, department, positionType,
+				positionTitle, isActive) {
+			var userBindObj = {
+				UserName : userName,
+				College : college,
+				Department : department,
+				PositionType : positionType,
+				PositionTitle : positionTitle,
+				IsActive : isActive
+			};
+
+			// this.config.data = JSON2.stringify({
+			// userBindObj : userBindObj
+			// });
+
+			this.config.data = {};
+
+			this.config.url = this.config.baseURL + "downloadFile";
+			this.config.type = 'GET';
+			this.config.ajaxCallMode = 10;
+			this.ajaxCall(this.config);
+			return false;
+		},
+
 		onInit : function() {
 			usersManage.SetFirstTabActive();
 			$('#btnReset').hide();
@@ -1161,7 +1185,7 @@ $(function() {
 				UserID : userId,
 				NewUserName : newUserName
 			};
-			
+
 			this.config.url = this.config.baseURL + "CheckUniqueUserName";
 			this.config.data = JSON2.stringify({
 				userUniqueObj : userUniqueObj,
@@ -1208,7 +1232,7 @@ $(function() {
 				UserID : userId,
 				NewEmail : newEmail
 			};
-			
+
 			this.config.url = this.config.baseURL + "CheckUniqueEmail";
 			this.config.data = JSON2.stringify({
 				userUniqueObj : userUniqueObj,
@@ -1689,10 +1713,14 @@ $(function() {
 				usersManage.ClearForm();
 				$('#divUserForm').hide();
 				break;
+
+			case 10:
+				alert('Fuck You!');
+				break;
 			}
 		},
 
-		ajaxFailure : function(msg) {
+		ajaxFailure : function(xhr, ajaxOptions, thrownError) {
 			switch (usersManage.config.ajaxCallMode) {
 			case 0:
 				break;
@@ -1738,6 +1766,12 @@ $(function() {
 					csscody.error("<h2>" + 'Error Message' + "</h2><p>"
 							+ 'Failed to save user!' + "</p>");
 				}
+				break;
+
+			case 10:
+				// alert('Fuck Me!' + msg);
+				alert(xhr.status);
+				alert(thrownError);
 				break;
 			}
 		},
@@ -1890,6 +1924,52 @@ $(function() {
 						$('#divUserGrid').hide();
 						$('#divUserForm').show();
 					});
+
+			$("#btnExportToExcel")
+					.on(
+							"click",
+							function() {
+								var userName = $.trim($("#txtSearchUserName")
+										.val());
+								var college = $.trim($('#ddlSearchCollege')
+										.val()) == "" ? null
+										: $.trim($('#ddlSearchCollege').val()) == "0" ? null
+												: $.trim($('#ddlSearchCollege')
+														.val());
+								var department = $.trim($(
+										'#ddlSearchDepartment').val()) == "" ? null
+										: $.trim($('#ddlSearchDepartment')
+												.val()) == "0" ? null : $
+												.trim($('#ddlSearchDepartment')
+														.val());
+								var positionType = $.trim($(
+										'#ddlSearchPositionType').val()) == "" ? null
+										: $.trim($('#ddlSearchPositionType')
+												.val()) == "0" ? null
+												: $
+														.trim($(
+																'#ddlSearchPositionType')
+																.val());
+								var positionTitle = $.trim($(
+										'#ddlSearchPositionTitle').val()) == "" ? null
+										: $.trim($('#ddlSearchPositionTitle')
+												.val()) == "0" ? null
+												: $
+														.trim($(
+																'#ddlSearchPositionTitle')
+																.val());
+								var isActive = $.trim($("#ddlSearchIsActive")
+										.val()) == "" ? null
+										: $.trim($("#ddlSearchIsActive").val()) == "True" ? true
+												: false;
+								if (userName.length < 1) {
+									userName = null;
+								}
+
+								usersManage.ExportToExcel(userName, college,
+										department, positionType,
+										positionTitle, isActive);
+							});
 
 			$('#btnBack').bind("click", function() {
 				$('#divUserForm').hide();

@@ -2,8 +2,8 @@ package gpms.model;
 
 import java.util.Date;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.ebay.xcelite.annotations.Column;
+import com.ebay.xcelite.annotations.Row;
 
 //@XmlRootElement
 //@XmlAccessorType(XmlAccessType.FIELD)
@@ -16,24 +16,49 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 //		"noOfPIedProposal", "noOfCoPIedProposal", "noOfSenioredProposal",
 //		"addedOn", "lastAudited", "lastAuditedBy", "lastAuditAction",
 //		"deleted", "activated", "adminUser" })
+@Row(colsOrder = { "User Name", "Full Name", "Number Of PIed Proposal",
+		"Number Of CoPIed Proposal", "Number Of Seniored Proposal", "Added On",
+		"Last Audited", "Last Audited By", "Last Audit Action", "Is Deleted?",
+		"Is Activated?" })
 public class UserInfo {
+
 	private int rowTotal;
+
 	private String id = new String();
+
+	@Column(name = "User Name")
 	private String userName = new String();
+
+	@Column(name = "Full Name")
 	private String fullName = new String();
 
+	@Column(name = "Number Of PIed Proposal")
 	private int noOfPIedProposal = 0;
+
+	@Column(name = "Number Of CoPIed Proposal")
 	private int noOfCoPIedProposal = 0;
+
+	@Column(name = "Number Of Seniored Proposal")
 	private int noOfSenioredProposal = 0;
+
+	@Column(name = "Added On", dataFormat = "ddd mmm dd hh:mm:ss yyy")
 	private Date addedOn = new Date();
+
+	@Column(name = "Last Audited", dataFormat = "ddd mmm dd hh:mm:ss yyy")
 	private Date lastAudited = new Date();
+
+	@Column(name = "Last Audited By")
 	private String lastAuditedBy = new String();
+
+	@Column(name = "Last Audit Action")
 	private String lastAuditAction = new String();
 
 	// @JsonProperty("deleted")
+	@Column(name = "Is Deleted?")
 	private boolean deleted;
 
 	// @JsonProperty("activated")
+	@Column(name = "Is Activated?")
 	private boolean activated;
 
 	// @JsonProperty("adminUser")

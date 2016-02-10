@@ -19,6 +19,7 @@ import gpms.utils.EmailUtil;
 import gpms.utils.MultimapAdapter;
 import gpms.utils.SerializationHelper;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.UnknownHostException;
@@ -41,6 +42,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.ResponseBuilder;
 
 import org.bson.types.ObjectId;
 import org.codehaus.jackson.JsonGenerationException;
@@ -50,6 +52,9 @@ import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.mongodb.morphia.Morphia;
 
+import com.ebay.xcelite.Xcelite;
+import com.ebay.xcelite.sheet.XceliteSheet;
+import com.ebay.xcelite.writer.SheetWriter;
 import com.google.common.collect.Multimap;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -175,6 +180,151 @@ public class UserService {
 		users = userProfileDAO.findAllForUserGrid(offset, limit, userName,
 				college, department, positionType, positionTitle, isActive);
 		return users;
+	}
+
+	@GET
+	@Path("/downloadFile")
+	@Produces(MediaType.APPLICATION_OCTET_STREAM)
+	public Response downloadFile() {
+		String policyFolderName = "/uploads";
+		String policyLocation = new String();
+		try {
+			policyLocation = this.getClass().getResource(policyFolderName)
+					.toURI().getPath();
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		File file = new File(policyLocation + "Employee.xlsx");
+
+		// if (file == null || !file.exists())
+		// throw new WebApplicationException(Status.NOT_FOUND);
+		ResponseBuilder response = Response.ok((Object) file);
+		response.header("Content-Disposition", "attachment; filename=test.xls");
+		return response.build();
+	}
+
+	@POST
+	@Path("/ExportExcel")
+	// @Produces({ MediaType.APPLICATION_OCTET_STREAM })
+	@Produces("application/vnd.ms-excel")
+	// TODO : Export features
+	public Response exportUsersJSON(String message)
+			throws JsonProcessingException, IOException {
+
+		List<UserInfo> users = new ArrayList<UserInfo>();
+		String userName = new String();
+		String college = new String();
+		String department = new String();
+		String positionType = new String();
+		String positionTitle = new String();
+		Boolean isActive = null;
+
+		ObjectMapper mapper = new ObjectMapper();
+		JsonNode root = mapper.readTree(message);
+
+		if (root != null && root.has("userBindObj")) {
+			JsonNode userObj = root.get("userBindObj");
+			if (userObj != null && userObj.has("UserName")) {
+				userName = userObj.get("UserName").getTextValue();
+			}
+
+			if (userObj != null && userObj.has("College")) {
+				college = userObj.get("College").getTextValue();
+			}
+
+			if (userObj != null && userObj.has("Department")) {
+				department = userObj.get("Department").getTextValue();
+			}
+
+			if (userObj != null && userObj.has("PositionType")) {
+				positionType = userObj.get("PositionType").getTextValue();
+			}
+
+			if (userObj != null && userObj.has("PositionTitle")) {
+				positionTitle = userObj.get("PositionTitle").getTextValue();
+			}
+
+			if (userObj != null && userObj.has("IsActive")) {
+				if (!userObj.get("IsActive").isNull()) {
+					isActive = userObj.get("IsActive").getBooleanValue();
+				} else {
+					isActive = null;
+				}
+			}
+		}
+		users = userProfileDAO.findAllUsers(userName, college, department,
+				positionType, positionTitle, isActive);
+
+		Xcelite xcelite = new Xcelite();
+		XceliteSheet sheet = xcelite.createSheet("users");
+		SheetWriter<UserInfo> writer = sheet.getBeanWriter(UserInfo.class);
+		// ...fill up users
+		writer.write(users);
+
+		String policyFolderName = "/uploads";
+		String policyLocation = new String();
+		try {
+			policyLocation = this.getClass().getResource(policyFolderName)
+					.toURI().getPath();
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		xcelite.write(new File(policyLocation + "Employee.xlsx"));
+
+		// // list is a List<MyData>
+		// final ObjectMapper mapper = new ObjectMapper();
+		// final Map<String, MyData> map = new HashMap<>();
+		// for (final MyData data : list)
+		// map.put(data.fname, data);
+		// final JsonNode json = mapper.valueToTree(map);
+
+		// Gson gson = new GsonBuilder().create();
+		// JsonArray myCustomArray = gson.toJsonTree(users).getAsJsonArray();
+
+		// String csv = CDL.toString(myCustomArray);
+
+		// JSONObject json = new JSONObject(users);
+
+		// JSONArray ar = new JSONArray(users);
+		// String jsonx = ar.toString();
+
+		// System.out.println(CDL.toString(new JSONArray(json.get("userName")
+		// .toString())));
+
+		// String xml = XML.toString(myCustomArray);
+
+		// JSONObject output = new JSONObject(users);
+		// JSONArray docs = response.getJSONArray("infile");
+
+		// File file = new File("yourpath/fromJSON.csv");
+
+		// FileUtils.writeStringToFile(file, csv);
+
+		// return myCustomArray.toString();
+		String FILE_PATH = policyLocation + "Employee.xlsx";
+
+		File file = new File(FILE_PATH);
+		ResponseBuilder response = Response.ok((Object) file);
+		response.header("Content-Disposition",
+				"attachment; filename=new-excel-file.xls");
+		return response.build();
+
+		// Response reponse = new Response();
+
+		// servletResponse.setHeader("Content-Length",
+		// String.valueOf(file.length()));
+		// servletResponse.setHeader("Content-Disposition",
+		// "attachment; filename=\"" + file.getName() + "\"");
+
+		// return Response
+		// .ok(writer)
+		// .header("Content-Disposition",
+		// "attachment; filename=" + fileName).build();
+
 	}
 
 	@POST
