@@ -243,9 +243,6 @@ $(function() {
 							},
 							checkedExcludedPartyList : {
 								required : true
-							},
-							proposalNotes : {
-								required : true
 							}
 						},
 						errorElement : "span",
@@ -418,9 +415,6 @@ $(function() {
 							},
 							checkedExcludedPartyList : {
 								required : "Please select if excluded party list has been checked"
-							},
-							proposalNotes : {
-								required : "Please enter proposal notes"
 							}
 						}
 					});
