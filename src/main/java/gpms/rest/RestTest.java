@@ -38,5 +38,7 @@ public class RestTest {
 			throw new WebApplicationException();
 		}
 		return Response.ok("Data uploaded successfully !!").build();
+		
+		
 	}
 }
