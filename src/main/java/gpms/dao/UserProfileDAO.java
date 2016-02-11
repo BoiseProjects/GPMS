@@ -523,6 +523,25 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 				.equal(userAccount).get();
 	}
 
+	public void signUpUser(UserProfile newProfile) {
+		Datastore ds = getDatastore();
+		ds.save(newProfile);
+		AuditLog audit = new AuditLog(newProfile,
+				"Signed up new user account and profile of "
+						+ newProfile.getUserAccount().getUserName(), new Date());
+		newProfile.getAuditLog().add(audit);
+		ds.save(newProfile);
+
+		// Send email to user
+		String messageBody = "Hello "
+				+ newProfile.getFullName()
+				+ ",<br/><br/> You have successfully created an account. As soon as administrator will activate and assign you on positions you will get an email and then only you can login. If you want to activate as soon as possible please contact administrator: <a href='http://seal.boisestate.edu:8080/GPMS/ContactUs.jsp' title='GPMS Contact Us' target='_blank'>Contact Us</a><br/><br/>Thank you, <br/> GPMS Team";
+		EmailUtil emailUtil = new EmailUtil();
+		emailUtil.sendMailWithoutAuth(newProfile.getWorkEmails().get(0),
+				"Successfully created an account " + newProfile.getFullName(),
+				messageBody);
+	}
+
 	public void saveUser(UserProfile newProfile, UserProfile authorProfile) {
 		Datastore ds = getDatastore();
 		audit = new AuditLog(authorProfile,

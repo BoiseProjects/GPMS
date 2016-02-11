@@ -425,7 +425,7 @@ public class ProposalService {
 				userDepartment, userPositionType, userPositionTitle);
 
 		Xcelite xcelite = new Xcelite();
-		XceliteSheet sheet = xcelite.createSheet("users");
+		XceliteSheet sheet = xcelite.createSheet("Proposals");
 		SheetWriter<ProposalInfo> writer = sheet
 				.getBeanWriter(ProposalInfo.class);
 
@@ -445,8 +445,8 @@ public class ProposalService {
 		// + File.separator + filename);
 		// System.out.println("Absolute Path at server=" +
 		// file.getAbsolutePath());
-		String policyLocation = this.getClass().getResource("/tmpfiles").toURI()
-				.getPath();
+		String policyLocation = this.getClass().getResource("/tmpfiles")
+				.toURI().getPath();
 
 		xcelite.write(new File(policyLocation + fileName));
 
@@ -758,7 +758,7 @@ public class ProposalService {
 		// response = JSONTansformer.ConvertToJSON(users);
 
 		Xcelite xcelite = new Xcelite();
-		XceliteSheet sheet = xcelite.createSheet("users");
+		XceliteSheet sheet = xcelite.createSheet("AuditLogs");
 		SheetWriter<AuditLogInfo> writer = sheet
 				.getBeanWriter(AuditLogInfo.class);
 
@@ -778,8 +778,8 @@ public class ProposalService {
 		// + File.separator + filename);
 		// System.out.println("Absolute Path at server=" +
 		// file.getAbsolutePath());
-		String policyLocation = this.getClass().getResource("/tmpfiles").toURI()
-				.getPath();
+		String policyLocation = this.getClass().getResource("/tmpfiles")
+				.toURI().getPath();
 
 		xcelite.write(new File(policyLocation + fileName));
 

@@ -243,7 +243,7 @@ public class UserService {
 				positionType, positionTitle, isActive);
 
 		Xcelite xcelite = new Xcelite();
-		XceliteSheet sheet = xcelite.createSheet("users");
+		XceliteSheet sheet = xcelite.createSheet("Users");
 		SheetWriter<UserInfo> writer = sheet.getBeanWriter(UserInfo.class);
 
 		writer.write(users);
@@ -262,8 +262,8 @@ public class UserService {
 		// + File.separator + filename);
 		// System.out.println("Absolute Path at server=" +
 		// file.getAbsolutePath());
-		String policyLocation = this.getClass().getResource("/tmpfiles").toURI()
-				.getPath();
+		String policyLocation = this.getClass().getResource("/tmpfiles")
+				.toURI().getPath();
 
 		xcelite.write(new File(policyLocation + fileName));
 
@@ -1460,17 +1460,7 @@ public class UserService {
 			userAccountDAO.save(newAccount);
 
 			// Save the User Profile
-			userProfileDAO.save(newProfile);
-
-			// Send email to user
-			String messageBody = "Hello "
-					+ newProfile.getFullName()
-					+ ",<br/><br/> You have successfully created an account. As soon as administrator will activate and assign you on positions you will get an email and then only you can login. If you want to activate as soon as possible please contact administrator: <a href='http://seal.boisestate.edu:8080/GPMS/ContactUs.jsp' title='GPMS Contact Us' target='_blank'>Contact Us</a><br/><br/>Thank you, <br/> GPMS Team";
-			EmailUtil emailUtil = new EmailUtil();
-			emailUtil.sendMailWithoutAuth(
-					newProfile.getWorkEmails().get(0),
-					"Successfully created an account "
-							+ newProfile.getFullName(), messageBody);
+			userProfileDAO.signUpUser(newProfile);
 
 			NotificationLog notification = new NotificationLog();
 			notification.setType("User");
