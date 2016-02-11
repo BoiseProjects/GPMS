@@ -353,7 +353,8 @@
 																		<option value="2">Senior Personnel</option>
 																</select></td>
 																<td><select title="Choose Full Name"
-																	class="sfListmenu" name="ddlName" style="width: 140px;" required="true">
+																	class="sfListmenu" name="ddlName" style="width: 140px;"
+																	required="true">
 																</select></td>
 																<td><select title="Choose College Name"
 																	class="sfListmenu" name="ddlCollege"
@@ -468,7 +469,8 @@
 												</div>
 
 												<h3>
-													<span id="lblSection3">Sponsor and Budget Information</span>
+													<span id="lblSection3">Sponsor and Budget
+														Information</span>
 												</h3>
 												<div class="sfFormwrapper ui-tabs-panel">
 													<table cellspacing="0" cellpadding="0" border="0">
@@ -608,7 +610,8 @@
 												</div>
 
 												<h3>
-													<span id="lblSection6">Conflict of Interest and Commitment Information</span>
+													<span id="lblSection6">Conflict of Interest and
+														Commitment Information</span>
 												</h3>
 												<div class="sfFormwrapper ui-tabs-panel">
 													<table cellspacing="0" cellpadding="0" border="0">
@@ -871,7 +874,8 @@
 												</div>
 
 												<h3>
-													<span id="lblSection10">Proprietary/Confidential Information</span>
+													<span id="lblSection10">Proprietary/Confidential
+														Information</span>
 												</h3>
 												<div class="sfFormwrapper ui-tabs-panel">
 													<table cellspacing="0" cellpadding="0" border="0">
@@ -997,7 +1001,8 @@
 														id="trSignPICOPI">
 														<thead>
 															<tr>
-																<th><span class="cssClassLabelTitle">Principal/Co-Investigator(s)/Senior Personnel(s)</span></th>
+																<th><span class="cssClassLabelTitle">Principal/Co-Investigator(s)/Senior
+																		Personnel(s)</span></th>
 																<th><span class="cssClassLabelTitle">Signature(s)</span></th>
 																<th><span class="cssClassLabelTitle">Date</span></th>
 																<th><span class="cssClassLabelTitle">Note</span></th>
@@ -1035,12 +1040,13 @@
 														<tbody>
 														</tbody>
 													</table>
-													
+
 													<table cellspacing="0" cellpadding="0" border="0"
 														id="trSignAdministrator">
 														<thead>
 															<tr>
-																<th><span class="cssClassLabelTitle">Research Administrator</span></th>
+																<th><span class="cssClassLabelTitle">Research
+																		Administrator</span></th>
 																<th><span class="cssClassLabelTitle">Signature</span></th>
 																<th><span class="cssClassLabelTitle">Date</span></th>
 																<th><span class="cssClassLabelTitle">Note</span></th>
@@ -1049,12 +1055,13 @@
 														<tbody>
 														</tbody>
 													</table>
-													
+
 													<table cellspacing="0" cellpadding="0" border="0"
 														id="trSignDirector">
 														<thead>
 															<tr>
-																<th><span class="cssClassLabelTitle">Research Director</span></th>
+																<th><span class="cssClassLabelTitle">Research
+																		Director</span></th>
 																<th><span class="cssClassLabelTitle">Signature</span></th>
 																<th><span class="cssClassLabelTitle">Date</span></th>
 																<th><span class="cssClassLabelTitle">Note</span></th>
@@ -1068,8 +1075,9 @@
 														id="trSignBusinessManager">
 														<thead>
 															<tr>
-																<th><span class="cssClassLabelTitle">Business Manager</span>(if applicable) has reviewed this proposal.</th>
-																<th><span class="cssClassLabelTitle">Signature</span>																	
+																<th><span class="cssClassLabelTitle">Business
+																		Manager</span>(if applicable) has reviewed this proposal.</th>
+																<th><span class="cssClassLabelTitle">Signature</span>
 																<th><span class="cssClassLabelTitle">Date</span></th>
 																<th><span class="cssClassLabelTitle">Note</span></th>
 															</tr>
@@ -1542,6 +1550,26 @@
 												<h1>
 													<span id="lblLogsHeading"></span>
 												</h1>
+												<div class="cssClassHeaderRight">
+													<div class="sfButtonwrapper">
+														<p>
+															<button title="Export to Excel" type="button"
+																id="btnLogsExportToExcel" class="sfBtn">
+																<span class="icon-showall">Export to Excel</span>
+															</button>
+														</p>
+														<!-- <p>
+															<button title="Export to CSV" type="button"
+																id="btnExportToCSV" class="sfBtn">
+																<span class="icon-showall">Export to CSV</span>
+															</button>
+														</p> -->
+
+														<div class="cssClassClear"></div>
+													</div>
+													<div class="cssClassClear"></div>
+												</div>
+												<div class="cssClassClear"></div>
 											</div>
 											<div class="sfGridwrapper">
 												<div class="sfGridWrapperContent">

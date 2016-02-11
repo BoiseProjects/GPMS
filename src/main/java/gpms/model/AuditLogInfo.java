@@ -2,11 +2,24 @@ package gpms.model;
 
 import java.util.Date;
 
+import com.ebay.xcelite.annotations.Column;
+import com.ebay.xcelite.annotations.Row;
+
+@Row(colsOrder = { "User Name", "User Full Name", "Audit Action",
+		"Activity Date" })
 public class AuditLogInfo implements Comparable<AuditLogInfo> {
 	private int rowTotal;
+
+	@Column(name = "User Name")
 	private String userName = new String();
+
+	@Column(name = "User Full Name")
 	private String userFullName = new String();
+
+	@Column(name = "Audit Action")
 	private String action = new String();
+
+	@Column(name = "Activity Date", dataFormat = "yyyy/MM/dd hh:mm:ss")
 	private Date activityDate = new Date();
 
 	public AuditLogInfo() {

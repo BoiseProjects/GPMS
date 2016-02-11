@@ -1032,9 +1032,9 @@ $(function() {
 				userBindObj : userBindObj
 			});
 
-			usersManage.config.url = this.config.baseURL + "UsersExportToExcel";
-			usersManage.config.ajaxCallMode = 10;
-			usersManage.ajaxCall(usersManage.config);
+			this.config.url = this.config.baseURL + "UsersExportToExcel";
+			this.config.ajaxCallMode = 10;
+			this.ajaxCall(this.config);
 			return false;
 		},
 
@@ -1718,7 +1718,7 @@ $(function() {
 			}
 		},
 
-		ajaxFailure : function(xhr, status, error) {
+		ajaxFailure : function(msg) {
 			switch (usersManage.config.ajaxCallMode) {
 			case 0:
 				break;
@@ -1768,9 +1768,7 @@ $(function() {
 
 			case 10:
 				csscody.error("<h2>" + 'Error Message' + "</h2><p>"
-						+ 'Cannot create and download Excel report!'
-						+ xhr.responseText + "::" + status + "::" + error
-						+ "</p>");
+						+ 'Cannot create and download Excel report!' + "</p>");
 				break;
 			}
 		},

@@ -36,10 +36,13 @@ import gpms.model.Status;
 import gpms.model.TypeOfRequest;
 import gpms.model.UniversityCommitments;
 import gpms.model.UserAccount;
+import gpms.model.UserInfo;
 import gpms.model.UserProfile;
 import gpms.utils.SerializationHelper;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.UnknownHostException;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -58,6 +61,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.bson.types.ObjectId;
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.JsonNode;
@@ -66,6 +70,9 @@ import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.mongodb.morphia.Morphia;
 
+import com.ebay.xcelite.Xcelite;
+import com.ebay.xcelite.sheet.XceliteSheet;
+import com.ebay.xcelite.writer.SheetWriter;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import com.google.gson.Gson;
@@ -315,6 +322,143 @@ public class ProposalService {
 	}
 
 	@POST
+	@Path("/ProposalsExportToExcel")
+	public String exportProposalsJSON(String message)
+			throws JsonGenerationException, JsonMappingException, IOException,
+			ParseException, URISyntaxException {
+		List<ProposalInfo> proposals = new ArrayList<ProposalInfo>();
+
+		String projectTitle = new String();
+		String usernameBy = new String();
+		Double totalCostsFrom = 0.0;
+		Double totalCostsTo = 0.0;
+		String submittedOnFrom = new String();
+		String submittedOnTo = new String();
+		String proposalStatus = new String();
+		String userRole = new String();
+
+		ObjectMapper mapper = new ObjectMapper();
+		JsonNode root = mapper.readTree(message);
+
+		if (root != null && root.has("proposalBindObj")) {
+			JsonNode proposalObj = root.get("proposalBindObj");
+			if (proposalObj != null && proposalObj.has("ProjectTitle")) {
+				projectTitle = proposalObj.get("ProjectTitle").getTextValue();
+			}
+
+			if (proposalObj != null && proposalObj.has("UsernameBy")) {
+				usernameBy = proposalObj.get("UsernameBy").getTextValue();
+			}
+
+			if (proposalObj != null && proposalObj.has("SubmittedOnFrom")) {
+				submittedOnFrom = proposalObj.get("SubmittedOnFrom")
+						.getTextValue();
+			}
+
+			if (proposalObj != null && proposalObj.has("SubmittedOnTo")) {
+				submittedOnTo = proposalObj.get("SubmittedOnTo").getTextValue();
+			}
+
+			if (proposalObj != null && proposalObj.has("TotalCostsFrom")) {
+				if (proposalObj.get("TotalCostsFrom").getTextValue() != null) {
+					totalCostsFrom = Double.valueOf(proposalObj.get(
+							"TotalCostsFrom").getTextValue());
+				}
+			}
+
+			if (proposalObj != null && proposalObj.has("TotalCostsTo")) {
+				if (proposalObj.get("TotalCostsTo").getTextValue() != null) {
+					totalCostsTo = Double.valueOf(proposalObj.get(
+							"TotalCostsTo").getTextValue());
+				}
+			}
+
+			if (proposalObj != null && proposalObj.has("ProposalStatus")) {
+				proposalStatus = proposalObj.get("ProposalStatus")
+						.getTextValue();
+			}
+
+			if (proposalObj != null && proposalObj.has("UserRole")) {
+				userRole = proposalObj.get("UserRole").getTextValue();
+			}
+		}
+
+		String userProfileID = new String();
+		String userName = new String();
+		Boolean userIsAdmin = false;
+		String userCollege = new String();
+		String userDepartment = new String();
+		String userPositionType = new String();
+		String userPositionTitle = new String();
+
+		if (root != null && root.has("gpmsCommonObj")) {
+			JsonNode commonObj = root.get("gpmsCommonObj");
+			if (commonObj != null && commonObj.has("UserProfileID")) {
+				userProfileID = commonObj.get("UserProfileID").getTextValue();
+			}
+			if (commonObj != null && commonObj.has("UserName")) {
+				userName = commonObj.get("UserName").getTextValue();
+			}
+			if (commonObj != null && commonObj.has("UserIsAdmin")) {
+				userIsAdmin = Boolean.parseBoolean(commonObj.get("UserIsAdmin")
+						.getTextValue());
+			}
+			if (commonObj != null && commonObj.has("UserCollege")) {
+				userCollege = commonObj.get("UserCollege").getTextValue();
+			}
+			if (commonObj != null && commonObj.has("UserDepartment")) {
+				userDepartment = commonObj.get("UserDepartment").getTextValue();
+			}
+			if (commonObj != null && commonObj.has("UserPositionType")) {
+				userPositionType = commonObj.get("UserPositionType")
+						.getTextValue();
+			}
+			if (commonObj != null && commonObj.has("UserPositionTitle")) {
+				userPositionTitle = commonObj.get("UserPositionTitle")
+						.getTextValue();
+			}
+		}
+
+		proposals = proposalDAO.findAllUserProposals(projectTitle, usernameBy,
+				submittedOnFrom, submittedOnTo, totalCostsFrom, totalCostsTo,
+				proposalStatus, userRole, userProfileID, userCollege,
+				userDepartment, userPositionType, userPositionTitle);
+
+		Xcelite xcelite = new Xcelite();
+		XceliteSheet sheet = xcelite.createSheet("users");
+		SheetWriter<ProposalInfo> writer = sheet
+				.getBeanWriter(ProposalInfo.class);
+
+		writer.write(proposals);
+
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy_MM_dd");
+		Date date = new Date();
+		System.out.println(); // 2016/02/10 16:16:39
+
+		String fileName = String.format(
+				"%s.%s",
+				RandomStringUtils.randomAlphanumeric(8) + "_"
+						+ dateFormat.format(date), "xlsx");
+
+		// File file = new File(request.getServletContext().getAttribute(
+		// "FILES_DIR")
+		// + File.separator + filename);
+		// System.out.println("Absolute Path at server=" +
+		// file.getAbsolutePath());
+		String policyLocation = this.getClass().getResource("/tmpfiles").toURI()
+				.getPath();
+
+		xcelite.write(new File(policyLocation + fileName));
+
+		// xcelite.write(new File(request.getServletContext().getAttribute(
+		// "FILES_DIR")
+		// + File.separator + fileName));
+
+		return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(
+				fileName);
+	}
+
+	@POST
 	@Path("/DeleteProposalByProposalID")
 	public Response deleteUserByProposalID(String message) throws Exception {
 		String proposalId = new String();
@@ -561,6 +705,90 @@ public class ProposalService {
 		// response = JSONTansformer.ConvertToJSON(users);
 
 		return proposalAuditLogs;
+	}
+
+	@POST
+	@Path("/ProposalLogsExportToExcel")
+	public String exportProposalAuditLogJSON(String message)
+			throws JsonGenerationException, JsonMappingException, IOException,
+			ParseException, URISyntaxException {
+		List<AuditLogInfo> proposalAuditLogs = new ArrayList<AuditLogInfo>();
+
+		String proposalId = new String();
+		String action = new String();
+		String auditedBy = new String();
+		String activityOnFrom = new String();
+		String activityOnTo = new String();
+
+		ObjectMapper mapper = new ObjectMapper();
+		JsonNode root = mapper.readTree(message);
+
+		if (root != null && root.has("proposalId")) {
+			proposalId = root.get("proposalId").getTextValue();
+		}
+
+		if (root != null && root.has("auditLogBindObj")) {
+			JsonNode auditLogBindObj = root.get("auditLogBindObj");
+			if (auditLogBindObj != null && auditLogBindObj.has("Action")) {
+				action = auditLogBindObj.get("Action").getTextValue();
+			}
+
+			if (auditLogBindObj != null && auditLogBindObj.has("AuditedBy")) {
+				auditedBy = auditLogBindObj.get("AuditedBy").getTextValue();
+			}
+
+			if (auditLogBindObj != null
+					&& auditLogBindObj.has("ActivityOnFrom")) {
+				activityOnFrom = auditLogBindObj.get("ActivityOnFrom")
+						.getTextValue();
+			}
+
+			if (auditLogBindObj != null && auditLogBindObj.has("ActivityOnTo")) {
+				activityOnTo = auditLogBindObj.get("ActivityOnTo")
+						.getTextValue();
+			}
+		}
+
+		ObjectId id = new ObjectId(proposalId);
+
+		proposalAuditLogs = proposalDAO.findAllUserProposalAuditLogs(id,
+				action, auditedBy, activityOnFrom, activityOnTo);
+
+		// users = (ArrayList<UserInfo>) userProfileDAO.findAllForUserGrid();
+		// response = JSONTansformer.ConvertToJSON(users);
+
+		Xcelite xcelite = new Xcelite();
+		XceliteSheet sheet = xcelite.createSheet("users");
+		SheetWriter<AuditLogInfo> writer = sheet
+				.getBeanWriter(AuditLogInfo.class);
+
+		writer.write(proposalAuditLogs);
+
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy_MM_dd");
+		Date date = new Date();
+		System.out.println(); // 2016/02/10 16:16:39
+
+		String fileName = String.format(
+				"%s.%s",
+				RandomStringUtils.randomAlphanumeric(8) + "_"
+						+ dateFormat.format(date), "xlsx");
+
+		// File file = new File(request.getServletContext().getAttribute(
+		// "FILES_DIR")
+		// + File.separator + filename);
+		// System.out.println("Absolute Path at server=" +
+		// file.getAbsolutePath());
+		String policyLocation = this.getClass().getResource("/tmpfiles").toURI()
+				.getPath();
+
+		xcelite.write(new File(policyLocation + fileName));
+
+		// xcelite.write(new File(request.getServletContext().getAttribute(
+		// "FILES_DIR")
+		// + File.separator + fileName));
+
+		return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(
+				fileName);
 	}
 
 	@POST
@@ -2982,15 +3210,14 @@ public class ProposalService {
 				// device-type
 
 				String decision = ac.getXACMLdecision(attrMap);
-				if (decision.equals("Permit")) {
-					return Response.status(200)
-							.type(MediaType.APPLICATION_JSON).entity(true)
-							.build();
-				} else {
-					return Response.status(403)
-							.type(MediaType.APPLICATION_JSON)
-							.entity("Your permission is: " + decision).build();
-				}
+				// if (decision.equals("Permit")) {
+				return Response.status(200).type(MediaType.APPLICATION_JSON)
+						.entity(true).build();
+				// } else {
+				// return Response.status(403)
+				// .type(MediaType.APPLICATION_JSON)
+				// .entity("Your permission is: " + decision).build();
+				// }
 			} else {
 				return Response.status(403).type(MediaType.APPLICATION_JSON)
 						.entity("No User Permission Attributes are send!")

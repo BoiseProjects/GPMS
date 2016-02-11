@@ -4,40 +4,70 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.ebay.xcelite.annotations.Column;
+import com.ebay.xcelite.annotations.Row;
+
+@Row(colsOrder = { "Proposal No", "Project Title", "Project Type",
+		"Type Of Request", "Project Location", "Granting Agencies",
+		"Direct Costs", "F&A Costs", "Total Costs", "F&A Rate", "Date Created",
+		"Date Submitted", "Due Date", "Project Period From",
+		"Project Period To", "Proposal Status", "Last Audited",
+		"Last Audited By", "Last Audit Action", "Is Deleted?" })
 public class ProposalInfo {
 	private int rowTotal;
 	private String id = new String();
 
 	// Proposal
+	@Column(name = "Proposal No")
 	private int proposalNo = 0;
 
 	// ProjectInfo
+	@Column(name = "Project Title")
 	private String projectTitle = new String();
+	@Column(name = "Project Type")
 	private String projectType = new String();
+	@Column(name = "Type Of Request")
 	private List<String> typeOfRequest = new ArrayList<String>();
+	@Column(name = "Project Location")
 	private String projectLocation = new String();
 
 	// SponsorAndBudgetInfo
+	@Column(name = "Granting Agencies")
 	private List<String> grantingAgencies = new ArrayList<String>();
+	@Column(name = "Direct Costs")
 	private double directCosts;
+	@Column(name = "F&A Costs")
 	private double faCosts;
+	@Column(name = "Total Costs")
 	private double totalCosts;
+	@Column(name = "F&A Rate")
 	private double faRate;
 
 	// Proposal
+	@Column(name = "Date Created", dataFormat = "yyyy/MM/dd hh:mm:ss")
 	private Date dateCreated = new Date();
+	@Column(name = "Date Submitted", dataFormat = "yyyy/MM/dd hh:mm:ss")
 	private Date dateSubmitted = new Date();
 
 	// ProjectInfo
+	@Column(name = "Due Date", dataFormat = "yyyy/MM/dd hh:mm:ss")
 	private Date dueDate = new Date();
+	@Column(name = "Project Period From", dataFormat = "yyyy/MM/dd hh:mm:ss")
 	private Date projectPeriodFrom = new Date();
+	@Column(name = "Project Period To", dataFormat = "yyyy/MM/dd hh:mm:ss")
 	private Date projectPeriodTo = new Date();
 
 	// Proposal
+	@Column(name = "Proposal Status")
 	private List<String> proposalStatus = new ArrayList<String>();
 
+	@Column(name = "Last Audited", dataFormat = "yyyy/MM/dd hh:mm:ss")
 	private Date lastAudited = new Date();
+
+	@Column(name = "Last Audited By")
 	private String lastAuditedBy = new String();
+
+	@Column(name = "Last Audit Action")
 	private String lastAuditAction = new String();
 
 	// PI, CO-PI and Senior UserProfiles
@@ -50,6 +80,7 @@ public class ProposalInfo {
 	// Proposal Roles
 	private List<String> currentuserProposalRoles = new ArrayList<String>();
 
+	@Column(name = "Is Deleted?")
 	private boolean isDeleted = false;
 
 	public ProposalInfo() {

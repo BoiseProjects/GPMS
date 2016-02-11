@@ -41,10 +41,10 @@ public class UserInfo {
 	@Column(name = "Number Of Seniored Proposal")
 	private int noOfSenioredProposal = 0;
 
-	@Column(name = "Added On", dataFormat = "ddd mmm dd hh:mm:ss yyy")
+	@Column(name = "Added On", dataFormat = "yyyy/MM/dd hh:mm:ss")
 	private Date addedOn = new Date();
 
-	@Column(name = "Last Audited", dataFormat = "ddd mmm dd hh:mm:ss yyy")
+	@Column(name = "Last Audited", dataFormat = "yyyy/MM/dd hh:mm:ss")
 	private Date lastAudited = new Date();
 
 	@Column(name = "Last Audited By")

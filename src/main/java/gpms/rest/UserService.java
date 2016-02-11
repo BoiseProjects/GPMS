@@ -195,8 +195,7 @@ public class UserService {
 
 	@POST
 	@Path("/UsersExportToExcel")
-	public String exportUsersJSON(String message,
-			@Context HttpServletRequest request)
+	public String exportUsersJSON(String message)
 			throws JsonProcessingException, IOException, URISyntaxException {
 
 		List<UserInfo> users = new ArrayList<UserInfo>();
@@ -263,7 +262,7 @@ public class UserService {
 		// + File.separator + filename);
 		// System.out.println("Absolute Path at server=" +
 		// file.getAbsolutePath());
-		String policyLocation = this.getClass().getResource("/uploads").toURI()
+		String policyLocation = this.getClass().getResource("/tmpfiles").toURI()
 				.getPath();
 
 		xcelite.write(new File(policyLocation + fileName));
@@ -272,7 +271,6 @@ public class UserService {
 		// "FILES_DIR")
 		// + File.separator + fileName));
 
-		// return filename;
 		return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(
 				fileName);
 	}

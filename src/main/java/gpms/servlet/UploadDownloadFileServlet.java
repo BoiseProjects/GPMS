@@ -45,7 +45,7 @@ public class UploadDownloadFileServlet extends HttpServlet {
 
 		String policyLocation = new String();
 		try {
-			policyLocation = this.getClass().getResource("/uploads").toURI()
+			policyLocation = this.getClass().getResource("/tmpfiles").toURI()
 					.getPath();
 		} catch (URISyntaxException e) {
 			// TODO Auto-generated catch block

@@ -3220,6 +3220,10 @@ $(function() {
 			}
 			break;
 
+		case 17:
+			window.location.href = 'UploadDownloadFileServlet?fileName=' + msg;
+			break;
+
 		}
 	},
 
@@ -3326,7 +3330,56 @@ $(function() {
 						+ msg.responseText + '</p>');
 				break;
 
+			case 17:
+				csscody.error("<h2>" + 'Error Message' + "</h2><p>"
+						+ 'Cannot create and download Excel report!' + "</p>");
+				break;
+
 			}
+		},
+
+		ExportToExcel : function(projectTitle, usernameBy, submittedOnFrom,
+				submittedOnTo, totalCostsFrom, totalCostsTo, proposalStatus,
+				userRole) {
+			var proposalBindObj = {
+				ProjectTitle : projectTitle,
+				UsernameBy : usernameBy,
+				SubmittedOnFrom : submittedOnFrom,
+				SubmittedOnTo : submittedOnTo,
+				TotalCostsFrom : totalCostsFrom,
+				TotalCostsTo : totalCostsTo,
+				ProposalStatus : proposalStatus,
+				UserRole : userRole
+			};
+
+			this.config.data = JSON2.stringify({
+				proposalBindObj : proposalBindObj,
+				gpmsCommonObj : gpmsCommonObj()
+			});
+
+			this.config.url = this.config.baseURL + "ProposalsExportToExcel";
+			this.config.ajaxCallMode = 17;
+			this.ajaxCall(this.config);
+			return false;
+		},
+
+		LogsExportToExcel : function(proposalId, action, auditedBy,
+				activityOnFrom, activityOnTo) {
+			var auditLogBindObj = {
+				Action : action,
+				AuditedBy : auditedBy,
+				ActivityOnFrom : activityOnFrom,
+				ActivityOnTo : activityOnTo,
+			};
+			this.config.data = JSON2.stringify({
+				proposalId : proposalId,
+				auditLogBindObj : auditLogBindObj
+			});
+
+			this.config.url = this.config.baseURL + "ProposalLogsExportToExcel";
+			this.config.ajaxCallMode = 17;
+			this.ajaxCall(this.config);
+			return false;
 		},
 
 		init : function(config) {
@@ -3541,6 +3594,98 @@ $(function() {
 								"Create", "Whole Proposal", myProposal.config);
 
 					});
+
+			$("#btnLogsExportToExcel").on(
+					"click",
+					function() {
+						var action = $.trim($("#txtSearchAction").val());
+						if (action.length < 1) {
+							action = null;
+						}
+
+						var auditedBy = $.trim($("#txtSearchAuditedBy").val());
+						if (auditedBy.length < 1) {
+							auditedBy = null;
+						}
+
+						var activityOnFrom = $.trim($(
+								"#txtSearchActivityOnFrom").val());
+						if (activityOnFrom.length < 1) {
+							activityOnFrom = null;
+						}
+
+						var activityOnTo = $.trim($("#txtSearchActivityOnTo")
+								.val());
+						if (activityOnTo.length < 1) {
+							activityOnTo = null;
+						}
+
+						myProposal.LogsExportToExcel(
+								myProposal.config.proposalId, action,
+								auditedBy, activityOnFrom, activityOnTo);
+					});
+
+			$("#btnExportToExcel")
+					.on(
+							"click",
+							function() {
+
+								var projectTitle = $.trim($(
+										"#txtSearchProjectTitle").val());
+								var usernameBy = $.trim($("#txtSearchUserName")
+										.val());
+								var submittedOnFrom = $.trim($(
+										"#txtSearchSubmittedOnFrom").val());
+								var submittedOnTo = $.trim($(
+										"#txtSearchSubmittedOnTo").val());
+								var totalCostsFrom = $.trim($(
+										"#txtSearchTotalCostsFrom")
+										.autoNumeric('get'));
+								var totalCostsTo = $.trim($(
+										"#txtSearchTotalCostsTo").autoNumeric(
+										'get'));
+
+								var proposalStatus = $.trim($(
+										'#ddlSearchProposalStatus').val()) == "" ? null
+										: $.trim($('#ddlSearchProposalStatus')
+												.val()) == "0" ? null
+												: $
+														.trim($(
+																'#ddlSearchProposalStatus')
+																.val());
+
+								var userRole = $.trim($('#ddlSearchUserRole')
+										.val()) == "" ? null
+										: $.trim($('#ddlSearchUserRole').val()) == "0" ? null
+												: $
+														.trim($(
+																'#ddlSearchUserRole')
+																.val());
+
+								if (projectTitle.length < 1) {
+									projectTitle = null;
+								}
+								if (usernameBy.length < 1) {
+									usernameBy = null;
+								}
+								if (totalCostsFrom.length < 1) {
+									totalCostsFrom = null;
+								}
+								if (totalCostsTo.length < 1) {
+									totalCostsTo = null;
+								}
+								if (submittedOnFrom.length < 1) {
+									submittedOnFrom = null;
+								}
+								if (submittedOnTo.length < 1) {
+									submittedOnTo = null;
+								}
+
+								myProposal.ExportToExcel(projectTitle,
+										usernameBy, submittedOnFrom,
+										submittedOnTo, totalCostsFrom,
+										totalCostsTo, proposalStatus, userRole);
+							});
 
 			$('#btnBack').on("click", function() {
 				$('#divProposalGrid').show();
