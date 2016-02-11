@@ -3213,7 +3213,13 @@ $(function() {
 			break;
 
 		case 17:
-			window.location.href = 'UploadDownloadFileServlet?fileName=' + msg;
+			if (msg != "No Record") {
+				window.location.href = 'UploadDownloadFileServlet?fileName='
+						+ msg;
+			} else {
+				csscody.alert("<h2>" + 'Information Message' + "</h2><p>"
+						+ 'No Record found!' + "</p>");
+			}
 			break;
 
 		}

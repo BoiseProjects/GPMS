@@ -424,38 +424,43 @@ public class ProposalService {
 				proposalStatus, userRole, userProfileID, userCollege,
 				userDepartment, userPositionType, userPositionTitle);
 
-		Xcelite xcelite = new Xcelite();
-		XceliteSheet sheet = xcelite.createSheet("Proposals");
-		SheetWriter<ProposalInfo> writer = sheet
-				.getBeanWriter(ProposalInfo.class);
+		if (proposals.size() > 0) {
+			Xcelite xcelite = new Xcelite();
+			XceliteSheet sheet = xcelite.createSheet("Proposals");
+			SheetWriter<ProposalInfo> writer = sheet
+					.getBeanWriter(ProposalInfo.class);
 
-		writer.write(proposals);
+			writer.write(proposals);
 
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy_MM_dd");
-		Date date = new Date();
-		System.out.println(); // 2016/02/10 16:16:39
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy_MM_dd");
+			Date date = new Date();
+			System.out.println(); // 2016/02/10 16:16:39
 
-		String fileName = String.format(
-				"%s.%s",
-				RandomStringUtils.randomAlphanumeric(8) + "_"
-						+ dateFormat.format(date), "xlsx");
+			String fileName = String.format(
+					"%s.%s",
+					RandomStringUtils.randomAlphanumeric(8) + "_"
+							+ dateFormat.format(date), "xlsx");
 
-		// File file = new File(request.getServletContext().getAttribute(
-		// "FILES_DIR")
-		// + File.separator + filename);
-		// System.out.println("Absolute Path at server=" +
-		// file.getAbsolutePath());
-		String policyLocation = this.getClass().getResource("/tmpfiles")
-				.toURI().getPath();
+			// File file = new File(request.getServletContext().getAttribute(
+			// "FILES_DIR")
+			// + File.separator + filename);
+			// System.out.println("Absolute Path at server=" +
+			// file.getAbsolutePath());
+			String policyLocation = this.getClass().getResource("/tmpfiles")
+					.toURI().getPath();
 
-		xcelite.write(new File(policyLocation + fileName));
+			xcelite.write(new File(policyLocation + fileName));
 
-		// xcelite.write(new File(request.getServletContext().getAttribute(
-		// "FILES_DIR")
-		// + File.separator + fileName));
+			// xcelite.write(new File(request.getServletContext().getAttribute(
+			// "FILES_DIR")
+			// + File.separator + fileName));
 
-		return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(
-				fileName);
+			return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(
+					fileName);
+		} else {
+			return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(
+					"No Record");
+		}
 	}
 
 	@POST
@@ -756,39 +761,43 @@ public class ProposalService {
 
 		// users = (ArrayList<UserInfo>) userProfileDAO.findAllForUserGrid();
 		// response = JSONTansformer.ConvertToJSON(users);
+		if (proposalAuditLogs.size() > 0) {
+			Xcelite xcelite = new Xcelite();
+			XceliteSheet sheet = xcelite.createSheet("AuditLogs");
+			SheetWriter<AuditLogInfo> writer = sheet
+					.getBeanWriter(AuditLogInfo.class);
 
-		Xcelite xcelite = new Xcelite();
-		XceliteSheet sheet = xcelite.createSheet("AuditLogs");
-		SheetWriter<AuditLogInfo> writer = sheet
-				.getBeanWriter(AuditLogInfo.class);
+			writer.write(proposalAuditLogs);
 
-		writer.write(proposalAuditLogs);
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy_MM_dd");
+			Date date = new Date();
+			System.out.println(); // 2016/02/10 16:16:39
 
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy_MM_dd");
-		Date date = new Date();
-		System.out.println(); // 2016/02/10 16:16:39
+			String fileName = String.format(
+					"%s.%s",
+					RandomStringUtils.randomAlphanumeric(8) + "_"
+							+ dateFormat.format(date), "xlsx");
 
-		String fileName = String.format(
-				"%s.%s",
-				RandomStringUtils.randomAlphanumeric(8) + "_"
-						+ dateFormat.format(date), "xlsx");
+			// File file = new File(request.getServletContext().getAttribute(
+			// "FILES_DIR")
+			// + File.separator + filename);
+			// System.out.println("Absolute Path at server=" +
+			// file.getAbsolutePath());
+			String policyLocation = this.getClass().getResource("/tmpfiles")
+					.toURI().getPath();
 
-		// File file = new File(request.getServletContext().getAttribute(
-		// "FILES_DIR")
-		// + File.separator + filename);
-		// System.out.println("Absolute Path at server=" +
-		// file.getAbsolutePath());
-		String policyLocation = this.getClass().getResource("/tmpfiles")
-				.toURI().getPath();
+			xcelite.write(new File(policyLocation + fileName));
 
-		xcelite.write(new File(policyLocation + fileName));
+			// xcelite.write(new File(request.getServletContext().getAttribute(
+			// "FILES_DIR")
+			// + File.separator + fileName));
 
-		// xcelite.write(new File(request.getServletContext().getAttribute(
-		// "FILES_DIR")
-		// + File.separator + fileName));
-
-		return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(
-				fileName);
+			return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(
+					fileName);
+		} else {
+			return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(
+					"No Record");
+		}
 	}
 
 	@POST

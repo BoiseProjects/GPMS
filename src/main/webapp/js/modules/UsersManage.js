@@ -454,17 +454,17 @@ $(function() {
 					// $('#txtUserName').prop('disabled', 'disabled');
 					if (argus[10].toLowerCase() != "yes") {
 						// $(".delbutton").prop("id", argus[0]);
-						$(".delbutton").data( "id", argus[0] );
+						$(".delbutton").data("id", argus[0]);
 						$(".delbutton").show();
 					} else {
-						//$(".delbutton").removeAttr("id");
+						// $(".delbutton").removeAttr("id");
 						$(".delbutton").removeData("id");
 						$(".delbutton").hide();
 					}
 					$("input[name=AddMore]").removeAttr('disabled');
 					$("input[name=DeleteOption]").removeAttr('disabled');
-					//$("#btnSaveUser").prop("name", argus[0]);
-					$("#btnSaveUser").data( "name", argus[0]);
+					// $("#btnSaveUser").prop("name", argus[0]);
+					$("#btnSaveUser").data("name", argus[0]);
 
 					$("#btnReset").hide();
 
@@ -995,9 +995,9 @@ $(function() {
 
 			usersManage.onInit();
 			$('#lblFormHeading').html('New User Details');
-			//$(".delbutton").removeAttr("id");
+			// $(".delbutton").removeAttr("id");
 			$(".delbutton").removeData("id");
-			//$("#btnSaveUser").removeAttr("name");
+			// $("#btnSaveUser").removeAttr("name");
 			$("#btnSaveUser").removeData("name");
 			$(".delbutton").hide();
 			$("#btnReset").show();
@@ -1717,8 +1717,13 @@ $(function() {
 				break;
 
 			case 10:
-				window.location.href = 'UploadDownloadFileServlet?fileName='
-						+ msg;
+				if (msg != "No Record") {
+					window.location.href = 'UploadDownloadFileServlet?fileName='
+							+ msg;
+				} else {
+					csscody.alert("<h2>" + 'Information Message' + "</h2><p>"
+							+ 'No Record found!' + "</p>");
+				}
 				break;
 			}
 		},

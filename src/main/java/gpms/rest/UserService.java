@@ -242,37 +242,42 @@ public class UserService {
 		users = userProfileDAO.findAllUsers(userName, college, department,
 				positionType, positionTitle, isActive);
 
-		Xcelite xcelite = new Xcelite();
-		XceliteSheet sheet = xcelite.createSheet("Users");
-		SheetWriter<UserInfo> writer = sheet.getBeanWriter(UserInfo.class);
+		if (users.size() > 0) {
+			Xcelite xcelite = new Xcelite();
+			XceliteSheet sheet = xcelite.createSheet("Users");
+			SheetWriter<UserInfo> writer = sheet.getBeanWriter(UserInfo.class);
 
-		writer.write(users);
+			writer.write(users);
 
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy_MM_dd");
-		Date date = new Date();
-		System.out.println(); // 2016/02/10 16:16:39
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy_MM_dd");
+			Date date = new Date();
+			System.out.println(); // 2016/02/10 16:16:39
 
-		String fileName = String.format(
-				"%s.%s",
-				RandomStringUtils.randomAlphanumeric(8) + "_"
-						+ dateFormat.format(date), "xlsx");
+			String fileName = String.format(
+					"%s.%s",
+					RandomStringUtils.randomAlphanumeric(8) + "_"
+							+ dateFormat.format(date), "xlsx");
 
-		// File file = new File(request.getServletContext().getAttribute(
-		// "FILES_DIR")
-		// + File.separator + filename);
-		// System.out.println("Absolute Path at server=" +
-		// file.getAbsolutePath());
-		String policyLocation = this.getClass().getResource("/tmpfiles")
-				.toURI().getPath();
+			// File file = new File(request.getServletContext().getAttribute(
+			// "FILES_DIR")
+			// + File.separator + filename);
+			// System.out.println("Absolute Path at server=" +
+			// file.getAbsolutePath());
+			String policyLocation = this.getClass().getResource("/tmpfiles")
+					.toURI().getPath();
 
-		xcelite.write(new File(policyLocation + fileName));
+			xcelite.write(new File(policyLocation + fileName));
 
-		// xcelite.write(new File(request.getServletContext().getAttribute(
-		// "FILES_DIR")
-		// + File.separator + fileName));
+			// xcelite.write(new File(request.getServletContext().getAttribute(
+			// "FILES_DIR")
+			// + File.separator + fileName));
 
-		return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(
-				fileName);
+			return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(
+					fileName);
+		} else {
+			return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(
+					"No Record");
+		}
 	}
 
 	@POST
