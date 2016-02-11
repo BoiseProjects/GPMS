@@ -610,8 +610,7 @@
 												</div>
 
 												<h3>
-													<span id="lblSection6">Conflict of Interest and
-														Commitment Information</span>
+													<span id="lblSection6">Conflict of Interest and Commitment Information</span>
 												</h3>
 												<div class="sfFormwrapper ui-tabs-panel">
 													<table cellspacing="0" cellpadding="0" border="0">
@@ -874,8 +873,7 @@
 												</div>
 
 												<h3>
-													<span id="lblSection10">Proprietary/Confidential
-														Information</span>
+													<span id="lblSection10">Proprietary/Confidential Information</span>
 												</h3>
 												<div class="sfFormwrapper ui-tabs-panel">
 													<table cellspacing="0" cellpadding="0" border="0">
@@ -1001,8 +999,7 @@
 														id="trSignPICOPI">
 														<thead>
 															<tr>
-																<th><span class="cssClassLabelTitle">Principal/Co-Investigator(s)/Senior
-																		Personnel(s)</span></th>
+																<th><span class="cssClassLabelTitle">Principal/Co-Investigator(s)/Senior Personnel(s)</span></th>
 																<th><span class="cssClassLabelTitle">Signature(s)</span></th>
 																<th><span class="cssClassLabelTitle">Date</span></th>
 																<th><span class="cssClassLabelTitle">Note</span></th>
