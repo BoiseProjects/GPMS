@@ -210,7 +210,8 @@ $(function() {
 			$('#txtPassword').rules("remove");
 			$('#txtConfirmPassword').rules("remove");
 
-			$("#btnSaveUser").prop("name", userProfileId);
+			//$("#btnSaveUser").prop("name", userProfileId);
+			$("#btnSaveUser").data( "name", userProfileId);
 
 			myAccount.config.url = myAccount.config.baseURL
 					+ "GetUserDetailsByProfileId";
@@ -484,7 +485,7 @@ $(function() {
 				activityOnTo = null;
 			}
 
-			var userId = $('#btnSaveUser').prop("name");
+			var userId = $('#btnSaveUser').data("name");
 			if (userId == '') {
 				userId = "0";
 			}
@@ -573,7 +574,8 @@ $(function() {
 			$("#gdvUsersAuditLog").empty();
 			$("#gdvUsersAuditLog_Pagination").remove();
 
-			$("#btnSaveUser").removeAttr("name");
+			//$("#btnSaveUser").removeAttr("name");
+			$("#btnSaveUser").removeData("name");
 
 			rowIndex = 0;
 			$("#dataTable tbody>tr:gt(0)").remove();
@@ -1116,7 +1118,7 @@ $(function() {
 
 			$('#btnSaveUser').click(function(e) {
 				$(this).disableWith('Saving...');
-				var user_id = $(this).prop("name");
+				var user_id = $(this).data("name");
 				if (user_id != '') {
 					myAccount.saveUser(user_id);
 				}
@@ -1134,7 +1136,7 @@ $(function() {
 				$(this).siblings('.cssClassRight').hide();
 			}), $('#txtUserName').on("blur", function() {
 				var userName = $.trim($(this).val());
-				var user_id = $('#btnSaveUser').prop("name");
+				var user_id = $('#btnSaveUser').data("name");
 				if (user_id == '') {
 					user_id = "0";
 				}
@@ -1146,7 +1148,7 @@ $(function() {
 				$(this).siblings('.cssClassRight').hide();
 			}), $('#txtWorkEmail, #txtPersonalEmail').on("blur", function() {
 				var email = $.trim($(this).val());
-				var user_id = $('#btnSaveUser').prop("name");
+				var user_id = $('#btnSaveUser').data("name");
 				if (user_id == '') {
 					user_id = "0";
 				}

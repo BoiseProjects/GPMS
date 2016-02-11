@@ -937,14 +937,6 @@ $(function() {
 			$("#btnWithdrawProposal").hide();
 			$("#btnArchiveProposal").hide();
 
-			$("#btnUpdateProposal").prop("name", proposalId);
-			$("#btnDeleteProposal").prop("name", proposalId);
-			$("#btnSubmitProposal").prop("name", proposalId);
-			$("#btnApproveProposal").prop("name", proposalId);
-			$("#btnDisapproveProposal").prop("name", proposalId);
-			$("#btnWithdrawProposal").prop("name", proposalId);
-			$("#btnArchiveProposal").prop("name", proposalId);
-
 			var currentPositionTitle = GPMS.utils.GetUserPositionTitle();
 
 			currentProposalRoles = currentProposalRoles.split(', ');

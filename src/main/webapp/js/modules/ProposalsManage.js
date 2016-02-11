@@ -2959,6 +2959,7 @@ $(function() {
 					null, null);
 			$('#divProposalGrid').show();
 			$("#btnSaveProposal").removeAttr("name");
+
 			// $("#accordion").accordion("option", "active", 0);
 
 			if (editFlag != "0") {
