@@ -73,9 +73,10 @@ import com.mongodb.MongoClient;
 
 @Path("/users")
 @Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML,
-		MediaType.APPLICATION_FORM_URLENCODED })
+		MediaType.APPLICATION_FORM_URLENCODED, MediaType.TEXT_PLAIN,
+		MediaType.TEXT_HTML })
 @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML,
-		MediaType.TEXT_PLAIN })
+		MediaType.TEXT_PLAIN, MediaType.TEXT_HTML })
 public class UserService {
 	MongoClient mongoClient = null;
 	Morphia morphia = null;
@@ -195,6 +196,7 @@ public class UserService {
 
 	@POST
 	@Path("/UsersExportToExcel")
+	@Produces(MediaType.TEXT_HTML)
 	public String exportUsersJSON(String message)
 			throws JsonProcessingException, IOException, URISyntaxException {
 

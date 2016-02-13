@@ -36,7 +36,6 @@ import gpms.model.Status;
 import gpms.model.TypeOfRequest;
 import gpms.model.UniversityCommitments;
 import gpms.model.UserAccount;
-import gpms.model.UserInfo;
 import gpms.model.UserProfile;
 import gpms.utils.SerializationHelper;
 
@@ -80,8 +79,11 @@ import com.google.gson.GsonBuilder;
 import com.mongodb.MongoClient;
 
 @Path("/proposals")
-@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML,
+		MediaType.APPLICATION_FORM_URLENCODED, MediaType.TEXT_PLAIN,
+		MediaType.TEXT_HTML })
+@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML,
+		MediaType.TEXT_PLAIN, MediaType.TEXT_HTML })
 public class ProposalService {
 	MongoClient mongoClient = null;
 	Morphia morphia = null;
@@ -323,6 +325,7 @@ public class ProposalService {
 
 	@POST
 	@Path("/ProposalsExportToExcel")
+	@Produces(MediaType.TEXT_HTML)
 	public String exportProposalsJSON(String message)
 			throws JsonGenerationException, JsonMappingException, IOException,
 			ParseException, URISyntaxException {
@@ -3108,6 +3111,14 @@ public class ProposalService {
 			notification.setPositionTitle(senior.getPositionTitle());
 			notificationDAO.save(notification);
 		}
+	}
+
+	@GET
+	@Path("/GetAttachmentsOfAProposal")
+	public Response getAttachmentsOfAProposal(String message) throws Exception {
+		ObjectMapper mapper = new ObjectMapper();
+		JsonNode root = mapper.readTree(message);
+		return null;
 	}
 
 	@POST

@@ -1,4 +1,5 @@
 <html>
+<head>
 <title>Image Upload</title>
 <meta charset="UTF-8">
 <script script="text/javascript">

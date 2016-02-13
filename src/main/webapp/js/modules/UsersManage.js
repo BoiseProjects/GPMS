@@ -1718,8 +1718,8 @@ $(function() {
 
 			case 10:
 				if (msg != "No Record") {
-					window.location.href = 'UploadDownloadFileServlet?fileName='
-							+ msg;
+					window.location.href = GPMS.utils.GetGPMSServicePath()
+							+ 'files/download?fileName=' + msg;
 				} else {
 					csscody.alert("<h2>" + 'Information Message' + "</h2><p>"
 							+ 'No Record found!' + "</p>");
