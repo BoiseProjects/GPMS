@@ -119,210 +119,212 @@
 <link type="text/css" rel="stylesheet" href="css/Templates/admin.css" />
 </head>
 <body>
-	<div style="display: none;" id="UpdateProgress1">
-		<div class="sfLoadingbg">&nbsp;</div>
-		<div class="sfLoadingdiv">
-			<img id="imgProgress" src="./images/ajax-loader.gif"
-				style="border-width: 0px;" alt="Loading..." title="Loading..." /> <br>
-			<span id="lblPrgress">Please wait...</span>
+	<form enctype="multipart/form-data" action="MyProposals.jsp"
+		method="post" name="form1" id="form1">
+		<div style="display: none;" id="UpdateProgress1">
+			<div class="sfLoadingbg">&nbsp;</div>
+			<div class="sfLoadingdiv">
+				<img id="imgProgress" src="./images/ajax-loader.gif"
+					style="border-width: 0px;" alt="Loading..." title="Loading..." />
+				<br> <span id="lblPrgress">Please wait...</span>
+			</div>
 		</div>
-	</div>
-	<div id="divAdminControlPanel">
-		<%@ include file="TopStickyBar.jsp"%>
-	</div>
-	<noscript>
-		<span>This page requires java-script to be enabled. Please
-			adjust your browser-settings.</span>
-	</noscript>
-	<div id="sfOuterwrapper">
-		<div class="sfSagewrapper">
+		<div id="divAdminControlPanel">
+			<%@ include file="TopStickyBar.jsp"%>
+		</div>
+		<noscript>
+			<span>This page requires java-script to be enabled. Please
+				adjust your browser-settings.</span>
+		</noscript>
+		<div id="sfOuterwrapper">
+			<div class="sfSagewrapper">
 
-			<!--Body Content-->
-			<div class="sfContentwrapper clearfix">
-				<div id="divCenterContent">
-					<!-- Side Bar Starts-->
-					<div class="sideBarLeft" id="divSideBar">
-						<%@ include file="UserSideBar.jsp"%>
-					</div>
-					<!-- Side Bar Ends -->
-					<div class="sfMaincontent">
-						<div style="display: block" class="sfCpanel sfInnerwrapper"
-							id="divBottompanel">
-							<div class="sfModulecontent clearfix">
-								<!-- Grid -->
-								<div id="divProposalGrid">
-									<div class="cssClassCommonBox Curve">
-										<div class="cssClassHeader">
-											<h1>
-												<span>Manage Your Proposals</span>
-											</h1>
-											<div class="cssClassHeaderRight">
-												<div class="sfButtonwrapper">
-													<p>
-														<button title="Add New Proposal" type="button"
-															id="btnAddNew" class="sfBtn">
-															<span class="icon-addnew">Add New Proposal</span>
-														</button>
-													</p>
-													<!-- 														<p> -->
-													<!-- 															<button title="Delete All Selected" type="button" -->
-													<!-- 																id="btnDeleteSelected" class="sfBtn"> -->
-													<!-- 																<span class="icon-delete">Delete All Selected</span> -->
-													<!-- 															</button> -->
-													<!-- 														</p> -->
-													<p>
-														<button title="Export to Excel" type="button"
-															id="btnExportToExcel" class="sfBtn">
-															<span class="icon-excel">Export to Excel</span>
-														</button>
-													</p>
-													<!-- <p>
+				<!--Body Content-->
+				<div class="sfContentwrapper clearfix">
+					<div id="divCenterContent">
+						<!-- Side Bar Starts-->
+						<div class="sideBarLeft" id="divSideBar">
+							<%@ include file="UserSideBar.jsp"%>
+						</div>
+						<!-- Side Bar Ends -->
+						<div class="sfMaincontent">
+							<div style="display: block" class="sfCpanel sfInnerwrapper"
+								id="divBottompanel">
+								<div class="sfModulecontent clearfix">
+									<!-- Grid -->
+									<div id="divProposalGrid">
+										<div class="cssClassCommonBox Curve">
+											<div class="cssClassHeader">
+												<h1>
+													<span>Manage Your Proposals</span>
+												</h1>
+												<div class="cssClassHeaderRight">
+													<div class="sfButtonwrapper">
+														<p>
+															<button title="Add New Proposal" type="button"
+																id="btnAddNew" class="sfBtn">
+																<span class="icon-addnew">Add New Proposal</span>
+															</button>
+														</p>
+														<!-- 														<p> -->
+														<!-- 															<button title="Delete All Selected" type="button" -->
+														<!-- 																id="btnDeleteSelected" class="sfBtn"> -->
+														<!-- 																<span class="icon-delete">Delete All Selected</span> -->
+														<!-- 															</button> -->
+														<!-- 														</p> -->
+														<p>
+															<button title="Export to Excel" type="button"
+																id="btnExportToExcel" class="sfBtn">
+																<span class="icon-showall">Export to Excel</span>
+															</button>
+														</p>
+														<!-- <p>
 															<button title="Export to CSV" type="button"
 																id="btnExportToCSV" class="sfBtn">
-																<span class="icon-excel">Export to CSV</span>
+																<span class="icon-showall">Export to CSV</span>
 															</button>
 														</p> -->
 
+														<div class="cssClassClear"></div>
+													</div>
 													<div class="cssClassClear"></div>
 												</div>
 												<div class="cssClassClear"></div>
 											</div>
-											<div class="cssClassClear"></div>
-										</div>
-										<div class="sfGridwrapper">
-											<div class="sfGridWrapperContent">
-												<div class="sfFormwrapper sfTableOption">
-													<table width="100%" cellspacing="0" cellpadding="0"
-														border="0">
-														<tbody>
-															<tr>
-																<td><label class="cssClassLabel">Project
-																		Title:</label> <input title="Project Title" type="text"
-																	class="sfTextBoxFix" id="txtSearchProjectTitle"
-																	placeholder="Project Title" /></td>
-																<td><label class="cssClassLabel">User Name:</label>
-																	<input title="User Name" id="txtSearchUserName"
-																	class="sfTextBoxFix" type="text"
-																	placeholder="User Name" /></td>
+											<div class="sfGridwrapper">
+												<div class="sfGridWrapperContent">
+													<div class="sfFormwrapper sfTableOption">
+														<table width="100%" cellspacing="0" cellpadding="0"
+															border="0">
+															<tbody>
+																<tr>
+																	<td><label class="cssClassLabel">Project
+																			Title:</label> <input title="Project Title" type="text"
+																		class="sfTextBoxFix" id="txtSearchProjectTitle"
+																		placeholder="Project Title" /></td>
+																	<td><label class="cssClassLabel">User
+																			Name:</label> <input title="User Name" id="txtSearchUserName"
+																		class="sfTextBoxFix" type="text"
+																		placeholder="User Name" /></td>
 
-																<!-- 																		<td><label class="cssClassLabel"> -->
-																<!-- 																				Project Type:</label> <select title="Choose Project Type" id="ddlProjectType" -->
-																<!-- 																			class="sfListmenu" style="width: 100px;"> -->
-																<!-- 																				<option value="0" >--All--</option> -->
-																<!-- 																		</select></td> -->
-																<!-- 																		<td><label class="cssClassLabel"> -->
-																<!-- 																				Type of Request:</label> <select title="Choose Type of Request" id="ddlTypeOfRequest" -->
-																<!-- 																			class="sfListmenu" style="width: 100px;"> -->
-																<!-- 																				<option value="0" >--All--</option> -->
-																<!-- 																		</select></td> -->
-																<!-- 																		<td><label class="cssClassLabel"> -->
-																<!-- 																				Location of Project:</label> <select  title="Choose Location of Project" id="ddlLocationOfProject" -->
-																<!-- 																			class="sfListmenu" style="width: 100px;"> -->
-																<!-- 																				<option value="0" >--All--</option> -->
-																<!-- 																		</select></td> -->
+																	<!-- 																		<td><label class="cssClassLabel"> -->
+																	<!-- 																				Project Type:</label> <select title="Choose Project Type" id="ddlProjectType" -->
+																	<!-- 																			class="sfListmenu" style="width: 100px;"> -->
+																	<!-- 																				<option value="0" >--All--</option> -->
+																	<!-- 																		</select></td> -->
+																	<!-- 																		<td><label class="cssClassLabel"> -->
+																	<!-- 																				Type of Request:</label> <select title="Choose Type of Request" id="ddlTypeOfRequest" -->
+																	<!-- 																			class="sfListmenu" style="width: 100px;"> -->
+																	<!-- 																				<option value="0" >--All--</option> -->
+																	<!-- 																		</select></td> -->
+																	<!-- 																		<td><label class="cssClassLabel"> -->
+																	<!-- 																				Location of Project:</label> <select  title="Choose Location of Project" id="ddlLocationOfProject" -->
+																	<!-- 																			class="sfListmenu" style="width: 100px;"> -->
+																	<!-- 																				<option value="0" >--All--</option> -->
+																	<!-- 																		</select></td> -->
 
-																<td style="width: 180px; float: left;"><label
-																	class="cssClassLabel">Recieved On:</label>
-																	<div>
-																		<span class="cssClassLabel">From:</span> <input
-																			type="text" title="Received On From"
-																			id="txtSearchSubmittedOnFrom" class="sfTextBoxFix"
-																			placeholder="From">
-																	</div>
-																	<div>
-																		<span class="cssClassLabel">To:</span> <input
-																			type="text" title="Received On To"
-																			id="txtSearchSubmittedOnTo" class="sfTextBoxFix"
-																			placeholder="To">
-																	</div></td>
+																	<td style="width: 180px; float: left;"><label
+																		class="cssClassLabel">Recieved On:</label>
+																		<div>
+																			<span class="cssClassLabel">From:</span> <input
+																				type="text" title="Received On From"
+																				id="txtSearchSubmittedOnFrom" class="sfTextBoxFix"
+																				placeholder="From">
+																		</div>
+																		<div>
+																			<span class="cssClassLabel">To:</span> <input
+																				type="text" title="Received On To"
+																				id="txtSearchSubmittedOnTo" class="sfTextBoxFix"
+																				placeholder="To">
+																		</div></td>
 
-																<td style="width: 180px;"><label
-																	class="cssClassLabel">Total Costs:</label>
-																	<div>
-																		<span class="cssClassLabel">From:</span> <input
-																			type="text" title="Total Costs From"
-																			id="txtSearchTotalCostsFrom"
-																			name="searchTotalCostsFrom" class="sfTextBoxFix"
-																			placeholder="From">
-																	</div>
-																	<div>
-																		<span class="cssClassLabel">To:</span> <input
-																			type="text" title="Total Costs To"
-																			id="txtSearchTotalCostsTo" name="searchTotalCostsTo"
-																			class="sfTextBoxFix" placeholder="To">
-																	</div></td>
+																	<td style="width: 180px;"><label
+																		class="cssClassLabel">Total Costs:</label>
+																		<div>
+																			<span class="cssClassLabel">From:</span> <input
+																				type="text" title="Total Costs From"
+																				id="txtSearchTotalCostsFrom"
+																				name="searchTotalCostsFrom" class="sfTextBoxFix"
+																				placeholder="From">
+																		</div>
+																		<div>
+																			<span class="cssClassLabel">To:</span> <input
+																				type="text" title="Total Costs To"
+																				id="txtSearchTotalCostsTo" name="searchTotalCostsTo"
+																				class="sfTextBoxFix" placeholder="To">
+																		</div></td>
 
-																<td><label class="cssClassLabel">Proposal
-																		Status:</label> <select title="Choose Proposal Status"
-																	id="ddlSearchProposalStatus" class="sfListmenu"
-																	style="width: 80px;">
-																		<option value="0">--All--</option>
-																</select></td>
+																	<td><label class="cssClassLabel">Proposal
+																			Status:</label> <select title="Choose Proposal Status"
+																		id="ddlSearchProposalStatus" class="sfListmenu"
+																		style="width: 80px;">
+																			<option value="0">--All--</option>
+																	</select></td>
 
-																<td><label class="cssClassLabel">As:</label> <select
-																	title="Choose User Role" id="ddlSearchUserRole"
-																	class="sfListmenu" style="width: 58px;">
-																		<option value="0">--All--</option>
-																		<option value="PI">PI</option>
-																		<option value="CO-PI">CO-PI</option>
-																		<option value="Senior">Senior</option>
-																</select></td>
+																	<td><label class="cssClassLabel">As:</label> <select
+																		title="Choose User Role" id="ddlSearchUserRole"
+																		class="sfListmenu" style="width: 58px;">
+																			<option value="0">--All--</option>
+																			<option value="PI">PI</option>
+																			<option value="CO-PI">CO-PI</option>
+																			<option value="Senior">Senior</option>
+																	</select></td>
 
-																<td><label class="cssClassLabel">&nbsp;</label>
-																	<button title="Search Proposal" class="sfBtn"
-																		id="btnSearchProposal" type="button">
-																		<span class="icon-search">Search</span>
-																	</button></td>
-															</tr>
-														</tbody>
-													</table>
+																	<td><label class="cssClassLabel">&nbsp;</label>
+																		<button title="Search Proposal" class="sfBtn"
+																			id="btnSearchProposal" type="button">
+																			<span class="icon-search">Search</span>
+																		</button></td>
+																</tr>
+															</tbody>
+														</table>
+													</div>
+													<div class="loading">
+														<img id="ajaxLoader" src="" alt="Loading..."
+															title="Loading..." />
+													</div>
+													<div class="log"></div>
+													<table id="gdvProposals" cellspacing="0" cellpadding="0"
+														border="0" width="100%"></table>
 												</div>
-												<div class="loading">
-													<img id="ajaxLoader" src="" alt="Loading..."
-														title="Loading..." />
-												</div>
-												<div class="log"></div>
-												<table id="gdvProposals" cellspacing="0" cellpadding="0"
-													border="0" width="100%"></table>
 											</div>
 										</div>
 									</div>
-								</div>
-								<!-- End of Grid -->
-								<!-- form -->
-								<div id="divProposalForm" style="display: none">
-									<div class="cssClassCommonBox Curve">
-										<div class="cssClassHeader">
-											<h1>
-												<span id="lblFormHeading">New Proposal Details</span>
-											</h1>
-											<div class="cssClassLeft">
-												<img src="images/bsu_logo.png" alt="Boise State University"
-													title="Boise State University">
+									<!-- End of Grid -->
+									<!-- form -->
+									<div id="divProposalForm" style="display: none">
+										<div class="cssClassCommonBox Curve">
+											<div class="cssClassHeader">
+												<h1>
+													<span id="lblFormHeading">New Proposal Details</span>
+												</h1>
+												<div class="cssClassLeft">
+													<img src="images/bsu_logo.png" alt="Boise State University"
+														title="Boise State University">
+												</div>
+												<div class="cssClassMiddle"
+													style="text-align: center; width: 60%;">
+													<div class="cssClassLabelHeader">Office of Sponsored
+														Programs</div>
+													<div class="cssClassLabelHeader">Proposal Data Sheet</div>
+													<span class="cssClassLabelTitle">Proposals must be
+														submitted to OSP <u>3 working days prior</u> to the
+														proposal submission deadline.
+													</span>
+												</div>
 											</div>
-											<div class="cssClassMiddle"
-												style="text-align: center; width: 60%;">
-												<div class="cssClassLabelHeader">Office of Sponsored
-													Programs</div>
-												<div class="cssClassLabelHeader">Proposal Data Sheet</div>
-												<span class="cssClassLabelTitle">Proposals must be
-													submitted to OSP <u>3 working days prior</u> to the
-													proposal submission deadline.
-												</span>
+											<div>
+												<span class="cssClassRequired">*</span> <span
+													class="cssClassLabelTitle">indicates required fields</span>
+												<div id="accordion-expand-holder" style="display: none;">
+													<button type="button" class="expandAll sfBtn">Expand
+														all</button>
+													<button type="button" class="collapseAll sfBtn">Collapse
+														all</button>
+												</div>
 											</div>
-										</div>
-										<div>
-											<span class="cssClassRequired">*</span> <span
-												class="cssClassLabelTitle">indicates required fields</span>
-											<div id="accordion-expand-holder" style="display: none;">
-												<button type="button" class="expandAll sfBtn">Expand
-													all</button>
-												<button type="button" class="collapseAll sfBtn">Collapse
-													all</button>
-											</div>
-										</div>
-										<form enctype="multipart/form-data" action="MyProposals.jsp"
-											method="post" name="form1" id="form1">
+											<!-- 										<form enctype="multipart/form-data" action="MyProposals.jsp" -->
+											<!-- 											method="post" name="form1" id="form1"> -->
 											<div id="accordion">
 												<h3>
 													<span id="lblSection1">Investigator Information</span>
@@ -474,8 +476,7 @@
 												</div>
 
 												<h3>
-													<span id="lblSection3">Sponsor and Budget
-														Information</span>
+													<span id="lblSection3">Sponsor and Budget Information</span>
 												</h3>
 												<div class="sfFormwrapper ui-tabs-panel">
 													<table cellspacing="0" cellpadding="0" border="0">
@@ -615,8 +616,7 @@
 												</div>
 
 												<h3>
-													<span id="lblSection6">Conflict of Interest and
-														Commitment Information</span>
+													<span id="lblSection6">Conflict of Interest and Commitment Information</span>
 												</h3>
 												<div class="sfFormwrapper ui-tabs-panel">
 													<table cellspacing="0" cellpadding="0" border="0">
@@ -879,8 +879,7 @@
 												</div>
 
 												<h3>
-													<span id="lblSection10">Proprietary/Confidential
-														Information</span>
+													<span id="lblSection10">Proprietary/Confidential Information</span>
 												</h3>
 												<div class="sfFormwrapper ui-tabs-panel">
 													<table cellspacing="0" cellpadding="0" border="0">
@@ -1480,194 +1479,192 @@
 															final copy of the Porposal Data Sheet.</span>
 													</div>
 												</div>
-											</div>
-										</form>
 
-										<div id="accordionUpload">
-											<h3>
-												<span id="lblSection14">Appendices</span>
-											</h3>
-											<div class="sfFormwrapper ui-tabs-panel">
-												<div id="fileuploader">Upload</div>
+												<h3>
+													<span id="lblSection13">Appendices</span>
+												</h3>
+												<div class="sfFormwrapper ui-tabs-panel">
+													<div id="fileuploader">Upload</div>
+												</div>
 											</div>
-										</div>
 
-										<div class="sfButtonwrapper">
-											<p>
-												<button title="Go Back" type="button" id="btnBack"
-													class="sfBtn">
-													<span class="icon-arrow-slim-w">Back</span>
-												</button>
-											</p>
-											<p>
-												<button title="Reset" type="button" id="btnReset"
-													class="sfBtn">
-													<span class="icon-refresh">Reset</span>
-												</button>
-											</p>
-											<p>
-												<button title="Save Proposal As Draft" type="button"
-													id="btnSaveProposal" class="sfBtn">
-													<span class="icon-save">Save As Draft</span>
-												</button>
-											</p>
-											<p>
-												<button title="Update Proposal" type="button"
-													id="btnUpdateProposal" class="sfBtn">
-													<span class="icon-save">Update</span>
-												</button>
-											</p>
-											<p>
-												<button title="Delete Proposal" type="button"
-													id="btnDeleteProposal" class="sfBtn">
-													<span class="icon-delete">Delete</span>
-												</button>
-											</p>
-											<p>
-												<button title="Submit Proposal" type="button"
-													id="btnSubmitProposal" class="sfBtn">
-													<span class="icon-save">Submit</span>
-												</button>
-											</p>
-											<p>
-												<button title="Approve Proposal" type="button"
-													id="btnApproveProposal" class="sfBtn">
-													<span class="icon-save">Approve</span>
-												</button>
-											</p>
-											<p>
-												<button title="Disapprove Proposal" type="button"
-													id="btnDisapproveProposal" class="sfBtn">
-													<span class="icon-save">Disapprove</span>
-												</button>
-											</p>
-											<p>
-												<button title="Withdraw Proposal" type="button"
-													id="btnWithdrawProposal" class="sfBtn">
-													<span class="icon-save">Withdraw</span>
-												</button>
-											</p>
-											<p>
-												<button title="Archive Proposal" type="button"
-													id="btnArchiveProposal" class="sfBtn">
-													<span class="icon-save">Archive</span>
-												</button>
-											</p>
+											<div class="sfButtonwrapper">
+												<p>
+													<button title="Go Back" type="button" id="btnBack"
+														class="sfBtn">
+														<span class="icon-arrow-slim-w">Back</span>
+													</button>
+												</p>
+												<p>
+													<button title="Reset" type="button" id="btnReset"
+														class="sfBtn">
+														<span class="icon-refresh">Reset</span>
+													</button>
+												</p>
+												<p>
+													<button title="Save Proposal As Draft" type="button"
+														id="btnSaveProposal" class="sfBtn">
+														<span class="icon-save">Save As Draft</span>
+													</button>
+												</p>
+												<p>
+													<button title="Update Proposal" type="button"
+														id="btnUpdateProposal" class="sfBtn">
+														<span class="icon-save">Update</span>
+													</button>
+												</p>
+												<p>
+													<button title="Delete Proposal" type="button"
+														id="btnDeleteProposal" class="sfBtn">
+														<span class="icon-delete">Delete</span>
+													</button>
+												</p>
+												<p>
+													<button title="Submit Proposal" type="button"
+														id="btnSubmitProposal" class="sfBtn">
+														<span class="icon-save">Submit</span>
+													</button>
+												</p>
+												<p>
+													<button title="Approve Proposal" type="button"
+														id="btnApproveProposal" class="sfBtn">
+														<span class="icon-save">Approve</span>
+													</button>
+												</p>
+												<p>
+													<button title="Disapprove Proposal" type="button"
+														id="btnDisapproveProposal" class="sfBtn">
+														<span class="icon-save">Disapprove</span>
+													</button>
+												</p>
+												<p>
+													<button title="Withdraw Proposal" type="button"
+														id="btnWithdrawProposal" class="sfBtn">
+														<span class="icon-save">Withdraw</span>
+													</button>
+												</p>
+												<p>
+													<button title="Archive Proposal" type="button"
+														id="btnArchiveProposal" class="sfBtn">
+														<span class="icon-save">Archive</span>
+													</button>
+												</p>
+											</div>
 										</div>
 									</div>
-								</div>
-								<!-- End form -->
+									<!-- End form -->
 
-								<!-- Start Change Log Grid -->
-								<div id="divProposalAuditGrid" style="display: none">
-									<div class="cssClassCommonBox Curve">
-										<div class="cssClassHeader">
-											<h1>
-												<span id="lblLogsHeading"></span>
-											</h1>
-											<div class="cssClassHeaderRight">
-												<div class="sfButtonwrapper">
-													<p>
-														<button title="Export to Excel" type="button"
-															id="btnLogsExportToExcel" class="sfBtn">
-															<span class="icon-excel">Export to Excel</span>
-														</button>
-													</p>
-													<!-- <p>
+									<!-- Start Change Log Grid -->
+									<div id="divProposalAuditGrid" style="display: none">
+										<div class="cssClassCommonBox Curve">
+											<div class="cssClassHeader">
+												<h1>
+													<span id="lblLogsHeading"></span>
+												</h1>
+												<div class="cssClassHeaderRight">
+													<div class="sfButtonwrapper">
+														<p>
+															<button title="Export to Excel" type="button"
+																id="btnLogsExportToExcel" class="sfBtn">
+																<span class="icon-showall">Export to Excel</span>
+															</button>
+														</p>
+														<!-- <p>
 															<button title="Export to CSV" type="button"
 																id="btnExportToCSV" class="sfBtn">
-																<span class="icon-excel">Export to CSV</span>
+																<span class="icon-showall">Export to CSV</span>
 															</button>
 														</p> -->
 
+														<div class="cssClassClear"></div>
+													</div>
 													<div class="cssClassClear"></div>
 												</div>
 												<div class="cssClassClear"></div>
 											</div>
-											<div class="cssClassClear"></div>
-										</div>
-										<div class="sfGridwrapper">
-											<div class="sfGridWrapperContent">
-												<div class="sfFormwrapper sfTableOption">
-													<table width="100%" cellspacing="0" cellpadding="0"
-														border="0">
-														<tbody>
-															<tr>
-																<td><label class="cssClassLabel"> Action:</label> <input
-																	title="Action" type="text" class="sfInputbox"
-																	id="txtSearchAction" placeholder="Action" /></td>
-																<td><label class="cssClassLabel"> Audited
-																		By:</label> <input title="Audited By" type="text"
-																	class="sfInputbox" id="txtSearchAuditedBy"
-																	placeholder="Audited By" /></td>
-																<td><label class="cssClassLabel"> Activity
-																		On From:</label> <input title="Activity On From" type="text"
-																	class="sfTextBoxSmall" id="txtSearchActivityOnFrom"
-																	placeholder="From" /></td>
-																<td><label class="cssClassLabel"> Activity
-																		On To:</label> <input title="Activity On To" type="text"
-																	class="sfTextBoxSmall" id="txtSearchActivityOnTo"
-																	placeholder="To" /></td>
-																<td><label class="cssClassLabel"> </label>
-																	<button title="Search Audit Log" class="sfBtn"
-																		id="btnSearchProposalAuditLog" type="button">
-																		<span class="icon-search">Search</span>
-																	</button></td>
-															</tr>
-														</tbody>
-													</table>
+											<div class="sfGridwrapper">
+												<div class="sfGridWrapperContent">
+													<div class="sfFormwrapper sfTableOption">
+														<table width="100%" cellspacing="0" cellpadding="0"
+															border="0">
+															<tbody>
+																<tr>
+																	<td><label class="cssClassLabel"> Action:</label>
+																		<input title="Action" type="text" class="sfInputbox"
+																		id="txtSearchAction" placeholder="Action" /></td>
+																	<td><label class="cssClassLabel"> Audited
+																			By:</label> <input title="Audited By" type="text"
+																		class="sfInputbox" id="txtSearchAuditedBy"
+																		placeholder="Audited By" /></td>
+																	<td><label class="cssClassLabel"> Activity
+																			On From:</label> <input title="Activity On From" type="text"
+																		class="sfTextBoxSmall" id="txtSearchActivityOnFrom"
+																		placeholder="From" /></td>
+																	<td><label class="cssClassLabel"> Activity
+																			On To:</label> <input title="Activity On To" type="text"
+																		class="sfTextBoxSmall" id="txtSearchActivityOnTo"
+																		placeholder="To" /></td>
+																	<td><label class="cssClassLabel"> </label>
+																		<button title="Search Audit Log" class="sfBtn"
+																			id="btnSearchProposalAuditLog" type="button">
+																			<span class="icon-search">Search</span>
+																		</button></td>
+																</tr>
+															</tbody>
+														</table>
+													</div>
+													<div class="loading">
+														<img id="ajaxLoader" src="" alt="Loading..."
+															title="Loading..." />
+													</div>
+													<div class="log"></div>
+													<table id="gdvProposalsAuditLog" cellspacing="0"
+														cellpadding="0" border="0" width="100%"></table>
 												</div>
-												<div class="loading">
-													<img id="ajaxLoader" src="" alt="Loading..."
-														title="Loading..." />
-												</div>
-												<div class="log"></div>
-												<table id="gdvProposalsAuditLog" cellspacing="0"
-													cellpadding="0" border="0" width="100%"></table>
 											</div>
 										</div>
+										<table id="tblLastAuditedInfo" cellspacing="0" cellpadding="0"
+											border="0">
+											<tbody>
+												<tr>
+													<td><span class="cssClassLabelTitle">Last
+															Audited On:&nbsp;</span></td>
+													<td class="cssClassTableRightCol"><span
+														id="lblLastUpdatedOn" class="cssClassLabel"></span></td>
+												</tr>
+												<tr>
+													<td><span class="cssClassLabelTitle">Last
+															Audited By:&nbsp;</span></td>
+													<td class="cssClassTableRightCol"><span
+														id="lblLastUpdatedBy" class="cssClassLabel"></span></td>
+												</tr>
+												<tr>
+													<td><span class="cssClassLabelTitle">Last
+															Activity:&nbsp;</span></td>
+													<td class="cssClassTableRightCol"><span
+														id="lblActivity" class="cssClassLabel"></span></td>
+												</tr>
+											</tbody>
+										</table>
+										<div class="sfButtonwrapper">
+											<p>
+												<button class="sfBtn" id="btnLogsBack" type="button"
+													title="Go Back">
+													<span class="icon-arrow-slim-w">Back</span>
+												</button>
+											</p>
+										</div>
 									</div>
-									<table id="tblLastAuditedInfo" cellspacing="0" cellpadding="0"
-										border="0">
-										<tbody>
-											<tr>
-												<td><span class="cssClassLabelTitle">Last
-														Audited On:&nbsp;</span></td>
-												<td class="cssClassTableRightCol"><span
-													id="lblLastUpdatedOn" class="cssClassLabel"></span></td>
-											</tr>
-											<tr>
-												<td><span class="cssClassLabelTitle">Last
-														Audited By:&nbsp;</span></td>
-												<td class="cssClassTableRightCol"><span
-													id="lblLastUpdatedBy" class="cssClassLabel"></span></td>
-											</tr>
-											<tr>
-												<td><span class="cssClassLabelTitle">Last
-														Activity:&nbsp;</span></td>
-												<td class="cssClassTableRightCol"><span
-													id="lblActivity" class="cssClassLabel"></span></td>
-											</tr>
-										</tbody>
-									</table>
-									<div class="sfButtonwrapper">
-										<p>
-											<button class="sfBtn" id="btnLogsBack" type="button"
-												title="Go Back">
-												<span class="icon-arrow-slim-w">Back</span>
-											</button>
-										</p>
-									</div>
+									<!-- End Change Log Grid-->
 								</div>
-								<!-- End Change Log Grid-->
 							</div>
+							<!-- END sfMaincontent -->
 						</div>
-						<!-- END sfMaincontent -->
 					</div>
+					<!-- END Body Content sfContentwrapper -->
 				</div>
-				<!-- END Body Content sfContentwrapper -->
 			</div>
 		</div>
-	</div>
+	</form>
 </body>
 </html>

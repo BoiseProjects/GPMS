@@ -37,7 +37,7 @@
 								"filepath" : "uploads\two.jpg",
 								"filesize" : "82393"
 							} ];
-							var uploadObj = $("#fileuploader")
+							$("#fileuploader")
 									.uploadFile(
 											{
 												url : "REST/files/multiupload",
@@ -63,6 +63,7 @@
 												showDownload : true,
 												statusBarWidth : 600,
 												dragdropWidth : 600,
+												nestedForms : false,
 
 												onLoad : function(obj) {
 													$
