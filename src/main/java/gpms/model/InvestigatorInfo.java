@@ -10,6 +10,10 @@ import com.google.gson.annotations.Expose;
 
 @Embedded
 public class InvestigatorInfo implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@Expose
 	@Embedded("PI")
 	private InvestigatorRefAndPosition pi = new InvestigatorRefAndPosition();

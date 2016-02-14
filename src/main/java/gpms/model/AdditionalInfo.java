@@ -9,6 +9,11 @@ import com.google.gson.annotations.Expose;
 
 @Embedded
 public class AdditionalInfo implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Expose
 	@Property("anticipates foreign nationals payment")
 	private boolean anticipatesForeignNationalsPayment;

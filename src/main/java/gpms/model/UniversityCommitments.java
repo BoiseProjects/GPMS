@@ -9,6 +9,11 @@ import com.google.gson.annotations.Expose;
 
 @Embedded
 public class UniversityCommitments implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Expose
 	@Property("new renovated facilities required")
 	private boolean newRenovatedFacilitiesRequired;

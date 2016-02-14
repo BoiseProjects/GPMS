@@ -9,6 +9,11 @@ import com.google.gson.annotations.Expose;
 
 @Embedded
 public class ProjectLocation implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Expose
 	@Property("off-campus")
 	private boolean offCampus;

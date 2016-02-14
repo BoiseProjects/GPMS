@@ -7,6 +7,11 @@ import org.mongodb.morphia.annotations.Property;
 import com.google.gson.annotations.Expose;
 
 public class BasePIEligibilityOptions implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Expose
 	@Property("yes")
 	private boolean yes;

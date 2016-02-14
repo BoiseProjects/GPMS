@@ -13,6 +13,11 @@ import com.google.gson.annotations.Expose;
 
 @Embedded
 public class SponsorAndBudgetInfo implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Expose
 	@Property("granting agency")
 	private List<String> grantingAgency = new ArrayList<String>();

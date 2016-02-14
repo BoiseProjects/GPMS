@@ -14,6 +14,11 @@ import com.google.gson.annotations.Expose;
 
 @Embedded
 public class ProjectInfo implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Expose
 	@Property("project title")
 	@Indexed(value = IndexDirection.ASC, name = "proposalTitleIndex", unique = true)

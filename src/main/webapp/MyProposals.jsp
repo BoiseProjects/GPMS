@@ -100,9 +100,9 @@
 <script type="text/javascript" src="js/MessageBox/jquery.easing.1.3.js"></script>
 <script type="text/javascript" src="js/MessageBox/alertbox.js"></script>
 
-<script type="text/javascript" src="js/modules/MyProposals.js"></script>
-
 <script type="text/javascript" src="js/Uploader/jquery.uploadfile.js"></script>
+
+<script type="text/javascript" src="js/modules/MyProposals.js"></script>
 
 <link type="text/css" rel="stylesheet"
 	href="css/Templates/jquery-ui.css" />
@@ -173,13 +173,13 @@
 													<p>
 														<button title="Export to Excel" type="button"
 															id="btnExportToExcel" class="sfBtn">
-															<span class="icon-showall">Export to Excel</span>
+															<span class="icon-excel">Export to Excel</span>
 														</button>
 													</p>
 													<!-- <p>
 															<button title="Export to CSV" type="button"
 																id="btnExportToCSV" class="sfBtn">
-																<span class="icon-showall">Export to CSV</span>
+																<span class="icon-excel">Export to CSV</span>
 															</button>
 														</p> -->
 
@@ -1491,7 +1491,7 @@
 												<div id="fileuploader">Upload</div>
 											</div>
 										</div>
-										
+
 										<div class="sfButtonwrapper">
 											<p>
 												<button title="Go Back" type="button" id="btnBack"
@@ -1570,13 +1570,13 @@
 													<p>
 														<button title="Export to Excel" type="button"
 															id="btnLogsExportToExcel" class="sfBtn">
-															<span class="icon-showall">Export to Excel</span>
+															<span class="icon-excel">Export to Excel</span>
 														</button>
 													</p>
 													<!-- <p>
 															<button title="Export to CSV" type="button"
 																id="btnExportToCSV" class="sfBtn">
-																<span class="icon-showall">Export to CSV</span>
+																<span class="icon-excel">Export to CSV</span>
 															</button>
 														</p> -->
 

@@ -1805,7 +1805,7 @@ $(function() {
 			};
 			csscody.confirm(
 					"<h2>" + 'Delete Confirmation' + "</h2><p>"
-							+ 'Are you sure you want to delete this proposal?'
+							+ 'Are you certain you want to delete this proposal?'
 							+ "</p>", properties);
 		},
 
@@ -3215,7 +3215,7 @@ $(function() {
 													"<h2>"
 															+ 'Delete Confirmation'
 															+ "</h2><p>"
-															+ 'Are you sure you want to delete selected proposal(s)?'
+															+ 'Are you certain you want to delete selected proposal(s)?'
 															+ "</p>",
 													properties);
 								} else {

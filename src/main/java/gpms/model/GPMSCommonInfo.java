@@ -3,6 +3,11 @@ package gpms.model;
 import java.io.Serializable;
 
 public class GPMSCommonInfo implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	private String userProfileID;
 	private String userName;
 	private boolean userIsAdmin;

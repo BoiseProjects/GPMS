@@ -43,15 +43,15 @@
 							showDone : false,
 							showDelete : false,
 							confirmDelete : false,
-							deleteButtonStr : "Delete it",
+							deleteButtonStr : "Ok",
 							cancelDeleteButtonStr : "Cancel",
-							confirmDeleteStr : "Delete confirmation!",
-							deleteMessageStr : "Really delete ",
+							confirmDeleteStr : "Delete Confirmation",
+							deleteMessageStr : "Are you certain you want to delete? ",
 							showError : true,
 							showStatusAfterSuccess : true,
 							showStatusAfterError : true,
 							showFileCounter : true,
-							fileCounterStyle : "). ",
+							fileCounterStyle : ") ",
 							showFileSize : true,
 							showProgress : false,
 							nestedForms : true,
@@ -84,7 +84,7 @@
 							dragDropHoverClass : "state-hover",
 							errorClass : "ajax-file-upload-error",
 							uploadButtonClass : "ajax-file-upload",
-							dragDropStr : "<span><b>Drag &amp; Drop Files</b></span>",
+							dragDropStr : "<span class='cssClassTitle'>Drag &amp; Drop Files Here</span>",
 							uploadStr : "Upload",
 							abortStr : "Abort",
 							cancelStr : "Cancel",
@@ -217,6 +217,7 @@
 
 		}
 		// This is for showing Old files to user.
+		alert(this);
 		this.createProgress = function(filename, filepath, filesize) {
 			var pd = new createProgressDiv(this, s);
 			pd.progressDiv.show();
@@ -984,7 +985,8 @@
 														"<div id='ajax-file-upload-delete'></div>")
 														.html(
 																s.deleteMessageStr
-																		+ data)
+																		+ fileArray)
+														// data
 														.dialog(
 																{
 																	autoOpen : false,

@@ -9,6 +9,11 @@ import com.google.gson.annotations.Expose;
 
 @Embedded
 public class TypeOfRequest implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Expose
 	@Property("pre-proposal")
 	private boolean isPreProposal;

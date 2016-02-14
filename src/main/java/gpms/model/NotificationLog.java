@@ -5,7 +5,6 @@ import gpms.dao.NotificationDAO;
 import java.io.Serializable;
 import java.util.Date;
 
-import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Indexed;
 import org.mongodb.morphia.annotations.PrePersist;
@@ -17,6 +16,11 @@ import com.google.gson.annotations.Expose;
 @Entity(value = NotificationDAO.COLLECTION_NAME, noClassnameStored = true)
 public class NotificationLog extends BaseEntity implements
 		Comparable<NotificationLog>, Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@Expose
 	@Property("type")

@@ -10,6 +10,11 @@ import com.google.gson.annotations.Expose;
 
 @Embedded
 public class SignatureInfo implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Expose
 	@Property("user profile id")
 	private String userProfileId = new String();

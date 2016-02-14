@@ -13,6 +13,11 @@ import com.google.gson.annotations.Expose;
 
 @Entity(value = DelegationDAO.COLLECTION_NAME, noClassnameStored = true)
 public class Delegation extends BaseEntity implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Expose
 	@Reference(value = "user profile"/* , lazy = true */)
 	private UserProfile userProfile = new UserProfile();

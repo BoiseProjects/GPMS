@@ -1,7 +1,6 @@
 package gpms.model;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Property;
@@ -10,6 +9,11 @@ import com.google.gson.annotations.Expose;
 
 @Embedded
 public class CostShareInfo implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Expose
 	@Property("institutional committed")
 	boolean institutionalCommitted;

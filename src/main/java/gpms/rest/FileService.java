@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URISyntaxException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -27,6 +29,7 @@ import javax.ws.rs.core.Response;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.lang3.RandomStringUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.jersey.core.header.FormDataContentDisposition;
@@ -160,12 +163,24 @@ public class FileService {
 		Iterator<FileItem> fileItemsIterator = fileItemsList.iterator();
 		while (fileItemsIterator.hasNext()) {
 			FileItem fileItem = fileItemsIterator.next();
+			String fileExtension = getFileExtension(fileItem.getName());
+
 			System.out.println("FieldName=" + fileItem.getFieldName());
 			System.out.println("FileName=" + fileItem.getName());
+			System.out.println("FileExtension=" + fileExtension);
 			System.out.println("ContentType=" + fileItem.getContentType());
 			System.out.println("Size in bytes=" + fileItem.getSize());
 
-			File file = new File(UPLOAD_PATH + fileItem.getName());
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy_MM_dd");
+			Date date = new Date();
+			System.out.println(); // 2016/02/10 16:16:39
+
+			String fileName = String.format(
+					"%s.%s",
+					RandomStringUtils.randomAlphanumeric(8) + "_"
+							+ dateFormat.format(date), fileExtension);
+
+			File file = new File(UPLOAD_PATH + fileName);
 
 			// File file = new File(request.getServletContext().getAttribute(
 			// "FILES_DIR")
@@ -181,8 +196,15 @@ public class FileService {
 			ObjectMapper mapper = new ObjectMapper();
 
 			// 4. Send result to client
-			mapper.writeValue(response.getOutputStream(), fileItem.getName());
+			mapper.writeValue(response.getOutputStream(), fileName);
 		}
+	}
+
+	private static String getFileExtension(String fileName) {
+		if (fileName.lastIndexOf(".") != -1 && fileName.lastIndexOf(".") != 0)
+			return fileName.substring(fileName.lastIndexOf(".") + 1);
+		else
+			return "";
 	}
 
 	@POST

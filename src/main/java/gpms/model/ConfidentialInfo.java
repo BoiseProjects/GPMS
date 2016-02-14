@@ -9,6 +9,11 @@ import com.google.gson.annotations.Expose;
 
 @Embedded
 public class ConfidentialInfo implements Serializable  {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Expose
 	@Property("contain confidential information")
 	private boolean containConfidentialInformation;

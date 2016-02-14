@@ -18,6 +18,11 @@ import com.google.gson.annotations.Expose;
 
 @Entity(value = ProposalDAO.COLLECTION_NAME, noClassnameStored = true)
 public class Proposal extends BaseEntity implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Expose
 	@Property("proposal no")
 	@Indexed(value = IndexDirection.ASC, name = "proposalNoIndex", unique = true)
@@ -83,9 +88,13 @@ public class Proposal extends BaseEntity implements Serializable {
 	@Embedded("OSPSection info")
 	private OSPSectionInfo oSPSectionInfo = new OSPSectionInfo();
 
-	@Expose
+	// @Expose
 	@Embedded("signature info")
 	private List<SignatureInfo> signatureInfo = new ArrayList<SignatureInfo>();
+
+	@Expose
+	@Embedded("appendices")
+	private List<Appendix> appendices = new ArrayList<Appendix>();
 
 	public Proposal() {
 	}
@@ -223,6 +232,14 @@ public class Proposal extends BaseEntity implements Serializable {
 		this.signatureInfo = signatureInfo;
 	}
 
+	public List<Appendix> getAppendices() {
+		return appendices;
+	}
+
+	public void setAppendices(List<Appendix> appendices) {
+		this.appendices = appendices;
+	}
+
 	@Override
 	public String toString() {
 		return "Proposal [proposalNo=" + proposalNo + ", dateCreated="
@@ -237,7 +254,7 @@ public class Proposal extends BaseEntity implements Serializable {
 				+ additionalInfo + ", collaborationInfo=" + collaborationInfo
 				+ ", confidentialInfo=" + confidentialInfo
 				+ ", oSPSectionInfo=" + oSPSectionInfo + ", signatureInfo="
-				+ signatureInfo + "]";
+				+ signatureInfo + ", appendices=" + appendices + "]";
 	}
 
 	@Override
@@ -246,6 +263,8 @@ public class Proposal extends BaseEntity implements Serializable {
 		int result = 1;
 		result = prime * result
 				+ ((additionalInfo == null) ? 0 : additionalInfo.hashCode());
+		result = prime * result
+				+ ((appendices == null) ? 0 : appendices.hashCode());
 		result = prime
 				* result
 				+ ((collaborationInfo == null) ? 0 : collaborationInfo
@@ -301,6 +320,11 @@ public class Proposal extends BaseEntity implements Serializable {
 			if (other.additionalInfo != null)
 				return false;
 		} else if (!additionalInfo.equals(other.additionalInfo))
+			return false;
+		if (appendices == null) {
+			if (other.appendices != null)
+				return false;
+		} else if (!appendices.equals(other.appendices))
 			return false;
 		if (collaborationInfo == null) {
 			if (other.collaborationInfo != null)

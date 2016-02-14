@@ -18,6 +18,11 @@ import com.google.gson.annotations.Expose;
 // @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class,
 // property = "_id")
 public class UserAccount extends BaseEntity implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Expose
 	@Property("username")
 	@Indexed(value = IndexDirection.ASC, name = "userNameIndex", unique = true)

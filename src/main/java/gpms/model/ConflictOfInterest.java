@@ -9,6 +9,11 @@ import com.google.gson.annotations.Expose;
 
 @Embedded
 public class ConflictOfInterest implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	// c_o_i == conflict_of_interest
 	@Expose
 	@Property("financial COI")

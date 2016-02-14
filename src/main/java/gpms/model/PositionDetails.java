@@ -9,6 +9,11 @@ import com.google.gson.annotations.Expose;
 
 @Embedded
 public class PositionDetails implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Expose
 	@Property("position title")
 	private String positionTitle = new String();
@@ -128,5 +133,5 @@ public class PositionDetails implements Serializable {
 			return false;
 		return true;
 	}
-	
+
 }

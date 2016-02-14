@@ -10,6 +10,11 @@ import com.google.gson.annotations.Expose;
 
 @Embedded
 public class InvestigatorRefAndPosition implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Expose
 	@Reference(value = "user profile" /* , lazy = true */)
 	UserProfile userRef = new UserProfile();

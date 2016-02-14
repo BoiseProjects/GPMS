@@ -26,6 +26,17 @@
 		$(document)
 				.ready(
 						function() {
+							var appendices = [ {
+								"filename" : "one.pdf",
+								"extension" : "pdf",
+								"filepath" : "uploads\\one.pdf",
+								"filesize" : "82393"
+							}, {
+								"filename" : "two.jpg",
+								"extension" : "jpg",
+								"filepath" : "uploads\two.jpg",
+								"filesize" : "82393"
+							} ];
 							var uploadObj = $("#fileuploader")
 									.uploadFile(
 											{
@@ -35,41 +46,40 @@
 												fileName : "myfile",
 												allowDuplicates : false,
 												duplicateStrict : true,
-												//sequential : true,
-												//sequentialCount : 1,
-												//autoSubmit : false,
-												// 	formData : {
-												// 	"name" : "Milson",
-												// 	"age" : 29
-												// 	},
-												//acceptFiles : "image/*",
+												// autoSubmit : true,
+												// sequential : true,
+												// sequentialCount : 1,
+												// autoSubmit : false,
+												// formData : {
+												// "name" : "Milson",
+												// "age" : 29
+												// },
+												// acceptFiles : "image/*",
 												maxFileCount : 5,
-												//maxFileSize : 5*100 * 1024, //5MB
+												// maxFileSize : 5*100 * 1024, //5MB
 												returnType : "json",
 												showDelete : true,
 												confirmDelete : true,
 												showDownload : true,
 												statusBarWidth : 600,
 												dragdropWidth : 600,
-												// 												
-												//onLoad : function(obj) {
-												// 													$
-												// 															.ajax({
-												// 																cache : false,
-												// 																url : "REST/proposals/GetAttachmentsOfAProposal",
-												// 																dataType : "json",
-												// 																success : function(
-												// 																		data) {
-												// 																	for (var i = 0; i < data.length; i++) {
-												// 																		obj
-												// 																				.createProgress(
-												// 																						data[i]["name"],
-												// 																						data[i]["path"],
-												// 																						data[i]["size"]);
-												// 																	}
-												// 																}
-												// 															});
-												// 												},
+
+												onLoad : function(obj) {
+													$
+															.each(
+																	appendices,
+																	function(
+																			index,
+																			value) {
+																		alert(value.filename);
+																		obj
+																				.createProgress(
+																						value.filename,
+																						value.filepath,
+																						value.filesize);
+
+																	});
+												},
 												deleteCallback : function(data,
 														pd) {
 													$
@@ -83,15 +93,18 @@
 																			resp,
 																			textStatus,
 																			jqXHR) {
-																		//Show Message	
+																		// Show Message
 																		alert("File Deleted");
 																	});
-													pd.statusbar.hide(); //You choice.
+													pd.statusbar.hide(); // You choice.
 
 												},
 												downloadCallback : function(
 														filename, pd) {
-													//location.href = "download.php?filename=" + filename;
+													// location.href =
+													// GPMS.utils.GetGPMSServicePath()
+													// + "download.php?fileName="
+													// + filename;
 													window.location.href = 'REST/files/download?fileName='
 															+ filename;
 												}

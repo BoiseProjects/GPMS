@@ -9,6 +9,11 @@ import com.google.gson.annotations.Expose;
 
 @Embedded
 public class OSPSectionInfo implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Expose
 	@Property("list agency")
 	private String listAgency = new String();
@@ -80,10 +85,6 @@ public class OSPSectionInfo implements Serializable {
 	@Expose
 	@Embedded("excluded party list checked")
 	private BaseOptions excludedPartyListChecked = new BaseOptions();
-
-	@Expose
-	@Property("proposal notes")
-	private String proposalNotes = new String();
 
 	public OSPSectionInfo() {
 	}
@@ -235,14 +236,6 @@ public class OSPSectionInfo implements Serializable {
 		this.excludedPartyListChecked = excludedPartyListChecked;
 	}
 
-	public String getProposalNotes() {
-		return proposalNotes;
-	}
-
-	public void setProposalNotes(String proposalNotes) {
-		this.proposalNotes = proposalNotes;
-	}
-
 	@Override
 	public String toString() {
 		return "OSPSectionInfo [listAgency=" + listAgency + ", fundingSource="
@@ -259,8 +252,7 @@ public class OSPSectionInfo implements Serializable {
 				+ anticipatedSubRecipientsNames + ", PIEligibilityWaiver="
 				+ PIEligibilityWaiver + ", conflictOfInterestForms="
 				+ conflictOfInterestForms + ", excludedPartyListChecked="
-				+ excludedPartyListChecked + ", proposalNotes=" + proposalNotes
-				+ "]";
+				+ excludedPartyListChecked + "]";
 	}
 
 	@Override
@@ -307,8 +299,6 @@ public class OSPSectionInfo implements Serializable {
 				+ ((programNo == null) ? 0 : programNo.hashCode());
 		result = prime * result
 				+ ((programTitle == null) ? 0 : programTitle.hashCode());
-		result = prime * result
-				+ ((proposalNotes == null) ? 0 : proposalNotes.hashCode());
 		result = prime * result
 				+ ((recovery == null) ? 0 : recovery.hashCode());
 		result = prime
@@ -401,11 +391,6 @@ public class OSPSectionInfo implements Serializable {
 				return false;
 		} else if (!programTitle.equals(other.programTitle))
 			return false;
-		if (proposalNotes == null) {
-			if (other.proposalNotes != null)
-				return false;
-		} else if (!proposalNotes.equals(other.proposalNotes))
-			return false;
 		if (recovery == null) {
 			if (other.recovery != null)
 				return false;
@@ -418,20 +403,6 @@ public class OSPSectionInfo implements Serializable {
 				.equals(other.thirdPartyCostDocumented))
 			return false;
 		return true;
-	}
-
-	public OSPSectionInfo(String listAgency, FundingSource fundingSource,
-			String cFDANo, String programNo, String programTitle,
-			Recovery recovery, BaseInfo baseInfo, boolean isPISalaryIncluded,
-			double pISalary, double pIFringe, String departmentId,
-			BaseOptions institutionalCostDocumented,
-			BaseOptions thirdPartyCostDocumented,
-			boolean isAnticipatedSubRecipients,
-			String anticipatedSubRecipientsNames,
-			BasePIEligibilityOptions pIEligibilityWaiver,
-			BaseOptions conflictOfInterestForms,
-			BaseOptions excludedPartyListChecked, String proposalNotes) {
-
 	}
 
 }

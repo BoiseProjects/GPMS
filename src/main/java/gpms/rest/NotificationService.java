@@ -67,7 +67,6 @@ public class NotificationService {
 	@Path("/NotificationGetAllCount")
 	public long notificationGetAllCountForAUser(String message)
 			throws JsonProcessingException, IOException, ParseException {
-		String response = new String();
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode root = mapper.readTree(message);
 
@@ -114,7 +113,6 @@ public class NotificationService {
 	@Path("/NotificationGetAll")
 	public List<NotificationLog> notificationGetAllForAUser(String message)
 			throws JsonProcessingException, IOException, ParseException {
-		String response = new String();
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode root = mapper.readTree(message);
 

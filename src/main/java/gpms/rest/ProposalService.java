@@ -3113,14 +3113,6 @@ public class ProposalService {
 		}
 	}
 
-	@GET
-	@Path("/GetAttachmentsOfAProposal")
-	public Response getAttachmentsOfAProposal(String message) throws Exception {
-		ObjectMapper mapper = new ObjectMapper();
-		JsonNode root = mapper.readTree(message);
-		return null;
-	}
-
 	@POST
 	@Path("/CheckPermissionForAProposal")
 	public Response checkUserPermissionForAProposal(String message)

@@ -10,6 +10,11 @@ import com.google.gson.annotations.Expose;
 
 @Embedded
 public class ProjectPeriod implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Expose
 	@Property("from")
 	private Date from = new Date();

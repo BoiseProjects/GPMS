@@ -444,8 +444,7 @@ $(function() {
 			buttonType : "",
 			arguments : [],
 			events : "",
-			content : [],
-			uploadObj : ""
+			content : []
 		},
 
 		ajaxCall : function(config) {
@@ -1044,16 +1043,16 @@ $(function() {
 				$("#trSignDirector").show();
 
 				// OSP Section
-				$('#ui-id-23').show();
+				$('#ui-id-25').show();
 				if (GPMS.utils.GetUserPositionTitle() == "Research Administrator"
 						|| GPMS.utils.GetUserPositionTitle() == "University Research Director") {
-					$('#ui-id-24').find('input, select, textarea').each(
+					$('#ui-id-26').find('input, select, textarea').each(
 							function() {
 								// $(this).addClass("ignore");
 								$(this).prop('disabled', false);
 							});
 				} else {
-					$('#ui-id-24').find('input, select, textarea').each(
+					$('#ui-id-26').find('input, select, textarea').each(
 							function() {
 								// $(this).addClass("ignore");
 								$(this).prop('disabled', true);
@@ -1075,9 +1074,6 @@ $(function() {
 				// Certification/ Signatures Info
 				myProposal.BindAllSignatureForAProposal(argus[0]);
 
-				// Initialize Appendices content and Uploader
-				myProposal.InitializeUploader(argus[0]);
-
 				// Delegation Info
 				break;
 			default:
@@ -1085,80 +1081,103 @@ $(function() {
 			}
 		},
 
-		InitializeUploader : function(proposalId) {
+		InitializeUploader : function(appendices) {
 			// Uploader for Appendix
 
-			if (myProposal.config.uploadObj != "") {
-				myProposal.config.uploadObj.reset();
+			alert(appendices);
+			if (appendices != "") {
+				$("#fileuploader")
+						.uploadFile(
+								{
+									url : GPMS.utils.GetGPMSServicePath()
+											+ "files/multiupload",
+									multiple : true,
+									dragDrop : true,
+									fileName : "myfile",
+									allowDuplicates : false,
+									duplicateStrict : true,
+									// autoSubmit : true,
+									// sequential : true,
+									// sequentialCount : 1,
+									// autoSubmit : false,
+									// formData : {
+									// "name" : "Milson",
+									// "age" : 29
+									// },
+									// acceptFiles : "image/*",
+									maxFileCount : 5,
+									// maxFileSize : 5*100 * 1024, //5MB
+									returnType : "json",
+									showDelete : true,
+									confirmDelete : true,
+									showDownload : true,
+									statusBarWidth : 600,
+									dragdropWidth : 600,
+
+									onLoad : function(obj) {
+										$.each(appendices, function(index,
+												value) {
+											alert(value.filename);
+											obj.createProgress(value.filename,
+													value.filepath,
+													value.filesize);
+
+										});
+									},
+									deleteCallback : function(data, pd) {
+										$.post(GPMS.utils.GetGPMSServicePath()
+												+ "files/delete", {
+											op : "delete",
+											name : data
+										}, function(resp, textStatus, jqXHR) {
+											// Show Message
+											alert("File Deleted");
+										});
+										pd.statusbar.hide(); // You choice.
+
+									},
+									downloadCallback : function(filename, pd) {
+										// location.href =
+										// GPMS.utils.GetGPMSServicePath()
+										// + "download.php?fileName="
+										// + filename;
+										window.location.href = GPMS.utils
+												.GetGPMSServicePath()
+												+ 'files/download?fileName='
+												+ filename;
+									}
+								});
+			} else {
+				$("#fileuploader").uploadFile(
+						{
+							url : GPMS.utils.GetGPMSServicePath()
+									+ "files/multiupload",
+							multiple : true,
+							dragDrop : true,
+							fileName : "myfile",
+							allowDuplicates : false,
+							duplicateStrict : true,
+							// autoSubmit : true,
+							// sequential : true,
+							// sequentialCount : 1,
+							// autoSubmit : false,
+							// formData : {
+							// "name" : "Milson",
+							// "age" : 29
+							// },uploadObj
+							// acceptFiles : "image/*",
+							maxFileCount : 5,
+							// maxFileSize : 5*100 * 1024, //5MB
+							returnType : "json",
+							showDelete : true,
+							confirmDelete : true,
+							statusBarWidth : 600,
+							dragdropWidth : 600,
+							deleteCallback : function(data, pd) {
+								pd.statusbar.hide(); // You choice.
+							},
+						});
 			}
-
-			myProposal.config.uploadObj = $("#fileuploader").uploadFile(
-					{
-						url : GPMS.utils.GetGPMSServicePath()
-								+ "files/multiupload",
-						multiple : true,
-						dragDrop : true,
-						fileName : "myfile",
-						allowDuplicates : false,
-						duplicateStrict : true,
-						// autoSubmit : true,
-						// sequential : true,
-						// sequentialCount : 1,
-						// autoSubmit : false,
-						// formData : {
-						// "name" : "Milson",
-						// "age" : 29
-						// },
-						// acceptFiles : "image/*",
-						maxFileCount : 5,
-						// maxFileSize : 5*100 * 1024, //5MB
-						returnType : "json",
-						showDelete : true,
-						confirmDelete : true,
-						showDownload : true,
-						statusBarWidth : 600,
-						dragdropWidth : 600,
-						// 												
-						// onLoad : function(obj) {
-						// $
-						// .ajax({
-						// cache : false,
-						// url :
-						// "REST/proposals/GetAttachmentsOfAProposal",
-						// dataType : "json",
-						// success : function(
-						// data) {
-						// for (var i = 0; i < data.length; i++) {
-						// obj
-						// .createProgress(
-						// data[i]["name"],
-						// data[i]["path"],
-						// data[i]["size"]);
-						// }
-						// }
-						// });
-						// },
-						deleteCallback : function(data, pd) {
-							$.post(GPMS.utils.GetGPMSServicePath()
-									+ "files/delete", {
-								op : "delete",
-								name : data
-							}, function(resp, textStatus, jqXHR) {
-								// Show Message
-								alert("File Deleted");
-							});
-							pd.statusbar.hide(); // You choice.
-
-						},
-						downloadCallback : function(filename, pd) {
-							// location.href = GPMS.utils.GetGPMSServicePath()
-							// + "download.php?fileName="
-							// + filename;
-							window.location.href = GPMS.utils
-									.GetGPMSServicePath()
-									+ 'files/download?fileName=' + filename;
-						}
-					});
 		},
 
 		BindUserPositionDetailsForAProposal : function(users) {
@@ -1977,10 +1996,9 @@ $(function() {
 							e);
 				}
 			};
-			csscody.confirm(
-					"<h2>" + 'Delete Confirmation' + "</h2><p>"
-							+ 'Are you sure you want to delete this proposal?'
-							+ "</p>", properties);
+			csscody.confirm("<h2>" + 'Delete Confirmation' + "</h2><p>"
+					+ 'Are you certain you want to delete this proposal?'
+					+ "</p>", properties);
 		},
 
 		ConfirmDeleteMultiple : function(proposal_ids, event) {
@@ -2027,9 +2045,6 @@ $(function() {
 		ClearForm : function() {
 			validator.resetForm();
 			// $('#accordion-expand-holder').hide();
-			if (myProposal.config.uploadObj != "") {
-				myProposal.config.uploadObj.reset();
-			}
 
 			myProposal.config.proposalId = '0';
 			myProposal.config.proposalRoles = "";
@@ -3055,6 +3070,10 @@ $(function() {
 
 		case 4:// For Proposal Edit Action
 			myProposal.FillForm(msg);
+
+			// Initialize Appendices content and Uploader
+			myProposal.InitializeUploader(msg.appendices);
+
 			$('#divProposalGrid').hide();
 			$('#divProposalForm').show();
 			$('#divProposalAuditGrid').hide();
@@ -3280,7 +3299,7 @@ $(function() {
 				$('#lblFormHeading').html('New Proposal Details');
 
 				// Initialize Appendices content and Uploader
-				myProposal.InitializeUploader(myProposal.config.proposalId);
+				myProposal.InitializeUploader("");
 
 				$("#btnReset").show();
 				$("#btnSaveProposal").show();
@@ -3295,8 +3314,8 @@ $(function() {
 				$("#btnWithdrawProposal").hide();
 				$("#btnArchiveProposal").hide();
 
-				$('#ui-id-23').hide();
-				$('#ui-id-24').find('input, select, textarea').each(function() {
+				$('#ui-id-25').hide();
+				$('#ui-id-26').find('input, select, textarea').each(function() {
 					// $(this).addClass("ignore");
 					$(this).prop('disabled', true);
 				});
@@ -3727,7 +3746,7 @@ $(function() {
 													"<h2>"
 															+ 'Delete Confirmation'
 															+ "</h2><p>"
-															+ 'Are you sure you want to delete selected proposal(s)?'
+															+ 'Are you certain you want to delete selected proposal(s)?'
 															+ "</p>",
 													properties);
 								} else {
