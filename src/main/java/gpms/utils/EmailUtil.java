@@ -144,11 +144,11 @@ public class EmailUtil {
 			msg.addHeader("format", "flowed");
 			msg.addHeader("Content-Transfer-Encoding", "8bit");
 
-			msg.setFrom(new InternetAddress("no_reply@seal.boisestate.edu",
-					"NoReply-GPMS"));
+			msg.setFrom(new InternetAddress("do-not-reply@seal.boisestate.edu",
+					"do-not-reply@seal.boisestate.edu"));
 
 			msg.setReplyTo(InternetAddress.parse(
-					"no_reply@seal.boisestate.edu", false));
+					"do-not-reply@seal.boisestate.edu", false));
 
 			msg.setSubject(subject, "UTF-8");
 
@@ -188,11 +188,11 @@ public class EmailUtil {
 			msg.addHeader("format", "flowed");
 			msg.addHeader("Content-Transfer-Encoding", "8bit");
 
-			msg.setFrom(new InternetAddress("no_reply@seal.boisestate.edu",
-					"NoReply-GPMS"));
+			msg.setFrom(new InternetAddress("do-not-reply@seal.boisestate.edu",
+					"do-not-reply@seal.boisestate.edu"));
 
 			msg.setReplyTo(InternetAddress.parse(
-					"no_reply@seal.boisestate.edu", false));
+					"do-not-reply@seal.boisestate.edu", false));
 
 			msg.setSubject(subject, "UTF-8");
 
@@ -253,11 +253,11 @@ public class EmailUtil {
 			msg.addHeader("format", "flowed");
 			msg.addHeader("Content-Transfer-Encoding", "8bit");
 
-			msg.setFrom(new InternetAddress("no_reply@seal.boisestate.edu",
-					"NoReply-GPMS"));
+			msg.setFrom(new InternetAddress("do-not-reply@seal.boisestate.edu",
+					"do-not-reply@seal.boisestate.edu"));
 
 			msg.setReplyTo(InternetAddress.parse(
-					"no_reply@seal.boisestate.edu", false));
+					"do-not-reply@seal.boisestate.edu", false));
 
 			msg.setSubject(subject, "UTF-8");
 

@@ -3229,7 +3229,7 @@ public class ProposalService {
 				// Device type
 				// device-type
 
-				String decision = ac.getXACMLdecision(attrMap);
+				// String decision = ac.getXACMLdecision(attrMap);
 				// if (decision.equals("Permit")) {
 				return Response.status(200).type(MediaType.APPLICATION_JSON)
 						.entity(true).build();

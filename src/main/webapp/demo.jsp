@@ -4,77 +4,88 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<link
-	href="https://rawgithub.com/hayageek/jquery-upload-file/master/css/uploadfile.css"
-	rel="stylesheet">
-<script
-	src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script
-	src="https://rawgithub.com/hayageek/jquery-upload-file/master/js/jquery.uploadfile.min.js"></script>
+<link type="text/css" rel="stylesheet"
+	href="css/Templates/uploadfile.css">
+<link type="text/css" rel="stylesheet"
+	href="css/Templates/jquery-ui.css" />
+<script type="text/javascript" src="js/jQuery/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="js/jQuery/jquery-ui.js"></script>
+
+<script type="text/javascript" src="js/Uploader/jquery.uploadfile.js"></script>
 
 <title>Insert title here</title>
 </head>
 <body>
-	<div id="fileuploader">Upload</div>
+	<form>
+		<div id="fileuploader">Upload</div>
+		<div class="ajax-file-upload-green" id="extrabutton">Start
+			Upload</div>
+		<div class="ajax-file-upload-red" id="resetbutton">Reset</div>
+	</form>
 	<script>
 		$(document)
 				.ready(
 						function() {
-							$("#fileuploader")
+							var uploadObj = $("#fileuploader")
 									.uploadFile(
 											{
 												url : "REST/files/multiupload",
 												multiple : true,
 												dragDrop : true,
 												fileName : "myfile",
+												allowDuplicates : false,
+												duplicateStrict : true,
+												//sequential : true,
+												//sequentialCount : 1,
+												//autoSubmit : false,
 												// 	formData : {
 												// 	"name" : "Milson",
 												// 	"age" : 29
 												// 	},
 												//acceptFiles : "image/*",
 												maxFileCount : 5,
-												//maxFileSize : 100 * 1024,
+												//maxFileSize : 5*100 * 1024, //5MB
 												returnType : "json",
 												showDelete : true,
+												confirmDelete : true,
 												showDownload : true,
 												statusBarWidth : 600,
 												dragdropWidth : 600,
-												onLoad : function(obj) {
-													$
-															.ajax({
-																cache : false,
-																url : "REST/proposals/GetAttachmentsOfAProposal",
-																dataType : "json",
-																success : function(
-																		data) {
-																	for (var i = 0; i < data.length; i++) {
-																		obj
-																				.createProgress(
-																						data[i]["name"],
-																						data[i]["path"],
-																						data[i]["size"]);
-																	}
-																}
-															});
-												},
+												// 												
+												//onLoad : function(obj) {
+												// 													$
+												// 															.ajax({
+												// 																cache : false,
+												// 																url : "REST/proposals/GetAttachmentsOfAProposal",
+												// 																dataType : "json",
+												// 																success : function(
+												// 																		data) {
+												// 																	for (var i = 0; i < data.length; i++) {
+												// 																		obj
+												// 																				.createProgress(
+												// 																						data[i]["name"],
+												// 																						data[i]["path"],
+												// 																						data[i]["size"]);
+												// 																	}
+												// 																}
+												// 															});
+												// 												},
 												deleteCallback : function(data,
 														pd) {
-													for (var i = 0; i < data.length; i++) {
-														$
-																.post(
-																		"delete.php",
-																		{
-																			op : "delete",
-																			name : data[i]
-																		},
-																		function(
-																				resp,
-																				textStatus,
-																				jqXHR) {
-																			//Show Message	
-																			alert("File Deleted");
-																		});
-													}
+													$
+															.post(
+																	"REST/files/delete",
+																	{
+																		op : "delete",
+																		name : data
+																	},
+																	function(
+																			resp,
+																			textStatus,
+																			jqXHR) {
+																		//Show Message	
+																		alert("File Deleted");
+																	});
 													pd.statusbar.hide(); //You choice.
 
 												},
@@ -85,6 +96,11 @@
 															+ filename;
 												}
 											});
+
+							$("#resetbutton").click(function() {
+								uploadObj.reset();
+								//uploadObj.remove();
+							});
 						});
 	</script>
 </body>

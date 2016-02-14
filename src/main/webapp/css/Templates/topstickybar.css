@@ -109,10 +109,9 @@ li.preview a:hover.icon-preview, li.preview a:hover.icon-preview:before,
 	color: #fff;
 }
 
-[class*="icon-"]:before, [class*=" icon-"]:before {
-	content: "\e646";
-}
-
+/* [class*="icon-"]:before, [class*=" icon-"]:before { */
+/* 	content: "\e646"; */
+/* } */
 .icon-settings:before, .icon-themesetting:before {
 	content: "\e602";
 }

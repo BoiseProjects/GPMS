@@ -444,7 +444,8 @@ $(function() {
 			buttonType : "",
 			arguments : [],
 			events : "",
-			content : []
+			content : [],
+			uploadObj : ""
 		},
 
 		ajaxCall : function(config) {
@@ -1022,6 +1023,7 @@ $(function() {
 			case "gdvProposals":
 				// $('#accordion-expand-holder').show();
 				$("#accordion").accordion("option", "active", false);
+				$("#accordionUpload").accordion("option", "active", false);
 
 				$('#lblFormHeading').html(
 						'Edit Proposal Details for: ' + argus[2]);
@@ -1073,11 +1075,90 @@ $(function() {
 				// Certification/ Signatures Info
 				myProposal.BindAllSignatureForAProposal(argus[0]);
 
+				// Initialize Appendices content and Uploader
+				myProposal.InitializeUploader(argus[0]);
+
 				// Delegation Info
 				break;
 			default:
 				break;
 			}
+		},
+
+		InitializeUploader : function(proposalId) {
+			// Uploader for Appendix
+
+			if (myProposal.config.uploadObj != "") {
+				myProposal.config.uploadObj.reset();
+			}
+
+			myProposal.config.uploadObj = $("#fileuploader").uploadFile(
+					{
+						url : GPMS.utils.GetGPMSServicePath()
+								+ "files/multiupload",
+						multiple : true,
+						dragDrop : true,
+						fileName : "myfile",
+						allowDuplicates : false,
+						duplicateStrict : true,
+						// autoSubmit : true,
+						// sequential : true,
+						// sequentialCount : 1,
+						// autoSubmit : false,
+						// formData : {
+						// "name" : "Milson",
+						// "age" : 29
+						// },
+						// acceptFiles : "image/*",
+						maxFileCount : 5,
+						// maxFileSize : 5*100 * 1024, //5MB
+						returnType : "json",
+						showDelete : true,
+						confirmDelete : true,
+						showDownload : true,
+						statusBarWidth : 600,
+						dragdropWidth : 600,
+						// 												
+						// onLoad : function(obj) {
+						// $
+						// .ajax({
+						// cache : false,
+						// url :
+						// "REST/proposals/GetAttachmentsOfAProposal",
+						// dataType : "json",
+						// success : function(
+						// data) {
+						// for (var i = 0; i < data.length; i++) {
+						// obj
+						// .createProgress(
+						// data[i]["name"],
+						// data[i]["path"],
+						// data[i]["size"]);
+						// }
+						// }
+						// });
+						// },
+						deleteCallback : function(data, pd) {
+							$.post(GPMS.utils.GetGPMSServicePath()
+									+ "files/delete", {
+								op : "delete",
+								name : data
+							}, function(resp, textStatus, jqXHR) {
+								// Show Message
+								alert("File Deleted");
+							});
+							pd.statusbar.hide(); // You choice.
+
+						},
+						downloadCallback : function(filename, pd) {
+							// location.href = GPMS.utils.GetGPMSServicePath()
+							// + "download.php?fileName="
+							// + filename;
+							window.location.href = GPMS.utils
+									.GetGPMSServicePath()
+									+ 'files/download?fileName=' + filename;
+						}
+					});
 		},
 
 		BindUserPositionDetailsForAProposal : function(users) {
@@ -1946,6 +2027,9 @@ $(function() {
 		ClearForm : function() {
 			validator.resetForm();
 			// $('#accordion-expand-holder').hide();
+			if (myProposal.config.uploadObj != "") {
+				myProposal.config.uploadObj.reset();
+			}
 
 			myProposal.config.proposalId = '0';
 			myProposal.config.proposalRoles = "";
@@ -2063,6 +2147,73 @@ $(function() {
 				activeHeader : "ui-icon-circle-arrow-s"
 			};
 
+			$("#accordionUpload")
+					.accordion(
+							{
+								heightStyle : "content",
+								icons : icons,
+								active : false,
+								collapsible : true,
+								activate : function(event, ui) {
+									if (myProposal.config.proposalId != "0"
+											&& ui.newHeader.length != 0) {
+										alert($.trim(ui.newHeader.text()));
+										myProposal.config.ajaxCallMode = 15;
+										// myProposal.config.event = event;
+										myProposal.config.content = ui.newPanel;
+										if (myProposal.config.proposalRoles != "") {
+											myProposal
+													.CheckUserPermissionWithProposalRole(
+															"Edit",
+															myProposal.config.proposalRoles,
+															myProposal.config.proposalId,
+															$.trim(ui.newHeader
+																	.text()),
+															myProposal.config);
+										} else {
+											myProposal
+													.CheckUserPermissionWithPositionTitle(
+															"Edit",
+															myProposal.config.proposalId,
+															$.trim(ui.newHeader
+																	.text()),
+															myProposal.config);
+										}
+									}
+								},
+								beforeActivate : function(event, ui) {
+									// Size = 0 --> collapsing
+									// Size = 1 --> Expanding
+									$("#accordion").accordion("option",
+											"active", false);
+									if (myProposal.config.proposalId != "0"
+											&& ui.newHeader.length != 0) {
+										alert($.trim(ui.newHeader.text()));
+										myProposal.config.ajaxCallMode = 14;
+										myProposal.config.event = event;
+										if (myProposal.config.proposalRoles != "") {
+											myProposal
+													.CheckUserPermissionWithProposalRole(
+															"View",
+															myProposal.config.proposalRoles,
+															myProposal.config.proposalId,
+															$.trim(ui.newHeader
+																	.text()),
+															myProposal.config);
+										} else {
+											myProposal
+													.CheckUserPermissionWithPositionTitle(
+															"View",
+															myProposal.config.proposalId,
+															$.trim(ui.newHeader
+																	.text()),
+															myProposal.config);
+										}
+
+									}
+								}
+							});
+
 			var $accordion = $("#accordion")
 					.accordion(
 							{
@@ -2100,6 +2251,8 @@ $(function() {
 								beforeActivate : function(event, ui) {
 									// Size = 0 --> collapsing
 									// Size = 1 --> Expanding
+									$("#accordionUpload").accordion("option",
+											"active", false);
 									if (myProposal.config.proposalId != "0"
 											&& ui.newHeader.length != 0) {
 										alert($.trim(ui.newHeader.text()));
@@ -3126,6 +3279,9 @@ $(function() {
 			if (myProposal.config.proposalId == '0') {
 				$('#lblFormHeading').html('New Proposal Details');
 
+				// Initialize Appendices content and Uploader
+				myProposal.InitializeUploader(myProposal.config.proposalId);
+
 				$("#btnReset").show();
 				$("#btnSaveProposal").show();
 				$("#btnUpdateProposal").hide();
@@ -3157,6 +3313,7 @@ $(function() {
 				$('#divProposalForm').show();
 				$('#divProposalAuditGrid').hide();
 				$("#accordion").accordion("option", "active", 0);
+				$("#accordionUpload").accordion("option", "active", false);
 			}
 			break;
 
@@ -3215,7 +3372,7 @@ $(function() {
 		case 17:
 			if (msg != "No Record") {
 				window.location.href = GPMS.utils.GetGPMSServicePath()
-							+ 'files/download?fileName=' + msg;
+						+ 'files/download?fileName=' + msg;
 			} else {
 				csscody.alert("<h2>" + 'Information Message' + "</h2><p>"
 						+ 'No Record found!' + "</p>");

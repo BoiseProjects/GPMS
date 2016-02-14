@@ -185,4 +185,20 @@ public class FileService {
 		}
 	}
 
+	@POST
+	@Path("/delete")
+	// @Consumes({ MediaType.MULTIPART_FORM_DATA })
+	@Produces({ MediaType.TEXT_PLAIN })
+	public void deleteFile(@Context HttpServletRequest request,
+			@Context HttpServletResponse response) throws Exception {
+		// 2. Set response type to html
+		response.setContentType("text/html");
+
+		// 3. Convert List<FileMeta> into JSON format
+		ObjectMapper mapper = new ObjectMapper();
+
+		// 4. Send result to client
+		mapper.writeValue(response.getOutputStream(), true);
+	}
+
 }
