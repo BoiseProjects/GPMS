@@ -28,7 +28,7 @@ public class Appendix implements Serializable {
 
 	@Expose
 	@Property("filesize")
-	private String filesize = new String();
+	private long filesize = 0;
 
 	public String getFilename() {
 		return filename;
@@ -54,11 +54,11 @@ public class Appendix implements Serializable {
 		this.filepath = filepath;
 	}
 
-	public String getFilesize() {
+	public long getFilesize() {
 		return filesize;
 	}
 
-	public void setFilesize(String filesize) {
+	public void setFilesize(long filesize) {
 		this.filesize = filesize;
 	}
 
@@ -78,8 +78,7 @@ public class Appendix implements Serializable {
 				+ ((filename == null) ? 0 : filename.hashCode());
 		result = prime * result
 				+ ((filepath == null) ? 0 : filepath.hashCode());
-		result = prime * result
-				+ ((filesize == null) ? 0 : filesize.hashCode());
+		result = prime * result + (int) (filesize ^ (filesize >>> 32));
 		return result;
 	}
 
@@ -107,10 +106,7 @@ public class Appendix implements Serializable {
 				return false;
 		} else if (!filepath.equals(other.filepath))
 			return false;
-		if (filesize == null) {
-			if (other.filesize != null)
-				return false;
-		} else if (!filesize.equals(other.filesize))
+		if (filesize != other.filesize)
 			return false;
 		return true;
 	}

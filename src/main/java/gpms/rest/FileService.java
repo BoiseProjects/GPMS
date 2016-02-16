@@ -55,7 +55,7 @@ public class FileService {
 
 		String DOWNLOAD_PATH = new String();
 		try {
-			DOWNLOAD_PATH = this.getClass().getResource("/tmpfiles").toURI()
+			DOWNLOAD_PATH = this.getClass().getResource("/uploads").toURI()
 					.getPath();
 		} catch (URISyntaxException e) {
 			// TODO Auto-generated catch block
@@ -107,7 +107,7 @@ public class FileService {
 			throws Exception {
 		String UPLOAD_PATH = new String();
 		try {
-			UPLOAD_PATH = this.getClass().getResource("/tmpfiles").toURI()
+			UPLOAD_PATH = this.getClass().getResource("/uploads").toURI()
 					.getPath();
 		} catch (URISyntaxException e) {
 			// TODO Auto-generated catch block
@@ -149,7 +149,7 @@ public class FileService {
 
 		String UPLOAD_PATH = new String();
 		try {
-			UPLOAD_PATH = this.getClass().getResource("/tmpfiles").toURI()
+			UPLOAD_PATH = this.getClass().getResource("/uploads").toURI()
 					.getPath();
 		} catch (URISyntaxException e) {
 			// TODO Auto-generated catch block

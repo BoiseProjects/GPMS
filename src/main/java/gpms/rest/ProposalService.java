@@ -8,7 +8,6 @@ import gpms.dao.ProposalDAO;
 import gpms.dao.UserAccountDAO;
 import gpms.dao.UserProfileDAO;
 import gpms.model.AdditionalInfo;
-import gpms.model.Address;
 import gpms.model.Appendix;
 import gpms.model.AuditLogInfo;
 import gpms.model.BaseInfo;
@@ -45,6 +44,9 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.UnknownHostException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -2768,9 +2770,19 @@ public class ProposalService {
 		}
 
 		if (proposalInfo != null && proposalInfo.has("AppendixInfo")) {
-
 			List<Appendix> appendixInfo = Arrays.asList(mapper.readValue(
 					proposalInfo.get("AppendixInfo"), Appendix[].class));
+
+			// A a = mapper.readValue(temp, A.class);
+
+			String UPLOAD_PATH = new String();
+			try {
+				UPLOAD_PATH = this.getClass().getResource("/uploads").toURI()
+						.getPath();
+			} catch (URISyntaxException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 			if (!proposalID.equals("0")) {
 				// boolean alreadyExist = false;
@@ -2782,20 +2794,43 @@ public class ProposalService {
 				// }
 				// if (!alreadyExist) {
 				existingProposal.getAppendices().clear();
-				for (Appendix appendix : appendixInfo) {
+
+				for (Appendix uploadFile : appendixInfo) {
 					Appendix newAppendix = new Appendix();
-					newAppendix.setFilename(appendix.getFilename());
-					newAppendix.setFilesize(appendix.getFilesize());
+
+					String fileName = uploadFile.getFilename();
+					File file = new File(UPLOAD_PATH + fileName);
+
+					newAppendix.setFilename(fileName);
+					String extension = "";
+					int i = fileName.lastIndexOf('.');
+					if (i > 0) {
+						extension = fileName.substring(i + 1);
+						newAppendix.setExtension(extension);
+					}
+					newAppendix.setFilesize(file.length());
+					newAppendix.setFilepath("\\uploads\\" + fileName);
 
 					existingProposal.getAppendices().add(newAppendix);
 				}
 
 				// }
 			} else {
-				for (Appendix appendix : appendixInfo) {
+				for (Appendix uploadFile : appendixInfo) {
 					Appendix newAppendix = new Appendix();
-					newAppendix.setFilename(appendix.getFilename());
-					newAppendix.setFilesize(appendix.getFilesize());
+
+					String fileName = uploadFile.getFilename();
+					File file = new File(UPLOAD_PATH + fileName);
+
+					newAppendix.setFilename(fileName);
+					String extension = "";
+					int i = fileName.lastIndexOf('.');
+					if (i > 0) {
+						extension = fileName.substring(i + 1);
+						newAppendix.setExtension(extension);
+					}
+					newAppendix.setFilesize(file.length());
+					newAppendix.setFilepath("\\uploads\\" + fileName);
 
 					newProposal.getAppendices().add(newAppendix);
 				}

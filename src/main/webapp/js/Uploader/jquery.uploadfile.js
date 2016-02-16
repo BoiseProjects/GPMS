@@ -115,7 +115,6 @@
 		this.formGroup = formGroup;
 		this.errorLog = $("<div></div>"); // Writing errors
 		this.responses = [];
-		this.responseData = [];
 		this.existingFileNames = [];
 		if (!feature.formdata) // check drag drop enabled.
 		{
@@ -213,7 +212,6 @@
 				obj.container.html("");
 			}
 			obj.existingFileNames = [];
-			obj.responseData = [];
 		}
 		this.remove = function() {
 			obj.container.html("");
@@ -222,6 +220,11 @@
 		}
 		// This is for showing Old files to user.
 		this.createProgress = function(filename, filepath, filesize) {
+			obj.responses.push({
+				filename : filename,
+				filesize : filesize
+			});
+
 			var pd = new createProgressDiv(this, s);
 			pd.progressDiv.show();
 			pd.progressbar.width('100%');
@@ -234,11 +237,6 @@
 
 			if (s.showFileSize)
 				fileNameStr += " (" + getSizeStr(filesize) + ")";
-
-			obj.responseData.push({
-				filename : filename,
-				filesize : filesize
-			});
 
 			pd.filename.html(fileNameStr);
 			obj.fileCounter++;
@@ -311,13 +309,10 @@
 			return pd;
 		}
 
-		this.getResponseData = function() {
-			return this.responseData;
-		}
-
 		this.getResponses = function() {
 			return this.responses;
 		}
+
 		var mainQ = [];
 		var progressQ = []
 		var running = false;
@@ -579,10 +574,6 @@
 
 				ajaxFormSubmit(form, ts, pd, fileArray, obj, files[i]);
 
-				obj.responseData.push({
-					filename : files[i].name,
-					filesize : files[i].size
-				});
 				obj.fileCounter++;
 			}
 		}
@@ -622,9 +613,9 @@
 				}
 			}
 
-			if (obj.responseData.length) {
+			if (obj.responses.length) {
 				for (var x = 0; x < fileArr.length; x++) {
-					obj.responseData = obj.responseData.filter(function(
+					obj.responses = obj.responses.filter(function(
 							returnableObjects) {
 						return returnableObjects.filename !== fileArr[x];
 					});
@@ -1000,7 +991,10 @@
 						form.remove();
 						return;
 					}
-					obj.responses.push(data);
+
+					obj.responses.push({
+						filename : data
+					});
 
 					pd.progressbar.width('100%')
 					if (s.showProgress) {

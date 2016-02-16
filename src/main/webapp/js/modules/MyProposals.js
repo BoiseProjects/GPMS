@@ -2583,7 +2583,7 @@ $(function() {
 					}
 
 					proposalInfo.AppendixInfo = this.config.uploadObj
-							.getResponseData();
+							.getResponses();
 
 					myProposal.AddProposalInfo(_buttonType, _proposalRoles,
 							proposalInfo);

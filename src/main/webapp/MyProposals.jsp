@@ -101,7 +101,8 @@
 <script type="text/javascript" src="js/MessageBox/alertbox.js"></script>
 <script type="text/javascript" src="js/modules/MyProposals.js"></script>
 
-<script type="text/javascript" src="js/Uploader/jquery.uploadfile.js"></script>
+<script type="text/javascript"
+	src="js/Uploader/jquery.uploadfile.js"></script>
 
 <link type="text/css" rel="stylesheet"
 	href="css/Templates/jquery-ui.css" />
