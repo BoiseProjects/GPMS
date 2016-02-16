@@ -210,7 +210,6 @@ $(function() {
 			$('#txtPassword').rules("remove");
 			$('#txtConfirmPassword').rules("remove");
 
-			// $("#btnSaveUser").prop("name", userProfileId);
 			$("#btnSaveUser").data("name", userProfileId);
 
 			myAccount.config.url = myAccount.config.baseURL
@@ -574,7 +573,6 @@ $(function() {
 			$("#gdvUsersAuditLog").empty();
 			$("#gdvUsersAuditLog_Pagination").remove();
 
-			// $("#btnSaveUser").removeAttr("name");
 			$("#btnSaveUser").removeData("name");
 
 			rowIndex = 0;

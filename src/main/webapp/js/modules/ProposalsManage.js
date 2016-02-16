@@ -827,13 +827,13 @@ $(function() {
 			$("#btnWithdrawProposal").hide();
 			$("#btnArchiveProposal").hide();
 
-			$("#btnSaveProposal").prop("name", proposalId);
-			$("#btnUpdateProposal").prop("name", proposalId);
-			$("#btnSubmitProposal").prop("name", proposalId);
-			$("#btnApproveProposal").prop("name", proposalId);
-			$("#btnDisapproveProposal").prop("name", proposalId);
-			$("#btnWithdrawProposal").prop("name", proposalId);
-			$("#btnArchiveProposal").prop("name", proposalId);
+			$("#btnSaveProposal").data("name", proposalId);
+			$("#btnUpdateProposal").data("name", proposalId);
+			$("#btnSubmitProposal").data("name", proposalId);
+			$("#btnApproveProposal").data("name", proposalId);
+			$("#btnDisapproveProposal").data("name", proposalId);
+			$("#btnWithdrawProposal").data("name", proposalId);
+			$("#btnArchiveProposal").data("name", proposalId);
 
 			var canUpdateRoles = [ "PI", "CO-PI" ];
 			var canUpdateTitles = [ "Business Manager",
@@ -1678,7 +1678,7 @@ $(function() {
 				activityOnTo = null;
 			}
 
-			var proposalId = $('#btnLogsBack').prop("name");
+			var proposalId = $('#btnLogsBack').data("name");
 			if (proposalId == '') {
 				proposalId = "0";
 			}
@@ -1892,7 +1892,7 @@ $(function() {
 			$("#gdvProposalsAuditLog").empty();
 			$("#gdvProposalsAuditLog_Pagination").remove();
 
-			$("#btnSaveProposal").removeAttr("name");
+			$("#btnSaveProposal").removeData("name");
 			$('#txtProjectTitle').removeAttr('disabled');
 
 			rowIndex = 0;
@@ -1985,7 +1985,7 @@ $(function() {
 								collapsible : true,
 								activate : function(event, ui) {
 									var proposal_id = $("#btnSaveProposal")
-											.prop("name");
+											.data("name");
 									if (proposal_id != ''
 											&& ui.newHeader.size() != 0
 											&& ui.newPanel.size() != 0) {
@@ -2016,7 +2016,7 @@ $(function() {
 									// Size = 0 --> collapsing
 									// Size = 1 --> Expanding
 									var proposal_id = $("#btnSaveProposal")
-											.prop("name");
+											.data("name");
 									if (proposal_id != ''
 											&& ui.newHeader.size() != 0
 											&& ui.newPanel.size() != 0) {
@@ -2958,7 +2958,7 @@ $(function() {
 			proposalsManage.BindProposalGrid(null, null, null, null, null, null,
 					null, null);
 			$('#divProposalGrid').show();
-			$("#btnSaveProposal").removeAttr("name");
+			$("#btnSaveProposal").removeData("name");
 
 			// $("#accordion").accordion("option", "active", 0);
 
@@ -3266,7 +3266,7 @@ $(function() {
 				$('#divProposalGrid').show();
 				$('#divProposalForm').hide();
 				$('#divProposalAuditGrid').hide();
-				$("#btnSaveProposal").removeAttr("name");
+				$("#btnSaveProposal").removeData("name");
 				// $("#accordion").accordion("option", "active", 0);
 			});
 
@@ -3279,7 +3279,7 @@ $(function() {
 
 			$('#btnSaveProposal').click(function(e) {
 				$(this).disableWith('Saving...');
-				var proposal_id = $(this).prop("name");
+				var proposal_id = $(this).data("name");
 				if (proposal_id != '') {
 					editFlag = proposal_id;
 					proposalsManage.SaveProposal(proposal_id, false);
@@ -3294,7 +3294,7 @@ $(function() {
 
 			$('#btnUpdateProposal').click(function(e) {
 				$(this).disableWith('Updating...');
-				var proposal_id = $(this).prop("name");
+				var proposal_id = $(this).data("name");
 				if (proposal_id != '') {
 					editFlag = proposal_id;
 					proposalsManage.SaveProposal(proposal_id, false);
@@ -3310,7 +3310,7 @@ $(function() {
 					"blur",
 					function() {
 						var projectTitle = $.trim($(this).val());
-						var proposal_id = $('#btnSaveProposal').prop("name");
+						var proposal_id = $('#btnSaveProposal').data("name");
 						if (proposal_id == '') {
 							proposal_id = "0";
 						}

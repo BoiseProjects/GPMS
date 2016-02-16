@@ -453,17 +453,14 @@ $(function() {
 					// $('#txtUserName').val(argus[1]);
 					// $('#txtUserName').prop('disabled', 'disabled');
 					if (argus[10].toLowerCase() != "yes") {
-						// $(".delbutton").prop("id", argus[0]);
 						$(".delbutton").data("id", argus[0]);
 						$(".delbutton").show();
 					} else {
-						// $(".delbutton").removeAttr("id");
 						$(".delbutton").removeData("id");
 						$(".delbutton").hide();
 					}
 					$("input[name=AddMore]").removeAttr('disabled');
 					$("input[name=DeleteOption]").removeAttr('disabled');
-					// $("#btnSaveUser").prop("name", argus[0]);
 					$("#btnSaveUser").data("name", argus[0]);
 
 					$("#btnReset").hide();
@@ -773,7 +770,7 @@ $(function() {
 				activityOnTo = null;
 			}
 
-			var userId = $('#btnSaveUser').prop("name");
+			var userId = $('#btnSaveUser').data("name");
 			if (userId == '') {
 				userId = "0";
 			}
@@ -995,9 +992,7 @@ $(function() {
 
 			usersManage.onInit();
 			$('#lblFormHeading').html('New User Details');
-			// $(".delbutton").removeAttr("id");
 			$(".delbutton").removeData("id");
-			// $("#btnSaveUser").removeAttr("name");
 			$("#btnSaveUser").removeData("name");
 			$(".delbutton").hide();
 			$("#btnReset").show();
@@ -1996,7 +1991,7 @@ $(function() {
 
 			$('#btnSaveUser').click(function(e) {
 				$(this).disableWith('Saving...');
-				var user_id = $(this).prop("name");
+				var user_id = $(this).data("name");
 				if (user_id != '') {
 					editFlag = user_id;
 					usersManage.saveUser(user_id);
@@ -2018,7 +2013,7 @@ $(function() {
 				$(this).siblings('.cssClassRight').hide();
 			}), $('#txtUserName').on("blur", function() {
 				var userName = $.trim($(this).val());
-				var user_id = $('#btnSaveUser').prop("name");
+				var user_id = $('#btnSaveUser').data("name");
 				if (user_id == '') {
 					user_id = "0";
 				}
@@ -2030,7 +2025,7 @@ $(function() {
 				$(this).siblings('.cssClassRight').hide();
 			}), $('#txtWorkEmail, #txtPersonalEmail').on("blur", function() {
 				var email = $.trim($(this).val());
-				var user_id = $('#btnSaveUser').prop("name");
+				var user_id = $('#btnSaveUser').data("name");
 				if (user_id == '') {
 					user_id = "0";
 				}
@@ -2039,8 +2034,7 @@ $(function() {
 			});
 
 			$(".delbutton").click(function() {
-				// var user_id = $(this).prop("id").replace(/[^0-9]/gi, '');
-				var user_id = $(this).prop("id");
+				var user_id = $(this).data("id");
 				usersManage.DeleteUserById(user_id);
 			});
 
