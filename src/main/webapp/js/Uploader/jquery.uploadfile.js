@@ -151,6 +151,9 @@
 				}
 				$(obj).append(obj.errorLog);
 
+				// Added for redundant container divs
+				$(".ajax-file-upload-container").remove();
+
 				if (s.showQueueDiv)
 					obj.container = $("#" + s.showQueueDiv);
 				else
@@ -202,7 +205,6 @@
 			s = $.extend(s, settings);
 		}
 		this.reset = function(removeStatusBars) {
-			obj.existingFileNames = [];
 			obj.fileCounter = 1;
 			obj.selectedFiles = 0;
 			obj.errorLog.html("");
@@ -210,6 +212,7 @@
 			if (removeStatusBars != false) {
 				obj.container.html("");
 			}
+			obj.existingFileNames = [];
 		}
 		this.remove = function() {
 			obj.container.html("");
@@ -217,7 +220,6 @@
 
 		}
 		// This is for showing Old files to user.
-		// alert(this.createProgress);
 		this.createProgress = function(filename, filepath, filesize) {
 			var pd = new createProgressDiv(this, s);
 			pd.progressDiv.show();
@@ -231,6 +233,10 @@
 
 			if (s.showFileSize)
 				fileNameStr += " (" + getSizeStr(filesize) + ")";
+
+			// file name: filename
+			// size: getSizeStr(filesize)
+			// filepath: filepath
 
 			pd.filename.html(fileNameStr);
 			obj.fileCounter++;
@@ -249,14 +255,55 @@
 			}
 			if (s.showDelete) {
 				pd.del.show();
-				pd.del.click(function() {
-					pd.statusbar.hide().remove();
-					var arr = [ filename ];
-					if (s.deleteCallback)
-						s.deleteCallback.call(this, arr, pd);
-					obj.selectedFiles -= 1;
-					updateFileCounter(s, obj);
-				});
+				pd.del
+						.click(function() {
+							if (s.confirmDelete) {
+								if (!$.ui) { // if jquery ui is
+									// not loaded
+									alert(s.jqueryUiNotLoadedStr);
+								} else {
+									var btns = {};
+									btns[s.deleteButtonStr] = function() {
+										removeExistingFileName(obj, filename);
+										pd.statusbar.hide().remove();
+										var arr = [ filename ];
+										if (s.deleteCallback)
+											s.deleteCallback
+													.call(this, arr, pd);
+										obj.selectedFiles -= 1;
+										updateFileCounter(s, obj);
+										$("#ajax-file-upload-delete").remove();
+									};
+									btns[s.cancelDeleteButtonStr] = function() {
+										$("#ajax-file-upload-delete").remove();
+									};
+									$dialog = $(
+											"<div id='ajax-file-upload-delete'></div>")
+											.html(s.deleteMessageStr + filename)
+											.dialog(
+													{
+														autoOpen : false,
+														modal : true,
+														title : s.confirmDeleteStr,
+														buttons : btns,
+														close : function() {
+															$(
+																	"#ajax-file-upload-delete")
+																	.remove();
+														}
+													});
+									$dialog.dialog('open');
+								}
+							} else {
+								removeExistingFileName(obj, filename);
+								pd.statusbar.hide().remove();
+								var arr = [ filename ];
+								if (s.deleteCallback)
+									s.deleteCallback.call(this, arr, pd);
+								obj.selectedFiles -= 1;
+								updateFileCounter(s, obj);
+							}
+						});
 			}
 
 			return pd;
@@ -443,6 +490,7 @@
 		}
 
 		function serializeAndUploadFiles(s, obj, files) {
+			// alert(files);
 			for (var i = 0; i < files.length; i++) {
 				if (!isFileTypeAllowed(obj, s, files[i].name)) {
 					if (s.showError)
@@ -908,6 +956,7 @@
 
 				},
 				success : function(data, message, xhr) {
+					alert(data);
 					pd.cancel.remove();
 					progressQ.pop();
 					// For custom errors.
@@ -930,6 +979,7 @@
 						form.remove();
 						return;
 					}
+					// alert(fileArray);
 					obj.responses.push(data);
 					pd.progressbar.width('100%')
 					if (s.showProgress) {

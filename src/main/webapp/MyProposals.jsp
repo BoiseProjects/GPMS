@@ -99,10 +99,9 @@
 
 <script type="text/javascript" src="js/MessageBox/jquery.easing.1.3.js"></script>
 <script type="text/javascript" src="js/MessageBox/alertbox.js"></script>
+<script type="text/javascript" src="js/modules/MyProposals.js"></script>
 
 <script type="text/javascript" src="js/Uploader/jquery.uploadfile.js"></script>
-
-<script type="text/javascript" src="js/modules/MyProposals.js"></script>
 
 <link type="text/css" rel="stylesheet"
 	href="css/Templates/jquery-ui.css" />
@@ -476,7 +475,8 @@
 												</div>
 
 												<h3>
-													<span id="lblSection3">Sponsor and Budget Information</span>
+													<span id="lblSection3">Sponsor and Budget
+														Information</span>
 												</h3>
 												<div class="sfFormwrapper ui-tabs-panel">
 													<table cellspacing="0" cellpadding="0" border="0">
@@ -616,7 +616,8 @@
 												</div>
 
 												<h3>
-													<span id="lblSection6">Conflict of Interest and Commitment Information</span>
+													<span id="lblSection6">Conflict of Interest and
+														Commitment Information</span>
 												</h3>
 												<div class="sfFormwrapper ui-tabs-panel">
 													<table cellspacing="0" cellpadding="0" border="0">
@@ -879,7 +880,8 @@
 												</div>
 
 												<h3>
-													<span id="lblSection10">Proprietary/Confidential Information</span>
+													<span id="lblSection10">Proprietary/Confidential
+														Information</span>
 												</h3>
 												<div class="sfFormwrapper ui-tabs-panel">
 													<table cellspacing="0" cellpadding="0" border="0">

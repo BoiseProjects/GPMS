@@ -444,7 +444,8 @@ $(function() {
 			buttonType : "",
 			arguments : [],
 			events : "",
-			content : []
+			content : [],
+			uploadObj : ""
 		},
 
 		ajaxCall : function(config) {
@@ -1114,47 +1115,16 @@ $(function() {
 
 			var settings = {
 				showDownload : true,
-
-				onLoad : function(obj) {
-					alert(obj);
-					var proposal_id = "56a9bc5c0fa20b3bb0d435cb";
-					$.ajax({
-						isPostBack : false,
-						async : false,
-						cache : false,
-						type : 'POST',
-						contentType : "application/json; charset=utf-8",
-						dataType : 'json',
-						url : GPMS.utils.GetGPMSServicePath()
-								+ "proposals/GetProposalDetailsByProposalId",
-						data : JSON2.stringify({
-							proposalId : proposal_id
-						}),
-						success : function(msg) {
-							$.each(msg.appendices, function(index, value) {
-								alert(value.filename);
-								obj.createProgress(value.filename,
-										value.filepath, value.filesize);
-							});
-						}
-					});
-					// $.each(appendices, function(index, value) {
-					// alert(value.filename);
-					// obj.createProgress(value.filename, value.filepath,
-					// value.filesize);
-					// });
-				},
-				deleteCallback : function(data, pd) {
-					$.post(GPMS.utils.GetGPMSServicePath() + "files/delete", {
-						op : "delete",
-						name : data
-					}, function(resp, textStatus, jqXHR) {
-						// Show Message
-						alert("File Deleted");
-					});
-					pd.statusbar.hide(); // You choice.
-
-				},
+				// deleteCallback : function(data, pd) {
+				// $.post(GPMS.utils.GetGPMSServicePath() + "files/delete", {
+				// op : "delete",
+				// name : data
+				// }, function(resp, textStatus, jqXHR) {
+				// // Show Message
+				// alert("File Deleted");
+				// });
+				// pd.statusbar.hide(); // You choice.
+				// },
 				downloadCallback : function(filename, pd) {
 					// location.href =
 					// GPMS.utils.GetGPMSServicePath()
@@ -1165,13 +1135,21 @@ $(function() {
 				}
 			}
 
-			alert(appendices);
+			myProposal.config.uploadObj = $("#fileuploader").uploadFile(
+					globalSettings);
+
 			if (appendices != "") {
-				// $("#fileuploader").uploadFile();
-				$("#fileuploader").uploadFile(
-						$.extend(globalSettings, settings));
-			} else {
-				$("#fileuploader").uploadFile($.extend(globalSettings));
+				myProposal.config.uploadObj.update(settings);
+
+				$.each(appendices, function(index, value) {
+					myProposal.config.uploadObj.createProgress(value.filename,
+							value.filepath, value.filesize);
+				});
+
+				myProposal.config.uploadObj.update({
+					showDownload : false
+				});
+
 			}
 		},
 
@@ -2041,6 +2019,10 @@ $(function() {
 			validator.resetForm();
 			// $('#accordion-expand-holder').hide();
 
+			if (this.config.uploadObj != "") {
+				this.config.uploadObj.reset(true);
+			}
+
 			myProposal.config.proposalId = '0';
 			myProposal.config.proposalRoles = "";
 			myProposal.config.buttonType = "";
@@ -2613,6 +2595,7 @@ $(function() {
 
 		AddProposalInfo : function(buttonClicked, _proposalRoles, info) {
 			alert(buttonClicked);
+			alert(myProposal.config.uploadObj.getResponses());
 			this.config.url = this.config.baseURL + "SaveUpdateProposal";
 			this.config.data = JSON2.stringify({
 				buttonType : buttonClicked,
@@ -2998,7 +2981,7 @@ $(function() {
 			myProposal.FillForm(msg);
 
 			// Initialize Appendices content and Uploader
-			// myProposal.InitializeUploader(msg.appendices);
+			myProposal.InitializeUploader(msg.appendices);
 
 			$('#divProposalGrid').hide();
 			$('#divProposalForm').show();
@@ -3225,7 +3208,7 @@ $(function() {
 				$('#lblFormHeading').html('New Proposal Details');
 
 				// Initialize Appendices content and Uploader
-				// myProposal.InitializeUploader("");
+				myProposal.InitializeUploader("");
 
 				$("#btnReset").show();
 				$("#btnSaveProposal").show();
@@ -3484,19 +3467,19 @@ $(function() {
 		init : function(config) {
 			myProposal.InitializeAccordion();
 
-			var appendices = [ {
-				"filename" : "one.pdf",
-				"extension" : "pdf",
-				"filepath" : "uploads\\one.pdf",
-				"filesize" : "82393"
-			}, {
-				"filename" : "two.jpg",
-				"extension" : "jpg",
-				"filepath" : "uploads\two.jpg",
-				"filesize" : "82393"
-			} ];
+			// var appendices = [ {
+			// "filename" : "one.pdf",
+			// "extension" : "pdf",
+			// "filepath" : "uploads\one.pdf",
+			// "filesize" : "82393"
+			// }, {
+			// "filename" : "two.jpg",
+			// "extension" : "jpg",
+			// "filepath" : "uploads\two.jpg",
+			// "filesize" : "82393"
+			//			} ];
 
-			myProposal.InitializeUploader(appendices);
+			// myProposal.InitializeUploader(appendices);
 
 			$('#btnLogsBack').on("click", function() {
 				$('#divProposalGrid').show();
