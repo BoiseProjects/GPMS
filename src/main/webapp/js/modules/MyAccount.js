@@ -210,8 +210,8 @@ $(function() {
 			$('#txtPassword').rules("remove");
 			$('#txtConfirmPassword').rules("remove");
 
-			//$("#btnSaveUser").prop("name", userProfileId);
-			$("#btnSaveUser").data( "name", userProfileId);
+			// $("#btnSaveUser").prop("name", userProfileId);
+			$("#btnSaveUser").data("name", userProfileId);
 
 			myAccount.config.url = myAccount.config.baseURL
 					+ "GetUserDetailsByProfileId";
@@ -574,7 +574,7 @@ $(function() {
 			$("#gdvUsersAuditLog").empty();
 			$("#gdvUsersAuditLog_Pagination").remove();
 
-			//$("#btnSaveUser").removeAttr("name");
+			// $("#btnSaveUser").removeAttr("name");
 			$("#btnSaveUser").removeData("name");
 
 			rowIndex = 0;
@@ -1122,7 +1122,7 @@ $(function() {
 				if (user_id != '') {
 					myAccount.saveUser(user_id);
 				}
-				$(this).enable();
+				$(this).enableAgain();
 				e.preventDefault();
 				return false;
 			});

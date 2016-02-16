@@ -27,7 +27,7 @@
 		return element;
 	};
 
-	$.fn.enable = function() {
+	$.fn.enableAgain = function() {
 		var element = $(this);
 		var enableWith = element.data('enable-with');
 

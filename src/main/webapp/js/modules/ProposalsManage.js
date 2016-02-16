@@ -3287,7 +3287,7 @@ $(function() {
 					editFlag = "0";
 					proposalsManage.SaveProposal("0", true);
 				}
-				$(this).enable();
+				$(this).enableAgain();
 				e.preventDefault();
 				return false;
 			});
@@ -3299,7 +3299,7 @@ $(function() {
 					editFlag = proposal_id;
 					proposalsManage.SaveProposal(proposal_id, false);
 				}
-				$(this).enable();
+				$(this).enableAgain();
 				e.preventDefault();
 				return false;
 			});

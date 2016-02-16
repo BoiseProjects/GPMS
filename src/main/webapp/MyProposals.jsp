@@ -175,13 +175,13 @@
 														<p>
 															<button title="Export to Excel" type="button"
 																id="btnExportToExcel" class="sfBtn">
-																<span class="icon-showall">Export to Excel</span>
+																<span class="icon-excel">Export to Excel</span>
 															</button>
 														</p>
 														<!-- <p>
 															<button title="Export to CSV" type="button"
 																id="btnExportToCSV" class="sfBtn">
-																<span class="icon-showall">Export to CSV</span>
+																<span class="icon-excel">Export to CSV</span>
 															</button>
 														</p> -->
 
@@ -1569,13 +1569,13 @@
 														<p>
 															<button title="Export to Excel" type="button"
 																id="btnLogsExportToExcel" class="sfBtn">
-																<span class="icon-showall">Export to Excel</span>
+																<span class="icon-excel">Export to Excel</span>
 															</button>
 														</p>
 														<!-- <p>
 															<button title="Export to CSV" type="button"
 																id="btnExportToCSV" class="sfBtn">
-																<span class="icon-showall">Export to CSV</span>
+																<span class="icon-excel">Export to CSV</span>
 															</button>
 														</p> -->
 

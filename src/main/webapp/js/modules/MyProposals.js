@@ -2138,69 +2138,70 @@ $(function() {
 				activeHeader : "ui-icon-circle-arrow-s"
 			};
 
-			var $accordion = $("#accordion").accordion({
-				heightStyle : "content",
-				icons : icons,
-				active : false,
-				collapsible : true,
-				activate : function(event, ui) {
-					// if (myProposal.config.proposalId != "0"
-					// && ui.newHeader.length != 0) {
-					// alert($.trim(ui.newHeader.text()));
-					// myProposal.config.ajaxCallMode = 15;
-					// // myProposal.config.event = event;
-					// myProposal.config.content = ui.newPanel;
-					// if (myProposal.config.proposalRoles !=
-					// "") {
-					// myProposal
-					// .CheckUserPermissionWithProposalRole(
-					// "Edit",
-					// myProposal.config.proposalRoles,
-					// myProposal.config.proposalId,
-					// $.trim(ui.newHeader
-					// .text()),
-					// myProposal.config);
-					// } else {
-					// myProposal
-					// .CheckUserPermissionWithPositionTitle(
-					// "Edit",
-					// myProposal.config.proposalId,
-					// $.trim(ui.newHeader
-					// .text()),
-					// myProposal.config);
-					// }
-					// }
-				},
-				beforeActivate : function(event, ui) {
-					// // Size = 0 --> collapsing
-					// // Size = 1 --> Expanding
-					// if (myProposal.config.proposalId != "0"
-					// && ui.newHeader.length != 0) {
-					// alert($.trim(ui.newHeader.text()));
-					// myProposal.config.ajaxCallMode = 14;
-					// myProposal.config.event = event;
-					// if (myProposal.config.proposalRoles != "") {
-					// myProposal
-					// .CheckUserPermissionWithProposalRole(
-					// "View",
-					// myProposal.config.proposalRoles,
-					// myProposal.config.proposalId,
-					// $.trim(ui.newHeader
-					// .text()),
-					// myProposal.config);
-					// } else {
-					// myProposal
-					// .CheckUserPermissionWithPositionTitle(
-					// "View",
-					// myProposal.config.proposalId,
-					// $.trim(ui.newHeader
-					// .text()),
-					// myProposal.config);
-					// }
-					//
-					// }
-				}
-			});
+			var $accordion = $("#accordion")
+					.accordion(
+							{
+								heightStyle : "content",
+								icons : icons,
+								active : false,
+								collapsible : true,
+								activate : function(event, ui) {
+									if (myProposal.config.proposalId != "0"
+											&& ui.newHeader.length != 0) {
+										alert($.trim(ui.newHeader.text()));
+										myProposal.config.ajaxCallMode = 15;
+										// myProposal.config.event = event;
+										myProposal.config.content = ui.newPanel;
+										if (myProposal.config.proposalRoles != "") {
+											myProposal
+													.CheckUserPermissionWithProposalRole(
+															"Edit",
+															myProposal.config.proposalRoles,
+															myProposal.config.proposalId,
+															$.trim(ui.newHeader
+																	.text()),
+															myProposal.config);
+										} else {
+											myProposal
+													.CheckUserPermissionWithPositionTitle(
+															"Edit",
+															myProposal.config.proposalId,
+															$.trim(ui.newHeader
+																	.text()),
+															myProposal.config);
+										}
+									}
+								},
+								beforeActivate : function(event, ui) {
+									// Size = 0 --> collapsing
+									// Size = 1 --> Expanding
+									if (myProposal.config.proposalId != "0"
+											&& ui.newHeader.length != 0) {
+										alert($.trim(ui.newHeader.text()));
+										myProposal.config.ajaxCallMode = 14;
+										myProposal.config.event = event;
+										if (myProposal.config.proposalRoles != "") {
+											myProposal
+													.CheckUserPermissionWithProposalRole(
+															"View",
+															myProposal.config.proposalRoles,
+															myProposal.config.proposalId,
+															$.trim(ui.newHeader
+																	.text()),
+															myProposal.config);
+										} else {
+											myProposal
+													.CheckUserPermissionWithPositionTitle(
+															"View",
+															myProposal.config.proposalId,
+															$.trim(ui.newHeader
+																	.text()),
+															myProposal.config);
+										}
+
+									}
+								}
+							});
 			// myProposal.SelectFirstAccordion();
 			// $("#accordion").accordion("option", "active", 0);
 			return false;
@@ -3812,7 +3813,7 @@ $(function() {
 
 					myProposal.SaveProposal($buttonType, "", "0", true);
 
-					$(this).enable();
+					$(this).enableAgain();
 					e.preventDefault();
 					return false;
 				} else {
@@ -3837,7 +3838,7 @@ $(function() {
 										"Whole Proposal", myProposal.config);
 							}
 
-							$(this).enable();
+							$(this).enableAgain();
 							e.preventDefault();
 							return false;
 						} else {
@@ -3869,7 +3870,7 @@ $(function() {
 												myProposal.config);
 							}
 
-							$(this).enable();
+							$(this).enableAgain();
 							e.preventDefault();
 							return false;
 						} else {
@@ -3901,7 +3902,7 @@ $(function() {
 												myProposal.config);
 							}
 
-							$(this).enable();
+							$(this).enableAgain();
 							e.preventDefault();
 							return false;
 						} else {
@@ -3922,7 +3923,7 @@ $(function() {
 									$buttonType, myProposal.config.proposalId,
 									"Whole Proposal", myProposal.config);
 
-							$(this).enable();
+							$(this).enableAgain();
 							e.preventDefault();
 							return false;
 						} else {
@@ -3943,7 +3944,7 @@ $(function() {
 									$buttonType, myProposal.config.proposalId,
 									"Whole Proposal", myProposal.config);
 
-							$(this).enable();
+							$(this).enableAgain();
 							e.preventDefault();
 							return false;
 						} else {
@@ -3964,7 +3965,7 @@ $(function() {
 									$buttonType, myProposal.config.proposalId,
 									"Whole Proposal", myProposal.config);
 
-							$(this).enable();
+							$(this).enableAgain();
 							e.preventDefault();
 							return false;
 						} else {
@@ -3985,7 +3986,7 @@ $(function() {
 									$buttonType, myProposal.config.proposalId,
 									"Whole Proposal", myProposal.config);
 
-							$(this).enable();
+							$(this).enableAgain();
 							e.preventDefault();
 							return false;
 						} else {

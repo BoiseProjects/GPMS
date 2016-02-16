@@ -388,7 +388,7 @@ $(function() {
 			$("#btnSignUp").on("click", function(e) {
 				$(this).disableWith('Registering...');
 				signUp.signUpUser();
-				$(this).enable();
+				$(this).enableAgain();
 				e.preventDefault();
 				return false;
 			});

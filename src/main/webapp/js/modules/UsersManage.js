@@ -2004,7 +2004,7 @@ $(function() {
 					editFlag = "0";
 					usersManage.saveUser("0");
 				}
-				$(this).enable();
+				$(this).enableAgain();
 				e.preventDefault();
 				return false;
 			});
