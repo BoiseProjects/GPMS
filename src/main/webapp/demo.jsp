@@ -84,7 +84,12 @@
 												// + filename;
 												window.location.href = 'REST/files/download?fileName='
 														+ filename;
-											}
+											},
+											onSuccess : function(files,
+													response, xhr, pd) {
+
+												//alert(files + ":::" + response);
+											},
 										});
 
 						$("#resetbutton").click(function() {

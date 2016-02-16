@@ -8,6 +8,8 @@ import gpms.dao.ProposalDAO;
 import gpms.dao.UserAccountDAO;
 import gpms.dao.UserProfileDAO;
 import gpms.model.AdditionalInfo;
+import gpms.model.Address;
+import gpms.model.Appendix;
 import gpms.model.AuditLogInfo;
 import gpms.model.BaseInfo;
 import gpms.model.BaseOptions;
@@ -2761,6 +2763,41 @@ public class ProposalService {
 						.getExcludedPartyListChecked().equals(newBaseOptions)) {
 					existingProposal.getoSPSectionInfo()
 							.setExcludedPartyListChecked(newBaseOptions);
+				}
+			}
+		}
+
+		if (proposalInfo != null && proposalInfo.has("AppendixInfo")) {
+
+			List<Appendix> appendixInfo = Arrays.asList(mapper.readValue(
+					proposalInfo.get("AppendixInfo"), Appendix[].class));
+
+			if (!proposalID.equals("0")) {
+				// boolean alreadyExist = false;
+				// for (Appendix appendix : existingProposal.getAppendices()) {
+				// if (appendix.equals(newAppendix)) {
+				// alreadyExist = true;
+				// break;
+				// }
+				// }
+				// if (!alreadyExist) {
+				existingProposal.getAppendices().clear();
+				for (Appendix appendix : appendixInfo) {
+					Appendix newAppendix = new Appendix();
+					newAppendix.setFilename(appendix.getFilename());
+					newAppendix.setFilesize(appendix.getFilesize());
+
+					existingProposal.getAppendices().add(newAppendix);
+				}
+
+				// }
+			} else {
+				for (Appendix appendix : appendixInfo) {
+					Appendix newAppendix = new Appendix();
+					newAppendix.setFilename(appendix.getFilename());
+					newAppendix.setFilesize(appendix.getFilesize());
+
+					newProposal.getAppendices().add(newAppendix);
 				}
 			}
 		}

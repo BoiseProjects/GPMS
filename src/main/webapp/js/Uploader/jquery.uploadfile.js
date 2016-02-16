@@ -115,6 +115,7 @@
 		this.formGroup = formGroup;
 		this.errorLog = $("<div></div>"); // Writing errors
 		this.responses = [];
+		this.responseData = [];
 		this.existingFileNames = [];
 		if (!feature.formdata) // check drag drop enabled.
 		{
@@ -163,7 +164,6 @@
 
 				s.onLoad.call(this, obj);
 				createCustomInputFile(obj, formGroup, s, uploadLabel);
-
 			} else
 				window.setTimeout(checkAjaxFormLoaded, 10);
 		})();
@@ -213,6 +213,7 @@
 				obj.container.html("");
 			}
 			obj.existingFileNames = [];
+			obj.responseData = [];
 		}
 		this.remove = function() {
 			obj.container.html("");
@@ -234,9 +235,10 @@
 			if (s.showFileSize)
 				fileNameStr += " (" + getSizeStr(filesize) + ")";
 
-			// file name: filename
-			// size: getSizeStr(filesize)
-			// filepath: filepath
+			obj.responseData.push({
+				filename : filename,
+				filesize : filesize
+			});
 
 			pd.filename.html(fileNameStr);
 			obj.fileCounter++;
@@ -264,9 +266,9 @@
 								} else {
 									var btns = {};
 									btns[s.deleteButtonStr] = function() {
-										removeExistingFileName(obj, filename);
-										pd.statusbar.hide().remove();
 										var arr = [ filename ];
+										removeExistingFileName(obj, arr);
+										pd.statusbar.hide().remove();
 										if (s.deleteCallback)
 											s.deleteCallback
 													.call(this, arr, pd);
@@ -307,6 +309,10 @@
 			}
 
 			return pd;
+		}
+
+		this.getResponseData = function() {
+			return this.responseData;
 		}
 
 		this.getResponses = function() {
@@ -490,7 +496,6 @@
 		}
 
 		function serializeAndUploadFiles(s, obj, files) {
-			// alert(files);
 			for (var i = 0; i < files.length; i++) {
 				if (!isFileTypeAllowed(obj, s, files[i].name)) {
 					if (s.showError)
@@ -573,6 +578,11 @@
 				fileArray.push(files[i].name);
 
 				ajaxFormSubmit(form, ts, pd, fileArray, obj, files[i]);
+
+				obj.responseData.push({
+					filename : files[i].name,
+					filesize : files[i].size
+				});
 				obj.fileCounter++;
 			}
 		}
@@ -609,6 +619,15 @@
 					if (pos != -1) {
 						obj.existingFileNames.splice(pos, 1);
 					}
+				}
+			}
+
+			if (obj.responseData.length) {
+				for (var x = 0; x < fileArr.length; x++) {
+					obj.responseData = obj.responseData.filter(function(
+							returnableObjects) {
+						return returnableObjects.filename !== fileArr[x];
+					});
 				}
 			}
 		}
@@ -679,6 +698,7 @@
 								return;
 						} else {
 							var filenameStr = $(this).val();
+
 							var flist = [];
 							fileArray.push(filenameStr);
 							if (!isFileTypeAllowed(obj, s, filenameStr)) {
@@ -696,10 +716,12 @@
 								name : filenameStr,
 								size : 'NA'
 							});
+
 							if (s.onSelect(flist) == false)
 								return;
 
 						}
+
 						updateFileCounter(s, obj);
 
 						uploadLabel.unbind("click");
@@ -727,7 +749,7 @@
 											+ "<br>";
 								else
 									fileList += fileArray[i] + "<br>";
-								;
+
 								obj.fileCounter++;
 
 							}
@@ -956,7 +978,6 @@
 
 				},
 				success : function(data, message, xhr) {
-					alert(data);
 					pd.cancel.remove();
 					progressQ.pop();
 					// For custom errors.
@@ -979,8 +1000,8 @@
 						form.remove();
 						return;
 					}
-					// alert(fileArray);
 					obj.responses.push(data);
+
 					pd.progressbar.width('100%')
 					if (s.showProgress) {
 						pd.progressbar.html('100%');

@@ -1149,7 +1149,6 @@ $(function() {
 				myProposal.config.uploadObj.update({
 					showDownload : false
 				});
-
 			}
 		},
 
@@ -2139,70 +2138,69 @@ $(function() {
 				activeHeader : "ui-icon-circle-arrow-s"
 			};
 
-			var $accordion = $("#accordion")
-					.accordion(
-							{
-								heightStyle : "content",
-								icons : icons,
-								active : false,
-								collapsible : true,
-								activate : function(event, ui) {
-									if (myProposal.config.proposalId != "0"
-											&& ui.newHeader.length != 0) {
-										alert($.trim(ui.newHeader.text()));
-										myProposal.config.ajaxCallMode = 15;
-										// myProposal.config.event = event;
-										myProposal.config.content = ui.newPanel;
-										if (myProposal.config.proposalRoles != "") {
-											myProposal
-													.CheckUserPermissionWithProposalRole(
-															"Edit",
-															myProposal.config.proposalRoles,
-															myProposal.config.proposalId,
-															$.trim(ui.newHeader
-																	.text()),
-															myProposal.config);
-										} else {
-											myProposal
-													.CheckUserPermissionWithPositionTitle(
-															"Edit",
-															myProposal.config.proposalId,
-															$.trim(ui.newHeader
-																	.text()),
-															myProposal.config);
-										}
-									}
-								},
-								beforeActivate : function(event, ui) {
-									// Size = 0 --> collapsing
-									// Size = 1 --> Expanding
-									if (myProposal.config.proposalId != "0"
-											&& ui.newHeader.length != 0) {
-										alert($.trim(ui.newHeader.text()));
-										myProposal.config.ajaxCallMode = 14;
-										myProposal.config.event = event;
-										if (myProposal.config.proposalRoles != "") {
-											myProposal
-													.CheckUserPermissionWithProposalRole(
-															"View",
-															myProposal.config.proposalRoles,
-															myProposal.config.proposalId,
-															$.trim(ui.newHeader
-																	.text()),
-															myProposal.config);
-										} else {
-											myProposal
-													.CheckUserPermissionWithPositionTitle(
-															"View",
-															myProposal.config.proposalId,
-															$.trim(ui.newHeader
-																	.text()),
-															myProposal.config);
-										}
-
-									}
-								}
-							});
+			var $accordion = $("#accordion").accordion({
+				heightStyle : "content",
+				icons : icons,
+				active : false,
+				collapsible : true,
+				activate : function(event, ui) {
+					// if (myProposal.config.proposalId != "0"
+					// && ui.newHeader.length != 0) {
+					// alert($.trim(ui.newHeader.text()));
+					// myProposal.config.ajaxCallMode = 15;
+					// // myProposal.config.event = event;
+					// myProposal.config.content = ui.newPanel;
+					// if (myProposal.config.proposalRoles !=
+					// "") {
+					// myProposal
+					// .CheckUserPermissionWithProposalRole(
+					// "Edit",
+					// myProposal.config.proposalRoles,
+					// myProposal.config.proposalId,
+					// $.trim(ui.newHeader
+					// .text()),
+					// myProposal.config);
+					// } else {
+					// myProposal
+					// .CheckUserPermissionWithPositionTitle(
+					// "Edit",
+					// myProposal.config.proposalId,
+					// $.trim(ui.newHeader
+					// .text()),
+					// myProposal.config);
+					// }
+					// }
+				},
+				beforeActivate : function(event, ui) {
+					// // Size = 0 --> collapsing
+					// // Size = 1 --> Expanding
+					// if (myProposal.config.proposalId != "0"
+					// && ui.newHeader.length != 0) {
+					// alert($.trim(ui.newHeader.text()));
+					// myProposal.config.ajaxCallMode = 14;
+					// myProposal.config.event = event;
+					// if (myProposal.config.proposalRoles != "") {
+					// myProposal
+					// .CheckUserPermissionWithProposalRole(
+					// "View",
+					// myProposal.config.proposalRoles,
+					// myProposal.config.proposalId,
+					// $.trim(ui.newHeader
+					// .text()),
+					// myProposal.config);
+					// } else {
+					// myProposal
+					// .CheckUserPermissionWithPositionTitle(
+					// "View",
+					// myProposal.config.proposalId,
+					// $.trim(ui.newHeader
+					// .text()),
+					// myProposal.config);
+					// }
+					//
+					// }
+				}
+			});
 			// myProposal.SelectFirstAccordion();
 			// $("#accordion").accordion("option", "active", 0);
 			return false;
@@ -2584,6 +2582,9 @@ $(function() {
 						proposalInfo.OSPSectionInfo = OSPSection;
 					}
 
+					proposalInfo.AppendixInfo = this.config.uploadObj
+							.getResponseData();
+
 					myProposal.AddProposalInfo(_buttonType, _proposalRoles,
 							proposalInfo);
 
@@ -2595,7 +2596,6 @@ $(function() {
 
 		AddProposalInfo : function(buttonClicked, _proposalRoles, info) {
 			alert(buttonClicked);
-			alert(myProposal.config.uploadObj.getResponses());
 			this.config.url = this.config.baseURL + "SaveUpdateProposal";
 			this.config.data = JSON2.stringify({
 				buttonType : buttonClicked,
@@ -3477,7 +3477,7 @@ $(function() {
 			// "extension" : "jpg",
 			// "filepath" : "uploads\two.jpg",
 			// "filesize" : "82393"
-			//			} ];
+			// } ];
 
 			// myProposal.InitializeUploader(appendices);
 
