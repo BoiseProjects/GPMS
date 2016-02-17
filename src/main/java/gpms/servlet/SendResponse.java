@@ -1,4 +1,4 @@
-package gpms.rest;
+package gpms.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -29,8 +29,8 @@ public class SendResponse extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.setContentType("text/event-stream");
 		PrintWriter out = response.getWriter();
@@ -40,7 +40,7 @@ public class SendResponse extends HttpServlet {
 			out.print("data: " + date.toString() + "\n\n");
 			out.flush();
 			try {
-				Thread.sleep(10000);
+				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -53,8 +53,8 @@ public class SendResponse extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
