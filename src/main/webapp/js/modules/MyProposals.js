@@ -1142,7 +1142,7 @@ $(function() {
 			if (appendices != "") {
 				myProposal.config.uploadObj.update(settings);
 
-				$.each(appendices.reverse(), function(index, value) {
+				$.each(appendices, function(index, value) {
 					myProposal.config.uploadObj.createProgress(value.filename,
 							value.filepath, value.filesize, value.title);
 				});
@@ -2584,17 +2584,22 @@ $(function() {
 						proposalInfo.OSPSectionInfo = OSPSection;
 					}
 
-					$.each(this.config.uploadObj.getResponses(), function(i,
-							val) {
-						val['title'] = $(
-								myProposal.config.uploadObj.container.children(
-										".ajax-file-upload-statusbar").find(
-										'.extrahtml').find("input").get(i))
-								.val();
-					});
+					$
+							.each(
+									this.config.uploadObj.getResponses()
+											.reverse(),
+									function(i, val) {
+										val['title'] = $(
+												myProposal.config.uploadObj.container
+														.children(
+																".ajax-file-upload-statusbar")
+														.find('.extrahtml')
+														.find("input").get(i))
+												.val();
+									});
 
 					proposalInfo.AppendixInfo = this.config.uploadObj
-							.getResponses();
+							.getResponses().reverse();
 
 					myProposal.AddProposalInfo(_buttonType, _proposalRoles,
 							proposalInfo);
