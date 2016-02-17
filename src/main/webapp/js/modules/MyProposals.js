@@ -1091,7 +1091,7 @@ $(function() {
 				allowDuplicates : false,
 				duplicateStrict : true,
 				nestedForms : false,
-				showFileCounter : false,
+				fileCounterStyle : ") ",
 				// autoSubmit : true,
 				// sequential : true,
 				// sequentialCount : 1,
@@ -1108,7 +1108,7 @@ $(function() {
 				confirmDelete : true,
 				statusBarWidth : 600,
 				dragdropWidth : 600,
-				uploadQueueOrder : 'bottom',
+				uploadQueueOrder : 'top',
 				deleteCallback : function(data, pd) {
 					pd.statusbar.hide(); // You choice.
 				}
@@ -1142,7 +1142,7 @@ $(function() {
 			if (appendices != "") {
 				myProposal.config.uploadObj.update(settings);
 
-				$.each(appendices, function(index, value) {
+				$.each(appendices.reverse(), function(index, value) {
 					myProposal.config.uploadObj.createProgress(value.filename,
 							value.filepath, value.filesize, value.title);
 				});
