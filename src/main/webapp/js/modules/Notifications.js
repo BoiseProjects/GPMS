@@ -126,6 +126,7 @@
 				var source = new EventSource(this.config.baseURL
 						+ "NotificationGetRealTimeCount");
 				source.addEventListener('notification', function(e) {
+					console.log("User " + e.data);
 					NotificationView.NotificationGetAllCountSuccess(e.data);
 				}, false);
 			},

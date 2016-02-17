@@ -121,7 +121,7 @@ public class NotificationService {
 			@Context HttpServletRequest request,
 			@Context HttpServletResponse response)
 			throws JsonProcessingException, IOException, ParseException {
-		response.setContentType("text/event-stream");
+		response.setContentType("text/event-stream, charset=UTF-8");
 		PrintWriter out = response.getWriter();
 		while (true) {
 			HttpSession session = request.getSession();

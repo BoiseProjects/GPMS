@@ -126,6 +126,7 @@
 				var source = new EventSource(this.config.baseURL
 						+ "NotificationGetRealTimeCount");
 				source.addEventListener('notification', function(e) {
+					console.log("Admin " + e.data);
 					AdminNotificationView
 							.NotificationGetAllCountSuccess(e.data);
 				}, false);
