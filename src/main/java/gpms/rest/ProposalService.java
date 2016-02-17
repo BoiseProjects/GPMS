@@ -2809,7 +2809,9 @@ public class ProposalService {
 						newAppendix.setExtension(extension);
 					}
 					newAppendix.setFilesize(file.length());
-					newAppendix.setFilepath("\\uploads\\" + fileName);
+					newAppendix.setFilepath("/uploads/" + fileName);
+
+					newAppendix.setTitle(uploadFile.getTitle());
 
 					existingProposal.getAppendices().add(newAppendix);
 				}

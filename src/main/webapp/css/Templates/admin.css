@@ -2085,6 +2085,18 @@ td.sfSelectleftright {
 	width: auto;
 }
 
+.extrahtml .error {
+    color: red;
+    display: inline;
+    padding: 10px;
+}
+
+.extrahtml input.error{
+    border: 1px dashed #f00 !important;
+	color: red;
+	padding: 8px;
+}
+
 label.error {
 	display: block;
 	/*margin-left: 1em;*/

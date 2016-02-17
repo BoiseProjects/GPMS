@@ -1091,7 +1091,7 @@ $(function() {
 				allowDuplicates : false,
 				duplicateStrict : true,
 				nestedForms : false,
-				fileCounterStyle : ") ",
+				showFileCounter : false,
 				// autoSubmit : true,
 				// sequential : true,
 				// sequentialCount : 1,
@@ -1108,9 +1108,10 @@ $(function() {
 				confirmDelete : true,
 				statusBarWidth : 600,
 				dragdropWidth : 600,
+				uploadQueueOrder : 'bottom',
 				deleteCallback : function(data, pd) {
 					pd.statusbar.hide(); // You choice.
-				},
+				}
 			}
 
 			var settings = {
@@ -1143,7 +1144,7 @@ $(function() {
 
 				$.each(appendices, function(index, value) {
 					myProposal.config.uploadObj.createProgress(value.filename,
-							value.filepath, value.filesize);
+							value.filepath, value.filesize, value.title);
 				});
 
 				myProposal.config.uploadObj.update({
@@ -2582,6 +2583,15 @@ $(function() {
 
 						proposalInfo.OSPSectionInfo = OSPSection;
 					}
+
+					$.each(this.config.uploadObj.getResponses(), function(i,
+							val) {
+						val['title'] = $(
+								myProposal.config.uploadObj.container.children(
+										".ajax-file-upload-statusbar").find(
+										'.extrahtml').find("input").get(i))
+								.val();
+					});
 
 					proposalInfo.AppendixInfo = this.config.uploadObj
 							.getResponses();

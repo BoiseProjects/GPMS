@@ -220,13 +220,12 @@
 
 		}
 		// This is for showing Old files to user.
-		this.createProgress = function(filename, filepath, filesize) {
+		this.createProgress = function(filename, filepath, filesize, title) {
 			obj.responses.push({
-				filename : filename,
-				filesize : filesize
+				filename : filename
 			});
 
-			var pd = new createProgressDiv(this, s);
+			var pd = new createProgressDiv(this, s, title);
 			pd.progressDiv.show();
 			pd.progressbar.width('100%');
 
@@ -478,7 +477,7 @@
 			}
 
 			ts.fileData = fd;
-			var pd = new createProgressDiv(obj, s);
+			var pd = new createProgressDiv(obj, s, null);
 			pd.filename.html(fileListStr);
 			var form = $("<form style='display:block; position:absolute;left: 150px;' class='"
 					+ obj.formGroup
@@ -548,7 +547,7 @@
 				}
 				ts.fileData = fd;
 
-				var pd = new createProgressDiv(obj, s);
+				var pd = new createProgressDiv(obj, s, null);
 				var fileNameStr = "";
 				if (s.showFileCounter)
 					fileNameStr = obj.fileCounter + s.fileCounterStyle
@@ -759,7 +758,7 @@
 							}
 							obj.selectedFiles += fileArray.length;
 
-							var pd = new createProgressDiv(obj, s);
+							var pd = new createProgressDiv(obj, s, null);
 							pd.filename.html(fileList);
 							ajaxFormSubmit(form, s, pd, fileArray, obj, null);
 						}
@@ -845,7 +844,7 @@
 
 			return this;
 		}
-		function createProgressDiv(obj, s) {
+		function createProgressDiv(obj, s, title) {
 			var bar = null;
 			if (s.customProgressBar)
 				bar = new s.customProgressBar(obj, s);
@@ -857,6 +856,21 @@
 
 			bar.cancel.addClass(obj.formGroup);
 			bar.cancel.addClass(s.cancelButtonClass);
+
+			/** ************ */
+			// Milson 2016/02/16
+			// Modified only for GPMS
+			var titleVal = "";
+			if (title != null) {
+				titleVal = title;
+			}
+			bar.extraHTML = $(
+					"<div class='extrahtml'><b>Title: </b><input type='text' value='"
+							+ titleVal + "' name='tile_"
+							+ $('.ajax-file-upload-statusbar').size()
+							+ "' required='true' /></div>").insertAfter(
+					bar.filename);
+			/** ************ */
 
 			if (s.extraHTML)
 				bar.extraHTML = $(
