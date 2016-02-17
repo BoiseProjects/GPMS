@@ -11,16 +11,21 @@ import gpms.model.UserAccount;
 import gpms.model.UserProfile;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 import org.codehaus.jackson.JsonNode;
@@ -106,6 +111,71 @@ public class NotificationService {
 		return notificationDAO.findAllNotificationCountAUser(userProfileID,
 				userCollege, userDepartment, userPositionType,
 				userPositionTitle, userIsAdmin);
+
+	}
+
+	@GET
+	@Path("/NotificationGetRealTimeCount")
+	@Produces("text/event-stream")
+	public void notificationGetRealTimeCountForAUser(
+			@Context HttpServletRequest request,
+			@Context HttpServletResponse response)
+			throws JsonProcessingException, IOException, ParseException {
+		response.setContentType("text/event-stream");
+		PrintWriter out = response.getWriter();
+		while (true) {
+			HttpSession session = request.getSession();
+			String userProfileID = new String();
+			String userCollege = new String();
+			String userDepartment = new String();
+			String userPositionType = new String();
+			String userPositionTitle = new String();
+			Boolean userIsAdmin = false;
+
+			if (session.getAttribute("userProfileId") != null) {
+				userProfileID = (String) session.getAttribute("userProfileId");
+			}
+			// if (session.getAttribute("gpmsUserName") != null) {
+			// userName = (String) session.getAttribute("gpmsUserName");
+			// }
+
+			if (session.getAttribute("userCollege") != null) {
+				userCollege = (String) session.getAttribute("userCollege");
+			}
+
+			if (session.getAttribute("userDepartment") != null) {
+				userDepartment = (String) session
+						.getAttribute("userDepartment");
+			}
+
+			if (session.getAttribute("userPositionType") != null) {
+				userPositionType = (String) session
+						.getAttribute("userPositionType");
+			}
+
+			if (session.getAttribute("userPositionTitle") != null) {
+				userPositionTitle = (String) session
+						.getAttribute("userPositionTitle");
+			}
+
+			if (session.getAttribute("isAdmin") != null) {
+				userIsAdmin = (Boolean) session.getAttribute("isAdmin");
+			}
+
+			long notificationCount = notificationDAO
+					.findAllNotificationCountAUser(userProfileID, userCollege,
+							userDepartment, userPositionType,
+							userPositionTitle, userIsAdmin);
+
+			out.print("event: notification\n");
+			out.print("data: " + notificationCount + "\n\n");
+			out.flush();
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 
 	}
 

@@ -85,7 +85,8 @@
 				}
 			},
 			init : function() {
-				NotificationView.NotificationGetAllCount();
+				// NotificationView.NotificationGetAllCount();
+				NotificationView.registerSSE();
 				$('#linkNotifyInfo').click(function() {
 					if ($('.cssClassNotify').is(":hidden")) {
 						$(this).addClass("sfNotificationSelect");
@@ -121,6 +122,13 @@
 							return false;
 						});
 			},
+			registerSSE : function() {
+				var source = new EventSource(this.config.baseURL
+						+ "NotificationGetRealTimeCount");
+				source.addEventListener('notification', function(e) {
+					NotificationView.NotificationGetAllCountSuccess(e.data);
+				}, false);
+			},
 			NotificationGetAllCount : function() {
 				this.config.method = "NotificationGetAllCount";
 				this.config.url = this.config.baseURL + this.config.method;
@@ -132,7 +140,7 @@
 				return false;
 			},
 			NotificationGetAllCountSuccess : function(msg) {
-				if (msg !== 0) {
+				if (msg !== "0") {
 					$("#spanNotifyInfo").html(msg);
 					$("#spanNotifyInfo").show();
 					p.notificationsNumber += parseInt(msg);

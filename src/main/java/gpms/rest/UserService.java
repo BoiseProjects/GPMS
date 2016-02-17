@@ -1701,23 +1701,23 @@ public class UserService {
 			return (String) session.getAttribute("gpmsUserName");
 		}
 
-		if (session.getAttribute("userPositionType") == null) {
+		if (session.getAttribute("userPositionType") != null) {
 			return (String) session.getAttribute("userPositionType");
 		}
 
-		if (session.getAttribute("userPositionTitle") == null) {
+		if (session.getAttribute("userPositionTitle") != null) {
 			return (String) session.getAttribute("userPositionTitle");
 		}
 
-		if (session.getAttribute("userDepartment") == null) {
+		if (session.getAttribute("userDepartment") != null) {
 			return (String) session.getAttribute("userDepartment");
 		}
 
-		if (session.getAttribute("userCollege") == null) {
+		if (session.getAttribute("userCollege") != null) {
 			return (String) session.getAttribute("userCollege");
 		}
 
-		if (session.getAttribute("isAdmin") == null) {
+		if (session.getAttribute("isAdmin") != null) {
 			return (String) session.getAttribute("isAdmin");
 		}
 		return null;
