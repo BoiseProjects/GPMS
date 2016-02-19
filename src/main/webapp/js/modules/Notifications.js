@@ -85,8 +85,11 @@
 				}
 			},
 			init : function() {
-				// NotificationView.NotificationGetAllCount();
-				NotificationView.registerSSE();
+				if (typeof (EventSource) !== undefined) {
+					NotificationView.registerSSE();
+				} else {
+					NotificationView.NotificationGetAllCount();
+				}
 				$('#linkNotifyInfo').click(function() {
 					if ($('.cssClassNotify').is(":hidden")) {
 						$(this).addClass("sfNotificationSelect");
