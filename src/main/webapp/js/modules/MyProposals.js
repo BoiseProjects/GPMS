@@ -3902,7 +3902,8 @@ $(function() {
 
 							myProposal.config.ajaxCallMode = 11;
 
-							if (myProposal.config.proposalRoles != "") {
+							if (myProposal.config.proposalRoles != ""
+									&& myProposal.config.proposalId != "0") {
 								myProposal.CheckUserPermissionWithProposalRole(
 										$buttonType,
 										myProposal.config.proposalRoles,
