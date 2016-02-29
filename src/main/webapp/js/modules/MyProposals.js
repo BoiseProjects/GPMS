@@ -3910,12 +3910,10 @@ $(function() {
 										myProposal.config.proposalId,
 										"Whole Proposal", myProposal.config);
 							} else {
-								myProposal
-										.CheckUserPermissionWithPositionTitle(
-												$buttonType,
-												myProposal.config.proposalId,
-												"Whole Proposal",
-												myProposal.config);
+
+								myProposal.CheckUserPermissionWithPositionType(
+										"Submit", "Whole Proposal",
+										myProposal.config);
 							}
 
 							$(this).enableAgain();
