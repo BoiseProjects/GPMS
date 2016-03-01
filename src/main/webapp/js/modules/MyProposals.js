@@ -441,6 +441,7 @@ $(function() {
 			ajaxCallMode : 0,
 			proposalId : "0",
 			proposalRoles : "",
+			proposalStatus : "",
 			buttonType : "",
 			arguments : [],
 			events : "",
@@ -505,6 +506,45 @@ $(function() {
 			this.ajaxCall(this.config);
 		},
 
+		CheckUserPermissionWithPositionTypeAndStatus : function(buttonType,
+				proposalSection, config) {
+			var attributeArray = [];
+
+			attributeArray.push({
+				attributeType : "Subject",
+				attributeName : "position-type",
+				attributeValue : GPMS.utils.GetUserPositionType()
+			});
+
+			attributeArray.push({
+				attributeType : "Resource",
+				attributeName : "proposal-section",
+				attributeValue : proposalSection
+			});
+
+			attributeArray.push({
+				attributeType : "Resource",
+				attributeName : "status",
+				attributeValue : config.proposalStatus
+			});
+
+			attributeArray.push({
+				attributeType : "Action",
+				attributeName : "proposal-action",
+				attributeValue : buttonType
+			});
+
+			this.config.url = this.config.baseURL
+					+ "CheckPermissionForAProposal";
+			this.config.data = JSON2.stringify({
+				policyInfo : attributeArray,
+				gpmsCommonObj : gpmsCommonObj()
+			});
+
+			this.config.buttonType = buttonType;
+			this.ajaxCall(this.config);
+		},
+
 		CheckUserPermissionWithPositionTitle : function(buttonType,
 				proposal_id, proposalSection, config) {
 			var attributeArray = [];
@@ -539,6 +579,46 @@ $(function() {
 			this.ajaxCall(this.config);
 		},
 
+		CheckUserPermissionWithPositionTitleAndStatus : function(buttonType,
+				proposal_id, proposalSection, config) {
+			var attributeArray = [];
+
+			attributeArray.push({
+				attributeType : "Subject",
+				attributeName : "position-title",
+				attributeValue : GPMS.utils.GetUserPositionTitle()
+			});
+
+			attributeArray.push({
+				attributeType : "Resource",
+				attributeName : "proposal-section",
+				attributeValue : proposalSection
+			});
+
+			attributeArray.push({
+				attributeType : "Resource",
+				attributeName : "status",
+				attributeValue : config.proposalStatus
+			});
+
+			attributeArray.push({
+				attributeType : "Action",
+				attributeName : "proposal-action",
+				attributeValue : buttonType
+			});
+
+			this.config.url = this.config.baseURL
+					+ "CheckPermissionForAProposal";
+			this.config.data = JSON2.stringify({
+				policyInfo : attributeArray,
+				gpmsCommonObj : gpmsCommonObj(),
+				proposalId : proposal_id
+			});
+
+			this.config.buttonType = buttonType;
+			this.ajaxCall(this.config);
+		},
+
 		CheckUserPermissionWithProposalRole : function(buttonType,
 				proposal_roles, proposal_id, proposalSection, config) {
 			var attributeArray = [];
@@ -553,6 +633,46 @@ $(function() {
 				attributeType : "Resource",
 				attributeName : "proposal-section",
 				attributeValue : proposalSection
+			});
+
+			attributeArray.push({
+				attributeType : "Action",
+				attributeName : "proposal-action",
+				attributeValue : buttonType
+			});
+
+			this.config.url = this.config.baseURL
+					+ "CheckPermissionForAProposal";
+			this.config.data = JSON2.stringify({
+				policyInfo : attributeArray,
+				gpmsCommonObj : gpmsCommonObj(),
+				proposalId : proposal_id
+			});
+
+			this.config.buttonType = buttonType;
+			this.ajaxCall(this.config);
+		},
+
+		CheckUserPermissionWithProposalRoleAndStatus : function(buttonType,
+				proposal_roles, proposal_id, proposalSection, config) {
+			var attributeArray = [];
+
+			attributeArray.push({
+				attributeType : "Subject",
+				attributeName : "proposal-role",
+				attributeValue : proposal_roles
+			});
+
+			attributeArray.push({
+				attributeType : "Resource",
+				attributeName : "proposal-section",
+				attributeValue : proposalSection
+			});
+
+			attributeArray.push({
+				attributeType : "Resource",
+				attributeName : "status",
+				attributeValue : config.proposalStatus
 			});
 
 			attributeArray.push({
@@ -3910,9 +4030,8 @@ $(function() {
 										myProposal.config.proposalId,
 										"Whole Proposal", myProposal.config);
 							} else {
-
 								myProposal.CheckUserPermissionWithPositionType(
-										"Submit", "Whole Proposal",
+										$buttonType, "Whole Proposal",
 										myProposal.config);
 							}
 
