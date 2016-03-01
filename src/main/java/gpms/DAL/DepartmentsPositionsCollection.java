@@ -37,6 +37,7 @@ public class DepartmentsPositionsCollection {
 		researchStaff.add("Senior Research Scientist");
 
 		ArrayList<String> professionalStaff = new ArrayList<String>();
+		professionalStaff.add("IRB");
 		professionalStaff.add("Business Manager");
 		professionalStaff.add("University Research Administrator");
 		professionalStaff.add("Department Administrative Assistant");
