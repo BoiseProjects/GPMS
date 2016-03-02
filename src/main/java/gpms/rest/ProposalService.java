@@ -3041,7 +3041,7 @@ public class ProposalService {
 			for (SignatureInfo signatureInfo : addedSignatures) {
 				String signFullName = signatureInfo.getFullName();
 				String position = signatureInfo.getPositionTitle();
-				Date signedDate = signatureInfo.getSignedDate();
+				// Date signedDate = signatureInfo.getSignedDate();
 				notification = new NotificationLog();
 				notification.setType("Signature");
 				notification.setAction("Signed by " + signFullName + " as "
@@ -3301,15 +3301,16 @@ public class ProposalService {
 				// Device type
 				// device-type
 
-				// String decision = ac.getXACMLdecision(attrMap);
-				// if (decision.equals("Permit")) {
-				return Response.status(200).type(MediaType.APPLICATION_JSON)
-						.entity(true).build();
-				// } else {
-				// return Response.status(403)
-				// .type(MediaType.APPLICATION_JSON)
-				// .entity("Your permission is: " + decision).build();
-				// }
+				String decision = ac.getXACMLdecision(attrMap);
+				if (decision.equals("Permit")) {
+					return Response.status(200)
+							.type(MediaType.APPLICATION_JSON).entity(true)
+							.build();
+				} else {
+					return Response.status(403)
+							.type(MediaType.APPLICATION_JSON)
+							.entity("Your permission is: " + decision).build();
+				}
 			} else {
 				return Response.status(403).type(MediaType.APPLICATION_JSON)
 						.entity("No User Permission Attributes are send!")
