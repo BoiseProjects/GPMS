@@ -1992,7 +1992,7 @@ $(function() {
 			$('#btnSaveUser').click(function(e) {
 				$(this).disableWith('Saving...');
 				var user_id = $(this).data("name");
-				if (user_id != '') {
+				if (user_id != undefined) {
 					editFlag = user_id;
 					usersManage.saveUser(user_id);
 				} else {
@@ -2014,7 +2014,7 @@ $(function() {
 			}), $('#txtUserName').on("blur", function() {
 				var userName = $.trim($(this).val());
 				var user_id = $('#btnSaveUser').data("name");
-				if (user_id == '') {
+				if (user_id == undefined) {
 					user_id = "0";
 				}
 				usersManage.checkUniqueUserName(user_id, userName, $(this));
@@ -2026,7 +2026,7 @@ $(function() {
 			}), $('#txtWorkEmail, #txtPersonalEmail').on("blur", function() {
 				var email = $.trim($(this).val());
 				var user_id = $('#btnSaveUser').data("name");
-				if (user_id == '') {
+				if (user_id == undefined) {
 					user_id = "0";
 				}
 				usersManage.checkUniqueEmailAddress(user_id, email, this.id);
