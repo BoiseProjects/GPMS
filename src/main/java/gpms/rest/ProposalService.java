@@ -1213,6 +1213,10 @@ public class ProposalService {
 										// This user is both PI and Research
 										// Administrator
 									}
+								} else {
+									newProposal.getProposalStatus().clear();
+									newProposal.getProposalStatus().add(
+											Status.WAITINGFORCHAIRAPPROVAL);
 								}
 
 								break;
@@ -2773,68 +2777,70 @@ public class ProposalService {
 			List<Appendix> appendixInfo = Arrays.asList(mapper.readValue(
 					proposalInfo.get("AppendixInfo"), Appendix[].class));
 
-			// A a = mapper.readValue(temp, A.class);
+			if (appendixInfo.size() != 0) {
 
-			String UPLOAD_PATH = new String();
-			try {
-				UPLOAD_PATH = this.getClass().getResource("/uploads").toURI()
-						.getPath();
-			} catch (URISyntaxException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-			if (!proposalID.equals("0")) {
-				// boolean alreadyExist = false;
-				// for (Appendix appendix : existingProposal.getAppendices()) {
-				// if (appendix.equals(newAppendix)) {
-				// alreadyExist = true;
-				// break;
-				// }
-				// }
-				// if (!alreadyExist) {
-				existingProposal.getAppendices().clear();
-
-				for (Appendix uploadFile : appendixInfo) {
-					Appendix newAppendix = new Appendix();
-
-					String fileName = uploadFile.getFilename();
-					File file = new File(UPLOAD_PATH + fileName);
-
-					newAppendix.setFilename(fileName);
-					String extension = "";
-					int i = fileName.lastIndexOf('.');
-					if (i > 0) {
-						extension = fileName.substring(i + 1);
-						newAppendix.setExtension(extension);
-					}
-					newAppendix.setFilesize(file.length());
-					newAppendix.setFilepath("/uploads/" + fileName);
-
-					newAppendix.setTitle(uploadFile.getTitle());
-
-					existingProposal.getAppendices().add(newAppendix);
+				String UPLOAD_PATH = new String();
+				try {
+					UPLOAD_PATH = this.getClass().getResource("/uploads")
+							.toURI().getPath();
+				} catch (URISyntaxException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 
-				// }
-			} else {
-				for (Appendix uploadFile : appendixInfo) {
-					Appendix newAppendix = new Appendix();
+				if (!proposalID.equals("0")) {
+					// boolean alreadyExist = false;
+					// for (Appendix appendix :
+					// existingProposal.getAppendices()) {
+					// if (appendix.equals(newAppendix)) {
+					// alreadyExist = true;
+					// break;
+					// }
+					// }
+					// if (!alreadyExist) {
+					existingProposal.getAppendices().clear();
 
-					String fileName = uploadFile.getFilename();
-					File file = new File(UPLOAD_PATH + fileName);
+					for (Appendix uploadFile : appendixInfo) {
+						Appendix newAppendix = new Appendix();
 
-					newAppendix.setFilename(fileName);
-					String extension = "";
-					int i = fileName.lastIndexOf('.');
-					if (i > 0) {
-						extension = fileName.substring(i + 1);
-						newAppendix.setExtension(extension);
+						String fileName = uploadFile.getFilename();
+						File file = new File(UPLOAD_PATH + fileName);
+
+						newAppendix.setFilename(fileName);
+						String extension = "";
+						int i = fileName.lastIndexOf('.');
+						if (i > 0) {
+							extension = fileName.substring(i + 1);
+							newAppendix.setExtension(extension);
+						}
+						newAppendix.setFilesize(file.length());
+						newAppendix.setFilepath("/uploads/" + fileName);
+
+						newAppendix.setTitle(uploadFile.getTitle());
+
+						existingProposal.getAppendices().add(newAppendix);
 					}
-					newAppendix.setFilesize(file.length());
-					newAppendix.setFilepath("\\uploads\\" + fileName);
 
-					newProposal.getAppendices().add(newAppendix);
+					// }
+				} else {
+					for (Appendix uploadFile : appendixInfo) {
+						Appendix newAppendix = new Appendix();
+
+						String fileName = uploadFile.getFilename();
+						File file = new File(UPLOAD_PATH + fileName);
+
+						newAppendix.setFilename(fileName);
+						String extension = "";
+						int i = fileName.lastIndexOf('.');
+						if (i > 0) {
+							extension = fileName.substring(i + 1);
+							newAppendix.setExtension(extension);
+						}
+						newAppendix.setFilesize(file.length());
+						newAppendix.setFilepath("\\uploads\\" + fileName);
+
+						newProposal.getAppendices().add(newAppendix);
+					}
 				}
 			}
 		}
@@ -3295,16 +3301,15 @@ public class ProposalService {
 				// Device type
 				// device-type
 
-				String decision = ac.getXACMLdecision(attrMap);
-				if (decision.equals("Permit")) {
-					return Response.status(200)
-							.type(MediaType.APPLICATION_JSON).entity(true)
-							.build();
-				} else {
-					return Response.status(403)
-							.type(MediaType.APPLICATION_JSON)
-							.entity("Your permission is: " + decision).build();
-				}
+				// String decision = ac.getXACMLdecision(attrMap);
+				// if (decision.equals("Permit")) {
+				return Response.status(200).type(MediaType.APPLICATION_JSON)
+						.entity(true).build();
+				// } else {
+				// return Response.status(403)
+				// .type(MediaType.APPLICATION_JSON)
+				// .entity("Your permission is: " + decision).build();
+				// }
 			} else {
 				return Response.status(403).type(MediaType.APPLICATION_JSON)
 						.entity("No User Permission Attributes are send!")
