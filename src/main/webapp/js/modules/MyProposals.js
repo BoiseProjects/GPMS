@@ -3335,6 +3335,9 @@ $(function() {
 				myProposal.SaveProposal(myProposal.config.buttonType,
 						myProposal.config.proposalRoles,
 						myProposal.config.proposalId, false);
+			} else {
+				myProposal.SaveProposal(myProposal.config.buttonType, "", "0",
+						true);
 			}
 
 			break;
