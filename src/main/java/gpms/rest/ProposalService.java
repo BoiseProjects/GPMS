@@ -3041,7 +3041,7 @@ public class ProposalService {
 			for (SignatureInfo signatureInfo : addedSignatures) {
 				String signFullName = signatureInfo.getFullName();
 				String position = signatureInfo.getPositionTitle();
-				Date signedDate = signatureInfo.getSignedDate();
+				// Date signedDate = signatureInfo.getSignedDate();
 				notification = new NotificationLog();
 				notification.setType("Signature");
 				notification.setAction("Signed by " + signFullName + " as "
