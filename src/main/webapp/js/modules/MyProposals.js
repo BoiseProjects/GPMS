@@ -3365,11 +3365,12 @@ $(function() {
 					$(this).prop('disabled', true);
 				});
 
+				myProposal.ClearForm();
+
 				$('select[name=ddlName]').eq(0).val(
 						GPMS.utils.GetUserProfileID()).prop('selected',
 						'selected').prop('disabled', 'disabled');
 
-				myProposal.ClearForm();
 				myProposal.BindDefaultUserPosition(0);
 				myProposal.BindPICoPISignatures();
 
