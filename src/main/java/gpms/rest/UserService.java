@@ -501,7 +501,7 @@ public class UserService {
 
 		OutboundEvent.Builder eventBuilder = new OutboundEvent.Builder();
 		OutboundEvent event = eventBuilder.name("notification")
-				.mediaType(MediaType.TEXT_PLAIN_TYPE).data(String.class, 1)
+				.mediaType(MediaType.TEXT_PLAIN_TYPE).data(String.class, "1")
 				.build();
 
 		NotificationService.BROADCASTER.broadcast(event);
@@ -613,7 +613,7 @@ public class UserService {
 
 		OutboundEvent.Builder eventBuilder = new OutboundEvent.Builder();
 		OutboundEvent event = eventBuilder.name("notification")
-				.mediaType(MediaType.TEXT_PLAIN_TYPE).data(String.class, 1)
+				.mediaType(MediaType.TEXT_PLAIN_TYPE).data(String.class, "1")
 				.build();
 
 		NotificationService.BROADCASTER.broadcast(event);
@@ -761,7 +761,7 @@ public class UserService {
 
 		OutboundEvent.Builder eventBuilder = new OutboundEvent.Builder();
 		OutboundEvent event = eventBuilder.name("notification")
-				.mediaType(MediaType.TEXT_PLAIN_TYPE).data(String.class, 1)
+				.mediaType(MediaType.TEXT_PLAIN_TYPE).data(String.class, "1")
 				.build();
 
 		NotificationService.BROADCASTER.broadcast(event);
@@ -1303,10 +1303,15 @@ public class UserService {
 		String userProfileID = new String();
 		@SuppressWarnings("unused")
 		String userName = new String();
+		@SuppressWarnings("unused")
 		Boolean userIsAdmin = false;
+		@SuppressWarnings("unused")
 		String userCollege = new String();
+		@SuppressWarnings("unused")
 		String userDepartment = new String();
+		@SuppressWarnings("unused")
 		String userPositionType = new String();
+		@SuppressWarnings("unused")
 		String userPositionTitle = new String();
 		if (root != null && root.has("gpmsCommonObj")) {
 			JsonNode commonObj = root.get("gpmsCommonObj");
@@ -1414,7 +1419,7 @@ public class UserService {
 
 		OutboundEvent.Builder eventBuilder = new OutboundEvent.Builder();
 		OutboundEvent event = eventBuilder.name("notification")
-				.mediaType(MediaType.TEXT_PLAIN_TYPE).data(String.class, 1)
+				.mediaType(MediaType.TEXT_PLAIN_TYPE).data(String.class, "1")
 				.build();
 
 		NotificationService.BROADCASTER.broadcast(event);
@@ -1541,7 +1546,7 @@ public class UserService {
 
 		OutboundEvent.Builder eventBuilder = new OutboundEvent.Builder();
 		OutboundEvent event = eventBuilder.name("notification")
-				.mediaType(MediaType.TEXT_PLAIN_TYPE).data(String.class, 1)
+				.mediaType(MediaType.TEXT_PLAIN_TYPE).data(String.class, "1")
 				.build();
 
 		NotificationService.BROADCASTER.broadcast(event);

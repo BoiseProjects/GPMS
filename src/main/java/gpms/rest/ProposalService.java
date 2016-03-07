@@ -3201,7 +3201,7 @@ public class ProposalService {
 
 		OutboundEvent.Builder eventBuilder = new OutboundEvent.Builder();
 		OutboundEvent event = eventBuilder.name("notification")
-				.mediaType(MediaType.TEXT_PLAIN_TYPE).data(String.class, 1)
+				.mediaType(MediaType.TEXT_PLAIN_TYPE).data(String.class, "1")
 				.build();
 
 		NotificationService.BROADCASTER.broadcast(event);
