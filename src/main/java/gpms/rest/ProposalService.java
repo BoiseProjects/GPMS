@@ -44,9 +44,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.UnknownHostException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.attribute.BasicFileAttributes;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -66,16 +63,17 @@ import javax.ws.rs.core.Response;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.bson.types.ObjectId;
-import org.codehaus.jackson.JsonGenerationException;
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.JsonProcessingException;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
+import org.glassfish.jersey.media.sse.OutboundEvent;
 import org.mongodb.morphia.Morphia;
 
 import com.ebay.xcelite.Xcelite;
 import com.ebay.xcelite.sheet.XceliteSheet;
 import com.ebay.xcelite.writer.SheetWriter;
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import com.google.gson.Gson;
@@ -153,54 +151,52 @@ public class ProposalService {
 		JsonNode root = mapper.readTree(message);
 
 		if (root != null && root.has("offset")) {
-			offset = root.get("offset").getIntValue();
+			offset = root.get("offset").intValue();
 		}
 
 		if (root != null && root.has("limit")) {
-			limit = root.get("limit").getIntValue();
+			limit = root.get("limit").intValue();
 		}
 
 		if (root != null && root.has("proposalBindObj")) {
 
 			JsonNode proposalObj = root.get("proposalBindObj");
 			if (proposalObj != null && proposalObj.has("ProjectTitle")) {
-				projectTitle = proposalObj.get("ProjectTitle").getTextValue();
+				projectTitle = proposalObj.get("ProjectTitle").textValue();
 			}
 
 			if (proposalObj != null && proposalObj.has("UsernameBy")) {
-				usernameBy = proposalObj.get("UsernameBy").getTextValue();
+				usernameBy = proposalObj.get("UsernameBy").textValue();
 			}
 
 			if (proposalObj != null && proposalObj.has("ReceivedOnFrom")) {
-				receivedOnFrom = proposalObj.get("ReceivedOnFrom")
-						.getTextValue();
+				receivedOnFrom = proposalObj.get("ReceivedOnFrom").textValue();
 			}
 
 			if (proposalObj != null && proposalObj.has("ReceivedOnTo")) {
-				receivedOnTo = proposalObj.get("ReceivedOnTo").getTextValue();
+				receivedOnTo = proposalObj.get("ReceivedOnTo").textValue();
 			}
 
 			if (proposalObj != null && proposalObj.has("TotalCostsFrom")) {
-				if (proposalObj.get("TotalCostsFrom").getTextValue() != null) {
+				if (proposalObj.get("TotalCostsFrom").textValue() != null) {
 					totalCostsFrom = Double.valueOf(proposalObj.get(
-							"TotalCostsFrom").getTextValue());
+							"TotalCostsFrom").textValue());
 				}
 			}
 
 			if (proposalObj != null && proposalObj.has("TotalCostsTo")) {
-				if (proposalObj.get("TotalCostsTo").getTextValue() != null) {
+				if (proposalObj.get("TotalCostsTo").textValue() != null) {
 					totalCostsTo = Double.valueOf(proposalObj.get(
-							"TotalCostsTo").getTextValue());
+							"TotalCostsTo").textValue());
 				}
 			}
 
 			if (proposalObj != null && proposalObj.has("ProposalStatus")) {
-				proposalStatus = proposalObj.get("ProposalStatus")
-						.getTextValue();
+				proposalStatus = proposalObj.get("ProposalStatus").textValue();
 			}
 
 			if (proposalObj != null && proposalObj.has("UserRole")) {
-				userRole = proposalObj.get("UserRole").getTextValue();
+				userRole = proposalObj.get("UserRole").textValue();
 			}
 		}
 
@@ -232,58 +228,59 @@ public class ProposalService {
 		JsonNode root = mapper.readTree(message);
 
 		if (root != null && root.has("offset")) {
-			offset = root.get("offset").getIntValue();
+			offset = root.get("offset").intValue();
 		}
 
 		if (root != null && root.has("limit")) {
-			limit = root.get("limit").getIntValue();
+			limit = root.get("limit").intValue();
 		}
 
 		if (root != null && root.has("proposalBindObj")) {
 			JsonNode proposalObj = root.get("proposalBindObj");
 			if (proposalObj != null && proposalObj.has("ProjectTitle")) {
-				projectTitle = proposalObj.get("ProjectTitle").getTextValue();
+				projectTitle = proposalObj.get("ProjectTitle").textValue();
 			}
 
 			if (proposalObj != null && proposalObj.has("UsernameBy")) {
-				usernameBy = proposalObj.get("UsernameBy").getTextValue();
+				usernameBy = proposalObj.get("UsernameBy").textValue();
 			}
 
 			if (proposalObj != null && proposalObj.has("SubmittedOnFrom")) {
 				submittedOnFrom = proposalObj.get("SubmittedOnFrom")
-						.getTextValue();
+						.textValue();
 			}
 
 			if (proposalObj != null && proposalObj.has("SubmittedOnTo")) {
-				submittedOnTo = proposalObj.get("SubmittedOnTo").getTextValue();
+				submittedOnTo = proposalObj.get("SubmittedOnTo").textValue();
 			}
 
 			if (proposalObj != null && proposalObj.has("TotalCostsFrom")) {
-				if (proposalObj.get("TotalCostsFrom").getTextValue() != null) {
+				if (proposalObj.get("TotalCostsFrom").textValue() != null) {
 					totalCostsFrom = Double.valueOf(proposalObj.get(
-							"TotalCostsFrom").getTextValue());
+							"TotalCostsFrom").textValue());
 				}
 			}
 
 			if (proposalObj != null && proposalObj.has("TotalCostsTo")) {
-				if (proposalObj.get("TotalCostsTo").getTextValue() != null) {
+				if (proposalObj.get("TotalCostsTo").textValue() != null) {
 					totalCostsTo = Double.valueOf(proposalObj.get(
-							"TotalCostsTo").getTextValue());
+							"TotalCostsTo").textValue());
 				}
 			}
 
 			if (proposalObj != null && proposalObj.has("ProposalStatus")) {
-				proposalStatus = proposalObj.get("ProposalStatus")
-						.getTextValue();
+				proposalStatus = proposalObj.get("ProposalStatus").textValue();
 			}
 
 			if (proposalObj != null && proposalObj.has("UserRole")) {
-				userRole = proposalObj.get("UserRole").getTextValue();
+				userRole = proposalObj.get("UserRole").textValue();
 			}
 		}
 
 		String userProfileID = new String();
+		@SuppressWarnings("unused")
 		String userName = new String();
+		@SuppressWarnings("unused")
 		Boolean userIsAdmin = false;
 		String userCollege = new String();
 		String userDepartment = new String();
@@ -293,28 +290,28 @@ public class ProposalService {
 		if (root != null && root.has("gpmsCommonObj")) {
 			JsonNode commonObj = root.get("gpmsCommonObj");
 			if (commonObj != null && commonObj.has("UserProfileID")) {
-				userProfileID = commonObj.get("UserProfileID").getTextValue();
+				userProfileID = commonObj.get("UserProfileID").textValue();
 			}
 			if (commonObj != null && commonObj.has("UserName")) {
-				userName = commonObj.get("UserName").getTextValue();
+				userName = commonObj.get("UserName").textValue();
 			}
 			if (commonObj != null && commonObj.has("UserIsAdmin")) {
 				userIsAdmin = Boolean.parseBoolean(commonObj.get("UserIsAdmin")
-						.getTextValue());
+						.textValue());
 			}
 			if (commonObj != null && commonObj.has("UserCollege")) {
-				userCollege = commonObj.get("UserCollege").getTextValue();
+				userCollege = commonObj.get("UserCollege").textValue();
 			}
 			if (commonObj != null && commonObj.has("UserDepartment")) {
-				userDepartment = commonObj.get("UserDepartment").getTextValue();
+				userDepartment = commonObj.get("UserDepartment").textValue();
 			}
 			if (commonObj != null && commonObj.has("UserPositionType")) {
 				userPositionType = commonObj.get("UserPositionType")
-						.getTextValue();
+						.textValue();
 			}
 			if (commonObj != null && commonObj.has("UserPositionTitle")) {
 				userPositionTitle = commonObj.get("UserPositionTitle")
-						.getTextValue();
+						.textValue();
 			}
 		}
 
@@ -350,48 +347,49 @@ public class ProposalService {
 		if (root != null && root.has("proposalBindObj")) {
 			JsonNode proposalObj = root.get("proposalBindObj");
 			if (proposalObj != null && proposalObj.has("ProjectTitle")) {
-				projectTitle = proposalObj.get("ProjectTitle").getTextValue();
+				projectTitle = proposalObj.get("ProjectTitle").textValue();
 			}
 
 			if (proposalObj != null && proposalObj.has("UsernameBy")) {
-				usernameBy = proposalObj.get("UsernameBy").getTextValue();
+				usernameBy = proposalObj.get("UsernameBy").textValue();
 			}
 
 			if (proposalObj != null && proposalObj.has("SubmittedOnFrom")) {
 				submittedOnFrom = proposalObj.get("SubmittedOnFrom")
-						.getTextValue();
+						.textValue();
 			}
 
 			if (proposalObj != null && proposalObj.has("SubmittedOnTo")) {
-				submittedOnTo = proposalObj.get("SubmittedOnTo").getTextValue();
+				submittedOnTo = proposalObj.get("SubmittedOnTo").textValue();
 			}
 
 			if (proposalObj != null && proposalObj.has("TotalCostsFrom")) {
-				if (proposalObj.get("TotalCostsFrom").getTextValue() != null) {
+				if (proposalObj.get("TotalCostsFrom").textValue() != null) {
 					totalCostsFrom = Double.valueOf(proposalObj.get(
-							"TotalCostsFrom").getTextValue());
+							"TotalCostsFrom").textValue());
 				}
 			}
 
 			if (proposalObj != null && proposalObj.has("TotalCostsTo")) {
-				if (proposalObj.get("TotalCostsTo").getTextValue() != null) {
+				if (proposalObj.get("TotalCostsTo").textValue() != null) {
 					totalCostsTo = Double.valueOf(proposalObj.get(
-							"TotalCostsTo").getTextValue());
+							"TotalCostsTo").textValue());
 				}
 			}
 
 			if (proposalObj != null && proposalObj.has("ProposalStatus")) {
-				proposalStatus = proposalObj.get("ProposalStatus")
-						.getTextValue();
+				proposalStatus = proposalObj.get("ProposalStatus").textValue();
 			}
 
 			if (proposalObj != null && proposalObj.has("UserRole")) {
-				userRole = proposalObj.get("UserRole").getTextValue();
+				userRole = proposalObj.get("UserRole").textValue();
 			}
 		}
 
 		String userProfileID = new String();
+		@SuppressWarnings("unused")
 		String userName = new String();
+		@SuppressWarnings("unused")
 		Boolean userIsAdmin = false;
 		String userCollege = new String();
 		String userDepartment = new String();
@@ -401,28 +399,28 @@ public class ProposalService {
 		if (root != null && root.has("gpmsCommonObj")) {
 			JsonNode commonObj = root.get("gpmsCommonObj");
 			if (commonObj != null && commonObj.has("UserProfileID")) {
-				userProfileID = commonObj.get("UserProfileID").getTextValue();
+				userProfileID = commonObj.get("UserProfileID").textValue();
 			}
 			if (commonObj != null && commonObj.has("UserName")) {
-				userName = commonObj.get("UserName").getTextValue();
+				userName = commonObj.get("UserName").textValue();
 			}
 			if (commonObj != null && commonObj.has("UserIsAdmin")) {
 				userIsAdmin = Boolean.parseBoolean(commonObj.get("UserIsAdmin")
-						.getTextValue());
+						.textValue());
 			}
 			if (commonObj != null && commonObj.has("UserCollege")) {
-				userCollege = commonObj.get("UserCollege").getTextValue();
+				userCollege = commonObj.get("UserCollege").textValue();
 			}
 			if (commonObj != null && commonObj.has("UserDepartment")) {
-				userDepartment = commonObj.get("UserDepartment").getTextValue();
+				userDepartment = commonObj.get("UserDepartment").textValue();
 			}
 			if (commonObj != null && commonObj.has("UserPositionType")) {
 				userPositionType = commonObj.get("UserPositionType")
-						.getTextValue();
+						.textValue();
 			}
 			if (commonObj != null && commonObj.has("UserPositionTitle")) {
 				userPositionTitle = commonObj.get("UserPositionTitle")
-						.getTextValue();
+						.textValue();
 			}
 		}
 
@@ -481,50 +479,56 @@ public class ProposalService {
 		JsonNode root = mapper.readTree(message);
 
 		if (root != null && root.has("proposalId")) {
-			proposalId = root.get("proposalId").getTextValue();
+			proposalId = root.get("proposalId").textValue();
 		}
 
 		if (root != null && root.has("proposalRoles")) {
-			proposalRoles = root.get("proposalRoles").getTextValue();
+			proposalRoles = root.get("proposalRoles").textValue();
 		}
 
 		if (root != null && root.has("proposalUserTitle")) {
-			proposalUserTitle = root.get("proposalUserTitle").getTextValue();
+			proposalUserTitle = root.get("proposalUserTitle").textValue();
 		}
 
 		String userProfileID = new String();
+		@SuppressWarnings("unused")
 		String userName = new String();
+		@SuppressWarnings("unused")
 		Boolean userIsAdmin = false;
+		@SuppressWarnings("unused")
 		String userCollege = new String();
+		@SuppressWarnings("unused")
 		String userDepartment = new String();
+		@SuppressWarnings("unused")
 		String userPositionType = new String();
+		@SuppressWarnings("unused")
 		String userPositionTitle = new String();
 
 		if (root != null && root.has("gpmsCommonObj")) {
 			JsonNode commonObj = root.get("gpmsCommonObj");
 			if (commonObj != null && commonObj.has("UserProfileID")) {
-				userProfileID = commonObj.get("UserProfileID").getTextValue();
+				userProfileID = commonObj.get("UserProfileID").textValue();
 			}
 			if (commonObj != null && commonObj.has("UserName")) {
-				userName = commonObj.get("UserName").getTextValue();
+				userName = commonObj.get("UserName").textValue();
 			}
 			if (commonObj != null && commonObj.has("UserIsAdmin")) {
 				userIsAdmin = Boolean.parseBoolean(commonObj.get("UserIsAdmin")
-						.getTextValue());
+						.textValue());
 			}
 			if (commonObj != null && commonObj.has("UserCollege")) {
-				userCollege = commonObj.get("UserCollege").getTextValue();
+				userCollege = commonObj.get("UserCollege").textValue();
 			}
 			if (commonObj != null && commonObj.has("UserDepartment")) {
-				userDepartment = commonObj.get("UserDepartment").getTextValue();
+				userDepartment = commonObj.get("UserDepartment").textValue();
 			}
 			if (commonObj != null && commonObj.has("UserPositionType")) {
 				userPositionType = commonObj.get("UserPositionType")
-						.getTextValue();
+						.textValue();
 			}
 			if (commonObj != null && commonObj.has("UserPositionTitle")) {
 				userPositionTitle = commonObj.get("UserPositionTitle")
-						.getTextValue();
+						.textValue();
 			}
 		}
 
@@ -547,11 +551,9 @@ public class ProposalService {
 			NotifyAllExistingInvestigators(proposalId, projectTitle, proposal,
 					notificationMessage, "Proposal", true);
 
-			return Response.status(200).type(MediaType.APPLICATION_JSON)
-					.entity(true).build();
+			return Response.status(200).entity(true).build();
 		} else {
-			return Response.status(403).type(MediaType.APPLICATION_JSON)
-					.entity("DENY").build();
+			return Response.status(403).entity("DENY").build();
 		}
 
 	}
@@ -568,43 +570,48 @@ public class ProposalService {
 		JsonNode root = mapper.readTree(message);
 
 		if (root != null && root.has("proposalIds")) {
-			proposalIds = root.get("proposalIds").getTextValue();
+			proposalIds = root.get("proposalIds").textValue();
 			proposals = proposalIds.split(",");
 		}
 
 		String userProfileID = new String();
+		@SuppressWarnings("unused")
 		String userName = new String();
+		@SuppressWarnings("unused")
 		Boolean userIsAdmin = false;
+		@SuppressWarnings("unused")
 		String userCollege = new String();
+		@SuppressWarnings("unused")
 		String userDepartment = new String();
+		@SuppressWarnings("unused")
 		String userPositionType = new String();
 		String userPositionTitle = new String();
 
 		if (root != null && root.has("gpmsCommonObj")) {
 			JsonNode commonObj = root.get("gpmsCommonObj");
 			if (commonObj != null && commonObj.has("UserProfileID")) {
-				userProfileID = commonObj.get("UserProfileID").getTextValue();
+				userProfileID = commonObj.get("UserProfileID").textValue();
 			}
 			if (commonObj != null && commonObj.has("UserName")) {
-				userName = commonObj.get("UserName").getTextValue();
+				userName = commonObj.get("UserName").textValue();
 			}
 			if (commonObj != null && commonObj.has("UserIsAdmin")) {
 				userIsAdmin = Boolean.parseBoolean(commonObj.get("UserIsAdmin")
-						.getTextValue());
+						.textValue());
 			}
 			if (commonObj != null && commonObj.has("UserCollege")) {
-				userCollege = commonObj.get("UserCollege").getTextValue();
+				userCollege = commonObj.get("UserCollege").textValue();
 			}
 			if (commonObj != null && commonObj.has("UserDepartment")) {
-				userDepartment = commonObj.get("UserDepartment").getTextValue();
+				userDepartment = commonObj.get("UserDepartment").textValue();
 			}
 			if (commonObj != null && commonObj.has("UserPositionType")) {
 				userPositionType = commonObj.get("UserPositionType")
-						.getTextValue();
+						.textValue();
 			}
 			if (commonObj != null && commonObj.has("UserPositionTitle")) {
 				userPositionTitle = commonObj.get("UserPositionTitle")
-						.getTextValue();
+						.textValue();
 			}
 		}
 
@@ -625,8 +632,9 @@ public class ProposalService {
 			NotifyAllExistingInvestigators(proposalId, projectTitle, proposal,
 					notificationMessage, "Proposal", true);
 		}
+
 		response = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(
-				"Success");
+				true);
 		return response;
 	}
 
@@ -643,7 +651,7 @@ public class ProposalService {
 		JsonNode root = mapper.readTree(message);
 
 		if (root != null && root.has("proposalId")) {
-			proposalId = root.get("proposalId").getTextValue();
+			proposalId = root.get("proposalId").textValue();
 		}
 
 		ObjectId id = new ObjectId(proposalId);
@@ -675,36 +683,35 @@ public class ProposalService {
 		JsonNode root = mapper.readTree(message);
 
 		if (root != null && root.has("offset")) {
-			offset = root.get("offset").getIntValue();
+			offset = root.get("offset").intValue();
 		}
 
 		if (root != null && root.has("limit")) {
-			limit = root.get("limit").getIntValue();
+			limit = root.get("limit").intValue();
 		}
 
 		if (root != null && root.has("proposalId")) {
-			proposalId = root.get("proposalId").getTextValue();
+			proposalId = root.get("proposalId").textValue();
 		}
 
 		if (root != null && root.has("auditLogBindObj")) {
 			JsonNode auditLogBindObj = root.get("auditLogBindObj");
 			if (auditLogBindObj != null && auditLogBindObj.has("Action")) {
-				action = auditLogBindObj.get("Action").getTextValue();
+				action = auditLogBindObj.get("Action").textValue();
 			}
 
 			if (auditLogBindObj != null && auditLogBindObj.has("AuditedBy")) {
-				auditedBy = auditLogBindObj.get("AuditedBy").getTextValue();
+				auditedBy = auditLogBindObj.get("AuditedBy").textValue();
 			}
 
 			if (auditLogBindObj != null
 					&& auditLogBindObj.has("ActivityOnFrom")) {
 				activityOnFrom = auditLogBindObj.get("ActivityOnFrom")
-						.getTextValue();
+						.textValue();
 			}
 
 			if (auditLogBindObj != null && auditLogBindObj.has("ActivityOnTo")) {
-				activityOnTo = auditLogBindObj.get("ActivityOnTo")
-						.getTextValue();
+				activityOnTo = auditLogBindObj.get("ActivityOnTo").textValue();
 			}
 		}
 
@@ -736,28 +743,27 @@ public class ProposalService {
 		JsonNode root = mapper.readTree(message);
 
 		if (root != null && root.has("proposalId")) {
-			proposalId = root.get("proposalId").getTextValue();
+			proposalId = root.get("proposalId").textValue();
 		}
 
 		if (root != null && root.has("auditLogBindObj")) {
 			JsonNode auditLogBindObj = root.get("auditLogBindObj");
 			if (auditLogBindObj != null && auditLogBindObj.has("Action")) {
-				action = auditLogBindObj.get("Action").getTextValue();
+				action = auditLogBindObj.get("Action").textValue();
 			}
 
 			if (auditLogBindObj != null && auditLogBindObj.has("AuditedBy")) {
-				auditedBy = auditLogBindObj.get("AuditedBy").getTextValue();
+				auditedBy = auditLogBindObj.get("AuditedBy").textValue();
 			}
 
 			if (auditLogBindObj != null
 					&& auditLogBindObj.has("ActivityOnFrom")) {
 				activityOnFrom = auditLogBindObj.get("ActivityOnFrom")
-						.getTextValue();
+						.textValue();
 			}
 
 			if (auditLogBindObj != null && auditLogBindObj.has("ActivityOnTo")) {
-				activityOnTo = auditLogBindObj.get("ActivityOnTo")
-						.getTextValue();
+				activityOnTo = auditLogBindObj.get("ActivityOnTo").textValue();
 			}
 		}
 
@@ -822,49 +828,56 @@ public class ProposalService {
 			JsonNode proposalUniqueObj = root.get("proposalUniqueObj");
 			if (proposalUniqueObj != null
 					&& proposalUniqueObj.has("ProposalID")) {
-				proposalID = proposalUniqueObj.get("ProposalID").getTextValue();
+				proposalID = proposalUniqueObj.get("ProposalID").textValue();
 			}
 
 			if (proposalUniqueObj != null
 					&& proposalUniqueObj.has("NewProjectTitle")) {
 				newProjectTitle = proposalUniqueObj.get("NewProjectTitle")
-						.getTextValue();
+						.textValue();
 			}
 		}
 
+		@SuppressWarnings("unused")
 		String userProfileID = new String();
+		@SuppressWarnings("unused")
 		String userName = new String();
+		@SuppressWarnings("unused")
 		Boolean userIsAdmin = false;
+		@SuppressWarnings("unused")
 		String userCollege = new String();
+		@SuppressWarnings("unused")
 		String userDepartment = new String();
+		@SuppressWarnings("unused")
 		String userPositionType = new String();
+		@SuppressWarnings("unused")
 		String userPositionTitle = new String();
 
 		if (root != null && root.has("gpmsCommonObj")) {
 			JsonNode commonObj = root.get("gpmsCommonObj");
 			if (commonObj != null && commonObj.has("UserProfileID")) {
-				userProfileID = commonObj.get("UserProfileID").getTextValue();
+				userProfileID = commonObj.get("UserProfileID").textValue();
 			}
 			if (commonObj != null && commonObj.has("UserName")) {
-				userName = commonObj.get("UserName").getTextValue();
+				userName = commonObj.get("UserName").textValue();
 			}
 			if (commonObj != null && commonObj.has("UserIsAdmin")) {
 				userIsAdmin = Boolean.parseBoolean(commonObj.get("UserIsAdmin")
-						.getTextValue());
+						.textValue());
 			}
 			if (commonObj != null && commonObj.has("UserCollege")) {
-				userCollege = commonObj.get("UserCollege").getTextValue();
+				userCollege = commonObj.get("UserCollege").textValue();
 			}
 			if (commonObj != null && commonObj.has("UserDepartment")) {
-				userDepartment = commonObj.get("UserDepartment").getTextValue();
+				userDepartment = commonObj.get("UserDepartment").textValue();
 			}
 			if (commonObj != null && commonObj.has("UserPositionType")) {
 				userPositionType = commonObj.get("UserPositionType")
-						.getTextValue();
+						.textValue();
 			}
 			if (commonObj != null && commonObj.has("UserPositionTitle")) {
 				userPositionTitle = commonObj.get("UserPositionTitle")
-						.getTextValue();
+						.textValue();
 			}
 		}
 
@@ -900,7 +913,7 @@ public class ProposalService {
 
 		JsonNode root = mapper.readTree(message);
 		if (root != null && root.has("proposalId")) {
-			proposalId = root.get("proposalId").getTextValue();
+			proposalId = root.get("proposalId").textValue();
 		}
 
 		ObjectId id = new ObjectId(proposalId);
@@ -949,7 +962,7 @@ public class ProposalService {
 			JsonNode proposalId = root.get("proposalId");
 
 			if (proposalId != null) {
-				proposalID = proposalId.getTextValue();
+				proposalID = proposalId.textValue();
 				if (!proposalID.equals("0") && !proposalID.equals("")) {
 					id = new ObjectId(proposalID);
 					existingProposal = proposalDAO.findProposalByProposalID(id);
@@ -967,7 +980,7 @@ public class ProposalService {
 								if (buttonType != null) {
 									String changeDone = new String();
 
-									switch (buttonType.getTextValue()) {
+									switch (buttonType.textValue()) {
 									case "Withdraw":
 										if (!proposalID.equals("0")) {
 											if (existingProposal
@@ -975,7 +988,7 @@ public class ProposalService {
 													.contains(
 															Status.APPROVEDBYDEAN)
 													&& proposalUserTitle
-															.getTextValue()
+															.textValue()
 															.equals("Research Administrator")
 													&& !existingProposal
 															.getProposalStatus()
@@ -999,7 +1012,7 @@ public class ProposalService {
 													.contains(
 															Status.SUBMITTEDBYRESEARCHADMIN)
 													&& proposalUserTitle
-															.getTextValue()
+															.textValue()
 															.equals("University Research Director")
 													&& !existingProposal
 															.getProposalStatus()
@@ -1022,11 +1035,17 @@ public class ProposalService {
 									}
 
 									String userProfileID = new String();
+									@SuppressWarnings("unused")
 									String userName = new String();
+									@SuppressWarnings("unused")
 									Boolean userIsAdmin = false;
+									@SuppressWarnings("unused")
 									String userCollege = new String();
+									@SuppressWarnings("unused")
 									String userDepartment = new String();
+									@SuppressWarnings("unused")
 									String userPositionType = new String();
+									@SuppressWarnings("unused")
 									String userPositionTitle = new String();
 
 									if (root != null
@@ -1038,46 +1057,45 @@ public class ProposalService {
 														.has("UserProfileID")) {
 											userProfileID = commonObj.get(
 													"UserProfileID")
-													.getTextValue();
+													.textValue();
 										}
 										if (commonObj != null
 												&& commonObj.has("UserName")) {
 											userName = commonObj
 													.get("UserName")
-													.getTextValue();
+													.textValue();
 										}
 										if (commonObj != null
 												&& commonObj.has("UserIsAdmin")) {
 											userIsAdmin = commonObj.get(
 													"UserIsAdmin")
-													.getBooleanValue();
+													.booleanValue();
 										}
 										if (commonObj != null
 												&& commonObj.has("UserCollege")) {
 											userCollege = commonObj.get(
-													"UserCollege")
-													.getTextValue();
+													"UserCollege").textValue();
 										}
 										if (commonObj != null
 												&& commonObj
 														.has("UserDepartment")) {
 											userDepartment = commonObj.get(
 													"UserDepartment")
-													.getTextValue();
+													.textValue();
 										}
 										if (commonObj != null
 												&& commonObj
 														.has("UserPositionType")) {
 											userPositionType = commonObj.get(
 													"UserPositionType")
-													.getTextValue();
+													.textValue();
 										}
 										if (commonObj != null
 												&& commonObj
 														.has("UserPositionTitle")) {
 											userPositionTitle = commonObj.get(
 													"UserPositionTitle")
-													.getTextValue();
+													.textValue();
 										}
 									}
 
@@ -1130,7 +1148,7 @@ public class ProposalService {
 		if (root != null && root.has("proposalInfo")) {
 			proposalInfo = root.get("proposalInfo");
 			if (proposalInfo != null && proposalInfo.has("ProposalID")) {
-				proposalID = proposalInfo.get("ProposalID").getTextValue();
+				proposalID = proposalInfo.get("ProposalID").textValue();
 				if (!proposalID.equals("0")) {
 					proposalId = new ObjectId(proposalID);
 					existingProposal = proposalDAO
@@ -1148,14 +1166,13 @@ public class ProposalService {
 					if (proposalRoles != null) {
 						// TODO
 						List<String> currentProposalRoles = Arrays
-								.asList(proposalRoles.getTextValue()
-										.split(", "));
+								.asList(proposalRoles.textValue().split(", "));
 
 						// For Proposal Status
 						JsonNode buttonType = root.get("buttonType");
 
 						if (buttonType != null) {
-							switch (buttonType.getTextValue()) {
+							switch (buttonType.textValue()) {
 							case "Save As Draft":
 								// This is Hack
 								break;
@@ -1181,7 +1198,7 @@ public class ProposalService {
 											&& currentProposalRoles
 													.contains("PI")
 											&& !proposalUserTitle
-													.getTextValue()
+													.textValue()
 													.equals("Research Administrator")
 											&& !existingProposal
 													.getProposalStatus()
@@ -1198,7 +1215,7 @@ public class ProposalService {
 											&& !currentProposalRoles
 													.contains("PI")
 											&& proposalUserTitle
-													.getTextValue()
+													.textValue()
 													.equals("Research Administrator")
 											&& !existingProposal
 													.getProposalStatus()
@@ -1237,7 +1254,7 @@ public class ProposalService {
 											.getProposalStatus()
 											.contains(
 													Status.WAITINGFORCHAIRAPPROVAL)
-											&& proposalUserTitle.getTextValue()
+											&& proposalUserTitle.textValue()
 													.equals("Department Chair")
 											&& !existingProposal
 													.getProposalStatus()
@@ -1254,7 +1271,7 @@ public class ProposalService {
 													Status.READYFORREVIEW) || existingProposal
 											.getProposalStatus().contains(
 													Status.APPROVEDBYIRB))
-											&& proposalUserTitle.getTextValue()
+											&& proposalUserTitle.textValue()
 													.equals("Business Manager")
 											&& !existingProposal
 													.getProposalStatus()
@@ -1273,7 +1290,7 @@ public class ProposalService {
 											.getProposalStatus()
 											.contains(
 													Status.REVIEWEDBYBUSINESSMANAGER))
-											&& proposalUserTitle.getTextValue()
+											&& proposalUserTitle.textValue()
 													.equals("IRB")
 											&& !existingProposal
 													.getProposalStatus()
@@ -1294,7 +1311,7 @@ public class ProposalService {
 															Status.REVIEWEDBYBUSINESSMANAGER) || existingProposal
 											.getProposalStatus().contains(
 													Status.APPROVEDBYIRB))
-											&& proposalUserTitle.getTextValue()
+											&& proposalUserTitle.textValue()
 													.equals("Dean")
 											&& !existingProposal
 													.getProposalStatus()
@@ -1310,7 +1327,7 @@ public class ProposalService {
 											.getProposalStatus().contains(
 													Status.APPROVEDBYDEAN)
 											&& proposalUserTitle
-													.getTextValue()
+													.textValue()
 													.equals("Research Administrator")
 											&& !existingProposal
 													.getProposalStatus()
@@ -1328,7 +1345,7 @@ public class ProposalService {
 											.contains(
 													Status.SUBMITTEDTORESEARCHDIRECTOR)
 											&& proposalUserTitle
-													.getTextValue()
+													.textValue()
 													.equals("University Research Director")
 											&& !existingProposal
 													.getProposalStatus()
@@ -1354,7 +1371,7 @@ public class ProposalService {
 											.getProposalStatus()
 											.contains(
 													Status.WAITINGFORCHAIRAPPROVAL)
-											&& proposalUserTitle.getTextValue()
+											&& proposalUserTitle.textValue()
 													.equals("Department Chair")
 											&& !existingProposal
 													.getProposalStatus()
@@ -1371,7 +1388,7 @@ public class ProposalService {
 													Status.READYFORREVIEW) || existingProposal
 											.getProposalStatus().contains(
 													Status.APPROVEDBYIRB))
-											&& proposalUserTitle.getTextValue()
+											&& proposalUserTitle.textValue()
 													.equals("Business Manager")
 											&& !existingProposal
 													.getProposalStatus()
@@ -1390,7 +1407,7 @@ public class ProposalService {
 											.getProposalStatus()
 											.contains(
 													Status.REVIEWEDBYBUSINESSMANAGER))
-											&& proposalUserTitle.getTextValue()
+											&& proposalUserTitle.textValue()
 													.equals("IRB")
 											&& !existingProposal
 													.getProposalStatus()
@@ -1411,7 +1428,7 @@ public class ProposalService {
 															Status.REVIEWEDBYBUSINESSMANAGER) || existingProposal
 											.getProposalStatus().contains(
 													Status.APPROVEDBYIRB))
-											&& proposalUserTitle.getTextValue()
+											&& proposalUserTitle.textValue()
 													.equals("Dean")
 											&& !existingProposal
 													.getProposalStatus()
@@ -1427,7 +1444,7 @@ public class ProposalService {
 											.getProposalStatus().contains(
 													Status.APPROVEDBYDEAN)
 											&& proposalUserTitle
-													.getTextValue()
+													.textValue()
 													.equals("Research Administrator")
 											&& !existingProposal
 													.getProposalStatus()
@@ -1445,7 +1462,7 @@ public class ProposalService {
 											.contains(
 													Status.SUBMITTEDTORESEARCHDIRECTOR)
 											&& proposalUserTitle
-													.getTextValue()
+													.textValue()
 													.equals("University Research Director")
 											&& !existingProposal
 													.getProposalStatus()
@@ -1485,20 +1502,19 @@ public class ProposalService {
 					if (!existingProposal
 							.getProjectInfo()
 							.getProjectTitle()
-							.equals(projectInfo.get("ProjectTitle")
-									.getTextValue())) {
+							.equals(projectInfo.get("ProjectTitle").textValue())) {
 						existingProposal.getProjectInfo().setProjectTitle(
-								projectInfo.get("ProjectTitle").getTextValue());
+								projectInfo.get("ProjectTitle").textValue());
 					}
 				} else {
 					newProjectInfo.setProjectTitle(projectInfo.get(
-							"ProjectTitle").getTextValue());
+							"ProjectTitle").textValue());
 				}
 			}
 
 			if (projectInfo != null && projectInfo.has("ProjectType")) {
 				ProjectType projectType = new ProjectType();
-				switch (projectInfo.get("ProjectType").getTextValue()) {
+				switch (projectInfo.get("ProjectType").textValue()) {
 				case "1":
 					projectType.setIsResearchBasic(true);
 					break;
@@ -1531,7 +1547,7 @@ public class ProposalService {
 
 			if (projectInfo != null && projectInfo.has("TypeOfRequest")) {
 				TypeOfRequest typeOfRequest = new TypeOfRequest();
-				switch (projectInfo.get("TypeOfRequest").getTextValue()) {
+				switch (projectInfo.get("TypeOfRequest").textValue()) {
 				case "1":
 					typeOfRequest.setPreProposal(true);
 					break;
@@ -1560,7 +1576,7 @@ public class ProposalService {
 
 			if (projectInfo != null && projectInfo.has("ProjectLocation")) {
 				ProjectLocation projectLocation = new ProjectLocation();
-				switch (projectInfo.get("ProjectLocation").getTextValue()) {
+				switch (projectInfo.get("ProjectLocation").textValue()) {
 				case "1":
 					projectLocation.setOffCampus(true);
 					break;
@@ -1583,7 +1599,7 @@ public class ProposalService {
 
 			if (projectInfo != null && projectInfo.has("DueDate")) {
 				Date dueDate = formatter.parse(projectInfo.get("DueDate")
-						.getTextValue());
+						.textValue());
 				if (!proposalID.equals("0")) {
 					if (!existingProposal.getProjectInfo().getDueDate()
 							.equals(dueDate)) {
@@ -1598,13 +1614,13 @@ public class ProposalService {
 
 			if (projectInfo != null && projectInfo.has("ProjectPeriodFrom")) {
 				Date periodFrom = formatter.parse(projectInfo.get(
-						"ProjectPeriodFrom").getTextValue());
+						"ProjectPeriodFrom").textValue());
 				projectPeriod.setFrom(periodFrom);
 			}
 
 			if (projectInfo != null && projectInfo.has("ProjectPeriodTo")) {
 				Date periodTo = formatter.parse(projectInfo.get(
-						"ProjectPeriodTo").getTextValue());
+						"ProjectPeriodTo").textValue());
 				projectPeriod.setTo(periodTo);
 			}
 			if (!proposalID.equals("0")) {
@@ -1630,7 +1646,7 @@ public class ProposalService {
 			if (sponsorAndBudgetInfo != null
 					&& sponsorAndBudgetInfo.has("GrantingAgency")) {
 				for (String grantingAgency : sponsorAndBudgetInfo
-						.get("GrantingAgency").getTextValue().split(", ")) {
+						.get("GrantingAgency").textValue().split(", ")) {
 					newSponsorAndBudgetInfo.getGrantingAgency().add(
 							grantingAgency);
 				}
@@ -1640,28 +1656,28 @@ public class ProposalService {
 					&& sponsorAndBudgetInfo.has("DirectCosts")) {
 				newSponsorAndBudgetInfo.setDirectCosts(Double
 						.parseDouble(sponsorAndBudgetInfo.get("DirectCosts")
-								.getTextValue()));
+								.textValue()));
 			}
 
 			if (sponsorAndBudgetInfo != null
 					&& sponsorAndBudgetInfo.has("FACosts")) {
 				newSponsorAndBudgetInfo.setFACosts(Double
 						.parseDouble(sponsorAndBudgetInfo.get("FACosts")
-								.getTextValue()));
+								.textValue()));
 			}
 
 			if (sponsorAndBudgetInfo != null
 					&& sponsorAndBudgetInfo.has("TotalCosts")) {
 				newSponsorAndBudgetInfo.setTotalCosts(Double
 						.parseDouble(sponsorAndBudgetInfo.get("TotalCosts")
-								.getTextValue()));
+								.textValue()));
 			}
 
 			if (sponsorAndBudgetInfo != null
 					&& sponsorAndBudgetInfo.has("FARate")) {
 				newSponsorAndBudgetInfo.setFARate(Double
 						.parseDouble(sponsorAndBudgetInfo.get("FARate")
-								.getTextValue()));
+								.textValue()));
 			}
 		}
 
@@ -1681,8 +1697,7 @@ public class ProposalService {
 			JsonNode costShareInfo = proposalInfo.get("CostShareInfo");
 			if (costShareInfo != null
 					&& costShareInfo.has("InstitutionalCommitted")) {
-				switch (costShareInfo.get("InstitutionalCommitted")
-						.getTextValue()) {
+				switch (costShareInfo.get("InstitutionalCommitted").textValue()) {
 				case "1":
 					newCostShareInfo.setInstitutionalCommitted(true);
 					break;
@@ -1696,7 +1711,7 @@ public class ProposalService {
 
 			if (costShareInfo != null
 					&& costShareInfo.has("ThirdPartyCommitted")) {
-				switch (costShareInfo.get("ThirdPartyCommitted").getTextValue()) {
+				switch (costShareInfo.get("ThirdPartyCommitted").textValue()) {
 				case "1":
 					newCostShareInfo.setThirdPartyCommitted(true);
 					break;
@@ -1723,7 +1738,7 @@ public class ProposalService {
 			if (univCommitments != null
 					&& univCommitments.has("NewRenovatedFacilitiesRequired")) {
 				switch (univCommitments.get("NewRenovatedFacilitiesRequired")
-						.getTextValue()) {
+						.textValue()) {
 				case "1":
 					newUnivCommitments.setNewRenovatedFacilitiesRequired(true);
 					break;
@@ -1737,8 +1752,7 @@ public class ProposalService {
 
 			if (univCommitments != null
 					&& univCommitments.has("RentalSpaceRequired")) {
-				switch (univCommitments.get("RentalSpaceRequired")
-						.getTextValue()) {
+				switch (univCommitments.get("RentalSpaceRequired").textValue()) {
 				case "1":
 					newUnivCommitments.setRentalSpaceRequired(true);
 					break;
@@ -1753,7 +1767,7 @@ public class ProposalService {
 			if (univCommitments != null
 					&& univCommitments.has("InstitutionalCommitmentRequired")) {
 				switch (univCommitments.get("InstitutionalCommitmentRequired")
-						.getTextValue()) {
+						.textValue()) {
 				case "1":
 					newUnivCommitments.setInstitutionalCommitmentRequired(true);
 					break;
@@ -1782,8 +1796,7 @@ public class ProposalService {
 					.get("ConflicOfInterestInfo");
 			if (conflicOfInterestInfo != null
 					&& conflicOfInterestInfo.has("FinancialCOI")) {
-				switch (conflicOfInterestInfo.get("FinancialCOI")
-						.getTextValue()) {
+				switch (conflicOfInterestInfo.get("FinancialCOI").textValue()) {
 				case "1":
 					newConflictOfInterest.setFinancialCOI(true);
 					break;
@@ -1798,7 +1811,7 @@ public class ProposalService {
 			if (conflicOfInterestInfo != null
 					&& conflicOfInterestInfo.has("ConflictDisclosed")) {
 				switch (conflicOfInterestInfo.get("ConflictDisclosed")
-						.getTextValue()) {
+						.textValue()) {
 				case "1":
 					newConflictOfInterest.setConflictDisclosed(true);
 					break;
@@ -1813,7 +1826,7 @@ public class ProposalService {
 			if (conflicOfInterestInfo != null
 					&& conflicOfInterestInfo.has("DisclosureFormChange")) {
 				switch (conflicOfInterestInfo.get("DisclosureFormChange")
-						.getTextValue()) {
+						.textValue()) {
 				case "1":
 					newConflictOfInterest.setDisclosureFormChange(true);
 					break;
@@ -1841,18 +1854,18 @@ public class ProposalService {
 			if (complianceInfo != null
 					&& complianceInfo.has("InvolveUseOfHumanSubjects")) {
 				switch (complianceInfo.get("InvolveUseOfHumanSubjects")
-						.getTextValue()) {
+						.textValue()) {
 				case "1":
 					newComplianceInfo.setInvolveUseOfHumanSubjects(true);
 					if (complianceInfo != null
 							&& complianceInfo.has("IRBPending")) {
-						switch (complianceInfo.get("IRBPending").getTextValue()) {
+						switch (complianceInfo.get("IRBPending").textValue()) {
 						case "1":
 							newComplianceInfo.setIRBPending(false);
 							if (complianceInfo != null
 									&& complianceInfo.has("IRB")) {
 								newComplianceInfo.setIRB(complianceInfo.get(
-										"IRB").getTextValue());
+										"IRB").textValue());
 							}
 							break;
 						case "2":
@@ -1874,19 +1887,18 @@ public class ProposalService {
 			if (complianceInfo != null
 					&& complianceInfo.has("InvolveUseOfVertebrateAnimals")) {
 				switch (complianceInfo.get("InvolveUseOfVertebrateAnimals")
-						.getTextValue()) {
+						.textValue()) {
 				case "1":
 					newComplianceInfo.setInvolveUseOfVertebrateAnimals(true);
 					if (complianceInfo != null
 							&& complianceInfo.has("IACUCPending")) {
-						switch (complianceInfo.get("IACUCPending")
-								.getTextValue()) {
+						switch (complianceInfo.get("IACUCPending").textValue()) {
 						case "1":
 							newComplianceInfo.setIACUCPending(false);
 							if (complianceInfo != null
 									&& complianceInfo.has("IACUC")) {
 								newComplianceInfo.setIACUC(complianceInfo.get(
-										"IACUC").getTextValue());
+										"IACUC").textValue());
 							}
 							break;
 						case "2":
@@ -1908,18 +1920,18 @@ public class ProposalService {
 			if (complianceInfo != null
 					&& complianceInfo.has("InvolveBiosafetyConcerns")) {
 				switch (complianceInfo.get("InvolveBiosafetyConcerns")
-						.getTextValue()) {
+						.textValue()) {
 				case "1":
 					newComplianceInfo.setInvolveBiosafetyConcerns(true);
 					if (complianceInfo != null
 							&& complianceInfo.has("IBCPending")) {
-						switch (complianceInfo.get("IBCPending").getTextValue()) {
+						switch (complianceInfo.get("IBCPending").textValue()) {
 						case "1":
 							newComplianceInfo.setIBCPending(false);
 							if (complianceInfo != null
 									&& complianceInfo.has("IBC")) {
 								newComplianceInfo.setIBC(complianceInfo.get(
-										"IBC").getTextValue());
+										"IBC").textValue());
 							}
 							break;
 						case "2":
@@ -1943,7 +1955,7 @@ public class ProposalService {
 							.has("InvolveEnvironmentalHealthAndSafetyConcerns")) {
 				switch (complianceInfo.get(
 						"InvolveEnvironmentalHealthAndSafetyConcerns")
-						.getTextValue()) {
+						.textValue()) {
 				case "1":
 					newComplianceInfo
 							.setInvolveEnvironmentalHealthAndSafetyConcerns(true);
@@ -1972,8 +1984,7 @@ public class ProposalService {
 			if (additionalInfo != null
 					&& additionalInfo.has("AnticipatesForeignNationalsPayment")) {
 				switch (additionalInfo
-						.get("AnticipatesForeignNationalsPayment")
-						.getTextValue()) {
+						.get("AnticipatesForeignNationalsPayment").textValue()) {
 				case "1":
 					newAdditionalInfo
 							.setAnticipatesForeignNationalsPayment(true);
@@ -1990,7 +2001,7 @@ public class ProposalService {
 			if (additionalInfo != null
 					&& additionalInfo.has("AnticipatesCourseReleaseTime")) {
 				switch (additionalInfo.get("AnticipatesCourseReleaseTime")
-						.getTextValue()) {
+						.textValue()) {
 				case "1":
 					newAdditionalInfo.setAnticipatesCourseReleaseTime(true);
 					break;
@@ -2006,8 +2017,7 @@ public class ProposalService {
 					&& additionalInfo
 							.has("RelatedToCenterForAdvancedEnergyStudies")) {
 				switch (additionalInfo.get(
-						"RelatedToCenterForAdvancedEnergyStudies")
-						.getTextValue()) {
+						"RelatedToCenterForAdvancedEnergyStudies").textValue()) {
 				case "1":
 					newAdditionalInfo
 							.setRelatedToCenterForAdvancedEnergyStudies(true);
@@ -2036,14 +2046,14 @@ public class ProposalService {
 			if (collaborationInfo != null
 					&& collaborationInfo.has("InvolveNonFundedCollab")) {
 				switch (collaborationInfo.get("InvolveNonFundedCollab")
-						.getTextValue()) {
+						.textValue()) {
 				case "1":
 					newCollaborationInfo.setInvolveNonFundedCollab(true);
 					if (collaborationInfo != null
 							&& collaborationInfo.has("Collaborators")) {
 						newCollaborationInfo
 								.setInvolvedCollaborators(collaborationInfo
-										.get("Collaborators").getTextValue());
+										.get("Collaborators").textValue());
 					}
 					break;
 				case "2":
@@ -2070,23 +2080,23 @@ public class ProposalService {
 			if (confidentialInfo != null
 					&& confidentialInfo.has("ContainConfidentialInformation")) {
 				switch (confidentialInfo.get("ContainConfidentialInformation")
-						.getTextValue()) {
+						.textValue()) {
 				case "1":
 					newConfidentialInfo.setContainConfidentialInformation(true);
 					if (confidentialInfo != null
 							&& confidentialInfo.has("OnPages")) {
 						newConfidentialInfo.setOnPages(confidentialInfo.get(
-								"OnPages").getTextValue());
+								"OnPages").textValue());
 					}
 					if (confidentialInfo != null
 							&& confidentialInfo.has("Patentable")) {
 						newConfidentialInfo.setPatentable(confidentialInfo.get(
-								"Patentable").getBooleanValue());
+								"Patentable").booleanValue());
 					}
 					if (confidentialInfo != null
 							&& confidentialInfo.has("Copyrightable")) {
 						newConfidentialInfo.setCopyrightable(confidentialInfo
-								.get("Copyrightable").getBooleanValue());
+								.get("Copyrightable").booleanValue());
 					}
 					break;
 				case "2":
@@ -2101,7 +2111,7 @@ public class ProposalService {
 			if (confidentialInfo != null
 					&& confidentialInfo.has("InvolveIntellectualProperty")) {
 				switch (confidentialInfo.get("InvolveIntellectualProperty")
-						.getTextValue()) {
+						.textValue()) {
 				case "1":
 					newConfidentialInfo.setInvolveIntellectualProperty(true);
 					break;
@@ -2139,7 +2149,7 @@ public class ProposalService {
 						.clear();
 			}
 
-			String[] rows = proposalInfo.get("InvestigatorInfo").getTextValue()
+			String[] rows = proposalInfo.get("InvestigatorInfo").textValue()
 					.split("#!#");
 
 			InvestigatorInfo newInvestigatorInfo = new InvestigatorInfo();
@@ -2259,7 +2269,7 @@ public class ProposalService {
 		List<SignatureInfo> addedSignatures = new ArrayList<SignatureInfo>();
 
 		if (proposalInfo != null && proposalInfo.has("SignatureInfo")) {
-			String[] rows = proposalInfo.get("SignatureInfo").getTextValue()
+			String[] rows = proposalInfo.get("SignatureInfo").textValue()
 					.split("#!#");
 
 			List<SignatureInfo> newSignatureInfo = new ArrayList<SignatureInfo>();
@@ -2309,11 +2319,9 @@ public class ProposalService {
 							.getoSPSectionInfo()
 							.getListAgency()
 							.equals(oSPSectionInfo.get("ListAgency")
-									.getTextValue())) {
-						existingProposal.getoSPSectionInfo()
-								.setListAgency(
-										oSPSectionInfo.get("ListAgency")
-												.getTextValue());
+									.textValue())) {
+						existingProposal.getoSPSectionInfo().setListAgency(
+								oSPSectionInfo.get("ListAgency").textValue());
 					}
 				}
 			}
@@ -2321,65 +2329,65 @@ public class ProposalService {
 			FundingSource newFundingSource = new FundingSource();
 			if (oSPSectionInfo != null && oSPSectionInfo.has("Federal")) {
 				newFundingSource.setFederal(oSPSectionInfo.get("Federal")
-						.getBooleanValue());
+						.booleanValue());
 			}
 
 			if (oSPSectionInfo != null
 					&& oSPSectionInfo.has("FederalFlowThrough")) {
 				newFundingSource.setFederalFlowThrough(oSPSectionInfo.get(
-						"FederalFlowThrough").getBooleanValue());
+						"FederalFlowThrough").booleanValue());
 			}
 
 			if (oSPSectionInfo != null
 					&& oSPSectionInfo.has("StateOfIdahoEntity")) {
 				newFundingSource.setStateOfIdahoEntity(oSPSectionInfo.get(
-						"StateOfIdahoEntity").getBooleanValue());
+						"StateOfIdahoEntity").booleanValue());
 			}
 
 			if (oSPSectionInfo != null
 					&& oSPSectionInfo.has("PrivateForProfit")) {
 				newFundingSource.setPrivateForProfit(oSPSectionInfo.get(
-						"PrivateForProfit").getBooleanValue());
+						"PrivateForProfit").booleanValue());
 			}
 
 			if (oSPSectionInfo != null
 					&& oSPSectionInfo.has("NonProfitOrganization")) {
 				newFundingSource.setNonProfitOrganization(oSPSectionInfo.get(
-						"NonProfitOrganization").getBooleanValue());
+						"NonProfitOrganization").booleanValue());
 			}
 
 			if (oSPSectionInfo != null
 					&& oSPSectionInfo.has("NonIdahoStateEntity")) {
 				newFundingSource.setNonIdahoStateEntity(oSPSectionInfo.get(
-						"NonIdahoStateEntity").getBooleanValue());
+						"NonIdahoStateEntity").booleanValue());
 			}
 
 			if (oSPSectionInfo != null
 					&& oSPSectionInfo.has("CollegeOrUniversity")) {
 				newFundingSource.setCollegeOrUniversity(oSPSectionInfo.get(
-						"CollegeOrUniversity").getBooleanValue());
+						"CollegeOrUniversity").booleanValue());
 			}
 
 			if (oSPSectionInfo != null && oSPSectionInfo.has("LocalEntity")) {
 				newFundingSource.setLocalEntity(oSPSectionInfo.get(
-						"LocalEntity").getBooleanValue());
+						"LocalEntity").booleanValue());
 			}
 
 			if (oSPSectionInfo != null
 					&& oSPSectionInfo.has("NonIdahoLocalEntity")) {
 				newFundingSource.setNonIdahoLocalEntity(oSPSectionInfo.get(
-						"NonIdahoLocalEntity").getBooleanValue());
+						"NonIdahoLocalEntity").booleanValue());
 			}
 
 			if (oSPSectionInfo != null
 					&& oSPSectionInfo.has("TirbalGovernment")) {
 				newFundingSource.setTirbalGovernment(oSPSectionInfo.get(
-						"TirbalGovernment").getBooleanValue());
+						"TirbalGovernment").booleanValue());
 			}
 
 			if (oSPSectionInfo != null && oSPSectionInfo.has("Foreign")) {
 				newFundingSource.setForeign(oSPSectionInfo.get("Foreign")
-						.getBooleanValue());
+						.booleanValue());
 			}
 
 			if (!proposalID.equals("0")) {
@@ -2392,12 +2400,10 @@ public class ProposalService {
 
 			if (oSPSectionInfo != null && oSPSectionInfo.has("CFDANo")) {
 				if (!proposalID.equals("0")) {
-					if (!existingProposal
-							.getoSPSectionInfo()
-							.getCFDANo()
-							.equals(oSPSectionInfo.get("CFDANo").getTextValue())) {
+					if (!existingProposal.getoSPSectionInfo().getCFDANo()
+							.equals(oSPSectionInfo.get("CFDANo").textValue())) {
 						existingProposal.getoSPSectionInfo().setCFDANo(
-								oSPSectionInfo.get("CFDANo").getTextValue());
+								oSPSectionInfo.get("CFDANo").textValue());
 					}
 				}
 			}
@@ -2407,10 +2413,9 @@ public class ProposalService {
 					if (!existingProposal
 							.getoSPSectionInfo()
 							.getProgramNo()
-							.equals(oSPSectionInfo.get("ProgramNo")
-									.getTextValue())) {
+							.equals(oSPSectionInfo.get("ProgramNo").textValue())) {
 						existingProposal.getoSPSectionInfo().setProgramNo(
-								oSPSectionInfo.get("ProgramNo").getTextValue());
+								oSPSectionInfo.get("ProgramNo").textValue());
 					}
 				}
 			}
@@ -2421,10 +2426,9 @@ public class ProposalService {
 							.getoSPSectionInfo()
 							.getProgramTitle()
 							.equals(oSPSectionInfo.get("ProgramTitle")
-									.getTextValue())) {
+									.textValue())) {
 						existingProposal.getoSPSectionInfo().setProgramTitle(
-								oSPSectionInfo.get("ProgramTitle")
-										.getTextValue());
+								oSPSectionInfo.get("ProgramTitle").textValue());
 					}
 				}
 
@@ -2432,21 +2436,21 @@ public class ProposalService {
 				if (oSPSectionInfo != null
 						&& oSPSectionInfo.has("FullRecovery")) {
 					newRecovery.setFullRecovery(oSPSectionInfo.get(
-							"FullRecovery").getBooleanValue());
+							"FullRecovery").booleanValue());
 				}
 
 				if (oSPSectionInfo != null
 						&& oSPSectionInfo.has("NoRecoveryNormalSponsorPolicy")) {
 					newRecovery.setNoRecoveryNormalSponsorPolicy(oSPSectionInfo
 							.get("NoRecoveryNormalSponsorPolicy")
-							.getBooleanValue());
+							.booleanValue());
 				}
 
 				if (oSPSectionInfo != null
 						&& oSPSectionInfo.has("NoRecoveryInstitutionalWaiver")) {
 					newRecovery.setNoRecoveryInstitutionalWaiver(oSPSectionInfo
 							.get("NoRecoveryInstitutionalWaiver")
-							.getBooleanValue());
+							.booleanValue());
 				}
 
 				if (oSPSectionInfo != null
@@ -2455,7 +2459,7 @@ public class ProposalService {
 					newRecovery
 							.setLimitedRecoveryNormalSponsorPolicy(oSPSectionInfo
 									.get("LimitedRecoveryNormalSponsorPolicy")
-									.getBooleanValue());
+									.booleanValue());
 				}
 
 				if (oSPSectionInfo != null
@@ -2464,7 +2468,7 @@ public class ProposalService {
 					newRecovery
 							.setLimitedRecoveryInstitutionalWaiver(oSPSectionInfo
 									.get("LimitedRecoveryInstitutionalWaiver")
-									.getBooleanValue());
+									.booleanValue());
 				}
 				if (!proposalID.equals("0")) {
 					if (!existingProposal.getoSPSectionInfo().getRecovery()
@@ -2477,28 +2481,27 @@ public class ProposalService {
 				BaseInfo newBaseInfo = new BaseInfo();
 				if (oSPSectionInfo != null && oSPSectionInfo.has("MTDC")) {
 					newBaseInfo.setMTDC(oSPSectionInfo.get("MTDC")
-							.getBooleanValue());
+							.booleanValue());
 				}
 
 				if (oSPSectionInfo != null && oSPSectionInfo.has("TDC")) {
-					newBaseInfo.setTDC(oSPSectionInfo.get("TDC")
-							.getBooleanValue());
+					newBaseInfo
+							.setTDC(oSPSectionInfo.get("TDC").booleanValue());
 				}
 
 				if (oSPSectionInfo != null && oSPSectionInfo.has("TC")) {
-					newBaseInfo.setTC(oSPSectionInfo.get("TC")
-							.getBooleanValue());
+					newBaseInfo.setTC(oSPSectionInfo.get("TC").booleanValue());
 				}
 
 				if (oSPSectionInfo != null && oSPSectionInfo.has("Other")) {
 					newBaseInfo.setOther(oSPSectionInfo.get("Other")
-							.getBooleanValue());
+							.booleanValue());
 				}
 
 				if (oSPSectionInfo != null
 						&& oSPSectionInfo.has("NotApplicable")) {
 					newBaseInfo.setNotApplicable(oSPSectionInfo.get(
-							"NotApplicable").getBooleanValue());
+							"NotApplicable").booleanValue());
 				}
 				if (!proposalID.equals("0")) {
 					if (!existingProposal.getoSPSectionInfo().getBaseInfo()
@@ -2511,7 +2514,7 @@ public class ProposalService {
 				if (oSPSectionInfo != null
 						&& oSPSectionInfo.has("IsPISalaryIncluded")) {
 					switch (oSPSectionInfo.get("IsPISalaryIncluded")
-							.getTextValue()) {
+							.textValue()) {
 					case "1":
 						newOSPSectionInfo.setPISalaryIncluded(true);
 						break;
@@ -2537,10 +2540,10 @@ public class ProposalService {
 					if (!proposalID.equals("0")) {
 						if (existingProposal.getoSPSectionInfo().getPISalary() != Double
 								.parseDouble(oSPSectionInfo.get("PISalary")
-										.getTextValue())) {
+										.textValue())) {
 							existingProposal.getoSPSectionInfo().setPISalary(
 									Double.parseDouble(oSPSectionInfo.get(
-											"PISalary").getTextValue()));
+											"PISalary").textValue()));
 						}
 					}
 				}
@@ -2548,15 +2551,15 @@ public class ProposalService {
 				if (oSPSectionInfo != null && oSPSectionInfo.has("PIFringe")) {
 					if (existingProposal.getoSPSectionInfo().getPIFringe() != Double
 							.parseDouble(oSPSectionInfo.get("PIFringe")
-									.getTextValue())) {
+									.textValue())) {
 						existingProposal.getoSPSectionInfo().setPIFringe(
 								Double.parseDouble(oSPSectionInfo.get(
-										"PIFringe").getTextValue()));
+										"PIFringe").textValue()));
 					}
 				} else {
 					newOSPSectionInfo.setPIFringe(Double
 							.parseDouble(oSPSectionInfo.get("PIFringe")
-									.getTextValue()));
+									.textValue()));
 				}
 			}
 
@@ -2566,14 +2569,13 @@ public class ProposalService {
 							.getoSPSectionInfo()
 							.getDepartmentId()
 							.equals(oSPSectionInfo.get("DepartmentId")
-									.getTextValue())) {
+									.textValue())) {
 						existingProposal.getoSPSectionInfo().setDepartmentId(
-								oSPSectionInfo.get("DepartmentId")
-										.getTextValue());
+								oSPSectionInfo.get("DepartmentId").textValue());
 					}
 				} else {
 					newOSPSectionInfo.setDepartmentId(oSPSectionInfo.get(
-							"DepartmentId").getTextValue());
+							"DepartmentId").textValue());
 				}
 			}
 
@@ -2582,7 +2584,7 @@ public class ProposalService {
 			if (oSPSectionInfo != null
 					&& oSPSectionInfo.has("InstitutionalCostDocumented")) {
 				switch (oSPSectionInfo.get("InstitutionalCostDocumented")
-						.getTextValue()) {
+						.textValue()) {
 				case "1":
 					newBaseOptions.setYes(true);
 					break;
@@ -2609,7 +2611,7 @@ public class ProposalService {
 			if (oSPSectionInfo != null
 					&& oSPSectionInfo.has("ThirdPartyCostDocumented")) {
 				switch (oSPSectionInfo.get("ThirdPartyCostDocumented")
-						.getTextValue()) {
+						.textValue()) {
 				case "1":
 					newBaseOptions.setYes(true);
 					break;
@@ -2634,7 +2636,7 @@ public class ProposalService {
 			if (oSPSectionInfo != null
 					&& oSPSectionInfo.has("IsAnticipatedSubRecipients")) {
 				switch (oSPSectionInfo.get("IsAnticipatedSubRecipients")
-						.getTextValue()) {
+						.textValue()) {
 				case "1":
 					newOSPSectionInfo.setAnticipatedSubRecipients(true);
 					if (oSPSectionInfo != null
@@ -2643,7 +2645,7 @@ public class ProposalService {
 						newOSPSectionInfo
 								.setAnticipatedSubRecipientsNames(oSPSectionInfo
 										.get("AnticipatedSubRecipientsNames")
-										.getTextValue());
+										.textValue());
 					}
 					break;
 				case "2":
@@ -2689,8 +2691,7 @@ public class ProposalService {
 			BasePIEligibilityOptions newBasePIEligibilityOptions = new BasePIEligibilityOptions();
 			if (oSPSectionInfo != null
 					&& oSPSectionInfo.has("PIEligibilityWaiver")) {
-				switch (oSPSectionInfo.get("PIEligibilityWaiver")
-						.getTextValue()) {
+				switch (oSPSectionInfo.get("PIEligibilityWaiver").textValue()) {
 				case "1":
 					newBasePIEligibilityOptions.setYes(true);
 					break;
@@ -2724,7 +2725,7 @@ public class ProposalService {
 			if (oSPSectionInfo != null
 					&& oSPSectionInfo.has("ConflictOfInterestForms")) {
 				switch (oSPSectionInfo.get("ConflictOfInterestForms")
-						.getTextValue()) {
+						.textValue()) {
 				case "1":
 					newBaseOptions.setYes(true);
 					break;
@@ -2750,7 +2751,7 @@ public class ProposalService {
 			if (oSPSectionInfo != null
 					&& oSPSectionInfo.has("ExcludedPartyListChecked")) {
 				switch (oSPSectionInfo.get("ExcludedPartyListChecked")
-						.getTextValue()) {
+						.textValue()) {
 				case "1":
 					newBaseOptions.setYes(true);
 					break;
@@ -2775,8 +2776,8 @@ public class ProposalService {
 
 		if (proposalInfo != null && proposalInfo.has("AppendixInfo")) {
 			List<Appendix> appendixInfo = Arrays.asList(mapper.readValue(
-					proposalInfo.get("AppendixInfo"), Appendix[].class));
-
+					proposalInfo.get("AppendixInfo").toString(),
+					Appendix[].class));
 			if (appendixInfo.size() != 0) {
 
 				String UPLOAD_PATH = new String();
@@ -2784,7 +2785,6 @@ public class ProposalService {
 					UPLOAD_PATH = this.getClass().getResource("/uploads")
 							.toURI().getPath();
 				} catch (URISyntaxException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 
@@ -2851,36 +2851,42 @@ public class ProposalService {
 		}
 
 		String userProfileID = new String();
+		@SuppressWarnings("unused")
 		String userName = new String();
+		@SuppressWarnings("unused")
 		Boolean userIsAdmin = false;
+		@SuppressWarnings("unused")
 		String userCollege = new String();
+		@SuppressWarnings("unused")
 		String userDepartment = new String();
+		@SuppressWarnings("unused")
 		String userPositionType = new String();
+		@SuppressWarnings("unused")
 		String userPositionTitle = new String();
 		if (root != null && root.has("gpmsCommonObj")) {
 			JsonNode commonObj = root.get("gpmsCommonObj");
 			if (commonObj != null && commonObj.has("UserProfileID")) {
-				userProfileID = commonObj.get("UserProfileID").getTextValue();
+				userProfileID = commonObj.get("UserProfileID").textValue();
 			}
 			if (commonObj != null && commonObj.has("UserName")) {
-				userName = commonObj.get("UserName").getTextValue();
+				userName = commonObj.get("UserName").textValue();
 			}
 			if (commonObj != null && commonObj.has("UserIsAdmin")) {
-				userIsAdmin = commonObj.get("UserIsAdmin").getBooleanValue();
+				userIsAdmin = commonObj.get("UserIsAdmin").booleanValue();
 			}
 			if (commonObj != null && commonObj.has("UserCollege")) {
-				userCollege = commonObj.get("UserCollege").getTextValue();
+				userCollege = commonObj.get("UserCollege").textValue();
 			}
 			if (commonObj != null && commonObj.has("UserDepartment")) {
-				userDepartment = commonObj.get("UserDepartment").getTextValue();
+				userDepartment = commonObj.get("UserDepartment").textValue();
 			}
 			if (commonObj != null && commonObj.has("UserPositionType")) {
 				userPositionType = commonObj.get("UserPositionType")
-						.getTextValue();
+						.textValue();
 			}
 			if (commonObj != null && commonObj.has("UserPositionTitle")) {
 				userPositionTitle = commonObj.get("UserPositionTitle")
-						.getTextValue();
+						.textValue();
 			}
 		}
 
@@ -3111,8 +3117,7 @@ public class ProposalService {
 				}
 			}
 		}
-		return Response.status(200).type(MediaType.APPLICATION_JSON)
-				.entity(true).build();
+		return Response.status(200).entity(true).build();
 	}
 
 	private void NotifyAllExistingInvestigators(String proposalID,
@@ -3191,6 +3196,15 @@ public class ProposalService {
 			notification.setPositionTitle(senior.getPositionTitle());
 			notificationDAO.save(notification);
 		}
+
+		// Broadcasting SSE
+
+		OutboundEvent.Builder eventBuilder = new OutboundEvent.Builder();
+		OutboundEvent event = eventBuilder.name("notification")
+				.mediaType(MediaType.TEXT_PLAIN_TYPE).data(String.class, 1)
+				.build();
+
+		NotificationService.BROADCASTER.broadcast(event);
 	}
 
 	@POST
@@ -3240,42 +3254,48 @@ public class ProposalService {
 					}
 				}
 
+				@SuppressWarnings("unused")
 				String userProfileID = new String();
+				@SuppressWarnings("unused")
 				String userName = new String();
+				@SuppressWarnings("unused")
 				Boolean userIsAdmin = false;
+				@SuppressWarnings("unused")
 				String userCollege = new String();
+				@SuppressWarnings("unused")
 				String userDepartment = new String();
+				@SuppressWarnings("unused")
 				String userPositionType = new String();
+				@SuppressWarnings("unused")
 				String userPositionTitle = new String();
 
 				if (root != null && root.has("gpmsCommonObj")) {
 					JsonNode commonObj = root.get("gpmsCommonObj");
 					if (commonObj != null && commonObj.has("UserProfileID")) {
 						userProfileID = commonObj.get("UserProfileID")
-								.getTextValue();
+								.textValue();
 					}
 					if (commonObj != null && commonObj.has("UserName")) {
-						userName = commonObj.get("UserName").getTextValue();
+						userName = commonObj.get("UserName").textValue();
 					}
 					if (commonObj != null && commonObj.has("UserIsAdmin")) {
 						userIsAdmin = commonObj.get("UserIsAdmin")
-								.getBooleanValue();
+								.booleanValue();
 					}
 					if (commonObj != null && commonObj.has("UserCollege")) {
-						userCollege = commonObj.get("UserCollege")
-								.getTextValue();
+						userCollege = commonObj.get("UserCollege").textValue();
 					}
 					if (commonObj != null && commonObj.has("UserDepartment")) {
 						userDepartment = commonObj.get("UserDepartment")
-								.getTextValue();
+								.textValue();
 					}
 					if (commonObj != null && commonObj.has("UserPositionType")) {
 						userPositionType = commonObj.get("UserPositionType")
-								.getTextValue();
+								.textValue();
 					}
 					if (commonObj != null && commonObj.has("UserPositionTitle")) {
 						userPositionTitle = commonObj.get("UserPositionTitle")
-								.getTextValue();
+								.textValue();
 					}
 				}
 
@@ -3283,7 +3303,7 @@ public class ProposalService {
 				if (root != null && root.has("proposalId")) {
 					String proposalId = new String();
 					JsonNode proposal_Id = root.get("proposalId");
-					proposalId = proposal_Id.getTextValue();
+					proposalId = proposal_Id.textValue();
 					if (!proposalId.equals("")) {
 						ObjectId id = new ObjectId(proposalId);
 						Proposal proposal = proposalDAO

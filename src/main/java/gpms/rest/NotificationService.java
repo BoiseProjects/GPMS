@@ -11,12 +11,12 @@ import gpms.model.UserAccount;
 import gpms.model.UserProfile;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+import javax.inject.Singleton;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -28,13 +28,18 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.JsonProcessingException;
-import org.codehaus.jackson.map.ObjectMapper;
+import org.glassfish.jersey.media.sse.EventOutput;
+import org.glassfish.jersey.media.sse.OutboundEvent;
+import org.glassfish.jersey.media.sse.SseBroadcaster;
+import org.glassfish.jersey.media.sse.SseFeature;
 import org.mongodb.morphia.Morphia;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.MongoClient;
 
+@Singleton
 @Path("/notifications")
 @Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
@@ -50,6 +55,8 @@ public class NotificationService {
 	NotificationDAO notificationDAO = null;
 
 	DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+
+	static final SseBroadcaster BROADCASTER = new SseBroadcaster();
 
 	public NotificationService() {
 		mongoClient = MongoDBConnector.getMongo();
@@ -70,12 +77,13 @@ public class NotificationService {
 
 	@POST
 	@Path("/NotificationGetAllCount")
-	public long notificationGetAllCountForAUser(String message)
+	public String notificationGetAllCountForAUser(String message)
 			throws JsonProcessingException, IOException, ParseException {
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode root = mapper.readTree(message);
 
 		String userProfileID = new String();
+		@SuppressWarnings("unused")
 		String userName = new String();
 		Boolean userIsAdmin = false;
 		String userCollege = new String();
@@ -85,98 +93,97 @@ public class NotificationService {
 
 		JsonNode commonObj = root.get("gpmsCommonObj");
 		if (commonObj != null && commonObj.has("UserProfileID")) {
-			userProfileID = commonObj.get("UserProfileID").getTextValue();
+			userProfileID = commonObj.get("UserProfileID").textValue();
 		}
 		if (commonObj != null && commonObj.has("UserName")) {
-			userName = commonObj.get("UserName").getTextValue();
+			userName = commonObj.get("UserName").textValue();
 		}
 		if (commonObj != null && commonObj.has("UserIsAdmin")) {
 			userIsAdmin = Boolean.parseBoolean(commonObj.get("UserIsAdmin")
-					.getTextValue());
+					.textValue());
 		}
 		if (commonObj != null && commonObj.has("UserCollege")) {
-			userCollege = commonObj.get("UserCollege").getTextValue();
+			userCollege = commonObj.get("UserCollege").textValue();
 		}
 		if (commonObj != null && commonObj.has("UserDepartment")) {
-			userDepartment = commonObj.get("UserDepartment").getTextValue();
+			userDepartment = commonObj.get("UserDepartment").textValue();
 		}
 		if (commonObj != null && commonObj.has("UserPositionType")) {
-			userPositionType = commonObj.get("UserPositionType").getTextValue();
+			userPositionType = commonObj.get("UserPositionType").textValue();
 		}
 		if (commonObj != null && commonObj.has("UserPositionTitle")) {
-			userPositionTitle = commonObj.get("UserPositionTitle")
-					.getTextValue();
+			userPositionTitle = commonObj.get("UserPositionTitle").textValue();
 		}
 
-		return notificationDAO.findAllNotificationCountAUser(userProfileID,
-				userCollege, userDepartment, userPositionType,
-				userPositionTitle, userIsAdmin);
+		return Long.toString(notificationDAO.findAllNotificationCountAUser(
+				userProfileID, userCollege, userDepartment, userPositionType,
+				userPositionTitle, userIsAdmin));
 
 	}
 
 	@GET
 	@Path("/NotificationGetRealTimeCount")
-	@Produces("text/event-stream")
-	public void notificationGetRealTimeCountForAUser(
+	// @Produces("text/event-stream")
+	@Produces(SseFeature.SERVER_SENT_EVENTS)
+	public EventOutput notificationGetRealTimeCountForAUser(
 			@Context HttpServletRequest request,
 			@Context HttpServletResponse response)
 			throws JsonProcessingException, IOException, ParseException {
-		response.setContentType("text/event-stream, charset=UTF-8");
-		PrintWriter out = response.getWriter();
-		while (true) {
-			HttpSession session = request.getSession();
-			String userProfileID = new String();
-			String userCollege = new String();
-			String userDepartment = new String();
-			String userPositionType = new String();
-			String userPositionTitle = new String();
-			Boolean userIsAdmin = false;
+		// response.setContentType("text/event-stream, charset=UTF-8");
+		// PrintWriter out = response.getWriter();
 
-			if (session.getAttribute("userProfileId") != null) {
-				userProfileID = (String) session.getAttribute("userProfileId");
-			}
-			// if (session.getAttribute("gpmsUserName") != null) {
-			// userName = (String) session.getAttribute("gpmsUserName");
-			// }
+		EventOutput eventOutput = new EventOutput();
 
-			if (session.getAttribute("userCollege") != null) {
-				userCollege = (String) session.getAttribute("userCollege");
-			}
+		HttpSession session = request.getSession();
+		String userProfileID = new String();
+		String userCollege = new String();
+		String userDepartment = new String();
+		String userPositionType = new String();
+		String userPositionTitle = new String();
+		Boolean userIsAdmin = false;
 
-			if (session.getAttribute("userDepartment") != null) {
-				userDepartment = (String) session
-						.getAttribute("userDepartment");
-			}
+		if (session.getAttribute("userProfileId") != null) {
+			userProfileID = (String) session.getAttribute("userProfileId");
+		}
+		// if (session.getAttribute("gpmsUserName") != null) {
+		// userName = (String) session.getAttribute("gpmsUserName");
+		// }
 
-			if (session.getAttribute("userPositionType") != null) {
-				userPositionType = (String) session
-						.getAttribute("userPositionType");
-			}
-
-			if (session.getAttribute("userPositionTitle") != null) {
-				userPositionTitle = (String) session
-						.getAttribute("userPositionTitle");
-			}
-
-			if (session.getAttribute("isAdmin") != null) {
-				userIsAdmin = (Boolean) session.getAttribute("isAdmin");
-			}
-
-			long notificationCount = notificationDAO
-					.findAllNotificationCountAUser(userProfileID, userCollege,
-							userDepartment, userPositionType,
-							userPositionTitle, userIsAdmin);
-
-			out.print("event: notification\n");
-			out.print("data: " + notificationCount + "\n\n");
-			out.flush();
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+		if (session.getAttribute("userCollege") != null) {
+			userCollege = (String) session.getAttribute("userCollege");
 		}
 
+		if (session.getAttribute("userDepartment") != null) {
+			userDepartment = (String) session.getAttribute("userDepartment");
+		}
+
+		if (session.getAttribute("userPositionType") != null) {
+			userPositionType = (String) session
+					.getAttribute("userPositionType");
+		}
+
+		if (session.getAttribute("userPositionTitle") != null) {
+			userPositionTitle = (String) session
+					.getAttribute("userPositionTitle");
+		}
+
+		if (session.getAttribute("isAdmin") != null) {
+			userIsAdmin = (Boolean) session.getAttribute("isAdmin");
+		}
+
+		long notificationCount = notificationDAO.findAllNotificationCountAUser(
+				userProfileID, userCollege, userDepartment, userPositionType,
+				userPositionTitle, userIsAdmin);
+
+		OutboundEvent.Builder eventBuilder = new OutboundEvent.Builder();
+		eventBuilder.name("notification");
+		eventBuilder.data(String.class, Long.toString(notificationCount));
+		OutboundEvent event = eventBuilder.build();
+		eventOutput.write(event);
+
+		BROADCASTER.add(eventOutput);
+
+		return eventOutput;
 	}
 
 	@POST
@@ -187,6 +194,7 @@ public class NotificationService {
 		JsonNode root = mapper.readTree(message);
 
 		String userProfileID = new String();
+		@SuppressWarnings("unused")
 		String userName = new String();
 		Boolean userIsAdmin = false;
 		String userCollege = new String();
@@ -197,28 +205,28 @@ public class NotificationService {
 		if (root != null && root.has("gpmsCommonObj")) {
 			JsonNode commonObj = root.get("gpmsCommonObj");
 			if (commonObj != null && commonObj.has("UserProfileID")) {
-				userProfileID = commonObj.get("UserProfileID").getTextValue();
+				userProfileID = commonObj.get("UserProfileID").textValue();
 			}
 			if (commonObj != null && commonObj.has("UserName")) {
-				userName = commonObj.get("UserName").getTextValue();
+				userName = commonObj.get("UserName").textValue();
 			}
 			if (commonObj != null && commonObj.has("UserIsAdmin")) {
 				userIsAdmin = Boolean.parseBoolean(commonObj.get("UserIsAdmin")
-						.getTextValue());
+						.textValue());
 			}
 			if (commonObj != null && commonObj.has("UserCollege")) {
-				userCollege = commonObj.get("UserCollege").getTextValue();
+				userCollege = commonObj.get("UserCollege").textValue();
 			}
 			if (commonObj != null && commonObj.has("UserDepartment")) {
-				userDepartment = commonObj.get("UserDepartment").getTextValue();
+				userDepartment = commonObj.get("UserDepartment").textValue();
 			}
 			if (commonObj != null && commonObj.has("UserPositionType")) {
 				userPositionType = commonObj.get("UserPositionType")
-						.getTextValue();
+						.textValue();
 			}
 			if (commonObj != null && commonObj.has("UserPositionTitle")) {
 				userPositionTitle = commonObj.get("UserPositionTitle")
-						.getTextValue();
+						.textValue();
 			}
 		}
 

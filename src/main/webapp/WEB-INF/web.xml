@@ -52,19 +52,15 @@
 		<listener-class>gpms.queue.ServletContextListener</listener-class>
 	</listener>
 	<servlet>
+		<display-name>GPMS-rest</display-name>
 		<servlet-name>GPMS-rest</servlet-name>
-		<servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
+		<servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
 		<init-param>
-			<param-name>com.sun.jersey.config.property.packages</param-name>
+			<param-name>jersey.config.server.provider.packages</param-name>
 			<param-value>gpms.rest</param-value>
 		</init-param>
-
-		<init-param>
-			<param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
-			<param-value>true</param-value>
-		</init-param>
-
 		<load-on-startup>1</load-on-startup>
+		<async-supported>true</async-supported>
 	</servlet>
 
 	<servlet-mapping>
@@ -73,13 +69,15 @@
 	</servlet-mapping>
 
 	<servlet>
+		<display-name>GPMS-enterprise-rest</display-name>
 		<servlet-name>GPMS-enterprise-rest</servlet-name>
-		<servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
+		<servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
 		<init-param>
-			<param-name>com.sun.jersey.config.property.packages</param-name>
+			<param-name>jersey.config.server.provider.packages</param-name>
 			<param-value>gpms.queue</param-value>
 		</init-param>
 		<load-on-startup>2</load-on-startup>
+		<async-supported>true</async-supported>
 	</servlet>
 
 	<servlet-mapping>

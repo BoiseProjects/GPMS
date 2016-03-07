@@ -40,7 +40,8 @@
 				baseURL : p.modulePath + "notifications/",
 				method : "",
 				url : "",
-				ajaxCallMode : 0
+				ajaxCallMode : 0,
+				firstTimeLoad : true
 			},
 			ajaxCall : function(config) {
 				$.ajax({
@@ -128,10 +129,33 @@
 			registerSSE : function() {
 				var source = new EventSource(this.config.baseURL
 						+ "NotificationGetRealTimeCount");
-				source.addEventListener('notification', function(e) {
-					console.log("User " + e.data);
-					NotificationView.NotificationGetAllCountSuccess(e.data);
-				}, false);
+				source
+						.addEventListener(
+								'notification',
+								function(e) {
+									console.log("User " + e.data);
+									if (e.data != "0"
+											&& !NotificationView.config.firstTimeLoad) {
+										NotificationView
+												.NotificationGetAllCount();
+									} else {
+										NotificationView
+												.NotificationGetAllCountSuccess(e.data);
+										NotificationView.config.firstTimeLoad = false;
+									}
+								}, false);
+
+				source.onerror = function(event) {
+					console.log("error [" + source.readyState + "]");
+				};
+
+				source.onopen = function(event) {
+					console.log("eventsource opened!");
+				};
+
+				source.onmessage = function(event) {
+					console.log(event.data);
+				};
 			},
 			NotificationGetAllCount : function() {
 				this.config.method = "NotificationGetAllCount";
@@ -144,7 +168,7 @@
 				return false;
 			},
 			NotificationGetAllCountSuccess : function(msg) {
-				if (msg !== "0") {
+				if (msg != "0") {
 					$("#spanNotifyInfo").html(msg);
 					$("#spanNotifyInfo").show();
 					p.notificationsNumber += parseInt(msg);

@@ -40,7 +40,8 @@
 				baseURL : p.modulePath + "notifications/",
 				method : "",
 				url : "",
-				ajaxCallMode : 0
+				ajaxCallMode : 0,
+				firstTimeLoad : true
 			},
 			ajaxCall : function(config) {
 				$.ajax({
@@ -130,9 +131,27 @@
 						+ "NotificationGetRealTimeCount");
 				source.addEventListener('notification', function(e) {
 					console.log("Admin " + e.data);
-					AdminNotificationView
-							.NotificationGetAllCountSuccess(e.data);
+					if (e.data != "0"
+							&& !AdminNotificationView.config.firstTimeLoad) {
+						AdminNotificationView.NotificationGetAllCount();
+					} else {
+						AdminNotificationView
+								.NotificationGetAllCountSuccess(e.data);
+						AdminNotificationView.config.firstTimeLoad = false;
+					}
 				}, false);
+
+				source.onerror = function(event) {
+					console.log("error [" + source.readyState + "]");
+				};
+
+				source.onopen = function(event) {
+					console.log("eventsource opened!");
+				};
+
+				source.onmessage = function(event) {
+					console.log(event.data);
+				};
 			},
 			NotificationGetAllCount : function() {
 				this.config.method = "NotificationGetAllCount";
@@ -145,7 +164,7 @@
 				return false;
 			},
 			NotificationGetAllCountSuccess : function(msg) {
-				if (msg !== "0") {
+				if (msg != "0") {
 					$("#spanNotifyInfo").html(msg);
 					$("#spanNotifyInfo").show();
 					p.notificationsNumber += parseInt(msg);
@@ -220,8 +239,10 @@
 													+ ' </li>';
 											break;
 										case 'User':
-											userID = strEncrypt(value.userProfileId);
-											userName = strEncrypt(value.username);
+											// userID =
+											// strEncrypt(value.userProfileId);
+											// userName =
+											// strEncrypt(value.username);
 
 											contentUser += '<li '
 													+ (intNewUsers > 0 ? 'class="sfLastestNotification"'

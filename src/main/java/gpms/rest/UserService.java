@@ -45,16 +45,17 @@ import javax.ws.rs.core.Response;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.bson.types.ObjectId;
-import org.codehaus.jackson.JsonGenerationException;
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.JsonProcessingException;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
+import org.glassfish.jersey.media.sse.OutboundEvent;
 import org.mongodb.morphia.Morphia;
 
 import com.ebay.xcelite.Xcelite;
 import com.ebay.xcelite.sheet.XceliteSheet;
 import com.ebay.xcelite.writer.SheetWriter;
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Multimap;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -105,7 +106,7 @@ public class UserService {
 
 		JsonNode root = mapper.readTree(message);
 		if (root != null && root.has("userIds")) {
-			profileIds = root.get("userIds").getTextValue();
+			profileIds = root.get("userIds").textValue();
 			profiles = profileIds.split(", ");
 		}
 
@@ -117,14 +118,13 @@ public class UserService {
 		final Gson gson = new GsonBuilder().setPrettyPrinting()
 				.registerTypeAdapter(Multimap.class, multimapAdapter).create();
 
-		final String userPositions = gson.toJson(userProfileDAO
+		return gson.toJson(userProfileDAO
 				.findUserPositionDetailsForAProposal(userIds));
-		return userPositions;
 	}
 
 	@POST
 	@Path("/GetUsersList")
-	public List<UserInfo> produceUsersJSON(String message)
+	public String produceUsersJSON(String message)
 			throws JsonGenerationException, JsonMappingException, IOException {
 		List<UserInfo> users = new ArrayList<UserInfo>();
 
@@ -140,38 +140,38 @@ public class UserService {
 		JsonNode root = mapper.readTree(message);
 
 		if (root != null && root.has("offset")) {
-			offset = root.get("offset").getIntValue();
+			offset = root.get("offset").intValue();
 		}
 
 		if (root != null && root.has("limit")) {
-			limit = root.get("limit").getIntValue();
+			limit = root.get("limit").intValue();
 		}
 
 		if (root != null && root.has("userBindObj")) {
 			JsonNode userObj = root.get("userBindObj");
 			if (userObj != null && userObj.has("UserName")) {
-				userName = userObj.get("UserName").getTextValue();
+				userName = userObj.get("UserName").textValue();
 			}
 
 			if (userObj != null && userObj.has("College")) {
-				college = userObj.get("College").getTextValue();
+				college = userObj.get("College").textValue();
 			}
 
 			if (userObj != null && userObj.has("Department")) {
-				department = userObj.get("Department").getTextValue();
+				department = userObj.get("Department").textValue();
 			}
 
 			if (userObj != null && userObj.has("PositionType")) {
-				positionType = userObj.get("PositionType").getTextValue();
+				positionType = userObj.get("PositionType").textValue();
 			}
 
 			if (userObj != null && userObj.has("PositionTitle")) {
-				positionTitle = userObj.get("PositionTitle").getTextValue();
+				positionTitle = userObj.get("PositionTitle").textValue();
 			}
 
 			if (userObj != null && userObj.has("IsActive")) {
 				if (!userObj.get("IsActive").isNull()) {
-					isActive = userObj.get("IsActive").getBooleanValue();
+					isActive = userObj.get("IsActive").booleanValue();
 				} else {
 					isActive = null;
 				}
@@ -180,7 +180,12 @@ public class UserService {
 
 		users = userProfileDAO.findAllForUserGrid(offset, limit, userName,
 				college, department, positionType, positionTitle, isActive);
-		return users;
+
+		// final Gson gson = new GsonBuilder().setPrettyPrinting().create();
+		// return gson.toJson(users);
+
+		return mapper.writerWithDefaultPrettyPrinter()
+				.writeValueAsString(users);
 	}
 
 	@POST
@@ -203,28 +208,28 @@ public class UserService {
 		if (root != null && root.has("userBindObj")) {
 			JsonNode userObj = root.get("userBindObj");
 			if (userObj != null && userObj.has("UserName")) {
-				userName = userObj.get("UserName").getTextValue();
+				userName = userObj.get("UserName").textValue();
 			}
 
 			if (userObj != null && userObj.has("College")) {
-				college = userObj.get("College").getTextValue();
+				college = userObj.get("College").textValue();
 			}
 
 			if (userObj != null && userObj.has("Department")) {
-				department = userObj.get("Department").getTextValue();
+				department = userObj.get("Department").textValue();
 			}
 
 			if (userObj != null && userObj.has("PositionType")) {
-				positionType = userObj.get("PositionType").getTextValue();
+				positionType = userObj.get("PositionType").textValue();
 			}
 
 			if (userObj != null && userObj.has("PositionTitle")) {
-				positionTitle = userObj.get("PositionTitle").getTextValue();
+				positionTitle = userObj.get("PositionTitle").textValue();
 			}
 
 			if (userObj != null && userObj.has("IsActive")) {
 				if (!userObj.get("IsActive").isNull()) {
-					isActive = userObj.get("IsActive").getBooleanValue();
+					isActive = userObj.get("IsActive").booleanValue();
 				} else {
 					isActive = null;
 				}
@@ -283,7 +288,7 @@ public class UserService {
 		JsonNode root = mapper.readTree(message);
 
 		if (root != null && root.has("userId")) {
-			profileId = root.get("userId").getTextValue();
+			profileId = root.get("userId").textValue();
 		}
 
 		// // build a JSON object using org.JSON
@@ -326,7 +331,7 @@ public class UserService {
 
 	@POST
 	@Path("/GetUserAuditLogList")
-	public List<AuditLogInfo> produceUserAuditLogJSON(String message)
+	public String produceUserAuditLogJSON(String message)
 			throws JsonGenerationException, JsonMappingException, IOException,
 			ParseException {
 		List<AuditLogInfo> userAuditLogs = new ArrayList<AuditLogInfo>();
@@ -342,36 +347,35 @@ public class UserService {
 		JsonNode root = mapper.readTree(message);
 
 		if (root != null && root.has("offset")) {
-			offset = root.get("offset").getIntValue();
+			offset = root.get("offset").intValue();
 		}
 
 		if (root != null && root.has("limit")) {
-			limit = root.get("limit").getIntValue();
+			limit = root.get("limit").intValue();
 		}
 
 		if (root != null && root.has("userId")) {
-			profileId = root.get("userId").getTextValue();
+			profileId = root.get("userId").textValue();
 		}
 
 		if (root != null && root.has("auditLogBindObj")) {
 			JsonNode auditLogBindObj = root.get("auditLogBindObj");
 			if (auditLogBindObj != null && auditLogBindObj.has("Action")) {
-				action = auditLogBindObj.get("Action").getTextValue();
+				action = auditLogBindObj.get("Action").textValue();
 			}
 
 			if (auditLogBindObj != null && auditLogBindObj.has("AuditedBy")) {
-				auditedBy = auditLogBindObj.get("AuditedBy").getTextValue();
+				auditedBy = auditLogBindObj.get("AuditedBy").textValue();
 			}
 
 			if (auditLogBindObj != null
 					&& auditLogBindObj.has("ActivityOnFrom")) {
 				activityOnFrom = auditLogBindObj.get("ActivityOnFrom")
-						.getTextValue();
+						.textValue();
 			}
 
 			if (auditLogBindObj != null && auditLogBindObj.has("ActivityOnTo")) {
-				activityOnTo = auditLogBindObj.get("ActivityOnTo")
-						.getTextValue();
+				activityOnTo = auditLogBindObj.get("ActivityOnTo").textValue();
 			}
 		}
 
@@ -383,15 +387,18 @@ public class UserService {
 		// users = (ArrayList<UserInfo>) userProfileDAO.findAllForUserGrid();
 		// response = JSONTansformer.ConvertToJSON(users);
 
-		return userAuditLogs;
+		return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(
+				userAuditLogs);
 	}
 
 	@POST
 	@Path("/GetPositionDetailsHash")
-	public HashMap<String, HashMap<String, HashMap<String, ArrayList<String>>>> producePositionDetailsHash()
-			throws JsonProcessingException, IOException {
+	public String producePositionDetailsHash() throws JsonProcessingException,
+			IOException {
+		ObjectMapper mapper = new ObjectMapper();
 		DepartmentsPositionsCollection dpc = new DepartmentsPositionsCollection();
-		return dpc.getAvailableDepartmentsAndPositions();
+		return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(
+				dpc.getAvailableDepartmentsAndPositions());
 	}
 
 	@POST
@@ -405,42 +412,48 @@ public class UserService {
 		JsonNode root = mapper.readTree(message);
 
 		if (root != null && root.has("userId")) {
-			profileId = root.get("userId").getTextValue();
+			profileId = root.get("userId").textValue();
 		}
 
 		String userProfileID = new String();
+		@SuppressWarnings("unused")
 		String userName = new String();
+		@SuppressWarnings("unused")
 		Boolean userIsAdmin = false;
+		@SuppressWarnings("unused")
 		String userCollege = new String();
+		@SuppressWarnings("unused")
 		String userDepartment = new String();
+		@SuppressWarnings("unused")
 		String userPositionType = new String();
+		@SuppressWarnings("unused")
 		String userPositionTitle = new String();
 
 		if (root != null && root.has("gpmsCommonObj")) {
 			JsonNode commonObj = root.get("gpmsCommonObj");
 			if (commonObj != null && commonObj.has("UserProfileID")) {
-				userProfileID = commonObj.get("UserProfileID").getTextValue();
+				userProfileID = commonObj.get("UserProfileID").textValue();
 			}
 			if (commonObj != null && commonObj.has("UserName")) {
-				userName = commonObj.get("UserName").getTextValue();
+				userName = commonObj.get("UserName").textValue();
 			}
 			if (commonObj != null && commonObj.has("UserIsAdmin")) {
 				userIsAdmin = Boolean.parseBoolean(commonObj.get("UserIsAdmin")
-						.getTextValue());
+						.textValue());
 			}
 			if (commonObj != null && commonObj.has("UserCollege")) {
-				userCollege = commonObj.get("UserCollege").getTextValue();
+				userCollege = commonObj.get("UserCollege").textValue();
 			}
 			if (commonObj != null && commonObj.has("UserDepartment")) {
-				userDepartment = commonObj.get("UserDepartment").getTextValue();
+				userDepartment = commonObj.get("UserDepartment").textValue();
 			}
 			if (commonObj != null && commonObj.has("UserPositionType")) {
 				userPositionType = commonObj.get("UserPositionType")
-						.getTextValue();
+						.textValue();
 			}
 			if (commonObj != null && commonObj.has("UserPositionTitle")) {
 				userPositionTitle = commonObj.get("UserPositionTitle")
-						.getTextValue();
+						.textValue();
 			}
 		}
 
@@ -484,6 +497,15 @@ public class UserService {
 		// notification.isViewedByUser(true);
 		notificationDAO.save(notification);
 
+		// Broadcasting SSE
+
+		OutboundEvent.Builder eventBuilder = new OutboundEvent.Builder();
+		OutboundEvent event = eventBuilder.name("notification")
+				.mediaType(MediaType.TEXT_PLAIN_TYPE).data(String.class, 1)
+				.build();
+
+		NotificationService.BROADCASTER.broadcast(event);
+
 		// response.setContentType("text/html;charset=UTF-8");
 		// response.getWriter().write("Success Data");
 
@@ -491,7 +513,7 @@ public class UserService {
 		// response = gson.toJson("Success", String.class);
 
 		response = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(
-				"Success");
+				true);
 		return response;
 	}
 
@@ -508,43 +530,49 @@ public class UserService {
 		JsonNode root = mapper.readTree(message);
 
 		if (root != null && root.has("userIds")) {
-			profileIds = root.get("userIds").getTextValue();
+			profileIds = root.get("userIds").textValue();
 			profiles = profileIds.split(",");
 		}
 
 		String userProfileID = new String();
+		@SuppressWarnings("unused")
 		String userName = new String();
+		@SuppressWarnings("unused")
 		Boolean userIsAdmin = false;
+		@SuppressWarnings("unused")
 		String userCollege = new String();
+		@SuppressWarnings("unused")
 		String userDepartment = new String();
+		@SuppressWarnings("unused")
 		String userPositionType = new String();
+		@SuppressWarnings("unused")
 		String userPositionTitle = new String();
 
 		if (root != null && root.has("gpmsCommonObj")) {
 			JsonNode commonObj = root.get("gpmsCommonObj");
 			if (commonObj != null && commonObj.has("UserProfileID")) {
-				userProfileID = commonObj.get("UserProfileID").getTextValue();
+				userProfileID = commonObj.get("UserProfileID").textValue();
 			}
 			if (commonObj != null && commonObj.has("UserName")) {
-				userName = commonObj.get("UserName").getTextValue();
+				userName = commonObj.get("UserName").textValue();
 			}
 			if (commonObj != null && commonObj.has("UserIsAdmin")) {
 				userIsAdmin = Boolean.parseBoolean(commonObj.get("UserIsAdmin")
-						.getTextValue());
+						.textValue());
 			}
 			if (commonObj != null && commonObj.has("UserCollege")) {
-				userCollege = commonObj.get("UserCollege").getTextValue();
+				userCollege = commonObj.get("UserCollege").textValue();
 			}
 			if (commonObj != null && commonObj.has("UserDepartment")) {
-				userDepartment = commonObj.get("UserDepartment").getTextValue();
+				userDepartment = commonObj.get("UserDepartment").textValue();
 			}
 			if (commonObj != null && commonObj.has("UserPositionType")) {
 				userPositionType = commonObj.get("UserPositionType")
-						.getTextValue();
+						.textValue();
 			}
 			if (commonObj != null && commonObj.has("UserPositionTitle")) {
 				userPositionTitle = commonObj.get("UserPositionTitle")
-						.getTextValue();
+						.textValue();
 			}
 		}
 
@@ -580,8 +608,18 @@ public class UserService {
 			notification.setCritical(true);
 			notificationDAO.save(notification);
 		}
+
+		// Broadcasting SSE
+
+		OutboundEvent.Builder eventBuilder = new OutboundEvent.Builder();
+		OutboundEvent event = eventBuilder.name("notification")
+				.mediaType(MediaType.TEXT_PLAIN_TYPE).data(String.class, 1)
+				.build();
+
+		NotificationService.BROADCASTER.broadcast(event);
+
 		response = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(
-				"Success");
+				true);
 		return response;
 	}
 
@@ -597,46 +635,52 @@ public class UserService {
 		JsonNode root = mapper.readTree(message);
 
 		if (root != null && root.has("userId")) {
-			profileId = root.get("userId").getTextValue();
+			profileId = root.get("userId").textValue();
 		}
 
 		if (root != null && root.has("isActive")) {
-			isActive = root.get("isActive").getBooleanValue();
+			isActive = root.get("isActive").booleanValue();
 		}
 
 		String userProfileID = new String();
+		@SuppressWarnings("unused")
 		String userName = new String();
+		@SuppressWarnings("unused")
 		Boolean userIsAdmin = false;
+		@SuppressWarnings("unused")
 		String userCollege = new String();
+		@SuppressWarnings("unused")
 		String userDepartment = new String();
+		@SuppressWarnings("unused")
 		String userPositionType = new String();
+		@SuppressWarnings("unused")
 		String userPositionTitle = new String();
 
 		if (root != null && root.has("gpmsCommonObj")) {
 			JsonNode commonObj = root.get("gpmsCommonObj");
 			if (commonObj != null && commonObj.has("UserProfileID")) {
-				userProfileID = commonObj.get("UserProfileID").getTextValue();
+				userProfileID = commonObj.get("UserProfileID").textValue();
 			}
 			if (commonObj != null && commonObj.has("UserName")) {
-				userName = commonObj.get("UserName").getTextValue();
+				userName = commonObj.get("UserName").textValue();
 			}
 			if (commonObj != null && commonObj.has("UserIsAdmin")) {
 				userIsAdmin = Boolean.parseBoolean(commonObj.get("UserIsAdmin")
-						.getTextValue());
+						.textValue());
 			}
 			if (commonObj != null && commonObj.has("UserCollege")) {
-				userCollege = commonObj.get("UserCollege").getTextValue();
+				userCollege = commonObj.get("UserCollege").textValue();
 			}
 			if (commonObj != null && commonObj.has("UserDepartment")) {
-				userDepartment = commonObj.get("UserDepartment").getTextValue();
+				userDepartment = commonObj.get("UserDepartment").textValue();
 			}
 			if (commonObj != null && commonObj.has("UserPositionType")) {
 				userPositionType = commonObj.get("UserPositionType")
-						.getTextValue();
+						.textValue();
 			}
 			if (commonObj != null && commonObj.has("UserPositionTitle")) {
 				userPositionTitle = commonObj.get("UserPositionTitle")
-						.getTextValue();
+						.textValue();
 			}
 		}
 
@@ -713,10 +757,19 @@ public class UserService {
 			notificationDAO.save(notification);
 		}
 
+		// Broadcasting SSE
+
+		OutboundEvent.Builder eventBuilder = new OutboundEvent.Builder();
+		OutboundEvent event = eventBuilder.name("notification")
+				.mediaType(MediaType.TEXT_PLAIN_TYPE).data(String.class, 1)
+				.build();
+
+		NotificationService.BROADCASTER.broadcast(event);
+
 		// return Response.ok("Success", MediaType.APPLICATION_JSON).build();
 
 		response = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(
-				"Success");
+				true);
 		return response;
 	}
 
@@ -734,47 +787,54 @@ public class UserService {
 		if (root != null && root.has("userUniqueObj")) {
 			JsonNode userUniqueObj = root.get("userUniqueObj");
 			if (userUniqueObj != null && userUniqueObj.has("UserID")) {
-				userID = userUniqueObj.get("UserID").getTextValue();
+				userID = userUniqueObj.get("UserID").textValue();
 			}
 
 			if (userUniqueObj != null && userUniqueObj.has("NewUserName")) {
-				newUserName = userUniqueObj.get("NewUserName").getTextValue();
+				newUserName = userUniqueObj.get("NewUserName").textValue();
 			}
 		}
 
+		@SuppressWarnings("unused")
 		String userProfileID = new String();
+		@SuppressWarnings("unused")
 		String userName = new String();
+		@SuppressWarnings("unused")
 		Boolean userIsAdmin = false;
+		@SuppressWarnings("unused")
 		String userCollege = new String();
+		@SuppressWarnings("unused")
 		String userDepartment = new String();
+		@SuppressWarnings("unused")
 		String userPositionType = new String();
+		@SuppressWarnings("unused")
 		String userPositionTitle = new String();
 
 		if (root != null && root.has("gpmsCommonObj")) {
 			JsonNode commonObj = root.get("gpmsCommonObj");
 			if (commonObj != null && commonObj.has("UserProfileID")) {
-				userProfileID = commonObj.get("UserProfileID").getTextValue();
+				userProfileID = commonObj.get("UserProfileID").textValue();
 			}
 			if (commonObj != null && commonObj.has("UserName")) {
-				userName = commonObj.get("UserName").getTextValue();
+				userName = commonObj.get("UserName").textValue();
 			}
 			if (commonObj != null && commonObj.has("UserIsAdmin")) {
 				userIsAdmin = Boolean.parseBoolean(commonObj.get("UserIsAdmin")
-						.getTextValue());
+						.textValue());
 			}
 			if (commonObj != null && commonObj.has("UserCollege")) {
-				userCollege = commonObj.get("UserCollege").getTextValue();
+				userCollege = commonObj.get("UserCollege").textValue();
 			}
 			if (commonObj != null && commonObj.has("UserDepartment")) {
-				userDepartment = commonObj.get("UserDepartment").getTextValue();
+				userDepartment = commonObj.get("UserDepartment").textValue();
 			}
 			if (commonObj != null && commonObj.has("UserPositionType")) {
 				userPositionType = commonObj.get("UserPositionType")
-						.getTextValue();
+						.textValue();
 			}
 			if (commonObj != null && commonObj.has("UserPositionTitle")) {
 				userPositionTitle = commonObj.get("UserPositionTitle")
-						.getTextValue();
+						.textValue();
 			}
 		}
 
@@ -813,47 +873,54 @@ public class UserService {
 		if (root != null && root.has("userUniqueObj")) {
 			JsonNode userUniqueObj = root.get("userUniqueObj");
 			if (userUniqueObj != null && userUniqueObj.has("UserID")) {
-				userID = userUniqueObj.get("UserID").getTextValue();
+				userID = userUniqueObj.get("UserID").textValue();
 			}
 
 			if (userUniqueObj != null && userUniqueObj.has("NewEmail")) {
-				newEmail = userUniqueObj.get("NewEmail").getTextValue();
+				newEmail = userUniqueObj.get("NewEmail").textValue();
 			}
 		}
 
+		@SuppressWarnings("unused")
 		String userProfileID = new String();
+		@SuppressWarnings("unused")
 		String userName = new String();
+		@SuppressWarnings("unused")
 		Boolean userIsAdmin = false;
+		@SuppressWarnings("unused")
 		String userCollege = new String();
+		@SuppressWarnings("unused")
 		String userDepartment = new String();
+		@SuppressWarnings("unused")
 		String userPositionType = new String();
+		@SuppressWarnings("unused")
 		String userPositionTitle = new String();
 
 		if (root != null && root.has("gpmsCommonObj")) {
 			JsonNode commonObj = root.get("gpmsCommonObj");
 			if (commonObj != null && commonObj.has("UserProfileID")) {
-				userProfileID = commonObj.get("UserProfileID").getTextValue();
+				userProfileID = commonObj.get("UserProfileID").textValue();
 			}
 			if (commonObj != null && commonObj.has("UserName")) {
-				userName = commonObj.get("UserName").getTextValue();
+				userName = commonObj.get("UserName").textValue();
 			}
 			if (commonObj != null && commonObj.has("UserIsAdmin")) {
 				userIsAdmin = Boolean.parseBoolean(commonObj.get("UserIsAdmin")
-						.getTextValue());
+						.textValue());
 			}
 			if (commonObj != null && commonObj.has("UserCollege")) {
-				userCollege = commonObj.get("UserCollege").getTextValue();
+				userCollege = commonObj.get("UserCollege").textValue();
 			}
 			if (commonObj != null && commonObj.has("UserDepartment")) {
-				userDepartment = commonObj.get("UserDepartment").getTextValue();
+				userDepartment = commonObj.get("UserDepartment").textValue();
 			}
 			if (commonObj != null && commonObj.has("UserPositionType")) {
 				userPositionType = commonObj.get("UserPositionType")
-						.getTextValue();
+						.textValue();
 			}
 			if (commonObj != null && commonObj.has("UserPositionTitle")) {
 				userPositionTitle = commonObj.get("UserPositionTitle")
-						.getTextValue();
+						.textValue();
 			}
 		}
 
@@ -888,8 +955,6 @@ public class UserService {
 		UserProfile existingUserProfile = new UserProfile();
 		UserProfile oldUserProfile = new UserProfile();
 
-		String response = new String();
-
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode root = mapper.readTree(message);
 
@@ -897,7 +962,7 @@ public class UserService {
 			JsonNode userInfo = root.get("userInfo");
 
 			if (userInfo != null && userInfo.has("UserID")) {
-				userID = userInfo.get("UserID").getTextValue();
+				userID = userInfo.get("UserID").textValue();
 				if (!userID.equals("0")) {
 					ObjectId id = new ObjectId(userID);
 					existingUserProfile = userProfileDAO
@@ -910,7 +975,7 @@ public class UserService {
 			}
 
 			if (userInfo != null && userInfo.has("UserName")) {
-				String userNameOf = userInfo.get("UserName").getTextValue();
+				String userNameOf = userInfo.get("UserName").textValue();
 				if (!userID.equals("0") && existingUserProfile != null) {
 					existingUserAccount = existingUserProfile.getUserAccount();
 					if (!existingUserAccount.getUserName().equals(userNameOf)) {
@@ -924,36 +989,36 @@ public class UserService {
 			if (userInfo != null && userInfo.has("Password")) {
 				if (!userID.equals("0")) {
 					if (!existingUserAccount.getPassword().equals(
-							userInfo.get("Password").getTextValue())) {
+							userInfo.get("Password").textValue())) {
 						existingUserAccount.setPassword(userInfo
-								.get("Password").getTextValue());
+								.get("Password").textValue());
 					}
 				} else {
-					newAccount.setPassword(userInfo.get("Password")
-							.getTextValue());
+					newAccount
+							.setPassword(userInfo.get("Password").textValue());
 				}
 			}
 
 			if (userInfo != null && userInfo.has("IsActive")) {
 				if (!userID.equals("0")) {
 					if (existingUserAccount.isActive() != userInfo.get(
-							"IsActive").getBooleanValue()) {
+							"IsActive").booleanValue()) {
 						existingUserAccount.setActive(userInfo.get("IsActive")
-								.getBooleanValue());
+								.booleanValue());
 					}
 				} else {
 					newAccount.setActive(userInfo.get("IsActive")
-							.getBooleanValue());
+							.booleanValue());
 				}
 				if (!userID.equals("0")) {
 					if (existingUserAccount.isDeleted() != !userInfo.get(
-							"IsActive").getBooleanValue()) {
+							"IsActive").booleanValue()) {
 						existingUserAccount.setDeleted(!userInfo
-								.get("IsActive").getBooleanValue());
+								.get("IsActive").booleanValue());
 					}
 				} else {
 					newAccount.setDeleted(!userInfo.get("IsActive")
-							.getBooleanValue());
+							.booleanValue());
 				}
 
 				// TODO: Check the old ways to do this
@@ -968,13 +1033,13 @@ public class UserService {
 
 				if (!userID.equals("0")) {
 					if (existingUserProfile.isDeleted() != !userInfo.get(
-							"IsActive").getBooleanValue()) {
+							"IsActive").booleanValue()) {
 						existingUserProfile.setDeleted(!userInfo
-								.get("IsActive").getBooleanValue());
+								.get("IsActive").booleanValue());
 					}
 				} else {
 					newProfile.setDeleted(!userInfo.get("IsActive")
-							.getBooleanValue());
+							.booleanValue());
 				}
 			}
 
@@ -985,44 +1050,44 @@ public class UserService {
 			if (userInfo != null && userInfo.has("FirstName")) {
 				if (!userID.equals("0")) {
 					if (!existingUserProfile.getFirstName().equals(
-							userInfo.get("FirstName").getTextValue())) {
+							userInfo.get("FirstName").textValue())) {
 						existingUserProfile.setFirstName(userInfo.get(
-								"FirstName").getTextValue());
+								"FirstName").textValue());
 					}
 				} else {
 					newProfile.setFirstName(userInfo.get("FirstName")
-							.getTextValue());
+							.textValue());
 				}
 			}
 
 			if (userInfo != null && userInfo.has("MiddleName")) {
 				if (!userID.equals("0")) {
 					if (!existingUserProfile.getMiddleName().equals(
-							userInfo.get("MiddleName").getTextValue())) {
+							userInfo.get("MiddleName").textValue())) {
 						existingUserProfile.setMiddleName(userInfo.get(
-								"MiddleName").getTextValue());
+								"MiddleName").textValue());
 					}
 				} else {
 					newProfile.setMiddleName(userInfo.get("MiddleName")
-							.getTextValue());
+							.textValue());
 				}
 			}
 
 			if (userInfo != null && userInfo.has("LastName")) {
 				if (!userID.equals("0")) {
 					if (!existingUserProfile.getLastName().equals(
-							userInfo.get("LastName").getTextValue())) {
+							userInfo.get("LastName").textValue())) {
 						existingUserProfile.setLastName(userInfo
-								.get("LastName").getTextValue());
+								.get("LastName").textValue());
 					}
 				} else {
-					newProfile.setLastName(userInfo.get("LastName")
-							.getTextValue());
+					newProfile
+							.setLastName(userInfo.get("LastName").textValue());
 				}
 			}
 
 			if (userInfo != null && userInfo.has("DOB")) {
-				Date dob = formatter.parse(userInfo.get("DOB").getTextValue());
+				Date dob = formatter.parse(userInfo.get("DOB").textValue());
 				if (!userID.equals("0")) {
 					if (!existingUserProfile.getDateOfBirth().equals(dob)) {
 						existingUserProfile.setDateOfBirth(dob);
@@ -1035,34 +1100,34 @@ public class UserService {
 			if (userInfo != null && userInfo.has("Gender")) {
 				if (!userID.equals("0")) {
 					if (!existingUserProfile.getGender().equals(
-							userInfo.get("Gender").getTextValue())) {
+							userInfo.get("Gender").textValue())) {
 						existingUserProfile.setGender(userInfo.get("Gender")
-								.getTextValue());
+								.textValue());
 					}
 				} else {
-					newProfile.setGender(userInfo.get("Gender").getTextValue());
+					newProfile.setGender(userInfo.get("Gender").textValue());
 				}
 			}
 
 			Address newAddress = new Address();
 
 			if (userInfo != null && userInfo.has("Street")) {
-				newAddress.setStreet(userInfo.get("Street").getTextValue());
+				newAddress.setStreet(userInfo.get("Street").textValue());
 			}
 			if (userInfo != null && userInfo.has("Apt")) {
-				newAddress.setApt(userInfo.get("Apt").getTextValue());
+				newAddress.setApt(userInfo.get("Apt").textValue());
 			}
 			if (userInfo != null && userInfo.has("City")) {
-				newAddress.setCity(userInfo.get("City").getTextValue());
+				newAddress.setCity(userInfo.get("City").textValue());
 			}
 			if (userInfo != null && userInfo.has("State")) {
-				newAddress.setState(userInfo.get("State").getTextValue());
+				newAddress.setState(userInfo.get("State").textValue());
 			}
 			if (userInfo != null && userInfo.has("Zip")) {
-				newAddress.setZipcode(userInfo.get("Zip").getTextValue());
+				newAddress.setZipcode(userInfo.get("Zip").textValue());
 			}
 			if (userInfo != null && userInfo.has("Country")) {
-				newAddress.setCountry(userInfo.get("Country").getTextValue());
+				newAddress.setCountry(userInfo.get("Country").textValue());
 			}
 
 			if (!userID.equals("0")) {
@@ -1087,7 +1152,7 @@ public class UserService {
 					for (String officeNo : existingUserProfile
 							.getOfficeNumbers()) {
 						if (officeNo.equals(userInfo.get("OfficeNumber")
-								.getTextValue())) {
+								.textValue())) {
 							alreadyExist = true;
 							break;
 						}
@@ -1095,11 +1160,11 @@ public class UserService {
 					if (!alreadyExist) {
 						existingUserProfile.getOfficeNumbers().clear();
 						existingUserProfile.getOfficeNumbers().add(
-								userInfo.get("OfficeNumber").getTextValue());
+								userInfo.get("OfficeNumber").textValue());
 					}
 				} else {
 					newProfile.getOfficeNumbers().add(
-							userInfo.get("OfficeNumber").getTextValue());
+							userInfo.get("OfficeNumber").textValue());
 				}
 			}
 
@@ -1109,7 +1174,7 @@ public class UserService {
 					for (String mobileNo : existingUserProfile
 							.getMobileNumbers()) {
 						if (mobileNo.equals(userInfo.get("MobileNumber")
-								.getTextValue())) {
+								.textValue())) {
 							alreadyExist = true;
 							break;
 						}
@@ -1117,11 +1182,11 @@ public class UserService {
 					if (!alreadyExist) {
 						existingUserProfile.getMobileNumbers().clear();
 						existingUserProfile.getMobileNumbers().add(
-								userInfo.get("MobileNumber").getTextValue());
+								userInfo.get("MobileNumber").textValue());
 					}
 				} else {
 					newProfile.getMobileNumbers().add(
-							userInfo.get("MobileNumber").getTextValue());
+							userInfo.get("MobileNumber").textValue());
 				}
 			}
 
@@ -1130,7 +1195,7 @@ public class UserService {
 					boolean alreadyExist = false;
 					for (String homeNo : existingUserProfile.getHomeNumbers()) {
 						if (homeNo.equals(userInfo.get("HomeNumber")
-								.getTextValue())) {
+								.textValue())) {
 							alreadyExist = true;
 							break;
 						}
@@ -1138,11 +1203,11 @@ public class UserService {
 					if (!alreadyExist) {
 						existingUserProfile.getHomeNumbers().clear();
 						existingUserProfile.getHomeNumbers().add(
-								userInfo.get("HomeNumber").getTextValue());
+								userInfo.get("HomeNumber").textValue());
 					}
 				} else {
 					newProfile.getHomeNumbers().add(
-							userInfo.get("HomeNumber").getTextValue());
+							userInfo.get("HomeNumber").textValue());
 				}
 			}
 
@@ -1151,7 +1216,7 @@ public class UserService {
 					boolean alreadyExist = false;
 					for (String otherNo : existingUserProfile.getOtherNumbers()) {
 						if (otherNo.equals(userInfo.get("OtherNumber")
-								.getTextValue())) {
+								.textValue())) {
 							alreadyExist = true;
 							break;
 						}
@@ -1159,11 +1224,11 @@ public class UserService {
 					if (!alreadyExist) {
 						existingUserProfile.getOtherNumbers().clear();
 						existingUserProfile.getOtherNumbers().add(
-								userInfo.get("OtherNumber").getTextValue());
+								userInfo.get("OtherNumber").textValue());
 					}
 				} else {
 					newProfile.getOtherNumbers().add(
-							userInfo.get("OtherNumber").getTextValue());
+							userInfo.get("OtherNumber").textValue());
 				}
 			}
 
@@ -1172,7 +1237,7 @@ public class UserService {
 					boolean alreadyExist = false;
 					for (String workEmail : existingUserProfile.getWorkEmails()) {
 						if (workEmail.equals(userInfo.get("WorkEmail")
-								.getTextValue())) {
+								.textValue())) {
 							alreadyExist = true;
 							break;
 						}
@@ -1180,11 +1245,11 @@ public class UserService {
 					if (!alreadyExist) {
 						existingUserProfile.getWorkEmails().clear();
 						existingUserProfile.getWorkEmails().add(
-								userInfo.get("WorkEmail").getTextValue());
+								userInfo.get("WorkEmail").textValue());
 					}
 				} else {
 					newProfile.getWorkEmails().add(
-							userInfo.get("WorkEmail").getTextValue());
+							userInfo.get("WorkEmail").textValue());
 				}
 			}
 
@@ -1194,7 +1259,7 @@ public class UserService {
 					for (String personalEmail : existingUserProfile
 							.getPersonalEmails()) {
 						if (personalEmail.equals(userInfo.get("PersonalEmail")
-								.getTextValue())) {
+								.textValue())) {
 							alreadyExist = true;
 							break;
 						}
@@ -1202,11 +1267,11 @@ public class UserService {
 					if (!alreadyExist) {
 						existingUserProfile.getPersonalEmails().clear();
 						existingUserProfile.getPersonalEmails().add(
-								userInfo.get("PersonalEmail").getTextValue());
+								userInfo.get("PersonalEmail").textValue());
 					}
 				} else {
 					newProfile.getPersonalEmails().add(
-							userInfo.get("PersonalEmail").getTextValue());
+							userInfo.get("PersonalEmail").textValue());
 				}
 			}
 
@@ -1215,7 +1280,7 @@ public class UserService {
 					existingUserProfile.getDetails().clear();
 				}
 
-				String[] rows = userInfo.get("SaveOptions").getTextValue()
+				String[] rows = userInfo.get("SaveOptions").textValue()
 						.split("#!#");
 
 				for (String col : rows) {
@@ -1236,6 +1301,7 @@ public class UserService {
 		}
 
 		String userProfileID = new String();
+		@SuppressWarnings("unused")
 		String userName = new String();
 		Boolean userIsAdmin = false;
 		String userCollege = new String();
@@ -1245,28 +1311,28 @@ public class UserService {
 		if (root != null && root.has("gpmsCommonObj")) {
 			JsonNode commonObj = root.get("gpmsCommonObj");
 			if (commonObj != null && commonObj.has("UserProfileID")) {
-				userProfileID = commonObj.get("UserProfileID").getTextValue();
+				userProfileID = commonObj.get("UserProfileID").textValue();
 			}
 			if (commonObj != null && commonObj.has("UserName")) {
-				userName = commonObj.get("UserName").getTextValue();
+				userName = commonObj.get("UserName").textValue();
 			}
 			if (commonObj != null && commonObj.has("UserIsAdmin")) {
 				userIsAdmin = Boolean.parseBoolean(commonObj.get("UserIsAdmin")
-						.getTextValue());
+						.textValue());
 			}
 			if (commonObj != null && commonObj.has("UserCollege")) {
-				userCollege = commonObj.get("UserCollege").getTextValue();
+				userCollege = commonObj.get("UserCollege").textValue();
 			}
 			if (commonObj != null && commonObj.has("UserDepartment")) {
-				userDepartment = commonObj.get("UserDepartment").getTextValue();
+				userDepartment = commonObj.get("UserDepartment").textValue();
 			}
 			if (commonObj != null && commonObj.has("UserPositionType")) {
 				userPositionType = commonObj.get("UserPositionType")
-						.getTextValue();
+						.textValue();
 			}
 			if (commonObj != null && commonObj.has("UserPositionTitle")) {
 				userPositionTitle = commonObj.get("UserPositionTitle")
-						.getTextValue();
+						.textValue();
 			}
 		}
 
@@ -1344,11 +1410,18 @@ public class UserService {
 			}
 		}
 
-		// UserProfile user = userProfileDAO.findByUserAccount(newAccount);
-		// System.out.println(user);
-		response = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(
-				"Success");
-		return response;
+		// Broadcasting SSE
+
+		OutboundEvent.Builder eventBuilder = new OutboundEvent.Builder();
+		OutboundEvent event = eventBuilder.name("notification")
+				.mediaType(MediaType.TEXT_PLAIN_TYPE).data(String.class, 1)
+				.build();
+
+		NotificationService.BROADCASTER.broadcast(event);
+
+		String res = mapper.writerWithDefaultPrettyPrinter()
+				.writeValueAsString(true);
+		return res;
 
 	}
 
@@ -1371,7 +1444,7 @@ public class UserService {
 			JsonNode userInfo = root.get("userInfo");
 
 			if (userInfo != null && userInfo.has("UserID")) {
-				userID = userInfo.get("UserID").getTextValue();
+				userID = userInfo.get("UserID").textValue();
 			}
 
 			if (userID.equals("0")) {
@@ -1379,74 +1452,71 @@ public class UserService {
 				newAccount.setAddedOn(new Date());
 
 				if (userInfo != null && userInfo.has("UserName")) {
-					String loginUserName = userInfo.get("UserName")
-							.getTextValue();
+					String loginUserName = userInfo.get("UserName").textValue();
 					newAccount.setUserName(loginUserName);
 				}
 
 				if (userInfo != null && userInfo.has("Password")) {
-					newAccount.setPassword(userInfo.get("Password")
-							.getTextValue());
+					newAccount
+							.setPassword(userInfo.get("Password").textValue());
 				}
 
 				newProfile.setUserAccount(newAccount);
 
 				if (userInfo != null && userInfo.has("FirstName")) {
 					newProfile.setFirstName(userInfo.get("FirstName")
-							.getTextValue());
+							.textValue());
 				}
 
 				if (userInfo != null && userInfo.has("MiddleName")) {
 					newProfile.setMiddleName(userInfo.get("MiddleName")
-							.getTextValue());
+							.textValue());
 				}
 
 				if (userInfo != null && userInfo.has("LastName")) {
-					newProfile.setLastName(userInfo.get("LastName")
-							.getTextValue());
+					newProfile
+							.setLastName(userInfo.get("LastName").textValue());
 				}
 
 				if (userInfo != null && userInfo.has("DOB")) {
-					Date dob = formatter.parse(userInfo.get("DOB")
-							.getTextValue());
+					Date dob = formatter.parse(userInfo.get("DOB").textValue());
 					newProfile.setDateOfBirth(dob);
 				}
 
 				if (userInfo != null && userInfo.has("Gender")) {
-					newProfile.setGender(userInfo.get("Gender").getTextValue());
+					newProfile.setGender(userInfo.get("Gender").textValue());
 				}
 
 				Address newAddress = new Address();
 
 				if (userInfo != null && userInfo.has("Street")) {
-					newAddress.setStreet(userInfo.get("Street").getTextValue());
+					newAddress.setStreet(userInfo.get("Street").textValue());
 				}
 				if (userInfo != null && userInfo.has("Apt")) {
-					newAddress.setApt(userInfo.get("Apt").getTextValue());
+					newAddress.setApt(userInfo.get("Apt").textValue());
 				}
 				if (userInfo != null && userInfo.has("City")) {
-					newAddress.setCity(userInfo.get("City").getTextValue());
+					newAddress.setCity(userInfo.get("City").textValue());
 				}
 				if (userInfo != null && userInfo.has("State")) {
-					newAddress.setState(userInfo.get("State").getTextValue());
+					newAddress.setState(userInfo.get("State").textValue());
 				}
 				if (userInfo != null && userInfo.has("Zip")) {
-					newAddress.setZipcode(userInfo.get("Zip").getTextValue());
+					newAddress.setZipcode(userInfo.get("Zip").textValue());
 				}
 				if (userInfo != null && userInfo.has("Country")) {
-					newAddress.setCountry(userInfo.get("Country")
-							.getTextValue());
+					newAddress.setCountry(userInfo.get("Country").textValue());
 				}
 
 				newProfile.getAddresses().add(newAddress);
 
 				if (userInfo != null && userInfo.has("MobileNumber")) {
 					newProfile.getMobileNumbers().add(
-							userInfo.get("MobileNumber").getTextValue());
+							userInfo.get("MobileNumber").textValue());
 				}
 
 				if (userInfo != null && userInfo.has("WorkEmail")) {
-					userEmail = userInfo.get("WorkEmail").getTextValue();
+					userEmail = userInfo.get("WorkEmail").textValue();
 
 					newProfile.getWorkEmails().add(userEmail);
 				}
@@ -1467,10 +1537,19 @@ public class UserService {
 			notificationDAO.save(notification);
 		}
 
+		// Broadcasting SSE
+
+		OutboundEvent.Builder eventBuilder = new OutboundEvent.Builder();
+		OutboundEvent event = eventBuilder.name("notification")
+				.mediaType(MediaType.TEXT_PLAIN_TYPE).data(String.class, 1)
+				.build();
+
+		NotificationService.BROADCASTER.broadcast(event);
+
 		// UserProfile user = userProfileDAO.findByUserAccount(newAccount);
 		// System.out.println(user);
 		response = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(
-				"Success");
+				true);
 		return response;
 
 	}
@@ -1535,7 +1614,7 @@ public class UserService {
 
 		if (root != null && root.has("userId") && root.has("userName")
 				&& root.has("isAdminUser")) {
-			String profileId = root.get("userId").getTextValue();
+			String profileId = root.get("userId").textValue();
 			ObjectId id = new ObjectId(profileId);
 
 			String userName = new String();
@@ -1545,24 +1624,24 @@ public class UserService {
 			String positionType = new String();
 			String positionTitle = new String();
 
-			userName = root.get("userName").getTextValue();
+			userName = root.get("userName").textValue();
 			isAdminUser = Boolean.parseBoolean(root.get("isAdminUser")
-					.getTextValue());
+					.textValue());
 
 			if (root != null && root.has("college")) {
-				college = root.get("college").getTextValue();
+				college = root.get("college").textValue();
 			}
 
 			if (root != null && root.has("department")) {
-				department = root.get("department").getTextValue();
+				department = root.get("department").textValue();
 			}
 
 			if (root != null && root.has("positionType")) {
-				positionType = root.get("positionType").getTextValue();
+				positionType = root.get("positionType").textValue();
 			}
 
 			if (root != null && root.has("positionTitle")) {
-				positionTitle = root.get("positionTitle").getTextValue();
+				positionTitle = root.get("positionTitle").textValue();
 			}
 
 			UserProfile user = userProfileDAO.findMatchedUserDetails(id,
@@ -1725,7 +1804,8 @@ public class UserService {
 
 	@POST
 	@Path("/GetAllUserDropdown")
-	public HashMap<String, String> getAllUsers() throws UnknownHostException {
+	public String getAllUsers() throws UnknownHostException,
+			JsonProcessingException {
 		HashMap<String, String> users = new HashMap<String, String>();
 		// List<UserProfile> userprofiles = userProfileDAO.findAllActiveUsers();
 		List<UserProfile> userprofiles = userProfileDAO
@@ -1733,7 +1813,11 @@ public class UserService {
 		for (UserProfile userProfile : userprofiles) {
 			users.put(userProfile.getId().toString(), userProfile.getFullName());
 		}
-		return users;
+
+		ObjectMapper mapper = new ObjectMapper();
+
+		return mapper.writerWithDefaultPrettyPrinter()
+				.writeValueAsString(users);
 	}
 
 	@POST
@@ -1746,7 +1830,7 @@ public class UserService {
 
 		JsonNode root = mapper.readTree(message);
 		if (root != null && root.has("userId")) {
-			userId = root.get("userId").getTextValue();
+			userId = root.get("userId").textValue();
 		}
 
 		ObjectId id = new ObjectId(userId);
@@ -1755,9 +1839,7 @@ public class UserService {
 		final Gson gson = new GsonBuilder().setPrettyPrinting()
 				.registerTypeAdapter(Multimap.class, multimapAdapter).create();
 
-		final String userPositions = gson.toJson(userProfileDAO
-				.findAllPositionDetailsForAUser(id));
-		return userPositions;
+		return gson.toJson(userProfileDAO.findAllPositionDetailsForAUser(id));
 	}
 
 	@POST
@@ -1769,7 +1851,9 @@ public class UserService {
 		JsonNode root = mapper.readTree(message);
 
 		String userProfileID = new String();
+		@SuppressWarnings("unused")
 		String userName = new String();
+		@SuppressWarnings("unused")
 		Boolean userIsAdmin = false;
 		String userCollege = new String();
 		String userDepartment = new String();
@@ -1779,32 +1863,33 @@ public class UserService {
 		if (root != null && root.has("gpmsCommonObj")) {
 			JsonNode commonObj = root.get("gpmsCommonObj");
 			if (commonObj != null && commonObj.has("UserProfileID")) {
-				userProfileID = commonObj.get("UserProfileID").getTextValue();
+				userProfileID = commonObj.get("UserProfileID").textValue();
 			}
 			if (commonObj != null && commonObj.has("UserName")) {
-				userName = commonObj.get("UserName").getTextValue();
+				userName = commonObj.get("UserName").textValue();
 			}
 			if (commonObj != null && commonObj.has("UserIsAdmin")) {
 				userIsAdmin = Boolean.parseBoolean(commonObj.get("UserIsAdmin")
-						.getTextValue());
+						.textValue());
 			}
 			if (commonObj != null && commonObj.has("UserCollege")) {
-				userCollege = commonObj.get("UserCollege").getTextValue();
+				userCollege = commonObj.get("UserCollege").textValue();
 			}
 			if (commonObj != null && commonObj.has("UserDepartment")) {
-				userDepartment = commonObj.get("UserDepartment").getTextValue();
+				userDepartment = commonObj.get("UserDepartment").textValue();
 			}
 			if (commonObj != null && commonObj.has("UserPositionType")) {
 				userPositionType = commonObj.get("UserPositionType")
-						.getTextValue();
+						.textValue();
 			}
 			if (commonObj != null && commonObj.has("UserPositionTitle")) {
 				userPositionTitle = commonObj.get("UserPositionTitle")
-						.getTextValue();
+						.textValue();
 			}
 		}
 
 		return userProfileDAO.getUserProposalCounts(userProfileID, userCollege,
 				userDepartment, userPositionType, userPositionTitle);
 	}
+
 }
