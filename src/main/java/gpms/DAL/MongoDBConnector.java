@@ -19,7 +19,6 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.Mongo;
 import com.mongodb.MongoClient;
-import com.mongodb.MongoClientURI;
 import com.mongodb.MongoException;
 
 /*
@@ -191,6 +190,7 @@ public class MongoDBConnector {
 		}
 	}
 
+	@SuppressWarnings("unused")
 	private void createCollection(String collName) {
 		DBObject dbs = new BasicDBObject();
 		db.createCollection(collName, dbs);

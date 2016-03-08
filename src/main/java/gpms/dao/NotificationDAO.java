@@ -1,9 +1,7 @@
 package gpms.dao;
 
 import gpms.DAL.MongoDBConnector;
-import gpms.model.AuditLog;
 import gpms.model.NotificationLog;
-import gpms.model.Proposal;
 import gpms.model.UserAccount;
 import gpms.model.UserProfile;
 
@@ -12,7 +10,6 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.mongodb.morphia.Datastore;

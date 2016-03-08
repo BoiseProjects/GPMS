@@ -27,11 +27,10 @@ public class TestProposalDAO {
 		morphia.map(UserProfile.class).map(UserAccount.class);
 		newProposalDAO = new ProposalDAO(mongoClient, morphia, dbName);
 	}
-	
+
 	@Test
-	public void createPropObject()
-	{
+	public void createPropObject() {
 		newProposalDAO = new ProposalDAO(mongoClient, morphia, dbName);
-	
+
 	}
 }

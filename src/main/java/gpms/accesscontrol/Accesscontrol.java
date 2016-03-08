@@ -196,7 +196,6 @@ public class Accesscontrol {
 		System.out.println(request);
 		System.out
 				.println("===========================================================");
-		String response = "";
 		try {
 
 			RequestCtxFactory rcf = RequestCtxFactory.getFactory();
@@ -283,7 +282,7 @@ public class Accesscontrol {
 
 		ac.getXACMLdecision(attrMap);
 	}
-	
+
 	public String getXACMLdecision(
 			HashMap<String, Multimap<String, String>> attrMap) {
 		String request = createXACMLRequest(attrMap);
@@ -321,8 +320,8 @@ public class Accesscontrol {
 		for (Entry<String, Multimap<String, String>> entry : attributesMap
 				.entrySet()) {
 
-			Set keySet = entry.getValue().keySet();
-			Iterator keyIterator = keySet.iterator();
+			Set<String> keySet = entry.getValue().keySet();
+			Iterator<String> keyIterator = keySet.iterator();
 
 			switch (entry.getKey()) {
 			case "Subject":

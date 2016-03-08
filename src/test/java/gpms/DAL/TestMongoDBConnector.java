@@ -1,6 +1,5 @@
 package gpms.DAL;
 
-import gpms.DAL.MongoDBConnector;
 import junit.framework.TestCase;
 
 public class TestMongoDBConnector extends TestCase {

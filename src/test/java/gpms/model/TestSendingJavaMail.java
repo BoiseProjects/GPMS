@@ -2,13 +2,6 @@ package gpms.model;
 
 import gpms.utils.EmailUtil;
 
-import java.io.IOException;
-import java.util.Properties;
-
-import javax.mail.Authenticator;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
-
 public class TestSendingJavaMail {
 
 	public static void main(String[] args) throws Exception {

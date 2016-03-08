@@ -43,6 +43,11 @@ public class MultimapAdapter implements JsonDeserializer<Multimap<String, ?>>,
 		assert typeArguments.length == 2;
 		@SuppressWarnings("unchecked")
 		final TypeToken<Map<String, Collection<V>>> mapTypeToken = new TypeToken<Map<String, Collection<V>>>() {
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
 		}.where(new TypeParameter<V>() {
 		}, (TypeToken<V>) TypeToken.of(typeArguments[1]));
 		return mapTypeToken.getType();

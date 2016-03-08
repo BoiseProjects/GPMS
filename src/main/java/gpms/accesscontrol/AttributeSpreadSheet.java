@@ -17,6 +17,8 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 public class AttributeSpreadSheet {
 
 	private static ArrayList<AttributeRecord> allAttributeRecords = new ArrayList<AttributeRecord>();
+	private HSSFWorkbook workBook1;
+	private HSSFWorkbook workBook2;
 
 	public ArrayList<AttributeRecord> getAllAttributeRecords() {
 		return allAttributeRecords;
@@ -27,8 +29,8 @@ public class AttributeSpreadSheet {
 	// }
 
 	public AttributeSpreadSheet(InputStream spreadSheetFile) throws Exception {
-		HSSFWorkbook workBook = new HSSFWorkbook(spreadSheetFile);
-		Sheet sheet = workBook.getSheetAt(0);
+		workBook1 = new HSSFWorkbook(spreadSheetFile);
+		Sheet sheet = workBook1.getSheetAt(0);
 		for (Row row : sheet) {
 			loadAttributeRow(row);
 		}
@@ -130,8 +132,8 @@ public class AttributeSpreadSheet {
 
 	public void readAttributeSpreadSheet(InputStream inputStream)
 			throws Exception {
-		HSSFWorkbook workBook = new HSSFWorkbook(inputStream);
-		Sheet sheet = workBook.getSheetAt(0);
+		workBook2 = new HSSFWorkbook(inputStream);
+		Sheet sheet = workBook2.getSheetAt(0);
 		for (Row row : sheet) {
 			loadAttributeRow(row);
 		}

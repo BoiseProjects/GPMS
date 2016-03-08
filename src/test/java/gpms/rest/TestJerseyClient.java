@@ -1,6 +1,5 @@
 package gpms.rest;
 
-
 public class TestJerseyClient {
 
 	public static void main(String[] args) {

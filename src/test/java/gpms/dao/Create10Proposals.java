@@ -1,9 +1,6 @@
 package gpms.dao;
 
 import gpms.DAL.MongoDBConnector;
-import gpms.dao.ProposalDAO;
-import gpms.dao.UserAccountDAO;
-import gpms.dao.UserProfileDAO;
 import gpms.model.InvestigatorInfo;
 import gpms.model.InvestigatorRefAndPosition;
 import gpms.model.ProjectInfo;
@@ -13,7 +10,6 @@ import gpms.model.ProjectType;
 import gpms.model.Proposal;
 import gpms.model.SignatureInfo;
 import gpms.model.SponsorAndBudgetInfo;
-import gpms.model.Status;
 import gpms.model.TypeOfRequest;
 import gpms.model.UserAccount;
 import gpms.model.UserProfile;
@@ -208,7 +204,7 @@ public class Create10Proposals {
 
 			newProposal.setDateCreated(new Date());
 
-			//newProposal.getProposalStatus().add(Status.NOTSUBMITTEDBYPI);
+			// newProposal.getProposalStatus().add(Status.NOTSUBMITTEDBYPI);
 
 			newProposalDAO.save(newProposal);
 

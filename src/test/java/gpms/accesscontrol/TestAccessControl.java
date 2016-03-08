@@ -37,7 +37,7 @@ public class TestAccessControl {
 
 		Multimap<String, String> resourceMap = ArrayListMultimap.create();
 		resourceMap.put("proposal-section", "Whole Proposal");
-		//resourceMap.put("status", "Withdraw by Research Office");
+		// resourceMap.put("status", "Withdraw by Research Office");
 		attrMap.put("Resource", resourceMap);
 
 		Multimap<String, String> actionMap = ArrayListMultimap.create();

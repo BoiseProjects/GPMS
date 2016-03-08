@@ -1,6 +1,5 @@
 package gpms.queue;
 
-
 public class MessageDetails implements WorkItem {
 
 	@Override

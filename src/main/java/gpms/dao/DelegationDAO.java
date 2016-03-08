@@ -1,15 +1,11 @@
 package gpms.dao;
 
 import gpms.DAL.MongoDBConnector;
-import gpms.model.AuditLog;
 import gpms.model.Delegation;
-import gpms.model.NotificationLog;
 import gpms.model.SignatureInfo;
 import gpms.model.UserAccount;
 
 import java.net.UnknownHostException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -29,7 +25,6 @@ public class DelegationDAO extends BasicDAO<Delegation, String> {
 
 	private static Morphia morphia;
 	private static Datastore ds;
-	private AuditLog audit = new AuditLog();
 
 	private static Morphia getMorphia() throws UnknownHostException,
 			MongoException {

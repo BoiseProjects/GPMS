@@ -52,8 +52,8 @@ public class DepartmentsPositionsCollection {
 
 		HashMap<String, ArrayList<String>> positionTypeCS = new HashMap<String, ArrayList<String>>();
 		positionTypeCS.put("Tenured/tenure-track faculty", tenuredTitles);
-		positionTypeCS
-				.put("Non-tenure-track research faculty", nonTenuredTitles);
+		positionTypeCS.put("Non-tenure-track research faculty",
+				nonTenuredTitles);
 		positionTypeCS.put("Teaching faculty", teachingFaculty);
 		positionTypeCS.put("Research staff", researchStaff);
 		positionTypeCS.put("Professional staff", professionalStaff);
@@ -61,8 +61,8 @@ public class DepartmentsPositionsCollection {
 
 		HashMap<String, ArrayList<String>> positionTypeEE = new HashMap<String, ArrayList<String>>();
 		positionTypeEE.put("Tenured/tenure-track faculty", tenuredTitles);
-		positionTypeEE
-				.put("Non-tenure-track research faculty", nonTenuredTitles);
+		positionTypeEE.put("Non-tenure-track research faculty",
+				nonTenuredTitles);
 		positionTypeEE.put("Teaching faculty", teachingFaculty);
 		positionTypeEE.put("Research staff", researchStaff);
 		positionTypeEE.put("Professional staff", professionalStaff);
@@ -70,8 +70,8 @@ public class DepartmentsPositionsCollection {
 
 		HashMap<String, ArrayList<String>> positionTypeCE = new HashMap<String, ArrayList<String>>();
 		positionTypeCE.put("Tenured/tenure-track faculty", tenuredTitles);
-		positionTypeCE
-				.put("Non-tenure-track research faculty", nonTenuredTitles);
+		positionTypeCE.put("Non-tenure-track research faculty",
+				nonTenuredTitles);
 		positionTypeCE.put("Teaching faculty", teachingFaculty);
 		positionTypeCE.put("Research staff", researchStaff);
 		positionTypeCE.put("Professional staff", professionalStaff);
@@ -87,7 +87,8 @@ public class DepartmentsPositionsCollection {
 		positionTypePhysics.put("Administrator", administratorStaff);
 
 		HashMap<String, ArrayList<String>> positionTypeChemistry = new HashMap<String, ArrayList<String>>();
-		positionTypeChemistry.put("Tenured/tenure-track faculty", tenuredTitles);
+		positionTypeChemistry
+				.put("Tenured/tenure-track faculty", tenuredTitles);
 		positionTypeChemistry.put("Non-tenure-track research faculty",
 				nonTenuredTitles);
 		positionTypeChemistry.put("Teaching faculty", teachingFaculty);

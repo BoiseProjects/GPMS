@@ -2,9 +2,6 @@ package gpms.dao;
 
 import gpms.DAL.DepartmentsPositionsCollection;
 import gpms.DAL.MongoDBConnector;
-import gpms.dao.ProposalDAO;
-import gpms.dao.UserAccountDAO;
-import gpms.dao.UserProfileDAO;
 import gpms.model.Address;
 import gpms.model.PositionDetails;
 import gpms.model.UserAccount;
