@@ -1019,7 +1019,7 @@ $(function() {
 											_event : 'click',
 											trigger : '2',
 											callMethod : 'myProposal.DeleteProposal',
-											arguments : '24,25'
+											arguments : '24,25,16'
 										},
 										{
 											display : 'View Change Logs',
@@ -2057,18 +2057,23 @@ $(function() {
 			case "gdvProposals":
 				var proposal_roles = $.trim(argus[1]);
 				if (argus[2].toLowerCase() != "yes") {
+					alert(argus);
 					myProposal.config.ajaxCallMode = 10;
 					myProposal.config.proposalRoles = proposal_roles;
 					myProposal.config.proposalId = argus[0];
+					myProposal.config.proposalStatus = argus[3];
 					if (proposal_roles != "") {
-						myProposal.CheckUserPermissionWithProposalRole(
-								"Delete", myProposal.config.proposalRoles,
-								myProposal.config.proposalId, "Whole Proposal",
-								myProposal.config);
+						myProposal
+								.CheckUserPermissionWithProposalRoleAndStatus(
+										"Delete",
+										myProposal.config.proposalRoles,
+										myProposal.config.proposalId,
+										"Whole Proposal", myProposal.config);
 					} else {
-						myProposal.CheckUserPermissionWithPositionTitle(
-								"Delete", myProposal.config.proposalId,
-								"Whole Proposal", myProposal.config);
+						myProposal
+								.CheckUserPermissionWithPositionTitleAndStatus(
+										"Delete", myProposal.config.proposalId,
+										"Whole Proposal", myProposal.config);
 					}
 					return false;
 				} else {
