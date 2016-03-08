@@ -1184,6 +1184,8 @@ $(function() {
 						.append(new Option(argus[16], argus[16])).prop(
 								'disabled', true);
 
+				myProposal.config.proposalStatus = argus[16];
+
 				myProposal.BindUserPositionDetailsForAProposal(argus[23]);
 
 				myProposal.BindProposalDetailsByProposalId(argus[0]);
@@ -3964,175 +3966,202 @@ $(function() {
 			});
 
 			// Update
-			$('#btnUpdateProposal').click(
-					function(e) {
-						if (validator.form()) {
-							var $buttonType = $.trim($(this).text());
-							$(this).disableWith('Updating...');
+			$('#btnUpdateProposal')
+					.click(
+							function(e) {
+								if (validator.form()) {
+									var $buttonType = $.trim($(this).text());
+									$(this).disableWith('Updating...');
 
-							myProposal.config.ajaxCallMode = 11;
+									myProposal.config.ajaxCallMode = 11;
 
-							if (myProposal.config.proposalRoles != "") {
-								myProposal.CheckUserPermissionWithProposalRole(
-										$buttonType,
-										myProposal.config.proposalRoles,
-										myProposal.config.proposalId,
-										"Whole Proposal", myProposal.config);
-							}
+									if (myProposal.config.proposalRoles != "") {
+										myProposal
+												.CheckUserPermissionWithProposalRoleAndStatus(
+														$buttonType,
+														myProposal.config.proposalRoles,
+														myProposal.config.proposalId,
+														"Whole Proposal",
+														myProposal.config);
+									}
 
-							$(this).enableAgain();
-							e.preventDefault();
-							return false;
-						} else {
-							myProposal.focusTabWithErrors("#accordion");
-						}
-					});
+									$(this).enableAgain();
+									e.preventDefault();
+									return false;
+								} else {
+									myProposal.focusTabWithErrors("#accordion");
+								}
+							});
 
 			// Delete
-			$('#btnDeleteProposal').click(
-					function(e) {
-						if (validator.form()) {
-							var $buttonType = $.trim($(this).text());
-							$(this).disableWith('Deleting...');
+			$('#btnDeleteProposal')
+					.click(
+							function(e) {
+								if (validator.form()) {
+									var $buttonType = $.trim($(this).text());
+									$(this).disableWith('Deleting...');
 
-							myProposal.config.ajaxCallMode = 10;
+									myProposal.config.ajaxCallMode = 10;
 
-							if (myProposal.config.proposalRoles != "") {
-								myProposal.CheckUserPermissionWithProposalRole(
-										$buttonType,
-										myProposal.config.proposalRoles,
-										myProposal.config.proposalId,
-										"Whole Proposal", myProposal.config);
-							} else {
-								myProposal
-										.CheckUserPermissionWithPositionTitle(
-												$buttonType,
-												myProposal.config.proposalId,
-												"Whole Proposal",
-												myProposal.config);
-							}
+									if (myProposal.config.proposalRoles != "") {
+										myProposal
+												.CheckUserPermissionWithProposalRoleAndStatus(
+														$buttonType,
+														myProposal.config.proposalRoles,
+														myProposal.config.proposalId,
+														"Whole Proposal",
+														myProposal.config);
+									} else {
+										myProposal
+												.CheckUserPermissionWithPositionTitleAndStatus(
+														$buttonType,
+														myProposal.config.proposalId,
+														"Whole Proposal",
+														myProposal.config);
+									}
 
-							$(this).enableAgain();
-							e.preventDefault();
-							return false;
-						} else {
-							myProposal.focusTabWithErrors("#accordion");
-						}
-					});
+									$(this).enableAgain();
+									e.preventDefault();
+									return false;
+								} else {
+									myProposal.focusTabWithErrors("#accordion");
+								}
+							});
 
 			// Submit
-			$('#btnSubmitProposal').click(
-					function(e) {
-						if (validator.form()) {
-							var $buttonType = $.trim($(this).text());
-							$(this).disableWith('Submitting...');
+			$('#btnSubmitProposal')
+					.click(
+							function(e) {
+								if (validator.form()) {
+									var $buttonType = $.trim($(this).text());
+									$(this).disableWith('Submitting...');
 
-							myProposal.config.ajaxCallMode = 11;
+									myProposal.config.ajaxCallMode = 11;
 
-							if (myProposal.config.proposalRoles != ""
-									&& myProposal.config.proposalId != "0") {
-								myProposal.CheckUserPermissionWithProposalRole(
-										$buttonType,
-										myProposal.config.proposalRoles,
-										myProposal.config.proposalId,
-										"Whole Proposal", myProposal.config);
-							} else {
-								myProposal.CheckUserPermissionWithPositionType(
-										$buttonType, "Whole Proposal",
-										myProposal.config);
-							}
+									if (myProposal.config.proposalRoles != ""
+											&& myProposal.config.proposalId != "0") {
+										myProposal
+												.CheckUserPermissionWithProposalRoleAndStatus(
+														$buttonType,
+														myProposal.config.proposalRoles,
+														myProposal.config.proposalId,
+														"Whole Proposal",
+														myProposal.config);
+									} else {
+										myProposal
+												.CheckUserPermissionWithPositionType(
+														$buttonType,
+														"Whole Proposal",
+														myProposal.config);
+									}
 
-							$(this).enableAgain();
-							e.preventDefault();
-							return false;
-						} else {
-							myProposal.focusTabWithErrors("#accordion");
-						}
-					});
+									$(this).enableAgain();
+									e.preventDefault();
+									return false;
+								} else {
+									myProposal.focusTabWithErrors("#accordion");
+								}
+							});
 
 			// Approve
-			$('#btnApproveProposal').click(
-					function(e) {
-						if (validator.form()) {
-							var $buttonType = $.trim($(this).text());
-							$(this).disableWith('Approving...');
+			$('#btnApproveProposal')
+					.click(
+							function(e) {
+								if (validator.form()) {
+									var $buttonType = $.trim($(this).text());
+									$(this).disableWith('Approving...');
 
-							myProposal.config.ajaxCallMode = 11;
+									myProposal.config.ajaxCallMode = 11;
 
-							myProposal.CheckUserPermissionWithPositionTitle(
-									$buttonType, myProposal.config.proposalId,
-									"Whole Proposal", myProposal.config);
+									myProposal
+											.CheckUserPermissionWithPositionTitleAndStatus(
+													$buttonType,
+													myProposal.config.proposalId,
+													"Whole Proposal",
+													myProposal.config);
 
-							$(this).enableAgain();
-							e.preventDefault();
-							return false;
-						} else {
-							myProposal.focusTabWithErrors("#accordion");
-						}
-					});
+									$(this).enableAgain();
+									e.preventDefault();
+									return false;
+								} else {
+									myProposal.focusTabWithErrors("#accordion");
+								}
+							});
 
 			// Disapprove
-			$('#btnDisapproveProposal').click(
-					function(e) {
-						if (validator.form()) {
-							var $buttonType = $.trim($(this).text());
-							$(this).disableWith('Disapproving...');
+			$('#btnDisapproveProposal')
+					.click(
+							function(e) {
+								if (validator.form()) {
+									var $buttonType = $.trim($(this).text());
+									$(this).disableWith('Disapproving...');
 
-							myProposal.config.ajaxCallMode = 11;
+									myProposal.config.ajaxCallMode = 11;
 
-							myProposal.CheckUserPermissionWithPositionTitle(
-									$buttonType, myProposal.config.proposalId,
-									"Whole Proposal", myProposal.config);
+									myProposal
+											.CheckUserPermissionWithPositionTitleAndStatus(
+													$buttonType,
+													myProposal.config.proposalId,
+													"Whole Proposal",
+													myProposal.config);
 
-							$(this).enableAgain();
-							e.preventDefault();
-							return false;
-						} else {
-							myProposal.focusTabWithErrors("#accordion");
-						}
-					});
+									$(this).enableAgain();
+									e.preventDefault();
+									return false;
+								} else {
+									myProposal.focusTabWithErrors("#accordion");
+								}
+							});
 
 			// Withdraw
-			$('#btnWithdrawProposal').click(
-					function(e) {
-						if (validator.form()) {
-							var $buttonType = $.trim($(this).text());
-							$(this).disableWith('Withdrawing...');
+			$('#btnWithdrawProposal')
+					.click(
+							function(e) {
+								if (validator.form()) {
+									var $buttonType = $.trim($(this).text());
+									$(this).disableWith('Withdrawing...');
 
-							myProposal.config.ajaxCallMode = 13;
+									myProposal.config.ajaxCallMode = 13;
 
-							myProposal.CheckUserPermissionWithPositionTitle(
-									$buttonType, myProposal.config.proposalId,
-									"Whole Proposal", myProposal.config);
+									myProposal
+											.CheckUserPermissionWithPositionTitleAndStatus(
+													$buttonType,
+													myProposal.config.proposalId,
+													"Whole Proposal",
+													myProposal.config);
 
-							$(this).enableAgain();
-							e.preventDefault();
-							return false;
-						} else {
-							myProposal.focusTabWithErrors("#accordion");
-						}
-					});
+									$(this).enableAgain();
+									e.preventDefault();
+									return false;
+								} else {
+									myProposal.focusTabWithErrors("#accordion");
+								}
+							});
 
 			// Archive
-			$('#btnArchiveProposal').click(
-					function(e) {
-						if (validator.form()) {
-							var $buttonType = $.trim($(this).text());
-							$(this).disableWith('Archiving...');
+			$('#btnArchiveProposal')
+					.click(
+							function(e) {
+								if (validator.form()) {
+									var $buttonType = $.trim($(this).text());
+									$(this).disableWith('Archiving...');
 
-							myProposal.config.ajaxCallMode = 13;
+									myProposal.config.ajaxCallMode = 13;
 
-							myProposal.CheckUserPermissionWithPositionTitle(
-									$buttonType, myProposal.config.proposalId,
-									"Whole Proposal", myProposal.config);
+									myProposal
+											.CheckUserPermissionWithPositionTitleAndStatus(
+													$buttonType,
+													myProposal.config.proposalId,
+													"Whole Proposal",
+													myProposal.config);
 
-							$(this).enableAgain();
-							e.preventDefault();
-							return false;
-						} else {
-							myProposal.focusTabWithErrors("#accordion");
-						}
-					});
+									$(this).enableAgain();
+									e.preventDefault();
+									return false;
+								} else {
+									myProposal.focusTabWithErrors("#accordion");
+								}
+							});
 
 			$('#txtProjectTitle').on("focus", function() {
 				$(this).siblings('.cssClassRight').hide();
