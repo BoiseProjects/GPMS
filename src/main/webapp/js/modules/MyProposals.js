@@ -3825,7 +3825,6 @@ $(function() {
 					"click",
 					function() {
 						myProposal.config.ajaxCallMode = 12;
-
 						myProposal.CheckUserPermissionWithPositionType(
 								"Create", "Whole Proposal", myProposal.config);
 
