@@ -16,9 +16,9 @@ public enum Status {
 			"Disapproved by Business Manager"), APPROVEDBYIRB("Approved by IRB"), DISAPPROVEDBYIRB(
 			"Disapproved by IRB"), APPROVEDBYDEAN("Approved by Dean"), RETURNEDBYDEAN(
 			"Returned by Dean"), SUBMITTEDTORESEARCHDIRECTOR(
-			"Submitted to Research Director"), DISAPPROVEDBYRESEARCHADMIN(
-			"Disapproved by Research Administrator"), WITHDRAWBYRESEARCHADMIN(
-			"Withdrawn by Research Administrator"), READYFORSUBMISSION(
+			"Submitted to University Research Director"), DISAPPROVEDBYRESEARCHADMIN(
+			"Disapproved by University Research Administrator"), WITHDRAWBYRESEARCHADMIN(
+			"Withdrawn by University Research Administrator"), READYFORSUBMISSION(
 			"Ready for submission"), DELETEDBYRESEARCHDIRECTOR(
 			"Deleted by University Research Director"), DISAPPROVEDBYRESEARCHDIRECTOR(
 			"Disapproved by University Research Director"), SUBMITTEDBYRESEARCHADMIN(

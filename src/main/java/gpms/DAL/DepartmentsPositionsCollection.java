@@ -39,7 +39,7 @@ public class DepartmentsPositionsCollection {
 		ArrayList<String> professionalStaff = new ArrayList<String>();
 		professionalStaff.add("IRB");
 		professionalStaff.add("Business Manager");
-		professionalStaff.add("University Research Administrator");
+		// professionalStaff.add("University Research Administrator");
 		professionalStaff.add("Department Administrative Assistant");
 
 		ArrayList<String> administratorStaff = new ArrayList<String>();
@@ -47,7 +47,7 @@ public class DepartmentsPositionsCollection {
 		administratorStaff.add("Associate Chair");
 		administratorStaff.add("Dean");
 		administratorStaff.add("Associate Dean");
-		administratorStaff.add("Research Administrator");
+		administratorStaff.add("University Research Administrator");
 		administratorStaff.add("University Research Director");
 
 		HashMap<String, ArrayList<String>> positionTypeCS = new HashMap<String, ArrayList<String>>();
