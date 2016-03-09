@@ -62,6 +62,7 @@ public class InvestigatorInfo implements Serializable {
 		for(InvestigatorRefAndPosition seniorP : seniorPersonnel)
 		{
 			masterList.add(seniorP);
+			
 		}
 	}
 

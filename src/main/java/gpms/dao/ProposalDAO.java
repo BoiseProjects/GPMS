@@ -1851,6 +1851,7 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 		}
 		
 		
+		
 	}
 	
 }

@@ -950,9 +950,5 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 		
 		return profileQuery.asList();
 	}
-	
-	public UserProfile findUserByTitleTypeDepartmentCollegeAndID()
-	{
-		return null;
-	}
+
 }
