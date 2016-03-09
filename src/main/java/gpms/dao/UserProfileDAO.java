@@ -930,4 +930,29 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 		return userProposalCount;
 	}
 
+	/**
+	 * Return a list of supervisory personnel.
+	 * This is meant to be used in tandem with the 
+	 * @param1 title we're looking for
+	 * @param2 the department we need to find them in
+	 * @return
+	 */
+	public List<UserProfile>getSupervisoryPersonnelByTitle(String title, String department)
+	{
+		Datastore ds = getDatastore();
+
+		Query<UserProfile> profileQuery = ds.createQuery(UserProfile.class);
+		
+		profileQuery.and(
+				profileQuery.criteria("details.position title").equal(title),
+				profileQuery.criteria("details.college").equal(department)
+		);
+		
+		return profileQuery.asList();
+	}
+	
+	public UserProfile findUserByTitleTypeDepartmentCollegeAndID()
+	{
+		return null;
+	}
 }
