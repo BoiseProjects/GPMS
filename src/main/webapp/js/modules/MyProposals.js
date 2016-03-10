@@ -1046,8 +1046,15 @@ $(function() {
 							});
 		},
 
-		ButtonHideShow : function(currentProposalRoles, proposalStatus,
-				proposalId) {
+		ButtonHideShow : function(currentProposalRoles, submittedByPI,
+				deletedByPI, chairApproval, businessManagerReviewal,
+				IRBReviewal, DeanApproval,
+				UniversityResearchAdministratorApproval,
+				UniversityResearchAdministratorWithdraw,
+				UniversityResearchDirectorApproval,
+				UniversityResearchDirectorDeletion,
+				UniversityResearchAdministratorSubmission,
+				UniversityResearchDirectorArchived, proposalId) {
 			$("#btnReset").hide();
 			$("#btnSaveProposal").hide();
 			$("#btnUpdateProposal").hide();
@@ -1063,7 +1070,7 @@ $(function() {
 			currentProposalRoles = currentProposalRoles.split(', ');
 
 			if (proposalStatus != ""
-					&& (($.inArray("PI", currentProposalRoles) !== -1 && (proposalStatus == "Not Submitted by PI"
+					&& (($.inArray("PI", currentProposalRoles) !== -1 && (submittedByPI == false
 							|| proposalStatus == "Returned by Chair"
 							|| proposalStatus == "Disapproved by Business Manager"
 							|| proposalStatus == "Disapproved by IRB"
