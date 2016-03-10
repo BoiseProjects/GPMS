@@ -4,7 +4,6 @@ import gpms.dao.ProposalDAO;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -36,10 +35,56 @@ public class Proposal extends BaseEntity implements Serializable {
 	@Property("date submitted")
 	private Date dateSubmitted = null;
 
+	// TODO : add status variables here
 	@Expose
-	@Property("proposal status")
-	private List<Status> proposalStatus = new ArrayList<>(
-			Arrays.asList(Status.NOTSUBMITTEDBYPI));
+	@Property("submitted by PI")
+	private boolean submittedByPI = false;
+
+	@Expose
+	@Property("deleted by PI")
+	private boolean deletedByPI = false;
+
+	@Expose
+	@Property("Chair approval")
+	private ApprovalType chairApproval = ApprovalType.NOTREADYFORAPPROVAL;
+
+	@Expose
+	@Property("Business Manager reviewal")
+	private ApprovalType businessManagerReviewal = ApprovalType.NOTREADYFORAPPROVAL;
+
+	@Expose
+	@Property("IRB reviewal")
+	private ApprovalType IRBReviewal = ApprovalType.NOTREADYFORAPPROVAL;
+
+	@Expose
+	@Property("Dean approval")
+	private ApprovalType DeanApproval = ApprovalType.NOTREADYFORAPPROVAL;
+
+	@Expose
+	@Property("University Research Administrator approval")
+	private ApprovalType UniversityResearchAdministratorApproval = ApprovalType.NOTREADYFORAPPROVAL;
+
+	@Expose
+	@Property("University Research Administrator withdraw")
+	private boolean UniversityResearchAdministratorWithdraw = false;
+
+	@Expose
+	@Property("University Research Director approval")
+	private ApprovalType UniversityResearchDirectorApproval = ApprovalType.NOTREADYFORAPPROVAL;
+
+	@Expose
+	@Property("University Research Director deletion")
+	private boolean UniversityResearchDirectorDeletion = false;
+
+	@Expose
+	@Property("University Research Administrator submitted")
+	private boolean UniversityResearchAdministratorSubmission = false;
+
+	@Expose
+	@Property("University Research Director archived")
+	private boolean UniversityResearchDirectorArchived = false;
+
+	// END
 
 	@Expose
 	@Embedded("investigator info")
@@ -126,16 +171,110 @@ public class Proposal extends BaseEntity implements Serializable {
 		this.dateSubmitted = dateSubmitted;
 	}
 
-	public List<Status> getProposalStatus() {
-		return proposalStatus;
-	}
-
-	public void setProposalStatus(List<Status> proposalStatus) {
-		this.proposalStatus = proposalStatus;
-	}
-
 	public InvestigatorInfo getInvestigatorInfo() {
 		return investigatorInfo;
+	}
+
+	public boolean isSubmittedByPI() {
+		return submittedByPI;
+	}
+
+	public void setSubmittedByPI(boolean submittedByPI) {
+		this.submittedByPI = submittedByPI;
+	}
+
+	public boolean isDeletedByPI() {
+		return deletedByPI;
+	}
+
+	public void setDeletedByPI(boolean deletedByPI) {
+		this.deletedByPI = deletedByPI;
+	}
+
+	public ApprovalType getChairApproval() {
+		return chairApproval;
+	}
+
+	public void setChairApproval(ApprovalType chairApproval) {
+		this.chairApproval = chairApproval;
+	}
+
+	public ApprovalType getBusinessManagerReviewal() {
+		return businessManagerReviewal;
+	}
+
+	public void setBusinessManagerReviewal(ApprovalType businessManagerReviewal) {
+		this.businessManagerReviewal = businessManagerReviewal;
+	}
+
+	public ApprovalType getIRBReviewal() {
+		return IRBReviewal;
+	}
+
+	public void setIRBReviewal(ApprovalType iRBReviewal) {
+		IRBReviewal = iRBReviewal;
+	}
+
+	public ApprovalType getDeanApproval() {
+		return DeanApproval;
+	}
+
+	public void setDeanApproval(ApprovalType deanApproval) {
+		DeanApproval = deanApproval;
+	}
+
+	public ApprovalType getUniversityResearchAdministratorApproval() {
+		return UniversityResearchAdministratorApproval;
+	}
+
+	public void setUniversityResearchAdministratorApproval(
+			ApprovalType universityResearchAdministratorApproval) {
+		UniversityResearchAdministratorApproval = universityResearchAdministratorApproval;
+	}
+
+	public boolean isUniversityResearchAdministratorWithdraw() {
+		return UniversityResearchAdministratorWithdraw;
+	}
+
+	public void setUniversityResearchAdministratorWithdraw(
+			boolean universityResearchAdministratorWithdraw) {
+		UniversityResearchAdministratorWithdraw = universityResearchAdministratorWithdraw;
+	}
+
+	public ApprovalType getUniversityResearchDirectorApproval() {
+		return UniversityResearchDirectorApproval;
+	}
+
+	public void setUniversityResearchDirectorApproval(
+			ApprovalType universityResearchDirectorApproval) {
+		UniversityResearchDirectorApproval = universityResearchDirectorApproval;
+	}
+
+	public boolean isUniversityResearchDirectorDeletion() {
+		return UniversityResearchDirectorDeletion;
+	}
+
+	public void setUniversityResearchDirectorDeletion(
+			boolean universityResearchDirectorDeletion) {
+		UniversityResearchDirectorDeletion = universityResearchDirectorDeletion;
+	}
+
+	public boolean isUniversityResearchAdministratorSubmission() {
+		return UniversityResearchAdministratorSubmission;
+	}
+
+	public void setUniversityResearchAdministratorSubmission(
+			boolean universityResearchAdministratorSubmission) {
+		UniversityResearchAdministratorSubmission = universityResearchAdministratorSubmission;
+	}
+
+	public boolean isUniversityResearchDirectorArchived() {
+		return UniversityResearchDirectorArchived;
+	}
+
+	public void setUniversityResearchDirectorArchived(
+			boolean universityResearchDirectorArchived) {
+		UniversityResearchDirectorArchived = universityResearchDirectorArchived;
 	}
 
 	public void setInvestigatorInfo(InvestigatorInfo investigatorInfo) {
@@ -244,7 +383,22 @@ public class Proposal extends BaseEntity implements Serializable {
 	public String toString() {
 		return "Proposal [proposalNo=" + proposalNo + ", dateCreated="
 				+ dateCreated + ", dateSubmitted=" + dateSubmitted
-				+ ", proposalStatus=" + proposalStatus + ", investigatorInfo="
+				+ ", submittedByPI=" + submittedByPI + ", deletedByPI="
+				+ deletedByPI + ", chairApproval=" + chairApproval
+				+ ", businessManagerReviewal=" + businessManagerReviewal
+				+ ", IRBReviewal=" + IRBReviewal + ", DeanApproval="
+				+ DeanApproval + ", UniversityResearchAdministratorApproval="
+				+ UniversityResearchAdministratorApproval
+				+ ", UniversityResearchAdministratorWithdraw="
+				+ UniversityResearchAdministratorWithdraw
+				+ ", UniversityResearchDirectorApproval="
+				+ UniversityResearchDirectorApproval
+				+ ", UniversityResearchDirectorDeletion="
+				+ UniversityResearchDirectorDeletion
+				+ ", UniversityResearchAdministratorSubmission="
+				+ UniversityResearchAdministratorSubmission
+				+ ", UniversityResearchDirectorArchived="
+				+ UniversityResearchDirectorArchived + ", investigatorInfo="
 				+ investigatorInfo + ", projectInfo=" + projectInfo
 				+ ", sponsorAndBudgetInfo=" + sponsorAndBudgetInfo
 				+ ", costShareInfo=" + costShareInfo
@@ -262,9 +416,35 @@ public class Proposal extends BaseEntity implements Serializable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result
+				+ ((DeanApproval == null) ? 0 : DeanApproval.hashCode());
+		result = prime * result
+				+ ((IRBReviewal == null) ? 0 : IRBReviewal.hashCode());
+		result = prime
+				* result
+				+ ((UniversityResearchAdministratorApproval == null) ? 0
+						: UniversityResearchAdministratorApproval.hashCode());
+		result = prime * result
+				+ (UniversityResearchAdministratorSubmission ? 1231 : 1237);
+		result = prime * result
+				+ (UniversityResearchAdministratorWithdraw ? 1231 : 1237);
+		result = prime
+				* result
+				+ ((UniversityResearchDirectorApproval == null) ? 0
+						: UniversityResearchDirectorApproval.hashCode());
+		result = prime * result
+				+ (UniversityResearchDirectorArchived ? 1231 : 1237);
+		result = prime * result
+				+ (UniversityResearchDirectorDeletion ? 1231 : 1237);
+		result = prime * result
 				+ ((additionalInfo == null) ? 0 : additionalInfo.hashCode());
 		result = prime * result
 				+ ((appendices == null) ? 0 : appendices.hashCode());
+		result = prime
+				* result
+				+ ((businessManagerReviewal == null) ? 0
+						: businessManagerReviewal.hashCode());
+		result = prime * result
+				+ ((chairApproval == null) ? 0 : chairApproval.hashCode());
 		result = prime
 				* result
 				+ ((collaborationInfo == null) ? 0 : collaborationInfo
@@ -284,6 +464,7 @@ public class Proposal extends BaseEntity implements Serializable {
 				+ ((dateCreated == null) ? 0 : dateCreated.hashCode());
 		result = prime * result
 				+ ((dateSubmitted == null) ? 0 : dateSubmitted.hashCode());
+		result = prime * result + (deletedByPI ? 1231 : 1237);
 		result = prime
 				* result
 				+ ((investigatorInfo == null) ? 0 : investigatorInfo.hashCode());
@@ -293,13 +474,12 @@ public class Proposal extends BaseEntity implements Serializable {
 				+ ((projectInfo == null) ? 0 : projectInfo.hashCode());
 		result = prime * result + proposalNo;
 		result = prime * result
-				+ ((proposalStatus == null) ? 0 : proposalStatus.hashCode());
-		result = prime * result
 				+ ((signatureInfo == null) ? 0 : signatureInfo.hashCode());
 		result = prime
 				* result
 				+ ((sponsorAndBudgetInfo == null) ? 0 : sponsorAndBudgetInfo
 						.hashCode());
+		result = prime * result + (submittedByPI ? 1231 : 1237);
 		result = prime
 				* result
 				+ ((universityCommitments == null) ? 0 : universityCommitments
@@ -316,6 +496,22 @@ public class Proposal extends BaseEntity implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Proposal other = (Proposal) obj;
+		if (DeanApproval != other.DeanApproval)
+			return false;
+		if (IRBReviewal != other.IRBReviewal)
+			return false;
+		if (UniversityResearchAdministratorApproval != other.UniversityResearchAdministratorApproval)
+			return false;
+		if (UniversityResearchAdministratorSubmission != other.UniversityResearchAdministratorSubmission)
+			return false;
+		if (UniversityResearchAdministratorWithdraw != other.UniversityResearchAdministratorWithdraw)
+			return false;
+		if (UniversityResearchDirectorApproval != other.UniversityResearchDirectorApproval)
+			return false;
+		if (UniversityResearchDirectorArchived != other.UniversityResearchDirectorArchived)
+			return false;
+		if (UniversityResearchDirectorDeletion != other.UniversityResearchDirectorDeletion)
+			return false;
 		if (additionalInfo == null) {
 			if (other.additionalInfo != null)
 				return false;
@@ -325,6 +521,10 @@ public class Proposal extends BaseEntity implements Serializable {
 			if (other.appendices != null)
 				return false;
 		} else if (!appendices.equals(other.appendices))
+			return false;
+		if (businessManagerReviewal != other.businessManagerReviewal)
+			return false;
+		if (chairApproval != other.chairApproval)
 			return false;
 		if (collaborationInfo == null) {
 			if (other.collaborationInfo != null)
@@ -361,6 +561,8 @@ public class Proposal extends BaseEntity implements Serializable {
 				return false;
 		} else if (!dateSubmitted.equals(other.dateSubmitted))
 			return false;
+		if (deletedByPI != other.deletedByPI)
+			return false;
 		if (investigatorInfo == null) {
 			if (other.investigatorInfo != null)
 				return false;
@@ -378,11 +580,6 @@ public class Proposal extends BaseEntity implements Serializable {
 			return false;
 		if (proposalNo != other.proposalNo)
 			return false;
-		if (proposalStatus == null) {
-			if (other.proposalStatus != null)
-				return false;
-		} else if (!proposalStatus.equals(other.proposalStatus))
-			return false;
 		if (signatureInfo == null) {
 			if (other.signatureInfo != null)
 				return false;
@@ -393,12 +590,140 @@ public class Proposal extends BaseEntity implements Serializable {
 				return false;
 		} else if (!sponsorAndBudgetInfo.equals(other.sponsorAndBudgetInfo))
 			return false;
+		if (submittedByPI != other.submittedByPI)
+			return false;
 		if (universityCommitments == null) {
 			if (other.universityCommitments != null)
 				return false;
 		} else if (!universityCommitments.equals(other.universityCommitments))
 			return false;
 		return true;
+	}
+
+	// public Status getProposalStatus() {
+	// // TODO to check the status based on the variables
+	// Status proposalStatus = Status.NOTSUBMITTEDBYPI;
+	// if (!this.isSubmittedByPI()) {
+	// proposalStatus = Status.NOTSUBMITTEDBYPI;
+	// } else if (this.isDeletedByPI()) {
+	// proposalStatus = Status.DELETEDBYPI;
+	// } else if (this.isSubmittedByPI()
+	// && this.getChairApproval()
+	// .equals(ApprovalType.READYFORAPPROVAL)) {
+	// proposalStatus = Status.WAITINGFORCHAIRAPPROVAL;
+	// } else if (this.isSubmittedByPI()
+	// && this.getChairApproval().equals(ApprovalType.DISAPPROVED)) {
+	// proposalStatus = Status.RETURNEDBYCHAIR;
+	// } else if (this.isSubmittedByPI()
+	// && this.getChairApproval().equals(ApprovalType.APPROVED)
+	// && this.getBusinessManagerReviewal().equals(
+	// ApprovalType.READYFORAPPROVAL)) {
+	// proposalStatus = Status.READYFORREVIEWBYBUSINESSMANAGER;
+	// } else if (this.isSubmittedByPI()
+	// && this.getChairApproval().equals(ApprovalType.APPROVED)
+	// && this.getBusinessManagerReviewal().equals(
+	// ApprovalType.APPROVED)) {
+	// proposalStatus = Status.REVIEWEDBYBUSINESSMANAGER;
+	// } else if (this.isSubmittedByPI()
+	// && this.getChairApproval().equals(ApprovalType.APPROVED)
+	// && this.getBusinessManagerReviewal().equals(
+	// ApprovalType.DISAPPROVED)) {
+	// proposalStatus = Status.DISAPPROVEDBYBUSINESSMANAGER;
+	// } else if (this.isSubmittedByPI()
+	// && this.getChairApproval().equals(ApprovalType.APPROVED)
+	// && this.getIRBReviewal().equals(ApprovalType.READYFORAPPROVAL)) {
+	// proposalStatus = Status.READYFORREVIEWBYIRB;
+	// } else if (this.isSubmittedByPI()
+	// && this.getChairApproval().equals(ApprovalType.APPROVED)
+	// && this.getIRBReviewal().equals(ApprovalType.APPROVED)) {
+	// proposalStatus = Status.APPROVEDBYIRB;
+	// } else if (this.isSubmittedByPI()
+	// && this.getChairApproval().equals(ApprovalType.APPROVED)
+	// && this.getIRBReviewal().equals(ApprovalType.DISAPPROVED)) {
+	// proposalStatus = Status.DISAPPROVEDBYIRB;
+	// } else if (this.isSubmittedByPI()
+	// && this.getChairApproval().equals(ApprovalType.APPROVED)
+	// && this.getDeanApproval().equals(ApprovalType.READYFORAPPROVAL)) {
+	// proposalStatus = Status.READYFORREVIEWBYDEAN;
+	// } else if (this.isSubmittedByPI()
+	// && this.getChairApproval().equals(ApprovalType.APPROVED)
+	// && this.getDeanApproval().equals(ApprovalType.APPROVED)
+	// && this.getUniversityResearchAdministratorApproval().equals(
+	// ApprovalType.READYFORAPPROVAL)) {
+	// proposalStatus = Status.APPROVEDBYDEAN;
+	// } else if (this.isSubmittedByPI()
+	// && this.getChairApproval().equals(ApprovalType.APPROVED)
+	// && this.getDeanApproval().equals(ApprovalType.DISAPPROVED)) {
+	// proposalStatus = Status.RETURNEDBYDEAN;
+	// } else if (this.isSubmittedByPI()
+	// && this.getChairApproval().equals(ApprovalType.APPROVED)
+	// && this.getDeanApproval().equals(ApprovalType.APPROVED)
+	// && this.getUniversityResearchAdministratorApproval().equals(
+	// ApprovalType.APPROVED)
+	// && this.getUniversityResearchDirectorApproval().equals(
+	// ApprovalType.READYFORAPPROVAL)) {
+	// proposalStatus = Status.SUBMITTEDTORESEARCHDIRECTOR;
+	// } else if (this.isSubmittedByPI()
+	// && this.getChairApproval().equals(ApprovalType.APPROVED)
+	// && this.getDeanApproval().equals(ApprovalType.APPROVED)
+	// && this.getUniversityResearchAdministratorApproval().equals(
+	// ApprovalType.DISAPPROVED)) {
+	// proposalStatus = Status.DISAPPROVEDBYRESEARCHADMIN;
+	// } else if (this.isSubmittedByPI()
+	// && this.getChairApproval().equals(ApprovalType.APPROVED)
+	// && this.getDeanApproval().equals(ApprovalType.APPROVED)
+	// && this.isUniversityResearchAdministratorWithdraw()) {
+	// proposalStatus = Status.WITHDRAWBYRESEARCHADMIN;
+	// } else if (this.isSubmittedByPI()
+	// && this.getChairApproval().equals(ApprovalType.APPROVED)
+	// && this.getDeanApproval().equals(ApprovalType.APPROVED)
+	// && this.getUniversityResearchAdministratorApproval().equals(
+	// ApprovalType.APPROVED)
+	// && this.getUniversityResearchDirectorApproval().equals(
+	// ApprovalType.APPROVED)) {
+	// proposalStatus = Status.READYFORSUBMISSION;
+	// } else if (this.isSubmittedByPI()
+	// && this.getChairApproval().equals(ApprovalType.APPROVED)
+	// && this.getDeanApproval().equals(ApprovalType.APPROVED)
+	// && this.getUniversityResearchAdministratorApproval().equals(
+	// ApprovalType.APPROVED)
+	// && this.isUniversityResearchDirectorDeletion()) {
+	// proposalStatus = Status.DELETEDBYRESEARCHDIRECTOR;
+	// } else if (this.isSubmittedByPI()
+	// && this.getChairApproval().equals(ApprovalType.APPROVED)
+	// && this.getDeanApproval().equals(ApprovalType.APPROVED)
+	// && this.getUniversityResearchAdministratorApproval().equals(
+	// ApprovalType.APPROVED)
+	// && this.getUniversityResearchDirectorApproval().equals(
+	// ApprovalType.DISAPPROVED)) {
+	// proposalStatus = Status.DISAPPROVEDBYRESEARCHDIRECTOR;
+	// } else if (this.isSubmittedByPI()
+	// && this.getChairApproval().equals(ApprovalType.APPROVED)
+	// && this.getDeanApproval().equals(ApprovalType.APPROVED)
+	// && this.getUniversityResearchAdministratorApproval().equals(
+	// ApprovalType.APPROVED)
+	// && this.isUniversityResearchAdministratorSubmission()
+	// && this.getUniversityResearchDirectorApproval().equals(
+	// ApprovalType.APPROVED)) {
+	// proposalStatus = Status.SUBMITTEDBYRESEARCHADMIN;
+	// } else if (this.isSubmittedByPI()
+	// && this.getChairApproval().equals(ApprovalType.APPROVED)
+	// && this.getDeanApproval().equals(ApprovalType.APPROVED)
+	// && this.getUniversityResearchAdministratorApproval().equals(
+	// ApprovalType.APPROVED)
+	// && this.isUniversityResearchAdministratorSubmission()
+	// && this.getUniversityResearchDirectorApproval().equals(
+	// ApprovalType.APPROVED)
+	// && this.isUniversityResearchDirectorArchived()) {
+	// proposalStatus = Status.ARCHIVEDBYRESEARCHDIRECTOR;
+	// }
+	// return proposalStatus;
+	// }
+
+	public boolean checkIRBReviewRequired() {
+		// TODO to check IRB Review Required based on the variables
+		boolean IRBReviewRequired = false;
+		return IRBReviewRequired;
 	}
 
 }

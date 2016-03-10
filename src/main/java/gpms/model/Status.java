@@ -10,11 +10,14 @@ public enum Status {
 	// manager
 
 	NOTSUBMITTEDBYPI("Not Submitted by PI"), DELETEDBYPI("Deleted by PI"), WAITINGFORCHAIRAPPROVAL(
-			"Waiting for Chair's Approval"), READYFORREVIEW("Ready for Review"), RETURNEDBYCHAIR(
-			"Returned by Chair"), REVIEWEDBYBUSINESSMANAGER(
+			"Waiting for Chair's Approval"), RETURNEDBYCHAIR(
+			"Returned by Chair"), READYFORREVIEWBYBUSINESSMANAGER(
+			"Ready for Review by Business Manager"), REVIEWEDBYBUSINESSMANAGER(
 			"Reviewed by Business Manager"), DISAPPROVEDBYBUSINESSMANAGER(
-			"Disapproved by Business Manager"), APPROVEDBYIRB("Approved by IRB"), DISAPPROVEDBYIRB(
-			"Disapproved by IRB"), APPROVEDBYDEAN("Approved by Dean"), RETURNEDBYDEAN(
+			"Disapproved by Business Manager"), READYFORREVIEWBYIRB(
+			"Ready for Review by IRB"), APPROVEDBYIRB("Approved by IRB"), DISAPPROVEDBYIRB(
+			"Disapproved by IRB"), READYFORREVIEWBYDEAN(
+			"Ready for Review by Dean"), APPROVEDBYDEAN("Approved by Dean"), RETURNEDBYDEAN(
 			"Returned by Dean"), SUBMITTEDTORESEARCHDIRECTOR(
 			"Submitted to University Research Director"), DISAPPROVEDBYRESEARCHADMIN(
 			"Disapproved by University Research Administrator"), WITHDRAWBYRESEARCHADMIN(

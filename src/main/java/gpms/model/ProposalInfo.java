@@ -4,8 +4,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.mongodb.morphia.annotations.Property;
+
 import com.ebay.xcelite.annotations.Column;
 import com.ebay.xcelite.annotations.Row;
+import com.google.gson.annotations.Expose;
 
 @Row(colsOrder = { "Proposal No", "Project Title", "Project Type",
 		"Type Of Request", "Project Location", "Granting Agencies",
@@ -58,8 +61,24 @@ public class ProposalInfo {
 	private Date projectPeriodTo = new Date();
 
 	// Proposal
-	@Column(name = "Proposal Status")
-	private List<String> proposalStatus = new ArrayList<String>();
+	// @Column(name = "Proposal Status")
+	// private List<String> proposalStatus = new ArrayList<String>();
+
+	// Proposal Status variables
+	private boolean submittedByPI = false;
+	private boolean deletedByPI = false;
+	private ApprovalType chairApproval = ApprovalType.NOTREADYFORAPPROVAL;
+	private ApprovalType businessManagerReviewal = ApprovalType.NOTREADYFORAPPROVAL;
+	private ApprovalType IRBReviewal = ApprovalType.NOTREADYFORAPPROVAL;
+	private ApprovalType DeanApproval = ApprovalType.NOTREADYFORAPPROVAL;
+	private ApprovalType UniversityResearchAdministratorApproval = ApprovalType.NOTREADYFORAPPROVAL;
+	private boolean UniversityResearchAdministratorWithdraw = false;
+	private ApprovalType UniversityResearchDirectorApproval = ApprovalType.NOTREADYFORAPPROVAL;
+	private boolean UniversityResearchDirectorDeletion = false;
+	private boolean UniversityResearchAdministratorSubmission = false;
+	private boolean UniversityResearchDirectorArchived = false;
+
+	// END
 
 	@Column(name = "Last Audited", dataFormat = "yyyy/MM/dd hh:mm:ss")
 	private Date lastAudited = new Date();
@@ -127,13 +146,114 @@ public class ProposalInfo {
 		this.dateSubmitted = dateSubmitted;
 	}
 
-	public List<String> getProposalStatus() {
-		return proposalStatus;
+	// public List<String> getProposalStatus() {
+	// return proposalStatus;
+	// }
+	//
+	// public void setProposalStatus(List<String> proposalStatus) {
+	// this.proposalStatus.addAll(proposalStatus);
+	// }
+
+	public boolean isSubmittedByPI() {
+		return submittedByPI;
 	}
 
-	// TODO
-	public void setProposalStatus(List<String> proposalStatus) {
-		this.proposalStatus.addAll(proposalStatus);
+	public void setSubmittedByPI(boolean submittedByPI) {
+		this.submittedByPI = submittedByPI;
+	}
+
+	public boolean isDeletedByPI() {
+		return deletedByPI;
+	}
+
+	public void setDeletedByPI(boolean deletedByPI) {
+		this.deletedByPI = deletedByPI;
+	}
+
+	public ApprovalType getChairApproval() {
+		return chairApproval;
+	}
+
+	public void setChairApproval(ApprovalType chairApproval) {
+		this.chairApproval = chairApproval;
+	}
+
+	public ApprovalType getBusinessManagerReviewal() {
+		return businessManagerReviewal;
+	}
+
+	public void setBusinessManagerReviewal(ApprovalType businessManagerReviewal) {
+		this.businessManagerReviewal = businessManagerReviewal;
+	}
+
+	public ApprovalType getIRBReviewal() {
+		return IRBReviewal;
+	}
+
+	public void setIRBReviewal(ApprovalType iRBReviewal) {
+		IRBReviewal = iRBReviewal;
+	}
+
+	public ApprovalType getDeanApproval() {
+		return DeanApproval;
+	}
+
+	public void setDeanApproval(ApprovalType deanApproval) {
+		DeanApproval = deanApproval;
+	}
+
+	public ApprovalType getUniversityResearchAdministratorApproval() {
+		return UniversityResearchAdministratorApproval;
+	}
+
+	public void setUniversityResearchAdministratorApproval(
+			ApprovalType universityResearchAdministratorApproval) {
+		UniversityResearchAdministratorApproval = universityResearchAdministratorApproval;
+	}
+
+	public boolean isUniversityResearchAdministratorWithdraw() {
+		return UniversityResearchAdministratorWithdraw;
+	}
+
+	public void setUniversityResearchAdministratorWithdraw(
+			boolean universityResearchAdministratorWithdraw) {
+		UniversityResearchAdministratorWithdraw = universityResearchAdministratorWithdraw;
+	}
+
+	public ApprovalType getUniversityResearchDirectorApproval() {
+		return UniversityResearchDirectorApproval;
+	}
+
+	public void setUniversityResearchDirectorApproval(
+			ApprovalType universityResearchDirectorApproval) {
+		UniversityResearchDirectorApproval = universityResearchDirectorApproval;
+	}
+
+	public boolean isUniversityResearchDirectorDeletion() {
+		return UniversityResearchDirectorDeletion;
+	}
+
+	public void setUniversityResearchDirectorDeletion(
+			boolean universityResearchDirectorDeletion) {
+		UniversityResearchDirectorDeletion = universityResearchDirectorDeletion;
+	}
+
+	public boolean isUniversityResearchAdministratorSubmission() {
+		return UniversityResearchAdministratorSubmission;
+	}
+
+	public void setUniversityResearchAdministratorSubmission(
+			boolean universityResearchAdministratorSubmission) {
+		UniversityResearchAdministratorSubmission = universityResearchAdministratorSubmission;
+	}
+
+	public boolean isUniversityResearchDirectorArchived() {
+		return UniversityResearchDirectorArchived;
+	}
+
+	public void setUniversityResearchDirectorArchived(
+			boolean universityResearchDirectorArchived) {
+		UniversityResearchDirectorArchived = universityResearchDirectorArchived;
 	}
 
 	public String getProjectTitle() {
