@@ -7,8 +7,8 @@ public enum ApprovalType {
 
 	private final String approvalType;
 
-	private ApprovalType(String s) {
-		approvalType = s;
+	private ApprovalType(String name) {
+		this.approvalType = name;
 	}
 
 	public boolean equalsName(String otherName) {

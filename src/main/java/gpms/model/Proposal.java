@@ -4,6 +4,7 @@ import gpms.dao.ProposalDAO;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -35,26 +36,31 @@ public class Proposal extends BaseEntity implements Serializable {
 	@Property("date submitted")
 	private Date dateSubmitted = null;
 
+	@Expose
+	@Property("proposal status")
+	private List<Status> proposalStatus = new ArrayList<>(
+			Arrays.asList(Status.NOTSUBMITTEDBYPI));
+
 	// TODO : add status variables here
 	@Expose
 	@Property("submitted by PI")
-	private boolean submittedByPI = false;
+	private SubmitType submittedByPI = SubmitType.NOTSUBMITTED;
 
 	@Expose
 	@Property("deleted by PI")
-	private boolean deletedByPI = false;
+	private DeleteType deletedByPI = DeleteType.NOTDELETED;
 
 	@Expose
 	@Property("Chair approval")
 	private ApprovalType chairApproval = ApprovalType.NOTREADYFORAPPROVAL;
 
 	@Expose
-	@Property("Business Manager reviewal")
-	private ApprovalType businessManagerReviewal = ApprovalType.NOTREADYFORAPPROVAL;
+	@Property("Business Manager approval")
+	private ApprovalType businessManagerApproval = ApprovalType.NOTREADYFORAPPROVAL;
 
 	@Expose
-	@Property("IRB reviewal")
-	private ApprovalType IRBReviewal = ApprovalType.NOTREADYFORAPPROVAL;
+	@Property("IRB approval")
+	private ApprovalType IRBApproval = ApprovalType.NOTREADYFORAPPROVAL;
 
 	@Expose
 	@Property("Dean approval")
@@ -66,7 +72,7 @@ public class Proposal extends BaseEntity implements Serializable {
 
 	@Expose
 	@Property("University Research Administrator withdraw")
-	private boolean UniversityResearchAdministratorWithdraw = false;
+	private WithdrawType UniversityResearchAdministratorWithdraw = WithdrawType.NOTWITHDRAWN;
 
 	@Expose
 	@Property("University Research Director approval")
@@ -74,15 +80,15 @@ public class Proposal extends BaseEntity implements Serializable {
 
 	@Expose
 	@Property("University Research Director deletion")
-	private boolean UniversityResearchDirectorDeletion = false;
+	private DeleteType UniversityResearchDirectorDeletion = DeleteType.NOTDELETED;
 
 	@Expose
 	@Property("University Research Administrator submitted")
-	private boolean UniversityResearchAdministratorSubmission = false;
+	private SubmitType UniversityResearchAdministratorSubmission = SubmitType.NOTSUBMITTED;
 
 	@Expose
 	@Property("University Research Director archived")
-	private boolean UniversityResearchDirectorArchived = false;
+	private ArchiveType UniversityResearchDirectorArchived = ArchiveType.NOTARCHIVED;
 
 	// END
 
@@ -142,6 +148,7 @@ public class Proposal extends BaseEntity implements Serializable {
 	private List<Appendix> appendices = new ArrayList<Appendix>();
 
 	public Proposal() {
+
 	}
 
 	public int getProposalNo() {
@@ -157,10 +164,7 @@ public class Proposal extends BaseEntity implements Serializable {
 	}
 
 	public void setDateCreated(Date dateCreated) {
-		Date currDate = new Date();
-		if (dateCreated.equals(currDate) || dateCreated.after(currDate)) {
-			this.dateCreated = dateCreated;
-		}
+		this.dateCreated = dateCreated;
 	}
 
 	public Date getDateSubmitted() {
@@ -171,23 +175,27 @@ public class Proposal extends BaseEntity implements Serializable {
 		this.dateSubmitted = dateSubmitted;
 	}
 
-	public InvestigatorInfo getInvestigatorInfo() {
-		return investigatorInfo;
+	public List<Status> getProposalStatus() {
+		return proposalStatus;
 	}
 
-	public boolean isSubmittedByPI() {
+	public void setProposalStatus(List<Status> proposalStatus) {
+		this.proposalStatus = proposalStatus;
+	}
+
+	public SubmitType getSubmittedByPI() {
 		return submittedByPI;
 	}
 
-	public void setSubmittedByPI(boolean submittedByPI) {
+	public void setSubmittedByPI(SubmitType submittedByPI) {
 		this.submittedByPI = submittedByPI;
 	}
 
-	public boolean isDeletedByPI() {
+	public DeleteType getDeletedByPI() {
 		return deletedByPI;
 	}
 
-	public void setDeletedByPI(boolean deletedByPI) {
+	public void setDeletedByPI(DeleteType deletedByPI) {
 		this.deletedByPI = deletedByPI;
 	}
 
@@ -199,20 +207,20 @@ public class Proposal extends BaseEntity implements Serializable {
 		this.chairApproval = chairApproval;
 	}
 
-	public ApprovalType getBusinessManagerReviewal() {
-		return businessManagerReviewal;
+	public ApprovalType getBusinessManagerApproval() {
+		return businessManagerApproval;
 	}
 
-	public void setBusinessManagerReviewal(ApprovalType businessManagerReviewal) {
-		this.businessManagerReviewal = businessManagerReviewal;
+	public void setBusinessManagerApproval(ApprovalType businessManagerApproval) {
+		this.businessManagerApproval = businessManagerApproval;
 	}
 
-	public ApprovalType getIRBReviewal() {
-		return IRBReviewal;
+	public ApprovalType getIRBApproval() {
+		return IRBApproval;
 	}
 
-	public void setIRBReviewal(ApprovalType iRBReviewal) {
-		IRBReviewal = iRBReviewal;
+	public void setIRBApproval(ApprovalType iRBApproval) {
+		IRBApproval = iRBApproval;
 	}
 
 	public ApprovalType getDeanApproval() {
@@ -232,12 +240,12 @@ public class Proposal extends BaseEntity implements Serializable {
 		UniversityResearchAdministratorApproval = universityResearchAdministratorApproval;
 	}
 
-	public boolean isUniversityResearchAdministratorWithdraw() {
+	public WithdrawType getUniversityResearchAdministratorWithdraw() {
 		return UniversityResearchAdministratorWithdraw;
 	}
 
 	public void setUniversityResearchAdministratorWithdraw(
-			boolean universityResearchAdministratorWithdraw) {
+			WithdrawType universityResearchAdministratorWithdraw) {
 		UniversityResearchAdministratorWithdraw = universityResearchAdministratorWithdraw;
 	}
 
@@ -250,31 +258,35 @@ public class Proposal extends BaseEntity implements Serializable {
 		UniversityResearchDirectorApproval = universityResearchDirectorApproval;
 	}
 
-	public boolean isUniversityResearchDirectorDeletion() {
+	public DeleteType getUniversityResearchDirectorDeletion() {
 		return UniversityResearchDirectorDeletion;
 	}
 
 	public void setUniversityResearchDirectorDeletion(
-			boolean universityResearchDirectorDeletion) {
+			DeleteType universityResearchDirectorDeletion) {
 		UniversityResearchDirectorDeletion = universityResearchDirectorDeletion;
 	}
 
-	public boolean isUniversityResearchAdministratorSubmission() {
+	public SubmitType getUniversityResearchAdministratorSubmission() {
 		return UniversityResearchAdministratorSubmission;
 	}
 
 	public void setUniversityResearchAdministratorSubmission(
-			boolean universityResearchAdministratorSubmission) {
+			SubmitType universityResearchAdministratorSubmission) {
 		UniversityResearchAdministratorSubmission = universityResearchAdministratorSubmission;
 	}
 
-	public boolean isUniversityResearchDirectorArchived() {
+	public ArchiveType getUniversityResearchDirectorArchived() {
 		return UniversityResearchDirectorArchived;
 	}
 
 	public void setUniversityResearchDirectorArchived(
-			boolean universityResearchDirectorArchived) {
+			ArchiveType universityResearchDirectorArchived) {
 		UniversityResearchDirectorArchived = universityResearchDirectorArchived;
+	}
+
+	public InvestigatorInfo getInvestigatorInfo() {
+		return investigatorInfo;
 	}
 
 	public void setInvestigatorInfo(InvestigatorInfo investigatorInfo) {
@@ -383,10 +395,11 @@ public class Proposal extends BaseEntity implements Serializable {
 	public String toString() {
 		return "Proposal [proposalNo=" + proposalNo + ", dateCreated="
 				+ dateCreated + ", dateSubmitted=" + dateSubmitted
-				+ ", submittedByPI=" + submittedByPI + ", deletedByPI="
-				+ deletedByPI + ", chairApproval=" + chairApproval
-				+ ", businessManagerReviewal=" + businessManagerReviewal
-				+ ", IRBReviewal=" + IRBReviewal + ", DeanApproval="
+				+ ", proposalStatus=" + proposalStatus + ", submittedByPI="
+				+ submittedByPI + ", deletedByPI=" + deletedByPI
+				+ ", chairApproval=" + chairApproval
+				+ ", businessManagerApproval=" + businessManagerApproval
+				+ ", IRBApproval=" + IRBApproval + ", DeanApproval="
 				+ DeanApproval + ", UniversityResearchAdministratorApproval="
 				+ UniversityResearchAdministratorApproval
 				+ ", UniversityResearchAdministratorWithdraw="
@@ -418,31 +431,39 @@ public class Proposal extends BaseEntity implements Serializable {
 		result = prime * result
 				+ ((DeanApproval == null) ? 0 : DeanApproval.hashCode());
 		result = prime * result
-				+ ((IRBReviewal == null) ? 0 : IRBReviewal.hashCode());
+				+ ((IRBApproval == null) ? 0 : IRBApproval.hashCode());
 		result = prime
 				* result
 				+ ((UniversityResearchAdministratorApproval == null) ? 0
 						: UniversityResearchAdministratorApproval.hashCode());
-		result = prime * result
-				+ (UniversityResearchAdministratorSubmission ? 1231 : 1237);
-		result = prime * result
-				+ (UniversityResearchAdministratorWithdraw ? 1231 : 1237);
+		result = prime
+				* result
+				+ ((UniversityResearchAdministratorSubmission == null) ? 0
+						: UniversityResearchAdministratorSubmission.hashCode());
+		result = prime
+				* result
+				+ ((UniversityResearchAdministratorWithdraw == null) ? 0
+						: UniversityResearchAdministratorWithdraw.hashCode());
 		result = prime
 				* result
 				+ ((UniversityResearchDirectorApproval == null) ? 0
 						: UniversityResearchDirectorApproval.hashCode());
-		result = prime * result
-				+ (UniversityResearchDirectorArchived ? 1231 : 1237);
-		result = prime * result
-				+ (UniversityResearchDirectorDeletion ? 1231 : 1237);
+		result = prime
+				* result
+				+ ((UniversityResearchDirectorArchived == null) ? 0
+						: UniversityResearchDirectorArchived.hashCode());
+		result = prime
+				* result
+				+ ((UniversityResearchDirectorDeletion == null) ? 0
+						: UniversityResearchDirectorDeletion.hashCode());
 		result = prime * result
 				+ ((additionalInfo == null) ? 0 : additionalInfo.hashCode());
 		result = prime * result
 				+ ((appendices == null) ? 0 : appendices.hashCode());
 		result = prime
 				* result
-				+ ((businessManagerReviewal == null) ? 0
-						: businessManagerReviewal.hashCode());
+				+ ((businessManagerApproval == null) ? 0
+						: businessManagerApproval.hashCode());
 		result = prime * result
 				+ ((chairApproval == null) ? 0 : chairApproval.hashCode());
 		result = prime
@@ -464,7 +485,8 @@ public class Proposal extends BaseEntity implements Serializable {
 				+ ((dateCreated == null) ? 0 : dateCreated.hashCode());
 		result = prime * result
 				+ ((dateSubmitted == null) ? 0 : dateSubmitted.hashCode());
-		result = prime * result + (deletedByPI ? 1231 : 1237);
+		result = prime * result
+				+ ((deletedByPI == null) ? 0 : deletedByPI.hashCode());
 		result = prime
 				* result
 				+ ((investigatorInfo == null) ? 0 : investigatorInfo.hashCode());
@@ -474,12 +496,15 @@ public class Proposal extends BaseEntity implements Serializable {
 				+ ((projectInfo == null) ? 0 : projectInfo.hashCode());
 		result = prime * result + proposalNo;
 		result = prime * result
+				+ ((proposalStatus == null) ? 0 : proposalStatus.hashCode());
+		result = prime * result
 				+ ((signatureInfo == null) ? 0 : signatureInfo.hashCode());
 		result = prime
 				* result
 				+ ((sponsorAndBudgetInfo == null) ? 0 : sponsorAndBudgetInfo
 						.hashCode());
-		result = prime * result + (submittedByPI ? 1231 : 1237);
+		result = prime * result
+				+ ((submittedByPI == null) ? 0 : submittedByPI.hashCode());
 		result = prime
 				* result
 				+ ((universityCommitments == null) ? 0 : universityCommitments
@@ -498,7 +523,7 @@ public class Proposal extends BaseEntity implements Serializable {
 		Proposal other = (Proposal) obj;
 		if (DeanApproval != other.DeanApproval)
 			return false;
-		if (IRBReviewal != other.IRBReviewal)
+		if (IRBApproval != other.IRBApproval)
 			return false;
 		if (UniversityResearchAdministratorApproval != other.UniversityResearchAdministratorApproval)
 			return false;
@@ -522,7 +547,7 @@ public class Proposal extends BaseEntity implements Serializable {
 				return false;
 		} else if (!appendices.equals(other.appendices))
 			return false;
-		if (businessManagerReviewal != other.businessManagerReviewal)
+		if (businessManagerApproval != other.businessManagerApproval)
 			return false;
 		if (chairApproval != other.chairApproval)
 			return false;
@@ -579,6 +604,11 @@ public class Proposal extends BaseEntity implements Serializable {
 		} else if (!projectInfo.equals(other.projectInfo))
 			return false;
 		if (proposalNo != other.proposalNo)
+			return false;
+		if (proposalStatus == null) {
+			if (other.proposalStatus != null)
+				return false;
+		} else if (!proposalStatus.equals(other.proposalStatus))
 			return false;
 		if (signatureInfo == null) {
 			if (other.signatureInfo != null)

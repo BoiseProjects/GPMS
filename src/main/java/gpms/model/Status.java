@@ -12,21 +12,21 @@ public enum Status {
 	NOTSUBMITTEDBYPI("Not Submitted by PI"), DELETEDBYPI("Deleted by PI"), WAITINGFORCHAIRAPPROVAL(
 			"Waiting for Chair's Approval"), RETURNEDBYCHAIR(
 			"Returned by Chair"), READYFORREVIEWBYBUSINESSMANAGER(
-			"Ready for Review by Business Manager"), REVIEWEDBYBUSINESSMANAGER(
-			"Reviewed by Business Manager"), DISAPPROVEDBYBUSINESSMANAGER(
+			"Ready for Review by Business Manager"), WAITINGFORDEANAPPROVAL(
+			"Waiting for Dean's Approval"), DISAPPROVEDBYBUSINESSMANAGER(
 			"Disapproved by Business Manager"), READYFORREVIEWBYIRB(
-			"Ready for Review by IRB"), APPROVEDBYIRB("Approved by IRB"), DISAPPROVEDBYIRB(
-			"Disapproved by IRB"), READYFORREVIEWBYDEAN(
-			"Ready for Review by Dean"), APPROVEDBYDEAN("Approved by Dean"), RETURNEDBYDEAN(
-			"Returned by Dean"), SUBMITTEDTORESEARCHDIRECTOR(
-			"Submitted to University Research Director"), DISAPPROVEDBYRESEARCHADMIN(
-			"Disapproved by University Research Administrator"), WITHDRAWBYRESEARCHADMIN(
-			"Withdrawn by University Research Administrator"), READYFORSUBMISSION(
-			"Ready for submission"), DELETEDBYRESEARCHDIRECTOR(
-			"Deleted by University Research Director"), DISAPPROVEDBYRESEARCHDIRECTOR(
-			"Disapproved by University Research Director"), SUBMITTEDBYRESEARCHADMIN(
-			"Submitted by University Research Administrator"), ARCHIVEDBYRESEARCHDIRECTOR(
-			"Archived by University Research Director");
+			"Ready for Review by IRB"), REVIEWEDBYIRB("Reviewed by IRB"), DISAPPROVEDBYIRB(
+			"Disapproved by IRB"), APPROVEDBYDEAN("Approved by Dean"), RETURNEDBYDEAN(
+			"Returned by Dean"), WAITINGFORRESEARCHADMINAPPROVAL(
+			"Waiting for Research Administrator's Approval"), WAITINGFORRESEARCHDIRECTORAPPROVAL(
+			"Waiting for Research Director's Approval"), DISAPPROVEDBYRESEARCHADMIN(
+			"Disapproved by Research Administrator"), WITHDRAWBYRESEARCHADMIN(
+			"Withdrawn by Research Administrator"), READYFORSUBMISSION(
+			"Ready for Submission"), DISAPPROVEDBYRESEARCHDIRECTOR(
+			"Disapproved by Research Director"), DELETEDBYRESEARCHDIRECTOR(
+			"Deleted by Research Director"), SUBMITTEDBYRESEARCHADMIN(
+			"Submitted by Research Administrator"), ARCHIVEDBYRESEARCHDIRECTOR(
+			"Archived by Research Director");
 
 	private final String name;
 

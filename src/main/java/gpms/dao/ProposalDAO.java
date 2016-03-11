@@ -4,6 +4,7 @@ import gpms.DAL.MongoDBConnector;
 import gpms.model.ApprovalType;
 import gpms.model.AuditLog;
 import gpms.model.AuditLogInfo;
+import gpms.model.DeleteType;
 import gpms.model.InvestigatorRefAndPosition;
 import gpms.model.PositionDetails;
 import gpms.model.ProjectLocation;
@@ -12,6 +13,7 @@ import gpms.model.Proposal;
 import gpms.model.ProposalInfo;
 import gpms.model.SignatureInfo;
 import gpms.model.Status;
+import gpms.model.SubmitType;
 import gpms.model.TypeOfRequest;
 import gpms.model.UserProfile;
 
@@ -108,34 +110,47 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 
 		boolean isDeleted = false;
 
-		if ((!proposal.isSubmittedByPI()
-				|| proposal.getChairApproval().equals(ApprovalType.DISAPPROVED)
-				|| proposal.getBusinessManagerReviewal().equals(
-						ApprovalType.DISAPPROVED)
-				|| proposal.getIRBReviewal().equals(ApprovalType.DISAPPROVED)
-				|| proposal.getDeanApproval().equals(ApprovalType.DISAPPROVED)
-				|| proposal.getUniversityResearchAdministratorApproval()
-						.equals(ApprovalType.DISAPPROVED) || proposal
-				.getUniversityResearchDirectorApproval().equals(
-						ApprovalType.DISAPPROVED))
+		if (!proposal.getDeletedByPI().equals(DeleteType.DELETED)
+				&& (!proposal.getSubmittedByPI().equals(SubmitType.SUBMITTED)
+						|| proposal.getChairApproval().equals(
+								ApprovalType.DISAPPROVED)
+						|| proposal.getBusinessManagerApproval().equals(
+								ApprovalType.DISAPPROVED)
+						|| proposal.getIRBApproval().equals(
+								ApprovalType.DISAPPROVED)
+						|| proposal.getDeanApproval().equals(
+								ApprovalType.DISAPPROVED)
+						|| proposal
+								.getUniversityResearchAdministratorApproval()
+								.equals(ApprovalType.DISAPPROVED) || proposal
+						.getUniversityResearchDirectorApproval().equals(
+								ApprovalType.DISAPPROVED))
 				&& proposalRoles.equals("PI")
-				&& !proposalUserTitle.equals("University Research Director")
-				&& !proposal.isDeletedByPI()) {
+				&& !proposalUserTitle.equals("University Research Director")) {
 
-			proposal.setDeletedByPI(true);
+			proposal.setDeletedByPI(DeleteType.DELETED);
+
+			// Proposal Status
+			proposal.getProposalStatus().clear();
+			proposal.getProposalStatus().add(Status.DELETEDBYPI);
 
 			AuditLog entry = new AuditLog(authorProfile, "Deleted Proposal by "
 					+ authorProfile.getUserAccount().getUserName(), new Date());
 			proposal.getAuditLog().add(entry);
 			ds.save(proposal);
 			isDeleted = true;
-		} else if (proposal.getUniversityResearchDirectorApproval().equals(
-				ApprovalType.READYFORAPPROVAL)
+		} else if (!proposal.getUniversityResearchDirectorDeletion().equals(
+				DeleteType.DELETED)
+				&& proposal.getUniversityResearchDirectorApproval().equals(
+						ApprovalType.READYFORAPPROVAL)
 				&& !proposalRoles.equals("PI")
-				&& proposalUserTitle.equals("University Research Director")
-				&& !proposal.isUniversityResearchDirectorDeletion()) {
+				&& proposalUserTitle.equals("University Research Director")) {
 
-			proposal.setUniversityResearchDirectorDeletion(true);
+			proposal.setUniversityResearchDirectorDeletion(DeleteType.DELETED);
+
+			// Proposal Status
+			proposal.getProposalStatus().clear();
+			proposal.getProposalStatus().add(Status.DELETEDBYRESEARCHDIRECTOR);
 
 			AuditLog entry = new AuditLog(authorProfile, "Deleted Proposal by "
 					+ authorProfile.getUserAccount().getUserName(), new Date());
@@ -553,19 +568,24 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 			proposal.setProjectPeriodTo(userProposal.getProjectInfo()
 					.getProjectPeriod().getTo());
 
+			// Proposal Status
+			for (Status status : userProposal.getProposalStatus()) {
+				proposal.getProposalStatus().add(status.toString());
+			}
+
 			// PI
-			proposal.setSubmittedByPI(userProposal.isSubmittedByPI());
-			proposal.setDeletedByPI(userProposal.isDeletedByPI());
+			proposal.setSubmittedByPI(userProposal.getSubmittedByPI());
+			proposal.setDeletedByPI(userProposal.getDeletedByPI());
 
 			// Chair
 			proposal.setChairApproval(userProposal.getChairApproval());
 
 			// Business Manager
-			proposal.setBusinessManagerReviewal(userProposal
-					.getBusinessManagerReviewal());
+			proposal.setBusinessManagerApproval(userProposal
+					.getBusinessManagerApproval());
 
 			// IRB
-			proposal.setIRBReviewal(userProposal.getIRBReviewal());
+			proposal.setIRBApproval(userProposal.getIRBApproval());
 
 			// Dean
 			proposal.setDeanApproval(userProposal.getDeanApproval());
@@ -575,23 +595,24 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 					.getUniversityResearchAdministratorApproval());
 
 			proposal.setUniversityResearchAdministratorWithdraw(userProposal
-					.isUniversityResearchAdministratorWithdraw());
+					.getUniversityResearchAdministratorWithdraw());
 
 			proposal.setUniversityResearchAdministratorSubmission(userProposal
-					.isUniversityResearchAdministratorSubmission());
+					.getUniversityResearchAdministratorSubmission());
 
 			// University Research Director
 			proposal.setUniversityResearchDirectorApproval(userProposal
 					.getUniversityResearchDirectorApproval());
 
 			proposal.setUniversityResearchDirectorDeletion(userProposal
-					.isUniversityResearchDirectorDeletion());
+					.getUniversityResearchDirectorDeletion());
 
 			proposal.setUniversityResearchDirectorArchived(userProposal
-					.isUniversityResearchDirectorArchived());
+					.getUniversityResearchDirectorArchived());
 
-			if (userProposal.isDeletedByPI()
-					|| userProposal.isUniversityResearchDirectorDeletion()) {
+			if (userProposal.getDeletedByPI().equals(DeleteType.DELETED)
+					|| userProposal.getUniversityResearchDirectorDeletion()
+							.equals(DeleteType.DELETED)) {
 				proposal.setDeleted(true);
 			}
 
@@ -684,7 +705,7 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 
 		// TODO
 		if (proposalStatus != null) {
-			proposalQuery.field("proposal status").equals(proposalStatus);
+			proposalQuery.field("proposal status").contains(proposalStatus);
 		}
 
 		// High Level Users University Level --> University Research
@@ -938,19 +959,24 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 			proposal.setProjectPeriodTo(userProposal.getProjectInfo()
 					.getProjectPeriod().getTo());
 
+			// Proposal Status
+			for (Status status : userProposal.getProposalStatus()) {
+				proposal.getProposalStatus().add(status.toString());
+			}
+
 			// PI
-			proposal.setSubmittedByPI(userProposal.isSubmittedByPI());
-			proposal.setDeletedByPI(userProposal.isDeletedByPI());
+			proposal.setSubmittedByPI(userProposal.getSubmittedByPI());
+			proposal.setDeletedByPI(userProposal.getDeletedByPI());
 
 			// Chair
 			proposal.setChairApproval(userProposal.getChairApproval());
 
 			// Business Manager
-			proposal.setBusinessManagerReviewal(userProposal
-					.getBusinessManagerReviewal());
+			proposal.setBusinessManagerApproval(userProposal
+					.getBusinessManagerApproval());
 
 			// IRB
-			proposal.setIRBReviewal(userProposal.getIRBReviewal());
+			proposal.setIRBApproval(userProposal.getIRBApproval());
 
 			// Dean
 			proposal.setDeanApproval(userProposal.getDeanApproval());
@@ -960,23 +986,24 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 					.getUniversityResearchAdministratorApproval());
 
 			proposal.setUniversityResearchAdministratorWithdraw(userProposal
-					.isUniversityResearchAdministratorWithdraw());
+					.getUniversityResearchAdministratorWithdraw());
 
 			proposal.setUniversityResearchAdministratorSubmission(userProposal
-					.isUniversityResearchAdministratorSubmission());
+					.getUniversityResearchAdministratorSubmission());
 
 			// University Research Director
 			proposal.setUniversityResearchDirectorApproval(userProposal
 					.getUniversityResearchDirectorApproval());
 
 			proposal.setUniversityResearchDirectorDeletion(userProposal
-					.isUniversityResearchDirectorDeletion());
+					.getUniversityResearchDirectorDeletion());
 
 			proposal.setUniversityResearchDirectorArchived(userProposal
-					.isUniversityResearchDirectorArchived());
+					.getUniversityResearchDirectorArchived());
 
-			if (userProposal.isDeletedByPI()
-					|| userProposal.isUniversityResearchDirectorDeletion()) {
+			if (userProposal.getDeletedByPI().equals(DeleteType.DELETED)
+					|| userProposal.getUniversityResearchDirectorDeletion()
+							.equals(DeleteType.DELETED)) {
 				proposal.setDeleted(true);
 			}
 
@@ -1334,19 +1361,24 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 			proposal.setProjectPeriodTo(userProposal.getProjectInfo()
 					.getProjectPeriod().getTo());
 
+			// Proposal Status
+			for (Status status : userProposal.getProposalStatus()) {
+				proposal.getProposalStatus().add(status.toString());
+			}
+
 			// PI
-			proposal.setSubmittedByPI(userProposal.isSubmittedByPI());
-			proposal.setDeletedByPI(userProposal.isDeletedByPI());
+			proposal.setSubmittedByPI(userProposal.getSubmittedByPI());
+			proposal.setDeletedByPI(userProposal.getDeletedByPI());
 
 			// Chair
 			proposal.setChairApproval(userProposal.getChairApproval());
 
 			// Business Manager
-			proposal.setBusinessManagerReviewal(userProposal
-					.getBusinessManagerReviewal());
+			proposal.setBusinessManagerApproval(userProposal
+					.getBusinessManagerApproval());
 
 			// IRB
-			proposal.setIRBReviewal(userProposal.getIRBReviewal());
+			proposal.setIRBApproval(userProposal.getIRBApproval());
 
 			// Dean
 			proposal.setDeanApproval(userProposal.getDeanApproval());
@@ -1356,23 +1388,24 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 					.getUniversityResearchAdministratorApproval());
 
 			proposal.setUniversityResearchAdministratorWithdraw(userProposal
-					.isUniversityResearchAdministratorWithdraw());
+					.getUniversityResearchAdministratorWithdraw());
 
 			proposal.setUniversityResearchAdministratorSubmission(userProposal
-					.isUniversityResearchAdministratorSubmission());
+					.getUniversityResearchAdministratorSubmission());
 
 			// University Research Director
 			proposal.setUniversityResearchDirectorApproval(userProposal
 					.getUniversityResearchDirectorApproval());
 
 			proposal.setUniversityResearchDirectorDeletion(userProposal
-					.isUniversityResearchDirectorDeletion());
+					.getUniversityResearchDirectorDeletion());
 
 			proposal.setUniversityResearchDirectorArchived(userProposal
-					.isUniversityResearchDirectorArchived());
+					.getUniversityResearchDirectorArchived());
 
-			if (userProposal.isDeletedByPI()
-					|| userProposal.isUniversityResearchDirectorDeletion()) {
+			if (userProposal.getDeletedByPI().equals(DeleteType.DELETED)
+					|| userProposal.getUniversityResearchDirectorDeletion()
+							.equals(DeleteType.DELETED)) {
 				proposal.setDeleted(true);
 			}
 

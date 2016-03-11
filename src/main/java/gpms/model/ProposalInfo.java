@@ -4,11 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.mongodb.morphia.annotations.Property;
-
 import com.ebay.xcelite.annotations.Column;
 import com.ebay.xcelite.annotations.Row;
-import com.google.gson.annotations.Expose;
 
 @Row(colsOrder = { "Proposal No", "Project Title", "Project Type",
 		"Type Of Request", "Project Location", "Granting Agencies",
@@ -61,22 +58,22 @@ public class ProposalInfo {
 	private Date projectPeriodTo = new Date();
 
 	// Proposal
-	// @Column(name = "Proposal Status")
-	// private List<String> proposalStatus = new ArrayList<String>();
+	@Column(name = "Proposal Status")
+	private List<String> proposalStatus = new ArrayList<String>();
 
 	// Proposal Status variables
-	private boolean submittedByPI = false;
-	private boolean deletedByPI = false;
+	private SubmitType submittedByPI = SubmitType.NOTSUBMITTED;
+	private DeleteType deletedByPI = DeleteType.NOTDELETED;
 	private ApprovalType chairApproval = ApprovalType.NOTREADYFORAPPROVAL;
-	private ApprovalType businessManagerReviewal = ApprovalType.NOTREADYFORAPPROVAL;
-	private ApprovalType IRBReviewal = ApprovalType.NOTREADYFORAPPROVAL;
+	private ApprovalType businessManagerApproval = ApprovalType.NOTREADYFORAPPROVAL;
+	private ApprovalType IRBApproval = ApprovalType.NOTREADYFORAPPROVAL;
 	private ApprovalType DeanApproval = ApprovalType.NOTREADYFORAPPROVAL;
 	private ApprovalType UniversityResearchAdministratorApproval = ApprovalType.NOTREADYFORAPPROVAL;
-	private boolean UniversityResearchAdministratorWithdraw = false;
+	private WithdrawType UniversityResearchAdministratorWithdraw = WithdrawType.NOTWITHDRAWN;
 	private ApprovalType UniversityResearchDirectorApproval = ApprovalType.NOTREADYFORAPPROVAL;
-	private boolean UniversityResearchDirectorDeletion = false;
-	private boolean UniversityResearchAdministratorSubmission = false;
-	private boolean UniversityResearchDirectorArchived = false;
+	private DeleteType UniversityResearchDirectorDeletion = DeleteType.NOTDELETED;
+	private SubmitType UniversityResearchAdministratorSubmission = SubmitType.NOTSUBMITTED;
+	private ArchiveType UniversityResearchDirectorArchived = ArchiveType.NOTARCHIVED;
 
 	// END
 
@@ -130,132 +127,6 @@ public class ProposalInfo {
 		this.proposalNo = proposalNo;
 	}
 
-	public Date getDateCreated() {
-		return dateCreated;
-	}
-
-	public void setDateCreated(Date dateCreated) {
-		this.dateCreated = dateCreated;
-	}
-
-	public Date getDateSubmitted() {
-		return dateSubmitted;
-	}
-
-	public void setDateSubmitted(Date dateSubmitted) {
-		this.dateSubmitted = dateSubmitted;
-	}
-
-	// public List<String> getProposalStatus() {
-	// return proposalStatus;
-	// }
-	//
-	// public void setProposalStatus(List<String> proposalStatus) {
-	// this.proposalStatus.addAll(proposalStatus);
-	// }
-
-	public boolean isSubmittedByPI() {
-		return submittedByPI;
-	}
-
-	public void setSubmittedByPI(boolean submittedByPI) {
-		this.submittedByPI = submittedByPI;
-	}
-
-	public boolean isDeletedByPI() {
-		return deletedByPI;
-	}
-
-	public void setDeletedByPI(boolean deletedByPI) {
-		this.deletedByPI = deletedByPI;
-	}
-
-	public ApprovalType getChairApproval() {
-		return chairApproval;
-	}
-
-	public void setChairApproval(ApprovalType chairApproval) {
-		this.chairApproval = chairApproval;
-	}
-
-	public ApprovalType getBusinessManagerReviewal() {
-		return businessManagerReviewal;
-	}
-
-	public void setBusinessManagerReviewal(ApprovalType businessManagerReviewal) {
-		this.businessManagerReviewal = businessManagerReviewal;
-	}
-
-	public ApprovalType getIRBReviewal() {
-		return IRBReviewal;
-	}
-
-	public void setIRBReviewal(ApprovalType iRBReviewal) {
-		IRBReviewal = iRBReviewal;
-	}
-
-	public ApprovalType getDeanApproval() {
-		return DeanApproval;
-	}
-
-	public void setDeanApproval(ApprovalType deanApproval) {
-		DeanApproval = deanApproval;
-	}
-
-	public ApprovalType getUniversityResearchAdministratorApproval() {
-		return UniversityResearchAdministratorApproval;
-	}
-
-	public void setUniversityResearchAdministratorApproval(
-			ApprovalType universityResearchAdministratorApproval) {
-		UniversityResearchAdministratorApproval = universityResearchAdministratorApproval;
-	}
-
-	public boolean isUniversityResearchAdministratorWithdraw() {
-		return UniversityResearchAdministratorWithdraw;
-	}
-
-	public void setUniversityResearchAdministratorWithdraw(
-			boolean universityResearchAdministratorWithdraw) {
-		UniversityResearchAdministratorWithdraw = universityResearchAdministratorWithdraw;
-	}
-
-	public ApprovalType getUniversityResearchDirectorApproval() {
-		return UniversityResearchDirectorApproval;
-	}
-
-	public void setUniversityResearchDirectorApproval(
-			ApprovalType universityResearchDirectorApproval) {
-		UniversityResearchDirectorApproval = universityResearchDirectorApproval;
-	}
-
-	public boolean isUniversityResearchDirectorDeletion() {
-		return UniversityResearchDirectorDeletion;
-	}
-
-	public void setUniversityResearchDirectorDeletion(
-			boolean universityResearchDirectorDeletion) {
-		UniversityResearchDirectorDeletion = universityResearchDirectorDeletion;
-	}
-
-	public boolean isUniversityResearchAdministratorSubmission() {
-		return UniversityResearchAdministratorSubmission;
-	}
-
-	public void setUniversityResearchAdministratorSubmission(
-			boolean universityResearchAdministratorSubmission) {
-		UniversityResearchAdministratorSubmission = universityResearchAdministratorSubmission;
-	}
-
-	public boolean isUniversityResearchDirectorArchived() {
-		return UniversityResearchDirectorArchived;
-	}
-
-	public void setUniversityResearchDirectorArchived(
-			boolean universityResearchDirectorArchived) {
-		UniversityResearchDirectorArchived = universityResearchDirectorArchived;
-	}
-
 	public String getProjectTitle() {
 		return projectTitle;
 	}
@@ -278,30 +149,6 @@ public class ProposalInfo {
 
 	public void setTypeOfRequest(List<String> typeOfRequest) {
 		this.typeOfRequest = typeOfRequest;
-	}
-
-	public Date getDueDate() {
-		return dueDate;
-	}
-
-	public void setDueDate(Date dueDate) {
-		this.dueDate = dueDate;
-	}
-
-	public Date getProjectPeriodFrom() {
-		return projectPeriodFrom;
-	}
-
-	public void setProjectPeriodFrom(Date projectPeriodFrom) {
-		this.projectPeriodFrom = projectPeriodFrom;
-	}
-
-	public Date getProjectPeriodTo() {
-		return projectPeriodTo;
-	}
-
-	public void setProjectPeriodTo(Date projectPeriodTo) {
-		this.projectPeriodTo = projectPeriodTo;
 	}
 
 	public String getProjectLocation() {
@@ -350,6 +197,156 @@ public class ProposalInfo {
 
 	public void setFaRate(double faRate) {
 		this.faRate = faRate;
+	}
+
+	public Date getDateCreated() {
+		return dateCreated;
+	}
+
+	public void setDateCreated(Date dateCreated) {
+		this.dateCreated = dateCreated;
+	}
+
+	public Date getDateSubmitted() {
+		return dateSubmitted;
+	}
+
+	public void setDateSubmitted(Date dateSubmitted) {
+		this.dateSubmitted = dateSubmitted;
+	}
+
+	public Date getDueDate() {
+		return dueDate;
+	}
+
+	public void setDueDate(Date dueDate) {
+		this.dueDate = dueDate;
+	}
+
+	public Date getProjectPeriodFrom() {
+		return projectPeriodFrom;
+	}
+
+	public void setProjectPeriodFrom(Date projectPeriodFrom) {
+		this.projectPeriodFrom = projectPeriodFrom;
+	}
+
+	public Date getProjectPeriodTo() {
+		return projectPeriodTo;
+	}
+
+	public void setProjectPeriodTo(Date projectPeriodTo) {
+		this.projectPeriodTo = projectPeriodTo;
+	}
+
+	public List<String> getProposalStatus() {
+		return proposalStatus;
+	}
+
+	public void setProposalStatus(List<String> proposalStatus) {
+		this.proposalStatus = proposalStatus;
+	}
+
+	public SubmitType getSubmittedByPI() {
+		return submittedByPI;
+	}
+
+	public void setSubmittedByPI(SubmitType submittedByPI) {
+		this.submittedByPI = submittedByPI;
+	}
+
+	public DeleteType getDeletedByPI() {
+		return deletedByPI;
+	}
+
+	public void setDeletedByPI(DeleteType deletedByPI) {
+		this.deletedByPI = deletedByPI;
+	}
+
+	public ApprovalType getChairApproval() {
+		return chairApproval;
+	}
+
+	public void setChairApproval(ApprovalType chairApproval) {
+		this.chairApproval = chairApproval;
+	}
+
+	public ApprovalType getBusinessManagerApproval() {
+		return businessManagerApproval;
+	}
+
+	public void setBusinessManagerApproval(ApprovalType businessManagerApproval) {
+		this.businessManagerApproval = businessManagerApproval;
+	}
+
+	public ApprovalType getIRBApproval() {
+		return IRBApproval;
+	}
+
+	public void setIRBApproval(ApprovalType iRBApproval) {
+		IRBApproval = iRBApproval;
+	}
+
+	public ApprovalType getDeanApproval() {
+		return DeanApproval;
+	}
+
+	public void setDeanApproval(ApprovalType deanApproval) {
+		DeanApproval = deanApproval;
+	}
+
+	public ApprovalType getUniversityResearchAdministratorApproval() {
+		return UniversityResearchAdministratorApproval;
+	}
+
+	public void setUniversityResearchAdministratorApproval(
+			ApprovalType universityResearchAdministratorApproval) {
+		UniversityResearchAdministratorApproval = universityResearchAdministratorApproval;
+	}
+
+	public WithdrawType getUniversityResearchAdministratorWithdraw() {
+		return UniversityResearchAdministratorWithdraw;
+	}
+
+	public void setUniversityResearchAdministratorWithdraw(
+			WithdrawType universityResearchAdministratorWithdraw) {
+		UniversityResearchAdministratorWithdraw = universityResearchAdministratorWithdraw;
+	}
+
+	public ApprovalType getUniversityResearchDirectorApproval() {
+		return UniversityResearchDirectorApproval;
+	}
+
+	public void setUniversityResearchDirectorApproval(
+			ApprovalType universityResearchDirectorApproval) {
+		UniversityResearchDirectorApproval = universityResearchDirectorApproval;
+	}
+
+	public DeleteType getUniversityResearchDirectorDeletion() {
+		return UniversityResearchDirectorDeletion;
+	}
+
+	public void setUniversityResearchDirectorDeletion(
+			DeleteType universityResearchDirectorDeletion) {
+		UniversityResearchDirectorDeletion = universityResearchDirectorDeletion;
+	}
+
+	public SubmitType getUniversityResearchAdministratorSubmission() {
+		return UniversityResearchAdministratorSubmission;
+	}
+
+	public void setUniversityResearchAdministratorSubmission(
+			SubmitType universityResearchAdministratorSubmission) {
+		UniversityResearchAdministratorSubmission = universityResearchAdministratorSubmission;
+	}
+
+	public ArchiveType getUniversityResearchDirectorArchived() {
+		return UniversityResearchDirectorArchived;
+	}
+
+	public void setUniversityResearchDirectorArchived(
+			ArchiveType universityResearchDirectorArchived) {
+		UniversityResearchDirectorArchived = universityResearchDirectorArchived;
 	}
 
 	public Date getLastAudited() {
@@ -408,7 +405,6 @@ public class ProposalInfo {
 		this.allUsers = allUsers;
 	}
 
-	// TODO
 	public List<String> getCurrentuserProposalRoles() {
 		return currentuserProposalRoles;
 	}

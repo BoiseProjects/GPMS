@@ -442,6 +442,18 @@ $(function() {
 			proposalId : "0",
 			proposalRoles : "",
 			proposalStatus : "",
+			submittedByPI : "",
+			deletedByPI : "",
+			chairApproval : "",
+			businessManagerApproval : "",
+			deanApproval : "",
+			universityResearchAdministratorApproval : "",
+			universityResearchAdministratorWithdraw : "",
+			universityResearchAdministratorSubmission : "",
+			universityResearchDirectorArchived : "",
+			universityResearchDirectorApproval : "",
+			universityResearchDirectorDeletion : "",
+			irbapproval : "",
 			buttonType : "",
 			arguments : [],
 			events : "",
@@ -767,240 +779,379 @@ $(function() {
 							{
 								url : this.config.url,
 								functionMethod : this.config.method,
-								colModel : [ {
-									display : 'Proposal ID',
-									cssclass : 'cssClassHeadCheckBox',
-									coltype : 'checkbox',
-									align : 'center',
-									checkFor : '25',
-									elemClass : 'attrChkbox',
-									elemDefault : false,
-									controlclass : 'attribHeaderChkbox',
-									hide : true
-								}, {
-									display : 'Proposal No',
-									name : 'proposal_no',
-									cssclass : '',
-									controlclass : '',
-									coltype : 'label',
-									align : 'left',
-									hide : true
-								}, {
-									display : 'Project Title',
-									name : 'project_title',
-									cssclass : '',
-									controlclass : '',
-									coltype : 'label',
-									align : 'left'
-								}, {
-									display : 'Project Type',
-									name : 'project_type',
-									cssclass : '',
-									controlclass : '',
-									coltype : 'label',
-									align : 'left',
-									hide : true
-								}, {
-									display : 'Type of Request',
-									name : 'type_of_request',
-									cssclass : '',
-									controlclass : '',
-									coltype : 'label',
-									align : 'left',
-									type : 'array',
-									hide : true
-								}, {
-									display : 'Project Location',
-									name : 'project_location',
-									cssclass : '',
-									controlclass : '',
-									coltype : 'label',
-									align : 'left',
-									hide : true
-								}, {
-									display : 'Granting Agencies',
-									name : 'granting_agencies',
-									cssclass : '',
-									controlclass : '',
-									coltype : 'label',
-									align : 'left',
-									type : 'array'
-								}, {
-									display : 'Direct Costs',
-									name : 'directCosts',
-									cssclass : '',
-									controlclass : '',
-									coltype : 'label',
-									align : 'left',
-									type : 'currency',
-									hide : true
-								}, {
-									display : 'FA Costs',
-									name : 'FA_costs',
-									cssclass : '',
-									controlclass : '',
-									coltype : 'label',
-									align : 'left',
-									type : 'currency',
-									hide : true
-								}, {
-									display : 'Total Costs',
-									name : 'total_costs',
-									cssclass : '',
-									controlclass : '',
-									coltype : 'label',
-									align : 'left',
-									type : 'currency'
-								}, {
-									display : 'FA Rate',
-									name : 'FA_rate',
-									cssclass : '',
-									controlclass : '',
-									coltype : 'label',
-									align : 'left',
-									type : 'percent',
-									hide : true
-								}, {
-									display : 'Date Created',
-									name : 'date_created',
-									cssclass : '',
-									controlclass : '',
-									coltype : 'label',
-									align : 'left',
-									type : 'date',
-									format : 'yyyy/MM/dd hh:mm:ss a',
-									hide : true
-								}, {
-									display : 'Date Submitted',
-									name : 'date_submitted',
-									cssclass : '',
-									controlclass : '',
-									coltype : 'label',
-									align : 'left',
-									type : 'date',
-									format : 'yyyy/MM/dd hh:mm:ss a'
-								}, {
-									display : 'Due Date',
-									name : 'due_date',
-									cssclass : 'cssClassHeadDate',
-									controlclass : '',
-									coltype : 'label',
-									align : 'left',
-									type : 'date',
-									format : 'yyyy/MM/dd hh:mm:ss a'
-								}, {
-									display : 'Project Period From',
-									name : 'project_period_from',
-									cssclass : 'cssClassHeadDate',
-									controlclass : '',
-									coltype : 'label',
-									align : 'left',
-									type : 'date',
-									format : 'yyyy/MM/dd hh:mm:ss a',
-									hide : true
-								}, {
-									display : 'Project Period To',
-									name : 'project_period_to',
-									cssclass : 'cssClassHeadDate',
-									controlclass : '',
-									coltype : 'label',
-									align : 'left',
-									type : 'date',
-									format : 'yyyy/MM/dd hh:mm:ss a',
-									hide : true
-								}, {
-									display : 'Status',
-									name : 'proposal_status',
-									cssclass : '',
-									controlclass : '',
-									coltype : 'label',
-									align : 'left',
-									type : 'array'
-								}, {
-									display : 'Last Audited',
-									name : 'last_audited',
-									cssclass : 'cssClassHeadDate',
-									controlclass : '',
-									coltype : 'label',
-									align : 'left',
-									type : 'date',
-									format : 'yyyy/MM/dd hh:mm:ss a',
-									hide : true
-								}, {
-									display : 'Last Audited By',
-									name : 'last_audited_by',
-									cssclass : '',
-									controlclass : '',
-									coltype : 'label',
-									align : 'left',
-									hide : true
-								}, {
-									display : 'Last Audited Action',
-									name : 'last_audited_action',
-									cssclass : '',
-									controlclass : '',
-									coltype : 'label',
-									align : 'left',
-									hide : true
-								}, {
-									display : 'PI User',
-									name : 'pi_user',
-									cssclass : '',
-									controlclass : '',
-									coltype : 'label',
-									align : 'left',
-									hide : true
-								}, {
-									display : 'Co-PI Users',
-									name : 'co_pi_users',
-									cssclass : '',
-									controlclass : '',
-									coltype : 'label',
-									align : 'left',
-									type : 'array',
-									hide : true
-								}, {
-									display : 'Senior Personnel Users',
-									name : 'senior_personnel_users',
-									cssclass : '',
-									controlclass : '',
-									coltype : 'label',
-									align : 'left',
-									type : 'array',
-									hide : true
-								}, {
-									display : 'All Involved Users',
-									name : 'all_users',
-									cssclass : '',
-									controlclass : '',
-									coltype : 'label',
-									align : 'left',
-									type : 'array',
-									hide : true
-								}, {
-									display : 'Current User Roles',
-									name : 'proposal_roles',
-									cssclass : '',
-									controlclass : '',
-									coltype : 'label',
-									align : 'left',
-									type : 'array'
-								}, {
-									display : 'Is Deleted?',
-									name : 'is_deleted',
-									cssclass : 'cssClassHeadBoolean',
-									controlclass : '',
-									coltype : 'label',
-									align : 'left',
-									type : 'boolean',
-									format : 'Yes/No'
-								}, {
-									display : 'Actions',
-									name : 'action',
-									cssclass : 'cssClassAction',
-									coltype : 'label',
-									align : 'center'
-								} ],
+								colModel : [
+										{
+											display : 'Proposal ID',
+											cssclass : 'cssClassHeadCheckBox',
+											coltype : 'checkbox',
+											align : 'center',
+											checkFor : '25',
+											elemClass : 'attrChkbox',
+											elemDefault : false,
+											controlclass : 'attribHeaderChkbox',
+											hide : true
+										},
+										{
+											display : 'Proposal No',
+											name : 'proposal_no',
+											cssclass : '',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left',
+											hide : true
+										},
+										{
+											display : 'Project Title',
+											name : 'project_title',
+											cssclass : '',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left'
+										},
+										{
+											display : 'Project Type',
+											name : 'project_type',
+											cssclass : '',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left',
+											hide : true
+										},
+										{
+											display : 'Type of Request',
+											name : 'type_of_request',
+											cssclass : '',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left',
+											type : 'array',
+											hide : true
+										},
+										{
+											display : 'Project Location',
+											name : 'project_location',
+											cssclass : '',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left',
+											hide : true
+										},
+										{
+											display : 'Granting Agencies',
+											name : 'granting_agencies',
+											cssclass : '',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left',
+											type : 'array'
+										},
+										{
+											display : 'Direct Costs',
+											name : 'directCosts',
+											cssclass : '',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left',
+											type : 'currency',
+											hide : true
+										},
+										{
+											display : 'FA Costs',
+											name : 'FA_costs',
+											cssclass : '',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left',
+											type : 'currency',
+											hide : true
+										},
+										{
+											display : 'Total Costs',
+											name : 'total_costs',
+											cssclass : '',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left',
+											type : 'currency'
+										},
+										{
+											display : 'FA Rate',
+											name : 'FA_rate',
+											cssclass : '',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left',
+											type : 'percent',
+											hide : true
+										},
+										{
+											display : 'Date Created',
+											name : 'date_created',
+											cssclass : '',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left',
+											type : 'date',
+											format : 'yyyy/MM/dd hh:mm:ss a',
+											hide : true
+										},
+										{
+											display : 'Date Submitted',
+											name : 'date_submitted',
+											cssclass : '',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left',
+											type : 'date',
+											format : 'yyyy/MM/dd hh:mm:ss a'
+										},
+										{
+											display : 'Due Date',
+											name : 'due_date',
+											cssclass : 'cssClassHeadDate',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left',
+											type : 'date',
+											format : 'yyyy/MM/dd hh:mm:ss a'
+										},
+										{
+											display : 'Project Period From',
+											name : 'project_period_from',
+											cssclass : 'cssClassHeadDate',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left',
+											type : 'date',
+											format : 'yyyy/MM/dd hh:mm:ss a',
+											hide : true
+										},
+										{
+											display : 'Project Period To',
+											name : 'project_period_to',
+											cssclass : 'cssClassHeadDate',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left',
+											type : 'date',
+											format : 'yyyy/MM/dd hh:mm:ss a',
+											hide : true
+										},
+										{
+											display : 'Status',
+											name : 'proposal_status',
+											cssclass : '',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left',
+											type : 'array'
+										},
+
+										// Start
+										{
+											display : 'Submitted by PI?',
+											name : 'submitted_by_PI',
+											cssclass : '',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left'
+										},
+										{
+											display : 'Is Deleted by PI?',
+											name : 'deleted_by_PI',
+											cssclass : '',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left'
+										},
+										{
+											display : 'Chair Approval',
+											name : 'chair_approval',
+											cssclass : '',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left',
+											hide : true
+										},
+										{
+											display : 'Business Manager Reviewal',
+											name : 'business_manager_reviewal',
+											cssclass : '',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left',
+											hide : true
+										},
+										// END
+
+										{
+											display : 'Last Audited',
+											name : 'last_audited',
+											cssclass : 'cssClassHeadDate',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left',
+											type : 'date',
+											format : 'yyyy/MM/dd hh:mm:ss a',
+											hide : true
+										},
+										{
+											display : 'Last Audited By',
+											name : 'last_audited_by',
+											cssclass : '',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left',
+											hide : true
+										},
+										{
+											display : 'Last Audited Action',
+											name : 'last_audited_action',
+											cssclass : '',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left',
+											hide : true
+										},
+										{
+											display : 'PI User',
+											name : 'pi_user',
+											cssclass : '',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left',
+											hide : true
+										},
+										{
+											display : 'Co-PI Users',
+											name : 'co_pi_users',
+											cssclass : '',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left',
+											type : 'array',
+											hide : true
+										},
+										{
+											display : 'Senior Personnel Users',
+											name : 'senior_personnel_users',
+											cssclass : '',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left',
+											type : 'array',
+											hide : true
+										},
+										{
+											display : 'All Involved Users',
+											name : 'all_users',
+											cssclass : '',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left',
+											type : 'array',
+											hide : true
+										},
+										{
+											display : 'Current User Roles',
+											name : 'proposal_roles',
+											cssclass : '',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left',
+											type : 'array'
+										},
+										{
+											display : 'Is Deleted?',
+											name : 'is_deleted',
+											cssclass : 'cssClassHeadBoolean',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left',
+											type : 'boolean',
+											format : 'Yes/No'
+										},
+										// Start
+										{
+											display : 'IRB Reviewal',
+											name : 'IRB_reviewal',
+											cssclass : '',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left',
+											hide : true
+										},
+										{
+											display : 'Dean Approval',
+											name : 'dean_approval',
+											cssclass : '',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left',
+											hide : true
+										},
+										{
+											display : 'Research Administrator Approval',
+											name : 'research_administrator_approval',
+											cssclass : '',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left',
+											hide : true
+										},
+										{
+											display : 'Withdrawn by Research Administrator?',
+											name : 'withdrawn_by_research_administrator',
+											cssclass : '',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left',
+											hide : true
+										},
+										{
+											display : 'Submitted by Research Administrator?',
+											name : 'submitted_by_research_administrator',
+											cssclass : 'cssClassHeadBoolean',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left',
+											hide : true
+										},
+										{
+											display : 'Archived by Research Director?',
+											name : 'archived_by_research_director',
+											cssclass : '',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left',
+											hide : true
+										},
+										{
+											display : 'Research Director Approval',
+											name : 'research_director_approval',
+											cssclass : '',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left',
+											hide : true
+										},
+										{
+											display : 'Deleted by Research Director?',
+											name : 'deleted_by_research_director',
+											cssclass : '',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left',
+											hide : true
+										},
+										// END
+										{
+											display : 'Actions',
+											name : 'action',
+											cssclass : 'cssClassAction',
+											coltype : 'label',
+											align : 'center'
+										} ],
 
 								buttons : [
 										{
@@ -1010,7 +1161,7 @@ $(function() {
 											_event : 'click',
 											trigger : '1',
 											callMethod : 'myProposal.EditProposal',
-											arguments : '1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25'
+											arguments : '2, 6, 11, 16, 27, 28, 17, 18, 19, 20, 30, 31, 32, 33, 34, 35, 36, 37'
 										},
 										{
 											display : 'Delete',
@@ -1019,7 +1170,7 @@ $(function() {
 											_event : 'click',
 											trigger : '2',
 											callMethod : 'myProposal.DeleteProposal',
-											arguments : '24,25,16'
+											arguments : '16, 28, 29, 17, 18, 19, 20, 30, 31, 32, 33, 34, 35, 36, 37'
 										},
 										{
 											display : 'View Change Logs',
@@ -1028,7 +1179,7 @@ $(function() {
 											_event : 'click',
 											trigger : '3',
 											callMethod : 'myProposal.ViewChangeLogs',
-											arguments : '2,17,18,19,24'
+											arguments : '28'
 										} ],
 								rp : perpage,
 								nomsg : 'No Records Found!',
@@ -1039,22 +1190,14 @@ $(function() {
 									0 : {
 										sorter : false
 									},
-									26 : {
+									38 : {
 										sorter : false
 									}
 								}
 							});
 		},
 
-		ButtonHideShow : function(currentProposalRoles, submittedByPI,
-				deletedByPI, chairApproval, businessManagerReviewal,
-				IRBReviewal, DeanApproval,
-				UniversityResearchAdministratorApproval,
-				UniversityResearchAdministratorWithdraw,
-				UniversityResearchDirectorApproval,
-				UniversityResearchDirectorDeletion,
-				UniversityResearchAdministratorSubmission,
-				UniversityResearchDirectorArchived, proposalId) {
+		ButtonHideShow : function(config) {
 			$("#btnReset").hide();
 			$("#btnSaveProposal").hide();
 			$("#btnUpdateProposal").hide();
@@ -1065,17 +1208,22 @@ $(function() {
 			$("#btnWithdrawProposal").hide();
 			$("#btnArchiveProposal").hide();
 
+			debugger;
+
 			var currentPositionTitle = GPMS.utils.GetUserPositionTitle();
 
-			currentProposalRoles = currentProposalRoles.split(', ');
+			var proposalStatus = config.proposalStatus;
+
+			currentProposalRoles = config.proposalRoles.split(', ');
 
 			if (proposalStatus != ""
-					&& (($.inArray("PI", currentProposalRoles) !== -1 && (submittedByPI == false
-							|| proposalStatus == "Returned by Chair"
-							|| proposalStatus == "Disapproved by Business Manager"
-							|| proposalStatus == "Disapproved by IRB"
-							|| proposalStatus == "Returned by Dean"
-							|| proposalStatus == "Disapproved by Research Administrator" || proposalStatus == "Disapproved by University Research Director")) || (currentPositionTitle == "Research Administrator" && proposalStatus == "Ready for submission"))) {
+					&& (($.inArray("PI", currentProposalRoles) !== -1 && (config.submittedByPI != "SUBMITTED"
+							|| config.chairApproval == "DISAPPROVED"
+							|| config.businessManagerApproval == "DISAPPROVED"
+							|| config.irbapproval == "DISAPPROVED"
+							|| config.deanApproval == "DISAPPROVED"
+							|| config.universityResearchAdministratorApproval == "DISAPPROVED" || config.universityResearchDirectorApproval == "DISAPPROVED")) || (currentPositionTitle == "Research Administrator"
+							&& config.universityResearchAdministratorSubmission != "SUBMITTED" && config.universityResearchDirectorApproval == "APPROVED"))) {
 				$("#btnSubmitProposal").show();
 			} else {
 				$("#btnSubmitProposal").hide();
@@ -1085,13 +1233,12 @@ $(function() {
 					&& ($.inArray("PI", currentProposalRoles) !== -1
 							|| $.inArray("CO-PI", currentProposalRoles) !== -1 || $
 							.inArray("Senior", currentProposalRoles) !== -1)
-					&& (proposalStatus == "Not Submitted by PI"
-							|| proposalStatus == "Waiting for Chair's Approval"
-							|| proposalStatus == "Returned by Chair"
-							|| proposalStatus == "Disapproved by Business Manager"
-							|| proposalStatus == "Disapproved by IRB"
-							|| proposalStatus == "Returned by Dean"
-							|| proposalStatus == "Disapproved by Research Administrator" || proposalStatus == "Disapproved by University Research Director")) {
+					&& (config.submittedByPI != "SUBMITTED"
+							|| config.chairApproval != "APPROVED"
+							|| config.businessManagerApproval == "DISAPPROVED"
+							|| config.irbapproval == "DISAPPROVED"
+							|| config.deanApproval == "DISAPPROVED"
+							|| config.universityResearchAdministratorApproval == "DISAPPROVED" || config.universityResearchDirectorApproval == "DISAPPROVED")) {
 				$("#btnUpdateProposal").show();
 			} else {
 				$("#btnUpdateProposal").hide();
@@ -1103,13 +1250,14 @@ $(function() {
 							function(index, value) {
 								if (proposalStatus != ""
 										&& (($.inArray("PI",
-												currentProposalRoles) !== -1 && (proposalStatus == "Not Submitted by PI"
-												|| proposalStatus == "Waiting for Chair's Approval"
-												|| proposalStatus == "Returned by Chair"
-												|| proposalStatus == "Disapproved by Business Manager"
-												|| proposalStatus == "Disapproved by IRB"
-												|| proposalStatus == "Returned by Dean"
-												|| proposalStatus == "Disapproved by Research Administrator" || proposalStatus == "Disapproved by University Research Director")) || (currentPositionTitle == "University Research Director" && proposalStatus == "Submitted to Research Director"))) {
+												currentProposalRoles) !== -1
+												&& config.deletedByPI != "DELETED" && (config.submittedByPI != "SUBMITTED"
+												|| config.chairApproval == "DISAPPROVED"
+												|| config.businessManagerApproval == "DISAPPROVED"
+												|| config.irbapproval == "DISAPPROVED"
+												|| config.deanApproval == "DISAPPROVED"
+												|| config.universityResearchAdministratorApproval == "DISAPPROVED" || config.universityResearchDirectorApproval == "DISAPPROVED")) || (config.universityResearchDirectorDeletion != "DELETED"
+												&& currentPositionTitle == "University Research Director" && proposalStatus == "Submitted to Research Director"))) {
 									$("#btnDeleteProposal").show();
 								} else {
 									$("#btnDeleteProposal").hide();
@@ -1117,12 +1265,16 @@ $(function() {
 							});
 
 			if (proposalStatus != ""
-					&& ((currentPositionTitle == "Department Chair" && proposalStatus == "Waiting for Chair's Approval")
-							|| (currentPositionTitle == "Business Manager" && (proposalStatus == "Ready for Review" || proposalStatus == "Approved by IRB"))
-							|| (currentPositionTitle == "IRB" && (proposalStatus == "Ready for Review" || proposalStatus == "Reviewed by Business Manager"))
-							|| (currentPositionTitle == "Dean" && (proposalStatus == "Ready for Review"
-									|| proposalStatus == "Reviewed by Business Manager" || proposalStatus == "Approved by IRB"))
-							|| (currentPositionTitle == "Research Administrator" && proposalStatus == "Approved by Dean") || (currentPositionTitle == "University Research Director" && proposalStatus == "Submitted to Research Director"))) {
+					&& ((currentPositionTitle == "Department Chair"
+							&& config.chairApproval == "READYFORAPPROVAL" && config.businessManagerApproval != "READYFORAPPROVAL")
+							|| (currentPositionTitle == "Business Manager"
+									&& config.businessManagerApproval == "READYFORAPPROVAL" && config.deanApproval != "READYFORAPPROVAL")
+							|| (currentPositionTitle == "IRB"
+									&& config.irbapproval == "READYFORAPPROVAL" && config.universityResearchAdministratorApproval != "READYFORAPPROVAL")
+							|| (currentPositionTitle == "Dean"
+									&& config.deanApproval == "READYFORAPPROVAL" && config.universityResearchAdministratorApproval != "READYFORAPPROVAL")
+							|| (currentPositionTitle == "Research Administrator"
+									&& config.universityResearchAdministratorApproval == "READYFORAPPROVAL" && config.universityResearchDirectorApproval != "READYFORAPPROVAL") || (currentPositionTitle == "University Research Director" && config.universityResearchDirectorApproval == "READYFORAPPROVAL"))) {
 				$("#btnApproveProposal").show();
 				$("#btnDisapproveProposal").show();
 			} else {
@@ -1131,14 +1283,16 @@ $(function() {
 			}
 
 			if (proposalStatus != ""
-					&& (currentPositionTitle == "Research Administrator" && proposalStatus == "Approved by Dean")) {
+					&& currentPositionTitle == "Research Administrator"
+					&& config.universityResearchAdministratorApproval == "READYFORAPPROVAL") {
 				$("#btnWithdrawProposal").show();
 			} else {
 				$("#btnWithdrawProposal").hide();
 			}
 
 			if (proposalStatus != ""
-					&& (currentPositionTitle == "University Research Director" && proposalStatus == "Submitted by University Research Administrator")) {
+					&& currentPositionTitle == "University Research Director"
+					&& config.universityResearchAdministratorSubmission == "SUBMITTED") {
 				$("#btnArchiveProposal").show();
 			} else {
 				$("#btnArchiveProposal").hide();
@@ -1148,20 +1302,35 @@ $(function() {
 		EditProposal : function(tblID, argus) {
 			switch (tblID) {
 			case "gdvProposals":
+
+				console.log(argus);
 				// $('#accordion-expand-holder').show();
 				$("#accordion").accordion("option", "active", false);
 
 				$('#lblFormHeading').html(
-						'Edit Proposal Details for: ' + argus[2]);
+						'Edit Proposal Details for: ' + argus[1]);
 
-				$("#lblProposalDateReceived").text(argus[13]);
+				$("#lblProposalDateReceived").text(argus[3]);
 
 				myProposal.ClearForm();
 
-				myProposal.config.proposalRoles = $.trim(argus[24]);
+				myProposal.config.proposalRoles = $.trim(argus[6]);
 				myProposal.config.proposalId = argus[0];
 
-				$("#txtNameOfGrantingAgency").val(argus[6]);
+				myProposal.config.submittedByPI = argus[7];
+				myProposal.config.deletedByPI = argus[8];
+				myProposal.config.chairApproval = argus[9];
+				myProposal.config.businessManagerApproval = argus[10];
+				myProposal.config.irbapproval = argus[11];
+				myProposal.config.deanApproval = argus[12];
+				myProposal.config.universityResearchAdministratorApproval = argus[13];
+				myProposal.config.universityResearchAdministratorWithdraw = argus[14];
+				myProposal.config.universityResearchAdministratorSubmission = argus[15];
+				myProposal.config.universityResearchDirectorArchived = argus[16];
+				myProposal.config.universityResearchDirectorApproval = argus[17];
+				myProposal.config.universityResearchDirectorDeletion = argus[18];
+
+				$("#txtNameOfGrantingAgency").val(argus[2]);
 
 				$("#trSignChair").show();
 				$("#trSignBusinessManager").show();
@@ -1187,18 +1356,16 @@ $(function() {
 				}
 
 				$('#ddlProposalStatus option').length = 0;
-				$('#ddlProposalStatus')
-						.append(new Option(argus[16], argus[16])).prop(
-								'disabled', true);
+				$('#ddlProposalStatus').append(new Option(argus[4], argus[4]))
+						.prop('disabled', true);
 
-				myProposal.config.proposalStatus = argus[16];
+				myProposal.config.proposalStatus = argus[4];
 
-				myProposal.BindUserPositionDetailsForAProposal(argus[23]);
+				myProposal.BindUserPositionDetailsForAProposal(argus[5]);
 
 				myProposal.BindProposalDetailsByProposalId(argus[0]);
 
-				myProposal.ButtonHideShow(myProposal.config.proposalRoles,
-						argus[16], argus[0]);
+				myProposal.ButtonHideShow(myProposal.config);
 
 				// Certification/ Signatures Info
 				myProposal.BindAllSignatureForAProposal(argus[0]);
@@ -2040,7 +2207,8 @@ $(function() {
 		ViewChangeLogs : function(tblID, argus) {
 			switch (tblID) {
 			case "gdvProposals":
-				var proposal_roles = $.trim(argus[5]);
+				console.log(argus);
+				var proposal_roles = $.trim(argus[1]);
 				myProposal.config.proposalId = argus[0];
 				myProposal.config.proposalRoles = proposal_roles;
 				myProposal.config.ajaxCallMode = 16;
@@ -2064,12 +2232,13 @@ $(function() {
 		DeleteProposal : function(tblID, argus) {
 			switch (tblID) {
 			case "gdvProposals":
-				var proposal_roles = $.trim(argus[1]);
-				if (argus[2].toLowerCase() != "yes") {
+				console.log(argus);
+				var proposal_roles = $.trim(argus[2]);
+				if (argus[3].toLowerCase() != "yes") {
 					myProposal.config.ajaxCallMode = 10;
 					myProposal.config.proposalRoles = proposal_roles;
 					myProposal.config.proposalId = argus[0];
-					myProposal.config.proposalStatus = argus[3];
+					myProposal.config.proposalStatus = argus[1];
 					if (proposal_roles != "") {
 						myProposal
 								.CheckUserPermissionWithProposalRoleAndStatus(
