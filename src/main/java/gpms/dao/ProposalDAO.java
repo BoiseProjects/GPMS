@@ -110,25 +110,24 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 
 		boolean isDeleted = false;
 
-		if (!proposal.getDeletedByPI().equals(DeleteType.DELETED)
-				&& (!proposal.getSubmittedByPI().equals(SubmitType.SUBMITTED)
-						|| proposal.getChairApproval().equals(
-								ApprovalType.DISAPPROVED)
-						|| proposal.getBusinessManagerApproval().equals(
-								ApprovalType.DISAPPROVED)
-						|| proposal.getIRBApproval().equals(
-								ApprovalType.DISAPPROVED)
-						|| proposal.getDeanApproval().equals(
-								ApprovalType.DISAPPROVED)
-						|| proposal
-								.getUniversityResearchAdministratorApproval()
-								.equals(ApprovalType.DISAPPROVED) || proposal
-						.getUniversityResearchDirectorApproval().equals(
-								ApprovalType.DISAPPROVED))
+		if ((!proposal.getDeletedByPI().equals(DeleteType.DELETED)
+				|| !proposal.getSubmittedByPI().equals(SubmitType.SUBMITTED)
+				|| proposal.getChairApproval().equals(ApprovalType.DISAPPROVED)
+				|| proposal.getBusinessManagerApproval().equals(
+						ApprovalType.DISAPPROVED)
+				|| proposal.getIRBApproval().equals(ApprovalType.DISAPPROVED)
+				|| proposal.getDeanApproval().equals(ApprovalType.DISAPPROVED)
+				|| proposal.getUniversityResearchAdministratorApproval()
+						.equals(ApprovalType.DISAPPROVED) || proposal
+				.getUniversityResearchDirectorApproval().equals(
+						ApprovalType.DISAPPROVED))
 				&& proposalRoles.equals("PI")
 				&& !proposalUserTitle.equals("University Research Director")) {
 
 			proposal.setDeletedByPI(DeleteType.DELETED);
+
+			proposal.setSubmittedByPI(SubmitType.NOTSUBMITTED);
+			proposal.setBusinessManagerApproval(ApprovalType.NOTREADYFORAPPROVAL);
 
 			// Proposal Status
 			proposal.getProposalStatus().clear();

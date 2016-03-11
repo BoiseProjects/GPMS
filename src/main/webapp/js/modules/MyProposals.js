@@ -970,8 +970,7 @@ $(function() {
 											cssclass : '',
 											controlclass : '',
 											coltype : 'label',
-											align : 'left',
-											hide : true
+											align : 'left'
 										},
 										{
 											display : 'Business Manager Reviewal',
@@ -1248,8 +1247,8 @@ $(function() {
 							function(index, value) {
 								if (proposalStatus != ""
 										&& (($.inArray("PI",
-												currentProposalRoles) !== -1
-												&& config.deletedByPI != "DELETED" && (config.submittedByPI != "SUBMITTED"
+												currentProposalRoles) !== -1 && (config.deletedByPI != "DELETED"
+												|| config.submittedByPI != "SUBMITTED"
 												|| config.chairApproval == "DISAPPROVED"
 												|| config.businessManagerApproval == "DISAPPROVED"
 												|| config.irbapproval == "DISAPPROVED"
