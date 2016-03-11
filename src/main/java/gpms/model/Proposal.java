@@ -1,13 +1,17 @@
 package gpms.model;
 
 import gpms.dao.ProposalDAO;
+import gpms.dao.UserProfileDAO;
 
 import java.io.Serializable;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import org.bson.types.ObjectId;
+import org.mongodb.morphia.Morphia;
 import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Indexed;
@@ -15,6 +19,7 @@ import org.mongodb.morphia.annotations.Property;
 import org.mongodb.morphia.utils.IndexDirection;
 
 import com.google.gson.annotations.Expose;
+import com.mongodb.MongoClient;
 
 @Entity(value = ProposalDAO.COLLECTION_NAME, noClassnameStored = true)
 public class Proposal extends BaseEntity implements Serializable {
@@ -88,13 +93,15 @@ public class Proposal extends BaseEntity implements Serializable {
 	@Embedded("OSPSection info")
 	private OSPSectionInfo oSPSectionInfo = new OSPSectionInfo();
 
-	// @Expose
+//	@Expose
 	@Embedded("signature info")
 	private List<SignatureInfo> signatureInfo = new ArrayList<SignatureInfo>();
 
 	@Expose
 	@Embedded("appendices")
 	private List<Appendix> appendices = new ArrayList<Appendix>();
+	
+	private static final String DBNAME = "db_gpms";
 
 	public Proposal() {
 	}
@@ -399,6 +406,92 @@ public class Proposal extends BaseEntity implements Serializable {
 		} else if (!universityCommitments.equals(other.universityCommitments))
 			return false;
 		return true;
+	}
+	
+	/**
+	 * This method will check the signatures for the proposal.
+	 * It will first find all the supervisory personnel that SHOULD be signing
+	 * the proposal (based on PI, COPI, Senior Personnel -their supervisory personnel-)
+	 * Then it will find out if the appropriate number has signed
+	 * ie: if between the Pi, CoPi, and SP, there are 4 department chairs,
+	 * we need to know that 4 department chairs have signed.
+	 * @param1 the ID of the proposal we need to query for
+	 * @param2 the position title we want to check
+	 * @return true if all required signatures exist
+	 * @throws UnknownHostException 
+	 */
+	public boolean getSignedStatus(String posTitle) throws UnknownHostException
+	{
+		Morphia morphia = new Morphia();
+		//1st Get the Proposal, then get the Pi, CoPi and SP attached to it
+
+		List<InvestigatorRefAndPosition> invList =  this.getInvestigatorInfo().getAllInvList();
+		ArrayList<UserProfile> supervisorsList = new ArrayList<UserProfile>();
+		//For each person on this list, get their supervisory personnel, and add them to a list, 
+		//but avoid duplicate entries.
+		UserProfileDAO getSupersDAO = new UserProfileDAO(new MongoClient(), morphia, DBNAME);
+		
+		String departmentQuery="";
+		
+		//For each investigator (pi, copi, sp) in the list of them...
+		//get their department, then from that department, get the desired position title (chair, dean, etc...)
+		//and add those supervisors to the list
+		//This may result in duplicate entries being added to the list but we will handle this with a nest for loop
+		//Hopefully this does not result in a giant run time
+		ArrayList<ObjectId> idList = new ArrayList<ObjectId>();
+		for(InvestigatorRefAndPosition query : invList)
+		{
+			departmentQuery = query.getDepartment();
+			List<UserProfile> tempList = getSupersDAO.getSupervisoryPersonnelByTitle(posTitle, departmentQuery);
+			for(UserProfile profs : tempList)
+			{
+				if(!idList.contains(profs.getId()))
+				{
+					supervisorsList.add(profs);
+				}
+			}
+		}
+		
+		int sigCount = 0;
+		boolean isSigned = true;
+		//For all the supervisors on the list, we need to get their status as signed or not signed.
+		String department, pType, pTitle, college;
+		ObjectId supID;
+		List<SignatureInfo> checkSigs = this.getSignatureInfo();
+
+		//2nd Find out all of their supervisory personnel
+		for(UserProfile supervisor : supervisorsList)
+		{
+			for(SignatureInfo thisSig : checkSigs)
+			{
+				if(!thisSig.getUserProfileId().toString().equals(supervisor.getId().toString()))
+				{
+					isSigned = false;
+				}
+				if(!thisSig.getPositionTitle().equals(posTitle))
+				{
+					isSigned = false;
+				}
+
+				if(isSigned)
+				{
+					sigCount++;
+				}
+			}
+
+		}
+		
+		//3rd Evaluate if these personnel have "signed" the proposal
+		
+		if(sigCount == checkSigs.size())
+		{
+			return true;
+		}else
+		{
+			return false;	
+		}
+		
+		
 	}
 
 }
