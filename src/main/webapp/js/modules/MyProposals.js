@@ -1208,8 +1208,6 @@ $(function() {
 			$("#btnWithdrawProposal").hide();
 			$("#btnArchiveProposal").hide();
 
-			debugger;
-
 			var currentPositionTitle = GPMS.utils.GetUserPositionTitle();
 
 			var proposalStatus = config.proposalStatus;
