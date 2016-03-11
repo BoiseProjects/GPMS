@@ -752,7 +752,7 @@ public class Proposal extends BaseEntity implements Serializable {
 
 	public boolean checkIRBReviewRequired() {
 		// TODO to check IRB Review Required based on the variables
-		boolean IRBReviewRequired = false;
+		boolean IRBReviewRequired = true;
 		return IRBReviewRequired;
 	}
 

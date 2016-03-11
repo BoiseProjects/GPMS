@@ -978,8 +978,7 @@ $(function() {
 											cssclass : '',
 											controlclass : '',
 											coltype : 'label',
-											align : 'left',
-											hide : true
+											align : 'left'
 										},
 										// END
 
@@ -1077,8 +1076,7 @@ $(function() {
 											cssclass : '',
 											controlclass : '',
 											coltype : 'label',
-											align : 'left',
-											hide : true
+											align : 'left'
 										},
 										{
 											display : 'Dean Approval',
