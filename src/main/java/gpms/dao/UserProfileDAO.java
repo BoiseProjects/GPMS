@@ -707,6 +707,55 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 		return profileQuery.get();
 	}
 
+	public List<InvestigatorUsersAndPositions> findCurrentPositionDetailsForPI(
+			ObjectId id, String userCollege, String userDepartment,
+			String userPositionType, String userPositionTitle) {
+		Datastore ds = getDatastore();
+		List<InvestigatorUsersAndPositions> userPositions = new ArrayList<InvestigatorUsersAndPositions>();
+
+		Query<UserProfile> q = ds
+				.createQuery(UserProfile.class)
+				.field("_id")
+				.equal(id)
+				.retrievedFields(true, "_id", "first name", "middle name",
+						"last name", "details", "mobile number");
+		List<UserProfile> userProfile = q.asList();
+
+		for (UserProfile user : userProfile) {
+			Multimap<String, Object> htUser = ArrayListMultimap.create();
+
+			InvestigatorUsersAndPositions userPosition = new InvestigatorUsersAndPositions();
+			userPosition.setId(user.getId().toString());
+			userPosition.setFullName(user.getFullName());
+			userPosition.setMobileNumber(user.getMobileNumbers().get(0));
+
+			for (PositionDetails userDetails : user.getDetails()) {
+				Multimap<String, Object> mapTypeTitle = ArrayListMultimap
+						.create();
+				Multimap<String, Object> mapDeptType = ArrayListMultimap
+						.create();
+				String college = userDetails.getCollege();
+				String department = userDetails.getDepartment();
+				String positionType = userDetails.getPositionType();
+				String positionTitle = userDetails.getPositionTitle();
+
+				if (college.equals(userCollege)
+						&& department.equals(userDepartment)
+						&& positionType.equals(userPositionType)
+						&& positionTitle.equals(userPositionTitle)) {
+
+					mapTypeTitle.put(positionType, positionTitle);
+					mapDeptType.put(department, mapTypeTitle.asMap());
+
+					htUser.put(college, mapDeptType.asMap());
+					userPosition.setPositions(htUser);
+				}
+			}
+			userPositions.add(userPosition);
+		}
+		return userPositions;
+	}
+
 	public List<InvestigatorUsersAndPositions> findAllPositionDetailsForAUser(
 			ObjectId id) {
 		Datastore ds = getDatastore();

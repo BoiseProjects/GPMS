@@ -2935,6 +2935,29 @@ $(function() {
 			return false;
 		},
 
+		BindCurrentDetailsForPI : function(userId) {
+			if (userId != null) {
+				var doExists = false;
+				$.each(positionsDetails, function(item, value) {
+					if (value.id == userId) {
+						doExists = true;
+						return false;
+					}
+				});
+
+				if (!doExists) {
+					this.config.url = this.config.rootURL + "users/"
+							+ "GetCurrentPositionDetailsForPI";
+					this.config.data = JSON2.stringify({
+						gpmsCommonObj : gpmsCommonObj()
+					});
+					this.config.ajaxCallMode = 18;
+					this.ajaxCall(this.config);
+				}
+			}
+			return false;
+		},
+
 		BindAllPositionDetailsForAUser : function(userId) {
 			if (userId != null) {
 				var doExists = false;
@@ -3522,7 +3545,11 @@ $(function() {
 						GPMS.utils.GetUserProfileID()).prop('selected',
 						'selected').prop('disabled', 'disabled');
 
+				// TODO for admin this need to be not set!
+				myProposal.BindCurrentDetailsForPI(GPMS.utils
+						.GetUserProfileID());
 				myProposal.BindDefaultUserPosition(0);
+
 				myProposal.BindPICoPISignatures();
 
 				$('#divProposalGrid').hide();
@@ -3592,6 +3619,16 @@ $(function() {
 				csscody.alert("<h2>" + 'Information Message' + "</h2><p>"
 						+ 'No Record found!' + "</p>");
 			}
+			break;
+
+		case 18:
+			positionsDetails = [];
+			$.merge(positionsDetails, msg);
+			$('select[name="ddlCollege"]').get(rowIndex).options.length = 0;
+			$('select[name="ddlDepartment"]').get(rowIndex).options.length = 0;
+			$('select[name="ddlPositionType"]').get(rowIndex).options.length = 0;
+			$('select[name="ddlPositionTitle"]').get(rowIndex).options.length = 0;
+			$('input[name="txtPhoneNo"]').eq(rowIndex).val('');
 			break;
 
 		}
@@ -4084,12 +4121,19 @@ $(function() {
 				// $("#accordion").accordion("option", "active", 0);
 			});
 
-			$('#btnReset').on("click", function() {
-				myProposal.ClearForm();
-				myProposal.BindDefaultUserPosition(0);
-				myProposal.BindPICoPISignatures();
-				// $("#accordion").accordion("option", "active", 0);
-			});
+			$('#btnReset').on(
+					"click",
+					function() {
+						myProposal.ClearForm();
+
+						// TODO for admin this need to be not set!
+						myProposal.BindCurrentDetailsForPI(GPMS.utils
+								.GetUserProfileID());
+						myProposal.BindDefaultUserPosition(0);
+
+						myProposal.BindPICoPISignatures();
+						// $("#accordion").accordion("option", "active", 0);
+					});
 
 			// Save As Draft
 			$('#btnSaveProposal').click(function(e) {

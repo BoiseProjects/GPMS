@@ -1822,6 +1822,63 @@ public class UserService {
 	}
 
 	@POST
+	@Path("/GetCurrentPositionDetailsForPI")
+	public String getCurrentPositionDetailsForPI(String message)
+			throws UnknownHostException, JsonProcessingException, IOException {
+
+		ObjectMapper mapper = new ObjectMapper();
+		JsonNode root = mapper.readTree(message);
+
+		String userProfileID = new String();
+		@SuppressWarnings("unused")
+		String userName = new String();
+		@SuppressWarnings("unused")
+		Boolean userIsAdmin = false;
+		String userCollege = new String();
+		String userDepartment = new String();
+		String userPositionType = new String();
+		String userPositionTitle = new String();
+
+		if (root != null && root.has("gpmsCommonObj")) {
+			JsonNode commonObj = root.get("gpmsCommonObj");
+			if (commonObj != null && commonObj.has("UserProfileID")) {
+				userProfileID = commonObj.get("UserProfileID").textValue();
+			}
+			if (commonObj != null && commonObj.has("UserName")) {
+				userName = commonObj.get("UserName").textValue();
+			}
+			if (commonObj != null && commonObj.has("UserIsAdmin")) {
+				userIsAdmin = Boolean.parseBoolean(commonObj.get("UserIsAdmin")
+						.textValue());
+			}
+			if (commonObj != null && commonObj.has("UserCollege")) {
+				userCollege = commonObj.get("UserCollege").textValue();
+			}
+			if (commonObj != null && commonObj.has("UserDepartment")) {
+				userDepartment = commonObj.get("UserDepartment").textValue();
+			}
+			if (commonObj != null && commonObj.has("UserPositionType")) {
+				userPositionType = commonObj.get("UserPositionType")
+						.textValue();
+			}
+			if (commonObj != null && commonObj.has("UserPositionTitle")) {
+				userPositionTitle = commonObj.get("UserPositionTitle")
+						.textValue();
+			}
+		}
+
+		ObjectId id = new ObjectId(userProfileID);
+
+		final MultimapAdapter multimapAdapter = new MultimapAdapter();
+		final Gson gson = new GsonBuilder().setPrettyPrinting()
+				.registerTypeAdapter(Multimap.class, multimapAdapter).create();
+
+		return gson.toJson(userProfileDAO.findCurrentPositionDetailsForPI(id,
+				userCollege, userDepartment, userPositionType,
+				userPositionTitle));
+	}
+
+	@POST
 	@Path("/GetAllPositionDetailsForAUser")
 	public String getAllPositionDetailsForAUser(String message)
 			throws UnknownHostException, JsonProcessingException, IOException {
