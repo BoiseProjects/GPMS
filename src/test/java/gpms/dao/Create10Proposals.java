@@ -148,18 +148,18 @@ public class Create10Proposals {
 			int sponsorChoice = rand.nextInt(2);
 
 			if (sponsorChoice == 0) {
-				newSandBud.addGrantingAgency("NSF");
-				newSandBud.addGrantingAgency("NASA");
+				newSandBud.getGrantingAgency().add("NSF");
+				newSandBud.getGrantingAgency().add("NASA");
 			}
 			if (sponsorChoice == 1) {
-				newSandBud.addGrantingAgency("Idaho STEM Grant");
-				newSandBud.addGrantingAgency("BSU");
+				newSandBud.getGrantingAgency().add("Idaho STEM Grant");
+				newSandBud.getGrantingAgency().add("BSU");
 			}
 
 			newSandBud.setDirectCosts(1000.00);
 			newSandBud.setTotalCosts(21000.00);
-			newSandBud.setFACosts(1000.00);
-			newSandBud.setFARate(10.00);
+			newSandBud.setFaCosts(1000.00);
+			newSandBud.setFaRate(10.00);
 
 			newProposal.setSponsorAndBudgetInfo(newSandBud);
 
@@ -193,7 +193,7 @@ public class Create10Proposals {
 			newProjInf.setTypeOfRequest(newTR);
 
 			ProjectType newPT = new ProjectType();
-			newPT.setIsResearchApplied(true);
+			newPT.setResearchApplied(true);
 			newProjInf.setProjectType(newPT);
 
 			c.add(Calendar.DATE, 60); // Adding 60 days

@@ -185,7 +185,7 @@ public class Create10UsersTest {
 		newDetails.setPositionTitle(fourthList.get(choice4));
 
 		if (theProfile.getDetails().size() == 1) {
-			newDetails.setDefault(true);
+			newDetails.setAsDefault(true);
 		}
 		theProfile.getDetails().add(newDetails);
 	}
