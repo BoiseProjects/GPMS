@@ -98,13 +98,13 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 		Query<UserProfile> profileQuery = ds.createQuery(UserProfile.class);
 		Query<UserAccount> accountQuery = ds.createQuery(UserAccount.class);
 
-		accountQuery.and(accountQuery.criteria("is deleted").equal(false),
-				accountQuery.criteria("is active").equal(true));
+		accountQuery.and(accountQuery.criteria("deleted").equal(false),
+				accountQuery.criteria("active").equal(true));
 		profileQuery.and(
 				profileQuery.criteria("details").notEqual(null),
 				profileQuery.and(profileQuery.criteria("user id").in(
 						accountQuery.asKeyList())),
-				profileQuery.criteria("is deleted").equal(false));
+				profileQuery.criteria("deleted").equal(false));
 
 		return profileQuery.retrievedFields(true, "_id", "first name",
 				"middle name", "last name").asList();
@@ -129,7 +129,7 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 		}
 
 		if (isActive != null) {
-			accountQuery.criteria("is active").equal(isActive);
+			accountQuery.criteria("active").equal(isActive);
 		}
 
 		profileQuery.criteria("user id").in(accountQuery.asKeyList());
@@ -226,7 +226,7 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 		}
 
 		if (isActive != null) {
-			accountQuery.criteria("is active").equal(isActive);
+			accountQuery.criteria("active").equal(isActive);
 		}
 
 		profileQuery.criteria("user id").in(accountQuery.asKeyList());
@@ -490,14 +490,14 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 	private int countPIProposal(UserProfile userProfile) {
 		Datastore ds = getDatastore();
 		return ds.createQuery(Proposal.class)
-				.field("investigator info.PI.user profile").equal(userProfile)
+				.field("investigator info.pi.user profile").equal(userProfile)
 				.asList().size();
 	}
 
 	private int countCoPIProposal(UserProfile userProfile) {
 		Datastore ds = getDatastore();
 		return ds.createQuery(Proposal.class)
-				.field("investigator info.CO-PI.user profile")
+				.field("investigator info.co_pi.user profile")
 				.equal(userProfile).asList().size();
 	}
 
@@ -794,10 +794,10 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 
 		Query<UserAccount> accountQuery = ds.createQuery(UserAccount.class);
 
-		accountQuery.and(accountQuery.criteria("is deleted").equal(false),
-				accountQuery.criteria("is active").equal(true), accountQuery
+		accountQuery.and(accountQuery.criteria("deleted").equal(false),
+				accountQuery.criteria("active").equal(true), accountQuery
 						.criteria("username").equal(userName), accountQuery
-						.criteria("is admin").equal(isAdminUser));
+						.criteria("admin").equal(isAdminUser));
 
 		Query<UserProfile> profileQuery = ds.createQuery(UserProfile.class)
 				.retrievedFields(true, "_id", "user id", "details.college",
@@ -808,7 +808,7 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 					profileQuery.criteria("_id").equal(id),
 					profileQuery.and(profileQuery.criteria("user id").in(
 							accountQuery.asKeyList())),
-					profileQuery.criteria("is deleted").equal(false));
+					profileQuery.criteria("deleted").equal(false));
 
 		} else {
 			profileQuery.and(
@@ -822,7 +822,7 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 					profileQuery.criteria("details.positionType").equal(
 							positionType),
 					profileQuery.criteria("details.positionTitle").equal(
-							positionTitle), profileQuery.criteria("is deleted")
+							positionTitle), profileQuery.criteria("deleted")
 							.equal(false));
 		}
 
@@ -837,27 +837,27 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 
 		Query<Proposal> proposalQuery = ds.createQuery(Proposal.class);
 		proposalQuery.or(proposalQuery.and(
-				proposalQuery.criteria("investigator info.PI.user profile id")
+				proposalQuery.criteria("investigator info.pi.user profile id")
 						.equal(userProfileId),
-				proposalQuery.criteria("investigator info.PI.college").equal(
+				proposalQuery.criteria("investigator info.pi.college").equal(
 						college),
-				proposalQuery.criteria("investigator info.PI.department")
+				proposalQuery.criteria("investigator info.pi.department")
 						.equal(department),
-				proposalQuery.criteria("investigator info.PI.position type")
+				proposalQuery.criteria("investigator info.pi.position type")
 						.equal(positionType),
-				proposalQuery.criteria("investigator info.PI.position title")
+				proposalQuery.criteria("investigator info.pi.position title")
 						.equal(positionTitle)), proposalQuery.and(
 				proposalQuery.criteria(
-						"investigator info.CO-PI.user profile id").equal(
+						"investigator info.co_pi.user profile id").equal(
 						userProfileId),
-				proposalQuery.criteria("investigator info.CO-PI.college")
+				proposalQuery.criteria("investigator info.co_pi.college")
 						.equal(college),
-				proposalQuery.criteria("investigator info.CO-PI.department")
+				proposalQuery.criteria("investigator info.co_pi.department")
 						.equal(department),
-				proposalQuery.criteria("investigator info.CO-PI.position type")
+				proposalQuery.criteria("investigator info.co_pi.position type")
 						.equal(positionType),
 				proposalQuery
-						.criteria("investigator info.CO-PI.position title")
+						.criteria("investigator info.co_pi.position title")
 						.equal(positionTitle)), proposalQuery.and(
 				proposalQuery.criteria(
 						"investigator info.senior personnel.user profile id")
@@ -880,31 +880,31 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 		proposalQuery = ds.createQuery(Proposal.class);
 
 		proposalQuery.and(
-				proposalQuery.criteria("investigator info.PI.user profile id")
+				proposalQuery.criteria("investigator info.pi.user profile id")
 						.equal(userProfileId),
-				proposalQuery.criteria("investigator info.PI.college").equal(
+				proposalQuery.criteria("investigator info.pi.college").equal(
 						college),
-				proposalQuery.criteria("investigator info.PI.department")
+				proposalQuery.criteria("investigator info.pi.department")
 						.equal(department),
-				proposalQuery.criteria("investigator info.PI.position type")
+				proposalQuery.criteria("investigator info.pi.position type")
 						.equal(positionType),
-				proposalQuery.criteria("investigator info.PI.position title")
+				proposalQuery.criteria("investigator info.pi.position title")
 						.equal(positionTitle));
 		userProposalCount.setPiCount(proposalQuery.asList().size());
 
 		proposalQuery = ds.createQuery(Proposal.class);
 		proposalQuery.and(
 				proposalQuery.criteria(
-						"investigator info.CO-PI.user profile id").equal(
+						"investigator info.co_pi.user profile id").equal(
 						userProfileId),
-				proposalQuery.criteria("investigator info.CO-PI.college")
+				proposalQuery.criteria("investigator info.co_pi.college")
 						.equal(college),
-				proposalQuery.criteria("investigator info.CO-PI.department")
+				proposalQuery.criteria("investigator info.co_pi.department")
 						.equal(department),
-				proposalQuery.criteria("investigator info.CO-PI.position type")
+				proposalQuery.criteria("investigator info.co_pi.position type")
 						.equal(positionType),
 				proposalQuery
-						.criteria("investigator info.CO-PI.position title")
+						.criteria("investigator info.co_pi.position title")
 						.equal(positionTitle));
 		userProposalCount.setCoPICount(proposalQuery.asList().size());
 

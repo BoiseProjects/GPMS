@@ -453,7 +453,7 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 		if (usernameBy != null) {
 			// accountQuery.field("username").containsIgnoreCase(usernameBy);
 			// profileQuery.criteria("user id").in(accountQuery.asKeyList());
-			// proposalQuery.criteria("investigator info.PI.user profile").in(
+			// proposalQuery.criteria("investigator info.pi.user profile").in(
 			// profileQuery.asKeyList());
 			profileQuery.or(
 					profileQuery.criteria("first name").containsIgnoreCase(
@@ -464,12 +464,12 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 			if (userRole != null) {
 				switch (userRole) {
 				case "PI":
-					proposalQuery.criteria("investigator info.PI.user profile")
+					proposalQuery.criteria("investigator info.pi.user profile")
 							.in(profileQuery.asKeyList());
 					break;
 				case "CO-PI":
 					proposalQuery.criteria(
-							"investigator info.CO-PI.user profile").in(
+							"investigator info.co_pi.user profile").in(
 							profileQuery.asKeyList());
 					break;
 
@@ -485,10 +485,10 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 			} else {
 				proposalQuery
 						.or(proposalQuery.criteria(
-								"investigator info.PI.user profile").in(
+								"investigator info.pi.user profile").in(
 								profileQuery.asKeyList()),
 								proposalQuery.criteria(
-										"investigator info.CO-PI.user profile")
+										"investigator info.co_pi.user profile")
 										.in(profileQuery.asKeyList()),
 								proposalQuery
 										.criteria(
@@ -719,10 +719,10 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 			if (positionTitle.equals("Dean")
 					|| positionTitle.equals("Associate Dean")) {
 				proposalQuery.or(
-						proposalQuery.criteria("investigator info.PI.college")
+						proposalQuery.criteria("investigator info.pi.college")
 								.equal(college),
 						proposalQuery.criteria(
-								"investigator info.CO-PI.college").equal(
+								"investigator info.co_pi.college").equal(
 								college),
 						proposalQuery.criteria(
 								"investigator info.senior personnel.college")
@@ -736,11 +736,11 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 				proposalQuery
 						.and(proposalQuery
 								.or(proposalQuery.criteria(
-										"investigator info.PI.college").equal(
+										"investigator info.pi.college").equal(
 										college),
 										proposalQuery
 												.criteria(
-														"investigator info.CO-PI.college")
+														"investigator info.co_pi.college")
 												.equal(college),
 										proposalQuery
 												.criteria(
@@ -749,11 +749,11 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 								proposalQuery
 										.or(proposalQuery
 												.criteria(
-														"investigator info.PI.department")
+														"investigator info.pi.department")
 												.equal(department),
 												proposalQuery
 														.criteria(
-																"investigator info.CO-PI.department")
+																"investigator info.co_pi.department")
 														.equal(department),
 												proposalQuery
 														.criteria(
@@ -763,40 +763,40 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 				proposalQuery
 						.or(proposalQuery.and(
 								proposalQuery.criteria(
-										"investigator info.PI.user profile id")
+										"investigator info.pi.user profile id")
 										.equal(userId),
 								proposalQuery.criteria(
-										"investigator info.PI.college").equal(
+										"investigator info.pi.college").equal(
 										college),
 								proposalQuery.criteria(
-										"investigator info.PI.department")
+										"investigator info.pi.department")
 										.equal(department),
 								proposalQuery.criteria(
-										"investigator info.PI.position type")
+										"investigator info.pi.position type")
 										.equal(positionType),
 								proposalQuery.criteria(
-										"investigator info.PI.position title")
+										"investigator info.pi.position title")
 										.equal(positionTitle)),
 								proposalQuery
 										.and(proposalQuery
 												.criteria(
-														"investigator info.CO-PI.user profile id")
+														"investigator info.co_pi.user profile id")
 												.equal(userId),
 												proposalQuery
 														.criteria(
-																"investigator info.CO-PI.college")
+																"investigator info.co_pi.college")
 														.equal(college),
 												proposalQuery
 														.criteria(
-																"investigator info.CO-PI.department")
+																"investigator info.co_pi.department")
 														.equal(department),
 												proposalQuery
 														.criteria(
-																"investigator info.CO-PI.position type")
+																"investigator info.co_pi.position type")
 														.equal(positionType),
 												proposalQuery
 														.criteria(
-																"investigator info.CO-PI.position title")
+																"investigator info.co_pi.position title")
 														.equal(positionTitle)),
 								proposalQuery
 										.and(proposalQuery
@@ -834,12 +834,12 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 			if (userRole != null) {
 				switch (userRole) {
 				case "PI":
-					proposalQuery.criteria("investigator info.PI.user profile")
+					proposalQuery.criteria("investigator info.pi.user profile")
 							.in(profileQuery.asKeyList());
 					break;
 				case "CO-PI":
 					proposalQuery.criteria(
-							"investigator info.CO-PI.user profile").in(
+							"investigator info.co_pi.user profile").in(
 							profileQuery.asKeyList());
 					break;
 
@@ -855,10 +855,10 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 			} else {
 				proposalQuery
 						.or(proposalQuery.criteria(
-								"investigator info.PI.user profile").in(
+								"investigator info.pi.user profile").in(
 								profileQuery.asKeyList()),
 								proposalQuery.criteria(
-										"investigator info.CO-PI.user profile")
+										"investigator info.co_pi.user profile")
 										.in(profileQuery.asKeyList()),
 								proposalQuery
 										.criteria(
@@ -868,12 +868,12 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 		} else if (usernameBy == null && userRole != null) {
 			switch (userRole) {
 			case "PI":
-				proposalQuery.criteria("investigator info.PI.user profile id")
+				proposalQuery.criteria("investigator info.pi.user profile id")
 						.equal(userId);
 				break;
 			case "CO-PI":
 				proposalQuery.criteria(
-						"investigator info.CO-PI.user profile id")
+						"investigator info.co_pi.user profile id")
 						.equal(userId);
 				break;
 
@@ -1122,10 +1122,10 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 			if (positionTitle.equals("Dean")
 					|| positionTitle.equals("Associate Dean")) {
 				proposalQuery.or(
-						proposalQuery.criteria("investigator info.PI.college")
+						proposalQuery.criteria("investigator info.pi.college")
 								.equal(college),
 						proposalQuery.criteria(
-								"investigator info.CO-PI.college").equal(
+								"investigator info.co_pi.college").equal(
 								college),
 						proposalQuery.criteria(
 								"investigator info.senior personnel.college")
@@ -1138,11 +1138,11 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 				proposalQuery
 						.and(proposalQuery
 								.or(proposalQuery.criteria(
-										"investigator info.PI.college").equal(
+										"investigator info.pi.college").equal(
 										college),
 										proposalQuery
 												.criteria(
-														"investigator info.CO-PI.college")
+														"investigator info.co_pi.college")
 												.equal(college),
 										proposalQuery
 												.criteria(
@@ -1151,11 +1151,11 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 								proposalQuery
 										.or(proposalQuery
 												.criteria(
-														"investigator info.PI.department")
+														"investigator info.pi.department")
 												.equal(department),
 												proposalQuery
 														.criteria(
-																"investigator info.CO-PI.department")
+																"investigator info.co_pi.department")
 														.equal(department),
 												proposalQuery
 														.criteria(
@@ -1165,40 +1165,40 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 				proposalQuery
 						.or(proposalQuery.and(
 								proposalQuery.criteria(
-										"investigator info.PI.user profile id")
+										"investigator info.pi.user profile id")
 										.equal(userId),
 								proposalQuery.criteria(
-										"investigator info.PI.college").equal(
+										"investigator info.pi.college").equal(
 										college),
 								proposalQuery.criteria(
-										"investigator info.PI.department")
+										"investigator info.pi.department")
 										.equal(department),
 								proposalQuery.criteria(
-										"investigator info.PI.position type")
+										"investigator info.pi.position type")
 										.equal(positionType),
 								proposalQuery.criteria(
-										"investigator info.PI.position title")
+										"investigator info.pi.position title")
 										.equal(positionTitle)),
 								proposalQuery
 										.and(proposalQuery
 												.criteria(
-														"investigator info.CO-PI.user profile id")
+														"investigator info.co_pi.user profile id")
 												.equal(userId),
 												proposalQuery
 														.criteria(
-																"investigator info.CO-PI.college")
+																"investigator info.co_pi.college")
 														.equal(college),
 												proposalQuery
 														.criteria(
-																"investigator info.CO-PI.department")
+																"investigator info.co_pi.department")
 														.equal(department),
 												proposalQuery
 														.criteria(
-																"investigator info.CO-PI.position type")
+																"investigator info.co_pi.position type")
 														.equal(positionType),
 												proposalQuery
 														.criteria(
-																"investigator info.CO-PI.position title")
+																"investigator info.co_pi.position title")
 														.equal(positionTitle)),
 								proposalQuery
 										.and(proposalQuery
@@ -1236,12 +1236,12 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 			if (userRole != null) {
 				switch (userRole) {
 				case "PI":
-					proposalQuery.criteria("investigator info.PI.user profile")
+					proposalQuery.criteria("investigator info.pi.user profile")
 							.in(profileQuery.asKeyList());
 					break;
 				case "CO-PI":
 					proposalQuery.criteria(
-							"investigator info.CO-PI.user profile").in(
+							"investigator info.co_pi.user profile").in(
 							profileQuery.asKeyList());
 					break;
 
@@ -1257,10 +1257,10 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 			} else {
 				proposalQuery
 						.or(proposalQuery.criteria(
-								"investigator info.PI.user profile").in(
+								"investigator info.pi.user profile").in(
 								profileQuery.asKeyList()),
 								proposalQuery.criteria(
-										"investigator info.CO-PI.user profile")
+										"investigator info.co_pi.user profile")
 										.in(profileQuery.asKeyList()),
 								proposalQuery
 										.criteria(
@@ -1270,12 +1270,12 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 		} else if (usernameBy == null && userRole != null) {
 			switch (userRole) {
 			case "PI":
-				proposalQuery.criteria("investigator info.PI.user profile id")
+				proposalQuery.criteria("investigator info.pi.user profile id")
 						.equal(userId);
 				break;
 			case "CO-PI":
 				proposalQuery.criteria(
-						"investigator info.CO-PI.user profile id")
+						"investigator info.co_pi.user profile id")
 						.equal(userId);
 				break;
 
