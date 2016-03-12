@@ -1005,27 +1005,27 @@ $(function() {
 			$("#txtProjectTitle").val(response.projectInfo.projectTitle).prop(
 					"disabled", "disabled");
 
-			if (response.projectInfo.projectType.isResearchBasic) {
+			if (response.projectInfo.projectType.researchBasic) {
 				$("#ddlProjectType").val(1);
-			} else if (response.projectInfo.projectType.isResearchApplied) {
+			} else if (response.projectInfo.projectType.researchApplied) {
 				$("#ddlProjectType").val(2);
-			} else if (response.projectInfo.projectType.isResearchDevelopment) {
+			} else if (response.projectInfo.projectType.researchDevelopment) {
 				$("#ddlProjectType").val(3);
-			} else if (response.projectInfo.projectType.isInstruction) {
+			} else if (response.projectInfo.projectType.instruction) {
 				$("#ddlProjectType").val(4);
-			} else if (response.projectInfo.projectType.isOtherSponsoredActivity) {
+			} else if (response.projectInfo.projectType.otherSponsoredActivity) {
 				$("#ddlProjectType").val(5);
 			} else {
 				$("#ddlProjectType").prop("selectedIndex", 0);
 			}
 
-			if (response.projectInfo.typeOfRequest.isPreProposal) {
+			if (response.projectInfo.typeOfRequest.preProposal) {
 				$("#ddlTypeOfRequest").val(1);
-			} else if (response.projectInfo.typeOfRequest.isNewProposal) {
+			} else if (response.projectInfo.typeOfRequest.newProposal) {
 				$("#ddlTypeOfRequest").val(2);
-			} else if (response.projectInfo.typeOfRequest.isContinuation) {
+			} else if (response.projectInfo.typeOfRequest.continuation) {
 				$("#ddlTypeOfRequest").val(3);
-			} else if (response.projectInfo.typeOfRequest.isSupplement) {
+			} else if (response.projectInfo.typeOfRequest.supplement) {
 				$("#ddlTypeOfRequest").val(4);
 			} else {
 				$("#ddlTypeOfRequest").prop("selectedIndex", 0);
@@ -1056,11 +1056,11 @@ $(function() {
 			$("#txtDirectCosts").autoNumeric('set',
 					response.sponsorAndBudgetInfo.directCosts);
 			$("#txtFACosts").autoNumeric('set',
-					response.sponsorAndBudgetInfo.FACosts);
+					response.sponsorAndBudgetInfo.faCosts);
 			$("#txtTotalCosts").autoNumeric('set',
 					response.sponsorAndBudgetInfo.totalCosts);
 			$("#txtFARate").autoNumeric('set',
-					response.sponsorAndBudgetInfo.FARate);
+					response.sponsorAndBudgetInfo.faRate);
 
 			// Cost Share Information
 			if (response.costShareInfo.institutionalCommitted) {
@@ -1148,13 +1148,13 @@ $(function() {
 				$("#lblUseHumanSubjects").show();
 				$("#tdHumanSubjectsOption").show();
 				$("#tdIRBOption").show();
-				if (response.complianceInfo.IRBPending) {
+				if (response.complianceInfo.irbPending) {
 					$("#ddlIRBOptions").val(2);
 					$("#tdIRBtxt").hide();
-				} else if (!response.complianceInfo.IRBPending
-						&& response.complianceInfo.IRB != "") {
+				} else if (!response.complianceInfo.irbPending
+						&& response.complianceInfo.irb != "") {
 					$("#ddlIRBOptions").val(1);
-					$("#txtIRB").val(response.complianceInfo.IRB);
+					$("#txtIRB").val(response.complianceInfo.irb);
 					$("#tdIRBtxt").show();
 				}
 			} else if (!response.complianceInfo.involveUseOfHumanSubjects) {
@@ -1176,13 +1176,13 @@ $(function() {
 				$("#lblUseVertebrateAnimals").show();
 				$("#tdVertebrateAnimalsOption").show();
 				$("#tdIACUCOption").show();
-				if (response.complianceInfo.IACUCPending) {
+				if (response.complianceInfo.iacucPending) {
 					$("#ddlIACUCOptions").val(2);
 					$("#tdIACUCtxt").hide();
-				} else if (!response.complianceInfo.IACUCPending
-						&& response.complianceInfo.IACUC != "") {
+				} else if (!response.complianceInfo.iacucPending
+						&& response.complianceInfo.iacuc != "") {
 					$("#ddlIACUCOptions").val(1);
-					$("#txtIACUC").val(response.complianceInfo.IACUC);
+					$("#txtIACUC").val(response.complianceInfo.iacuc);
 					$("#tdIACUCtxt").show();
 				}
 			} else if (!response.complianceInfo.involveUseOfVertebrateAnimals) {
@@ -1204,13 +1204,13 @@ $(function() {
 				$("#lblHasBiosafetyConcerns").show();
 				$("#tdBiosafetyOption").show();
 				$("#tdIBCOption").show();
-				if (response.complianceInfo.IBCPending) {
+				if (response.complianceInfo.ibcPending) {
 					$("#ddlIBCOptions").val(2);
 					$("#tdIBCtxt").hide();
-				} else if (!response.complianceInfo.IBCPending
-						&& response.complianceInfo.IBC != "") {
+				} else if (!response.complianceInfo.ibcPending
+						&& response.complianceInfo.ibc != "") {
 					$("#ddlIBCOptions").val(1);
-					$("#txtIBC").val(response.complianceInfo.IBC);
+					$("#txtIBC").val(response.complianceInfo.ibc);
 					$("#tdIBCtxt").show();
 				}
 			} else if (!response.complianceInfo.involveBiosafetyConcerns) {
@@ -1312,69 +1312,69 @@ $(function() {
 			}
 
 			// OSP Section
-			$("#txtAgencyList").val(response.oSPSectionInfo.listAgency);
+			$("#txtAgencyList").val(response.ospSectionInfo.listAgency);
 
 			$("#chkFederal").prop("checked",
-					response.oSPSectionInfo.fundingSource.federal);
+					response.ospSectionInfo.fundingSource.federal);
 			$("#chkFederalFlowThrough").prop("checked",
-					response.oSPSectionInfo.fundingSource.federalFlowThrough);
+					response.ospSectionInfo.fundingSource.federalFlowThrough);
 			$("#chkStateOfIdahoEntity").prop("checked",
-					response.oSPSectionInfo.fundingSource.stateOfIdahoEntity);
+					response.ospSectionInfo.fundingSource.stateOfIdahoEntity);
 			$("#chkPrivateForProfit").prop("checked",
-					response.oSPSectionInfo.fundingSource.privateForProfit);
+					response.ospSectionInfo.fundingSource.privateForProfit);
 			$("#chkNonProfitOrganization")
 					.prop(
 							"checked",
-							response.oSPSectionInfo.fundingSource.nonProfitOrganization);
+							response.ospSectionInfo.fundingSource.nonProfitOrganization);
 			$("#chkNonIdahoStateEntity").prop("checked",
-					response.oSPSectionInfo.fundingSource.nonIdahoStateEntity);
+					response.ospSectionInfo.fundingSource.nonIdahoStateEntity);
 			$("#chkCollegeUniversity").prop("checked",
-					response.oSPSectionInfo.fundingSource.collegeOrUniversity);
+					response.ospSectionInfo.fundingSource.collegeOrUniversity);
 			$("#chkLocalEntity").prop("checked",
-					response.oSPSectionInfo.fundingSource.localEntity);
+					response.ospSectionInfo.fundingSource.localEntity);
 			$("#chkNonIdahoLocalEntity").prop("checked",
-					response.oSPSectionInfo.fundingSource.nonIdahoLocalEntity);
+					response.ospSectionInfo.fundingSource.nonIdahoLocalEntity);
 			$("#chkTribalGovernment").prop("checked",
-					response.oSPSectionInfo.fundingSource.tirbalGovernment);
+					response.ospSectionInfo.fundingSource.tirbalGovernment);
 			$("#chkForeign").prop("checked",
-					response.oSPSectionInfo.fundingSource.foreign);
+					response.ospSectionInfo.fundingSource.foreign);
 
-			$("#txtCFDANo").val(response.oSPSectionInfo.CFDANo);
-			$("#txtProgramNo").val(response.oSPSectionInfo.programNo);
-			$("#txtProgramTitle").val(response.oSPSectionInfo.programTitle);
+			$("#txtCFDANo").val(response.ospSectionInfo.cfdaNo);
+			$("#txtProgramNo").val(response.ospSectionInfo.programNo);
+			$("#txtProgramTitle").val(response.ospSectionInfo.programTitle);
 
 			$("#chkFullRecovery").prop("checked",
-					response.oSPSectionInfo.recovery.fullRecovery);
+					response.ospSectionInfo.recovery.fullRecovery);
 			$("#chkNoRecoveryNormal")
 					.prop(
 							"checked",
-							response.oSPSectionInfo.recovery.noRecoveryNormalSponsorPolicy);
+							response.ospSectionInfo.recovery.noRecoveryNormalSponsorPolicy);
 			$("#chkNoRecoveryInstitutional")
 					.prop(
 							"checked",
-							response.oSPSectionInfo.recovery.noRecoveryInstitutionalWaiver);
+							response.ospSectionInfo.recovery.noRecoveryInstitutionalWaiver);
 			$("#chkLimitedRecoveryNormal")
 					.prop(
 							"checked",
-							response.oSPSectionInfo.recovery.limitedRecoveryNormalSponsorPolicy);
+							response.ospSectionInfo.recovery.limitedRecoveryNormalSponsorPolicy);
 			$("#chkLimitedRecoveryInstitutional")
 					.prop(
 							"checked",
-							response.oSPSectionInfo.recovery.limitedRecoveryInstitutionalWaiver);
+							response.ospSectionInfo.recovery.limitedRecoveryInstitutionalWaiver);
 
 			$("#chkMTDC")
-					.prop("checked", response.oSPSectionInfo.baseInfo.MTDC);
-			$("#chkTDC").prop("checked", response.oSPSectionInfo.baseInfo.TDC);
-			$("#chkTC").prop("checked", response.oSPSectionInfo.baseInfo.TC);
+					.prop("checked", response.ospSectionInfo.baseInfo.mtdc);
+			$("#chkTDC").prop("checked", response.ospSectionInfo.baseInfo.tdc);
+			$("#chkTC").prop("checked", response.ospSectionInfo.baseInfo.tc);
 			$("#chkOther").prop("checked",
-					response.oSPSectionInfo.baseInfo.other);
+					response.ospSectionInfo.baseInfo.other);
 			$("#chkNA").prop("checked",
-					response.oSPSectionInfo.baseInfo.notApplicable);
+					response.ospSectionInfo.baseInfo.notApplicable);
 
-			if (response.oSPSectionInfo.isPISalaryIncluded) {
+			if (response.ospSectionInfo.piSalaryIncluded) {
 				$("#ddlPISalaryIncluded").val(1);
 				$("#lblPISalaryIncluded").hide();
-			} else if (!response.oSPSectionInfo.isPISalaryIncluded) {
+			} else if (!response.ospSectionInfo.piSalaryIncluded) {
 				$("#ddlPISalaryIncluded").val(2);
 				$("#lblPISalaryIncluded").show();
 			} else {
@@ -1383,39 +1383,39 @@ $(function() {
 			}
 
 			$("#txtPISalary").autoNumeric('set',
-					response.oSPSectionInfo.PISalary);
+					response.ospSectionInfo.piSalary);
 			$("#txtPIFringe").autoNumeric('set',
-					response.oSPSectionInfo.PIFringe);
+					response.ospSectionInfo.piFringe);
 
-			$("#txtDepartmentID").val(response.oSPSectionInfo.departmentId);
+			$("#txtDepartmentID").val(response.ospSectionInfo.departmentId);
 
-			if (response.oSPSectionInfo.institutionalCostDocumented.yes) {
+			if (response.ospSectionInfo.institutionalCostDocumented.yes) {
 				$("#ddlInstitutionalCostDocumented").val(1);
-			} else if (response.oSPSectionInfo.institutionalCostDocumented.no) {
+			} else if (response.ospSectionInfo.institutionalCostDocumented.no) {
 				$("#ddlInstitutionalCostDocumented").val(2);
-			} else if (response.oSPSectionInfo.institutionalCostDocumented.notApplicable) {
+			} else if (response.ospSectionInfo.institutionalCostDocumented.notApplicable) {
 				$("#ddlInstitutionalCostDocumented").val(3);
 			} else {
 				$("#ddlInstitutionalCostDocumented").prop("selectedIndex", 0);
 			}
 
-			if (response.oSPSectionInfo.thirdPartyCostDocumented.yes) {
+			if (response.ospSectionInfo.thirdPartyCostDocumented.yes) {
 				$("#ddlThirdPartyCostDocumented").val(1);
-			} else if (response.oSPSectionInfo.thirdPartyCostDocumented.no) {
+			} else if (response.ospSectionInfo.thirdPartyCostDocumented.no) {
 				$("#ddlThirdPartyCostDocumented").val(2);
-			} else if (response.oSPSectionInfo.thirdPartyCostDocumented.notApplicable) {
+			} else if (response.ospSectionInfo.thirdPartyCostDocumented.notApplicable) {
 				$("#ddlThirdPartyCostDocumented").val(3);
 			} else {
 				$("#ddlThirdPartyCostDocumented").prop("selectedIndex", 0);
 			}
 
-			if (response.oSPSectionInfo.isAnticipatedSubRecipients) {
+			if (response.ospSectionInfo.anticipatedSubRecipients) {
 				$("#ddlSubrecipients").val(1);
 				$("#txtNamesSubrecipients").removeClass("ignore");
 				$("#txtNamesSubrecipients").val(
-						response.oSPSectionInfo.anticipatedSubRecipientsNames);
+						response.ospSectionInfo.anticipatedSubRecipientsNames);
 				$("#trSubrecipientsNames").show();
-			} else if (!response.oSPSectionInfo.isAnticipatedSubRecipients) {
+			} else if (!response.ospSectionInfo.anticipatedSubRecipients) {
 				$("#ddlSubrecipients").val(2);
 				$("#txtNamesSubrecipients").addClass("ignore");
 				$("#trSubrecipientsNames").hide();
@@ -1427,35 +1427,35 @@ $(function() {
 				$("#txtNamesSubrecipients").val('');
 			}
 
-			if (response.oSPSectionInfo.PIEligibilityWaiver.yes) {
+			if (response.ospSectionInfo.piEligibilityWaiver.yes) {
 				$("#ddlPIEligibilityWaiver").val(1);
-			} else if (response.oSPSectionInfo.PIEligibilityWaiver.no) {
+			} else if (response.ospSectionInfo.piEligibilityWaiver.no) {
 				$("#ddlPIEligibilityWaiver").val(2);
-			} else if (response.oSPSectionInfo.PIEligibilityWaiver.notApplicable) {
+			} else if (response.ospSectionInfo.piEligibilityWaiver.notApplicable) {
 				$("#ddlPIEligibilityWaiver").val(3);
-			} else if (response.oSPSectionInfo.PIEligibilityWaiver.thisProposalOnly) {
+			} else if (response.ospSectionInfo.piEligibilityWaiver.thisProposalOnly) {
 				$("#ddlPIEligibilityWaiver").val(4);
-			} else if (response.oSPSectionInfo.PIEligibilityWaiver.blanket) {
+			} else if (response.ospSectionInfo.piEligibilityWaiver.blanket) {
 				$("#ddlPIEligibilityWaiver").val(5);
 			} else {
 				$("#ddlPIEligibilityWaiver").prop("selectedIndex", 0);
 			}
 
-			if (response.oSPSectionInfo.conflictOfInterestForms.yes) {
+			if (response.ospSectionInfo.conflictOfInterestForms.yes) {
 				$("#ddlCOIForms").val(1);
-			} else if (response.oSPSectionInfo.conflictOfInterestForms.no) {
+			} else if (response.ospSectionInfo.conflictOfInterestForms.no) {
 				$("#ddlCOIForms").val(2);
-			} else if (response.oSPSectionInfo.conflictOfInterestForms.notApplicable) {
+			} else if (response.ospSectionInfo.conflictOfInterestForms.notApplicable) {
 				$("#ddlCOIForms").val(3);
 			} else {
 				$("#ddlCOIForms").prop("selectedIndex", 0);
 			}
 
-			if (response.oSPSectionInfo.excludedPartyListChecked.yes) {
+			if (response.ospSectionInfo.excludedPartyListChecked.yes) {
 				$("#ddlCheckedExcludedPartyList").val(1);
-			} else if (response.oSPSectionInfo.excludedPartyListChecked.no) {
+			} else if (response.ospSectionInfo.excludedPartyListChecked.no) {
 				$("#ddlCheckedExcludedPartyList").val(2);
-			} else if (response.oSPSectionInfo.excludedPartyListChecked.notApplicable) {
+			} else if (response.ospSectionInfo.excludedPartyListChecked.notApplicable) {
 				$("#ddlCheckedExcludedPartyList").val(3);
 			} else {
 				$("#ddlCheckedExcludedPartyList").prop("selectedIndex", 0);

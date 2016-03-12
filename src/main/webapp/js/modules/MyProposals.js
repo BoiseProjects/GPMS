@@ -785,11 +785,10 @@ $(function() {
 											cssclass : 'cssClassHeadCheckBox',
 											coltype : 'checkbox',
 											align : 'center',
-											checkFor : '25',
+											checkFor : '24',
 											elemClass : 'attrChkbox',
 											elemDefault : false,
-											controlclass : 'attribHeaderChkbox',
-											hide : true
+											controlclass : 'attribHeaderChkbox'
 										},
 										{
 											display : 'Proposal No',
@@ -938,51 +937,6 @@ $(function() {
 											hide : true
 										},
 										{
-											display : 'Status',
-											name : 'proposal_status',
-											cssclass : '',
-											controlclass : '',
-											coltype : 'label',
-											align : 'left',
-											type : 'array'
-										},
-
-										// Start
-										{
-											display : 'Submitted by PI?',
-											name : 'submitted_by_PI',
-											cssclass : '',
-											controlclass : '',
-											coltype : 'label',
-											align : 'left'
-										},
-										{
-											display : 'Is Deleted by PI?',
-											name : 'deleted_by_PI',
-											cssclass : '',
-											controlclass : '',
-											coltype : 'label',
-											align : 'left'
-										},
-										{
-											display : 'Chair Approval',
-											name : 'chair_approval',
-											cssclass : '',
-											controlclass : '',
-											coltype : 'label',
-											align : 'left'
-										},
-										{
-											display : 'Business Manager Reviewal',
-											name : 'business_manager_reviewal',
-											cssclass : '',
-											controlclass : '',
-											coltype : 'label',
-											align : 'left'
-										},
-										// END
-
-										{
 											display : 'Last Audited',
 											name : 'last_audited',
 											cssclass : 'cssClassHeadDate',
@@ -1069,10 +1023,50 @@ $(function() {
 											type : 'boolean',
 											format : 'Yes/No'
 										},
-										// Start
 										{
-											display : 'IRB Reviewal',
-											name : 'IRB_reviewal',
+											display : 'Status',
+											name : 'proposal_status',
+											cssclass : '',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left',
+											type : 'array'
+										},
+										{
+											display : 'Submitted by PI',
+											name : 'submitted_by_PI',
+											cssclass : '',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left'
+										},
+										{
+											display : 'Deleted by PI',
+											name : 'deleted_by_PI',
+											cssclass : '',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left'
+										},
+										{
+											display : 'Chair Approval',
+											name : 'chair_approval',
+											cssclass : '',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left'
+										},
+										{
+											display : 'Business Manager Approval',
+											name : 'business_manager_approval',
+											cssclass : '',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left'
+										},
+										{
+											display : 'IRB Approval',
+											name : 'IRB_approval',
 											cssclass : '',
 											controlclass : '',
 											coltype : 'label',
@@ -1084,8 +1078,7 @@ $(function() {
 											cssclass : '',
 											controlclass : '',
 											coltype : 'label',
-											align : 'left',
-											hide : true
+											align : 'left'
 										},
 										{
 											display : 'Research Administrator Approval',
@@ -1093,35 +1086,15 @@ $(function() {
 											cssclass : '',
 											controlclass : '',
 											coltype : 'label',
-											align : 'left',
-											hide : true
+											align : 'left'
 										},
 										{
-											display : 'Withdrawn by Research Administrator?',
+											display : 'Withdrawn by Research Administrator',
 											name : 'withdrawn_by_research_administrator',
 											cssclass : '',
 											controlclass : '',
 											coltype : 'label',
-											align : 'left',
-											hide : true
-										},
-										{
-											display : 'Submitted by Research Administrator?',
-											name : 'submitted_by_research_administrator',
-											cssclass : 'cssClassHeadBoolean',
-											controlclass : '',
-											coltype : 'label',
-											align : 'left',
-											hide : true
-										},
-										{
-											display : 'Archived by Research Director?',
-											name : 'archived_by_research_director',
-											cssclass : '',
-											controlclass : '',
-											coltype : 'label',
-											align : 'left',
-											hide : true
+											align : 'left'
 										},
 										{
 											display : 'Research Director Approval',
@@ -1129,20 +1102,32 @@ $(function() {
 											cssclass : '',
 											controlclass : '',
 											coltype : 'label',
-											align : 'left',
-											hide : true
+											align : 'left'
 										},
 										{
-											display : 'Deleted by Research Director?',
+											display : 'Deleted by Research Director',
 											name : 'deleted_by_research_director',
 											cssclass : '',
 											controlclass : '',
 											coltype : 'label',
-											align : 'left',
-											hide : true
+											align : 'left'
 										},
-										// END
 										{
+											display : 'Submitted by Research Administrator',
+											name : 'submitted_by_research_administrator',
+											cssclass : 'cssClassHeadBoolean',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left'
+										},
+										{
+											display : 'Archived by Research Director',
+											name : 'archived_by_research_director',
+											cssclass : '',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left'
+										}, {
 											display : 'Actions',
 											name : 'action',
 											cssclass : 'cssClassAction',
@@ -1158,7 +1143,7 @@ $(function() {
 											_event : 'click',
 											trigger : '1',
 											callMethod : 'myProposal.EditProposal',
-											arguments : '2, 6, 11, 16, 27, 28, 17, 18, 19, 20, 30, 31, 32, 33, 34, 35, 36, 37'
+											arguments : '2, 6, 11, 22, 23, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37'
 										},
 										{
 											display : 'Delete',
@@ -1167,7 +1152,7 @@ $(function() {
 											_event : 'click',
 											trigger : '2',
 											callMethod : 'myProposal.DeleteProposal',
-											arguments : '16, 28, 29, 17, 18, 19, 20, 30, 31, 32, 33, 34, 35, 36, 37'
+											arguments : '23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37'
 										},
 										{
 											display : 'View Change Logs',
@@ -1176,7 +1161,7 @@ $(function() {
 											_event : 'click',
 											trigger : '3',
 											callMethod : 'myProposal.ViewChangeLogs',
-											arguments : '28'
+											arguments : '23'
 										} ],
 								rp : perpage,
 								nomsg : 'No Records Found!',
@@ -1212,12 +1197,8 @@ $(function() {
 			currentProposalRoles = config.proposalRoles.split(', ');
 
 			if (proposalStatus != ""
-					&& (($.inArray("PI", currentProposalRoles) !== -1 && (config.submittedByPI != "SUBMITTED"
-							|| config.chairApproval == "DISAPPROVED"
-							|| config.businessManagerApproval == "DISAPPROVED"
-							|| config.irbapproval == "DISAPPROVED"
-							|| config.deanApproval == "DISAPPROVED"
-							|| config.universityResearchAdministratorApproval == "DISAPPROVED" || config.universityResearchDirectorApproval == "DISAPPROVED")) || (currentPositionTitle == "Research Administrator"
+					&& (($.inArray("PI", currentProposalRoles) !== -1
+							&& config.deletedByPI != "DELETED" && config.submittedByPI != "SUBMITTED") || (currentPositionTitle == "Research Administrator"
 							&& config.universityResearchAdministratorSubmission != "SUBMITTED" && config.universityResearchDirectorApproval == "APPROVED"))) {
 				$("#btnSubmitProposal").show();
 			} else {
@@ -1245,14 +1226,9 @@ $(function() {
 							function(index, value) {
 								if (proposalStatus != ""
 										&& (($.inArray("PI",
-												currentProposalRoles) !== -1 && (config.deletedByPI != "DELETED"
-												|| config.submittedByPI != "SUBMITTED"
-												|| config.chairApproval == "DISAPPROVED"
-												|| config.businessManagerApproval == "DISAPPROVED"
-												|| config.irbapproval == "DISAPPROVED"
-												|| config.deanApproval == "DISAPPROVED"
-												|| config.universityResearchAdministratorApproval == "DISAPPROVED" || config.universityResearchDirectorApproval == "DISAPPROVED")) || (config.universityResearchDirectorDeletion != "DELETED"
-												&& currentPositionTitle == "University Research Director" && proposalStatus == "Submitted to Research Director"))) {
+												currentProposalRoles) !== -1
+												&& config.deletedByPI != "DELETED" && config.submittedByPI != "SUBMITTED") || (currentPositionTitle == "University Research Director"
+												&& config.universityResearchDirectorDeletion != "DELETED" && config.universityResearchDirectorApproval == "READYFORAPPROVAL"))) {
 									$("#btnDeleteProposal").show();
 								} else {
 									$("#btnDeleteProposal").hide();
@@ -1260,16 +1236,11 @@ $(function() {
 							});
 
 			if (proposalStatus != ""
-					&& ((currentPositionTitle == "Department Chair"
-							&& config.chairApproval == "READYFORAPPROVAL" && config.businessManagerApproval != "READYFORAPPROVAL")
-							|| (currentPositionTitle == "Business Manager"
-									&& config.businessManagerApproval == "READYFORAPPROVAL" && config.deanApproval != "READYFORAPPROVAL")
-							|| (currentPositionTitle == "IRB"
-									&& config.irbapproval == "READYFORAPPROVAL" && config.universityResearchAdministratorApproval != "READYFORAPPROVAL")
-							|| (currentPositionTitle == "Dean"
-									&& config.deanApproval == "READYFORAPPROVAL" && config.universityResearchAdministratorApproval != "READYFORAPPROVAL")
-							|| (currentPositionTitle == "Research Administrator"
-									&& config.universityResearchAdministratorApproval == "READYFORAPPROVAL" && config.universityResearchDirectorApproval != "READYFORAPPROVAL") || (currentPositionTitle == "University Research Director" && config.universityResearchDirectorApproval == "READYFORAPPROVAL"))) {
+					&& ((currentPositionTitle == "Department Chair" && config.chairApproval == "READYFORAPPROVAL")
+							|| (currentPositionTitle == "Business Manager" && config.businessManagerApproval == "READYFORAPPROVAL")
+							|| (currentPositionTitle == "IRB" && config.irbapproval == "READYFORAPPROVAL")
+							|| (currentPositionTitle == "Dean" && config.deanApproval == "READYFORAPPROVAL")
+							|| (currentPositionTitle == "Research Administrator" && config.universityResearchAdministratorApproval == "READYFORAPPROVAL") || (currentPositionTitle == "University Research Director" && config.universityResearchDirectorApproval == "READYFORAPPROVAL"))) {
 				$("#btnApproveProposal").show();
 				$("#btnDisapproveProposal").show();
 			} else {
@@ -1279,7 +1250,8 @@ $(function() {
 
 			if (proposalStatus != ""
 					&& currentPositionTitle == "Research Administrator"
-					&& config.universityResearchAdministratorApproval == "READYFORAPPROVAL") {
+					&& config.universityResearchAdministratorApproval == "READYFORAPPROVAL"
+					&& config.universityResearchAdministratorWithdraw != "NOTWITHDRAWN") {
 				$("#btnWithdrawProposal").show();
 			} else {
 				$("#btnWithdrawProposal").hide();
@@ -1287,7 +1259,8 @@ $(function() {
 
 			if (proposalStatus != ""
 					&& currentPositionTitle == "University Research Director"
-					&& config.universityResearchAdministratorSubmission == "SUBMITTED") {
+					&& config.universityResearchAdministratorSubmission == "SUBMITTED"
+					&& config.universityResearchDirectorArchived != "NOTARCHIVED") {
 				$("#btnArchiveProposal").show();
 			} else {
 				$("#btnArchiveProposal").hide();
@@ -1309,7 +1282,7 @@ $(function() {
 
 				myProposal.ClearForm();
 
-				myProposal.config.proposalRoles = $.trim(argus[6]);
+				myProposal.config.proposalRoles = $.trim(argus[5]);
 				myProposal.config.proposalId = argus[0];
 
 				myProposal.config.submittedByPI = argus[7];
@@ -1320,10 +1293,10 @@ $(function() {
 				myProposal.config.deanApproval = argus[12];
 				myProposal.config.universityResearchAdministratorApproval = argus[13];
 				myProposal.config.universityResearchAdministratorWithdraw = argus[14];
-				myProposal.config.universityResearchAdministratorSubmission = argus[15];
-				myProposal.config.universityResearchDirectorArchived = argus[16];
-				myProposal.config.universityResearchDirectorApproval = argus[17];
-				myProposal.config.universityResearchDirectorDeletion = argus[18];
+				myProposal.config.universityResearchDirectorApproval = argus[15];
+				myProposal.config.universityResearchDirectorDeletion = argus[16];
+				myProposal.config.universityResearchAdministratorSubmission = argus[17];
+				myProposal.config.universityResearchDirectorArchived = argus[18];
 
 				$("#txtNameOfGrantingAgency").val(argus[2]);
 
@@ -1351,12 +1324,12 @@ $(function() {
 				}
 
 				$('#ddlProposalStatus option').length = 0;
-				$('#ddlProposalStatus').append(new Option(argus[4], argus[4]))
+				$('#ddlProposalStatus').append(new Option(argus[6], argus[6]))
 						.prop('disabled', true);
 
-				myProposal.config.proposalStatus = argus[4];
+				myProposal.config.proposalStatus = argus[6];
 
-				myProposal.BindUserPositionDetailsForAProposal(argus[5]);
+				myProposal.BindUserPositionDetailsForAProposal(argus[4]);
 
 				myProposal.BindProposalDetailsByProposalId(argus[0]);
 
@@ -1486,27 +1459,27 @@ $(function() {
 			$("#txtProjectTitle").val(response.projectInfo.projectTitle).prop(
 					"disabled", "disabled");
 
-			if (response.projectInfo.projectType.isResearchBasic) {
+			if (response.projectInfo.projectType.researchBasic) {
 				$("#ddlProjectType").val(1);
-			} else if (response.projectInfo.projectType.isResearchApplied) {
+			} else if (response.projectInfo.projectType.researchApplied) {
 				$("#ddlProjectType").val(2);
-			} else if (response.projectInfo.projectType.isResearchDevelopment) {
+			} else if (response.projectInfo.projectType.researchDevelopment) {
 				$("#ddlProjectType").val(3);
-			} else if (response.projectInfo.projectType.isInstruction) {
+			} else if (response.projectInfo.projectType.instruction) {
 				$("#ddlProjectType").val(4);
-			} else if (response.projectInfo.projectType.isOtherSponsoredActivity) {
+			} else if (response.projectInfo.projectType.otherSponsoredActivity) {
 				$("#ddlProjectType").val(5);
 			} else {
 				$("#ddlProjectType").prop("selectedIndex", 0);
 			}
 
-			if (response.projectInfo.typeOfRequest.isPreProposal) {
+			if (response.projectInfo.typeOfRequest.preProposal) {
 				$("#ddlTypeOfRequest").val(1);
-			} else if (response.projectInfo.typeOfRequest.isNewProposal) {
+			} else if (response.projectInfo.typeOfRequest.newProposal) {
 				$("#ddlTypeOfRequest").val(2);
-			} else if (response.projectInfo.typeOfRequest.isContinuation) {
+			} else if (response.projectInfo.typeOfRequest.continuation) {
 				$("#ddlTypeOfRequest").val(3);
-			} else if (response.projectInfo.typeOfRequest.isSupplement) {
+			} else if (response.projectInfo.typeOfRequest.supplement) {
 				$("#ddlTypeOfRequest").val(4);
 			} else {
 				$("#ddlTypeOfRequest").prop("selectedIndex", 0);
@@ -1537,11 +1510,11 @@ $(function() {
 			$("#txtDirectCosts").autoNumeric('set',
 					response.sponsorAndBudgetInfo.directCosts);
 			$("#txtFACosts").autoNumeric('set',
-					response.sponsorAndBudgetInfo.FACosts);
+					response.sponsorAndBudgetInfo.faCosts);
 			$("#txtTotalCosts").autoNumeric('set',
 					response.sponsorAndBudgetInfo.totalCosts);
 			$("#txtFARate").autoNumeric('set',
-					response.sponsorAndBudgetInfo.FARate);
+					response.sponsorAndBudgetInfo.faRate);
 
 			// Cost Share Information
 			if (response.costShareInfo.institutionalCommitted) {
@@ -1629,13 +1602,13 @@ $(function() {
 				$("#lblUseHumanSubjects").show();
 				$("#tdHumanSubjectsOption").show();
 				$("#tdIRBOption").show();
-				if (response.complianceInfo.IRBPending) {
+				if (response.complianceInfo.irbPending) {
 					$("#ddlIRBOptions").val(2);
 					$("#tdIRBtxt").hide();
-				} else if (!response.complianceInfo.IRBPending
-						&& response.complianceInfo.IRB != "") {
+				} else if (!response.complianceInfo.irbPending
+						&& response.complianceInfo.irb != "") {
 					$("#ddlIRBOptions").val(1);
-					$("#txtIRB").val(response.complianceInfo.IRB);
+					$("#txtIRB").val(response.complianceInfo.irb);
 					$("#tdIRBtxt").show();
 				}
 			} else if (!response.complianceInfo.involveUseOfHumanSubjects) {
@@ -1657,13 +1630,13 @@ $(function() {
 				$("#lblUseVertebrateAnimals").show();
 				$("#tdVertebrateAnimalsOption").show();
 				$("#tdIACUCOption").show();
-				if (response.complianceInfo.IACUCPending) {
+				if (response.complianceInfo.iacucPending) {
 					$("#ddlIACUCOptions").val(2);
 					$("#tdIACUCtxt").hide();
-				} else if (!response.complianceInfo.IACUCPending
-						&& response.complianceInfo.IACUC != "") {
+				} else if (!response.complianceInfo.iacucPending
+						&& response.complianceInfo.iacuc != "") {
 					$("#ddlIACUCOptions").val(1);
-					$("#txtIACUC").val(response.complianceInfo.IACUC);
+					$("#txtIACUC").val(response.complianceInfo.iacuc);
 					$("#tdIACUCtxt").show();
 				}
 			} else if (!response.complianceInfo.involveUseOfVertebrateAnimals) {
@@ -1685,13 +1658,13 @@ $(function() {
 				$("#lblHasBiosafetyConcerns").show();
 				$("#tdBiosafetyOption").show();
 				$("#tdIBCOption").show();
-				if (response.complianceInfo.IBCPending) {
+				if (response.complianceInfo.ibcPending) {
 					$("#ddlIBCOptions").val(2);
 					$("#tdIBCtxt").hide();
-				} else if (!response.complianceInfo.IBCPending
-						&& response.complianceInfo.IBC != "") {
+				} else if (!response.complianceInfo.ibcPending
+						&& response.complianceInfo.ibc != "") {
 					$("#ddlIBCOptions").val(1);
-					$("#txtIBC").val(response.complianceInfo.IBC);
+					$("#txtIBC").val(response.complianceInfo.ibc);
 					$("#tdIBCtxt").show();
 				}
 			} else if (!response.complianceInfo.involveBiosafetyConcerns) {
@@ -1793,69 +1766,69 @@ $(function() {
 			}
 
 			// OSP Section
-			$("#txtAgencyList").val(response.oSPSectionInfo.listAgency);
+			$("#txtAgencyList").val(response.ospSectionInfo.listAgency);
 
 			$("#chkFederal").prop("checked",
-					response.oSPSectionInfo.fundingSource.federal);
+					response.ospSectionInfo.fundingSource.federal);
 			$("#chkFederalFlowThrough").prop("checked",
-					response.oSPSectionInfo.fundingSource.federalFlowThrough);
+					response.ospSectionInfo.fundingSource.federalFlowThrough);
 			$("#chkStateOfIdahoEntity").prop("checked",
-					response.oSPSectionInfo.fundingSource.stateOfIdahoEntity);
+					response.ospSectionInfo.fundingSource.stateOfIdahoEntity);
 			$("#chkPrivateForProfit").prop("checked",
-					response.oSPSectionInfo.fundingSource.privateForProfit);
+					response.ospSectionInfo.fundingSource.privateForProfit);
 			$("#chkNonProfitOrganization")
 					.prop(
 							"checked",
-							response.oSPSectionInfo.fundingSource.nonProfitOrganization);
+							response.ospSectionInfo.fundingSource.nonProfitOrganization);
 			$("#chkNonIdahoStateEntity").prop("checked",
-					response.oSPSectionInfo.fundingSource.nonIdahoStateEntity);
+					response.ospSectionInfo.fundingSource.nonIdahoStateEntity);
 			$("#chkCollegeUniversity").prop("checked",
-					response.oSPSectionInfo.fundingSource.collegeOrUniversity);
+					response.ospSectionInfo.fundingSource.collegeOrUniversity);
 			$("#chkLocalEntity").prop("checked",
-					response.oSPSectionInfo.fundingSource.localEntity);
+					response.ospSectionInfo.fundingSource.localEntity);
 			$("#chkNonIdahoLocalEntity").prop("checked",
-					response.oSPSectionInfo.fundingSource.nonIdahoLocalEntity);
+					response.ospSectionInfo.fundingSource.nonIdahoLocalEntity);
 			$("#chkTribalGovernment").prop("checked",
-					response.oSPSectionInfo.fundingSource.tirbalGovernment);
+					response.ospSectionInfo.fundingSource.tirbalGovernment);
 			$("#chkForeign").prop("checked",
-					response.oSPSectionInfo.fundingSource.foreign);
+					response.ospSectionInfo.fundingSource.foreign);
 
-			$("#txtCFDANo").val(response.oSPSectionInfo.CFDANo);
-			$("#txtProgramNo").val(response.oSPSectionInfo.programNo);
-			$("#txtProgramTitle").val(response.oSPSectionInfo.programTitle);
+			$("#txtCFDANo").val(response.ospSectionInfo.cfdaNo);
+			$("#txtProgramNo").val(response.ospSectionInfo.programNo);
+			$("#txtProgramTitle").val(response.ospSectionInfo.programTitle);
 
 			$("#chkFullRecovery").prop("checked",
-					response.oSPSectionInfo.recovery.fullRecovery);
+					response.ospSectionInfo.recovery.fullRecovery);
 			$("#chkNoRecoveryNormal")
 					.prop(
 							"checked",
-							response.oSPSectionInfo.recovery.noRecoveryNormalSponsorPolicy);
+							response.ospSectionInfo.recovery.noRecoveryNormalSponsorPolicy);
 			$("#chkNoRecoveryInstitutional")
 					.prop(
 							"checked",
-							response.oSPSectionInfo.recovery.noRecoveryInstitutionalWaiver);
+							response.ospSectionInfo.recovery.noRecoveryInstitutionalWaiver);
 			$("#chkLimitedRecoveryNormal")
 					.prop(
 							"checked",
-							response.oSPSectionInfo.recovery.limitedRecoveryNormalSponsorPolicy);
+							response.ospSectionInfo.recovery.limitedRecoveryNormalSponsorPolicy);
 			$("#chkLimitedRecoveryInstitutional")
 					.prop(
 							"checked",
-							response.oSPSectionInfo.recovery.limitedRecoveryInstitutionalWaiver);
+							response.ospSectionInfo.recovery.limitedRecoveryInstitutionalWaiver);
 
 			$("#chkMTDC")
-					.prop("checked", response.oSPSectionInfo.baseInfo.MTDC);
-			$("#chkTDC").prop("checked", response.oSPSectionInfo.baseInfo.TDC);
-			$("#chkTC").prop("checked", response.oSPSectionInfo.baseInfo.TC);
+					.prop("checked", response.ospSectionInfo.baseInfo.mtdc);
+			$("#chkTDC").prop("checked", response.ospSectionInfo.baseInfo.tdc);
+			$("#chkTC").prop("checked", response.ospSectionInfo.baseInfo.tc);
 			$("#chkOther").prop("checked",
-					response.oSPSectionInfo.baseInfo.other);
+					response.ospSectionInfo.baseInfo.other);
 			$("#chkNA").prop("checked",
-					response.oSPSectionInfo.baseInfo.notApplicable);
+					response.ospSectionInfo.baseInfo.notApplicable);
 
-			if (response.oSPSectionInfo.isPISalaryIncluded) {
+			if (response.ospSectionInfo.piSalaryIncluded) {
 				$("#ddlPISalaryIncluded").val(1);
 				$("#lblPISalaryIncluded").hide();
-			} else if (!response.oSPSectionInfo.isPISalaryIncluded) {
+			} else if (!response.ospSectionInfo.piSalaryIncluded) {
 				$("#ddlPISalaryIncluded").val(2);
 				$("#lblPISalaryIncluded").show();
 			} else {
@@ -1864,39 +1837,39 @@ $(function() {
 			}
 
 			$("#txtPISalary").autoNumeric('set',
-					response.oSPSectionInfo.PISalary);
+					response.ospSectionInfo.piSalary);
 			$("#txtPIFringe").autoNumeric('set',
-					response.oSPSectionInfo.PIFringe);
+					response.ospSectionInfo.piFringe);
 
-			$("#txtDepartmentID").val(response.oSPSectionInfo.departmentId);
+			$("#txtDepartmentID").val(response.ospSectionInfo.departmentId);
 
-			if (response.oSPSectionInfo.institutionalCostDocumented.yes) {
+			if (response.ospSectionInfo.institutionalCostDocumented.yes) {
 				$("#ddlInstitutionalCostDocumented").val(1);
-			} else if (response.oSPSectionInfo.institutionalCostDocumented.no) {
+			} else if (response.ospSectionInfo.institutionalCostDocumented.no) {
 				$("#ddlInstitutionalCostDocumented").val(2);
-			} else if (response.oSPSectionInfo.institutionalCostDocumented.notApplicable) {
+			} else if (response.ospSectionInfo.institutionalCostDocumented.notApplicable) {
 				$("#ddlInstitutionalCostDocumented").val(3);
 			} else {
 				$("#ddlInstitutionalCostDocumented").prop("selectedIndex", 0);
 			}
 
-			if (response.oSPSectionInfo.thirdPartyCostDocumented.yes) {
+			if (response.ospSectionInfo.thirdPartyCostDocumented.yes) {
 				$("#ddlThirdPartyCostDocumented").val(1);
-			} else if (response.oSPSectionInfo.thirdPartyCostDocumented.no) {
+			} else if (response.ospSectionInfo.thirdPartyCostDocumented.no) {
 				$("#ddlThirdPartyCostDocumented").val(2);
-			} else if (response.oSPSectionInfo.thirdPartyCostDocumented.notApplicable) {
+			} else if (response.ospSectionInfo.thirdPartyCostDocumented.notApplicable) {
 				$("#ddlThirdPartyCostDocumented").val(3);
 			} else {
 				$("#ddlThirdPartyCostDocumented").prop("selectedIndex", 0);
 			}
 
-			if (response.oSPSectionInfo.isAnticipatedSubRecipients) {
+			if (response.ospSectionInfo.anticipatedSubRecipients) {
 				$("#ddlSubrecipients").val(1);
 				$("#txtNamesSubrecipients").removeClass("ignore");
 				$("#txtNamesSubrecipients").val(
-						response.oSPSectionInfo.anticipatedSubRecipientsNames);
+						response.ospSectionInfo.anticipatedSubRecipientsNames);
 				$("#trSubrecipientsNames").show();
-			} else if (!response.oSPSectionInfo.isAnticipatedSubRecipients) {
+			} else if (!response.ospSectionInfo.anticipatedSubRecipients) {
 				$("#ddlSubrecipients").val(2);
 				$("#txtNamesSubrecipients").addClass("ignore");
 				$("#trSubrecipientsNames").hide();
@@ -1908,35 +1881,35 @@ $(function() {
 				$("#txtNamesSubrecipients").val('');
 			}
 
-			if (response.oSPSectionInfo.PIEligibilityWaiver.yes) {
+			if (response.ospSectionInfo.piEligibilityWaiver.yes) {
 				$("#ddlPIEligibilityWaiver").val(1);
-			} else if (response.oSPSectionInfo.PIEligibilityWaiver.no) {
+			} else if (response.ospSectionInfo.piEligibilityWaiver.no) {
 				$("#ddlPIEligibilityWaiver").val(2);
-			} else if (response.oSPSectionInfo.PIEligibilityWaiver.notApplicable) {
+			} else if (response.ospSectionInfo.piEligibilityWaiver.notApplicable) {
 				$("#ddlPIEligibilityWaiver").val(3);
-			} else if (response.oSPSectionInfo.PIEligibilityWaiver.thisProposalOnly) {
+			} else if (response.ospSectionInfo.piEligibilityWaiver.thisProposalOnly) {
 				$("#ddlPIEligibilityWaiver").val(4);
-			} else if (response.oSPSectionInfo.PIEligibilityWaiver.blanket) {
+			} else if (response.ospSectionInfo.piEligibilityWaiver.blanket) {
 				$("#ddlPIEligibilityWaiver").val(5);
 			} else {
 				$("#ddlPIEligibilityWaiver").prop("selectedIndex", 0);
 			}
 
-			if (response.oSPSectionInfo.conflictOfInterestForms.yes) {
+			if (response.ospSectionInfo.conflictOfInterestForms.yes) {
 				$("#ddlCOIForms").val(1);
-			} else if (response.oSPSectionInfo.conflictOfInterestForms.no) {
+			} else if (response.ospSectionInfo.conflictOfInterestForms.no) {
 				$("#ddlCOIForms").val(2);
-			} else if (response.oSPSectionInfo.conflictOfInterestForms.notApplicable) {
+			} else if (response.ospSectionInfo.conflictOfInterestForms.notApplicable) {
 				$("#ddlCOIForms").val(3);
 			} else {
 				$("#ddlCOIForms").prop("selectedIndex", 0);
 			}
 
-			if (response.oSPSectionInfo.excludedPartyListChecked.yes) {
+			if (response.ospSectionInfo.excludedPartyListChecked.yes) {
 				$("#ddlCheckedExcludedPartyList").val(1);
-			} else if (response.oSPSectionInfo.excludedPartyListChecked.no) {
+			} else if (response.ospSectionInfo.excludedPartyListChecked.no) {
 				$("#ddlCheckedExcludedPartyList").val(2);
-			} else if (response.oSPSectionInfo.excludedPartyListChecked.notApplicable) {
+			} else if (response.ospSectionInfo.excludedPartyListChecked.notApplicable) {
 				$("#ddlCheckedExcludedPartyList").val(3);
 			} else {
 				$("#ddlCheckedExcludedPartyList").prop("selectedIndex", 0);
@@ -2202,7 +2175,6 @@ $(function() {
 		ViewChangeLogs : function(tblID, argus) {
 			switch (tblID) {
 			case "gdvProposals":
-				console.log(argus);
 				var proposal_roles = $.trim(argus[1]);
 				myProposal.config.proposalId = argus[0];
 				myProposal.config.proposalRoles = proposal_roles;
@@ -2227,13 +2199,12 @@ $(function() {
 		DeleteProposal : function(tblID, argus) {
 			switch (tblID) {
 			case "gdvProposals":
-				console.log(argus);
-				var proposal_roles = $.trim(argus[2]);
-				if (argus[3].toLowerCase() != "yes") {
+				var proposal_roles = $.trim(argus[1]);
+				if (argus[2].toLowerCase() != "yes") {
 					myProposal.config.ajaxCallMode = 10;
 					myProposal.config.proposalRoles = proposal_roles;
 					myProposal.config.proposalId = argus[0];
-					myProposal.config.proposalStatus = argus[1];
+					myProposal.config.proposalStatus = argus[3];
 					if (proposal_roles != "") {
 						myProposal
 								.CheckUserPermissionWithProposalRoleAndStatus(

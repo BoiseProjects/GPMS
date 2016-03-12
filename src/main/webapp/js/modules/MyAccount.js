@@ -452,7 +452,7 @@ $(function() {
 															$button
 																	.prop(
 																			'checked',
-																			value['isDefault']);
+																			value['asDefault']);
 														}
 													});
 								});

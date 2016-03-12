@@ -552,7 +552,7 @@ $(function() {
 			});
 
 			$('input[name=chkActive]').prop('checked',
-					response['userAccount']['isActive']);
+					response['userAccount']['active']);
 
 			$.each(response['userAccount'], function(index, value) {
 				$('#txtUserName').val(response['userAccount']['userName']);
@@ -738,7 +738,7 @@ $(function() {
 															$button
 																	.prop(
 																			'checked',
-																			value['isDefault']);
+																			value['asDefault']);
 														}
 													});
 								});
