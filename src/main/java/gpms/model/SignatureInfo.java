@@ -6,8 +6,6 @@ import java.util.Date;
 import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Property;
 
-import com.google.gson.annotations.Expose;
-
 @Embedded
 public class SignatureInfo implements Serializable {
 	/**
@@ -15,39 +13,32 @@ public class SignatureInfo implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	@Expose
 	@Property("user profile id")
 	private String userProfileId = new String();
 
-	@Expose
 	@Property("full name")
 	private String fullName = new String();
 
-	@Expose
 	@Property("signature")
 	private String signature = new String();
 
-	@Expose
 	@Property("position title")
 	private String positionTitle = new String();
 
-	@Expose
 	@Property("signed date")
 	private Date signedDate = null;
 
-	@Expose
 	@Property("note")
 	private String note = new String();
 
-	@Expose
-	@Property("is delegated")
-	private boolean isDelegated = false;
+	@Property("delegated")
+	private boolean delegated = false;
 
-	@Expose
 	@Property("delegated as")
 	private String delegatedAs = new String();
 
 	public SignatureInfo() {
+
 	}
 
 	public String getUserProfileId() {
@@ -99,11 +90,11 @@ public class SignatureInfo implements Serializable {
 	}
 
 	public boolean isDelegated() {
-		return isDelegated;
+		return delegated;
 	}
 
-	public void setDelegated(boolean isDelegated) {
-		this.isDelegated = isDelegated;
+	public void setDelegated(boolean delegated) {
+		this.delegated = delegated;
 	}
 
 	public String getDelegatedAs() {
@@ -119,7 +110,7 @@ public class SignatureInfo implements Serializable {
 		return "SignatureInfo [userProfileId=" + userProfileId + ", fullName="
 				+ fullName + ", signature=" + signature + ", positionTitle="
 				+ positionTitle + ", signedDate=" + signedDate + ", note="
-				+ note + ", isDelegated=" + isDelegated + ", delegatedAs="
+				+ note + ", delegated=" + delegated + ", delegatedAs="
 				+ delegatedAs + "]";
 	}
 
@@ -127,11 +118,11 @@ public class SignatureInfo implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + (delegated ? 1231 : 1237);
 		result = prime * result
 				+ ((delegatedAs == null) ? 0 : delegatedAs.hashCode());
 		result = prime * result
 				+ ((fullName == null) ? 0 : fullName.hashCode());
-		result = prime * result + (isDelegated ? 1231 : 1237);
 		result = prime * result + ((note == null) ? 0 : note.hashCode());
 		result = prime * result
 				+ ((positionTitle == null) ? 0 : positionTitle.hashCode());
@@ -153,6 +144,8 @@ public class SignatureInfo implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		SignatureInfo other = (SignatureInfo) obj;
+		if (delegated != other.delegated)
+			return false;
 		if (delegatedAs == null) {
 			if (other.delegatedAs != null)
 				return false;
@@ -162,8 +155,6 @@ public class SignatureInfo implements Serializable {
 			if (other.fullName != null)
 				return false;
 		} else if (!fullName.equals(other.fullName))
-			return false;
-		if (isDelegated != other.isDelegated)
 			return false;
 		if (note == null) {
 			if (other.note != null)

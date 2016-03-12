@@ -6,8 +6,6 @@ import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Property;
 import org.mongodb.morphia.annotations.Reference;
 
-import com.google.gson.annotations.Expose;
-
 @Embedded
 public class InvestigatorRefAndPosition implements Serializable {
 	/**
@@ -15,27 +13,21 @@ public class InvestigatorRefAndPosition implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	@Expose
 	@Reference(value = "user profile" /* , lazy = true */)
 	UserProfile userRef = new UserProfile();
 
-	@Expose
 	@Property("user profile id")
 	private String userProfileId = new String();
 
-	@Expose
 	@Property("college")
 	private String college = new String();
 
-	@Expose
 	@Property("department")
 	private String department = new String();
 
-	@Expose
 	@Property("position type")
 	private String positionType = new String();
 
-	@Expose
 	@Property("position title")
 	private String positionTitle = new String();
 

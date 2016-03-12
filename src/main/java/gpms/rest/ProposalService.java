@@ -20,6 +20,7 @@ import gpms.model.ComplianceInfo;
 import gpms.model.ConfidentialInfo;
 import gpms.model.ConflictOfInterest;
 import gpms.model.CostShareInfo;
+import gpms.model.DeleteType;
 import gpms.model.FundingSource;
 import gpms.model.InvestigatorInfo;
 import gpms.model.InvestigatorRefAndPosition;
@@ -648,8 +649,6 @@ public class ProposalService {
 	public String produceProposalDetailsByProposalId(String message)
 			throws JsonProcessingException, IOException {
 		Proposal proposal = new Proposal();
-		String response = new String();
-
 		String proposalId = new String();
 
 		ObjectMapper mapper = new ObjectMapper();
@@ -662,12 +661,15 @@ public class ProposalService {
 		ObjectId id = new ObjectId(proposalId);
 		proposal = proposalDAO.findProposalByProposalID(id);
 
-		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd")
-				.excludeFieldsWithoutExposeAnnotation().setPrettyPrinting()
-				.create();
-		response = gson.toJson(proposal, Proposal.class);
+		// Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd")
+		// .excludeFieldsWithoutExposeAnnotation().setPrettyPrinting()
+		// .create();
+		// return gson.toJson(proposal, Proposal.class);
 
-		return response;
+		// mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+
+		return mapper.setDateFormat(formatter).writerWithDefaultPrettyPrinter()
+				.writeValueAsString(proposal);
 	}
 
 	@POST
@@ -990,13 +992,16 @@ public class ProposalService {
 									case "Withdraw":
 										if (!proposalID.equals("0")) {
 											if (existingProposal
-													.getUniversityResearchAdministratorApproval()
+													.getResearchAdministratorApproval()
 													.equals(ApprovalType.READYFORAPPROVAL)
 													&& proposalUserTitle
 															.textValue()
-															.equals("Research Administrator")) {
+															.equals("Research Administrator")
+													&& !existingProposal
+															.getResearchAdministratorWithdraw()
+															.equals(WithdrawType.WITHDRAWN)) {
 												existingProposal
-														.setUniversityResearchAdministratorWithdraw(WithdrawType.WITHDRAWN);
+														.setResearchAdministratorWithdraw(WithdrawType.WITHDRAWN);
 
 												// Proposal Status
 												existingProposal
@@ -1014,13 +1019,16 @@ public class ProposalService {
 									case "Archive":
 										if (!proposalID.equals("0")) {
 											if (existingProposal
-													.getUniversityResearchAdministratorSubmission()
+													.getResearchAdministratorSubmission()
 													.equals(SubmitType.SUBMITTED)
 													&& proposalUserTitle
 															.textValue()
-															.equals("University Research Director")) {
+															.equals("University Research Director")
+													&& !existingProposal
+															.getResearchDirectorArchived()
+															.equals(ArchiveType.ARCHIVED)) {
 												existingProposal
-														.setUniversityResearchDirectorArchived(ArchiveType.ARCHIVED);
+														.setResearchDirectorArchived(ArchiveType.ARCHIVED);
 
 												// Proposal Status
 												existingProposal
@@ -1189,25 +1197,11 @@ public class ProposalService {
 								// "Research Administrator"
 								// ];
 								if (!proposalID.equals("0")) {
-									if ((!existingProposal.getSubmittedByPI()
-											.equals(SubmitType.SUBMITTED)
-											|| !existingProposal
-													.getChairApproval()
-													.equals(ApprovalType.APPROVED)
-											|| existingProposal
-													.getBusinessManagerApproval()
-													.equals(ApprovalType.DISAPPROVED)
-											|| existingProposal
-													.getIRBApproval()
-													.equals(ApprovalType.DISAPPROVED)
-											|| existingProposal
-													.getDeanApproval()
-													.equals(ApprovalType.DISAPPROVED)
-											|| existingProposal
-													.getUniversityResearchAdministratorApproval()
-													.equals(ApprovalType.DISAPPROVED) || existingProposal
-											.getUniversityResearchDirectorApproval()
-											.equals(ApprovalType.DISAPPROVED))
+									if (!existingProposal.getDeletedByPI()
+											.equals(DeleteType.NOTDELETED)
+											&& (!existingProposal
+													.getSubmittedByPI()
+													.equals(SubmitType.SUBMITTED))
 											&& currentProposalRoles
 													.contains("PI")
 											&& !proposalUserTitle
@@ -1229,10 +1223,10 @@ public class ProposalService {
 												.add(Status.WAITINGFORCHAIRAPPROVAL);
 
 									} else if (!existingProposal
-											.getUniversityResearchAdministratorSubmission()
+											.getResearchAdministratorSubmission()
 											.equals(SubmitType.SUBMITTED)
 											&& existingProposal
-													.getUniversityResearchDirectorApproval()
+													.getResearchDirectorApproval()
 													.equals(ApprovalType.APPROVED)
 											&& !currentProposalRoles
 													.contains("PI")
@@ -1240,7 +1234,7 @@ public class ProposalService {
 													.textValue()
 													.equals("Research Administrator")) {
 										existingProposal
-												.setUniversityResearchAdministratorSubmission(SubmitType.SUBMITTED);
+												.setResearchAdministratorSubmission(SubmitType.SUBMITTED);
 
 										// Proposal Status
 										existingProposal.getProposalStatus()
@@ -1283,10 +1277,7 @@ public class ProposalService {
 											.getChairApproval()
 											.equals(ApprovalType.READYFORAPPROVAL)
 											&& proposalUserTitle.textValue()
-													.equals("Department Chair")
-											&& !existingProposal
-													.getBusinessManagerApproval()
-													.equals(ApprovalType.READYFORAPPROVAL)) {
+													.equals("Department Chair")) {
 										// Ready for Review by Business Manager
 										existingProposal
 												.setChairApproval(ApprovalType.APPROVED);
@@ -1303,15 +1294,12 @@ public class ProposalService {
 										// TODO check the compliance and IRB
 										// approvable needed or not?
 										if (existingProposal
-												.checkIRBReviewRequired()
-												&& !existingProposal
-														.getIRBApproval()
-														.equals(ApprovalType.READYFORAPPROVAL)) {
+												.checkIRBReviewRequired()) {
 											// existingProposal
 											// .setChairApproval(ApprovalType.APPROVED);
 
 											existingProposal
-													.setIRBApproval(ApprovalType.READYFORAPPROVAL);
+													.setIrbApproval(ApprovalType.READYFORAPPROVAL);
 
 											// Proposal Status
 											existingProposal
@@ -1323,10 +1311,7 @@ public class ProposalService {
 											.getBusinessManagerApproval()
 											.equals(ApprovalType.READYFORAPPROVAL)
 											&& proposalUserTitle.textValue()
-													.equals("Business Manager")
-											&& !existingProposal
-													.getDeanApproval()
-													.equals(ApprovalType.READYFORAPPROVAL)) {
+													.equals("Business Manager")) {
 										// Reviewed by Business Manager
 										existingProposal
 												.setBusinessManagerApproval(ApprovalType.APPROVED);
@@ -1342,18 +1327,13 @@ public class ProposalService {
 												.add(Status.WAITINGFORDEANAPPROVAL);
 
 									} else if (existingProposal
-											.checkIRBReviewRequired()
-											&& existingProposal
-													.getIRBApproval()
-													.equals(ApprovalType.READYFORAPPROVAL)
+											.getIrbApproval()
+											.equals(ApprovalType.READYFORAPPROVAL)
 											&& proposalUserTitle.textValue()
-													.equals("IRB")
-											&& !existingProposal
-													.getUniversityResearchAdministratorApproval()
-													.equals(ApprovalType.READYFORAPPROVAL)) {
+													.equals("IRB")) {
 										// Approved by IRB
 										existingProposal
-												.setIRBApproval(ApprovalType.APPROVED);
+												.setIrbApproval(ApprovalType.APPROVED);
 
 										// Proposal Status
 										existingProposal
@@ -1365,7 +1345,7 @@ public class ProposalService {
 										if (existingProposal.getDeanApproval()
 												.equals(ApprovalType.APPROVED)) {
 											existingProposal
-													.setUniversityResearchAdministratorApproval(ApprovalType.READYFORAPPROVAL);
+													.setResearchAdministratorApproval(ApprovalType.READYFORAPPROVAL);
 
 											// Proposal Status
 											existingProposal
@@ -1380,10 +1360,7 @@ public class ProposalService {
 											.getDeanApproval()
 											.equals(ApprovalType.READYFORAPPROVAL)
 											&& proposalUserTitle.textValue()
-													.equals("Dean")
-											&& !existingProposal
-													.getUniversityResearchAdministratorApproval()
-													.equals(ApprovalType.READYFORAPPROVAL)) {
+													.equals("Dean")) {
 										// Approved by Dean
 										existingProposal
 												.setDeanApproval(ApprovalType.APPROVED);
@@ -1398,7 +1375,7 @@ public class ProposalService {
 										if (!existingProposal
 												.checkIRBReviewRequired()) {
 											existingProposal
-													.setUniversityResearchAdministratorApproval(ApprovalType.READYFORAPPROVAL);
+													.setResearchAdministratorApproval(ApprovalType.READYFORAPPROVAL);
 
 											// Proposal Status
 											existingProposal
@@ -1409,10 +1386,10 @@ public class ProposalService {
 													.add(Status.WAITINGFORRESEARCHADMINAPPROVAL);
 										} else {
 											if (existingProposal
-													.getIRBApproval()
+													.getIrbApproval()
 													.equals(ApprovalType.APPROVED)) {
 												existingProposal
-														.setUniversityResearchAdministratorApproval(ApprovalType.READYFORAPPROVAL);
+														.setResearchAdministratorApproval(ApprovalType.READYFORAPPROVAL);
 
 												// Proposal Status
 												existingProposal
@@ -1424,19 +1401,16 @@ public class ProposalService {
 											}
 										}
 									} else if (existingProposal
-											.getUniversityResearchAdministratorApproval()
+											.getResearchAdministratorApproval()
 											.equals(ApprovalType.READYFORAPPROVAL)
 											&& proposalUserTitle
 													.textValue()
-													.equals("Research Administrator")
-											&& !existingProposal
-													.getUniversityResearchDirectorApproval()
-													.equals(ApprovalType.READYFORAPPROVAL)) {
+													.equals("Research Administrator")) {
 										// Submitted to Research Director
 										existingProposal
-												.setUniversityResearchAdministratorApproval(ApprovalType.APPROVED);
+												.setResearchAdministratorApproval(ApprovalType.APPROVED);
 										existingProposal
-												.setUniversityResearchDirectorApproval(ApprovalType.READYFORAPPROVAL);
+												.setResearchDirectorApproval(ApprovalType.READYFORAPPROVAL);
 
 										// Proposal Status
 										existingProposal.getProposalStatus()
@@ -1446,14 +1420,14 @@ public class ProposalService {
 												.add(Status.WAITINGFORRESEARCHDIRECTORAPPROVAL);
 
 									} else if (existingProposal
-											.getUniversityResearchDirectorApproval()
+											.getResearchDirectorApproval()
 											.equals(ApprovalType.READYFORAPPROVAL)
 											&& proposalUserTitle
 													.textValue()
 													.equals("University Research Director")) {
 										// Ready for submission
 										existingProposal
-												.setUniversityResearchDirectorApproval(ApprovalType.APPROVED);
+												.setResearchDirectorApproval(ApprovalType.APPROVED);
 
 										// Proposal Status
 										existingProposal.getProposalStatus()
@@ -1476,13 +1450,13 @@ public class ProposalService {
 											.getChairApproval()
 											.equals(ApprovalType.READYFORAPPROVAL)
 											&& proposalUserTitle.textValue()
-													.equals("Department Chair")
-											&& !existingProposal
-													.getBusinessManagerApproval()
-													.equals(ApprovalType.READYFORAPPROVAL)) {
+													.equals("Department Chair")) {
 										// Returned by Chair
 										existingProposal
 												.setChairApproval(ApprovalType.DISAPPROVED);
+
+										existingProposal
+												.setSubmittedByPI(SubmitType.NOTSUBMITTED);
 
 										// Proposal Status
 										existingProposal.getProposalStatus()
@@ -1494,13 +1468,15 @@ public class ProposalService {
 											.getBusinessManagerApproval()
 											.equals(ApprovalType.READYFORAPPROVAL)
 											&& proposalUserTitle.textValue()
-													.equals("Business Manager")
-											&& !existingProposal
-													.getDeanApproval()
-													.equals(ApprovalType.READYFORAPPROVAL)) {
+													.equals("Business Manager")) {
 										// Disapproved by Business Manager
 										existingProposal
 												.setBusinessManagerApproval(ApprovalType.DISAPPROVED);
+
+										existingProposal
+												.setSubmittedByPI(SubmitType.NOTSUBMITTED);
+										existingProposal
+												.setIrbApproval(ApprovalType.NOTREADYFORAPPROVAL);
 
 										// Proposal Status
 										existingProposal.getProposalStatus()
@@ -1510,18 +1486,16 @@ public class ProposalService {
 												.add(Status.DISAPPROVEDBYBUSINESSMANAGER);
 
 									} else if (existingProposal
-											.checkIRBReviewRequired()
-											&& existingProposal
-													.getIRBApproval()
-													.equals(ApprovalType.READYFORAPPROVAL)
+											.getIrbApproval()
+											.equals(ApprovalType.READYFORAPPROVAL)
 											&& proposalUserTitle.textValue()
-													.equals("IRB")
-											&& !existingProposal
-													.getUniversityResearchAdministratorApproval()
-													.equals(ApprovalType.READYFORAPPROVAL)) {
+													.equals("IRB")) {
 										// Disapproved by IRB
 										existingProposal
-												.setIRBApproval(ApprovalType.DISAPPROVED);
+												.setIrbApproval(ApprovalType.DISAPPROVED);
+
+										existingProposal
+												.setSubmittedByPI(SubmitType.NOTSUBMITTED);
 
 										// Proposal Status
 										existingProposal.getProposalStatus()
@@ -1533,13 +1507,13 @@ public class ProposalService {
 											.getDeanApproval()
 											.equals(ApprovalType.READYFORAPPROVAL)
 											&& proposalUserTitle.textValue()
-													.equals("Dean")
-											&& !existingProposal
-													.getUniversityResearchAdministratorApproval()
-													.equals(ApprovalType.READYFORAPPROVAL)) {
+													.equals("Dean")) {
 										// Returned by Dean
 										existingProposal
 												.setDeanApproval(ApprovalType.DISAPPROVED);
+
+										existingProposal
+												.setSubmittedByPI(SubmitType.NOTSUBMITTED);
 
 										// Proposal Status
 										existingProposal.getProposalStatus()
@@ -1548,17 +1522,17 @@ public class ProposalService {
 												.add(Status.RETURNEDBYDEAN);
 
 									} else if (existingProposal
-											.getUniversityResearchAdministratorApproval()
+											.getResearchAdministratorApproval()
 											.equals(ApprovalType.READYFORAPPROVAL)
 											&& proposalUserTitle
 													.textValue()
-													.equals("Research Administrator")
-											&& !existingProposal
-													.getUniversityResearchDirectorApproval()
-													.equals(ApprovalType.READYFORAPPROVAL)) {
+													.equals("Research Administrator")) {
 										// Disapproved by Research Administrator
 										existingProposal
-												.setUniversityResearchAdministratorApproval(ApprovalType.DISAPPROVED);
+												.setResearchAdministratorApproval(ApprovalType.DISAPPROVED);
+
+										existingProposal
+												.setSubmittedByPI(SubmitType.NOTSUBMITTED);
 
 										// Proposal Status
 										existingProposal.getProposalStatus()
@@ -1568,7 +1542,7 @@ public class ProposalService {
 												.add(Status.DISAPPROVEDBYRESEARCHADMIN);
 
 									} else if (existingProposal
-											.getUniversityResearchDirectorApproval()
+											.getResearchDirectorApproval()
 											.equals(ApprovalType.READYFORAPPROVAL)
 											&& proposalUserTitle
 													.textValue()
@@ -1576,7 +1550,10 @@ public class ProposalService {
 										// Disapproved by University Research
 										// Director
 										existingProposal
-												.setUniversityResearchDirectorApproval(ApprovalType.DISAPPROVED);
+												.setResearchDirectorApproval(ApprovalType.DISAPPROVED);
+
+										existingProposal
+												.setSubmittedByPI(SubmitType.NOTSUBMITTED);
 
 										// Proposal Status
 										existingProposal.getProposalStatus()
@@ -1626,19 +1603,19 @@ public class ProposalService {
 				ProjectType projectType = new ProjectType();
 				switch (projectInfo.get("ProjectType").textValue()) {
 				case "1":
-					projectType.setIsResearchBasic(true);
+					projectType.setResearchBasic(true);
 					break;
 				case "2":
-					projectType.setIsResearchApplied(true);
+					projectType.setResearchApplied(true);
 					break;
 				case "3":
-					projectType.setIsResearchDevelopment(true);
+					projectType.setResearchDevelopment(true);
 					break;
 				case "4":
-					projectType.setIsInstruction(true);
+					projectType.setInstruction(true);
 					break;
 				case "5":
-					projectType.setIsOtherSponsoredActivity(true);
+					projectType.setOtherSponsoredActivity(true);
 					break;
 				default:
 					break;
@@ -1771,7 +1748,7 @@ public class ProposalService {
 
 			if (sponsorAndBudgetInfo != null
 					&& sponsorAndBudgetInfo.has("FACosts")) {
-				newSponsorAndBudgetInfo.setFACosts(Double
+				newSponsorAndBudgetInfo.setFaCosts(Double
 						.parseDouble(sponsorAndBudgetInfo.get("FACosts")
 								.textValue()));
 			}
@@ -1785,7 +1762,7 @@ public class ProposalService {
 
 			if (sponsorAndBudgetInfo != null
 					&& sponsorAndBudgetInfo.has("FARate")) {
-				newSponsorAndBudgetInfo.setFARate(Double
+				newSponsorAndBudgetInfo.setFaRate(Double
 						.parseDouble(sponsorAndBudgetInfo.get("FARate")
 								.textValue()));
 			}
@@ -1971,15 +1948,15 @@ public class ProposalService {
 							&& complianceInfo.has("IRBPending")) {
 						switch (complianceInfo.get("IRBPending").textValue()) {
 						case "1":
-							newComplianceInfo.setIRBPending(false);
+							newComplianceInfo.setIrbPending(false);
 							if (complianceInfo != null
 									&& complianceInfo.has("IRB")) {
-								newComplianceInfo.setIRB(complianceInfo.get(
+								newComplianceInfo.setIrb(complianceInfo.get(
 										"IRB").textValue());
 							}
 							break;
 						case "2":
-							newComplianceInfo.setIRBPending(true);
+							newComplianceInfo.setIrbPending(true);
 							break;
 						default:
 							break;
@@ -2004,15 +1981,15 @@ public class ProposalService {
 							&& complianceInfo.has("IACUCPending")) {
 						switch (complianceInfo.get("IACUCPending").textValue()) {
 						case "1":
-							newComplianceInfo.setIACUCPending(false);
+							newComplianceInfo.setIacucPending(false);
 							if (complianceInfo != null
 									&& complianceInfo.has("IACUC")) {
-								newComplianceInfo.setIACUC(complianceInfo.get(
+								newComplianceInfo.setIacuc(complianceInfo.get(
 										"IACUC").textValue());
 							}
 							break;
 						case "2":
-							newComplianceInfo.setIACUCPending(true);
+							newComplianceInfo.setIacucPending(true);
 							break;
 						default:
 							break;
@@ -2037,15 +2014,15 @@ public class ProposalService {
 							&& complianceInfo.has("IBCPending")) {
 						switch (complianceInfo.get("IBCPending").textValue()) {
 						case "1":
-							newComplianceInfo.setIBCPending(false);
+							newComplianceInfo.setIbcPending(false);
 							if (complianceInfo != null
 									&& complianceInfo.has("IBC")) {
-								newComplianceInfo.setIBC(complianceInfo.get(
+								newComplianceInfo.setIbc(complianceInfo.get(
 										"IBC").textValue());
 							}
 							break;
 						case "2":
-							newComplianceInfo.setIBCPending(true);
+							newComplianceInfo.setIbcPending(true);
 							break;
 						default:
 							break;
@@ -2426,11 +2403,11 @@ public class ProposalService {
 			if (oSPSectionInfo != null && oSPSectionInfo.has("ListAgency")) {
 				if (!proposalID.equals("0")) {
 					if (!existingProposal
-							.getoSPSectionInfo()
+							.getOspSectionInfo()
 							.getListAgency()
 							.equals(oSPSectionInfo.get("ListAgency")
 									.textValue())) {
-						existingProposal.getoSPSectionInfo().setListAgency(
+						existingProposal.getOspSectionInfo().setListAgency(
 								oSPSectionInfo.get("ListAgency").textValue());
 					}
 				}
@@ -2501,18 +2478,18 @@ public class ProposalService {
 			}
 
 			if (!proposalID.equals("0")) {
-				if (!existingProposal.getoSPSectionInfo().getFundingSource()
+				if (!existingProposal.getOspSectionInfo().getFundingSource()
 						.equals(newFundingSource)) {
-					existingProposal.getoSPSectionInfo().setFundingSource(
+					existingProposal.getOspSectionInfo().setFundingSource(
 							newFundingSource);
 				}
 			}
 
 			if (oSPSectionInfo != null && oSPSectionInfo.has("CFDANo")) {
 				if (!proposalID.equals("0")) {
-					if (!existingProposal.getoSPSectionInfo().getCFDANo()
+					if (!existingProposal.getOspSectionInfo().getCfdaNo()
 							.equals(oSPSectionInfo.get("CFDANo").textValue())) {
-						existingProposal.getoSPSectionInfo().setCFDANo(
+						existingProposal.getOspSectionInfo().setCfdaNo(
 								oSPSectionInfo.get("CFDANo").textValue());
 					}
 				}
@@ -2521,10 +2498,10 @@ public class ProposalService {
 			if (oSPSectionInfo != null && oSPSectionInfo.has("ProgramNo")) {
 				if (!proposalID.equals("0")) {
 					if (!existingProposal
-							.getoSPSectionInfo()
+							.getOspSectionInfo()
 							.getProgramNo()
 							.equals(oSPSectionInfo.get("ProgramNo").textValue())) {
-						existingProposal.getoSPSectionInfo().setProgramNo(
+						existingProposal.getOspSectionInfo().setProgramNo(
 								oSPSectionInfo.get("ProgramNo").textValue());
 					}
 				}
@@ -2533,11 +2510,11 @@ public class ProposalService {
 			if (oSPSectionInfo != null && oSPSectionInfo.has("ProgramTitle")) {
 				if (!proposalID.equals("0")) {
 					if (!existingProposal
-							.getoSPSectionInfo()
+							.getOspSectionInfo()
 							.getProgramTitle()
 							.equals(oSPSectionInfo.get("ProgramTitle")
 									.textValue())) {
-						existingProposal.getoSPSectionInfo().setProgramTitle(
+						existingProposal.getOspSectionInfo().setProgramTitle(
 								oSPSectionInfo.get("ProgramTitle").textValue());
 					}
 				}
@@ -2581,26 +2558,26 @@ public class ProposalService {
 									.booleanValue());
 				}
 				if (!proposalID.equals("0")) {
-					if (!existingProposal.getoSPSectionInfo().getRecovery()
+					if (!existingProposal.getOspSectionInfo().getRecovery()
 							.equals(newRecovery)) {
-						existingProposal.getoSPSectionInfo().setRecovery(
+						existingProposal.getOspSectionInfo().setRecovery(
 								newRecovery);
 					}
 				}
 
 				BaseInfo newBaseInfo = new BaseInfo();
 				if (oSPSectionInfo != null && oSPSectionInfo.has("MTDC")) {
-					newBaseInfo.setMTDC(oSPSectionInfo.get("MTDC")
+					newBaseInfo.setMtdc(oSPSectionInfo.get("MTDC")
 							.booleanValue());
 				}
 
 				if (oSPSectionInfo != null && oSPSectionInfo.has("TDC")) {
 					newBaseInfo
-							.setTDC(oSPSectionInfo.get("TDC").booleanValue());
+							.setTdc(oSPSectionInfo.get("TDC").booleanValue());
 				}
 
 				if (oSPSectionInfo != null && oSPSectionInfo.has("TC")) {
-					newBaseInfo.setTC(oSPSectionInfo.get("TC").booleanValue());
+					newBaseInfo.setTc(oSPSectionInfo.get("TC").booleanValue());
 				}
 
 				if (oSPSectionInfo != null && oSPSectionInfo.has("Other")) {
@@ -2614,9 +2591,9 @@ public class ProposalService {
 							"NotApplicable").booleanValue());
 				}
 				if (!proposalID.equals("0")) {
-					if (!existingProposal.getoSPSectionInfo().getBaseInfo()
+					if (!existingProposal.getOspSectionInfo().getBaseInfo()
 							.equals(newBaseInfo)) {
-						existingProposal.getoSPSectionInfo().setBaseInfo(
+						existingProposal.getOspSectionInfo().setBaseInfo(
 								newBaseInfo);
 					}
 				}
@@ -2626,10 +2603,10 @@ public class ProposalService {
 					switch (oSPSectionInfo.get("IsPISalaryIncluded")
 							.textValue()) {
 					case "1":
-						newOSPSectionInfo.setPISalaryIncluded(true);
+						newOSPSectionInfo.setPiSalaryIncluded(true);
 						break;
 					case "2":
-						newOSPSectionInfo.setPISalaryIncluded(false);
+						newOSPSectionInfo.setPiSalaryIncluded(false);
 						break;
 					default:
 						break;
@@ -2637,21 +2614,21 @@ public class ProposalService {
 				}
 
 				if (!proposalID.equals("0")) {
-					if (existingProposal.getoSPSectionInfo()
-							.isPISalaryIncluded() != newOSPSectionInfo
-							.isPISalaryIncluded()) {
-						existingProposal.getoSPSectionInfo()
-								.setPISalaryIncluded(
-										newOSPSectionInfo.isPISalaryIncluded());
+					if (existingProposal.getOspSectionInfo()
+							.isPiSalaryIncluded() != newOSPSectionInfo
+							.isPiSalaryIncluded()) {
+						existingProposal.getOspSectionInfo()
+								.setPiSalaryIncluded(
+										newOSPSectionInfo.isPiSalaryIncluded());
 					}
 				}
 
 				if (oSPSectionInfo != null && oSPSectionInfo.has("PISalary")) {
 					if (!proposalID.equals("0")) {
-						if (existingProposal.getoSPSectionInfo().getPISalary() != Double
+						if (existingProposal.getOspSectionInfo().getPiSalary() != Double
 								.parseDouble(oSPSectionInfo.get("PISalary")
 										.textValue())) {
-							existingProposal.getoSPSectionInfo().setPISalary(
+							existingProposal.getOspSectionInfo().setPiSalary(
 									Double.parseDouble(oSPSectionInfo.get(
 											"PISalary").textValue()));
 						}
@@ -2659,15 +2636,15 @@ public class ProposalService {
 				}
 
 				if (oSPSectionInfo != null && oSPSectionInfo.has("PIFringe")) {
-					if (existingProposal.getoSPSectionInfo().getPIFringe() != Double
+					if (existingProposal.getOspSectionInfo().getPiFringe() != Double
 							.parseDouble(oSPSectionInfo.get("PIFringe")
 									.textValue())) {
-						existingProposal.getoSPSectionInfo().setPIFringe(
+						existingProposal.getOspSectionInfo().setPiFringe(
 								Double.parseDouble(oSPSectionInfo.get(
 										"PIFringe").textValue()));
 					}
 				} else {
-					newOSPSectionInfo.setPIFringe(Double
+					newOSPSectionInfo.setPiFringe(Double
 							.parseDouble(oSPSectionInfo.get("PIFringe")
 									.textValue()));
 				}
@@ -2676,11 +2653,11 @@ public class ProposalService {
 			if (oSPSectionInfo != null && oSPSectionInfo.has("DepartmentId")) {
 				if (oSPSectionInfo != null && oSPSectionInfo.has("PIFringe")) {
 					if (!existingProposal
-							.getoSPSectionInfo()
+							.getOspSectionInfo()
 							.getDepartmentId()
 							.equals(oSPSectionInfo.get("DepartmentId")
 									.textValue())) {
-						existingProposal.getoSPSectionInfo().setDepartmentId(
+						existingProposal.getOspSectionInfo().setDepartmentId(
 								oSPSectionInfo.get("DepartmentId").textValue());
 					}
 				} else {
@@ -2709,10 +2686,10 @@ public class ProposalService {
 				}
 			}
 			if (!proposalID.equals("0")) {
-				if (!existingProposal.getoSPSectionInfo()
+				if (!existingProposal.getOspSectionInfo()
 						.getInstitutionalCostDocumented()
 						.equals(newBaseOptions)) {
-					existingProposal.getoSPSectionInfo()
+					existingProposal.getOspSectionInfo()
 							.setInstitutionalCostDocumented(newBaseOptions);
 				}
 			}
@@ -2736,9 +2713,9 @@ public class ProposalService {
 				}
 			}
 			if (!proposalID.equals("0")) {
-				if (!existingProposal.getoSPSectionInfo()
+				if (!existingProposal.getOspSectionInfo()
 						.getThirdPartyCostDocumented().equals(newBaseOptions)) {
-					existingProposal.getoSPSectionInfo()
+					existingProposal.getOspSectionInfo()
 							.setThirdPartyCostDocumented(newBaseOptions);
 				}
 			}
@@ -2767,31 +2744,31 @@ public class ProposalService {
 			}
 
 			if (!proposalID.equals("0")) {
-				if (existingProposal.getoSPSectionInfo()
+				if (existingProposal.getOspSectionInfo()
 						.isAnticipatedSubRecipients() != newOSPSectionInfo
 						.isAnticipatedSubRecipients()) {
-					existingProposal.getoSPSectionInfo()
+					existingProposal.getOspSectionInfo()
 							.setAnticipatedSubRecipients(
 									newOSPSectionInfo
 											.isAnticipatedSubRecipients());
 				}
 
-				if (existingProposal.getoSPSectionInfo()
+				if (existingProposal.getOspSectionInfo()
 						.getAnticipatedSubRecipientsNames() != null) {
 					if (!existingProposal
-							.getoSPSectionInfo()
+							.getOspSectionInfo()
 							.getAnticipatedSubRecipientsNames()
 							.equals(newOSPSectionInfo
 									.getAnticipatedSubRecipientsNames())) {
 						existingProposal
-								.getoSPSectionInfo()
+								.getOspSectionInfo()
 								.setAnticipatedSubRecipientsNames(
 										newOSPSectionInfo
 												.getAnticipatedSubRecipientsNames());
 					}
 				} else {
 					existingProposal
-							.getoSPSectionInfo()
+							.getOspSectionInfo()
 							.setAnticipatedSubRecipientsNames(
 									newOSPSectionInfo
 											.getAnticipatedSubRecipientsNames());
@@ -2822,12 +2799,12 @@ public class ProposalService {
 				}
 			}
 			if (!proposalID.equals("0")) {
-				if (!existingProposal.getoSPSectionInfo()
-						.getPIEligibilityWaiver()
+				if (!existingProposal.getOspSectionInfo()
+						.getPiEligibilityWaiver()
 						.equals(newBasePIEligibilityOptions)) {
 					existingProposal
-							.getoSPSectionInfo()
-							.setPIEligibilityWaiver(newBasePIEligibilityOptions);
+							.getOspSectionInfo()
+							.setPiEligibilityWaiver(newBasePIEligibilityOptions);
 				}
 			}
 
@@ -2850,9 +2827,9 @@ public class ProposalService {
 				}
 			}
 			if (!proposalID.equals("0")) {
-				if (!existingProposal.getoSPSectionInfo()
+				if (!existingProposal.getOspSectionInfo()
 						.getConflictOfInterestForms().equals(newBaseOptions)) {
-					existingProposal.getoSPSectionInfo()
+					existingProposal.getOspSectionInfo()
 							.setConflictOfInterestForms(newBaseOptions);
 				}
 			}
@@ -2876,9 +2853,9 @@ public class ProposalService {
 				}
 			}
 			if (!proposalID.equals("0")) {
-				if (!existingProposal.getoSPSectionInfo()
+				if (!existingProposal.getOspSectionInfo()
 						.getExcludedPartyListChecked().equals(newBaseOptions)) {
-					existingProposal.getoSPSectionInfo()
+					existingProposal.getOspSectionInfo()
 							.setExcludedPartyListChecked(newBaseOptions);
 				}
 			}

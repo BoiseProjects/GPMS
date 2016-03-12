@@ -7,7 +7,7 @@ public class GPMSCommonInfo implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	private String userProfileID;
 	private String userName;
 	private boolean userIsAdmin;
@@ -17,6 +17,7 @@ public class GPMSCommonInfo implements Serializable {
 	private String userPositionTitle;
 
 	public GPMSCommonInfo() {
+
 	}
 
 	public String getUserProfileID() {
@@ -35,7 +36,7 @@ public class GPMSCommonInfo implements Serializable {
 		this.userName = userName;
 	}
 
-	public boolean getUserIsAdmin() {
+	public boolean isUserIsAdmin() {
 		return userIsAdmin;
 	}
 

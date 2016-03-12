@@ -5,8 +5,6 @@ import java.io.Serializable;
 import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Property;
 
-import com.google.gson.annotations.Expose;
-
 @Embedded
 public class CollaborationInfo implements Serializable {
 	/**
@@ -14,15 +12,14 @@ public class CollaborationInfo implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	@Expose
 	@Property("involve non-funded collaborations")
 	private boolean involveNonFundedCollab;
 
-	@Expose
 	@Property("involve collaborators")
 	private String involvedCollaborators = new String();
 
 	public CollaborationInfo() {
+
 	}
 
 	public boolean isInvolveNonFundedCollab() {

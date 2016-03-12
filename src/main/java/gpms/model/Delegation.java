@@ -9,8 +9,6 @@ import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Property;
 import org.mongodb.morphia.annotations.Reference;
 
-import com.google.gson.annotations.Expose;
-
 @Entity(value = DelegationDAO.COLLECTION_NAME, noClassnameStored = true)
 public class Delegation extends BaseEntity implements Serializable {
 	/**
@@ -18,43 +16,35 @@ public class Delegation extends BaseEntity implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	@Expose
 	@Reference(value = "user profile"/* , lazy = true */)
 	private UserProfile userProfile = new UserProfile();
 
-	@Expose
 	@Property("assigned user id")
 	private String assignedId = new String();
 
-	@Expose
 	@Property("college")
 	private String college = new String();
 
-	@Expose
 	@Property("department")
 	private String department = new String();
 
-	@Expose
 	@Property("position type")
 	private String positionType = new String();
 
-	@Expose
 	@Property("position title")
 	private String positionTitle = new String();
 
-	@Expose
 	@Property("proposal id")
 	private String proposalId = new String();
 
-	@Expose
 	@Property("from")
 	private Date from = new Date();
 
-	@Expose
 	@Property("to")
 	private Date to = new Date();
 
 	public Delegation() {
+
 	}
 
 	public UserProfile getUserProfile() {
@@ -130,9 +120,18 @@ public class Delegation extends BaseEntity implements Serializable {
 	}
 
 	@Override
+	public String toString() {
+		return "Delegation [userProfile=" + userProfile + ", assignedId="
+				+ assignedId + ", college=" + college + ", department="
+				+ department + ", positionType=" + positionType
+				+ ", positionTitle=" + positionTitle + ", proposalId="
+				+ proposalId + ", from=" + from + ", to=" + to + "]";
+	}
+
+	@Override
 	public int hashCode() {
 		final int prime = 31;
-		int result = 1;
+		int result = super.hashCode();
 		result = prime * result
 				+ ((assignedId == null) ? 0 : assignedId.hashCode());
 		result = prime * result + ((college == null) ? 0 : college.hashCode());
@@ -155,7 +154,7 @@ public class Delegation extends BaseEntity implements Serializable {
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
+		if (!super.equals(obj))
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
@@ -206,15 +205,6 @@ public class Delegation extends BaseEntity implements Serializable {
 		} else if (!userProfile.equals(other.userProfile))
 			return false;
 		return true;
-	}
-
-	@Override
-	public String toString() {
-		return "Delegation [userProfile=" + userProfile + ", assignedId="
-				+ assignedId + ", college=" + college + ", department="
-				+ department + ", positionType=" + positionType
-				+ ", positionTitle=" + positionTitle + ", proposalId="
-				+ proposalId + ", from=" + from + ", to=" + to + "]";
 	}
 
 }

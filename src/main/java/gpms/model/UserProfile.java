@@ -14,8 +14,6 @@ import org.mongodb.morphia.annotations.Property;
 import org.mongodb.morphia.annotations.Reference;
 import org.mongodb.morphia.utils.IndexDirection;
 
-import com.google.gson.annotations.Expose;
-
 @Entity(value = UserProfileDAO.COLLECTION_NAME, noClassnameStored = true)
 // @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class,
 // property = "id")
@@ -25,74 +23,57 @@ public class UserProfile extends BaseEntity implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	@Expose
 	@Property("first name")
 	@Indexed(value = IndexDirection.ASC, name = "firstNameIndex")
 	private String firstName = new String();
 
-	@Expose
 	@Property("middle name")
 	// @Indexed(value = IndexDirection.ASC, name = "middleNameIndex")
 	private String middleName = new String();
 
-	@Expose
 	@Property("last name")
 	@Indexed(value = IndexDirection.ASC, name = "lastNameIndex")
 	private String lastName = new String();
 
-	@Expose
 	@Property("date of birth")
 	private Date dateOfBirth = new Date();
 
-	@Expose
 	@Property("gender")
 	private String gender = new String();
 
-	@Expose
 	@Embedded("details")
 	private List<PositionDetails> details = new ArrayList<PositionDetails>();
 
-	@Expose
 	@Property("office number")
 	private List<String> officeNumbers = new ArrayList<String>();
 
-	@Expose
 	@Property("mobile number")
 	private List<String> mobileNumbers = new ArrayList<String>();
 
-	@Expose
 	@Property("home number")
 	private List<String> homeNumbers = new ArrayList<String>();
 
-	@Expose
 	@Property("other number")
 	private List<String> otherNumbers = new ArrayList<String>();
 
-	@Expose
 	@Embedded("addresses")
 	private List<Address> addresses = new ArrayList<Address>();
 
-	@Expose
 	@Property("work email")
 	@Indexed(name = "workEmailsIndex", unique = true)
 	private List<String> workEmails = new ArrayList<String>();
 
-	@Expose
 	@Property("personal email")
 	private List<String> personalEmails = new ArrayList<String>();
 
-	@Expose
 	@Reference(value = "user id"/* , lazy = true */)
 	private UserAccount userAccount = new UserAccount();
 
-	@Expose
-	@Property("is deleted")
-	private boolean isDeleted = false;
+	@Property("deleted")
+	private boolean deleted = false;
 
-	/**
-	 * Non-Parameterized constructor, needed for @id assignment
-	 */
 	public UserProfile() {
+
 	}
 
 	public String getFirstName() {
@@ -137,17 +118,6 @@ public class UserProfile extends BaseEntity implements Serializable {
 
 	public List<PositionDetails> getDetails() {
 		return details;
-	}
-
-	/**
-	 * Will return a PositionDetails object from the list, for manipulation
-	 * 
-	 * @param index
-	 *            index to find
-	 * @return PositionDetails object to return
-	 */
-	public PositionDetails getDetails(int index) {
-		return details.get(index);
 	}
 
 	public void setDetails(List<PositionDetails> details) {
@@ -219,44 +189,41 @@ public class UserProfile extends BaseEntity implements Serializable {
 	}
 
 	public boolean isDeleted() {
-		return isDeleted;
+		return deleted;
 	}
 
-	public void setDeleted(boolean isDeleted) {
-		this.isDeleted = isDeleted;
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
 	}
 
-	/**
-	 * toString returns full user name
-	 * 
-	 * @return full name of the user
-	 */
 	@Override
 	public String toString() {
-		return new StringBuffer(" First Name : ").append(this.getFirstName())
-				.append(" Middle Name : ").append(this.getMiddleName())
-				.append(" Last Name : ").append(this.getLastName())
-				.append(" Date of Birth : ").append(this.getDateOfBirth())
-				.append(" Gender : ").append(this.getGender())
-				.append(" Account name: ").append(userAccount.getUserName())
-				.toString();
+		return "UserProfile [firstName=" + firstName + ", middleName="
+				+ middleName + ", lastName=" + lastName + ", dateOfBirth="
+				+ dateOfBirth + ", gender=" + gender + ", details=" + details
+				+ ", officeNumbers=" + officeNumbers + ", mobileNumbers="
+				+ mobileNumbers + ", homeNumbers=" + homeNumbers
+				+ ", otherNumbers=" + otherNumbers + ", addresses=" + addresses
+				+ ", workEmails=" + workEmails + ", personalEmails="
+				+ personalEmails + ", userAccount=" + userAccount
+				+ ", deleted=" + deleted + "]";
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		int result = 1;
+		int result = super.hashCode();
 		result = prime * result
 				+ ((addresses == null) ? 0 : addresses.hashCode());
 		result = prime * result
 				+ ((dateOfBirth == null) ? 0 : dateOfBirth.hashCode());
+		result = prime * result + (deleted ? 1231 : 1237);
 		result = prime * result + ((details == null) ? 0 : details.hashCode());
 		result = prime * result
 				+ ((firstName == null) ? 0 : firstName.hashCode());
 		result = prime * result + ((gender == null) ? 0 : gender.hashCode());
 		result = prime * result
 				+ ((homeNumbers == null) ? 0 : homeNumbers.hashCode());
-		result = prime * result + (isDeleted ? 1231 : 1237);
 		result = prime * result
 				+ ((lastName == null) ? 0 : lastName.hashCode());
 		result = prime * result
@@ -280,7 +247,7 @@ public class UserProfile extends BaseEntity implements Serializable {
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
+		if (!super.equals(obj))
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
@@ -294,6 +261,8 @@ public class UserProfile extends BaseEntity implements Serializable {
 			if (other.dateOfBirth != null)
 				return false;
 		} else if (!dateOfBirth.equals(other.dateOfBirth))
+			return false;
+		if (deleted != other.deleted)
 			return false;
 		if (details == null) {
 			if (other.details != null)
@@ -314,8 +283,6 @@ public class UserProfile extends BaseEntity implements Serializable {
 			if (other.homeNumbers != null)
 				return false;
 		} else if (!homeNumbers.equals(other.homeNumbers))
-			return false;
-		if (isDeleted != other.isDeleted)
 			return false;
 		if (lastName == null) {
 			if (other.lastName != null)
@@ -366,6 +333,17 @@ public class UserProfile extends BaseEntity implements Serializable {
 		else
 			return this.firstName + " " + this.lastName;
 
+	}
+
+	/**
+	 * Will return a PositionDetails object from the list, for manipulation
+	 * 
+	 * @param index
+	 *            index to find
+	 * @return PositionDetails object to return
+	 */
+	public PositionDetails getDetails(int index) {
+		return details.get(index);
 	}
 
 }

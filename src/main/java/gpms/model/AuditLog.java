@@ -12,20 +12,18 @@ import org.mongodb.morphia.utils.IndexDirection;
 // @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class,
 // property = "id")
 public class AuditLog {
-	// @Expose
 	@Reference(value = "author info", lazy = true)
 	private UserProfile userProfile = new UserProfile();
 
-	// @Expose
 	@Property("action")
 	private String action = new String();
 
-	// @Expose
 	@Property("activity on")
 	@Indexed(value = IndexDirection.ASC, name = "activityOnIndex")
 	private Date activityDate = new Date();
 
 	public AuditLog() {
+		
 	}
 
 	public AuditLog(UserProfile authorProfile, String action, Date activityDate) {
@@ -38,8 +36,8 @@ public class AuditLog {
 		return userProfile;
 	}
 
-	public void setUserProfile(UserProfile userProfileId) {
-		this.userProfile = userProfileId;
+	public void setUserProfile(UserProfile userProfile) {
+		this.userProfile = userProfile;
 	}
 
 	public String getAction() {
@@ -56,6 +54,12 @@ public class AuditLog {
 
 	public void setActivityDate(Date activityDate) {
 		this.activityDate = activityDate;
+	}
+
+	@Override
+	public String toString() {
+		return "AuditLog [userProfile=" + userProfile + ", action=" + action
+				+ ", activityDate=" + activityDate + "]";
 	}
 
 	@Override

@@ -1,29 +1,24 @@
 package gpms.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
-@JsonInclude(Include.NON_NULL)
-@JsonSerialize(as = InvestigatorUsersAndPositions.class)
-@JsonDeserialize(as = InvestigatorUsersAndPositions.class)
+//@JsonIgnoreProperties(ignoreUnknown = true)
+//@JsonInclude(Include.NON_NULL)
+//@JsonSerialize(as = InvestigatorUsersAndPositions.class)
+//@JsonDeserialize(as = InvestigatorUsersAndPositions.class)
 public class InvestigatorUsersAndPositions {
-	@JsonProperty
+	// @JsonProperty
 	private String id;
-	@JsonProperty
+	// @JsonProperty
 	private String fullName;
-	@JsonProperty
+	// @JsonProperty
 	private String mobileNumber = new String();
-	@JsonProperty
+	// @JsonProperty
 	private Multimap<String, Object> positions = ArrayListMultimap.create();
 
 	public InvestigatorUsersAndPositions() {
+
 	}
 
 	public String getId() {
@@ -54,8 +49,15 @@ public class InvestigatorUsersAndPositions {
 		return positions;
 	}
 
-	public void setPositions(Multimap<String, Object> htUser) {
-		this.positions = htUser;
+	public void setPositions(Multimap<String, Object> positions) {
+		this.positions = positions;
+	}
+
+	@Override
+	public String toString() {
+		return "InvestigatorUsersAndPositions [id=" + id + ", fullName="
+				+ fullName + ", mobileNumber=" + mobileNumber + ", positions="
+				+ positions + "]";
 	}
 
 	@Override

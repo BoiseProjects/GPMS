@@ -8,8 +8,6 @@ import org.mongodb.morphia.annotations.Indexed;
 import org.mongodb.morphia.annotations.Property;
 import org.mongodb.morphia.utils.IndexDirection;
 
-import com.google.gson.annotations.Expose;
-
 //import org.mongodb.morphia.annotations.Id;
 
 @Embedded
@@ -19,32 +17,27 @@ public class ProjectInfo implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	@Expose
 	@Property("project title")
 	@Indexed(value = IndexDirection.ASC, name = "proposalTitleIndex", unique = true)
 	private String projectTitle = new String();
 
-	@Expose
 	@Embedded("project type")
 	private ProjectType projectType = new ProjectType();
 
-	@Expose
 	@Embedded("type of request")
 	private TypeOfRequest typeOfRequest = new TypeOfRequest();
 
-	@Expose
 	@Property("due date")
 	private Date dueDate = new Date();
 
-	@Expose
 	@Embedded("project period")
 	private ProjectPeriod projectPeriod = new ProjectPeriod();
 
-	@Expose
 	@Embedded("location of project")
 	private ProjectLocation projectLocation = new ProjectLocation();
 
 	public ProjectInfo() {
+
 	}
 
 	public String getProjectTitle() {
@@ -97,19 +90,10 @@ public class ProjectInfo implements Serializable {
 
 	@Override
 	public String toString() {
-		String outPut = "";
-		outPut += "Project Title       : " + projectTitle + "\n";
-		outPut += "Project Type        : " + "\n";
-		outPut += projectType.toString() + "\n";
-		outPut += "Type Of Request     : " + "\n";
-		outPut += typeOfRequest.toString() + "\n";
-		outPut += "Due Date            : " + "\n";
-		outPut += dueDate.toString() + "\n";
-		outPut += "Project Period      : " + "\n";
-		outPut += projectPeriod.toString() + "\n";
-		outPut += "Location of Project : " + "\n";
-		outPut += projectLocation.toString();
-		return outPut;
+		return "ProjectInfo [projectTitle=" + projectTitle + ", projectType="
+				+ projectType + ", typeOfRequest=" + typeOfRequest
+				+ ", dueDate=" + dueDate + ", projectPeriod=" + projectPeriod
+				+ ", projectLocation=" + projectLocation + "]";
 	}
 
 	@Override

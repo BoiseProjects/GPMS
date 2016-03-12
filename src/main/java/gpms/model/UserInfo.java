@@ -4,6 +4,8 @@ import java.util.Date;
 
 import com.ebay.xcelite.annotations.Column;
 import com.ebay.xcelite.annotations.Row;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 //@XmlRootElement
 //@XmlAccessorType(XmlAccessType.FIELD)
@@ -12,59 +14,71 @@ import com.ebay.xcelite.annotations.Row;
 //		"addedOn", "lastAudited", "lastAuditedBy", "lastAuditAction",
 //		"isDeleted", "isActive", "isAdmin" })
 //@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "name", visible = true)
-//@JsonPropertyOrder({ "rowTotal", "id", "userName", "fullName",
-//		"noOfPIedProposal", "noOfCoPIedProposal", "noOfSenioredProposal",
-//		"addedOn", "lastAudited", "lastAuditedBy", "lastAuditAction",
-//		"deleted", "activated", "adminUser" })
+@JsonPropertyOrder({ "rowTotal", "id", "userName", "fullName",
+		"noOfPIedProposal", "noOfCoPIedProposal", "noOfSenioredProposal",
+		"addedOn", "lastAudited", "lastAuditedBy", "lastAuditAction",
+		"deleted", "activated", "adminUser" })
 @Row(colsOrder = { "User Name", "Full Name", "Number Of PIed Proposal",
 		"Number Of CoPIed Proposal", "Number Of Seniored Proposal", "Added On",
 		"Last Audited", "Last Audited By", "Last Audit Action", "Is Deleted?",
 		"Is Activated?" })
 public class UserInfo {
 
+	@JsonProperty("rowTotal")
 	private int rowTotal;
 
+	@JsonProperty("id")
 	private String id = new String();
 
+	@JsonProperty("userName")
 	@Column(name = "User Name")
 	private String userName = new String();
 
+	@JsonProperty("fullName")
 	@Column(name = "Full Name")
 	private String fullName = new String();
 
+	@JsonProperty("noOfPIedProposal")
 	@Column(name = "Number Of PIed Proposal")
 	private int noOfPIedProposal = 0;
 
+	@JsonProperty("noOfCoPIedProposal")
 	@Column(name = "Number Of CoPIed Proposal")
 	private int noOfCoPIedProposal = 0;
 
+	@JsonProperty("noOfSenioredProposal")
 	@Column(name = "Number Of Seniored Proposal")
 	private int noOfSenioredProposal = 0;
 
+	@JsonProperty("addedOn")
 	@Column(name = "Added On", dataFormat = "yyyy/MM/dd hh:mm:ss")
 	private Date addedOn = new Date();
 
+	@JsonProperty("lastAudited")
 	@Column(name = "Last Audited", dataFormat = "yyyy/MM/dd hh:mm:ss")
 	private Date lastAudited = new Date();
 
+	@JsonProperty("lastAuditedBy")
 	@Column(name = "Last Audited By")
 	private String lastAuditedBy = new String();
 
+	@JsonProperty("lastAuditAction")
 	@Column(name = "Last Audit Action")
 	private String lastAuditAction = new String();
 
-	// @JsonProperty("deleted")
+	@JsonProperty("deleted")
 	@Column(name = "Is Deleted?")
 	private boolean deleted;
 
-	// @JsonProperty("activated")
+	@JsonProperty("activated")
 	@Column(name = "Is Activated?")
 	private boolean activated;
 
-	// @JsonProperty("adminUser")
+	@JsonProperty("adminUser")
 	private boolean adminUser;
 
 	public UserInfo() {
+
 	}
 
 	public int getRowTotal() {

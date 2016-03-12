@@ -11,8 +11,6 @@ import org.mongodb.morphia.annotations.PrePersist;
 import org.mongodb.morphia.annotations.Property;
 import org.mongodb.morphia.utils.IndexDirection;
 
-import com.google.gson.annotations.Expose;
-
 @Entity(value = NotificationDAO.COLLECTION_NAME, noClassnameStored = true)
 public class NotificationLog extends BaseEntity implements
 		Comparable<NotificationLog>, Serializable {
@@ -22,67 +20,54 @@ public class NotificationLog extends BaseEntity implements
 	 */
 	private static final long serialVersionUID = 1L;
 
-	@Expose
 	@Property("type")
 	private String type = new String();
 
-	@Expose
 	@Property("action")
 	private String action = new String();
 
-	@Expose
 	@Property("proposal id")
 	private String proposalId = new String();
 
-	@Expose
 	@Property("proposal title")
 	private String proposalTitle = new String();
 
-	@Expose
 	@Property("user profile id")
 	private String userProfileId = new String();
 
-	@Expose
 	@Property("user name")
 	private String username = new String();
 
-	@Expose
 	@Property("college")
 	private String college = new String();
 
-	@Expose
 	@Property("department")
 	private String department = new String();
 
-	@Expose
 	@Property("position type")
 	private String positionType = new String();
 
-	@Expose
 	@Property("position title")
 	private String positionTitle = new String();
 
-	@Expose
-	@Property("is viewed by user")
-	private boolean isViewedByUser = false;
+	@Property("viewed by user")
+	private boolean viewedByUser = false;
 
-	@Expose
-	@Property("is viewed by admin")
-	private boolean isViewedByAdmin = false;
+	@Property("viewed by admin")
+	private boolean viewedByAdmin = false;
 
 	@Property("activity on")
 	@Indexed(value = IndexDirection.ASC, name = "activityDateIndex")
 	private Date activityDate = new Date();
 
-	@Expose
 	@Property("for admin")
-	private boolean isForAdmin = false;
+	private boolean forAdmin = false;
 
-	@Expose
-	@Property("is critical")
-	private boolean isCritical = false;
+	@Property("critical")
+	private boolean critical = false;
 
 	public NotificationLog() {
+
 	}
 
 	public String getType() {
@@ -166,19 +151,19 @@ public class NotificationLog extends BaseEntity implements
 	}
 
 	public boolean isViewedByUser() {
-		return isViewedByUser;
+		return viewedByUser;
 	}
 
-	public void setViewedByUser(boolean isViewedByUser) {
-		this.isViewedByUser = isViewedByUser;
+	public void setViewedByUser(boolean viewedByUser) {
+		this.viewedByUser = viewedByUser;
 	}
 
 	public boolean isViewedByAdmin() {
-		return isViewedByAdmin;
+		return viewedByAdmin;
 	}
 
-	public void setViewedByAdmin(boolean isViewedByAdmin) {
-		this.isViewedByAdmin = isViewedByAdmin;
+	public void setViewedByAdmin(boolean viewedByAdmin) {
+		this.viewedByAdmin = viewedByAdmin;
 	}
 
 	public Date getActivityDate() {
@@ -190,35 +175,33 @@ public class NotificationLog extends BaseEntity implements
 	}
 
 	public boolean isForAdmin() {
-		return isForAdmin;
+		return forAdmin;
 	}
 
-	public void setForAdmin(boolean isForAdmin) {
-		this.isForAdmin = isForAdmin;
+	public void setForAdmin(boolean forAdmin) {
+		this.forAdmin = forAdmin;
 	}
 
 	public boolean isCritical() {
-		return isCritical;
+		return critical;
 	}
 
-	public void setCritical(boolean isCritical) {
-		this.isCritical = isCritical;
+	public void setCritical(boolean critical) {
+		this.critical = critical;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		int result = 1;
+		int result = super.hashCode();
 		result = prime * result + ((action == null) ? 0 : action.hashCode());
 		result = prime * result
 				+ ((activityDate == null) ? 0 : activityDate.hashCode());
 		result = prime * result + ((college == null) ? 0 : college.hashCode());
+		result = prime * result + (critical ? 1231 : 1237);
 		result = prime * result
 				+ ((department == null) ? 0 : department.hashCode());
-		result = prime * result + (isCritical ? 1231 : 1237);
-		result = prime * result + (isForAdmin ? 1231 : 1237);
-		result = prime * result + (isViewedByAdmin ? 1231 : 1237);
-		result = prime * result + (isViewedByUser ? 1231 : 1237);
+		result = prime * result + (forAdmin ? 1231 : 1237);
 		result = prime * result
 				+ ((positionTitle == null) ? 0 : positionTitle.hashCode());
 		result = prime * result
@@ -232,6 +215,8 @@ public class NotificationLog extends BaseEntity implements
 				+ ((userProfileId == null) ? 0 : userProfileId.hashCode());
 		result = prime * result
 				+ ((username == null) ? 0 : username.hashCode());
+		result = prime * result + (viewedByAdmin ? 1231 : 1237);
+		result = prime * result + (viewedByUser ? 1231 : 1237);
 		return result;
 	}
 
@@ -239,7 +224,7 @@ public class NotificationLog extends BaseEntity implements
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
+		if (!super.equals(obj))
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
@@ -259,18 +244,14 @@ public class NotificationLog extends BaseEntity implements
 				return false;
 		} else if (!college.equals(other.college))
 			return false;
+		if (critical != other.critical)
+			return false;
 		if (department == null) {
 			if (other.department != null)
 				return false;
 		} else if (!department.equals(other.department))
 			return false;
-		if (isCritical != other.isCritical)
-			return false;
-		if (isForAdmin != other.isForAdmin)
-			return false;
-		if (isViewedByAdmin != other.isViewedByAdmin)
-			return false;
-		if (isViewedByUser != other.isViewedByUser)
+		if (forAdmin != other.forAdmin)
 			return false;
 		if (positionTitle == null) {
 			if (other.positionTitle != null)
@@ -307,6 +288,10 @@ public class NotificationLog extends BaseEntity implements
 				return false;
 		} else if (!username.equals(other.username))
 			return false;
+		if (viewedByAdmin != other.viewedByAdmin)
+			return false;
+		if (viewedByUser != other.viewedByUser)
+			return false;
 		return true;
 	}
 
@@ -318,10 +303,9 @@ public class NotificationLog extends BaseEntity implements
 				+ ", username=" + username + ", college=" + college
 				+ ", department=" + department + ", positionType="
 				+ positionType + ", positionTitle=" + positionTitle
-				+ ", isViewedByUser=" + isViewedByUser + ", isViewedByAdmin="
-				+ isViewedByAdmin + ", activityDate=" + activityDate
-				+ ", isForAdmin=" + isForAdmin + ", isCritical=" + isCritical
-				+ "]";
+				+ ", viewedByUser=" + viewedByUser + ", viewedByAdmin="
+				+ viewedByAdmin + ", activityDate=" + activityDate
+				+ ", forAdmin=" + forAdmin + ", critical=" + critical + "]";
 	}
 
 	@Override

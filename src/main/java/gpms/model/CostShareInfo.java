@@ -5,8 +5,6 @@ import java.io.Serializable;
 import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Property;
 
-import com.google.gson.annotations.Expose;
-
 @Embedded
 public class CostShareInfo implements Serializable {
 	/**
@@ -14,15 +12,14 @@ public class CostShareInfo implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	@Expose
 	@Property("institutional committed")
 	boolean institutionalCommitted;
 
-	@Expose
 	@Property("third party committed")
 	boolean thirdPartyCommitted;
 
 	public CostShareInfo() {
+
 	}
 
 	public boolean isInstitutionalCommitted() {
@@ -43,10 +40,9 @@ public class CostShareInfo implements Serializable {
 
 	@Override
 	public String toString() {
-		String outPut = "";
-		outPut += "Institutional Committed : " + institutionalCommitted + "\n";
-		outPut += "Third Party Committed   : " + thirdPartyCommitted;
-		return outPut;
+		return "CostShareInfo [institutionalCommitted="
+				+ institutionalCommitted + ", thirdPartyCommitted="
+				+ thirdPartyCommitted + "]";
 	}
 
 	@Override

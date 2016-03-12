@@ -5,8 +5,6 @@ import java.io.Serializable;
 import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Property;
 
-import com.google.gson.annotations.Expose;
-
 @Embedded
 public class ProjectLocation implements Serializable {
 	/**
@@ -14,15 +12,14 @@ public class ProjectLocation implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	@Expose
 	@Property("off-campus")
 	private boolean offCampus;
 
-	@Expose
 	@Property("on-campus")
 	private boolean onCampus;
 
 	public ProjectLocation() {
+
 	}
 
 	public boolean isOffCampus() {
@@ -30,10 +27,7 @@ public class ProjectLocation implements Serializable {
 	}
 
 	public void setOffCampus(boolean offCampus) {
-		if (!this.offCampus && offCampus) {
-			this.offCampus = offCampus;
-			onCampus = false;
-		}
+		this.offCampus = offCampus;
 	}
 
 	public boolean isOnCampus() {
@@ -41,18 +35,13 @@ public class ProjectLocation implements Serializable {
 	}
 
 	public void setOnCampus(boolean onCampus) {
-		if (!this.onCampus && onCampus) {
-			offCampus = false;
-			this.onCampus = onCampus;
-		}
+		this.onCampus = onCampus;
 	}
 
 	@Override
 	public String toString() {
-		String outPut = "";
-		outPut += "Off-Campus : " + offCampus + "\n";
-		outPut += "On-Campus  : " + onCampus;
-		return outPut;
+		return "ProjectLocation [offCampus=" + offCampus + ", onCampus="
+				+ onCampus + "]";
 	}
 
 	@Override

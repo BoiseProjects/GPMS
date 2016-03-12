@@ -6,6 +6,7 @@ public class UserProposalCount {
 			seniorCount = 0;
 
 	public UserProposalCount() {
+	
 	}
 
 	public int getTotalProposalCount() {

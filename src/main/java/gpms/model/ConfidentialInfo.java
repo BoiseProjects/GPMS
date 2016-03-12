@@ -5,36 +5,30 @@ import java.io.Serializable;
 import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Property;
 
-import com.google.gson.annotations.Expose;
-
 @Embedded
-public class ConfidentialInfo implements Serializable  {
+public class ConfidentialInfo implements Serializable {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	@Expose
 	@Property("contain confidential information")
 	private boolean containConfidentialInformation;
 
-	@Expose
 	@Property("on pages")
 	private String onPages = new String();
 
-	@Expose
 	@Property("patentable")
 	private boolean patentable;
 
-	@Expose
 	@Property("copyrightable")
 	private boolean copyrightable;
 
-	@Expose
 	@Property("involve intellectual property")
 	private boolean involveIntellectualProperty;
 
 	public ConfidentialInfo() {
+
 	}
 
 	public boolean isContainConfidentialInformation() {

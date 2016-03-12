@@ -4,6 +4,10 @@ public class ProposalStatusInfo {
 	private String statusKey = new String();
 	private String statusValue = new String();
 
+	public ProposalStatusInfo() {
+
+	}
+
 	public String getStatusKey() {
 		return statusKey;
 	}

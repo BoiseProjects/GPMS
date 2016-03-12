@@ -6,7 +6,21 @@ import java.util.List;
 
 import com.ebay.xcelite.annotations.Column;
 import com.ebay.xcelite.annotations.Row;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+@JsonPropertyOrder({ "rowTotal", "id", "proposalNo", "projectTitle",
+		"projectType", "typeOfRequest", "projectLocation", "grantingAgencies",
+		"directCosts", "faCosts", "totalCosts", "faRate", "dateCreated",
+		"dateSubmitted", "dueDate", "projectPeriodFrom", "projectPeriodTo",
+		"lastAudited", "lastAuditedBy", "lastAuditAction", "piUser",
+		"copiUsers", "seniorUsers", "allUsers", "currentuserProposalRoles",
+		"deleted", "proposalStatus", "submittedByPI", "deletedByPI",
+		"chairApproval", "businessManagerApproval", "irbapproval",
+		"deanApproval", "researchAdministratorApproval",
+		"researchAdministratorWithdraw", "researchDirectorApproval",
+		"researchDirectorDeletion", "researchAdministratorSubmission",
+		"researchDirectorArchived" })
 @Row(colsOrder = { "Proposal No", "Project Title", "Project Type",
 		"Type Of Request", "Project Location", "Granting Agencies",
 		"Direct Costs", "F&A Costs", "Total Costs", "F&A Rate", "Date Created",
@@ -14,90 +28,151 @@ import com.ebay.xcelite.annotations.Row;
 		"Project Period To", "Proposal Status", "Last Audited",
 		"Last Audited By", "Last Audit Action", "Is Deleted?" })
 public class ProposalInfo {
+	@JsonProperty("rowTotal")
 	private int rowTotal;
+
+	@JsonProperty("id")
 	private String id = new String();
 
 	// Proposal
+	@JsonProperty("proposalNo")
 	@Column(name = "Proposal No")
 	private int proposalNo = 0;
 
 	// ProjectInfo
+	@JsonProperty("projectTitle")
 	@Column(name = "Project Title")
 	private String projectTitle = new String();
+
+	@JsonProperty("projectType")
 	@Column(name = "Project Type")
 	private String projectType = new String();
+
+	@JsonProperty("typeOfRequest")
 	@Column(name = "Type Of Request")
 	private List<String> typeOfRequest = new ArrayList<String>();
+
+	@JsonProperty("projectLocation")
 	@Column(name = "Project Location")
 	private String projectLocation = new String();
 
 	// SponsorAndBudgetInfo
+	@JsonProperty("grantingAgencies")
 	@Column(name = "Granting Agencies")
 	private List<String> grantingAgencies = new ArrayList<String>();
+
+	@JsonProperty("directCosts")
 	@Column(name = "Direct Costs")
 	private double directCosts;
+
+	@JsonProperty("faCosts")
 	@Column(name = "F&A Costs")
 	private double faCosts;
+
+	@JsonProperty("totalCosts")
 	@Column(name = "Total Costs")
 	private double totalCosts;
+
+	@JsonProperty("faRate")
 	@Column(name = "F&A Rate")
 	private double faRate;
 
 	// Proposal
+	@JsonProperty("dateCreated")
 	@Column(name = "Date Created", dataFormat = "yyyy/MM/dd hh:mm:ss")
 	private Date dateCreated = new Date();
+
+	@JsonProperty("dateSubmitted")
 	@Column(name = "Date Submitted", dataFormat = "yyyy/MM/dd hh:mm:ss")
 	private Date dateSubmitted = new Date();
 
 	// ProjectInfo
+	@JsonProperty("dueDate")
 	@Column(name = "Due Date", dataFormat = "yyyy/MM/dd hh:mm:ss")
 	private Date dueDate = new Date();
+
+	@JsonProperty("projectPeriodFrom")
 	@Column(name = "Project Period From", dataFormat = "yyyy/MM/dd hh:mm:ss")
 	private Date projectPeriodFrom = new Date();
+
+	@JsonProperty("projectPeriodTo")
 	@Column(name = "Project Period To", dataFormat = "yyyy/MM/dd hh:mm:ss")
 	private Date projectPeriodTo = new Date();
 
-	// Proposal
-	@Column(name = "Proposal Status")
-	private List<String> proposalStatus = new ArrayList<String>();
-
-	// Proposal Status variables
-	private SubmitType submittedByPI = SubmitType.NOTSUBMITTED;
-	private DeleteType deletedByPI = DeleteType.NOTDELETED;
-	private ApprovalType chairApproval = ApprovalType.NOTREADYFORAPPROVAL;
-	private ApprovalType businessManagerApproval = ApprovalType.NOTREADYFORAPPROVAL;
-	private ApprovalType IRBApproval = ApprovalType.NOTREADYFORAPPROVAL;
-	private ApprovalType DeanApproval = ApprovalType.NOTREADYFORAPPROVAL;
-	private ApprovalType UniversityResearchAdministratorApproval = ApprovalType.NOTREADYFORAPPROVAL;
-	private WithdrawType UniversityResearchAdministratorWithdraw = WithdrawType.NOTWITHDRAWN;
-	private ApprovalType UniversityResearchDirectorApproval = ApprovalType.NOTREADYFORAPPROVAL;
-	private DeleteType UniversityResearchDirectorDeletion = DeleteType.NOTDELETED;
-	private SubmitType UniversityResearchAdministratorSubmission = SubmitType.NOTSUBMITTED;
-	private ArchiveType UniversityResearchDirectorArchived = ArchiveType.NOTARCHIVED;
-
-	// END
-
+	@JsonProperty("lastAudited")
 	@Column(name = "Last Audited", dataFormat = "yyyy/MM/dd hh:mm:ss")
 	private Date lastAudited = new Date();
 
+	@JsonProperty("lastAuditedBy")
 	@Column(name = "Last Audited By")
 	private String lastAuditedBy = new String();
 
+	@JsonProperty("lastAuditAction")
 	@Column(name = "Last Audit Action")
 	private String lastAuditAction = new String();
 
 	// PI, CO-PI and Senior UserProfiles
+	@JsonProperty("piUser")
 	private String piUser = new String();
+
+	@JsonProperty("copiUsers")
 	private List<String> copiUsers = new ArrayList<String>();
+
+	@JsonProperty("seniorUsers")
 	private List<String> seniorUsers = new ArrayList<String>();
 
+	@JsonProperty("allUsers")
 	private List<String> allUsers = new ArrayList<String>();
 
 	// Proposal Roles
+	@JsonProperty("currentuserProposalRoles")
 	private List<String> currentuserProposalRoles = new ArrayList<String>();
 
+	@JsonProperty("deleted")
 	@Column(name = "Is Deleted?")
-	private boolean isDeleted = false;
+	private boolean deleted = false;
+
+	// Proposal
+	@JsonProperty("proposalStatus")
+	@Column(name = "Proposal Status")
+	private List<String> proposalStatus = new ArrayList<String>();
+
+	// Proposal Status variables
+	@JsonProperty("submittedByPI")
+	private SubmitType submittedByPI = SubmitType.NOTSUBMITTED;
+
+	@JsonProperty("deletedByPI")
+	private DeleteType deletedByPI = DeleteType.NOTDELETED;
+
+	@JsonProperty("chairApproval")
+	private ApprovalType chairApproval = ApprovalType.NOTREADYFORAPPROVAL;
+
+	@JsonProperty("businessManagerApproval")
+	private ApprovalType businessManagerApproval = ApprovalType.NOTREADYFORAPPROVAL;
+
+	@JsonProperty("irbapproval")
+	private ApprovalType irbApproval = ApprovalType.NOTREADYFORAPPROVAL;
+
+	@JsonProperty("deanApproval")
+	private ApprovalType deanApproval = ApprovalType.NOTREADYFORAPPROVAL;
+
+	@JsonProperty("researchAdministratorApproval")
+	private ApprovalType researchAdministratorApproval = ApprovalType.NOTREADYFORAPPROVAL;
+
+	@JsonProperty("researchAdministratorWithdraw")
+	private WithdrawType researchAdministratorWithdraw = WithdrawType.NOTWITHDRAWN;
+
+	@JsonProperty("researchDirectorApproval")
+	private ApprovalType researchDirectorApproval = ApprovalType.NOTREADYFORAPPROVAL;
+
+	@JsonProperty("researchDirectorDeletion")
+	private DeleteType researchDirectorDeletion = DeleteType.NOTDELETED;
+
+	@JsonProperty("researchAdministratorSubmission")
+	private SubmitType researchAdministratorSubmission = SubmitType.NOTSUBMITTED;
+
+	@JsonProperty("researchDirectorArchived")
+	private ArchiveType researchDirectorArchived = ArchiveType.NOTARCHIVED;
 
 	public ProposalInfo() {
 
@@ -239,116 +314,6 @@ public class ProposalInfo {
 		this.projectPeriodTo = projectPeriodTo;
 	}
 
-	public List<String> getProposalStatus() {
-		return proposalStatus;
-	}
-
-	public void setProposalStatus(List<String> proposalStatus) {
-		this.proposalStatus = proposalStatus;
-	}
-
-	public SubmitType getSubmittedByPI() {
-		return submittedByPI;
-	}
-
-	public void setSubmittedByPI(SubmitType submittedByPI) {
-		this.submittedByPI = submittedByPI;
-	}
-
-	public DeleteType getDeletedByPI() {
-		return deletedByPI;
-	}
-
-	public void setDeletedByPI(DeleteType deletedByPI) {
-		this.deletedByPI = deletedByPI;
-	}
-
-	public ApprovalType getChairApproval() {
-		return chairApproval;
-	}
-
-	public void setChairApproval(ApprovalType chairApproval) {
-		this.chairApproval = chairApproval;
-	}
-
-	public ApprovalType getBusinessManagerApproval() {
-		return businessManagerApproval;
-	}
-
-	public void setBusinessManagerApproval(ApprovalType businessManagerApproval) {
-		this.businessManagerApproval = businessManagerApproval;
-	}
-
-	public ApprovalType getIRBApproval() {
-		return IRBApproval;
-	}
-
-	public void setIRBApproval(ApprovalType iRBApproval) {
-		IRBApproval = iRBApproval;
-	}
-
-	public ApprovalType getDeanApproval() {
-		return DeanApproval;
-	}
-
-	public void setDeanApproval(ApprovalType deanApproval) {
-		DeanApproval = deanApproval;
-	}
-
-	public ApprovalType getUniversityResearchAdministratorApproval() {
-		return UniversityResearchAdministratorApproval;
-	}
-
-	public void setUniversityResearchAdministratorApproval(
-			ApprovalType universityResearchAdministratorApproval) {
-		UniversityResearchAdministratorApproval = universityResearchAdministratorApproval;
-	}
-
-	public WithdrawType getUniversityResearchAdministratorWithdraw() {
-		return UniversityResearchAdministratorWithdraw;
-	}
-
-	public void setUniversityResearchAdministratorWithdraw(
-			WithdrawType universityResearchAdministratorWithdraw) {
-		UniversityResearchAdministratorWithdraw = universityResearchAdministratorWithdraw;
-	}
-
-	public ApprovalType getUniversityResearchDirectorApproval() {
-		return UniversityResearchDirectorApproval;
-	}
-
-	public void setUniversityResearchDirectorApproval(
-			ApprovalType universityResearchDirectorApproval) {
-		UniversityResearchDirectorApproval = universityResearchDirectorApproval;
-	}
-
-	public DeleteType getUniversityResearchDirectorDeletion() {
-		return UniversityResearchDirectorDeletion;
-	}
-
-	public void setUniversityResearchDirectorDeletion(
-			DeleteType universityResearchDirectorDeletion) {
-		UniversityResearchDirectorDeletion = universityResearchDirectorDeletion;
-	}
-
-	public SubmitType getUniversityResearchAdministratorSubmission() {
-		return UniversityResearchAdministratorSubmission;
-	}
-
-	public void setUniversityResearchAdministratorSubmission(
-			SubmitType universityResearchAdministratorSubmission) {
-		UniversityResearchAdministratorSubmission = universityResearchAdministratorSubmission;
-	}
-
-	public ArchiveType getUniversityResearchDirectorArchived() {
-		return UniversityResearchDirectorArchived;
-	}
-
-	public void setUniversityResearchDirectorArchived(
-			ArchiveType universityResearchDirectorArchived) {
-		UniversityResearchDirectorArchived = universityResearchDirectorArchived;
-	}
-
 	public Date getLastAudited() {
 		return lastAudited;
 	}
@@ -415,11 +380,119 @@ public class ProposalInfo {
 	}
 
 	public boolean isDeleted() {
-		return isDeleted;
+		return deleted;
 	}
 
-	public void setDeleted(boolean isDeleted) {
-		this.isDeleted = isDeleted;
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
+
+	public List<String> getProposalStatus() {
+		return proposalStatus;
+	}
+
+	public void setProposalStatus(List<String> proposalStatus) {
+		this.proposalStatus = proposalStatus;
+	}
+
+	public SubmitType getSubmittedByPI() {
+		return submittedByPI;
+	}
+
+	public void setSubmittedByPI(SubmitType submittedByPI) {
+		this.submittedByPI = submittedByPI;
+	}
+
+	public DeleteType getDeletedByPI() {
+		return deletedByPI;
+	}
+
+	public void setDeletedByPI(DeleteType deletedByPI) {
+		this.deletedByPI = deletedByPI;
+	}
+
+	public ApprovalType getChairApproval() {
+		return chairApproval;
+	}
+
+	public void setChairApproval(ApprovalType chairApproval) {
+		this.chairApproval = chairApproval;
+	}
+
+	public ApprovalType getBusinessManagerApproval() {
+		return businessManagerApproval;
+	}
+
+	public void setBusinessManagerApproval(ApprovalType businessManagerApproval) {
+		this.businessManagerApproval = businessManagerApproval;
+	}
+
+	public ApprovalType getIrbApproval() {
+		return irbApproval;
+	}
+
+	public void setIrbApproval(ApprovalType irbApproval) {
+		this.irbApproval = irbApproval;
+	}
+
+	public ApprovalType getDeanApproval() {
+		return deanApproval;
+	}
+
+	public void setDeanApproval(ApprovalType deanApproval) {
+		this.deanApproval = deanApproval;
+	}
+
+	public ApprovalType getResearchAdministratorApproval() {
+		return researchAdministratorApproval;
+	}
+
+	public void setResearchAdministratorApproval(
+			ApprovalType researchAdministratorApproval) {
+		this.researchAdministratorApproval = researchAdministratorApproval;
+	}
+
+	public WithdrawType getResearchAdministratorWithdraw() {
+		return researchAdministratorWithdraw;
+	}
+
+	public void setResearchAdministratorWithdraw(
+			WithdrawType researchAdministratorWithdraw) {
+		this.researchAdministratorWithdraw = researchAdministratorWithdraw;
+	}
+
+	public ApprovalType getResearchDirectorApproval() {
+		return researchDirectorApproval;
+	}
+
+	public void setResearchDirectorApproval(
+			ApprovalType researchDirectorApproval) {
+		this.researchDirectorApproval = researchDirectorApproval;
+	}
+
+	public DeleteType getResearchDirectorDeletion() {
+		return researchDirectorDeletion;
+	}
+
+	public void setResearchDirectorDeletion(DeleteType researchDirectorDeletion) {
+		this.researchDirectorDeletion = researchDirectorDeletion;
+	}
+
+	public SubmitType getResearchAdministratorSubmission() {
+		return researchAdministratorSubmission;
+	}
+
+	public void setResearchAdministratorSubmission(
+			SubmitType researchAdministratorSubmission) {
+		this.researchAdministratorSubmission = researchAdministratorSubmission;
+	}
+
+	public ArchiveType getResearchDirectorArchived() {
+		return researchDirectorArchived;
+	}
+
+	public void setResearchDirectorArchived(ArchiveType researchDirectorArchived) {
+		this.researchDirectorArchived = researchDirectorArchived;
 	}
 
 }

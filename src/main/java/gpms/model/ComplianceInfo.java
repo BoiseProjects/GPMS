@@ -5,8 +5,6 @@ import java.io.Serializable;
 import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Property;
 
-import com.google.gson.annotations.Expose;
-
 @Embedded
 public class ComplianceInfo implements Serializable {
 	/**
@@ -14,43 +12,33 @@ public class ComplianceInfo implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	@Expose
 	@Property("involve use of human subjects")
 	private boolean involveUseOfHumanSubjects;
 
-	@Expose
-	@Property("IRB")
-	private String IRB = new String();
+	@Property("irb")
+	private String irb = new String();
 
-	@Expose
-	@Property("IRB pending status")
-	private boolean IRBPending;
+	@Property("irb pending status")
+	private boolean irbPending;
 
-	@Expose
 	@Property("involve use of vertebrate animals")
 	private boolean involveUseOfVertebrateAnimals;
 
-	@Expose
-	@Property("IACUC")
-	private String IACUC = new String();
+	@Property("iacuc")
+	private String iacuc = new String();
 
-	@Expose
-	@Property("IACUC pending status")
-	private boolean IACUCPending;
+	@Property("iacuc pending status")
+	private boolean iacucPending;
 
-	@Expose
 	@Property("involve biosafety concerns")
 	private boolean involveBiosafetyConcerns;
 
-	@Expose
-	@Property("IBC")
-	private String IBC = new String();
+	@Property("ibc")
+	private String ibc = new String();
 
-	@Expose
-	@Property("IBC pending status")
-	private boolean IBCPending;
+	@Property("ibc pending status")
+	private boolean ibcPending;
 
-	@Expose
 	@Property("involve environmental health and safety concerns")
 	private boolean involveEnvironmentalHealthAndSafetyConcerns;
 
@@ -66,20 +54,20 @@ public class ComplianceInfo implements Serializable {
 		this.involveUseOfHumanSubjects = involveUseOfHumanSubjects;
 	}
 
-	public String getIRB() {
-		return IRB;
+	public String getIrb() {
+		return irb;
 	}
 
-	public void setIRB(String iRB) {
-		IRB = iRB;
+	public void setIrb(String irb) {
+		this.irb = irb;
 	}
 
-	public boolean isIRBPending() {
-		return IRBPending;
+	public boolean isIrbPending() {
+		return irbPending;
 	}
 
-	public void setIRBPending(boolean iRBPending) {
-		IRBPending = iRBPending;
+	public void setIrbPending(boolean irbPending) {
+		this.irbPending = irbPending;
 	}
 
 	public boolean isInvolveUseOfVertebrateAnimals() {
@@ -91,20 +79,20 @@ public class ComplianceInfo implements Serializable {
 		this.involveUseOfVertebrateAnimals = involveUseOfVertebrateAnimals;
 	}
 
-	public String getIACUC() {
-		return IACUC;
+	public String getIacuc() {
+		return iacuc;
 	}
 
-	public void setIACUC(String iACUC) {
-		IACUC = iACUC;
+	public void setIacuc(String iacuc) {
+		this.iacuc = iacuc;
 	}
 
-	public boolean isIACUCPending() {
-		return IACUCPending;
+	public boolean isIacucPending() {
+		return iacucPending;
 	}
 
-	public void setIACUCPending(boolean iACUCPending) {
-		IACUCPending = iACUCPending;
+	public void setIacucPending(boolean iacucPending) {
+		this.iacucPending = iacucPending;
 	}
 
 	public boolean isInvolveBiosafetyConcerns() {
@@ -115,20 +103,20 @@ public class ComplianceInfo implements Serializable {
 		this.involveBiosafetyConcerns = involveBiosafetyConcerns;
 	}
 
-	public String getIBC() {
-		return IBC;
+	public String getIbc() {
+		return ibc;
 	}
 
-	public void setIBC(String iBC) {
-		IBC = iBC;
+	public void setIbc(String ibc) {
+		this.ibc = ibc;
 	}
 
-	public boolean isIBCPending() {
-		return IBCPending;
+	public boolean isIbcPending() {
+		return ibcPending;
 	}
 
-	public void setIBCPending(boolean iBCPending) {
-		IBCPending = iBCPending;
+	public void setIbcPending(boolean ibcPending) {
+		this.ibcPending = ibcPending;
 	}
 
 	public boolean isInvolveEnvironmentalHealthAndSafetyConcerns() {
@@ -143,12 +131,12 @@ public class ComplianceInfo implements Serializable {
 	@Override
 	public String toString() {
 		return "ComplianceInfo [involveUseOfHumanSubjects="
-				+ involveUseOfHumanSubjects + ", IRB=" + IRB + ", IRBPending="
-				+ IRBPending + ", involveUseOfVertebrateAnimals="
-				+ involveUseOfVertebrateAnimals + ", IACUC=" + IACUC
-				+ ", IACUCPending=" + IACUCPending
+				+ involveUseOfHumanSubjects + ", irb=" + irb + ", irbPending="
+				+ irbPending + ", involveUseOfVertebrateAnimals="
+				+ involveUseOfVertebrateAnimals + ", iacuc=" + iacuc
+				+ ", iacucPending=" + iacucPending
 				+ ", involveBiosafetyConcerns=" + involveBiosafetyConcerns
-				+ ", IBC=" + IBC + ", IBCPending=" + IBCPending
+				+ ", ibc=" + ibc + ", ibcPending=" + ibcPending
 				+ ", involveEnvironmentalHealthAndSafetyConcerns="
 				+ involveEnvironmentalHealthAndSafetyConcerns + "]";
 	}
@@ -157,17 +145,17 @@ public class ComplianceInfo implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((IACUC == null) ? 0 : IACUC.hashCode());
-		result = prime * result + (IACUCPending ? 1231 : 1237);
-		result = prime * result + ((IBC == null) ? 0 : IBC.hashCode());
-		result = prime * result + (IBCPending ? 1231 : 1237);
-		result = prime * result + ((IRB == null) ? 0 : IRB.hashCode());
-		result = prime * result + (IRBPending ? 1231 : 1237);
+		result = prime * result + ((iacuc == null) ? 0 : iacuc.hashCode());
+		result = prime * result + (iacucPending ? 1231 : 1237);
+		result = prime * result + ((ibc == null) ? 0 : ibc.hashCode());
+		result = prime * result + (ibcPending ? 1231 : 1237);
 		result = prime * result + (involveBiosafetyConcerns ? 1231 : 1237);
 		result = prime * result
 				+ (involveEnvironmentalHealthAndSafetyConcerns ? 1231 : 1237);
 		result = prime * result + (involveUseOfHumanSubjects ? 1231 : 1237);
 		result = prime * result + (involveUseOfVertebrateAnimals ? 1231 : 1237);
+		result = prime * result + ((irb == null) ? 0 : irb.hashCode());
+		result = prime * result + (irbPending ? 1231 : 1237);
 		return result;
 	}
 
@@ -180,26 +168,19 @@ public class ComplianceInfo implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		ComplianceInfo other = (ComplianceInfo) obj;
-		if (IACUC == null) {
-			if (other.IACUC != null)
+		if (iacuc == null) {
+			if (other.iacuc != null)
 				return false;
-		} else if (!IACUC.equals(other.IACUC))
+		} else if (!iacuc.equals(other.iacuc))
 			return false;
-		if (IACUCPending != other.IACUCPending)
+		if (iacucPending != other.iacucPending)
 			return false;
-		if (IBC == null) {
-			if (other.IBC != null)
+		if (ibc == null) {
+			if (other.ibc != null)
 				return false;
-		} else if (!IBC.equals(other.IBC))
+		} else if (!ibc.equals(other.ibc))
 			return false;
-		if (IBCPending != other.IBCPending)
-			return false;
-		if (IRB == null) {
-			if (other.IRB != null)
-				return false;
-		} else if (!IRB.equals(other.IRB))
-			return false;
-		if (IRBPending != other.IRBPending)
+		if (ibcPending != other.ibcPending)
 			return false;
 		if (involveBiosafetyConcerns != other.involveBiosafetyConcerns)
 			return false;
@@ -208,6 +189,13 @@ public class ComplianceInfo implements Serializable {
 		if (involveUseOfHumanSubjects != other.involveUseOfHumanSubjects)
 			return false;
 		if (involveUseOfVertebrateAnimals != other.involveUseOfVertebrateAnimals)
+			return false;
+		if (irb == null) {
+			if (other.irb != null)
+				return false;
+		} else if (!irb.equals(other.irb))
+			return false;
+		if (irbPending != other.irbPending)
 			return false;
 		return true;
 	}

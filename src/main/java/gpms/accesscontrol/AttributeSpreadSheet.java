@@ -16,15 +16,15 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class AttributeSpreadSheet {
 
-	private static ArrayList<AttributeRecord> allAttributeRecords = new ArrayList<AttributeRecord>();
+	private static List<AttributeRecord> allAttributeRecords = new ArrayList<AttributeRecord>();
 	private HSSFWorkbook workBook1;
 	private HSSFWorkbook workBook2;
 
-	public ArrayList<AttributeRecord> getAllAttributeRecords() {
+	public List<AttributeRecord> getAllAttributeRecords() {
 		return allAttributeRecords;
 	}
 
-	// public ArrayList<AttributeRecord> getTestRecord() {
+	// public List<AttributeRecord> getTestRecord() {
 	// return allAttributeRecords;
 	// }
 

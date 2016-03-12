@@ -4,35 +4,29 @@ import java.io.Serializable;
 
 import org.mongodb.morphia.annotations.Property;
 
-import com.google.gson.annotations.Expose;
-
 public class BasePIEligibilityOptions implements Serializable {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	@Expose
 	@Property("yes")
 	private boolean yes;
 
-	@Expose
 	@Property("no")
 	private boolean no;
 
-	@Expose
 	@Property("not applicable")
 	private boolean notApplicable;
 
-	@Expose
 	@Property("this proposal only")
 	private boolean thisProposalOnly;
 
-	@Expose
 	@Property("blanket")
 	private boolean blanket;
 
 	public BasePIEligibilityOptions() {
+
 	}
 
 	public boolean isYes() {
@@ -40,13 +34,7 @@ public class BasePIEligibilityOptions implements Serializable {
 	}
 
 	public void setYes(boolean yes) {
-		if (!this.yes && yes) {
-			this.yes = yes;
-			no = false;
-			notApplicable = false;
-			thisProposalOnly = false;
-			blanket = false;
-		}
+		this.yes = yes;
 	}
 
 	public boolean isNo() {
@@ -54,13 +42,7 @@ public class BasePIEligibilityOptions implements Serializable {
 	}
 
 	public void setNo(boolean no) {
-		if (!this.no && no) {
-			yes = false;
-			this.no = no;
-			notApplicable = false;
-			thisProposalOnly = false;
-			blanket = false;
-		}
+		this.no = no;
 	}
 
 	public boolean isNotApplicable() {
@@ -68,13 +50,7 @@ public class BasePIEligibilityOptions implements Serializable {
 	}
 
 	public void setNotApplicable(boolean notApplicable) {
-		if (!this.notApplicable && notApplicable) {
-			yes = false;
-			no = false;
-			this.notApplicable = notApplicable;
-			thisProposalOnly = false;
-			blanket = false;
-		}
+		this.notApplicable = notApplicable;
 	}
 
 	public boolean isThisProposalOnly() {
@@ -82,13 +58,7 @@ public class BasePIEligibilityOptions implements Serializable {
 	}
 
 	public void setThisProposalOnly(boolean thisProposalOnly) {
-		if (!this.thisProposalOnly && thisProposalOnly) {
-			yes = false;
-			no = false;
-			notApplicable = false;
-			this.thisProposalOnly = thisProposalOnly;
-			blanket = false;
-		}
+		this.thisProposalOnly = thisProposalOnly;
 	}
 
 	public boolean isBlanket() {
@@ -96,13 +66,7 @@ public class BasePIEligibilityOptions implements Serializable {
 	}
 
 	public void setBlanket(boolean blanket) {
-		if (!this.blanket && blanket) {
-			yes = false;
-			no = false;
-			notApplicable = false;
-			thisProposalOnly = false;
-			this.blanket = blanket;
-		}
+		this.blanket = blanket;
 	}
 
 	@Override

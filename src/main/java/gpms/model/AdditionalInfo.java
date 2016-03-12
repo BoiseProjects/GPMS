@@ -5,8 +5,6 @@ import java.io.Serializable;
 import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Property;
 
-import com.google.gson.annotations.Expose;
-
 @Embedded
 public class AdditionalInfo implements Serializable {
 	/**
@@ -14,19 +12,17 @@ public class AdditionalInfo implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	@Expose
 	@Property("anticipates foreign nationals payment")
 	private boolean anticipatesForeignNationalsPayment;
 
-	@Expose
 	@Property("anticipates course release time")
 	private boolean anticipatesCourseReleaseTime;
 
-	@Expose
 	@Property("related to center for advanced energy studies")
 	private boolean relatedToCenterForAdvancedEnergyStudies;
 
 	public AdditionalInfo() {
+		
 	}
 
 	public boolean isAnticipatesForeignNationalsPayment() {

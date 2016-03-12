@@ -1,6 +1,7 @@
 package gpms.model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.Embedded;
@@ -8,19 +9,27 @@ import org.mongodb.morphia.annotations.Id;
 import org.mongodb.morphia.annotations.Property;
 import org.mongodb.morphia.annotations.Version;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+@JsonIgnoreProperties({ "id", "version", "auditLog" })
 public abstract class BaseEntity {
 	@Id
 	@Property("id")
+	@JsonProperty("id")
 	protected ObjectId id;
 
 	@Version
 	@Property("version")
+	@JsonProperty("version")
 	private Long version;
 
 	@Embedded("audit log")
-	private ArrayList<AuditLog> auditLog = new ArrayList<AuditLog>();
+	@JsonProperty("auditLog")
+	private List<AuditLog> auditLog = new ArrayList<AuditLog>();
 
 	public BaseEntity() {
+		
 	}
 
 	public ObjectId getId() {
@@ -39,7 +48,7 @@ public abstract class BaseEntity {
 		this.version = version;
 	}
 
-	public ArrayList<AuditLog> getAuditLog() {
+	public List<AuditLog> getAuditLog() {
 		return auditLog;
 	}
 

@@ -5,8 +5,6 @@ import java.io.Serializable;
 import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Property;
 
-import com.google.gson.annotations.Expose;
-
 @Embedded
 public class BaseOptions implements Serializable {
 	/**
@@ -14,19 +12,17 @@ public class BaseOptions implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	@Expose
 	@Property("yes")
 	private boolean yes;
 
-	@Expose
 	@Property("no")
 	private boolean no;
 
-	@Expose
 	@Property("not applicable")
 	private boolean notApplicable;
 
 	public BaseOptions() {
+		
 	}
 
 	public boolean isYes() {
@@ -34,11 +30,7 @@ public class BaseOptions implements Serializable {
 	}
 
 	public void setYes(boolean yes) {
-		if (!this.yes && yes) {
-			this.yes = yes;
-			no = false;
-			notApplicable = false;
-		}
+		this.yes = yes;
 	}
 
 	public boolean isNo() {
@@ -46,11 +38,7 @@ public class BaseOptions implements Serializable {
 	}
 
 	public void setNo(boolean no) {
-		if (!this.no && no) {
-			yes = false;
-			this.no = no;
-			notApplicable = false;
-		}
+		this.no = no;
 	}
 
 	public boolean isNotApplicable() {
@@ -58,11 +46,7 @@ public class BaseOptions implements Serializable {
 	}
 
 	public void setNotApplicable(boolean notApplicable) {
-		if (!this.notApplicable && notApplicable) {
-			yes = false;
-			no = false;
-			this.notApplicable = notApplicable;
-		}
+		this.notApplicable = notApplicable;
 	}
 
 	@Override

@@ -5,8 +5,6 @@ import java.io.Serializable;
 import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Property;
 
-import com.google.gson.annotations.Expose;
-
 @Embedded
 public class BaseInfo implements Serializable {
 	/**
@@ -14,51 +12,47 @@ public class BaseInfo implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	@Expose
-	@Property("MTDC")
-	private boolean MTDC;
+	@Property("mtdc")
+	private boolean mtdc;
 
-	@Expose
-	@Property("TDC")
-	private boolean TDC;
+	@Property("tdc")
+	private boolean tdc;
 
-	@Expose
-	@Property("TC")
-	private boolean TC;
+	@Property("tc")
+	private boolean tc;
 
-	@Expose
 	@Property("other")
 	private boolean other;
 
-	@Expose
 	@Property("not applicable")
 	private boolean notApplicable;
 
 	public BaseInfo() {
+		
 	}
 
-	public boolean isMTDC() {
-		return MTDC;
+	public boolean isMtdc() {
+		return mtdc;
 	}
 
-	public void setMTDC(boolean mTDC) {
-		MTDC = mTDC;
+	public void setMtdc(boolean mtdc) {
+		this.mtdc = mtdc;
 	}
 
-	public boolean isTDC() {
-		return TDC;
+	public boolean isTdc() {
+		return tdc;
 	}
 
-	public void setTDC(boolean tDC) {
-		TDC = tDC;
+	public void setTdc(boolean tdc) {
+		this.tdc = tdc;
 	}
 
-	public boolean isTC() {
-		return TC;
+	public boolean isTc() {
+		return tc;
 	}
 
-	public void setTC(boolean tC) {
-		TC = tC;
+	public void setTc(boolean tc) {
+		this.tc = tc;
 	}
 
 	public boolean isOther() {
@@ -79,7 +73,7 @@ public class BaseInfo implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Base [MTDC=" + MTDC + ", TDC=" + TDC + ", TC=" + TC
+		return "BaseInfo [mtdc=" + mtdc + ", tdc=" + tdc + ", tc=" + tc
 				+ ", other=" + other + ", notApplicable=" + notApplicable + "]";
 	}
 
@@ -87,11 +81,11 @@ public class BaseInfo implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + (MTDC ? 1231 : 1237);
-		result = prime * result + (TC ? 1231 : 1237);
-		result = prime * result + (TDC ? 1231 : 1237);
+		result = prime * result + (mtdc ? 1231 : 1237);
 		result = prime * result + (notApplicable ? 1231 : 1237);
 		result = prime * result + (other ? 1231 : 1237);
+		result = prime * result + (tc ? 1231 : 1237);
+		result = prime * result + (tdc ? 1231 : 1237);
 		return result;
 	}
 
@@ -104,15 +98,15 @@ public class BaseInfo implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		BaseInfo other = (BaseInfo) obj;
-		if (MTDC != other.MTDC)
-			return false;
-		if (TC != other.TC)
-			return false;
-		if (TDC != other.TDC)
+		if (mtdc != other.mtdc)
 			return false;
 		if (notApplicable != other.notApplicable)
 			return false;
 		if (this.other != other.other)
+			return false;
+		if (tc != other.tc)
+			return false;
+		if (tdc != other.tdc)
 			return false;
 		return true;
 	}

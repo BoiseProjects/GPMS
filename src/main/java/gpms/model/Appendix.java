@@ -5,8 +5,6 @@ import java.io.Serializable;
 import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Property;
 
-import com.google.gson.annotations.Expose;
-
 @Embedded
 public class Appendix implements Serializable {
 	/**
@@ -14,25 +12,24 @@ public class Appendix implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	@Expose
 	@Property("filename")
 	private String filename = new String();
 
-	@Expose
 	@Property("extension")
 	private String extension = new String();
 
-	@Expose
 	@Property("filepath")
 	private String filepath = new String();
 
-	@Expose
 	@Property("filesize")
 	private long filesize = 0;
 
-	@Expose
 	@Property("title")
 	private String title = new String();
+
+	public Appendix() {
+
+	}
 
 	public String getFilename() {
 		return filename;

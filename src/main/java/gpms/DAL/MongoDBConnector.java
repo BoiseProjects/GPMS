@@ -4,7 +4,7 @@ import java.net.UnknownHostException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.List;
 
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.Datastore;
@@ -176,7 +176,7 @@ public class MongoDBConnector {
 
 	}
 
-	public void insertBatch(ArrayList<DBObject> dbses, String collName) {
+	public void insertBatch(List<DBObject> dbses, String collName) {
 		DBCollection coll = db.getCollection(collName);
 		coll.insert(dbses);
 	}

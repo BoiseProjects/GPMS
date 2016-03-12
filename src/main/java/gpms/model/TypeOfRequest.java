@@ -5,8 +5,6 @@ import java.io.Serializable;
 import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Property;
 
-import com.google.gson.annotations.Expose;
-
 @Embedded
 public class TypeOfRequest implements Serializable {
 	/**
@@ -14,95 +12,69 @@ public class TypeOfRequest implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	@Expose
 	@Property("pre-proposal")
-	private boolean isPreProposal;
+	private boolean preProposal;
 
-	@Expose
 	@Property("new proposal")
-	private boolean isNewProposal;
+	private boolean newProposal;
 
-	@Expose
 	@Property("continuation")
-	private boolean isContinuation;
+	private boolean continuation;
 
-	@Expose
 	@Property("supplement")
-	private boolean isSupplement;
+	private boolean supplement;
 
 	public TypeOfRequest() {
+
 	}
 
 	public boolean isPreProposal() {
-		return isPreProposal;
+		return preProposal;
 	}
 
-	public void setPreProposal(boolean isPreProposal) {
-		if (!this.isPreProposal && isPreProposal) {
-			this.isPreProposal = isPreProposal;
-			isNewProposal = false;
-			isContinuation = false;
-			isSupplement = false;
-		}
+	public void setPreProposal(boolean preProposal) {
+		this.preProposal = preProposal;
 	}
 
 	public boolean isNewProposal() {
-		return isNewProposal;
+		return newProposal;
 	}
 
-	public void setNewProposal(boolean isNewProposal) {
-		if (!this.isNewProposal && isNewProposal) {
-			isPreProposal = false;
-			this.isNewProposal = isNewProposal;
-			isContinuation = false;
-			isSupplement = false;
-		}
+	public void setNewProposal(boolean newProposal) {
+		this.newProposal = newProposal;
 	}
 
 	public boolean isContinuation() {
-		return isContinuation;
+		return continuation;
 	}
 
-	public void setContinuation(boolean isContinuation) {
-		if (!this.isContinuation && isContinuation) {
-			isPreProposal = false;
-			isNewProposal = false;
-			this.isContinuation = isContinuation;
-			isSupplement = false;
-		}
+	public void setContinuation(boolean continuation) {
+		this.continuation = continuation;
 	}
 
 	public boolean isSupplement() {
-		return isSupplement;
+		return supplement;
 	}
 
-	public void setSupplement(boolean isSupplement) {
-		if (!this.isSupplement && isSupplement) {
-			isPreProposal = false;
-			isNewProposal = false;
-			isContinuation = false;
-			this.isSupplement = isSupplement;
-		}
+	public void setSupplement(boolean supplement) {
+		this.supplement = supplement;
 	}
 
 	@Override
 	public String toString() {
-		String outPut = "";
-		outPut += "pre-proposal : " + isPreProposal + "\n";
-		outPut += "new proposal : " + isNewProposal + "\n";
-		outPut += "continuation : " + isContinuation + "\n";
-		outPut += "supplement   : " + isSupplement;
-		return outPut;
+		return "TypeOfRequest [preProposal=" + preProposal + ", newProposal="
+				+ newProposal + ", continuation=" + continuation
+				+ ", supplement=" + supplement + "]";
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + (isContinuation ? 1231 : 1237);
-		result = prime * result + (isNewProposal ? 1231 : 1237);
-		result = prime * result + (isPreProposal ? 1231 : 1237);
-		result = prime * result + (isSupplement ? 1231 : 1237);
+		result = prime * result + (continuation ? 1231 : 1237);
+		result = prime * result + (newProposal ? 1231 : 1237);
+		result = prime * result + (preProposal ? 1231 : 1237);
+		result = prime * result + (supplement ? 1231 : 1237);
 		return result;
 	}
 
@@ -115,13 +87,13 @@ public class TypeOfRequest implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		TypeOfRequest other = (TypeOfRequest) obj;
-		if (isContinuation != other.isContinuation)
+		if (continuation != other.continuation)
 			return false;
-		if (isNewProposal != other.isNewProposal)
+		if (newProposal != other.newProposal)
 			return false;
-		if (isPreProposal != other.isPreProposal)
+		if (preProposal != other.preProposal)
 			return false;
-		if (isSupplement != other.isSupplement)
+		if (supplement != other.supplement)
 			return false;
 		return true;
 	}

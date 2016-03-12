@@ -5,8 +5,6 @@ import java.io.Serializable;
 import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Property;
 
-import com.google.gson.annotations.Expose;
-
 @Embedded
 public class ProjectType implements Serializable {
 	/**
@@ -14,120 +12,83 @@ public class ProjectType implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	@Expose
 	@Property("research-basic")
-	private boolean isResearchBasic;
+	private boolean researchBasic;
 
-	@Expose
 	@Property("research-applied")
-	private boolean isResearchApplied;
+	private boolean researchApplied;
 
-	@Expose
 	@Property("research-development")
-	private boolean isResearchDevelopment;
+	private boolean researchDevelopment;
 
-	@Expose
 	@Property("instruction")
-	private boolean isInstruction;
+	private boolean instruction;
 
-	@Expose
 	@Property("other sponsored activity")
-	private boolean isOtherSponsoredActivity;
+	private boolean otherSponsoredActivity;
 
 	public ProjectType() {
 
 	}
 
-	public void setIsResearchBasic(boolean is_research_basic) {
-		if (!this.isResearchBasic && is_research_basic) {
-			this.isResearchBasic = is_research_basic;
-			isResearchApplied = false;
-			isResearchDevelopment = false;
-			isInstruction = false;
-			isOtherSponsoredActivity = false;
-		}
+	public boolean isResearchBasic() {
+		return researchBasic;
 	}
 
-	public boolean getIsResearchBasic() {
-		return isResearchBasic;
+	public void setResearchBasic(boolean researchBasic) {
+		this.researchBasic = researchBasic;
 	}
 
-	public void setIsResearchApplied(boolean is_research_applied) {
-		if (!this.isResearchApplied && is_research_applied) {
-			isResearchBasic = false;
-			this.isResearchApplied = is_research_applied;
-			isResearchDevelopment = false;
-			isInstruction = false;
-			isOtherSponsoredActivity = false;
-		}
+	public boolean isResearchApplied() {
+		return researchApplied;
 	}
 
-	public boolean getIsResearchApplied() {
-		return isResearchApplied;
+	public void setResearchApplied(boolean researchApplied) {
+		this.researchApplied = researchApplied;
 	}
 
-	public void setIsResearchDevelopment(boolean is_research_development) {
-		if (!this.isResearchDevelopment && is_research_development) {
-			isResearchBasic = false;
-			isResearchApplied = false;
-			this.isResearchDevelopment = is_research_development;
-			isInstruction = false;
-			isOtherSponsoredActivity = false;
-		}
+	public boolean isResearchDevelopment() {
+		return researchDevelopment;
 	}
 
-	public boolean getIsResearchDevelopment() {
-		return isResearchDevelopment;
+	public void setResearchDevelopment(boolean researchDevelopment) {
+		this.researchDevelopment = researchDevelopment;
 	}
 
-	public void setIsInstruction(boolean is_instruction) {
-		if (!this.isInstruction && is_instruction) {
-			isResearchBasic = false;
-			isResearchApplied = false;
-			isResearchDevelopment = false;
-			this.isInstruction = is_instruction;
-			isOtherSponsoredActivity = false;
-		}
+	public boolean isInstruction() {
+		return instruction;
 	}
 
-	public boolean getIsInstruction() {
-		return isInstruction;
+	public void setInstruction(boolean instruction) {
+		this.instruction = instruction;
 	}
 
-	public void setIsOtherSponsoredActivity(boolean is_other_sposored_activity) {
-		if (!this.isOtherSponsoredActivity && is_other_sposored_activity) {
-			isResearchBasic = false;
-			isResearchApplied = false;
-			isResearchDevelopment = false;
-			isInstruction = false;
-			this.isOtherSponsoredActivity = is_other_sposored_activity;
-		}
+	public boolean isOtherSponsoredActivity() {
+		return otherSponsoredActivity;
 	}
 
-	public boolean getIsOtherSponsoredActivity() {
-		return isOtherSponsoredActivity;
+	public void setOtherSponsoredActivity(boolean otherSponsoredActivity) {
+		this.otherSponsoredActivity = otherSponsoredActivity;
 	}
 
 	@Override
 	public String toString() {
-		String outPut = "";
-		outPut += "Research-Basic           : " + isResearchBasic + "\n";
-		outPut += "Research-Applied          : " + isResearchApplied + "\n";
-		outPut += "Research-Development     : " + isResearchDevelopment + "\n";
-		outPut += "Instruction              : " + isInstruction + "\n";
-		outPut += "Other Sponsored Activity : " + isOtherSponsoredActivity;
-		return outPut;
+		return "ProjectType [researchBasic=" + researchBasic
+				+ ", researchApplied=" + researchApplied
+				+ ", researchDevelopment=" + researchDevelopment
+				+ ", instruction=" + instruction + ", otherSponsoredActivity="
+				+ otherSponsoredActivity + "]";
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + (isInstruction ? 1231 : 1237);
-		result = prime * result + (isOtherSponsoredActivity ? 1231 : 1237);
-		result = prime * result + (isResearchApplied ? 1231 : 1237);
-		result = prime * result + (isResearchBasic ? 1231 : 1237);
-		result = prime * result + (isResearchDevelopment ? 1231 : 1237);
+		result = prime * result + (instruction ? 1231 : 1237);
+		result = prime * result + (otherSponsoredActivity ? 1231 : 1237);
+		result = prime * result + (researchApplied ? 1231 : 1237);
+		result = prime * result + (researchBasic ? 1231 : 1237);
+		result = prime * result + (researchDevelopment ? 1231 : 1237);
 		return result;
 	}
 
@@ -140,15 +101,15 @@ public class ProjectType implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		ProjectType other = (ProjectType) obj;
-		if (isInstruction != other.isInstruction)
+		if (instruction != other.instruction)
 			return false;
-		if (isOtherSponsoredActivity != other.isOtherSponsoredActivity)
+		if (otherSponsoredActivity != other.otherSponsoredActivity)
 			return false;
-		if (isResearchApplied != other.isResearchApplied)
+		if (researchApplied != other.researchApplied)
 			return false;
-		if (isResearchBasic != other.isResearchBasic)
+		if (researchBasic != other.researchBasic)
 			return false;
-		if (isResearchDevelopment != other.isResearchDevelopment)
+		if (researchDevelopment != other.researchDevelopment)
 			return false;
 		return true;
 	}

@@ -9,7 +9,6 @@ import gpms.dao.UserProfileDAO;
 import gpms.model.Address;
 import gpms.model.AuditLogInfo;
 import gpms.model.NotificationLog;
-import gpms.model.PasswordHash;
 import gpms.model.PositionDetails;
 import gpms.model.UserAccount;
 import gpms.model.UserInfo;
@@ -17,6 +16,7 @@ import gpms.model.UserProfile;
 import gpms.model.UserProposalCount;
 import gpms.utils.EmailUtil;
 import gpms.utils.MultimapAdapter;
+import gpms.utils.PasswordHash;
 import gpms.utils.SerializationHelper;
 
 import java.io.File;
@@ -281,7 +281,6 @@ public class UserService {
 	public String produceUserDetailsByProfileId(String message)
 			throws JsonProcessingException, IOException {
 		UserProfile user = new UserProfile();
-		String response = new String();
 		String profileId = new String();
 
 		ObjectMapper mapper = new ObjectMapper();
@@ -315,18 +314,15 @@ public class UserService {
 
 		// Gson gson = new Gson();
 		// .setDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz").create();
-		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd")
-				.excludeFieldsWithoutExposeAnnotation().setPrettyPrinting()
-				.create();
-		response = gson.toJson(user, UserProfile.class);
+		// Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd")
+		// .excludeFieldsWithoutExposeAnnotation().setPrettyPrinting()
+		// .create();
+		// return gson.toJson(user, UserProfile.class);
 
 		// response = gson.toJson(user);
 
-		// response =
-		// mapper.writerWithDefaultPrettyPrinter().writeValueAsString(
-		// user);
-
-		return response;
+		return mapper.setDateFormat(formatter).writerWithDefaultPrettyPrinter()
+				.writeValueAsString(user);
 	}
 
 	@POST
@@ -1290,7 +1286,7 @@ public class UserService {
 					newDetails.setDepartment(cols[1]);
 					newDetails.setPositionType(cols[2]);
 					newDetails.setPositionTitle(cols[3]);
-					newDetails.setDefault(Boolean.parseBoolean(cols[4]));
+					newDetails.setAsDefault(Boolean.parseBoolean(cols[4]));
 					if (!userID.equals("0")) {
 						existingUserProfile.getDetails().add(newDetails);
 					} else {
@@ -1749,7 +1745,7 @@ public class UserService {
 			}
 
 			for (PositionDetails userDetails : existingUserProfile.getDetails()) {
-				if (userDetails.isDefault()) {
+				if (userDetails.isAsDefault()) {
 					if (session.getAttribute("userPositionType") == null) {
 						session.setAttribute("userPositionType",
 								userDetails.getPositionType());

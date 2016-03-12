@@ -110,24 +110,12 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 
 		boolean isDeleted = false;
 
-		if ((!proposal.getDeletedByPI().equals(DeleteType.DELETED)
-				|| !proposal.getSubmittedByPI().equals(SubmitType.SUBMITTED)
-				|| proposal.getChairApproval().equals(ApprovalType.DISAPPROVED)
-				|| proposal.getBusinessManagerApproval().equals(
-						ApprovalType.DISAPPROVED)
-				|| proposal.getIRBApproval().equals(ApprovalType.DISAPPROVED)
-				|| proposal.getDeanApproval().equals(ApprovalType.DISAPPROVED)
-				|| proposal.getUniversityResearchAdministratorApproval()
-						.equals(ApprovalType.DISAPPROVED) || proposal
-				.getUniversityResearchDirectorApproval().equals(
-						ApprovalType.DISAPPROVED))
+		if ((!proposal.getDeletedByPI().equals(DeleteType.DELETED) && !proposal
+				.getSubmittedByPI().equals(SubmitType.SUBMITTED))
 				&& proposalRoles.equals("PI")
 				&& !proposalUserTitle.equals("University Research Director")) {
 
 			proposal.setDeletedByPI(DeleteType.DELETED);
-
-			proposal.setSubmittedByPI(SubmitType.NOTSUBMITTED);
-			proposal.setBusinessManagerApproval(ApprovalType.NOTREADYFORAPPROVAL);
 
 			// Proposal Status
 			proposal.getProposalStatus().clear();
@@ -138,14 +126,14 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 			proposal.getAuditLog().add(entry);
 			ds.save(proposal);
 			isDeleted = true;
-		} else if (!proposal.getUniversityResearchDirectorDeletion().equals(
+		} else if (!proposal.getResearchDirectorDeletion().equals(
 				DeleteType.DELETED)
-				&& proposal.getUniversityResearchDirectorApproval().equals(
+				&& proposal.getResearchDirectorApproval().equals(
 						ApprovalType.READYFORAPPROVAL)
 				&& !proposalRoles.equals("PI")
 				&& proposalUserTitle.equals("University Research Director")) {
 
-			proposal.setUniversityResearchDirectorDeletion(DeleteType.DELETED);
+			proposal.setResearchDirectorDeletion(DeleteType.DELETED);
 
 			// Proposal Status
 			proposal.getProposalStatus().clear();
@@ -172,7 +160,7 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 
 		Proposal q = proposalQuery.field("_id").equal(id).get();
 
-		ArrayList<AuditLogInfo> allAuditLogs = new ArrayList<AuditLogInfo>();
+		List<AuditLogInfo> allAuditLogs = new ArrayList<AuditLogInfo>();
 		int rowTotal = 0;
 		if (q.getAuditLog() != null && q.getAuditLog().size() != 0) {
 			for (AuditLog poposalAudit : q.getAuditLog()) {
@@ -282,7 +270,7 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 
 		Proposal q = proposalQuery.field("_id").equal(id).get();
 
-		ArrayList<AuditLogInfo> allAuditLogs = new ArrayList<AuditLogInfo>();
+		List<AuditLogInfo> allAuditLogs = new ArrayList<AuditLogInfo>();
 
 		if (q.getAuditLog() != null && q.getAuditLog().size() != 0) {
 			for (AuditLog poposalAudit : q.getAuditLog()) {
@@ -415,7 +403,7 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 			String submittedOnTo, Double totalCostsFrom, Double totalCostsTo,
 			String proposalStatus, String userRole) throws ParseException {
 		Datastore ds = getDatastore();
-		ArrayList<ProposalInfo> proposals = new ArrayList<ProposalInfo>();
+		List<ProposalInfo> proposals = new ArrayList<ProposalInfo>();
 
 		Query<Proposal> proposalQuery = ds.createQuery(Proposal.class);
 		Query<UserProfile> profileQuery = ds.createQuery(UserProfile.class);
@@ -514,15 +502,15 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 					.getProjectTitle());
 
 			ProjectType pt = userProposal.getProjectInfo().getProjectType();
-			if (pt.getIsResearchBasic()) {
+			if (pt.isResearchBasic()) {
 				proposal.setProjectType("Research-basic");
-			} else if (pt.getIsResearchApplied()) {
+			} else if (pt.isResearchApplied()) {
 				proposal.setProjectType("Research-applied");
-			} else if (pt.getIsResearchDevelopment()) {
+			} else if (pt.isResearchDevelopment()) {
 				proposal.setProjectType("Research-development");
-			} else if (pt.getIsInstruction()) {
+			} else if (pt.isInstruction()) {
 				proposal.setProjectType("Instruction");
-			} else if (pt.getIsOtherSponsoredActivity()) {
+			} else if (pt.isOtherSponsoredActivity()) {
 				proposal.setProjectType("Other sponsored activity");
 			}
 
@@ -552,11 +540,11 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 			proposal.setDirectCosts(userProposal.getSponsorAndBudgetInfo()
 					.getDirectCosts());
 			proposal.setFaCosts(userProposal.getSponsorAndBudgetInfo()
-					.getFACosts());
+					.getFaCosts());
 			proposal.setTotalCosts(userProposal.getSponsorAndBudgetInfo()
 					.getTotalCosts());
 			proposal.setFaRate(userProposal.getSponsorAndBudgetInfo()
-					.getFARate());
+					.getFaRate());
 
 			proposal.setDateCreated(userProposal.getDateCreated());
 			proposal.setDateSubmitted(userProposal.getDateSubmitted());
@@ -584,34 +572,34 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 					.getBusinessManagerApproval());
 
 			// IRB
-			proposal.setIRBApproval(userProposal.getIRBApproval());
+			proposal.setIrbApproval(userProposal.getIrbApproval());
 
 			// Dean
 			proposal.setDeanApproval(userProposal.getDeanApproval());
 
 			// University Research Administrator
-			proposal.setUniversityResearchAdministratorApproval(userProposal
-					.getUniversityResearchAdministratorApproval());
+			proposal.setResearchAdministratorApproval(userProposal
+					.getResearchAdministratorApproval());
 
-			proposal.setUniversityResearchAdministratorWithdraw(userProposal
-					.getUniversityResearchAdministratorWithdraw());
+			proposal.setResearchAdministratorWithdraw(userProposal
+					.getResearchAdministratorWithdraw());
 
-			proposal.setUniversityResearchAdministratorSubmission(userProposal
-					.getUniversityResearchAdministratorSubmission());
+			proposal.setResearchAdministratorSubmission(userProposal
+					.getResearchAdministratorSubmission());
 
 			// University Research Director
-			proposal.setUniversityResearchDirectorApproval(userProposal
-					.getUniversityResearchDirectorApproval());
+			proposal.setResearchDirectorApproval(userProposal
+					.getResearchDirectorApproval());
 
-			proposal.setUniversityResearchDirectorDeletion(userProposal
-					.getUniversityResearchDirectorDeletion());
+			proposal.setResearchDirectorDeletion(userProposal
+					.getResearchDirectorDeletion());
 
-			proposal.setUniversityResearchDirectorArchived(userProposal
-					.getUniversityResearchDirectorArchived());
+			proposal.setResearchDirectorArchived(userProposal
+					.getResearchDirectorArchived());
 
 			if (userProposal.getDeletedByPI().equals(DeleteType.DELETED)
-					|| userProposal.getUniversityResearchDirectorDeletion()
-							.equals(DeleteType.DELETED)) {
+					|| userProposal.getResearchDirectorDeletion().equals(
+							DeleteType.DELETED)) {
 				proposal.setDeleted(true);
 			}
 
@@ -672,7 +660,7 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 			String college, String department, String positionType,
 			String positionTitle) throws ParseException {
 		Datastore ds = getDatastore();
-		ArrayList<ProposalInfo> proposals = new ArrayList<ProposalInfo>();
+		List<ProposalInfo> proposals = new ArrayList<ProposalInfo>();
 
 		Query<Proposal> proposalQuery = ds.createQuery(Proposal.class);
 		Query<UserProfile> profileQuery = ds.createQuery(UserProfile.class);
@@ -905,15 +893,15 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 					.getProjectTitle());
 
 			ProjectType pt = userProposal.getProjectInfo().getProjectType();
-			if (pt.getIsResearchBasic()) {
+			if (pt.isResearchBasic()) {
 				proposal.setProjectType("Research-basic");
-			} else if (pt.getIsResearchApplied()) {
+			} else if (pt.isResearchApplied()) {
 				proposal.setProjectType("Research-applied");
-			} else if (pt.getIsResearchDevelopment()) {
+			} else if (pt.isResearchDevelopment()) {
 				proposal.setProjectType("Research-development");
-			} else if (pt.getIsInstruction()) {
+			} else if (pt.isInstruction()) {
 				proposal.setProjectType("Instruction");
-			} else if (pt.getIsOtherSponsoredActivity()) {
+			} else if (pt.isOtherSponsoredActivity()) {
 				proposal.setProjectType("Other sponsored activity");
 			}
 
@@ -943,11 +931,11 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 			proposal.setDirectCosts(userProposal.getSponsorAndBudgetInfo()
 					.getDirectCosts());
 			proposal.setFaCosts(userProposal.getSponsorAndBudgetInfo()
-					.getFACosts());
+					.getFaCosts());
 			proposal.setTotalCosts(userProposal.getSponsorAndBudgetInfo()
 					.getTotalCosts());
 			proposal.setFaRate(userProposal.getSponsorAndBudgetInfo()
-					.getFARate());
+					.getFaRate());
 
 			proposal.setDateCreated(userProposal.getDateCreated());
 			proposal.setDateSubmitted(userProposal.getDateSubmitted());
@@ -975,34 +963,34 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 					.getBusinessManagerApproval());
 
 			// IRB
-			proposal.setIRBApproval(userProposal.getIRBApproval());
+			proposal.setIrbApproval(userProposal.getIrbApproval());
 
 			// Dean
 			proposal.setDeanApproval(userProposal.getDeanApproval());
 
 			// University Research Administrator
-			proposal.setUniversityResearchAdministratorApproval(userProposal
-					.getUniversityResearchAdministratorApproval());
+			proposal.setResearchAdministratorApproval(userProposal
+					.getResearchAdministratorApproval());
 
-			proposal.setUniversityResearchAdministratorWithdraw(userProposal
-					.getUniversityResearchAdministratorWithdraw());
+			proposal.setResearchAdministratorWithdraw(userProposal
+					.getResearchAdministratorWithdraw());
 
-			proposal.setUniversityResearchAdministratorSubmission(userProposal
-					.getUniversityResearchAdministratorSubmission());
+			proposal.setResearchAdministratorSubmission(userProposal
+					.getResearchAdministratorSubmission());
 
 			// University Research Director
-			proposal.setUniversityResearchDirectorApproval(userProposal
-					.getUniversityResearchDirectorApproval());
+			proposal.setResearchDirectorApproval(userProposal
+					.getResearchDirectorApproval());
 
-			proposal.setUniversityResearchDirectorDeletion(userProposal
-					.getUniversityResearchDirectorDeletion());
+			proposal.setResearchDirectorDeletion(userProposal
+					.getResearchDirectorDeletion());
 
-			proposal.setUniversityResearchDirectorArchived(userProposal
-					.getUniversityResearchDirectorArchived());
+			proposal.setResearchDirectorArchived(userProposal
+					.getResearchDirectorArchived());
 
 			if (userProposal.getDeletedByPI().equals(DeleteType.DELETED)
-					|| userProposal.getUniversityResearchDirectorDeletion()
-							.equals(DeleteType.DELETED)) {
+					|| userProposal.getResearchDirectorDeletion().equals(
+							DeleteType.DELETED)) {
 				proposal.setDeleted(true);
 			}
 
@@ -1075,7 +1063,7 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 			String userRole, String userId, String college, String department,
 			String positionType, String positionTitle) throws ParseException {
 		Datastore ds = getDatastore();
-		ArrayList<ProposalInfo> proposals = new ArrayList<ProposalInfo>();
+		List<ProposalInfo> proposals = new ArrayList<ProposalInfo>();
 
 		Query<Proposal> proposalQuery = ds.createQuery(Proposal.class);
 		Query<UserProfile> profileQuery = ds.createQuery(UserProfile.class);
@@ -1307,15 +1295,15 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 					.getProjectTitle());
 
 			ProjectType pt = userProposal.getProjectInfo().getProjectType();
-			if (pt.getIsResearchBasic()) {
+			if (pt.isResearchBasic()) {
 				proposal.setProjectType("Research-basic");
-			} else if (pt.getIsResearchApplied()) {
+			} else if (pt.isResearchApplied()) {
 				proposal.setProjectType("Research-applied");
-			} else if (pt.getIsResearchDevelopment()) {
+			} else if (pt.isResearchDevelopment()) {
 				proposal.setProjectType("Research-development");
-			} else if (pt.getIsInstruction()) {
+			} else if (pt.isInstruction()) {
 				proposal.setProjectType("Instruction");
-			} else if (pt.getIsOtherSponsoredActivity()) {
+			} else if (pt.isOtherSponsoredActivity()) {
 				proposal.setProjectType("Other sponsored activity");
 			}
 
@@ -1345,11 +1333,11 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 			proposal.setDirectCosts(userProposal.getSponsorAndBudgetInfo()
 					.getDirectCosts());
 			proposal.setFaCosts(userProposal.getSponsorAndBudgetInfo()
-					.getFACosts());
+					.getFaCosts());
 			proposal.setTotalCosts(userProposal.getSponsorAndBudgetInfo()
 					.getTotalCosts());
 			proposal.setFaRate(userProposal.getSponsorAndBudgetInfo()
-					.getFARate());
+					.getFaRate());
 
 			proposal.setDateCreated(userProposal.getDateCreated());
 			proposal.setDateSubmitted(userProposal.getDateSubmitted());
@@ -1377,34 +1365,34 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 					.getBusinessManagerApproval());
 
 			// IRB
-			proposal.setIRBApproval(userProposal.getIRBApproval());
+			proposal.setIrbApproval(userProposal.getIrbApproval());
 
 			// Dean
 			proposal.setDeanApproval(userProposal.getDeanApproval());
 
 			// University Research Administrator
-			proposal.setUniversityResearchAdministratorApproval(userProposal
-					.getUniversityResearchAdministratorApproval());
+			proposal.setResearchAdministratorApproval(userProposal
+					.getResearchAdministratorApproval());
 
-			proposal.setUniversityResearchAdministratorWithdraw(userProposal
-					.getUniversityResearchAdministratorWithdraw());
+			proposal.setResearchAdministratorWithdraw(userProposal
+					.getResearchAdministratorWithdraw());
 
-			proposal.setUniversityResearchAdministratorSubmission(userProposal
-					.getUniversityResearchAdministratorSubmission());
+			proposal.setResearchAdministratorSubmission(userProposal
+					.getResearchAdministratorSubmission());
 
 			// University Research Director
-			proposal.setUniversityResearchDirectorApproval(userProposal
-					.getUniversityResearchDirectorApproval());
+			proposal.setResearchDirectorApproval(userProposal
+					.getResearchDirectorApproval());
 
-			proposal.setUniversityResearchDirectorDeletion(userProposal
-					.getUniversityResearchDirectorDeletion());
+			proposal.setResearchDirectorDeletion(userProposal
+					.getResearchDirectorDeletion());
 
-			proposal.setUniversityResearchDirectorArchived(userProposal
-					.getUniversityResearchDirectorArchived());
+			proposal.setResearchDirectorArchived(userProposal
+					.getResearchDirectorArchived());
 
 			if (userProposal.getDeletedByPI().equals(DeleteType.DELETED)
-					|| userProposal.getUniversityResearchDirectorDeletion()
-							.equals(DeleteType.DELETED)) {
+					|| userProposal.getResearchDirectorDeletion().equals(
+							DeleteType.DELETED)) {
 				proposal.setDeleted(true);
 			}
 
@@ -1921,9 +1909,14 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 			throws UnknownHostException {
 		// 1st Get the Proposal, then get the Pi, CoPi and SP attached to it
 		Proposal checkProposal = findProposalByProposalID(id);
-		List<InvestigatorRefAndPosition> invList = checkProposal
-				.getInvestigatorInfo().getAllInvList();
-		ArrayList<UserProfile> supervisorsList = new ArrayList<UserProfile>();
+
+		/*************************** Urgent TODO ************************/
+		// TODO : do this in proposal not in individual class
+		// Removed by Milson
+		// List<InvestigatorRefAndPosition> invList = checkProposal
+		// .getInvestigatorInfo().getAllInvList();
+
+		List<UserProfile> supervisorsList = new ArrayList<UserProfile>();
 		// For each person on this list, get their supervisory personnel, and
 		// add them to a list,
 		// but avoid duplicate entries.
@@ -1939,17 +1932,19 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 		// This may result in duplicate entries being added to the list but we
 		// will handle this with a nest for loop
 		// Hopefully this does not result in a giant run time
-		ArrayList<ObjectId> idList = new ArrayList<ObjectId>();
-		for (InvestigatorRefAndPosition query : invList) {
-			departmentQuery = query.getDepartment();
-			List<UserProfile> tempList = getSupersDAO
-					.getSupervisoryPersonnelByTitle(posTitle, departmentQuery);
-			for (UserProfile profs : tempList) {
-				if (!idList.contains(profs.getId())) {
-					supervisorsList.add(profs);
-				}
-			}
-		}
+		List<ObjectId> idList = new ArrayList<ObjectId>();
+
+		// Removed by Milson
+		// for (InvestigatorRefAndPosition query : invList) {
+		// departmentQuery = query.getDepartment();
+		// List<UserProfile> tempList = getSupersDAO
+		// .getSupervisoryPersonnelByTitle(posTitle, departmentQuery);
+		// for (UserProfile profs : tempList) {
+		// if (!idList.contains(profs.getId())) {
+		// supervisorsList.add(profs);
+		// }
+		// }
+		// }
 
 		int sigCount = 0;
 		boolean isSigned = true;

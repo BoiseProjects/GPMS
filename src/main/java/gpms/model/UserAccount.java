@@ -1,6 +1,7 @@
 package gpms.model;
 
 import gpms.dao.UserAccountDAO;
+import gpms.utils.PasswordHash;
 
 import java.io.Serializable;
 import java.security.NoSuchAlgorithmException;
@@ -12,8 +13,6 @@ import org.mongodb.morphia.annotations.Indexed;
 import org.mongodb.morphia.annotations.Property;
 import org.mongodb.morphia.utils.IndexDirection;
 
-import com.google.gson.annotations.Expose;
-
 @Entity(value = UserAccountDAO.COLLECTION_NAME, noClassnameStored = true)
 // @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class,
 // property = "_id")
@@ -23,36 +22,26 @@ public class UserAccount extends BaseEntity implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	@Expose
 	@Property("username")
 	@Indexed(value = IndexDirection.ASC, name = "userNameIndex", unique = true)
 	private String userName = new String();
 
-	@Expose
 	@Property("password")
 	private String password = new String();
 
-	@Expose
-	@Property("is deleted")
-	private boolean isDeleted = false;
+	@Property("deleted")
+	private boolean deleted = false;
 
-	@Expose
-	@Property("is active")
-	private boolean isActive = false;
+	@Property("active")
+	private boolean active = false;
 
-	@Expose
-	@Property("is admin")
-	private boolean isAdmin = false;
+	@Property("admin")
+	private boolean admin = false;
 
-	@Expose
 	@Property("added on")
 	private Date addedOn = new Date();
 
 	public UserAccount() {
-	}
-
-	public UserAccount(String userName) {
-		this.userName = userName;
 
 	}
 
@@ -64,10 +53,6 @@ public class UserAccount extends BaseEntity implements Serializable {
 		this.userName = userName;
 	}
 
-	/**
-	 * 
-	 * @return Returns the hashed and salted password.
-	 */
 	public String getPassword() {
 		return password;
 	}
@@ -83,19 +68,27 @@ public class UserAccount extends BaseEntity implements Serializable {
 	}
 
 	public boolean isDeleted() {
-		return isDeleted;
+		return deleted;
 	}
 
-	public void setDeleted(boolean isDeleted) {
-		this.isDeleted = isDeleted;
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
 	}
 
 	public boolean isActive() {
-		return isActive;
+		return active;
 	}
 
-	public void setActive(boolean isActive) {
-		this.isActive = isActive;
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+
+	public boolean isAdmin() {
+		return admin;
+	}
+
+	public void setAdmin(boolean admin) {
+		this.admin = admin;
 	}
 
 	public Date getAddedOn() {
@@ -106,29 +99,21 @@ public class UserAccount extends BaseEntity implements Serializable {
 		this.addedOn = addedOn;
 	}
 
-	public boolean isAdmin() {
-		return isAdmin;
-	}
-
-	public void setAdmin(boolean isAdmin) {
-		this.isAdmin = isAdmin;
-	}
-
 	@Override
 	public String toString() {
 		return "UserAccount [userName=" + userName + ", password=" + password
-				+ ", isDeleted=" + isDeleted + ", isActive=" + isActive
-				+ ", isAdmin=" + isAdmin + ", addedOn=" + addedOn + "]";
+				+ ", deleted=" + deleted + ", active=" + active + ", admin="
+				+ admin + ", addedOn=" + addedOn + "]";
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		int result = 1;
+		int result = super.hashCode();
+		result = prime * result + (active ? 1231 : 1237);
 		result = prime * result + ((addedOn == null) ? 0 : addedOn.hashCode());
-		result = prime * result + (isActive ? 1231 : 1237);
-		result = prime * result + (isAdmin ? 1231 : 1237);
-		result = prime * result + (isDeleted ? 1231 : 1237);
+		result = prime * result + (admin ? 1231 : 1237);
+		result = prime * result + (deleted ? 1231 : 1237);
 		result = prime * result
 				+ ((password == null) ? 0 : password.hashCode());
 		result = prime * result
@@ -140,21 +125,21 @@ public class UserAccount extends BaseEntity implements Serializable {
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
+		if (!super.equals(obj))
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
 		UserAccount other = (UserAccount) obj;
+		if (active != other.active)
+			return false;
 		if (addedOn == null) {
 			if (other.addedOn != null)
 				return false;
 		} else if (!addedOn.equals(other.addedOn))
 			return false;
-		if (isActive != other.isActive)
+		if (admin != other.admin)
 			return false;
-		if (isAdmin != other.isAdmin)
-			return false;
-		if (isDeleted != other.isDeleted)
+		if (deleted != other.deleted)
 			return false;
 		if (password == null) {
 			if (other.password != null)

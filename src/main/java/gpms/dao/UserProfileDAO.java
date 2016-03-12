@@ -119,7 +119,7 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 			String positionType, String positionTitle, Boolean isActive)
 			throws UnknownHostException {
 		Datastore ds = getDatastore();
-		ArrayList<UserInfo> users = new ArrayList<UserInfo>();
+		List<UserInfo> users = new ArrayList<UserInfo>();
 
 		Query<UserProfile> profileQuery = ds.createQuery(UserProfile.class);
 		Query<UserAccount> accountQuery = ds.createQuery(UserAccount.class);
@@ -166,7 +166,7 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 
 			user.setAddedOn(userProfile.getUserAccount().getAddedOn());
 
-			// ArrayList<AuditLogInfo> allAuditLogs = new
+			// List<AuditLogInfo> allAuditLogs = new
 			// ArrayList<AuditLogInfo>();
 
 			// if (userProfile.getUserAccount().getAuditLog() != null
@@ -216,7 +216,7 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 			String department, String positionType, String positionTitle,
 			Boolean isActive) throws UnknownHostException {
 		Datastore ds = getDatastore();
-		ArrayList<UserInfo> users = new ArrayList<UserInfo>();
+		List<UserInfo> users = new ArrayList<UserInfo>();
 
 		Query<UserProfile> profileQuery = ds.createQuery(UserProfile.class);
 		Query<UserAccount> accountQuery = ds.createQuery(UserAccount.class);
@@ -297,7 +297,7 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 
 		UserProfile q = profileQuery.field("_id").equal(userId).get();
 
-		ArrayList<AuditLogInfo> allAuditLogs = new ArrayList<AuditLogInfo>();
+		List<AuditLogInfo> allAuditLogs = new ArrayList<AuditLogInfo>();
 		int rowTotal = 0;
 		if (q.getAuditLog() != null && q.getAuditLog().size() != 0) {
 			for (AuditLog userProfileAudit : q.getAuditLog()) {
@@ -710,7 +710,7 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 	public List<InvestigatorUsersAndPositions> findAllPositionDetailsForAUser(
 			ObjectId id) {
 		Datastore ds = getDatastore();
-		ArrayList<InvestigatorUsersAndPositions> userPositions = new ArrayList<InvestigatorUsersAndPositions>();
+		List<InvestigatorUsersAndPositions> userPositions = new ArrayList<InvestigatorUsersAndPositions>();
 
 		Query<UserProfile> q = ds
 				.createQuery(UserProfile.class)
@@ -750,7 +750,7 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 	public List<InvestigatorUsersAndPositions> findUserPositionDetailsForAProposal(
 			List<ObjectId> userIds) {
 		Datastore ds = getDatastore();
-		ArrayList<InvestigatorUsersAndPositions> userPositions = new ArrayList<InvestigatorUsersAndPositions>();
+		List<InvestigatorUsersAndPositions> userPositions = new ArrayList<InvestigatorUsersAndPositions>();
 
 		Query<UserProfile> q = ds
 				.createQuery(UserProfile.class)
@@ -931,23 +931,23 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 	}
 
 	/**
-	 * Return a list of supervisory personnel.
-	 * This is meant to be used in tandem with the 
+	 * Return a list of supervisory personnel. This is meant to be used in
+	 * tandem with the
+	 * 
 	 * @param1 title we're looking for
 	 * @param2 the department we need to find them in
 	 * @return
 	 */
-	public List<UserProfile>getSupervisoryPersonnelByTitle(String title, String department)
-	{
+	public List<UserProfile> getSupervisoryPersonnelByTitle(String title,
+			String department) {
 		Datastore ds = getDatastore();
 
 		Query<UserProfile> profileQuery = ds.createQuery(UserProfile.class);
-		
+
 		profileQuery.and(
 				profileQuery.criteria("details.position title").equal(title),
-				profileQuery.criteria("details.college").equal(department)
-		);
-		
+				profileQuery.criteria("details.college").equal(department));
+
 		return profileQuery.asList();
 	}
 

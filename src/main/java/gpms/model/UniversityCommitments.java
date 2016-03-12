@@ -5,8 +5,6 @@ import java.io.Serializable;
 import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Property;
 
-import com.google.gson.annotations.Expose;
-
 @Embedded
 public class UniversityCommitments implements Serializable {
 	/**
@@ -14,19 +12,17 @@ public class UniversityCommitments implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	@Expose
 	@Property("new renovated facilities required")
 	private boolean newRenovatedFacilitiesRequired;
 
-	@Expose
 	@Property("rental space required")
 	private boolean rentalSpaceRequired;
 
-	@Expose
 	@Property("institutional commitment required")
 	private boolean institutionalCommitmentRequired;
 
 	public UniversityCommitments() {
+
 	}
 
 	public boolean isNewRenovatedFacilitiesRequired() {

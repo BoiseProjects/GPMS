@@ -3,10 +3,11 @@ package gpms.DAL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class DepartmentsPositionsCollection {
-	private static final HashMap<String, HashMap<String, HashMap<String, ArrayList<String>>>> ht = new HashMap<String, HashMap<String, HashMap<String, ArrayList<String>>>>();
+	private static final Map<String, HashMap<String, HashMap<String, ArrayList<String>>>> ht = new HashMap<String, HashMap<String, HashMap<String, ArrayList<String>>>>();
 
 	public DepartmentsPositionsCollection() {
 		ArrayList<String> tenuredTitles = new ArrayList<String>();
@@ -109,7 +110,7 @@ public class DepartmentsPositionsCollection {
 		ht.put("Science", departmentScience);
 	}
 
-	public HashMap<String, HashMap<String, HashMap<String, ArrayList<String>>>> getAvailableDepartmentsAndPositions() {
+	public Map<String, HashMap<String, HashMap<String, ArrayList<String>>>> getAvailableDepartmentsAndPositions() {
 		return ht;
 	}
 

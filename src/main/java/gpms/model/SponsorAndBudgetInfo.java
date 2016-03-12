@@ -7,8 +7,6 @@ import java.util.List;
 import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Property;
 
-import com.google.gson.annotations.Expose;
-
 //import org.bson.types.ObjectId;
 
 @Embedded
@@ -18,27 +16,23 @@ public class SponsorAndBudgetInfo implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	@Expose
 	@Property("granting agency")
 	private List<String> grantingAgency = new ArrayList<String>();
 
-	@Expose
 	@Property("direct costs")
 	private double directCosts;
 
-	@Expose
-	@Property("F&A costs")
-	private double FACosts;
+	@Property("fa costs")
+	private double faCosts;
 
-	@Expose
 	@Property("total costs")
 	private double totalCosts;
 
-	@Expose
-	@Property("F&A rate")
-	private double FARate;
+	@Property("fa rate")
+	private double faRate;
 
 	public SponsorAndBudgetInfo() {
+
 	}
 
 	public List<String> getGrantingAgency() {
@@ -49,10 +43,6 @@ public class SponsorAndBudgetInfo implements Serializable {
 		this.grantingAgency = grantingAgency;
 	}
 
-	public void addGrantingAgency(String agencyName) {
-		this.grantingAgency.add(agencyName);
-	}
-
 	public double getDirectCosts() {
 		return directCosts;
 	}
@@ -61,12 +51,12 @@ public class SponsorAndBudgetInfo implements Serializable {
 		this.directCosts = directCosts;
 	}
 
-	public double getFACosts() {
-		return FACosts;
+	public double getFaCosts() {
+		return faCosts;
 	}
 
-	public void setFACosts(double fACosts) {
-		FACosts = fACosts;
+	public void setFaCosts(double faCosts) {
+		this.faCosts = faCosts;
 	}
 
 	public double getTotalCosts() {
@@ -77,23 +67,19 @@ public class SponsorAndBudgetInfo implements Serializable {
 		this.totalCosts = totalCosts;
 	}
 
-	public double getFARate() {
-		return FARate;
+	public double getFaRate() {
+		return faRate;
 	}
 
-	public void setFARate(double fARate) {
-		FARate = fARate;
+	public void setFaRate(double faRate) {
+		this.faRate = faRate;
 	}
 
 	@Override
 	public String toString() {
-		String outPut = "";
-		outPut += "Granting Agency : " + grantingAgency.toString() + "\n";
-		outPut += "Direct Costs    : " + directCosts + "\n";
-		outPut += "F&A costs       : " + FACosts + "\n";
-		outPut += "Total Costs     : " + totalCosts + "\n";
-		outPut += "F&A rate        : " + FARate;
-		return outPut;
+		return "SponsorAndBudgetInfo [grantingAgency=" + grantingAgency
+				+ ", directCosts=" + directCosts + ", faCosts=" + faCosts
+				+ ", totalCosts=" + totalCosts + ", faRate=" + faRate + "]";
 	}
 
 	@Override
@@ -101,11 +87,11 @@ public class SponsorAndBudgetInfo implements Serializable {
 		final int prime = 31;
 		int result = 1;
 		long temp;
-		temp = Double.doubleToLongBits(FACosts);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		temp = Double.doubleToLongBits(FARate);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
 		temp = Double.doubleToLongBits(directCosts);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(faCosts);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(faRate);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
 		result = prime * result
 				+ ((grantingAgency == null) ? 0 : grantingAgency.hashCode());
@@ -123,14 +109,14 @@ public class SponsorAndBudgetInfo implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		SponsorAndBudgetInfo other = (SponsorAndBudgetInfo) obj;
-		if (Double.doubleToLongBits(FACosts) != Double
-				.doubleToLongBits(other.FACosts))
-			return false;
-		if (Double.doubleToLongBits(FARate) != Double
-				.doubleToLongBits(other.FARate))
-			return false;
 		if (Double.doubleToLongBits(directCosts) != Double
 				.doubleToLongBits(other.directCosts))
+			return false;
+		if (Double.doubleToLongBits(faCosts) != Double
+				.doubleToLongBits(other.faCosts))
+			return false;
+		if (Double.doubleToLongBits(faRate) != Double
+				.doubleToLongBits(other.faRate))
 			return false;
 		if (grantingAgency == null) {
 			if (other.grantingAgency != null)

@@ -5,8 +5,6 @@ import java.io.Serializable;
 import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Property;
 
-import com.google.gson.annotations.Expose;
-
 @Embedded
 public class PositionDetails implements Serializable {
 	/**
@@ -14,27 +12,23 @@ public class PositionDetails implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	@Expose
 	@Property("position title")
 	private String positionTitle = new String();
 
-	@Expose
 	@Property("position type")
 	private String positionType = new String();
 
-	@Expose
 	@Property("department")
 	private String department = new String();
 
-	@Expose
 	@Property("college")
 	private String college = new String();
 
-	@Expose
-	@Property("is default")
-	private boolean isDefault = false;
+	@Property("as default")
+	private boolean asDefault = false;
 
 	public PositionDetails() {
+
 	}
 
 	public String getPositionTitle() {
@@ -69,30 +63,30 @@ public class PositionDetails implements Serializable {
 		this.college = college;
 	}
 
-	public boolean isDefault() {
-		return isDefault;
+	public boolean isAsDefault() {
+		return asDefault;
 	}
 
-	public void setDefault(boolean isDefault) {
-		this.isDefault = isDefault;
+	public void setAsDefault(boolean asDefault) {
+		this.asDefault = asDefault;
 	}
 
 	@Override
 	public String toString() {
 		return "PositionDetails [positionTitle=" + positionTitle
 				+ ", positionType=" + positionType + ", department="
-				+ department + ", college=" + college + ", isDefault="
-				+ isDefault + "]";
+				+ department + ", college=" + college + ", asDefault="
+				+ asDefault + "]";
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + (asDefault ? 1231 : 1237);
 		result = prime * result + ((college == null) ? 0 : college.hashCode());
 		result = prime * result
 				+ ((department == null) ? 0 : department.hashCode());
-		result = prime * result + (isDefault ? 1231 : 1237);
 		result = prime * result
 				+ ((positionTitle == null) ? 0 : positionTitle.hashCode());
 		result = prime * result
@@ -109,6 +103,8 @@ public class PositionDetails implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		PositionDetails other = (PositionDetails) obj;
+		if (asDefault != other.asDefault)
+			return false;
 		if (college == null) {
 			if (other.college != null)
 				return false;
@@ -118,8 +114,6 @@ public class PositionDetails implements Serializable {
 			if (other.department != null)
 				return false;
 		} else if (!department.equals(other.department))
-			return false;
-		if (isDefault != other.isDefault)
 			return false;
 		if (positionTitle == null) {
 			if (other.positionTitle != null)

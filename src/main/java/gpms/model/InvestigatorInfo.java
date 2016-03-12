@@ -6,26 +6,24 @@ import java.util.List;
 
 import org.mongodb.morphia.annotations.Embedded;
 
-import com.google.gson.annotations.Expose;
-
 @Embedded
 public class InvestigatorInfo implements Serializable {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	@Expose
-	@Embedded("PI")
+
+	@Embedded("pi")
 	private InvestigatorRefAndPosition pi = new InvestigatorRefAndPosition();
-	@Expose
-	@Embedded("CO-PI")
+
+	@Embedded("co_pi")
 	private List<InvestigatorRefAndPosition> co_pi = new ArrayList<InvestigatorRefAndPosition>();
-	@Expose
+
 	@Embedded("senior personnel")
 	private List<InvestigatorRefAndPosition> seniorPersonnel = new ArrayList<InvestigatorRefAndPosition>();
-	private List<InvestigatorRefAndPosition> masterList = new ArrayList<InvestigatorRefAndPosition>();
-	
+
 	public InvestigatorInfo() {
+
 	}
 
 	public InvestigatorRefAndPosition getPi() {
@@ -34,8 +32,6 @@ public class InvestigatorInfo implements Serializable {
 
 	public void setPi(InvestigatorRefAndPosition pi) {
 		this.pi = pi;
-		//Adding to the master list, to help with signature verification
-		masterList.add(pi);
 	}
 
 	public List<InvestigatorRefAndPosition> getCo_pi() {
@@ -44,11 +40,6 @@ public class InvestigatorInfo implements Serializable {
 
 	public void setCo_pi(List<InvestigatorRefAndPosition> co_pi) {
 		this.co_pi = co_pi;
-		//Adding all of these to a master list, to help with signature verification
-		for(InvestigatorRefAndPosition coPi : co_pi)
-		{
-			masterList.add(coPi);
-		}
 	}
 
 	public List<InvestigatorRefAndPosition> getSeniorPersonnel() {
@@ -58,24 +49,8 @@ public class InvestigatorInfo implements Serializable {
 	public void setSeniorPersonnel(
 			List<InvestigatorRefAndPosition> seniorPersonnel) {
 		this.seniorPersonnel = seniorPersonnel;
-		//Adding all of these to a master list, to help with signature verification
-		for(InvestigatorRefAndPosition seniorP : seniorPersonnel)
-		{
-			masterList.add(seniorP);
-			
-		}
 	}
 
-	/**
-	 * This is the master list of all Pi, CoPi, and SP
-	 * This was made to help with signature verification
-	 * @return the masterList
-	 */
-	public List<InvestigatorRefAndPosition> getAllInvList()
-	{
-		return masterList;
-	}
-	
 	@Override
 	public String toString() {
 		return "InvestigatorInfo [pi=" + pi + ", co_pi=" + co_pi

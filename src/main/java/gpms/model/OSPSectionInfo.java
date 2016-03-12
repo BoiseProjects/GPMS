@@ -5,8 +5,6 @@ import java.io.Serializable;
 import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Property;
 
-import com.google.gson.annotations.Expose;
-
 @Embedded
 public class OSPSectionInfo implements Serializable {
 	/**
@@ -14,79 +12,62 @@ public class OSPSectionInfo implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	@Expose
 	@Property("list agency")
 	private String listAgency = new String();
 
-	@Expose
 	@Embedded("funding source")
 	private FundingSource fundingSource = new FundingSource();
 
-	@Expose
-	@Property("CFDA no")
-	private String CFDANo = new String();
+	@Property("cfda no")
+	private String cfdaNo = new String();
 
-	@Expose
 	@Property("program no")
 	private String programNo = new String();
 
-	@Expose
 	@Property("program title")
 	private String programTitle = new String();
 
-	@Expose
 	@Embedded("recovery")
 	private Recovery recovery = new Recovery();
 
-	@Expose
 	@Embedded("base")
 	private BaseInfo baseInfo = new BaseInfo();
 
-	@Expose
-	@Property("is PI salary included")
-	private boolean isPISalaryIncluded;
+	@Property("pi salary included")
+	private boolean piSalaryIncluded;
 
-	@Expose
-	@Property("PI salary")
-	private double PISalary;
+	@Property("pi salary")
+	private double piSalary;
 
-	@Expose
-	@Property("PI fringe")
-	private double PIFringe;
+	@Property("pi fringe")
+	private double piFringe;
 
-	@Expose
 	@Property("department id")
 	private String departmentId = new String();
 
-	@Expose
 	@Embedded("institutional cost share documented")
 	private BaseOptions institutionalCostDocumented = new BaseOptions();
 
-	@Expose
 	@Embedded("third party cost share documented")
 	private BaseOptions thirdPartyCostDocumented = new BaseOptions();
 
-	@Expose
-	@Property("is anticipated subrecipients")
-	private boolean isAnticipatedSubRecipients;
+	@Property("anticipated subrecipients")
+	private boolean anticipatedSubRecipients;
 
-	@Expose
 	@Property("anticipated subrecipients names")
 	private String anticipatedSubRecipientsNames;
 
-	@Expose
-	@Embedded("PI eligibility waiver on file")
-	private BasePIEligibilityOptions PIEligibilityWaiver = new BasePIEligibilityOptions();
+	@Embedded("pi eligibility waiver on file")
+	private BasePIEligibilityOptions piEligibilityWaiver = new BasePIEligibilityOptions();
 
-	@Expose
 	@Embedded("conflict of interest forms on file")
 	private BaseOptions conflictOfInterestForms = new BaseOptions();
 
-	@Expose
 	@Embedded("excluded party list checked")
 	private BaseOptions excludedPartyListChecked = new BaseOptions();
 
 	public OSPSectionInfo() {
+
 	}
 
 	public String getListAgency() {
@@ -105,12 +86,12 @@ public class OSPSectionInfo implements Serializable {
 		this.fundingSource = fundingSource;
 	}
 
-	public String getCFDANo() {
-		return CFDANo;
+	public String getCfdaNo() {
+		return cfdaNo;
 	}
 
-	public void setCFDANo(String cFDANo) {
-		CFDANo = cFDANo;
+	public void setCfdaNo(String cfdaNo) {
+		this.cfdaNo = cfdaNo;
 	}
 
 	public String getProgramNo() {
@@ -145,28 +126,28 @@ public class OSPSectionInfo implements Serializable {
 		this.baseInfo = baseInfo;
 	}
 
-	public boolean isPISalaryIncluded() {
-		return isPISalaryIncluded;
+	public boolean isPiSalaryIncluded() {
+		return piSalaryIncluded;
 	}
 
-	public void setPISalaryIncluded(boolean isPISalaryIncluded) {
-		this.isPISalaryIncluded = isPISalaryIncluded;
+	public void setPiSalaryIncluded(boolean piSalaryIncluded) {
+		this.piSalaryIncluded = piSalaryIncluded;
 	}
 
-	public double getPISalary() {
-		return PISalary;
+	public double getPiSalary() {
+		return piSalary;
 	}
 
-	public void setPISalary(double pISalary) {
-		PISalary = pISalary;
+	public void setPiSalary(double piSalary) {
+		this.piSalary = piSalary;
 	}
 
-	public double getPIFringe() {
-		return PIFringe;
+	public double getPiFringe() {
+		return piFringe;
 	}
 
-	public void setPIFringe(double pIFringe) {
-		PIFringe = pIFringe;
+	public void setPiFringe(double piFringe) {
+		this.piFringe = piFringe;
 	}
 
 	public String getDepartmentId() {
@@ -195,11 +176,11 @@ public class OSPSectionInfo implements Serializable {
 	}
 
 	public boolean isAnticipatedSubRecipients() {
-		return isAnticipatedSubRecipients;
+		return anticipatedSubRecipients;
 	}
 
-	public void setAnticipatedSubRecipients(boolean isAnticipatedSubRecipients) {
-		this.isAnticipatedSubRecipients = isAnticipatedSubRecipients;
+	public void setAnticipatedSubRecipients(boolean anticipatedSubRecipients) {
+		this.anticipatedSubRecipients = anticipatedSubRecipients;
 	}
 
 	public String getAnticipatedSubRecipientsNames() {
@@ -211,13 +192,13 @@ public class OSPSectionInfo implements Serializable {
 		this.anticipatedSubRecipientsNames = anticipatedSubRecipientsNames;
 	}
 
-	public BasePIEligibilityOptions getPIEligibilityWaiver() {
-		return PIEligibilityWaiver;
+	public BasePIEligibilityOptions getPiEligibilityWaiver() {
+		return piEligibilityWaiver;
 	}
 
-	public void setPIEligibilityWaiver(
-			BasePIEligibilityOptions pIEligibilityWaiver) {
-		PIEligibilityWaiver = pIEligibilityWaiver;
+	public void setPiEligibilityWaiver(
+			BasePIEligibilityOptions piEligibilityWaiver) {
+		this.piEligibilityWaiver = piEligibilityWaiver;
 	}
 
 	public BaseOptions getConflictOfInterestForms() {
@@ -239,18 +220,17 @@ public class OSPSectionInfo implements Serializable {
 	@Override
 	public String toString() {
 		return "OSPSectionInfo [listAgency=" + listAgency + ", fundingSource="
-				+ fundingSource + ", CFDANo=" + CFDANo + ", programNo="
+				+ fundingSource + ", cfdaNo=" + cfdaNo + ", programNo="
 				+ programNo + ", programTitle=" + programTitle + ", recovery="
-				+ recovery + ", baseInfo=" + baseInfo + ", isPISalaryIncluded="
-				+ isPISalaryIncluded + ", PISalary=" + PISalary + ", PIFringe="
-				+ PIFringe + ", departmentId=" + departmentId
+				+ recovery + ", baseInfo=" + baseInfo + ", piSalaryIncluded="
+				+ piSalaryIncluded + ", piSalary=" + piSalary + ", piFringe="
+				+ piFringe + ", departmentId=" + departmentId
 				+ ", institutionalCostDocumented="
 				+ institutionalCostDocumented + ", thirdPartyCostDocumented="
-				+ thirdPartyCostDocumented + ", isAnticipatedSubRecipients="
-				+ isAnticipatedSubRecipients
-				+ ", anticipatedSubRecipientsNames="
-				+ anticipatedSubRecipientsNames + ", PIEligibilityWaiver="
-				+ PIEligibilityWaiver + ", conflictOfInterestForms="
+				+ thirdPartyCostDocumented + ", anticipatedSubRecipients="
+				+ anticipatedSubRecipients + ", anticipatedSubRecipientsNames="
+				+ anticipatedSubRecipientsNames + ", piEligibilityWaiver="
+				+ piEligibilityWaiver + ", conflictOfInterestForms="
 				+ conflictOfInterestForms + ", excludedPartyListChecked="
 				+ excludedPartyListChecked + "]";
 	}
@@ -259,22 +239,14 @@ public class OSPSectionInfo implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((CFDANo == null) ? 0 : CFDANo.hashCode());
-		result = prime
-				* result
-				+ ((PIEligibilityWaiver == null) ? 0 : PIEligibilityWaiver
-						.hashCode());
-		long temp;
-		temp = Double.doubleToLongBits(PIFringe);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		temp = Double.doubleToLongBits(PISalary);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + (anticipatedSubRecipients ? 1231 : 1237);
 		result = prime
 				* result
 				+ ((anticipatedSubRecipientsNames == null) ? 0
 						: anticipatedSubRecipientsNames.hashCode());
 		result = prime * result
 				+ ((baseInfo == null) ? 0 : baseInfo.hashCode());
+		result = prime * result + ((cfdaNo == null) ? 0 : cfdaNo.hashCode());
 		result = prime
 				* result
 				+ ((conflictOfInterestForms == null) ? 0
@@ -291,10 +263,18 @@ public class OSPSectionInfo implements Serializable {
 				* result
 				+ ((institutionalCostDocumented == null) ? 0
 						: institutionalCostDocumented.hashCode());
-		result = prime * result + (isAnticipatedSubRecipients ? 1231 : 1237);
-		result = prime * result + (isPISalaryIncluded ? 1231 : 1237);
 		result = prime * result
 				+ ((listAgency == null) ? 0 : listAgency.hashCode());
+		result = prime
+				* result
+				+ ((piEligibilityWaiver == null) ? 0 : piEligibilityWaiver
+						.hashCode());
+		long temp;
+		temp = Double.doubleToLongBits(piFringe);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(piSalary);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + (piSalaryIncluded ? 1231 : 1237);
 		result = prime * result
 				+ ((programNo == null) ? 0 : programNo.hashCode());
 		result = prime * result
@@ -317,21 +297,7 @@ public class OSPSectionInfo implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		OSPSectionInfo other = (OSPSectionInfo) obj;
-		if (CFDANo == null) {
-			if (other.CFDANo != null)
-				return false;
-		} else if (!CFDANo.equals(other.CFDANo))
-			return false;
-		if (PIEligibilityWaiver == null) {
-			if (other.PIEligibilityWaiver != null)
-				return false;
-		} else if (!PIEligibilityWaiver.equals(other.PIEligibilityWaiver))
-			return false;
-		if (Double.doubleToLongBits(PIFringe) != Double
-				.doubleToLongBits(other.PIFringe))
-			return false;
-		if (Double.doubleToLongBits(PISalary) != Double
-				.doubleToLongBits(other.PISalary))
+		if (anticipatedSubRecipients != other.anticipatedSubRecipients)
 			return false;
 		if (anticipatedSubRecipientsNames == null) {
 			if (other.anticipatedSubRecipientsNames != null)
@@ -343,6 +309,11 @@ public class OSPSectionInfo implements Serializable {
 			if (other.baseInfo != null)
 				return false;
 		} else if (!baseInfo.equals(other.baseInfo))
+			return false;
+		if (cfdaNo == null) {
+			if (other.cfdaNo != null)
+				return false;
+		} else if (!cfdaNo.equals(other.cfdaNo))
 			return false;
 		if (conflictOfInterestForms == null) {
 			if (other.conflictOfInterestForms != null)
@@ -372,14 +343,23 @@ public class OSPSectionInfo implements Serializable {
 		} else if (!institutionalCostDocumented
 				.equals(other.institutionalCostDocumented))
 			return false;
-		if (isAnticipatedSubRecipients != other.isAnticipatedSubRecipients)
-			return false;
-		if (isPISalaryIncluded != other.isPISalaryIncluded)
-			return false;
 		if (listAgency == null) {
 			if (other.listAgency != null)
 				return false;
 		} else if (!listAgency.equals(other.listAgency))
+			return false;
+		if (piEligibilityWaiver == null) {
+			if (other.piEligibilityWaiver != null)
+				return false;
+		} else if (!piEligibilityWaiver.equals(other.piEligibilityWaiver))
+			return false;
+		if (Double.doubleToLongBits(piFringe) != Double
+				.doubleToLongBits(other.piFringe))
+			return false;
+		if (Double.doubleToLongBits(piSalary) != Double
+				.doubleToLongBits(other.piSalary))
+			return false;
+		if (piSalaryIncluded != other.piSalaryIncluded)
 			return false;
 		if (programNo == null) {
 			if (other.programNo != null)

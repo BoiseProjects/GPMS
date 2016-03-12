@@ -4,25 +4,35 @@ import java.util.Date;
 
 import com.ebay.xcelite.annotations.Column;
 import com.ebay.xcelite.annotations.Row;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+@JsonPropertyOrder({ "rowTotal", "userName", "userFullName", "action",
+		"activityDate" })
 @Row(colsOrder = { "User Name", "User Full Name", "Audit Action",
 		"Activity Date" })
 public class AuditLogInfo implements Comparable<AuditLogInfo> {
+	@JsonProperty("rowTotal")
 	private int rowTotal;
 
+	@JsonProperty("userName")
 	@Column(name = "User Name")
 	private String userName = new String();
 
+	@JsonProperty("userFullName")
 	@Column(name = "User Full Name")
 	private String userFullName = new String();
 
+	@JsonProperty("action")
 	@Column(name = "Audit Action")
 	private String action = new String();
 
+	@JsonProperty("activityDate")
 	@Column(name = "Activity Date", dataFormat = "yyyy/MM/dd hh:mm:ss")
 	private Date activityDate = new Date();
 
 	public AuditLogInfo() {
+		
 	}
 
 	public int getRowTotal() {

@@ -5,8 +5,6 @@ import java.io.Serializable;
 import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Property;
 
-import com.google.gson.annotations.Expose;
-
 @Embedded
 public class Address implements Serializable {
 	/**
@@ -14,27 +12,21 @@ public class Address implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	@Expose
 	@Property("street")
 	private String street = new String();
 
-	@Expose
 	@Property("apt")
 	private String apt = new String();
 
-	@Expose
 	@Property("city")
 	private String city = new String();
 
-	@Expose
 	@Property("state")
 	private String state = new String();
 
-	@Expose
 	@Property("zipcode")
 	private String zipcode = new String();
 
-	@Expose
 	@Property("country")
 	private String country = new String();
 

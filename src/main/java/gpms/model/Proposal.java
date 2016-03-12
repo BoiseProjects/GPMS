@@ -14,136 +14,106 @@ import org.mongodb.morphia.annotations.Indexed;
 import org.mongodb.morphia.annotations.Property;
 import org.mongodb.morphia.utils.IndexDirection;
 
-import com.google.gson.annotations.Expose;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity(value = ProposalDAO.COLLECTION_NAME, noClassnameStored = true)
+@JsonIgnoreProperties({ "signatureInfo", "id", "version", "auditLog",
+		"userProfile", "action", "activityDate" })
 public class Proposal extends BaseEntity implements Serializable {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	@Expose
 	@Property("proposal no")
 	@Indexed(value = IndexDirection.ASC, name = "proposalNoIndex", unique = true)
 	private int proposalNo = 0;
 
-	@Expose
 	@Property("date created")
 	private Date dateCreated = new Date();
 
-	@Expose
 	@Property("date submitted")
 	private Date dateSubmitted = null;
 
-	@Expose
 	@Property("proposal status")
 	private List<Status> proposalStatus = new ArrayList<>(
 			Arrays.asList(Status.NOTSUBMITTEDBYPI));
 
-	// TODO : add status variables here
-	@Expose
 	@Property("submitted by PI")
 	private SubmitType submittedByPI = SubmitType.NOTSUBMITTED;
 
-	@Expose
 	@Property("deleted by PI")
 	private DeleteType deletedByPI = DeleteType.NOTDELETED;
 
-	@Expose
-	@Property("Chair approval")
+	@Property("chair approval")
 	private ApprovalType chairApproval = ApprovalType.NOTREADYFORAPPROVAL;
 
-	@Expose
-	@Property("Business Manager approval")
+	@Property("business manager approval")
 	private ApprovalType businessManagerApproval = ApprovalType.NOTREADYFORAPPROVAL;
 
-	@Expose
-	@Property("IRB approval")
-	private ApprovalType IRBApproval = ApprovalType.NOTREADYFORAPPROVAL;
+	@Property("irb approval")
+	private ApprovalType irbApproval = ApprovalType.NOTREADYFORAPPROVAL;
 
-	@Expose
-	@Property("Dean approval")
-	private ApprovalType DeanApproval = ApprovalType.NOTREADYFORAPPROVAL;
+	@Property("dean approval")
+	private ApprovalType deanApproval = ApprovalType.NOTREADYFORAPPROVAL;
 
-	@Expose
-	@Property("University Research Administrator approval")
-	private ApprovalType UniversityResearchAdministratorApproval = ApprovalType.NOTREADYFORAPPROVAL;
+	@Property("research administrator approval")
+	private ApprovalType researchAdministratorApproval = ApprovalType.NOTREADYFORAPPROVAL;
 
-	@Expose
-	@Property("University Research Administrator withdraw")
-	private WithdrawType UniversityResearchAdministratorWithdraw = WithdrawType.NOTWITHDRAWN;
+	@Property("research administrator withdraw")
+	private WithdrawType researchAdministratorWithdraw = WithdrawType.NOTWITHDRAWN;
 
-	@Expose
-	@Property("University Research Director approval")
-	private ApprovalType UniversityResearchDirectorApproval = ApprovalType.NOTREADYFORAPPROVAL;
+	@Property("research director approval")
+	private ApprovalType researchDirectorApproval = ApprovalType.NOTREADYFORAPPROVAL;
 
-	@Expose
-	@Property("University Research Director deletion")
-	private DeleteType UniversityResearchDirectorDeletion = DeleteType.NOTDELETED;
+	@Property("research director deletion")
+	private DeleteType researchDirectorDeletion = DeleteType.NOTDELETED;
 
-	@Expose
-	@Property("University Research Administrator submitted")
-	private SubmitType UniversityResearchAdministratorSubmission = SubmitType.NOTSUBMITTED;
+	@Property("research administrator submitted")
+	private SubmitType researchAdministratorSubmission = SubmitType.NOTSUBMITTED;
 
-	@Expose
-	@Property("University Research Director archived")
-	private ArchiveType UniversityResearchDirectorArchived = ArchiveType.NOTARCHIVED;
+	@Property("research director archived")
+	private ArchiveType researchDirectorArchived = ArchiveType.NOTARCHIVED;
 
-	// END
-
-	@Expose
 	@Embedded("investigator info")
 	private InvestigatorInfo investigatorInfo = new InvestigatorInfo();
 
-	@Expose
 	@Embedded("project info")
 	private ProjectInfo projectInfo = new ProjectInfo();
 
-	@Expose
 	@Embedded("sponsor and budget info")
 	private SponsorAndBudgetInfo sponsorAndBudgetInfo = new SponsorAndBudgetInfo();
 
-	// Until this clone is done
-	// below need to be done
-
-	@Expose
 	@Embedded("cost share info")
 	private CostShareInfo costShareInfo = new CostShareInfo();
 
-	@Expose
 	@Embedded("university commitments")
 	private UniversityCommitments universityCommitments = new UniversityCommitments();
 
-	@Expose
 	@Embedded("conflict of interest and commitment info")
 	private ConflictOfInterest conflicOfInterest = new ConflictOfInterest();
 
-	@Expose
 	@Embedded("compliance info")
 	private ComplianceInfo complianceInfo = new ComplianceInfo();
 
-	@Expose
 	@Embedded("additional info")
 	private AdditionalInfo additionalInfo = new AdditionalInfo();
 
-	@Expose
 	@Embedded("collaboration info")
 	private CollaborationInfo collaborationInfo = new CollaborationInfo();
 
-	@Expose
 	@Embedded("proprietary/confidential info")
 	private ConfidentialInfo confidentialInfo = new ConfidentialInfo();
 
-	@Expose
-	@Embedded("OSPSection info")
-	private OSPSectionInfo oSPSectionInfo = new OSPSectionInfo();
+	@Embedded("osp section info")
+	private OSPSectionInfo ospSectionInfo = new OSPSectionInfo();
 
-	// @Expose
+	@JsonProperty("signatureInfo")
 	@Embedded("signature info")
 	private List<SignatureInfo> signatureInfo = new ArrayList<SignatureInfo>();
 
-	@Expose
+	@JsonProperty("appendices")
 	@Embedded("appendices")
 	private List<Appendix> appendices = new ArrayList<Appendix>();
 
@@ -215,74 +185,72 @@ public class Proposal extends BaseEntity implements Serializable {
 		this.businessManagerApproval = businessManagerApproval;
 	}
 
-	public ApprovalType getIRBApproval() {
-		return IRBApproval;
+	public ApprovalType getIrbApproval() {
+		return irbApproval;
 	}
 
-	public void setIRBApproval(ApprovalType iRBApproval) {
-		IRBApproval = iRBApproval;
+	public void setIrbApproval(ApprovalType irbApproval) {
+		this.irbApproval = irbApproval;
 	}
 
 	public ApprovalType getDeanApproval() {
-		return DeanApproval;
+		return deanApproval;
 	}
 
 	public void setDeanApproval(ApprovalType deanApproval) {
-		DeanApproval = deanApproval;
+		this.deanApproval = deanApproval;
 	}
 
-	public ApprovalType getUniversityResearchAdministratorApproval() {
-		return UniversityResearchAdministratorApproval;
+	public ApprovalType getResearchAdministratorApproval() {
+		return researchAdministratorApproval;
 	}
 
-	public void setUniversityResearchAdministratorApproval(
-			ApprovalType universityResearchAdministratorApproval) {
-		UniversityResearchAdministratorApproval = universityResearchAdministratorApproval;
+	public void setResearchAdministratorApproval(
+			ApprovalType researchAdministratorApproval) {
+		this.researchAdministratorApproval = researchAdministratorApproval;
 	}
 
-	public WithdrawType getUniversityResearchAdministratorWithdraw() {
-		return UniversityResearchAdministratorWithdraw;
+	public WithdrawType getResearchAdministratorWithdraw() {
+		return researchAdministratorWithdraw;
 	}
 
-	public void setUniversityResearchAdministratorWithdraw(
-			WithdrawType universityResearchAdministratorWithdraw) {
-		UniversityResearchAdministratorWithdraw = universityResearchAdministratorWithdraw;
+	public void setResearchAdministratorWithdraw(
+			WithdrawType researchAdministratorWithdraw) {
+		this.researchAdministratorWithdraw = researchAdministratorWithdraw;
 	}
 
-	public ApprovalType getUniversityResearchDirectorApproval() {
-		return UniversityResearchDirectorApproval;
+	public ApprovalType getResearchDirectorApproval() {
+		return researchDirectorApproval;
 	}
 
-	public void setUniversityResearchDirectorApproval(
-			ApprovalType universityResearchDirectorApproval) {
-		UniversityResearchDirectorApproval = universityResearchDirectorApproval;
+	public void setResearchDirectorApproval(
+			ApprovalType researchDirectorApproval) {
+		this.researchDirectorApproval = researchDirectorApproval;
 	}
 
-	public DeleteType getUniversityResearchDirectorDeletion() {
-		return UniversityResearchDirectorDeletion;
+	public DeleteType getResearchDirectorDeletion() {
+		return researchDirectorDeletion;
 	}
 
-	public void setUniversityResearchDirectorDeletion(
-			DeleteType universityResearchDirectorDeletion) {
-		UniversityResearchDirectorDeletion = universityResearchDirectorDeletion;
+	public void setResearchDirectorDeletion(DeleteType researchDirectorDeletion) {
+		this.researchDirectorDeletion = researchDirectorDeletion;
 	}
 
-	public SubmitType getUniversityResearchAdministratorSubmission() {
-		return UniversityResearchAdministratorSubmission;
+	public SubmitType getResearchAdministratorSubmission() {
+		return researchAdministratorSubmission;
 	}
 
-	public void setUniversityResearchAdministratorSubmission(
-			SubmitType universityResearchAdministratorSubmission) {
-		UniversityResearchAdministratorSubmission = universityResearchAdministratorSubmission;
+	public void setResearchAdministratorSubmission(
+			SubmitType researchAdministratorSubmission) {
+		this.researchAdministratorSubmission = researchAdministratorSubmission;
 	}
 
-	public ArchiveType getUniversityResearchDirectorArchived() {
-		return UniversityResearchDirectorArchived;
+	public ArchiveType getResearchDirectorArchived() {
+		return researchDirectorArchived;
 	}
 
-	public void setUniversityResearchDirectorArchived(
-			ArchiveType universityResearchDirectorArchived) {
-		UniversityResearchDirectorArchived = universityResearchDirectorArchived;
+	public void setResearchDirectorArchived(ArchiveType researchDirectorArchived) {
+		this.researchDirectorArchived = researchDirectorArchived;
 	}
 
 	public InvestigatorInfo getInvestigatorInfo() {
@@ -367,12 +335,12 @@ public class Proposal extends BaseEntity implements Serializable {
 		this.confidentialInfo = confidentialInfo;
 	}
 
-	public OSPSectionInfo getoSPSectionInfo() {
-		return oSPSectionInfo;
+	public OSPSectionInfo getOspSectionInfo() {
+		return ospSectionInfo;
 	}
 
-	public void setoSPSectionInfo(OSPSectionInfo oSPSectionInfo) {
-		this.oSPSectionInfo = oSPSectionInfo;
+	public void setOspSectionInfo(OSPSectionInfo ospSectionInfo) {
+		this.ospSectionInfo = ospSectionInfo;
 	}
 
 	public List<SignatureInfo> getSignatureInfo() {
@@ -399,63 +367,32 @@ public class Proposal extends BaseEntity implements Serializable {
 				+ submittedByPI + ", deletedByPI=" + deletedByPI
 				+ ", chairApproval=" + chairApproval
 				+ ", businessManagerApproval=" + businessManagerApproval
-				+ ", IRBApproval=" + IRBApproval + ", DeanApproval="
-				+ DeanApproval + ", UniversityResearchAdministratorApproval="
-				+ UniversityResearchAdministratorApproval
-				+ ", UniversityResearchAdministratorWithdraw="
-				+ UniversityResearchAdministratorWithdraw
-				+ ", UniversityResearchDirectorApproval="
-				+ UniversityResearchDirectorApproval
-				+ ", UniversityResearchDirectorDeletion="
-				+ UniversityResearchDirectorDeletion
-				+ ", UniversityResearchAdministratorSubmission="
-				+ UniversityResearchAdministratorSubmission
-				+ ", UniversityResearchDirectorArchived="
-				+ UniversityResearchDirectorArchived + ", investigatorInfo="
-				+ investigatorInfo + ", projectInfo=" + projectInfo
-				+ ", sponsorAndBudgetInfo=" + sponsorAndBudgetInfo
-				+ ", costShareInfo=" + costShareInfo
+				+ ", irbApproval=" + irbApproval + ", deanApproval="
+				+ deanApproval + ", researchAdministratorApproval="
+				+ researchAdministratorApproval
+				+ ", researchAdministratorWithdraw="
+				+ researchAdministratorWithdraw + ", researchDirectorApproval="
+				+ researchDirectorApproval + ", researchDirectorDeletion="
+				+ researchDirectorDeletion
+				+ ", researchAdministratorSubmission="
+				+ researchAdministratorSubmission
+				+ ", researchDirectorArchived=" + researchDirectorArchived
+				+ ", investigatorInfo=" + investigatorInfo + ", projectInfo="
+				+ projectInfo + ", sponsorAndBudgetInfo="
+				+ sponsorAndBudgetInfo + ", costShareInfo=" + costShareInfo
 				+ ", universityCommitments=" + universityCommitments
 				+ ", conflicOfInterest=" + conflicOfInterest
 				+ ", complianceInfo=" + complianceInfo + ", additionalInfo="
 				+ additionalInfo + ", collaborationInfo=" + collaborationInfo
 				+ ", confidentialInfo=" + confidentialInfo
-				+ ", oSPSectionInfo=" + oSPSectionInfo + ", signatureInfo="
+				+ ", ospSectionInfo=" + ospSectionInfo + ", signatureInfo="
 				+ signatureInfo + ", appendices=" + appendices + "]";
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		int result = 1;
-		result = prime * result
-				+ ((DeanApproval == null) ? 0 : DeanApproval.hashCode());
-		result = prime * result
-				+ ((IRBApproval == null) ? 0 : IRBApproval.hashCode());
-		result = prime
-				* result
-				+ ((UniversityResearchAdministratorApproval == null) ? 0
-						: UniversityResearchAdministratorApproval.hashCode());
-		result = prime
-				* result
-				+ ((UniversityResearchAdministratorSubmission == null) ? 0
-						: UniversityResearchAdministratorSubmission.hashCode());
-		result = prime
-				* result
-				+ ((UniversityResearchAdministratorWithdraw == null) ? 0
-						: UniversityResearchAdministratorWithdraw.hashCode());
-		result = prime
-				* result
-				+ ((UniversityResearchDirectorApproval == null) ? 0
-						: UniversityResearchDirectorApproval.hashCode());
-		result = prime
-				* result
-				+ ((UniversityResearchDirectorArchived == null) ? 0
-						: UniversityResearchDirectorArchived.hashCode());
-		result = prime
-				* result
-				+ ((UniversityResearchDirectorDeletion == null) ? 0
-						: UniversityResearchDirectorDeletion.hashCode());
+		int result = super.hashCode();
 		result = prime * result
 				+ ((additionalInfo == null) ? 0 : additionalInfo.hashCode());
 		result = prime * result
@@ -486,17 +423,45 @@ public class Proposal extends BaseEntity implements Serializable {
 		result = prime * result
 				+ ((dateSubmitted == null) ? 0 : dateSubmitted.hashCode());
 		result = prime * result
+				+ ((deanApproval == null) ? 0 : deanApproval.hashCode());
+		result = prime * result
 				+ ((deletedByPI == null) ? 0 : deletedByPI.hashCode());
 		result = prime
 				* result
 				+ ((investigatorInfo == null) ? 0 : investigatorInfo.hashCode());
 		result = prime * result
-				+ ((oSPSectionInfo == null) ? 0 : oSPSectionInfo.hashCode());
+				+ ((irbApproval == null) ? 0 : irbApproval.hashCode());
+		result = prime * result
+				+ ((ospSectionInfo == null) ? 0 : ospSectionInfo.hashCode());
 		result = prime * result
 				+ ((projectInfo == null) ? 0 : projectInfo.hashCode());
 		result = prime * result + proposalNo;
 		result = prime * result
 				+ ((proposalStatus == null) ? 0 : proposalStatus.hashCode());
+		result = prime
+				* result
+				+ ((researchAdministratorApproval == null) ? 0
+						: researchAdministratorApproval.hashCode());
+		result = prime
+				* result
+				+ ((researchAdministratorSubmission == null) ? 0
+						: researchAdministratorSubmission.hashCode());
+		result = prime
+				* result
+				+ ((researchAdministratorWithdraw == null) ? 0
+						: researchAdministratorWithdraw.hashCode());
+		result = prime
+				* result
+				+ ((researchDirectorApproval == null) ? 0
+						: researchDirectorApproval.hashCode());
+		result = prime
+				* result
+				+ ((researchDirectorArchived == null) ? 0
+						: researchDirectorArchived.hashCode());
+		result = prime
+				* result
+				+ ((researchDirectorDeletion == null) ? 0
+						: researchDirectorDeletion.hashCode());
 		result = prime * result
 				+ ((signatureInfo == null) ? 0 : signatureInfo.hashCode());
 		result = prime
@@ -516,27 +481,11 @@ public class Proposal extends BaseEntity implements Serializable {
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
+		if (!super.equals(obj))
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
 		Proposal other = (Proposal) obj;
-		if (DeanApproval != other.DeanApproval)
-			return false;
-		if (IRBApproval != other.IRBApproval)
-			return false;
-		if (UniversityResearchAdministratorApproval != other.UniversityResearchAdministratorApproval)
-			return false;
-		if (UniversityResearchAdministratorSubmission != other.UniversityResearchAdministratorSubmission)
-			return false;
-		if (UniversityResearchAdministratorWithdraw != other.UniversityResearchAdministratorWithdraw)
-			return false;
-		if (UniversityResearchDirectorApproval != other.UniversityResearchDirectorApproval)
-			return false;
-		if (UniversityResearchDirectorArchived != other.UniversityResearchDirectorArchived)
-			return false;
-		if (UniversityResearchDirectorDeletion != other.UniversityResearchDirectorDeletion)
-			return false;
 		if (additionalInfo == null) {
 			if (other.additionalInfo != null)
 				return false;
@@ -586,6 +535,8 @@ public class Proposal extends BaseEntity implements Serializable {
 				return false;
 		} else if (!dateSubmitted.equals(other.dateSubmitted))
 			return false;
+		if (deanApproval != other.deanApproval)
+			return false;
 		if (deletedByPI != other.deletedByPI)
 			return false;
 		if (investigatorInfo == null) {
@@ -593,10 +544,12 @@ public class Proposal extends BaseEntity implements Serializable {
 				return false;
 		} else if (!investigatorInfo.equals(other.investigatorInfo))
 			return false;
-		if (oSPSectionInfo == null) {
-			if (other.oSPSectionInfo != null)
+		if (irbApproval != other.irbApproval)
+			return false;
+		if (ospSectionInfo == null) {
+			if (other.ospSectionInfo != null)
 				return false;
-		} else if (!oSPSectionInfo.equals(other.oSPSectionInfo))
+		} else if (!ospSectionInfo.equals(other.ospSectionInfo))
 			return false;
 		if (projectInfo == null) {
 			if (other.projectInfo != null)
@@ -609,6 +562,18 @@ public class Proposal extends BaseEntity implements Serializable {
 			if (other.proposalStatus != null)
 				return false;
 		} else if (!proposalStatus.equals(other.proposalStatus))
+			return false;
+		if (researchAdministratorApproval != other.researchAdministratorApproval)
+			return false;
+		if (researchAdministratorSubmission != other.researchAdministratorSubmission)
+			return false;
+		if (researchAdministratorWithdraw != other.researchAdministratorWithdraw)
+			return false;
+		if (researchDirectorApproval != other.researchDirectorApproval)
+			return false;
+		if (researchDirectorArchived != other.researchDirectorArchived)
+			return false;
+		if (researchDirectorDeletion != other.researchDirectorDeletion)
 			return false;
 		if (signatureInfo == null) {
 			if (other.signatureInfo != null)

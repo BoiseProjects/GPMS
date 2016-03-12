@@ -6,8 +6,6 @@ import java.util.Date;
 import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Property;
 
-import com.google.gson.annotations.Expose;
-
 @Embedded
 public class ProjectPeriod implements Serializable {
 	/**
@@ -15,15 +13,14 @@ public class ProjectPeriod implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	@Expose
 	@Property("from")
 	private Date from = new Date();
 
-	@Expose
 	@Property("to")
 	private Date to = new Date();
 
 	public ProjectPeriod() {
+
 	}
 
 	public Date getFrom() {
@@ -44,10 +41,7 @@ public class ProjectPeriod implements Serializable {
 
 	@Override
 	public String toString() {
-		String outPut = "";
-		outPut += "From : " + from.toString() + "\n";
-		outPut += "To   : " + to.toString();
-		return outPut;
+		return "ProjectPeriod [from=" + from + ", to=" + to + "]";
 	}
 
 	@Override

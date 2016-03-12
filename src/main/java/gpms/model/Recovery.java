@@ -5,8 +5,6 @@ import java.io.Serializable;
 import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Property;
 
-import com.google.gson.annotations.Expose;
-
 @Embedded
 public class Recovery implements Serializable {
 	/**
@@ -14,27 +12,23 @@ public class Recovery implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	@Expose
 	@Property("full recovery")
 	private boolean fullRecovery;
 
-	@Expose
 	@Property("no recovery normal sponsor policy")
 	private boolean noRecoveryNormalSponsorPolicy;
 
-	@Expose
 	@Property("no recovery institutional waiver")
 	private boolean noRecoveryInstitutionalWaiver;
 
-	@Expose
 	@Property("limited recovery normal sponsor policy")
 	private boolean limitedRecoveryNormalSponsorPolicy;
 
-	@Expose
 	@Property("limited recovery institutional waiver")
 	private boolean limitedRecoveryInstitutionalWaiver;
 
 	public Recovery() {
+
 	}
 
 	public boolean isFullRecovery() {
