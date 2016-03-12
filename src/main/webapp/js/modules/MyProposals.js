@@ -2358,6 +2358,30 @@ $(function() {
 			return false;
 		},
 
+		BindCurrentUserPosition : function(rowIndexVal) {
+			// For form Dropdown Binding
+			myProposal.BindCurrentDetailsForPI(GPMS.utils.GetUserProfileID());
+
+			myProposal.BindUserMobileNo($('select[name="ddlName"]').eq(
+					rowIndexVal).val());
+
+			myProposal.BindCollegeDropDown($('select[name="ddlName"]').eq(
+					rowIndexVal).val());
+			myProposal.BindDepartmentDropDown($('select[name="ddlName"]').eq(
+					rowIndexVal).val(), $('select[name="ddlCollege"]').eq(
+					rowIndexVal).val());
+			myProposal.BindPositionTypeDropDown($('select[name="ddlName"]').eq(
+					rowIndexVal).val(), $('select[name="ddlCollege"]').eq(
+					rowIndexVal).val(), $('select[name="ddlDepartment"]').eq(
+					rowIndexVal).val());
+			myProposal.BindPositionTitleDropDown($('select[name="ddlName"]')
+					.eq(rowIndexVal).val(), $('select[name="ddlCollege"]').eq(
+					rowIndexVal).val(), $('select[name="ddlDepartment"]').eq(
+					rowIndexVal).val(), $('select[name="ddlPositionType"]').eq(
+					rowIndexVal).val());
+			return false;
+		},
+
 		BindDefaultUserPosition : function(rowIndexVal) {
 			// For form Dropdown Binding
 			myProposal.BindAllPositionDetailsForAUser($(
@@ -3546,9 +3570,7 @@ $(function() {
 						'selected').prop('disabled', 'disabled');
 
 				// TODO for admin this need to be not set!
-				myProposal.BindCurrentDetailsForPI(GPMS.utils
-						.GetUserProfileID());
-				myProposal.BindDefaultUserPosition(0);
+				myProposal.BindCurrentUserPosition(0);
 
 				myProposal.BindPICoPISignatures();
 
@@ -3624,11 +3646,11 @@ $(function() {
 		case 18:
 			positionsDetails = [];
 			$.merge(positionsDetails, msg);
-			$('select[name="ddlCollege"]').get(rowIndex).options.length = 0;
-			$('select[name="ddlDepartment"]').get(rowIndex).options.length = 0;
-			$('select[name="ddlPositionType"]').get(rowIndex).options.length = 0;
-			$('select[name="ddlPositionTitle"]').get(rowIndex).options.length = 0;
-			$('input[name="txtPhoneNo"]').eq(rowIndex).val('');
+			$('select[name="ddlCollege"]').get(0).options.length = 0;
+			$('select[name="ddlDepartment"]').get(0).options.length = 0;
+			$('select[name="ddlPositionType"]').get(0).options.length = 0;
+			$('select[name="ddlPositionTitle"]').get(0).options.length = 0;
+			$('input[name="txtPhoneNo"]').eq(0).val('');
 			break;
 
 		}
@@ -4126,10 +4148,12 @@ $(function() {
 					function() {
 						myProposal.ClearForm();
 
+						$('select[name=ddlName]').eq(0).val(
+								GPMS.utils.GetUserProfileID()).prop('selected',
+								'selected').prop('disabled', 'disabled');
+
 						// TODO for admin this need to be not set!
-						myProposal.BindCurrentDetailsForPI(GPMS.utils
-								.GetUserProfileID());
-						myProposal.BindDefaultUserPosition(0);
+						myProposal.BindCurrentUserPosition(0);
 
 						myProposal.BindPICoPISignatures();
 						// $("#accordion").accordion("option", "active", 0);
