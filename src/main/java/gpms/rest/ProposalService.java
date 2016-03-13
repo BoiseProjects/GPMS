@@ -998,7 +998,7 @@ public class ProposalService {
 															.getResearchAdministratorApproval() == ApprovalType.READYFORAPPROVAL
 													&& proposalUserTitle
 															.textValue()
-															.equals("Research Administrator")) {
+															.equals("University Research Administrator")) {
 												existingProposal
 														.setResearchAdministratorWithdraw(WithdrawType.WITHDRAWN);
 
@@ -1191,7 +1191,7 @@ public class ProposalService {
 							case "Submit":
 								// var canSubmitRoles = [ "PI" ];
 								// var canSubmitTitles = [
-								// "Research Administrator"
+								// "University Research Administrator"
 								// ];
 								if (!proposalID.equals("0")) {
 									if (existingProposal.getSubmittedByPI() == SubmitType.NOTSUBMITTED
@@ -1203,7 +1203,7 @@ public class ProposalService {
 													.contains("PI")
 											&& !proposalUserTitle
 													.textValue()
-													.equals("Research Administrator")) {
+													.equals("University Research Administrator")) {
 										existingProposal
 												.setDateSubmitted(new Date());
 
@@ -1227,7 +1227,7 @@ public class ProposalService {
 													.contains("PI")
 											&& proposalUserTitle
 													.textValue()
-													.equals("Research Administrator")) {
+													.equals("University Research Administrator")) {
 										existingProposal
 												.setResearchAdministratorSubmission(SubmitType.SUBMITTED);
 
@@ -1272,7 +1272,7 @@ public class ProposalService {
 									// var canApproveTitles = [
 									// "Department Chair",
 									// "Business Manager",
-									// "IRB", "Dean", "Research Administrator",
+									// "IRB", "Dean", "University Research Administrator",
 									// "University Research Director" ];
 									if (existingProposal.getChairApproval() == ApprovalType.READYFORAPPROVAL
 											&& proposalUserTitle.textValue()
@@ -1398,7 +1398,7 @@ public class ProposalService {
 											.getResearchAdministratorApproval() == ApprovalType.READYFORAPPROVAL
 											&& proposalUserTitle
 													.textValue()
-													.equals("Research Administrator")) {
+													.equals("University Research Administrator")) {
 										// Submitted to Research Director
 										existingProposal
 												.setResearchAdministratorApproval(ApprovalType.APPROVED);
@@ -1512,7 +1512,7 @@ public class ProposalService {
 											.getResearchAdministratorApproval() == ApprovalType.READYFORAPPROVAL
 											&& proposalUserTitle
 													.textValue()
-													.equals("Research Administrator")) {
+													.equals("University Research Administrator")) {
 										// Disapproved by Research Administrator
 										existingProposal
 												.setResearchAdministratorApproval(ApprovalType.DISAPPROVED);

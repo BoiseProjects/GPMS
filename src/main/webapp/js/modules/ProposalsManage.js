@@ -837,13 +837,13 @@ $(function() {
 
 			var canUpdateRoles = [ "PI", "CO-PI" ];
 			var canUpdateTitles = [ "Business Manager",
-					"Research Administrator", "Department Chair", "Dean" ];
+					"University Research Administrator", "Department Chair", "Dean" ];
 			var canSubmitRoles = [ "PI" ];
 			var canApproveTitles = [ "Department Chair", "Dean",
 					"University Research Director" ];
 			var canDisApproveTitles = [ "Department Chair", "Dean",
 					"University Research Director" ];
-			var canWithDrawTitles = [ "Research Administrator" ];
+			var canWithDrawTitles = [ "University Research Administrator" ];
 			var canArchiveTitles = [ "University Research Director" ];
 
 			$.each(currentProposalRoles,

@@ -1208,7 +1208,7 @@ $(function() {
 			if (proposalStatus != ""
 					&& (($.inArray("PI", currentProposalRoles) !== -1
 							&& config.submittedByPI == "NOTSUBMITTED"
-							&& config.readyForSubmitionByPI == "READYFORSSUBMIT" && config.deletedByPI == "NOTDELETED") || (currentPositionTitle == "Research Administrator"
+							&& config.readyForSubmitionByPI == "READYFORSSUBMIT" && config.deletedByPI == "NOTDELETED") || (currentPositionTitle == "University Research Administrator"
 							&& config.researchAdministratorSubmission == "NOTSUBMITTED" && config.researchDirectorApproval == "APPROVED"))) {
 				$("#btnSubmitProposal").show();
 			} else {
@@ -1246,7 +1246,7 @@ $(function() {
 							|| (currentPositionTitle == "Business Manager" && config.businessManagerApproval == "READYFORAPPROVAL")
 							|| (currentPositionTitle == "IRB" && config.irbapproval == "READYFORAPPROVAL")
 							|| (currentPositionTitle == "Dean" && config.deanApproval == "READYFORAPPROVAL")
-							|| (currentPositionTitle == "Research Administrator" && config.researchAdministratorApproval == "READYFORAPPROVAL") || (currentPositionTitle == "University Research Director" && config.researchDirectorApproval == "READYFORAPPROVAL"))) {
+							|| (currentPositionTitle == "University Research Administrator" && config.researchAdministratorApproval == "READYFORAPPROVAL") || (currentPositionTitle == "University Research Director" && config.researchDirectorApproval == "READYFORAPPROVAL"))) {
 				$("#btnApproveProposal").show();
 				$("#btnDisapproveProposal").show();
 			} else {
@@ -1257,7 +1257,7 @@ $(function() {
 			if (proposalStatus != ""
 					&& config.researchAdministratorWithdraw == "NOTWITHDRAWN"
 					&& config.researchAdministratorApproval == "READYFORAPPROVAL"
-					&& currentPositionTitle == "Research Administrator") {
+					&& currentPositionTitle == "University Research Administrator") {
 				$("#btnWithdrawProposal").show();
 			} else {
 				$("#btnWithdrawProposal").hide();
@@ -1276,7 +1276,6 @@ $(function() {
 		EditProposal : function(tblID, argus) {
 			switch (tblID) {
 			case "gdvProposals":
-
 				console.log(argus);
 				// $('#accordion-expand-holder').show();
 				$("#accordion").accordion("option", "active", false);
@@ -1315,7 +1314,7 @@ $(function() {
 
 				// OSP Section
 				$('#ui-id-25').show();
-				if (GPMS.utils.GetUserPositionTitle() == "Research Administrator"
+				if (GPMS.utils.GetUserPositionTitle() == "University Research Administrator"
 						|| GPMS.utils.GetUserPositionTitle() == "University Research Director") {
 					$('#ui-id-26').find('input, select, textarea').each(
 							function() {
@@ -3451,7 +3450,7 @@ $(function() {
 											"#trSignBusinessManager tbody");
 									break;
 
-								case "Research Administrator":
+								case "University Research Administrator":
 									$(cloneRow).appendTo(
 											"#trSignAdministrator tbody");
 									break;
