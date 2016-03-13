@@ -443,17 +443,18 @@ $(function() {
 			proposalRoles : "",
 			proposalStatus : "",
 			submittedByPI : "",
+			readyForSubmitionByPI : "",
 			deletedByPI : "",
 			chairApproval : "",
 			businessManagerApproval : "",
-			deanApproval : "",
-			universityResearchAdministratorApproval : "",
-			universityResearchAdministratorWithdraw : "",
-			universityResearchAdministratorSubmission : "",
-			universityResearchDirectorArchived : "",
-			universityResearchDirectorApproval : "",
-			universityResearchDirectorDeletion : "",
 			irbapproval : "",
+			deanApproval : "",
+			researchAdministratorApproval : "",
+			researchAdministratorWithdraw : "",
+			researchDirectorApproval : "",
+			researchDirectorDeletion : "",
+			researchAdministratorSubmission : "",
+			researchDirectorArchived : "",
 			buttonType : "",
 			arguments : [],
 			events : "",
@@ -1041,6 +1042,14 @@ $(function() {
 											align : 'left'
 										},
 										{
+											display : 'Ready for Submission by PI',
+											name : 'ready_for_submission_by_PI',
+											cssclass : '',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left'
+										},
+										{
 											display : 'Deleted by PI',
 											name : 'deleted_by_PI',
 											cssclass : '',
@@ -1143,7 +1152,7 @@ $(function() {
 											_event : 'click',
 											trigger : '1',
 											callMethod : 'myProposal.EditProposal',
-											arguments : '2, 6, 11, 22, 23, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37'
+											arguments : '2, 6, 11, 22, 23, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38'
 										},
 										{
 											display : 'Delete',
@@ -1152,7 +1161,7 @@ $(function() {
 											_event : 'click',
 											trigger : '2',
 											callMethod : 'myProposal.DeleteProposal',
-											arguments : '23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37'
+											arguments : '23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38'
 										},
 										{
 											display : 'View Change Logs',
@@ -1172,7 +1181,7 @@ $(function() {
 									0 : {
 										sorter : false
 									},
-									38 : {
+									39 : {
 										sorter : false
 									}
 								}
@@ -1198,8 +1207,9 @@ $(function() {
 
 			if (proposalStatus != ""
 					&& (($.inArray("PI", currentProposalRoles) !== -1
-							&& config.deletedByPI != "DELETED" && config.submittedByPI != "SUBMITTED") || (currentPositionTitle == "Research Administrator"
-							&& config.universityResearchAdministratorSubmission != "SUBMITTED" && config.universityResearchDirectorApproval == "APPROVED"))) {
+							&& config.submittedByPI == "NOTSUBMITTED"
+							&& config.readyForSubmitionByPI == "READYFORSSUBMIT" && config.deletedByPI == "NOTDELETED") || (currentPositionTitle == "Research Administrator"
+							&& config.researchAdministratorSubmission == "NOTSUBMITTED" && config.researchDirectorApproval == "APPROVED"))) {
 				$("#btnSubmitProposal").show();
 			} else {
 				$("#btnSubmitProposal").hide();
@@ -1209,12 +1219,8 @@ $(function() {
 					&& ($.inArray("PI", currentProposalRoles) !== -1
 							|| $.inArray("CO-PI", currentProposalRoles) !== -1 || $
 							.inArray("Senior", currentProposalRoles) !== -1)
-					&& (config.submittedByPI != "SUBMITTED"
-							|| config.chairApproval != "APPROVED"
-							|| config.businessManagerApproval == "DISAPPROVED"
-							|| config.irbapproval == "DISAPPROVED"
-							|| config.deanApproval == "DISAPPROVED"
-							|| config.universityResearchAdministratorApproval == "DISAPPROVED" || config.universityResearchDirectorApproval == "DISAPPROVED")) {
+					&& config.submittedByPI == "NOTSUBMITTED"
+					&& config.readyForSubmitionByPI == "NOTREADYFORSUBMIT") {
 				$("#btnUpdateProposal").show();
 			} else {
 				$("#btnUpdateProposal").hide();
@@ -1227,8 +1233,8 @@ $(function() {
 								if (proposalStatus != ""
 										&& (($.inArray("PI",
 												currentProposalRoles) !== -1
-												&& config.deletedByPI != "DELETED" && config.submittedByPI != "SUBMITTED") || (currentPositionTitle == "University Research Director"
-												&& config.universityResearchDirectorDeletion != "DELETED" && config.universityResearchDirectorApproval == "READYFORAPPROVAL"))) {
+												&& config.submittedByPI == "NOTSUBMITTED" && config.deletedByPI == "NOTDELETED") || (currentPositionTitle == "University Research Director"
+												&& config.researchDirectorDeletion == "NOTDELETED" && config.researchDirectorApproval == "READYFORAPPROVAL"))) {
 									$("#btnDeleteProposal").show();
 								} else {
 									$("#btnDeleteProposal").hide();
@@ -1240,7 +1246,7 @@ $(function() {
 							|| (currentPositionTitle == "Business Manager" && config.businessManagerApproval == "READYFORAPPROVAL")
 							|| (currentPositionTitle == "IRB" && config.irbapproval == "READYFORAPPROVAL")
 							|| (currentPositionTitle == "Dean" && config.deanApproval == "READYFORAPPROVAL")
-							|| (currentPositionTitle == "Research Administrator" && config.universityResearchAdministratorApproval == "READYFORAPPROVAL") || (currentPositionTitle == "University Research Director" && config.universityResearchDirectorApproval == "READYFORAPPROVAL"))) {
+							|| (currentPositionTitle == "Research Administrator" && config.researchAdministratorApproval == "READYFORAPPROVAL") || (currentPositionTitle == "University Research Director" && config.researchDirectorApproval == "READYFORAPPROVAL"))) {
 				$("#btnApproveProposal").show();
 				$("#btnDisapproveProposal").show();
 			} else {
@@ -1249,18 +1255,18 @@ $(function() {
 			}
 
 			if (proposalStatus != ""
-					&& currentPositionTitle == "Research Administrator"
-					&& config.universityResearchAdministratorApproval == "READYFORAPPROVAL"
-					&& config.universityResearchAdministratorWithdraw != "NOTWITHDRAWN") {
+					&& config.researchAdministratorWithdraw == "NOTWITHDRAWN"
+					&& config.researchAdministratorApproval == "READYFORAPPROVAL"
+					&& currentPositionTitle == "Research Administrator") {
 				$("#btnWithdrawProposal").show();
 			} else {
 				$("#btnWithdrawProposal").hide();
 			}
 
 			if (proposalStatus != ""
-					&& currentPositionTitle == "University Research Director"
-					&& config.universityResearchAdministratorSubmission == "SUBMITTED"
-					&& config.universityResearchDirectorArchived != "NOTARCHIVED") {
+					&& config.researchDirectorArchived == "NOTARCHIVED"
+					&& config.researchAdministratorSubmission == "SUBMITTED"
+					&& currentPositionTitle == "University Research Director") {
 				$("#btnArchiveProposal").show();
 			} else {
 				$("#btnArchiveProposal").hide();
@@ -1286,17 +1292,18 @@ $(function() {
 				myProposal.config.proposalId = argus[0];
 
 				myProposal.config.submittedByPI = argus[7];
-				myProposal.config.deletedByPI = argus[8];
-				myProposal.config.chairApproval = argus[9];
-				myProposal.config.businessManagerApproval = argus[10];
-				myProposal.config.irbapproval = argus[11];
-				myProposal.config.deanApproval = argus[12];
-				myProposal.config.universityResearchAdministratorApproval = argus[13];
-				myProposal.config.universityResearchAdministratorWithdraw = argus[14];
-				myProposal.config.universityResearchDirectorApproval = argus[15];
-				myProposal.config.universityResearchDirectorDeletion = argus[16];
-				myProposal.config.universityResearchAdministratorSubmission = argus[17];
-				myProposal.config.universityResearchDirectorArchived = argus[18];
+				myProposal.config.readyForSubmitionByPI = argus[8];
+				myProposal.config.deletedByPI = argus[9];
+				myProposal.config.chairApproval = argus[10];
+				myProposal.config.businessManagerApproval = argus[11];
+				myProposal.config.irbapproval = argus[12];
+				myProposal.config.deanApproval = argus[13];
+				myProposal.config.researchAdministratorApproval = argus[14];
+				myProposal.config.researchAdministratorWithdraw = argus[15];
+				myProposal.config.researchDirectorApproval = argus[16];
+				myProposal.config.researchDirectorDeletion = argus[17];
+				myProposal.config.researchAdministratorSubmission = argus[18];
+				myProposal.config.researchDirectorArchived = argus[19];
 
 				$("#txtNameOfGrantingAgency").val(argus[2]);
 
@@ -2975,7 +2982,7 @@ $(function() {
 					this.config.data = JSON2.stringify({
 						gpmsCommonObj : gpmsCommonObj()
 					});
-					this.config.ajaxCallMode = 18;
+					this.config.ajaxCallMode = 6;
 					this.ajaxCall(this.config);
 				}
 			}
@@ -3549,7 +3556,8 @@ $(function() {
 				$("#btnUpdateProposal").hide();
 				$("#btnDeleteProposal").hide();
 
-				$("#btnSubmitProposal").show();
+				// For old Proposal only visible
+				$("#btnSubmitProposal").hide();
 
 				// For Admin user only
 				$("#btnApproveProposal").hide();
@@ -4032,8 +4040,8 @@ $(function() {
 					"click",
 					function() {
 						myProposal.config.ajaxCallMode = 12;
-						myProposal.CheckUserPermissionWithPositionType(
-								"Create", "Whole Proposal", myProposal.config);
+						myProposal.CheckUserPermissionWithPositionType("Add",
+								"Whole Proposal", myProposal.config);
 
 					});
 
@@ -4159,11 +4167,11 @@ $(function() {
 						// $("#accordion").accordion("option", "active", 0);
 					});
 
-			// Save As Draft
+			// Create
 			$('#btnSaveProposal').click(function(e) {
 				if (validator.form()) {
 					var $buttonType = $.trim($(this).text());
-					$(this).disableWith('Saving As Draft...');
+					$(this).disableWith('Creating...');
 
 					myProposal.SaveProposal($buttonType, "", "0", true);
 

@@ -1503,7 +1503,7 @@
 												<p>
 													<button title="Save Proposal As Draft" type="button"
 														id="btnSaveProposal" class="sfBtn">
-														<span class="icon-save">Save As Draft</span>
+														<span class="icon-save">Create</span>
 													</button>
 												</p>
 												<p>

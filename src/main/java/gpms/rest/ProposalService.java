@@ -33,6 +33,7 @@ import gpms.model.ProjectType;
 import gpms.model.Proposal;
 import gpms.model.ProposalInfo;
 import gpms.model.ProposalStatusInfo;
+import gpms.model.ReadyType;
 import gpms.model.Recovery;
 import gpms.model.SignatureInfo;
 import gpms.model.SponsorAndBudgetInfo;
@@ -992,14 +993,12 @@ public class ProposalService {
 									case "Withdraw":
 										if (!proposalID.equals("0")) {
 											if (existingProposal
-													.getResearchAdministratorApproval()
-													.equals(ApprovalType.READYFORAPPROVAL)
+													.getResearchAdministratorWithdraw() == WithdrawType.NOTWITHDRAWN
+													&& existingProposal
+															.getResearchAdministratorApproval() == ApprovalType.READYFORAPPROVAL
 													&& proposalUserTitle
 															.textValue()
-															.equals("Research Administrator")
-													&& !existingProposal
-															.getResearchAdministratorWithdraw()
-															.equals(WithdrawType.WITHDRAWN)) {
+															.equals("Research Administrator")) {
 												existingProposal
 														.setResearchAdministratorWithdraw(WithdrawType.WITHDRAWN);
 
@@ -1019,14 +1018,12 @@ public class ProposalService {
 									case "Archive":
 										if (!proposalID.equals("0")) {
 											if (existingProposal
-													.getResearchAdministratorSubmission()
-													.equals(SubmitType.SUBMITTED)
+													.getResearchDirectorArchived() == ArchiveType.NOTARCHIVED
+													&& existingProposal
+															.getResearchAdministratorSubmission() == SubmitType.SUBMITTED
 													&& proposalUserTitle
 															.textValue()
-															.equals("University Research Director")
-													&& !existingProposal
-															.getResearchDirectorArchived()
-															.equals(ArchiveType.ARCHIVED)) {
+															.equals("University Research Director")) {
 												existingProposal
 														.setResearchDirectorArchived(ArchiveType.ARCHIVED);
 
@@ -1187,7 +1184,7 @@ public class ProposalService {
 
 						if (buttonType != null) {
 							switch (buttonType.textValue()) {
-							case "Save As Draft":
+							case "Create":
 								// This is Hack
 								break;
 
@@ -1197,11 +1194,11 @@ public class ProposalService {
 								// "Research Administrator"
 								// ];
 								if (!proposalID.equals("0")) {
-									if (!existingProposal.getDeletedByPI()
-											.equals(DeleteType.NOTDELETED)
-											&& (!existingProposal
-													.getSubmittedByPI()
-													.equals(SubmitType.SUBMITTED))
+									if (existingProposal.getSubmittedByPI() == SubmitType.NOTSUBMITTED
+											&& existingProposal
+													.getReadyForSubmissionByPI() == ReadyType.READYFORSSUBMIT
+											&& existingProposal
+													.getDeletedByPI() == DeleteType.NOTDELETED
 											&& currentProposalRoles
 													.contains("PI")
 											&& !proposalUserTitle
@@ -1222,12 +1219,10 @@ public class ProposalService {
 												.getProposalStatus()
 												.add(Status.WAITINGFORCHAIRAPPROVAL);
 
-									} else if (!existingProposal
-											.getResearchAdministratorSubmission()
-											.equals(SubmitType.SUBMITTED)
+									} else if (existingProposal
+											.getResearchAdministratorSubmission() == SubmitType.NOTSUBMITTED
 											&& existingProposal
-													.getResearchDirectorApproval()
-													.equals(ApprovalType.APPROVED)
+													.getResearchDirectorApproval() == ApprovalType.APPROVED
 											&& !currentProposalRoles
 													.contains("PI")
 											&& proposalUserTitle
@@ -1247,23 +1242,29 @@ public class ProposalService {
 										// This user is both PI and Research
 										// Administrator
 									}
-								} else {
-									newProposal.setDateSubmitted(new Date());
-									newProposal
-											.setSubmittedByPI(SubmitType.SUBMITTED);
-									newProposal
-											.setChairApproval(ApprovalType.READYFORAPPROVAL);
-									// Proposal Status
-									newProposal.getProposalStatus().clear();
-									newProposal.getProposalStatus().add(
-											Status.WAITINGFORCHAIRAPPROVAL);
 								}
 
 								break;
 
 							case "Update":
-								// This is also Hack
-
+								if (!proposalID.equals("0")) {
+									if ((currentProposalRoles.contains("PI")
+											|| currentProposalRoles
+													.contains("CO-PI") || currentProposalRoles
+												.contains("Senior"))
+											&& existingProposal
+													.getSubmittedByPI() == SubmitType.NOTSUBMITTED
+											&& existingProposal
+													.getReadyForSubmissionByPI() == ReadyType.NOTREADYFORSUBMIT) {
+										// TODO : check all pi/copi/seniors
+										// signed the proposal
+										if (existingProposal
+												.checkSignedByInvestigators()) {
+											existingProposal
+													.setReadyForSubmissionByPI(ReadyType.READYFORSSUBMIT);
+										}
+									}
+								}
 								break;
 
 							case "Approve":
@@ -1273,9 +1274,7 @@ public class ProposalService {
 									// "Business Manager",
 									// "IRB", "Dean", "Research Administrator",
 									// "University Research Director" ];
-									if (existingProposal
-											.getChairApproval()
-											.equals(ApprovalType.READYFORAPPROVAL)
+									if (existingProposal.getChairApproval() == ApprovalType.READYFORAPPROVAL
 											&& proposalUserTitle.textValue()
 													.equals("Department Chair")) {
 										// Ready for Review by Business Manager
@@ -1308,8 +1307,7 @@ public class ProposalService {
 										}
 
 									} else if (existingProposal
-											.getBusinessManagerApproval()
-											.equals(ApprovalType.READYFORAPPROVAL)
+											.getBusinessManagerApproval() == ApprovalType.READYFORAPPROVAL
 											&& proposalUserTitle.textValue()
 													.equals("Business Manager")) {
 										// Reviewed by Business Manager
@@ -1327,8 +1325,7 @@ public class ProposalService {
 												.add(Status.WAITINGFORDEANAPPROVAL);
 
 									} else if (existingProposal
-											.getIrbApproval()
-											.equals(ApprovalType.READYFORAPPROVAL)
+											.getIrbApproval() == ApprovalType.READYFORAPPROVAL
 											&& proposalUserTitle.textValue()
 													.equals("IRB")) {
 										// Approved by IRB
@@ -1342,8 +1339,7 @@ public class ProposalService {
 										existingProposal.getProposalStatus()
 												.add(Status.REVIEWEDBYIRB);
 
-										if (existingProposal.getDeanApproval()
-												.equals(ApprovalType.APPROVED)) {
+										if (existingProposal.getDeanApproval() == ApprovalType.APPROVED) {
 											existingProposal
 													.setResearchAdministratorApproval(ApprovalType.READYFORAPPROVAL);
 
@@ -1357,8 +1353,7 @@ public class ProposalService {
 										}
 
 									} else if (existingProposal
-											.getDeanApproval()
-											.equals(ApprovalType.READYFORAPPROVAL)
+											.getDeanApproval() == ApprovalType.READYFORAPPROVAL
 											&& proposalUserTitle.textValue()
 													.equals("Dean")) {
 										// Approved by Dean
@@ -1386,8 +1381,7 @@ public class ProposalService {
 													.add(Status.WAITINGFORRESEARCHADMINAPPROVAL);
 										} else {
 											if (existingProposal
-													.getIrbApproval()
-													.equals(ApprovalType.APPROVED)) {
+													.getIrbApproval() == ApprovalType.APPROVED) {
 												existingProposal
 														.setResearchAdministratorApproval(ApprovalType.READYFORAPPROVAL);
 
@@ -1401,8 +1395,7 @@ public class ProposalService {
 											}
 										}
 									} else if (existingProposal
-											.getResearchAdministratorApproval()
-											.equals(ApprovalType.READYFORAPPROVAL)
+											.getResearchAdministratorApproval() == ApprovalType.READYFORAPPROVAL
 											&& proposalUserTitle
 													.textValue()
 													.equals("Research Administrator")) {
@@ -1420,8 +1413,7 @@ public class ProposalService {
 												.add(Status.WAITINGFORRESEARCHDIRECTORAPPROVAL);
 
 									} else if (existingProposal
-											.getResearchDirectorApproval()
-											.equals(ApprovalType.READYFORAPPROVAL)
+											.getResearchDirectorApproval() == ApprovalType.READYFORAPPROVAL
 											&& proposalUserTitle
 													.textValue()
 													.equals("University Research Director")) {
@@ -1446,9 +1438,7 @@ public class ProposalService {
 							case "Disapprove":
 								if (!proposalID.equals("0")) {
 
-									if (existingProposal
-											.getChairApproval()
-											.equals(ApprovalType.READYFORAPPROVAL)
+									if (existingProposal.getChairApproval() == ApprovalType.READYFORAPPROVAL
 											&& proposalUserTitle.textValue()
 													.equals("Department Chair")) {
 										// Returned by Chair
@@ -1465,8 +1455,7 @@ public class ProposalService {
 												.add(Status.RETURNEDBYCHAIR);
 
 									} else if (existingProposal
-											.getBusinessManagerApproval()
-											.equals(ApprovalType.READYFORAPPROVAL)
+											.getBusinessManagerApproval() == ApprovalType.READYFORAPPROVAL
 											&& proposalUserTitle.textValue()
 													.equals("Business Manager")) {
 										// Disapproved by Business Manager
@@ -1486,8 +1475,7 @@ public class ProposalService {
 												.add(Status.DISAPPROVEDBYBUSINESSMANAGER);
 
 									} else if (existingProposal
-											.getIrbApproval()
-											.equals(ApprovalType.READYFORAPPROVAL)
+											.getIrbApproval() == ApprovalType.READYFORAPPROVAL
 											&& proposalUserTitle.textValue()
 													.equals("IRB")) {
 										// Disapproved by IRB
@@ -1504,8 +1492,7 @@ public class ProposalService {
 												.add(Status.DISAPPROVEDBYIRB);
 
 									} else if (existingProposal
-											.getDeanApproval()
-											.equals(ApprovalType.READYFORAPPROVAL)
+											.getDeanApproval() == ApprovalType.READYFORAPPROVAL
 											&& proposalUserTitle.textValue()
 													.equals("Dean")) {
 										// Returned by Dean
@@ -1522,8 +1509,7 @@ public class ProposalService {
 												.add(Status.RETURNEDBYDEAN);
 
 									} else if (existingProposal
-											.getResearchAdministratorApproval()
-											.equals(ApprovalType.READYFORAPPROVAL)
+											.getResearchAdministratorApproval() == ApprovalType.READYFORAPPROVAL
 											&& proposalUserTitle
 													.textValue()
 													.equals("Research Administrator")) {
@@ -1542,8 +1528,7 @@ public class ProposalService {
 												.add(Status.DISAPPROVEDBYRESEARCHADMIN);
 
 									} else if (existingProposal
-											.getResearchDirectorApproval()
-											.equals(ApprovalType.READYFORAPPROVAL)
+											.getResearchDirectorApproval() == ApprovalType.READYFORAPPROVAL
 											&& proposalUserTitle
 													.textValue()
 													.equals("University Research Director")) {

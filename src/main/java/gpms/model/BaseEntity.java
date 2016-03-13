@@ -29,7 +29,7 @@ public abstract class BaseEntity {
 	private List<AuditLog> auditLog = new ArrayList<AuditLog>();
 
 	public BaseEntity() {
-		
+
 	}
 
 	public ObjectId getId() {
@@ -52,8 +52,14 @@ public abstract class BaseEntity {
 		return auditLog;
 	}
 
-	public void setAuditLog(ArrayList<AuditLog> auditLog) {
+	public void setAuditLog(List<AuditLog> auditLog) {
 		this.auditLog = auditLog;
+	}
+
+	@Override
+	public String toString() {
+		return "BaseEntity [id=" + id + ", version=" + version + ", auditLog="
+				+ auditLog + "]";
 	}
 
 }

@@ -43,6 +43,9 @@ public class Proposal extends BaseEntity implements Serializable {
 	@Property("submitted by PI")
 	private SubmitType submittedByPI = SubmitType.NOTSUBMITTED;
 
+	@Property("ready for submission by PI")
+	private ReadyType readyForSubmissionByPI = ReadyType.NOTREADYFORSUBMIT;
+
 	@Property("deleted by PI")
 	private DeleteType deletedByPI = DeleteType.NOTDELETED;
 
@@ -159,6 +162,14 @@ public class Proposal extends BaseEntity implements Serializable {
 
 	public void setSubmittedByPI(SubmitType submittedByPI) {
 		this.submittedByPI = submittedByPI;
+	}
+
+	public ReadyType getReadyForSubmissionByPI() {
+		return readyForSubmissionByPI;
+	}
+
+	public void setReadyForSubmissionByPI(ReadyType readyForSubmissionByPI) {
+		this.readyForSubmissionByPI = readyForSubmissionByPI;
 	}
 
 	public DeleteType getDeletedByPI() {
@@ -364,7 +375,8 @@ public class Proposal extends BaseEntity implements Serializable {
 		return "Proposal [proposalNo=" + proposalNo + ", dateCreated="
 				+ dateCreated + ", dateSubmitted=" + dateSubmitted
 				+ ", proposalStatus=" + proposalStatus + ", submittedByPI="
-				+ submittedByPI + ", deletedByPI=" + deletedByPI
+				+ submittedByPI + ", readyForSubmissionByPI="
+				+ readyForSubmissionByPI + ", deletedByPI=" + deletedByPI
 				+ ", chairApproval=" + chairApproval
 				+ ", businessManagerApproval=" + businessManagerApproval
 				+ ", irbApproval=" + irbApproval + ", deanApproval="
@@ -438,6 +450,10 @@ public class Proposal extends BaseEntity implements Serializable {
 		result = prime * result + proposalNo;
 		result = prime * result
 				+ ((proposalStatus == null) ? 0 : proposalStatus.hashCode());
+		result = prime
+				* result
+				+ ((readyForSubmissionByPI == null) ? 0
+						: readyForSubmissionByPI.hashCode());
 		result = prime
 				* result
 				+ ((researchAdministratorApproval == null) ? 0
@@ -563,6 +579,8 @@ public class Proposal extends BaseEntity implements Serializable {
 				return false;
 		} else if (!proposalStatus.equals(other.proposalStatus))
 			return false;
+		if (readyForSubmissionByPI != other.readyForSubmissionByPI)
+			return false;
 		if (researchAdministratorApproval != other.researchAdministratorApproval)
 			return false;
 		if (researchAdministratorSubmission != other.researchAdministratorSubmission)
@@ -593,6 +611,48 @@ public class Proposal extends BaseEntity implements Serializable {
 		} else if (!universityCommitments.equals(other.universityCommitments))
 			return false;
 		return true;
+	}
+
+	public boolean checkSignedByInvestigators() {
+		// TODO to check all Investigators i.e. PI/ CO-PI/ Senior
+		boolean signedByAllInvestigators = true;
+		return signedByAllInvestigators;
+	}
+
+	public boolean checkSignedByAllChairs() {
+		// TODO to check all Department Chairs
+		boolean signedByAllChairs = false;
+		return signedByAllChairs;
+	}
+
+	public boolean checkSignedByAllBusinessManagers() {
+		// TODO to check all Business Managers
+		boolean signedByAllBusinessManagers = false;
+		return signedByAllBusinessManagers;
+	}
+
+	public boolean checkSignedByAllIRBs() {
+		// TODO to check all IRBs
+		boolean signedByAllIRBs = false;
+		return signedByAllIRBs;
+	}
+
+	public boolean checkSignedByAllResearchAdministrators() {
+		// TODO to check all Research Administrators
+		boolean signedByAllResearchAdministrators = false;
+		return signedByAllResearchAdministrators;
+	}
+
+	public boolean checkSignedByAllResearchDirectors() {
+		// TODO to check all Research Directors
+		boolean signedByAllResearchDirectors = false;
+		return signedByAllResearchDirectors;
+	}
+
+	public boolean checkIRBReviewRequired() {
+		// TODO to check IRB Review Required based on the variables
+		boolean IRBReviewRequired = true;
+		return IRBReviewRequired;
 	}
 
 	// public Status getProposalStatus() {
@@ -714,11 +774,5 @@ public class Proposal extends BaseEntity implements Serializable {
 	// }
 	// return proposalStatus;
 	// }
-
-	public boolean checkIRBReviewRequired() {
-		// TODO to check IRB Review Required based on the variables
-		boolean IRBReviewRequired = true;
-		return IRBReviewRequired;
-	}
 
 }

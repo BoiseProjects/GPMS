@@ -9,7 +9,8 @@ public enum Status {
 	// granted the permission,Approved by Department Chair, Approved by Business
 	// manager
 
-	NOTSUBMITTEDBYPI("Not Submitted by PI"), DELETEDBYPI("Deleted by PI"), WAITINGFORCHAIRAPPROVAL(
+	NOTSUBMITTEDBYPI("Not Submitted by PI"), READYFORSUBMISSIONBYPI(
+			"Ready for Submission by PI"), DELETEDBYPI("Deleted by PI"), WAITINGFORCHAIRAPPROVAL(
 			"Waiting for Chair's Approval"), RETURNEDBYCHAIR(
 			"Returned by Chair"), READYFORREVIEWBYBUSINESSMANAGER(
 			"Ready for Review by Business Manager"), WAITINGFORDEANAPPROVAL(

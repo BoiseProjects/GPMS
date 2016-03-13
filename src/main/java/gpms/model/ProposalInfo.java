@@ -15,9 +15,9 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 		"dateSubmitted", "dueDate", "projectPeriodFrom", "projectPeriodTo",
 		"lastAudited", "lastAuditedBy", "lastAuditAction", "piUser",
 		"copiUsers", "seniorUsers", "allUsers", "currentuserProposalRoles",
-		"deleted", "proposalStatus", "submittedByPI", "deletedByPI",
-		"chairApproval", "businessManagerApproval", "irbapproval",
-		"deanApproval", "researchAdministratorApproval",
+		"deleted", "proposalStatus", "submittedByPI", "readyForSubmissionByPI",
+		"deletedByPI", "chairApproval", "businessManagerApproval",
+		"irbapproval", "deanApproval", "researchAdministratorApproval",
 		"researchAdministratorWithdraw", "researchDirectorApproval",
 		"researchDirectorDeletion", "researchAdministratorSubmission",
 		"researchDirectorArchived" })
@@ -140,6 +140,9 @@ public class ProposalInfo {
 	// Proposal Status variables
 	@JsonProperty("submittedByPI")
 	private SubmitType submittedByPI = SubmitType.NOTSUBMITTED;
+
+	@JsonProperty("readyForSubmissionByPI")
+	private ReadyType readyForSubmissionByPI = ReadyType.NOTREADYFORSUBMIT;
 
 	@JsonProperty("deletedByPI")
 	private DeleteType deletedByPI = DeleteType.NOTDELETED;
@@ -401,6 +404,14 @@ public class ProposalInfo {
 
 	public void setSubmittedByPI(SubmitType submittedByPI) {
 		this.submittedByPI = submittedByPI;
+	}
+
+	public ReadyType getReadyForSubmissionByPI() {
+		return readyForSubmissionByPI;
+	}
+
+	public void setReadyForSubmissionByPI(ReadyType readyForSubmissionByPI) {
+		this.readyForSubmissionByPI = readyForSubmissionByPI;
 	}
 
 	public DeleteType getDeletedByPI() {

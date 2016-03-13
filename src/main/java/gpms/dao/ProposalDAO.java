@@ -109,8 +109,8 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 
 		boolean isDeleted = false;
 
-		if ((!proposal.getDeletedByPI().equals(DeleteType.DELETED) && !proposal
-				.getSubmittedByPI().equals(SubmitType.SUBMITTED))
+		if (proposal.getSubmittedByPI() == SubmitType.NOTSUBMITTED
+				&& proposal.getDeletedByPI() == DeleteType.NOTDELETED
 				&& proposalRoles.equals("PI")
 				&& !proposalUserTitle.equals("University Research Director")) {
 
@@ -125,10 +125,8 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 			proposal.getAuditLog().add(entry);
 			ds.save(proposal);
 			isDeleted = true;
-		} else if (!proposal.getResearchDirectorDeletion().equals(
-				DeleteType.DELETED)
-				&& proposal.getResearchDirectorApproval().equals(
-						ApprovalType.READYFORAPPROVAL)
+		} else if (proposal.getResearchDirectorDeletion() == DeleteType.NOTDELETED
+				&& proposal.getResearchDirectorApproval() == ApprovalType.READYFORAPPROVAL
 				&& !proposalRoles.equals("PI")
 				&& proposalUserTitle.equals("University Research Director")) {
 
@@ -561,6 +559,8 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 
 			// PI
 			proposal.setSubmittedByPI(userProposal.getSubmittedByPI());
+			proposal.setReadyForSubmissionByPI(userProposal
+					.getReadyForSubmissionByPI());
 			proposal.setDeletedByPI(userProposal.getDeletedByPI());
 
 			// Chair
@@ -952,6 +952,8 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 
 			// PI
 			proposal.setSubmittedByPI(userProposal.getSubmittedByPI());
+			proposal.setReadyForSubmissionByPI(userProposal
+					.getReadyForSubmissionByPI());
 			proposal.setDeletedByPI(userProposal.getDeletedByPI());
 
 			// Chair
@@ -1354,6 +1356,8 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 
 			// PI
 			proposal.setSubmittedByPI(userProposal.getSubmittedByPI());
+			proposal.setReadyForSubmissionByPI(userProposal
+					.getReadyForSubmissionByPI());
 			proposal.setDeletedByPI(userProposal.getDeletedByPI());
 
 			// Chair
