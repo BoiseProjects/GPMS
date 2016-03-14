@@ -2690,17 +2690,109 @@ public class ProposalService {
 									&& !proposalUserTitle
 											.textValue()
 											.equals("University Research Administrator")) {
-								existingProposal.setDateSubmitted(new Date());
 
-								existingProposal
-										.setSubmittedByPI(SubmitType.SUBMITTED);
-								existingProposal
-										.setChairApproval(ApprovalType.READYFORAPPROVAL);
+								boolean foundCoPI = false;
+								boolean foundSenior = false;
+								// Check if all PI/ Co-PI/ Senior/
+								boolean signedByPI = false;
+								boolean signedByAllCoPIs = false;
+								boolean signedByAllSeniors = false;
 
-								// Proposal Status
-								existingProposal.getProposalStatus().clear();
-								existingProposal.getProposalStatus().add(
-										Status.WAITINGFORCHAIRAPPROVAL);
+								for (SignatureInfo sign : existingProposal
+										.getSignatureInfo()) {
+									if (existingProposal.getInvestigatorInfo()
+											.getPi().getUserProfileId()
+											.equals(sign.getUserProfileId())
+											&& sign.getPositionTitle().equals(
+													"PI")) {
+										signedByPI = true;
+										break;
+									}
+								}
+
+								int coPICount = existingProposal
+										.getInvestigatorInfo().getCo_pi()
+										.size();
+								if (coPICount > 0) {
+									for (InvestigatorRefAndPosition copi : existingProposal
+											.getInvestigatorInfo().getCo_pi()) {
+										for (SignatureInfo sign : existingProposal
+												.getSignatureInfo()) {
+											if (copi.getUserProfileId().equals(
+													sign.getUserProfileId())
+													&& sign.getPositionTitle()
+															.equals("Co-PI")) {
+												foundCoPI = true;
+												break;
+											}
+										}
+										if (!foundCoPI) {
+											signedByAllCoPIs = false;
+											break;
+										} else {
+											signedByAllCoPIs = true;
+										}
+										foundCoPI = false;
+									}
+								} else {
+									signedByAllCoPIs = true;
+								}
+
+								int seniorCount = existingProposal
+										.getInvestigatorInfo()
+										.getSeniorPersonnel().size();
+								if (seniorCount > 0) {
+									for (InvestigatorRefAndPosition senior : existingProposal
+											.getInvestigatorInfo()
+											.getSeniorPersonnel()) {
+										for (SignatureInfo sign : existingProposal
+												.getSignatureInfo()) {
+											if (senior
+													.getUserProfileId()
+													.equals(sign
+															.getUserProfileId())
+													&& sign.getPositionTitle()
+															.equals("Senior")) {
+												foundSenior = true;
+												break;
+											}
+										}
+										if (!foundSenior) {
+											signedByAllSeniors = false;
+											break;
+										} else {
+											signedByAllSeniors = true;
+										}
+										foundSenior = false;
+									}
+								} else {
+									signedByAllSeniors = true;
+								}
+
+								if (signedByPI && signedByAllCoPIs
+										&& signedByAllSeniors) {
+									existingProposal
+											.setDateSubmitted(new Date());
+
+									existingProposal
+											.setSubmittedByPI(SubmitType.SUBMITTED);
+									existingProposal
+											.setChairApproval(ApprovalType.READYFORAPPROVAL);
+
+									// Proposal Status
+									existingProposal.getProposalStatus()
+											.clear();
+									existingProposal.getProposalStatus().add(
+											Status.WAITINGFORCHAIRAPPROVAL);
+								} else {
+									existingProposal
+											.setReadyForSubmissionByPI(ReadyType.NOTREADYFORSUBMIT);
+
+									existingProposal.getProposalStatus()
+											.clear();
+									existingProposal.getProposalStatus().add(
+											Status.NOTSUBMITTEDBYPI);
+								}
 
 							} else if (existingProposal
 									.getResearchAdministratorSubmission() == SubmitType.NOTSUBMITTED
@@ -2823,6 +2915,8 @@ public class ProposalService {
 									existingProposal
 											.setReadyForSubmissionByPI(ReadyType.READYFORSUBMIT);
 
+									existingProposal.getProposalStatus()
+											.clear();
 									existingProposal.getProposalStatus().add(
 											Status.READYFORSUBMITBYPI);
 								} else {
@@ -3106,7 +3200,7 @@ public class ProposalService {
 											signedByAllResearchAdmins = false;
 											break;
 										} else {
-											foundResearchAdmin = true;
+											signedByAllResearchAdmins = true;
 										}
 										foundResearchAdmin = false;
 									}
