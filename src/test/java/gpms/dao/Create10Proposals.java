@@ -15,6 +15,7 @@ import gpms.model.UserAccount;
 import gpms.model.UserProfile;
 
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -107,9 +108,6 @@ public class Create10Proposals {
 			// --------------------------------------------------------
 			// newProposalDAO.save(newProposal);
 
-			SignatureInfo newSignInfo = new SignatureInfo();
-			newProposal.getSignatureInfo().add(newSignInfo);
-
 			InvestigatorInfo newInfo = new InvestigatorInfo();
 
 			InvestigatorRefAndPosition newInvPos = new InvestigatorRefAndPosition();
@@ -142,6 +140,153 @@ public class Create10Proposals {
 			}
 
 			newProposal.setInvestigatorInfo(newInfo);
+
+			// SignatureInfo newSignInfo = new SignatureInfo();
+			// newProposal.getSignatureInfo().add(newSignInfo);
+
+			// Begin Signature Info Section
+
+			// TODO : first add all investigators signatures then only others
+			// can sign it
+
+			// I have an idea here...
+			// On Odd number proposals I'm going to try and fill out the
+			// Signature fields with
+			// appropriate signees, so the right members of each department sign
+			// it, and try
+			// and fill the fields completely so hopefully my signature check
+			// tests pass if
+			// all systems are go with this
+			//
+			SignatureInfo newSignInfo = new SignatureInfo();
+
+			List<String> deptsList = new ArrayList<String>();
+
+			List<UserProfile> deanList = new ArrayList<UserProfile>();
+			List<UserProfile> deptChairList = new ArrayList<UserProfile>();
+			List<UserProfile> IRBList = new ArrayList<UserProfile>();
+
+			deptsList.add(newInfo.getPi().getDepartment());
+			for (InvestigatorRefAndPosition copi : newInfo.getCo_pi()) {
+				if (!deptsList.contains(copi.getDepartment())) {
+					deptsList.add(copi.getDepartment());
+				}
+			}
+
+			for (InvestigatorRefAndPosition seniorp : newInfo
+					.getSeniorPersonnel()) {
+				if (!deptsList.contains(seniorp.getDepartment())) {
+					deptsList.add(seniorp.getDepartment());
+				}
+			}
+
+			for (String dept : deptsList) {
+				deanList = newUserProfileDAO.getSupervisoryPersonnels(dept,
+						"Dean");
+				deptChairList = newUserProfileDAO.getSupervisoryPersonnels(
+						dept, "Department Chair");
+				IRBList = newUserProfileDAO.getSupervisoryPersonnels(dept,
+						"IRB");
+			}
+
+			if (!(propNumb % 2 == 0)) {
+				if (deanList.size() > 0) {
+					System.out.println("deanList not empty");
+					for (UserProfile dean : deanList) {
+						newSignInfo = new SignatureInfo();
+						newSignInfo.setFullName(dean.getFullName());
+						newSignInfo.setPositionTitle("Dean");
+						newSignInfo.setUserProfileId(dean.getId().toString());
+						newSignInfo.setSignature(dean.getFullName());
+						newProposal.getSignatureInfo().add(newSignInfo);
+					}
+				} else {
+					System.out.println("No deans in database");
+				}
+				//
+				if (deptChairList.size() > 0) {
+					System.out.println("chair list not empty");
+					for (UserProfile dChair : deptChairList) {
+						newSignInfo = new SignatureInfo();
+						newSignInfo.setFullName(dChair.getFullName());
+						newSignInfo.setPositionTitle("Department Chair");
+						newSignInfo.setUserProfileId(dChair.getId().toString());
+						newSignInfo.setSignature(dChair.getFullName());
+						newProposal.getSignatureInfo().add(newSignInfo);
+					}
+				} else {
+					System.out.println("no chairs in database");
+				}
+				//
+				if (IRBList.size() > 0) {
+					for (UserProfile irb : IRBList) {
+						newSignInfo = new SignatureInfo();
+						newSignInfo.setFullName(irb.getFullName());
+						newSignInfo.setPositionTitle("IRB");
+						newSignInfo.setUserProfileId(irb.getId().toString());
+						newSignInfo.setSignature(irb.getFullName());
+						newProposal.getSignatureInfo().add(newSignInfo);
+					}
+				}
+			} // this was here,
+				//
+				// //On even number proposals, I'm going to purposefully screw
+				// this
+				// up, so that I can see
+				// //failed tests when I'm running a signature check
+				// //Meaning I want inadequate numbers of signatures, not
+				// exactly
+				// the wrong people signing
+			if ((propNumb % 2) == 0) {
+				Random rDean, rChair, rirb;
+				rDean = new Random();
+				rChair = new Random();
+				rirb = new Random();
+				//
+				//
+				if (deanList.size() > 0) {
+					int rando = rDean.nextInt(deanList.size());
+					for (int a = 0; a < rando; a++) {
+						newSignInfo = new SignatureInfo();
+						newSignInfo.setFullName(deanList.get(a).getFullName());
+						newSignInfo.setPositionTitle("Dean");
+						newSignInfo.setUserProfileId(deanList.get(a).getId()
+								.toString());
+						newSignInfo.setSignature(deanList.get(a).getFullName());
+						newProposal.getSignatureInfo().add(newSignInfo);
+					}
+				}
+				//
+				if (deptChairList.size() > 0) {
+					int rando = rChair.nextInt(deptChairList.size());
+					for (int b = 0; b < rando; b++) {
+						newSignInfo = new SignatureInfo();
+						newSignInfo.setFullName(deptChairList.get(b)
+								.getFullName());
+						newSignInfo.setPositionTitle("Department Chair");
+						newSignInfo.setUserProfileId(deptChairList.get(b)
+								.getId().toString());
+						newSignInfo.setSignature(deptChairList.get(b)
+								.getFullName());
+						newProposal.getSignatureInfo().add(newSignInfo);
+					}
+				}
+				//
+				if (IRBList.size() > 0) {
+					int rando = rirb.nextInt(IRBList.size());
+					for (int c = 0; c < rando; c++) {
+						newSignInfo = new SignatureInfo();
+						newSignInfo.setFullName(IRBList.get(c).getFullName());
+						newSignInfo.setPositionTitle("IRB");
+						newSignInfo.setUserProfileId(IRBList.get(c).getId()
+								.toString());
+						newSignInfo.setSignature(IRBList.get(c).getFullName());
+						newProposal.getSignatureInfo().add(newSignInfo);
+					}
+				}
+			}
+
+			// End Signature Info Section
 
 			SponsorAndBudgetInfo newSandBud = new SponsorAndBudgetInfo();
 
