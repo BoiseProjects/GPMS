@@ -1339,16 +1339,16 @@ $(function() {
 				$("#trSignDirector").show();
 
 				// OSP Section
-				$('#ui-id-25').show();
+				$('#ui-id-23').show();
 				if (GPMS.utils.GetUserPositionTitle() == "University Research Administrator"
 						|| GPMS.utils.GetUserPositionTitle() == "University Research Director") {
-					$('#ui-id-26').find('input, select, textarea').each(
+					$('#ui-id-24').find('input, select, textarea').each(
 							function() {
 								// $(this).addClass("ignore");
 								$(this).prop('disabled', false);
 							});
 				} else {
-					$('#ui-id-26').find('input, select, textarea').each(
+					$('#ui-id-24').find('input, select, textarea').each(
 							function() {
 								// $(this).addClass("ignore");
 								$(this).prop('disabled', true);
