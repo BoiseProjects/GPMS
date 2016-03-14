@@ -1039,7 +1039,8 @@ $(function() {
 											cssclass : '',
 											controlclass : '',
 											coltype : 'label',
-											align : 'left'
+											align : 'left',
+											hide : true
 										},
 										{
 											display : 'Ready for Submission by PI',
@@ -1047,7 +1048,8 @@ $(function() {
 											cssclass : '',
 											controlclass : '',
 											coltype : 'label',
-											align : 'left'
+											align : 'left',
+											hide : true
 										},
 										{
 											display : 'Deleted by PI',
@@ -1055,7 +1057,8 @@ $(function() {
 											cssclass : '',
 											controlclass : '',
 											coltype : 'label',
-											align : 'left'
+											align : 'left',
+											hide : true
 										},
 										{
 											display : 'Chair Approval',
@@ -1063,7 +1066,8 @@ $(function() {
 											cssclass : '',
 											controlclass : '',
 											coltype : 'label',
-											align : 'left'
+											align : 'left',
+											hide : true
 										},
 										{
 											display : 'Business Manager Approval',
@@ -1071,7 +1075,8 @@ $(function() {
 											cssclass : '',
 											controlclass : '',
 											coltype : 'label',
-											align : 'left'
+											align : 'left',
+											hide : true
 										},
 										{
 											display : 'IRB Approval',
@@ -1079,7 +1084,8 @@ $(function() {
 											cssclass : '',
 											controlclass : '',
 											coltype : 'label',
-											align : 'left'
+											align : 'left',
+											hide : true
 										},
 										{
 											display : 'Dean Approval',
@@ -1087,7 +1093,8 @@ $(function() {
 											cssclass : '',
 											controlclass : '',
 											coltype : 'label',
-											align : 'left'
+											align : 'left',
+											hide : true
 										},
 										{
 											display : 'Research Administrator Approval',
@@ -1095,7 +1102,8 @@ $(function() {
 											cssclass : '',
 											controlclass : '',
 											coltype : 'label',
-											align : 'left'
+											align : 'left',
+											hide : true
 										},
 										{
 											display : 'Withdrawn by Research Administrator',
@@ -1103,7 +1111,8 @@ $(function() {
 											cssclass : '',
 											controlclass : '',
 											coltype : 'label',
-											align : 'left'
+											align : 'left',
+											hide : true
 										},
 										{
 											display : 'Research Director Approval',
@@ -1111,7 +1120,8 @@ $(function() {
 											cssclass : '',
 											controlclass : '',
 											coltype : 'label',
-											align : 'left'
+											align : 'left',
+											hide : true
 										},
 										{
 											display : 'Deleted by Research Director',
@@ -1119,7 +1129,8 @@ $(function() {
 											cssclass : '',
 											controlclass : '',
 											coltype : 'label',
-											align : 'left'
+											align : 'left',
+											hide : true
 										},
 										{
 											display : 'Submitted by Research Administrator',
@@ -1127,7 +1138,8 @@ $(function() {
 											cssclass : 'cssClassHeadBoolean',
 											controlclass : '',
 											coltype : 'label',
-											align : 'left'
+											align : 'left',
+											hide : true
 										},
 										{
 											display : 'Archived by Research Director',
@@ -1135,7 +1147,17 @@ $(function() {
 											cssclass : '',
 											controlclass : '',
 											coltype : 'label',
-											align : 'left'
+											align : 'left',
+											hide : true
+										}, {
+											display : 'IRB Approval Required?',
+											name : 'irb_approval_required',
+											cssclass : 'cssClassHeadBoolean',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left',
+											type : 'boolean',
+											format : 'True/False'
 										}, {
 											display : 'Actions',
 											name : 'action',
@@ -1152,7 +1174,7 @@ $(function() {
 											_event : 'click',
 											trigger : '1',
 											callMethod : 'myProposal.EditProposal',
-											arguments : '2, 6, 11, 22, 23, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38'
+											arguments : '2, 6, 11, 22, 23, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39'
 										},
 										{
 											display : 'Delete',
@@ -1181,7 +1203,7 @@ $(function() {
 									0 : {
 										sorter : false
 									},
-									39 : {
+									40 : {
 										sorter : false
 									}
 								}
@@ -1208,7 +1230,7 @@ $(function() {
 			if (proposalStatus != ""
 					&& (($.inArray("PI", currentProposalRoles) !== -1
 							&& config.submittedByPI == "NOTSUBMITTED"
-							&& config.readyForSubmitionByPI == "READYFORSSUBMIT" && config.deletedByPI == "NOTDELETED") || (currentPositionTitle == "University Research Administrator"
+							&& config.readyForSubmitionByPI == "READYFORSUBMIT" && config.deletedByPI == "NOTDELETED") || (currentPositionTitle == "University Research Administrator"
 							&& config.researchAdministratorSubmission == "NOTSUBMITTED" && config.researchDirectorApproval == "APPROVED"))) {
 				$("#btnSubmitProposal").show();
 			} else {
@@ -1217,10 +1239,9 @@ $(function() {
 
 			if (proposalStatus != ""
 					&& ($.inArray("PI", currentProposalRoles) !== -1
-							|| $.inArray("CO-PI", currentProposalRoles) !== -1 || $
-							.inArray("Senior", currentProposalRoles) !== -1)
-					&& config.submittedByPI == "NOTSUBMITTED"
-					&& config.readyForSubmitionByPI == "NOTREADYFORSUBMIT") {
+							|| ($.inArray("CO-PI", currentProposalRoles) !== -1 && config.readyForSubmitionByPI == "NOTREADYFORSUBMIT") || ($
+							.inArray("Senior", currentProposalRoles) !== -1 && config.readyForSubmitionByPI == "NOTREADYFORSUBMIT"))
+					&& config.submittedByPI == "NOTSUBMITTED") {
 				$("#btnUpdateProposal").show();
 			} else {
 				$("#btnUpdateProposal").hide();
@@ -1308,6 +1329,11 @@ $(function() {
 
 				$("#trSignChair").show();
 				$("#trSignBusinessManager").show();
+				if (argus[20].toLowerCase() != "true") {
+					$("#trSignIRB").hide();
+				} else {
+					$("#trSignIRB").show();
+				}
 				$("#trSignDean").show();
 				$("#trSignAdministrator").show();
 				$("#trSignDirector").show();
@@ -1342,7 +1368,7 @@ $(function() {
 				myProposal.ButtonHideShow(myProposal.config);
 
 				// Certification/ Signatures Info
-				myProposal.BindAllSignatureForAProposal(argus[0]);
+				myProposal.BindAllSignatureForAProposal(argus[0], argus[20]);
 
 				// Delegation Info
 				break;
@@ -2334,6 +2360,7 @@ $(function() {
 			// For Signature Section
 			$("#trSignChair").hide();
 			$("#trSignBusinessManager").hide();
+			$("#trSignIRB").hide();
 			$("#trSignDean").hide();
 			$("#trSignAdministrator").hide();
 			$("#trSignDirector").hide();
@@ -2341,6 +2368,7 @@ $(function() {
 			$("#trSignPICOPI tbody").empty();
 			$("#trSignChair tbody").empty();
 			$("#trSignBusinessManager tbody").empty();
+			$("#trSignIRB tbody").empty();
 			$("#trSignDean tbody").empty();
 			$("#trSignAdministrator tbody").empty();
 			$("#trSignDirector tbody").empty();
@@ -2506,11 +2534,12 @@ $(function() {
 			return false;
 		},
 
-		BindAllSignatureForAProposal : function(proposalId) {
+		BindAllSignatureForAProposal : function(proposalId, irbSignRequired) {
 			myProposal.config.url = myProposal.config.baseURL
 					+ "GetAllSignatureForAProposal";
 			myProposal.config.data = JSON2.stringify({
-				proposalId : proposalId
+				proposalId : proposalId,
+				irbApprovalRequired : irbSignRequired
 			});
 			myProposal.config.ajaxCallMode = 8;
 			myProposal.ajaxCall(myProposal.config);
@@ -2658,7 +2687,7 @@ $(function() {
 					signatureInfo = '';
 
 					$(
-							'#trSignPICOPI > tbody  > tr, #trSignChair > tbody  > tr, #trSignDean > tbody  > tr, #trSignBusinessManager > tbody  > tr, #trSignAdministrator > tbody  > tr, #trSignDirector > tbody  > tr')
+							'#trSignPICOPI > tbody  > tr, #trSignChair > tbody  > tr, #trSignDean > tbody  > tr, #trSignBusinessManager > tbody  > tr, #trSignIRB > tbody  > tr, #trSignAdministrator > tbody  > tr, #trSignDirector > tbody  > tr')
 							.each(function() {
 								myProposal.GetUserSignature($(this));
 							});
@@ -3449,12 +3478,13 @@ $(function() {
 									$(cloneRow).appendTo(
 											"#trSignBusinessManager tbody");
 									break;
-
+								case "IRB":
+									$(cloneRow).appendTo("#trSignIRB tbody");
+									break;
 								case "University Research Administrator":
 									$(cloneRow).appendTo(
 											"#trSignAdministrator tbody");
 									break;
-
 								case "University Research Director":
 									$(cloneRow).appendTo(
 											"#trSignDirector tbody");

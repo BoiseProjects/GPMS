@@ -20,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 		"irbapproval", "deanApproval", "researchAdministratorApproval",
 		"researchAdministratorWithdraw", "researchDirectorApproval",
 		"researchDirectorDeletion", "researchAdministratorSubmission",
-		"researchDirectorArchived" })
+		"researchDirectorArchived", "irbApprovalRequired" })
 @Row(colsOrder = { "Proposal No", "Project Title", "Project Type",
 		"Type Of Request", "Project Location", "Granting Agencies",
 		"Direct Costs", "F&A Costs", "Total Costs", "F&A Rate", "Date Created",
@@ -176,6 +176,10 @@ public class ProposalInfo {
 
 	@JsonProperty("researchDirectorArchived")
 	private ArchiveType researchDirectorArchived = ArchiveType.NOTARCHIVED;
+
+	@JsonProperty("irbApprovalRequired")
+	@Column(name = "IRB Approval Required?")
+	private boolean irbApprovalRequired = false;
 
 	public ProposalInfo() {
 
@@ -504,6 +508,14 @@ public class ProposalInfo {
 
 	public void setResearchDirectorArchived(ArchiveType researchDirectorArchived) {
 		this.researchDirectorArchived = researchDirectorArchived;
+	}
+
+	public boolean isIrbApprovalRequired() {
+		return irbApprovalRequired;
+	}
+
+	public void setIrbApprovalRequired(boolean irbApprovalRequired) {
+		this.irbApprovalRequired = irbApprovalRequired;
 	}
 
 }

@@ -2,7 +2,7 @@ package gpms.model;
 
 public enum ReadyType {
 
-	READYFORSSUBMIT("Ready for Submit"), NOTREADYFORSUBMIT(
+	READYFORSUBMIT("Ready for Submit"), NOTREADYFORSUBMIT(
 			"Not Ready for Submit");
 
 	private final String readyType;

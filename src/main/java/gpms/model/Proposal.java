@@ -100,6 +100,9 @@ public class Proposal extends BaseEntity implements Serializable {
 	@Embedded("compliance info")
 	private ComplianceInfo complianceInfo = new ComplianceInfo();
 
+	@Property("irb approval required")
+	private boolean irbApprovalRequired = false;
+
 	@Embedded("additional info")
 	private AdditionalInfo additionalInfo = new AdditionalInfo();
 
@@ -322,6 +325,14 @@ public class Proposal extends BaseEntity implements Serializable {
 		this.complianceInfo = complianceInfo;
 	}
 
+	public boolean isIrbApprovalRequired() {
+		return irbApprovalRequired;
+	}
+
+	public void setIrbApprovalRequired(boolean irbApprovalRequired) {
+		this.irbApprovalRequired = irbApprovalRequired;
+	}
+
 	public AdditionalInfo getAdditionalInfo() {
 		return additionalInfo;
 	}
@@ -394,9 +405,10 @@ public class Proposal extends BaseEntity implements Serializable {
 				+ sponsorAndBudgetInfo + ", costShareInfo=" + costShareInfo
 				+ ", universityCommitments=" + universityCommitments
 				+ ", conflicOfInterest=" + conflicOfInterest
-				+ ", complianceInfo=" + complianceInfo + ", additionalInfo="
-				+ additionalInfo + ", collaborationInfo=" + collaborationInfo
-				+ ", confidentialInfo=" + confidentialInfo
+				+ ", complianceInfo=" + complianceInfo
+				+ ", irbApprovalRequired=" + irbApprovalRequired
+				+ ", additionalInfo=" + additionalInfo + ", collaborationInfo="
+				+ collaborationInfo + ", confidentialInfo=" + confidentialInfo
 				+ ", ospSectionInfo=" + ospSectionInfo + ", signatureInfo="
 				+ signatureInfo + ", appendices=" + appendices + "]";
 	}
@@ -404,7 +416,7 @@ public class Proposal extends BaseEntity implements Serializable {
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		int result = super.hashCode();
+		int result = 1;
 		result = prime * result
 				+ ((additionalInfo == null) ? 0 : additionalInfo.hashCode());
 		result = prime * result
@@ -443,6 +455,7 @@ public class Proposal extends BaseEntity implements Serializable {
 				+ ((investigatorInfo == null) ? 0 : investigatorInfo.hashCode());
 		result = prime * result
 				+ ((irbApproval == null) ? 0 : irbApproval.hashCode());
+		result = prime * result + (irbApprovalRequired ? 1231 : 1237);
 		result = prime * result
 				+ ((ospSectionInfo == null) ? 0 : ospSectionInfo.hashCode());
 		result = prime * result
@@ -497,7 +510,7 @@ public class Proposal extends BaseEntity implements Serializable {
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (!super.equals(obj))
+		if (obj == null)
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
@@ -562,6 +575,8 @@ public class Proposal extends BaseEntity implements Serializable {
 			return false;
 		if (irbApproval != other.irbApproval)
 			return false;
+		if (irbApprovalRequired != other.irbApprovalRequired)
+			return false;
 		if (ospSectionInfo == null) {
 			if (other.ospSectionInfo != null)
 				return false;
@@ -611,48 +626,6 @@ public class Proposal extends BaseEntity implements Serializable {
 		} else if (!universityCommitments.equals(other.universityCommitments))
 			return false;
 		return true;
-	}
-
-	public boolean checkSignedByInvestigators() {
-		// TODO to check all Investigators i.e. PI/ CO-PI/ Senior
-		boolean signedByAllInvestigators = true;
-		return signedByAllInvestigators;
-	}
-
-	public boolean checkSignedByAllChairs() {
-		// TODO to check all Department Chairs
-		boolean signedByAllChairs = false;
-		return signedByAllChairs;
-	}
-
-	public boolean checkSignedByAllBusinessManagers() {
-		// TODO to check all Business Managers
-		boolean signedByAllBusinessManagers = false;
-		return signedByAllBusinessManagers;
-	}
-
-	public boolean checkSignedByAllIRBs() {
-		// TODO to check all IRBs
-		boolean signedByAllIRBs = false;
-		return signedByAllIRBs;
-	}
-
-	public boolean checkSignedByAllResearchAdministrators() {
-		// TODO to check all Research Administrators
-		boolean signedByAllResearchAdministrators = false;
-		return signedByAllResearchAdministrators;
-	}
-
-	public boolean checkSignedByAllResearchDirectors() {
-		// TODO to check all Research Directors
-		boolean signedByAllResearchDirectors = false;
-		return signedByAllResearchDirectors;
-	}
-
-	public boolean checkIRBReviewRequired() {
-		// TODO to check IRB Review Required based on the variables
-		boolean IRBReviewRequired = true;
-		return IRBReviewRequired;
 	}
 
 	// public Status getProposalStatus() {

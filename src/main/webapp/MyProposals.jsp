@@ -475,7 +475,8 @@
 												</div>
 
 												<h3>
-													<span id="lblSection3">Sponsor and Budget Information</span>
+													<span id="lblSection3">Sponsor and Budget
+														Information</span>
 												</h3>
 												<div class="sfFormwrapper ui-tabs-panel">
 													<table cellspacing="0" cellpadding="0" border="0">
@@ -615,7 +616,8 @@
 												</div>
 
 												<h3>
-													<span id="lblSection6">Conflict of Interest and Commitment Information</span>
+													<span id="lblSection6">Conflict of Interest and
+														Commitment Information</span>
 												</h3>
 												<div class="sfFormwrapper ui-tabs-panel">
 													<table cellspacing="0" cellpadding="0" border="0">
@@ -878,7 +880,8 @@
 												</div>
 
 												<h3>
-													<span id="lblSection10">Proprietary/Confidential Information</span>
+													<span id="lblSection10">Proprietary/Confidential
+														Information</span>
 												</h3>
 												<div class="sfFormwrapper ui-tabs-panel">
 													<table cellspacing="0" cellpadding="0" border="0">
@@ -1080,6 +1083,21 @@
 															<tr>
 																<th><span class="cssClassLabelTitle">Business
 																		Manager</span>(if applicable) has reviewed this proposal.</th>
+																<th><span class="cssClassLabelTitle">Signature</span>
+																<th><span class="cssClassLabelTitle">Date</span></th>
+																<th><span class="cssClassLabelTitle">Note</span></th>
+															</tr>
+														</thead>
+														<tbody>
+														</tbody>
+													</table>
+
+													<table cellspacing="0" cellpadding="0" border="0"
+														id="trSignIRB">
+														<thead>
+															<tr>
+																<th><span class="cssClassLabelTitle">IRB</span>(if
+																	applicable) has reviewed this proposal.</th>
 																<th><span class="cssClassLabelTitle">Signature</span>
 																<th><span class="cssClassLabelTitle">Date</span></th>
 																<th><span class="cssClassLabelTitle">Note</span></th>

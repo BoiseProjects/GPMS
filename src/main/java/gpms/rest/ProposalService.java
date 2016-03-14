@@ -82,8 +82,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.mongodb.MongoClient;
 
 @Path("/proposals")
@@ -916,6 +914,9 @@ public class ProposalService {
 			throws UnknownHostException, JsonProcessingException, IOException,
 			ParseException {
 		String proposalId = new String();
+
+		Boolean irbApprovalRequired = false;
+
 		// String response = new String();
 
 		ObjectMapper mapper = new ObjectMapper();
@@ -924,11 +925,15 @@ public class ProposalService {
 		if (root != null && root.has("proposalId")) {
 			proposalId = root.get("proposalId").textValue();
 		}
+		if (root != null && root.has("irbApprovalRequired")) {
+			irbApprovalRequired = Boolean.parseBoolean(root.get(
+					"irbApprovalRequired").textValue());
+		}
 
 		ObjectId id = new ObjectId(proposalId);
 
 		List<SignatureInfo> signatures = proposalDAO
-				.findAllSignatureForAProposal(id);
+				.findAllSignatureForAProposal(id, irbApprovalRequired);
 
 		// Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd")
 		// .excludeFieldsWithoutExposeAnnotation().setPrettyPrinting()
@@ -1078,9 +1083,10 @@ public class ProposalService {
 										}
 										if (commonObj != null
 												&& commonObj.has("UserIsAdmin")) {
-											userIsAdmin = commonObj.get(
-													"UserIsAdmin")
-													.booleanValue();
+											userIsAdmin = Boolean
+													.parseBoolean(commonObj
+															.get("UserIsAdmin")
+															.textValue());
 										}
 										if (commonObj != null
 												&& commonObj.has("UserCollege")) {
@@ -1167,400 +1173,6 @@ public class ProposalService {
 					// using our serializable method for cloning
 					oldProposal = SerializationHelper
 							.cloneThroughSerialize(existingProposal);
-				}
-
-				// For Proposal User Title : for Dean, Chair and Manager
-				JsonNode proposalUserTitle = root.get("proposalUserTitle");
-				if (proposalUserTitle != null) {
-					// For Proposal Roles : PI, Co-PI, Senior
-					JsonNode proposalRoles = root.get("proposalRoles");
-					if (proposalRoles != null) {
-						// TODO
-						List<String> currentProposalRoles = Arrays
-								.asList(proposalRoles.textValue().split(", "));
-
-						// For Proposal Status
-						JsonNode buttonType = root.get("buttonType");
-
-						if (buttonType != null) {
-							switch (buttonType.textValue()) {
-							case "Create":
-								// This is Hack
-								break;
-
-							case "Submit":
-								// var canSubmitRoles = [ "PI" ];
-								// var canSubmitTitles = [
-								// "University Research Administrator"
-								// ];
-								if (!proposalID.equals("0")) {
-									if (existingProposal.getSubmittedByPI() == SubmitType.NOTSUBMITTED
-											&& existingProposal
-													.getReadyForSubmissionByPI() == ReadyType.READYFORSSUBMIT
-											&& existingProposal
-													.getDeletedByPI() == DeleteType.NOTDELETED
-											&& currentProposalRoles
-													.contains("PI")
-											&& !proposalUserTitle
-													.textValue()
-													.equals("University Research Administrator")) {
-										existingProposal
-												.setDateSubmitted(new Date());
-
-										existingProposal
-												.setSubmittedByPI(SubmitType.SUBMITTED);
-										existingProposal
-												.setChairApproval(ApprovalType.READYFORAPPROVAL);
-
-										// Proposal Status
-										existingProposal.getProposalStatus()
-												.clear();
-										existingProposal
-												.getProposalStatus()
-												.add(Status.WAITINGFORCHAIRAPPROVAL);
-
-									} else if (existingProposal
-											.getResearchAdministratorSubmission() == SubmitType.NOTSUBMITTED
-											&& existingProposal
-													.getResearchDirectorApproval() == ApprovalType.APPROVED
-											&& !currentProposalRoles
-													.contains("PI")
-											&& proposalUserTitle
-													.textValue()
-													.equals("University Research Administrator")) {
-										existingProposal
-												.setResearchAdministratorSubmission(SubmitType.SUBMITTED);
-
-										// Proposal Status
-										existingProposal.getProposalStatus()
-												.clear();
-										existingProposal
-												.getProposalStatus()
-												.add(Status.SUBMITTEDBYRESEARCHADMIN);
-
-									} else {
-										// This user is both PI and Research
-										// Administrator
-									}
-								}
-
-								break;
-
-							case "Update":
-								if (!proposalID.equals("0")) {
-									if ((currentProposalRoles.contains("PI")
-											|| currentProposalRoles
-													.contains("CO-PI") || currentProposalRoles
-												.contains("Senior"))
-											&& existingProposal
-													.getSubmittedByPI() == SubmitType.NOTSUBMITTED
-											&& existingProposal
-													.getReadyForSubmissionByPI() == ReadyType.NOTREADYFORSUBMIT) {
-										// TODO : check all pi/copi/seniors
-										// signed the proposal
-										if (existingProposal
-												.checkSignedByInvestigators()) {
-											existingProposal
-													.setReadyForSubmissionByPI(ReadyType.READYFORSSUBMIT);
-										}
-									}
-								}
-								break;
-
-							case "Approve":
-								if (!proposalID.equals("0")) {
-									// var canApproveTitles = [
-									// "Department Chair",
-									// "Business Manager",
-									// "IRB", "Dean", "University Research Administrator",
-									// "University Research Director" ];
-									if (existingProposal.getChairApproval() == ApprovalType.READYFORAPPROVAL
-											&& proposalUserTitle.textValue()
-													.equals("Department Chair")) {
-										// Ready for Review by Business Manager
-										existingProposal
-												.setChairApproval(ApprovalType.APPROVED);
-										existingProposal
-												.setBusinessManagerApproval(ApprovalType.READYFORAPPROVAL);
-
-										// Proposal Status
-										existingProposal.getProposalStatus()
-												.clear();
-										existingProposal
-												.getProposalStatus()
-												.add(Status.READYFORREVIEWBYBUSINESSMANAGER);
-
-										// TODO check the compliance and IRB
-										// approvable needed or not?
-										if (existingProposal
-												.checkIRBReviewRequired()) {
-											// existingProposal
-											// .setChairApproval(ApprovalType.APPROVED);
-
-											existingProposal
-													.setIrbApproval(ApprovalType.READYFORAPPROVAL);
-
-											// Proposal Status
-											existingProposal
-													.getProposalStatus()
-													.add(Status.READYFORREVIEWBYIRB);
-										}
-
-									} else if (existingProposal
-											.getBusinessManagerApproval() == ApprovalType.READYFORAPPROVAL
-											&& proposalUserTitle.textValue()
-													.equals("Business Manager")) {
-										// Reviewed by Business Manager
-										existingProposal
-												.setBusinessManagerApproval(ApprovalType.APPROVED);
-										existingProposal
-												.setDeanApproval(ApprovalType.READYFORAPPROVAL);
-
-										// Proposal Status
-										existingProposal
-												.getProposalStatus()
-												.remove(Status.READYFORREVIEWBYBUSINESSMANAGER);
-										existingProposal
-												.getProposalStatus()
-												.add(Status.WAITINGFORDEANAPPROVAL);
-
-									} else if (existingProposal
-											.getIrbApproval() == ApprovalType.READYFORAPPROVAL
-											&& proposalUserTitle.textValue()
-													.equals("IRB")) {
-										// Approved by IRB
-										existingProposal
-												.setIrbApproval(ApprovalType.APPROVED);
-
-										// Proposal Status
-										existingProposal
-												.getProposalStatus()
-												.remove(Status.READYFORREVIEWBYIRB);
-										existingProposal.getProposalStatus()
-												.add(Status.REVIEWEDBYIRB);
-
-										if (existingProposal.getDeanApproval() == ApprovalType.APPROVED) {
-											existingProposal
-													.setResearchAdministratorApproval(ApprovalType.READYFORAPPROVAL);
-
-											// Proposal Status
-											existingProposal
-													.getProposalStatus()
-													.clear();
-											existingProposal
-													.getProposalStatus()
-													.add(Status.WAITINGFORRESEARCHADMINAPPROVAL);
-										}
-
-									} else if (existingProposal
-											.getDeanApproval() == ApprovalType.READYFORAPPROVAL
-											&& proposalUserTitle.textValue()
-													.equals("Dean")) {
-										// Approved by Dean
-										existingProposal
-												.setDeanApproval(ApprovalType.APPROVED);
-
-										// Proposal Status
-										existingProposal
-												.getProposalStatus()
-												.remove(Status.WAITINGFORDEANAPPROVAL);
-										existingProposal.getProposalStatus()
-												.add(Status.APPROVEDBYDEAN);
-
-										if (!existingProposal
-												.checkIRBReviewRequired()) {
-											existingProposal
-													.setResearchAdministratorApproval(ApprovalType.READYFORAPPROVAL);
-
-											// Proposal Status
-											existingProposal
-													.getProposalStatus()
-													.clear();
-											existingProposal
-													.getProposalStatus()
-													.add(Status.WAITINGFORRESEARCHADMINAPPROVAL);
-										} else {
-											if (existingProposal
-													.getIrbApproval() == ApprovalType.APPROVED) {
-												existingProposal
-														.setResearchAdministratorApproval(ApprovalType.READYFORAPPROVAL);
-
-												// Proposal Status
-												existingProposal
-														.getProposalStatus()
-														.clear();
-												existingProposal
-														.getProposalStatus()
-														.add(Status.WAITINGFORRESEARCHADMINAPPROVAL);
-											}
-										}
-									} else if (existingProposal
-											.getResearchAdministratorApproval() == ApprovalType.READYFORAPPROVAL
-											&& proposalUserTitle
-													.textValue()
-													.equals("University Research Administrator")) {
-										// Submitted to Research Director
-										existingProposal
-												.setResearchAdministratorApproval(ApprovalType.APPROVED);
-										existingProposal
-												.setResearchDirectorApproval(ApprovalType.READYFORAPPROVAL);
-
-										// Proposal Status
-										existingProposal.getProposalStatus()
-												.clear();
-										existingProposal
-												.getProposalStatus()
-												.add(Status.WAITINGFORRESEARCHDIRECTORAPPROVAL);
-
-									} else if (existingProposal
-											.getResearchDirectorApproval() == ApprovalType.READYFORAPPROVAL
-											&& proposalUserTitle
-													.textValue()
-													.equals("University Research Director")) {
-										// Ready for submission
-										existingProposal
-												.setResearchDirectorApproval(ApprovalType.APPROVED);
-
-										// Proposal Status
-										existingProposal.getProposalStatus()
-												.clear();
-										existingProposal.getProposalStatus()
-												.add(Status.READYFORSUBMISSION);
-
-									} else {
-										// You are not allowed to APPROVE the
-										// Proposal
-									}
-								}
-
-								break;
-
-							case "Disapprove":
-								if (!proposalID.equals("0")) {
-
-									if (existingProposal.getChairApproval() == ApprovalType.READYFORAPPROVAL
-											&& proposalUserTitle.textValue()
-													.equals("Department Chair")) {
-										// Returned by Chair
-										existingProposal
-												.setChairApproval(ApprovalType.DISAPPROVED);
-
-										existingProposal
-												.setSubmittedByPI(SubmitType.NOTSUBMITTED);
-
-										// Proposal Status
-										existingProposal.getProposalStatus()
-												.clear();
-										existingProposal.getProposalStatus()
-												.add(Status.RETURNEDBYCHAIR);
-
-									} else if (existingProposal
-											.getBusinessManagerApproval() == ApprovalType.READYFORAPPROVAL
-											&& proposalUserTitle.textValue()
-													.equals("Business Manager")) {
-										// Disapproved by Business Manager
-										existingProposal
-												.setBusinessManagerApproval(ApprovalType.DISAPPROVED);
-
-										existingProposal
-												.setSubmittedByPI(SubmitType.NOTSUBMITTED);
-										existingProposal
-												.setIrbApproval(ApprovalType.NOTREADYFORAPPROVAL);
-
-										// Proposal Status
-										existingProposal.getProposalStatus()
-												.clear();
-										existingProposal
-												.getProposalStatus()
-												.add(Status.DISAPPROVEDBYBUSINESSMANAGER);
-
-									} else if (existingProposal
-											.getIrbApproval() == ApprovalType.READYFORAPPROVAL
-											&& proposalUserTitle.textValue()
-													.equals("IRB")) {
-										// Disapproved by IRB
-										existingProposal
-												.setIrbApproval(ApprovalType.DISAPPROVED);
-
-										existingProposal
-												.setSubmittedByPI(SubmitType.NOTSUBMITTED);
-
-										// Proposal Status
-										existingProposal.getProposalStatus()
-												.clear();
-										existingProposal.getProposalStatus()
-												.add(Status.DISAPPROVEDBYIRB);
-
-									} else if (existingProposal
-											.getDeanApproval() == ApprovalType.READYFORAPPROVAL
-											&& proposalUserTitle.textValue()
-													.equals("Dean")) {
-										// Returned by Dean
-										existingProposal
-												.setDeanApproval(ApprovalType.DISAPPROVED);
-
-										existingProposal
-												.setSubmittedByPI(SubmitType.NOTSUBMITTED);
-
-										// Proposal Status
-										existingProposal.getProposalStatus()
-												.clear();
-										existingProposal.getProposalStatus()
-												.add(Status.RETURNEDBYDEAN);
-
-									} else if (existingProposal
-											.getResearchAdministratorApproval() == ApprovalType.READYFORAPPROVAL
-											&& proposalUserTitle
-													.textValue()
-													.equals("University Research Administrator")) {
-										// Disapproved by Research Administrator
-										existingProposal
-												.setResearchAdministratorApproval(ApprovalType.DISAPPROVED);
-
-										existingProposal
-												.setSubmittedByPI(SubmitType.NOTSUBMITTED);
-
-										// Proposal Status
-										existingProposal.getProposalStatus()
-												.clear();
-										existingProposal
-												.getProposalStatus()
-												.add(Status.DISAPPROVEDBYRESEARCHADMIN);
-
-									} else if (existingProposal
-											.getResearchDirectorApproval() == ApprovalType.READYFORAPPROVAL
-											&& proposalUserTitle
-													.textValue()
-													.equals("University Research Director")) {
-										// Disapproved by University Research
-										// Director
-										existingProposal
-												.setResearchDirectorApproval(ApprovalType.DISAPPROVED);
-
-										existingProposal
-												.setSubmittedByPI(SubmitType.NOTSUBMITTED);
-
-										// Proposal Status
-										existingProposal.getProposalStatus()
-												.clear();
-										existingProposal
-												.getProposalStatus()
-												.add(Status.DISAPPROVEDBYRESEARCHDIRECTOR);
-
-									} else {
-										// You are not allowed to DISAPPROVE the
-										// Proposal
-									}
-								}
-								break;
-
-							default:
-
-								break;
-							}
-						}
-					}
-
 				}
 			}
 		}
@@ -1921,6 +1533,7 @@ public class ProposalService {
 		}
 
 		ComplianceInfo newComplianceInfo = new ComplianceInfo();
+		Boolean irbApprovalRequired = false;
 		if (proposalInfo != null && proposalInfo.has("ComplianceInfo")) {
 			JsonNode complianceInfo = proposalInfo.get("ComplianceInfo");
 			if (complianceInfo != null
@@ -1933,6 +1546,7 @@ public class ProposalService {
 							&& complianceInfo.has("IRBPending")) {
 						switch (complianceInfo.get("IRBPending").textValue()) {
 						case "1":
+							irbApprovalRequired = true;
 							newComplianceInfo.setIrbPending(false);
 							if (complianceInfo != null
 									&& complianceInfo.has("IRB")) {
@@ -1966,6 +1580,7 @@ public class ProposalService {
 							&& complianceInfo.has("IACUCPending")) {
 						switch (complianceInfo.get("IACUCPending").textValue()) {
 						case "1":
+							irbApprovalRequired = true;
 							newComplianceInfo.setIacucPending(false);
 							if (complianceInfo != null
 									&& complianceInfo.has("IACUC")) {
@@ -1999,6 +1614,7 @@ public class ProposalService {
 							&& complianceInfo.has("IBCPending")) {
 						switch (complianceInfo.get("IBCPending").textValue()) {
 						case "1":
+							irbApprovalRequired = true;
 							newComplianceInfo.setIbcPending(false);
 							if (complianceInfo != null
 									&& complianceInfo.has("IBC")) {
@@ -2029,6 +1645,7 @@ public class ProposalService {
 						"InvolveEnvironmentalHealthAndSafetyConcerns")
 						.textValue()) {
 				case "1":
+					irbApprovalRequired = true;
 					newComplianceInfo
 							.setInvolveEnvironmentalHealthAndSafetyConcerns(true);
 					break;
@@ -2045,9 +1662,11 @@ public class ProposalService {
 		if (!proposalID.equals("0")) {
 			if (!existingProposal.getComplianceInfo().equals(newComplianceInfo)) {
 				existingProposal.setComplianceInfo(newComplianceInfo);
+				existingProposal.setIrbApprovalRequired(irbApprovalRequired);
 			}
 		} else {
 			newProposal.setComplianceInfo(newComplianceInfo);
+			newProposal.setIrbApprovalRequired(irbApprovalRequired);
 		}
 
 		AdditionalInfo newAdditionalInfo = new AdditionalInfo();
@@ -2203,182 +1822,6 @@ public class ProposalService {
 			}
 		} else {
 			newProposal.setConfidentialInfo(newConfidentialInfo);
-		}
-
-		// To hold all new Investigators list to get notified
-		InvestigatorInfo addedInvestigators = new InvestigatorInfo();
-		InvestigatorInfo existingInvestigators = new InvestigatorInfo();
-		InvestigatorInfo deletedInvestigators = new InvestigatorInfo();
-
-		if (proposalInfo != null && proposalInfo.has("InvestigatorInfo")) {
-			if (!proposalID.equals("0")) {
-				// Existing Investigator Info to compare
-				existingInvestigators = oldProposal.getInvestigatorInfo();
-
-				// MUST Clear all co-PI and Seniors
-				existingProposal.getInvestigatorInfo().getCo_pi().clear();
-				existingProposal.getInvestigatorInfo().getSeniorPersonnel()
-						.clear();
-			}
-
-			String[] rows = proposalInfo.get("InvestigatorInfo").textValue()
-					.split("#!#");
-
-			InvestigatorInfo newInvestigatorInfo = new InvestigatorInfo();
-
-			for (String col : rows) {
-				String[] cols = col.split("!#!");
-				InvestigatorRefAndPosition investigatorRefAndPosition = new InvestigatorRefAndPosition();
-				ObjectId id = new ObjectId(cols[1]);
-				UserProfile userRef = userProfileDAO
-						.findUserDetailsByProfileID(id);
-				investigatorRefAndPosition.setUserRef(userRef);
-				investigatorRefAndPosition.setUserProfileId(cols[1]);
-				investigatorRefAndPosition.setCollege(cols[2]);
-				investigatorRefAndPosition.setDepartment(cols[3]);
-				investigatorRefAndPosition.setPositionType(cols[4]);
-				investigatorRefAndPosition.setPositionTitle(cols[5]);
-				switch (cols[0]) {
-				case "0":
-					if (!proposalID.equals("0")) {
-						if (!existingProposal.getInvestigatorInfo().getPi()
-								.equals(investigatorRefAndPosition)) {
-							existingProposal.getInvestigatorInfo().setPi(
-									investigatorRefAndPosition);
-							if (!addedInvestigators.getPi().equals(
-									investigatorRefAndPosition)) {
-								addedInvestigators
-										.setPi(investigatorRefAndPosition);
-							}
-						}
-					} else {
-						newInvestigatorInfo.setPi(investigatorRefAndPosition);
-					}
-					break;
-				case "1":
-					if (!proposalID.equals("0")) {
-						if (!existingProposal.getInvestigatorInfo().getCo_pi()
-								.contains(investigatorRefAndPosition)) {
-							existingProposal.getInvestigatorInfo().getCo_pi()
-									.add(investigatorRefAndPosition);
-						}
-						if (!existingInvestigators.getCo_pi().contains(
-								investigatorRefAndPosition)) {
-							if (!addedInvestigators.getCo_pi().contains(
-									investigatorRefAndPosition)) {
-								addedInvestigators.getCo_pi().add(
-										investigatorRefAndPosition);
-							}
-						}
-					} else {
-						newInvestigatorInfo.getCo_pi().add(
-								investigatorRefAndPosition);
-					}
-					break;
-				case "2":
-					if (!proposalID.equals("0")) {
-						if (!existingProposal.getInvestigatorInfo()
-								.getSeniorPersonnel()
-								.contains(investigatorRefAndPosition)) {
-							existingProposal.getInvestigatorInfo()
-									.getSeniorPersonnel()
-									.add(investigatorRefAndPosition);
-						}
-						if (!existingInvestigators.getSeniorPersonnel()
-								.contains(investigatorRefAndPosition)) {
-							if (!addedInvestigators.getSeniorPersonnel()
-									.contains(investigatorRefAndPosition)) {
-								addedInvestigators.getSeniorPersonnel().add(
-										investigatorRefAndPosition);
-							}
-						}
-					} else {
-						newInvestigatorInfo.getSeniorPersonnel().add(
-								investigatorRefAndPosition);
-					}
-					break;
-				default:
-					break;
-				}
-			}
-
-			// InvestigatorInfo
-			if (proposalID.equals("0")) {
-				newProposal.setInvestigatorInfo(newInvestigatorInfo);
-				addedInvestigators = newInvestigatorInfo;
-			} else {
-				// TO see the deleted from addedInvestigators vs
-				// existingInvestigators
-
-				if (!existingProposal.getInvestigatorInfo().getPi()
-						.equals(existingInvestigators.getPi())) {
-					if (!deletedInvestigators.getPi().equals(
-							existingInvestigators.getPi())) {
-						deletedInvestigators.setPi(existingInvestigators
-								.getPi());
-					}
-				}
-
-				for (InvestigatorRefAndPosition coPI : existingInvestigators
-						.getCo_pi()) {
-					if (!existingProposal.getInvestigatorInfo().getCo_pi()
-							.contains(coPI)) {
-						deletedInvestigators.getCo_pi().add(coPI);
-					}
-				}
-
-				for (InvestigatorRefAndPosition senior : existingInvestigators
-						.getSeniorPersonnel()) {
-					if (!existingProposal.getInvestigatorInfo()
-							.getSeniorPersonnel().contains(senior)) {
-						deletedInvestigators.getSeniorPersonnel().add(senior);
-					}
-				}
-			}
-		}
-
-		// To hold all new Investigators list to get notified
-		List<SignatureInfo> addedSignatures = new ArrayList<SignatureInfo>();
-
-		if (proposalInfo != null && proposalInfo.has("SignatureInfo")) {
-			String[] rows = proposalInfo.get("SignatureInfo").textValue()
-					.split("#!#");
-
-			List<SignatureInfo> newSignatureInfo = new ArrayList<SignatureInfo>();
-			// UserProfileID!#!Signature!#!SignedDate!#!Note!#!FullName!#!PositionTitle!#!Delegated#!#
-			DateFormat format = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss a");
-
-			for (String col : rows) {
-				String[] cols = col.split("!#!");
-				SignatureInfo signatureInfo = new SignatureInfo();
-				signatureInfo.setUserProfileId(cols[0]);
-				signatureInfo.setSignature(cols[1]);
-				signatureInfo.setSignedDate(format.parse(cols[2]));
-				signatureInfo.setNote(cols[3]);
-				signatureInfo.setFullName(cols[4]);
-				signatureInfo.setPositionTitle(cols[5]);
-				signatureInfo.setDelegated(Boolean.parseBoolean(cols[6]));
-
-				boolean alreadyExist = false;
-				for (SignatureInfo sign : existingProposal.getSignatureInfo()) {
-					if (sign.equals(signatureInfo)) {
-						alreadyExist = true;
-						break;
-					}
-				}
-				if (!alreadyExist) {
-					newSignatureInfo.add(signatureInfo);
-				}
-			}
-			// SignatureInfo
-			addedSignatures = newSignatureInfo;
-			if (!proposalID.equals("0")) {
-				for (SignatureInfo signatureInfo : newSignatureInfo) {
-					existingProposal.getSignatureInfo().add(signatureInfo);
-				}
-			} else {
-				newProposal.setSignatureInfo(newSignatureInfo);
-			}
 		}
 
 		OSPSectionInfo newOSPSectionInfo = new OSPSectionInfo();
@@ -2935,6 +2378,7 @@ public class ProposalService {
 		String userPositionType = new String();
 		@SuppressWarnings("unused")
 		String userPositionTitle = new String();
+
 		if (root != null && root.has("gpmsCommonObj")) {
 			JsonNode commonObj = root.get("gpmsCommonObj");
 			if (commonObj != null && commonObj.has("UserProfileID")) {
@@ -2944,7 +2388,8 @@ public class ProposalService {
 				userName = commonObj.get("UserName").textValue();
 			}
 			if (commonObj != null && commonObj.has("UserIsAdmin")) {
-				userIsAdmin = commonObj.get("UserIsAdmin").booleanValue();
+				userIsAdmin = Boolean.parseBoolean(commonObj.get("UserIsAdmin")
+						.textValue());
 			}
 			if (commonObj != null && commonObj.has("UserCollege")) {
 				userCollege = commonObj.get("UserCollege").textValue();
@@ -2965,6 +2410,789 @@ public class ProposalService {
 		ObjectId authorId = new ObjectId(userProfileID);
 		UserProfile authorProfile = userProfileDAO
 				.findUserDetailsByProfileID(authorId);
+
+		// START
+
+		// Signature
+		// To hold all new Investigators list to get notified
+		List<SignatureInfo> addedSignatures = new ArrayList<SignatureInfo>();
+
+		if (proposalInfo != null && proposalInfo.has("SignatureInfo")) {
+			String[] rows = proposalInfo.get("SignatureInfo").textValue()
+					.split("#!#");
+
+			List<SignatureInfo> newSignatureInfo = new ArrayList<SignatureInfo>();
+			// UserProfileID!#!Signature!#!SignedDate!#!Note!#!FullName!#!PositionTitle!#!Delegated#!#
+			DateFormat format = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss a");
+
+			for (String col : rows) {
+				String[] cols = col.split("!#!");
+				SignatureInfo signatureInfo = new SignatureInfo();
+				signatureInfo.setUserProfileId(cols[0]);
+				signatureInfo.setSignature(cols[1]);
+				signatureInfo.setSignedDate(format.parse(cols[2]));
+				signatureInfo.setNote(cols[3]);
+				signatureInfo.setFullName(cols[4]);
+				signatureInfo.setPositionTitle(cols[5]);
+				signatureInfo.setDelegated(Boolean.parseBoolean(cols[6]));
+
+				boolean alreadyExist = false;
+				for (SignatureInfo sign : existingProposal.getSignatureInfo()) {
+					if (sign.equals(signatureInfo)) {
+						alreadyExist = true;
+						break;
+					}
+				}
+				if (!alreadyExist) {
+					newSignatureInfo.add(signatureInfo);
+				}
+			}
+			// SignatureInfo
+			addedSignatures = newSignatureInfo;
+			if (!proposalID.equals("0")) {
+				for (SignatureInfo signatureInfo : newSignatureInfo) {
+					existingProposal.getSignatureInfo().add(signatureInfo);
+				}
+			} else {
+				newProposal.setSignatureInfo(newSignatureInfo);
+			}
+		}
+
+		// InvestigatorInfo
+		// To hold all new Investigators list to get notified
+		InvestigatorInfo addedInvestigators = new InvestigatorInfo();
+		InvestigatorInfo existingInvestigators = new InvestigatorInfo();
+		InvestigatorInfo deletedInvestigators = new InvestigatorInfo();
+
+		// Check if all PI/ Co-PI/ Senior/
+		boolean signedByPI = false;
+		boolean signedByAllCoPIs = false;
+		boolean signedByAllSeniors = false;
+		boolean signedByAllChairs = false;
+		boolean signedByAllBusinessManagers = false;
+		boolean signedByAllDeans = false;
+		boolean signedByAllIRBs = false;
+		boolean signedByAllResearchAdmins = false;
+		boolean signedByAllResearchDirectors = false;
+
+		if (proposalInfo != null && proposalInfo.has("InvestigatorInfo")) {
+			if (!proposalID.equals("0")) {
+				// Existing Investigator Info to compare
+				existingInvestigators = oldProposal.getInvestigatorInfo();
+
+				// MUST Clear all co-PI and Seniors
+				existingProposal.getInvestigatorInfo().getCo_pi().clear();
+				existingProposal.getInvestigatorInfo().getSeniorPersonnel()
+						.clear();
+			}
+
+			String[] rows = proposalInfo.get("InvestigatorInfo").textValue()
+					.split("#!#");
+
+			InvestigatorInfo newInvestigatorInfo = new InvestigatorInfo();
+
+			for (String col : rows) {
+				String[] cols = col.split("!#!");
+				InvestigatorRefAndPosition investigatorRefAndPosition = new InvestigatorRefAndPosition();
+				ObjectId id = new ObjectId(cols[1]);
+				UserProfile userRef = userProfileDAO
+						.findUserDetailsByProfileID(id);
+				investigatorRefAndPosition.setUserRef(userRef);
+				investigatorRefAndPosition.setUserProfileId(cols[1]);
+				investigatorRefAndPosition.setCollege(cols[2]);
+				investigatorRefAndPosition.setDepartment(cols[3]);
+				investigatorRefAndPosition.setPositionType(cols[4]);
+				investigatorRefAndPosition.setPositionTitle(cols[5]);
+				switch (cols[0]) {
+				case "0":
+					if (!proposalID.equals("0")) {
+						if (!existingProposal.getInvestigatorInfo().getPi()
+								.equals(investigatorRefAndPosition)) {
+							existingProposal.getInvestigatorInfo().setPi(
+									investigatorRefAndPosition);
+							if (!addedInvestigators.getPi().equals(
+									investigatorRefAndPosition)) {
+								addedInvestigators
+										.setPi(investigatorRefAndPosition);
+							}
+						}
+					} else {
+						newInvestigatorInfo.setPi(investigatorRefAndPosition);
+					}
+					break;
+				case "1":
+					if (!proposalID.equals("0")) {
+						if (!existingProposal.getInvestigatorInfo().getCo_pi()
+								.contains(investigatorRefAndPosition)) {
+							existingProposal.getInvestigatorInfo().getCo_pi()
+									.add(investigatorRefAndPosition);
+						}
+						if (!existingInvestigators.getCo_pi().contains(
+								investigatorRefAndPosition)) {
+							if (!addedInvestigators.getCo_pi().contains(
+									investigatorRefAndPosition)) {
+								addedInvestigators.getCo_pi().add(
+										investigatorRefAndPosition);
+							}
+						}
+					} else {
+						newInvestigatorInfo.getCo_pi().add(
+								investigatorRefAndPosition);
+					}
+					break;
+				case "2":
+					if (!proposalID.equals("0")) {
+						if (!existingProposal.getInvestigatorInfo()
+								.getSeniorPersonnel()
+								.contains(investigatorRefAndPosition)) {
+							existingProposal.getInvestigatorInfo()
+									.getSeniorPersonnel()
+									.add(investigatorRefAndPosition);
+						}
+						if (!existingInvestigators.getSeniorPersonnel()
+								.contains(investigatorRefAndPosition)) {
+							if (!addedInvestigators.getSeniorPersonnel()
+									.contains(investigatorRefAndPosition)) {
+								addedInvestigators.getSeniorPersonnel().add(
+										investigatorRefAndPosition);
+							}
+						}
+					} else {
+						newInvestigatorInfo.getSeniorPersonnel().add(
+								investigatorRefAndPosition);
+					}
+					break;
+				default:
+					break;
+				}
+			}
+
+			// InvestigatorInfo
+			if (proposalID.equals("0")) {
+				newProposal.setInvestigatorInfo(newInvestigatorInfo);
+				addedInvestigators = newInvestigatorInfo;
+			} else {
+				// TO see the deleted from addedInvestigators vs
+				// existingInvestigators
+
+				if (!existingProposal.getInvestigatorInfo().getPi()
+						.equals(existingInvestigators.getPi())) {
+					if (!deletedInvestigators.getPi().equals(
+							existingInvestigators.getPi())) {
+						deletedInvestigators.setPi(existingInvestigators
+								.getPi());
+					}
+				}
+
+				for (InvestigatorRefAndPosition coPI : existingInvestigators
+						.getCo_pi()) {
+					if (!existingProposal.getInvestigatorInfo().getCo_pi()
+							.contains(coPI)) {
+						deletedInvestigators.getCo_pi().add(coPI);
+					}
+				}
+
+				for (InvestigatorRefAndPosition senior : existingInvestigators
+						.getSeniorPersonnel()) {
+					if (!existingProposal.getInvestigatorInfo()
+							.getSeniorPersonnel().contains(senior)) {
+						deletedInvestigators.getSeniorPersonnel().add(senior);
+					}
+				}
+
+				boolean foundCoPI = false;
+				boolean foundSenior = false;
+
+				// Check Chair
+
+				boolean foundChair = false;
+				boolean foundBusinessManager = false;
+				boolean foundDean = false;
+				boolean foundIRB = false;
+				boolean foundResearchAdmin = false;
+				boolean foundResearchDirector = false;
+
+				for (SignatureInfo sign : existingProposal.getSignatureInfo()) {
+					if (existingProposal.getInvestigatorInfo().getPi()
+							.getUserProfileId().equals(sign.getUserProfileId())
+							&& sign.getPositionTitle().equals("PI")) {
+						signedByPI = true;
+						break;
+					}
+				}
+
+				int coPICount = existingProposal.getInvestigatorInfo()
+						.getCo_pi().size();
+				if (coPICount > 0) {
+					for (InvestigatorRefAndPosition copi : existingProposal
+							.getInvestigatorInfo().getCo_pi()) {
+						for (SignatureInfo sign : existingProposal
+								.getSignatureInfo()) {
+							if (copi.getUserProfileId().equals(
+									sign.getUserProfileId())
+									&& sign.getPositionTitle().equals("Co-PI")) {
+								foundCoPI = true;
+								break;
+							}
+						}
+						if (!foundCoPI) {
+							signedByAllCoPIs = false;
+							break;
+						} else {
+							signedByAllCoPIs = true;
+						}
+						foundCoPI = false;
+					}
+				} else {
+					signedByAllCoPIs = true;
+				}
+
+				int seniorCount = existingProposal.getInvestigatorInfo()
+						.getSeniorPersonnel().size();
+				if (seniorCount > 0) {
+					for (InvestigatorRefAndPosition senior : existingProposal
+							.getInvestigatorInfo().getSeniorPersonnel()) {
+						for (SignatureInfo sign : existingProposal
+								.getSignatureInfo()) {
+							if (senior.getUserProfileId().equals(
+									sign.getUserProfileId())
+									&& sign.getPositionTitle().equals("Senior")) {
+								foundSenior = true;
+								break;
+							}
+						}
+						if (!foundSenior) {
+							signedByAllSeniors = false;
+							break;
+						} else {
+							signedByAllSeniors = true;
+						}
+						foundSenior = false;
+					}
+				} else {
+					signedByAllSeniors = true;
+				}
+
+				ObjectId id = new ObjectId(proposalID);
+
+				List<SignatureInfo> signatures = proposalDAO
+						.findSignaturesExceptInvestigator(id,
+								irbApprovalRequired);
+
+				for (SignatureInfo chairSign : signatures) {
+					if (chairSign.getPositionTitle().equals("Department Chair")) {
+						for (SignatureInfo sign : existingProposal
+								.getSignatureInfo()) {
+							if (chairSign.getUserProfileId().equals(
+									sign.getUserProfileId())
+									&& sign.getPositionTitle().equals(
+											"Department Chair")) {
+								foundChair = true;
+								break;
+							}
+						}
+						if (!foundChair) {
+							signedByAllChairs = false;
+							break;
+						} else {
+							signedByAllChairs = true;
+						}
+						foundChair = false;
+					}
+				}
+
+				for (SignatureInfo businessManagerSign : signatures) {
+					if (businessManagerSign.getPositionTitle().equals(
+							"Business Manager")) {
+						for (SignatureInfo sign : existingProposal
+								.getSignatureInfo()) {
+							if (businessManagerSign.getUserProfileId().equals(
+									sign.getUserProfileId())
+									&& sign.getPositionTitle().equals(
+											"Business Manager")) {
+								foundBusinessManager = true;
+								break;
+							}
+						}
+						if (!foundBusinessManager) {
+							signedByAllBusinessManagers = false;
+							break;
+						} else {
+							signedByAllBusinessManagers = true;
+						}
+						foundBusinessManager = false;
+					}
+				}
+
+				for (SignatureInfo deanSign : signatures) {
+					if (deanSign.getPositionTitle().equals("Dean")) {
+						for (SignatureInfo sign : existingProposal
+								.getSignatureInfo()) {
+							if (deanSign.getUserProfileId().equals(
+									sign.getUserProfileId())
+									&& sign.getPositionTitle().equals("Dean")) {
+								foundDean = true;
+								break;
+							}
+						}
+						if (!foundDean) {
+							signedByAllDeans = false;
+							break;
+						} else {
+							signedByAllDeans = true;
+						}
+						foundDean = false;
+					}
+				}
+
+				for (SignatureInfo irbSign : signatures) {
+					if (irbSign.getPositionTitle().equals("IRB")) {
+						for (SignatureInfo sign : existingProposal
+								.getSignatureInfo()) {
+							if (irbSign.getUserProfileId().equals(
+									sign.getUserProfileId())
+									&& sign.getPositionTitle().equals("IRB")) {
+								foundIRB = true;
+								break;
+							}
+						}
+						if (!foundIRB) {
+							signedByAllIRBs = false;
+							break;
+						} else {
+							signedByAllIRBs = true;
+						}
+						foundIRB = false;
+					}
+				}
+
+				for (SignatureInfo researchAdminSign : signatures) {
+					if (researchAdminSign.getPositionTitle().equals(
+							"University Research Administrator")) {
+						for (SignatureInfo sign : existingProposal
+								.getSignatureInfo()) {
+							if (researchAdminSign.getUserProfileId().equals(
+									sign.getUserProfileId())
+									&& sign.getPositionTitle()
+											.equals("University Research Administrator")) {
+								foundResearchAdmin = true;
+								break;
+							}
+						}
+						if (!foundResearchAdmin) {
+							signedByAllResearchAdmins = false;
+							break;
+						} else {
+							foundResearchAdmin = true;
+						}
+						foundResearchAdmin = false;
+					}
+				}
+
+				for (SignatureInfo researchDirectorSign : signatures) {
+					if (researchDirectorSign.getPositionTitle().equals(
+							"University Research Director")) {
+						for (SignatureInfo sign : existingProposal
+								.getSignatureInfo()) {
+							if (researchDirectorSign.getUserProfileId().equals(
+									sign.getUserProfileId())
+									&& sign.getPositionTitle().equals(
+											"University Research Director")) {
+								foundResearchDirector = true;
+								break;
+							}
+						}
+						if (!foundResearchDirector) {
+							signedByAllResearchDirectors = false;
+							break;
+						} else {
+							signedByAllResearchDirectors = true;
+						}
+						foundResearchDirector = false;
+					}
+				}
+			}
+		}
+
+		// For Proposal User Title : for Dean, Chair and Manager
+		JsonNode proposalUserTitle = root.get("proposalUserTitle");
+		if (proposalUserTitle != null) {
+			// For Proposal Roles : PI, Co-PI, Senior
+			JsonNode proposalRoles = root.get("proposalRoles");
+
+			List<String> currentProposalRoles = new ArrayList<String>();
+
+			if (!proposalRoles.asText().equals("")) {
+				currentProposalRoles = Arrays.asList(proposalRoles.textValue()
+						.split(", "));
+			}
+
+			JsonNode buttonType = root.get("buttonType");
+
+			// For Proposal Status
+			if (buttonType != null) {
+				switch (buttonType.textValue()) {
+				case "Create":
+					// This is Hack
+					// TODO check for if no CO-PI/ Seniors in first create
+					// case
+					// Change status to ready to submitted by PI
+					if (proposalID.equals("0")) {
+						if ((newProposal.getInvestigatorInfo().getCo_pi()
+								.size() == 0)
+								&& (newProposal.getInvestigatorInfo()
+										.getSeniorPersonnel().size() == 0)) {
+							newProposal
+									.setReadyForSubmissionByPI(ReadyType.READYFORSUBMIT);
+
+							newProposal.getProposalStatus().add(
+									Status.READYFORSUBMITBYPI);
+						}
+					}
+					break;
+
+				case "Submit":
+					// var canSubmitRoles = [ "PI" ];
+					// var canSubmitTitles = [
+					// "University Research Administrator"
+					// ];
+					if (!proposalID.equals("0")
+							&& !proposalRoles.asText().equals("")) {
+						if (existingProposal.getSubmittedByPI() == SubmitType.NOTSUBMITTED
+								&& existingProposal.getReadyForSubmissionByPI() == ReadyType.READYFORSUBMIT
+								&& existingProposal.getDeletedByPI() == DeleteType.NOTDELETED
+								&& currentProposalRoles.contains("PI")
+								&& !proposalUserTitle.textValue().equals(
+										"University Research Administrator")) {
+							existingProposal.setDateSubmitted(new Date());
+
+							existingProposal
+									.setSubmittedByPI(SubmitType.SUBMITTED);
+							existingProposal
+									.setChairApproval(ApprovalType.READYFORAPPROVAL);
+
+							// Proposal Status
+							existingProposal.getProposalStatus().clear();
+							existingProposal.getProposalStatus().add(
+									Status.WAITINGFORCHAIRAPPROVAL);
+
+						} else if (existingProposal
+								.getResearchAdministratorSubmission() == SubmitType.NOTSUBMITTED
+								&& existingProposal
+										.getResearchDirectorApproval() == ApprovalType.APPROVED
+								&& !currentProposalRoles.contains("PI")
+								&& proposalUserTitle.textValue().equals(
+										"University Research Administrator")) {
+							existingProposal
+									.setResearchAdministratorSubmission(SubmitType.SUBMITTED);
+
+							// Proposal Status
+							existingProposal.getProposalStatus().clear();
+							existingProposal.getProposalStatus().add(
+									Status.SUBMITTEDBYRESEARCHADMIN);
+
+						} else {
+							// This user is both PI and Research
+							// Administrator
+						}
+					}
+
+					break;
+
+				case "Update":
+					if (!proposalID.equals("0")
+							&& !proposalRoles.asText().equals("")) {
+						if ((currentProposalRoles.contains("PI")
+								|| (currentProposalRoles.contains("CO-PI") && existingProposal
+										.getReadyForSubmissionByPI() == ReadyType.NOTREADYFORSUBMIT) || (currentProposalRoles
+								.contains("Senior") && existingProposal
+								.getReadyForSubmissionByPI() == ReadyType.NOTREADYFORSUBMIT))
+								&& existingProposal.getSubmittedByPI() == SubmitType.NOTSUBMITTED) {
+							// TODO : check all pi/copi/seniors
+							// signed the proposal
+							// existingProposal.getInvestigatorInfo().getCo_pi()
+							// existingProposal.getSignatureInfo()
+							if (signedByPI && signedByAllCoPIs
+									&& signedByAllSeniors) {
+								existingProposal
+										.setReadyForSubmissionByPI(ReadyType.READYFORSUBMIT);
+
+								existingProposal.getProposalStatus().add(
+										Status.READYFORSUBMITBYPI);
+							} else {
+								existingProposal
+										.setReadyForSubmissionByPI(ReadyType.NOTREADYFORSUBMIT);
+
+								existingProposal.getProposalStatus().clear();
+								existingProposal.getProposalStatus().add(
+										Status.NOTSUBMITTEDBYPI);
+							}
+						}
+					}
+					break;
+
+				case "Approve":
+					if (!proposalID.equals("0")
+							&& proposalRoles.asText().equals("")) {
+						// var canApproveTitles = [
+						// "Department Chair",
+						// "Business Manager",
+						// "IRB", "Dean",
+						// "University Research Administrator",
+						// "University Research Director" ];
+						if (existingProposal.getChairApproval() == ApprovalType.READYFORAPPROVAL
+								&& proposalUserTitle.textValue().equals(
+										"Department Chair")
+								&& signedByAllChairs) {
+							// Ready for Review by Business Manager
+							existingProposal
+									.setChairApproval(ApprovalType.APPROVED);
+							existingProposal
+									.setBusinessManagerApproval(ApprovalType.READYFORAPPROVAL);
+
+							// Proposal Status
+							existingProposal.getProposalStatus().clear();
+							existingProposal.getProposalStatus().add(
+									Status.READYFORREVIEWBYBUSINESSMANAGER);
+
+							// TODO check the compliance and IRB
+							// approvable needed or not?
+							if (irbApprovalRequired) {
+								// existingProposal
+								// .setChairApproval(ApprovalType.APPROVED);
+
+								existingProposal
+										.setIrbApproval(ApprovalType.READYFORAPPROVAL);
+
+								// Proposal Status
+								existingProposal.getProposalStatus().add(
+										Status.READYFORREVIEWBYIRB);
+							}
+
+						} else if (existingProposal
+								.getBusinessManagerApproval() == ApprovalType.READYFORAPPROVAL
+								&& proposalUserTitle.textValue().equals(
+										"Business Manager")
+								&& signedByAllBusinessManagers) {
+							// Reviewed by Business Manager
+							existingProposal
+									.setBusinessManagerApproval(ApprovalType.APPROVED);
+							existingProposal
+									.setDeanApproval(ApprovalType.READYFORAPPROVAL);
+
+							// Proposal Status
+							existingProposal.getProposalStatus().remove(
+									Status.READYFORREVIEWBYBUSINESSMANAGER);
+							existingProposal.getProposalStatus().add(
+									Status.WAITINGFORDEANAPPROVAL);
+
+						} else if (existingProposal.getIrbApproval() == ApprovalType.READYFORAPPROVAL
+								&& proposalUserTitle.textValue().equals("IRB")
+								&& signedByAllIRBs) {
+							// Approved by IRB
+							existingProposal
+									.setIrbApproval(ApprovalType.APPROVED);
+
+							// Proposal Status
+							existingProposal.getProposalStatus().remove(
+									Status.READYFORREVIEWBYIRB);
+							existingProposal.getProposalStatus().add(
+									Status.REVIEWEDBYIRB);
+
+							if (existingProposal.getDeanApproval() == ApprovalType.APPROVED) {
+								existingProposal
+										.setResearchAdministratorApproval(ApprovalType.READYFORAPPROVAL);
+
+								// Proposal Status
+								existingProposal.getProposalStatus().clear();
+								existingProposal.getProposalStatus().add(
+										Status.WAITINGFORRESEARCHADMINAPPROVAL);
+							}
+
+						} else if (existingProposal.getDeanApproval() == ApprovalType.READYFORAPPROVAL
+								&& proposalUserTitle.textValue().equals("Dean")
+								&& signedByAllDeans) {
+							// Approved by Dean
+							existingProposal
+									.setDeanApproval(ApprovalType.APPROVED);
+
+							// Proposal Status
+							existingProposal.getProposalStatus().remove(
+									Status.WAITINGFORDEANAPPROVAL);
+							existingProposal.getProposalStatus().add(
+									Status.APPROVEDBYDEAN);
+
+							if (!irbApprovalRequired) {
+								existingProposal
+										.setResearchAdministratorApproval(ApprovalType.READYFORAPPROVAL);
+
+								// Proposal Status
+								existingProposal.getProposalStatus().clear();
+								existingProposal.getProposalStatus().add(
+										Status.WAITINGFORRESEARCHADMINAPPROVAL);
+							} else {
+								if (existingProposal.getIrbApproval() == ApprovalType.APPROVED) {
+									existingProposal
+											.setResearchAdministratorApproval(ApprovalType.READYFORAPPROVAL);
+
+									// Proposal Status
+									existingProposal.getProposalStatus()
+											.clear();
+									existingProposal
+											.getProposalStatus()
+											.add(Status.WAITINGFORRESEARCHADMINAPPROVAL);
+								}
+							}
+						} else if (existingProposal
+								.getResearchAdministratorApproval() == ApprovalType.READYFORAPPROVAL
+								&& proposalUserTitle.textValue().equals(
+										"University Research Administrator")
+								&& signedByAllResearchAdmins) {
+							// Submitted to Research Director
+							existingProposal
+									.setResearchAdministratorApproval(ApprovalType.APPROVED);
+							existingProposal
+									.setResearchDirectorApproval(ApprovalType.READYFORAPPROVAL);
+
+							// Proposal Status
+							existingProposal.getProposalStatus().clear();
+							existingProposal.getProposalStatus().add(
+									Status.WAITINGFORRESEARCHDIRECTORAPPROVAL);
+
+						} else if (existingProposal
+								.getResearchDirectorApproval() == ApprovalType.READYFORAPPROVAL
+								&& proposalUserTitle.textValue().equals(
+										"University Research Director")
+								&& signedByAllResearchDirectors) {
+							// Ready for submission
+							existingProposal
+									.setResearchDirectorApproval(ApprovalType.APPROVED);
+
+							// Proposal Status
+							existingProposal.getProposalStatus().clear();
+							existingProposal.getProposalStatus().add(
+									Status.READYFORSUBMISSION);
+
+						} else {
+							// You are not allowed to APPROVE the
+							// Proposal
+						}
+					}
+
+					break;
+
+				case "Disapprove":
+					if (!proposalID.equals("0")
+							&& proposalRoles.asText().equals("")) {
+
+						if (existingProposal.getChairApproval() == ApprovalType.READYFORAPPROVAL
+								&& proposalUserTitle.textValue().equals(
+										"Department Chair")) {
+							// Returned by Chair
+							existingProposal
+									.setChairApproval(ApprovalType.DISAPPROVED);
+
+							existingProposal
+									.setSubmittedByPI(SubmitType.NOTSUBMITTED);
+
+							// Proposal Status
+							existingProposal.getProposalStatus().clear();
+							existingProposal.getProposalStatus().add(
+									Status.RETURNEDBYCHAIR);
+
+						} else if (existingProposal
+								.getBusinessManagerApproval() == ApprovalType.READYFORAPPROVAL
+								&& proposalUserTitle.textValue().equals(
+										"Business Manager")) {
+							// Disapproved by Business Manager
+							existingProposal
+									.setBusinessManagerApproval(ApprovalType.DISAPPROVED);
+
+							existingProposal
+									.setSubmittedByPI(SubmitType.NOTSUBMITTED);
+							existingProposal
+									.setIrbApproval(ApprovalType.NOTREADYFORAPPROVAL);
+
+							// Proposal Status
+							existingProposal.getProposalStatus().clear();
+							existingProposal.getProposalStatus().add(
+									Status.DISAPPROVEDBYBUSINESSMANAGER);
+
+						} else if (existingProposal.getIrbApproval() == ApprovalType.READYFORAPPROVAL
+								&& proposalUserTitle.textValue().equals("IRB")) {
+							// Disapproved by IRB
+							existingProposal
+									.setIrbApproval(ApprovalType.DISAPPROVED);
+
+							existingProposal
+									.setSubmittedByPI(SubmitType.NOTSUBMITTED);
+
+							// Proposal Status
+							existingProposal.getProposalStatus().clear();
+							existingProposal.getProposalStatus().add(
+									Status.DISAPPROVEDBYIRB);
+
+						} else if (existingProposal.getDeanApproval() == ApprovalType.READYFORAPPROVAL
+								&& proposalUserTitle.textValue().equals("Dean")) {
+							// Returned by Dean
+							existingProposal
+									.setDeanApproval(ApprovalType.DISAPPROVED);
+
+							existingProposal
+									.setSubmittedByPI(SubmitType.NOTSUBMITTED);
+
+							// Proposal Status
+							existingProposal.getProposalStatus().clear();
+							existingProposal.getProposalStatus().add(
+									Status.RETURNEDBYDEAN);
+
+						} else if (existingProposal
+								.getResearchAdministratorApproval() == ApprovalType.READYFORAPPROVAL
+								&& proposalUserTitle.textValue().equals(
+										"University Research Administrator")) {
+							// Disapproved by Research Administrator
+							existingProposal
+									.setResearchAdministratorApproval(ApprovalType.DISAPPROVED);
+
+							existingProposal
+									.setSubmittedByPI(SubmitType.NOTSUBMITTED);
+
+							// Proposal Status
+							existingProposal.getProposalStatus().clear();
+							existingProposal.getProposalStatus().add(
+									Status.DISAPPROVEDBYRESEARCHADMIN);
+
+						} else if (existingProposal
+								.getResearchDirectorApproval() == ApprovalType.READYFORAPPROVAL
+								&& proposalUserTitle.textValue().equals(
+										"University Research Director")) {
+							// Disapproved by University Research
+							// Director
+							existingProposal
+									.setResearchDirectorApproval(ApprovalType.DISAPPROVED);
+
+							existingProposal
+									.setSubmittedByPI(SubmitType.NOTSUBMITTED);
+
+							// Proposal Status
+							existingProposal.getProposalStatus().clear();
+							existingProposal.getProposalStatus().add(
+									Status.DISAPPROVEDBYRESEARCHDIRECTOR);
+
+						} else {
+							// You are not allowed to DISAPPROVE the
+							// Proposal
+						}
+					}
+					break;
+
+				default:
+
+					break;
+				}
+			}
+		}
+		// END
 
 		// Save the Proposal
 		Proposal currentProposal = new Proposal();
@@ -3352,8 +3580,8 @@ public class ProposalService {
 						userName = commonObj.get("UserName").textValue();
 					}
 					if (commonObj != null && commonObj.has("UserIsAdmin")) {
-						userIsAdmin = commonObj.get("UserIsAdmin")
-								.booleanValue();
+						userIsAdmin = Boolean.parseBoolean(commonObj.get(
+								"UserIsAdmin").textValue());
 					}
 					if (commonObj != null && commonObj.has("UserCollege")) {
 						userCollege = commonObj.get("UserCollege").textValue();

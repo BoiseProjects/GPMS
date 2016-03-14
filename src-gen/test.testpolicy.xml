@@ -27,7 +27,7 @@
     </xacml3:Target>
     <xacml3:Rule 
             Effect="Permit"
-            RuleId="http://axiomatics.com/alfa/identifier/test.testpolicy.Id_13">
+            RuleId="http://axiomatics.com/alfa/identifier/test.testpolicy.Id_1">
         <xacml3:Description />
         <xacml3:Target />
     </xacml3:Rule>
