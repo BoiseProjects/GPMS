@@ -1173,6 +1173,9 @@ public class ProposalService {
 					// using our serializable method for cloning
 					oldProposal = SerializationHelper
 							.cloneThroughSerialize(existingProposal);
+					if (existingProposal.equals(oldProposal)) {
+						System.out.println("Both are Equals!");
+					}
 				}
 			}
 
@@ -3090,7 +3093,7 @@ public class ProposalService {
 
 									if (existingProposal.getDeanApproval() == ApprovalType.APPROVED
 											&& existingProposal
-													.getBusinessManagerApproval() != ApprovalType.READYFORAPPROVAL) {
+													.getBusinessManagerApproval() == ApprovalType.APPROVED) {
 										existingProposal
 												.setResearchAdministratorApproval(ApprovalType.READYFORAPPROVAL);
 
@@ -3262,6 +3265,13 @@ public class ProposalService {
 						if (!proposalID.equals("0")
 								&& currentProposalRoles != null) {
 
+							int coPICount = existingProposal
+									.getInvestigatorInfo().getCo_pi().size();
+
+							int seniorCount = existingProposal
+									.getInvestigatorInfo().getSeniorPersonnel()
+									.size();
+
 							if (existingProposal.getChairApproval() == ApprovalType.READYFORAPPROVAL
 									&& proposalUserTitle.textValue().equals(
 											"Department Chair")) {
@@ -3271,6 +3281,12 @@ public class ProposalService {
 
 								existingProposal
 										.setSubmittedByPI(SubmitType.NOTSUBMITTED);
+
+								if (coPICount > 0 && seniorCount > 0) {
+									existingProposal
+											.setReadyForSubmissionByPI(ReadyType.NOTREADYFORSUBMIT);
+								}
+								existingProposal.getSignatureInfo().clear();
 
 								// Proposal Status
 								existingProposal.getProposalStatus().clear();
@@ -3290,6 +3306,13 @@ public class ProposalService {
 								existingProposal
 										.setIrbApproval(ApprovalType.NOTREADYFORAPPROVAL);
 
+								if (coPICount > 0 && seniorCount > 0) {
+									existingProposal
+											.setReadyForSubmissionByPI(ReadyType.NOTREADYFORSUBMIT);
+								}
+
+								existingProposal.getSignatureInfo().clear();
+
 								// Proposal Status
 								existingProposal.getProposalStatus().clear();
 								existingProposal.getProposalStatus().add(
@@ -3305,6 +3328,13 @@ public class ProposalService {
 								existingProposal
 										.setSubmittedByPI(SubmitType.NOTSUBMITTED);
 
+								if (coPICount > 0 && seniorCount > 0) {
+									existingProposal
+											.setReadyForSubmissionByPI(ReadyType.NOTREADYFORSUBMIT);
+								}
+
+								existingProposal.getSignatureInfo().clear();
+
 								// Proposal Status
 								existingProposal.getProposalStatus().clear();
 								existingProposal.getProposalStatus().add(
@@ -3319,6 +3349,13 @@ public class ProposalService {
 
 								existingProposal
 										.setSubmittedByPI(SubmitType.NOTSUBMITTED);
+
+								if (coPICount > 0 && seniorCount > 0) {
+									existingProposal
+											.setReadyForSubmissionByPI(ReadyType.NOTREADYFORSUBMIT);
+								}
+
+								existingProposal.getSignatureInfo().clear();
 
 								// Proposal Status
 								existingProposal.getProposalStatus().clear();
@@ -3337,6 +3374,13 @@ public class ProposalService {
 								existingProposal
 										.setSubmittedByPI(SubmitType.NOTSUBMITTED);
 
+								if (coPICount > 0 && seniorCount > 0) {
+									existingProposal
+											.setReadyForSubmissionByPI(ReadyType.NOTREADYFORSUBMIT);
+								}
+
+								existingProposal.getSignatureInfo().clear();
+
 								// Proposal Status
 								existingProposal.getProposalStatus().clear();
 								existingProposal.getProposalStatus().add(
@@ -3353,6 +3397,13 @@ public class ProposalService {
 
 								existingProposal
 										.setSubmittedByPI(SubmitType.NOTSUBMITTED);
+
+								if (coPICount > 0 && seniorCount > 0) {
+									existingProposal
+											.setReadyForSubmissionByPI(ReadyType.NOTREADYFORSUBMIT);
+								}
+
+								existingProposal.getSignatureInfo().clear();
 
 								// Proposal Status
 								existingProposal.getProposalStatus().clear();

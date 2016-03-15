@@ -77,6 +77,13 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 		return ds.createQuery(Proposal.class).field("_id").equal(id).get();
 	}
 
+	public Proposal findProposalByProposalIDExceptAuditLog(ObjectId proposalId) {
+		Datastore ds = getDatastore();
+		return ds.createQuery(Proposal.class)
+				.retrievedFields(false, "_id", "audit log", "version")
+				.field("_id").equal(proposalId).get();
+	}
+
 	public void saveProposal(Proposal newProposal, UserProfile authorProfile) {
 		Datastore ds = getDatastore();
 		audit = new AuditLog(authorProfile, "Created proposal by "
