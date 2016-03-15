@@ -3638,7 +3638,7 @@ $(function() {
 		case 15:
 			if (myProposal.config.proposalId != '0') {
 				alert("You are allowed to Edit this Section!");
-				 $(myProposal.config.content).find('input, select, textarea')
+				$(myProposal.config.content).find('input, select, textarea')
 						.each(function() {
 							// $(this).addClass("ignore");
 							$(this).prop('disabled', false);

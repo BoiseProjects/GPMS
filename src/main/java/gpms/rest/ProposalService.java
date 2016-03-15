@@ -3088,7 +3088,9 @@ public class ProposalService {
 									existingProposal.getProposalStatus().add(
 											Status.REVIEWEDBYIRB);
 
-									if (existingProposal.getDeanApproval() == ApprovalType.APPROVED) {
+									if (existingProposal.getDeanApproval() == ApprovalType.APPROVED
+											&& existingProposal
+													.getBusinessManagerApproval() != ApprovalType.READYFORAPPROVAL) {
 										existingProposal
 												.setResearchAdministratorApproval(ApprovalType.READYFORAPPROVAL);
 
