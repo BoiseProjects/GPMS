@@ -3820,15 +3820,30 @@ public class ProposalService {
 		// 1st Get the Proposal, then get the Pi, CoPi and SP attached to it
 		List<InvestigatorRefAndPosition> investigatorList = new ArrayList<InvestigatorRefAndPosition>();
 
+		
+		//For now I'm going to handle this boolean here...
+		boolean isAdmin=false;
+		//The getSupervisory method we'll call wants a boolean "isAdmin" this is just used to define
+		//whether or not someone is in an administrative position.  
+		//For example: when we want a department chair, we need their college and their department that 
+		//they are from, but if we want a dean, we just need their college, because they're the dean
+		//of the college, and not part of a department under that college
+		//The boolean tells the getSuper method which search call it needs to make, for now
+		//this is done for simplicity
+		if(posTitle.equals("Dean"))
+		{
+			isAdmin=true;
+		}
+		
 		investigatorList.add(checkProposal.getInvestigatorInfo().getPi());
 		for (InvestigatorRefAndPosition coPi : checkProposal
 				.getInvestigatorInfo().getCo_pi()) {
 			investigatorList.add(coPi);
 		}
-		for (InvestigatorRefAndPosition senior : checkProposal
-				.getInvestigatorInfo().getSeniorPersonnel()) {
-			investigatorList.add(senior);
-		}
+//		for (InvestigatorRefAndPosition senior : checkProposal
+//				.getInvestigatorInfo().getSeniorPersonnel()) {
+//			investigatorList.add(senior);
+//		} //Apparently we do not need the supers for senior personnel
 
 		ArrayList<UserProfile> supervisorsList = new ArrayList<UserProfile>();
 		// For each person on this list, get their supervisory personnel, and
@@ -3843,10 +3858,12 @@ public class ProposalService {
 		// will handle this with a nest for loop
 		// Hopefully this does not result in a giant run time
 
+
+		// 2nd Find out all of their supervisory personnel
 		for (InvestigatorRefAndPosition investigator : investigatorList) {
 			List<UserProfile> tempList = userProfileDAO
-					.getSupervisoryPersonnels(investigator.getDepartment(),
-							posTitle);
+					.getSupervisoryPersonnels(investigator.getCollege(),
+							investigator.getDepartment(), posTitle, isAdmin);
 			for (UserProfile profs : tempList) {
 				if (!supervisorsList.contains(profs)) {
 					supervisorsList.add(profs);
@@ -3854,31 +3871,36 @@ public class ProposalService {
 			}
 		}
 
-		int sigCount = 0;
-		boolean isSigned = true;
-		// For all the supervisors on the list, we need to get their status as
-		// signed or not signed.
 
-		// 2nd Find out all of their supervisory personnel
-		for (UserProfile supervisor : supervisorsList) {
-			for (SignatureInfo signature : checkProposal.getSignatureInfo()) {
-				if (!signature.getUserProfileId().toString()
-						.equals(supervisor.getId().toString())
-						&& !signature.getPositionTitle().equals(posTitle)) {
-					isSigned = false;
-				}
-
-				if (isSigned) {
-					sigCount++;
-				}
-			}
-
-		}
 
 		// 3rd Evaluate if these personnel have "signed" the proposal
-		if (sigCount == supervisorsList.size()) {
+		List<SignatureInfo> checkSigs = checkProposal.getSignatureInfo();
+		boolean isOnList=false;
+		int sigsCount=0;
+		for(UserProfile superProfs : supervisorsList)
+		{
+			for(SignatureInfo sigsProfs : checkSigs)
+			{
+				if(sigsProfs.getFullName().equals(superProfs.getFullName()))
+				{
+					if(sigsProfs.getPositionTitle().equals(posTitle))
+					{
+						isOnList=true;
+					}
+				}
+
+			}
+			if(isOnList)
+			{
+				sigsCount++;
+				isOnList=false;
+			}
+		}
+		
+		if(sigsCount == supervisorsList.size()){
 			return true;
-		} else {
+		}else
+		{
 			return false;
 		}
 	}

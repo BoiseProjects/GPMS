@@ -30,6 +30,8 @@ public class InvestigatorRefAndPosition implements Serializable {
 
 	@Property("position title")
 	private String positionTitle = new String();
+	
+	private String fullName = new String();
 
 	public InvestigatorRefAndPosition() {
 
@@ -83,6 +85,10 @@ public class InvestigatorRefAndPosition implements Serializable {
 		this.positionTitle = positionTitle;
 	}
 
+	public void setFullName(String firstName, String lastName){
+		fullName = firstName+" "+lastName;
+	}
+	
 	@Override
 	public String toString() {
 		return "InvestigatorRefAndPosition [userRef=" + userRef

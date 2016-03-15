@@ -2023,7 +2023,7 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 			container.add(container.and(
 					profileQuery.criteria("details.position title").in(
 							positions), profileQuery
-							.criteria("details.college").in(colleges)));
+					.criteria("details.college").in(colleges)));
 			if (departments != null && !departments.isEmpty()) {
 				container.add(container.and(
 						profileQuery.criteria("details.position title").equal(
@@ -2094,7 +2094,7 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 					signAdmin.setSignature("");
 					signAdmin.setNote("");
 					signAdmin
-							.setPositionTitle("University Research Administrator");
+					.setPositionTitle("University Research Administrator");
 					signAdmin.setDelegated(false);
 					if (!signatures.contains(signAdmin)) {
 						signatures.add(signAdmin);
@@ -2107,7 +2107,7 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 					signDirector.setSignature("");
 					signDirector.setNote("");
 					signDirector
-							.setPositionTitle("University Research Director");
+					.setPositionTitle("University Research Director");
 					signDirector.setDelegated(false);
 					if (!signatures.contains(signDirector)) {
 						signatures.add(signDirector);
