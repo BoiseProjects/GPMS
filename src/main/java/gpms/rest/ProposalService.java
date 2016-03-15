@@ -1559,12 +1559,12 @@ public class ProposalService {
 							.textValue()) {
 					case "1":
 						newComplianceInfo.setInvolveUseOfHumanSubjects(true);
+						irbApprovalRequired = true;
 						if (complianceInfo != null
 								&& complianceInfo.has("IRBPending")) {
 							switch (complianceInfo.get("IRBPending")
 									.textValue()) {
 							case "1":
-								irbApprovalRequired = true;
 								newComplianceInfo.setIrbPending(false);
 								if (complianceInfo != null
 										&& complianceInfo.has("IRB")) {
@@ -1595,12 +1595,12 @@ public class ProposalService {
 					case "1":
 						newComplianceInfo
 								.setInvolveUseOfVertebrateAnimals(true);
+						irbApprovalRequired = true;
 						if (complianceInfo != null
 								&& complianceInfo.has("IACUCPending")) {
 							switch (complianceInfo.get("IACUCPending")
 									.textValue()) {
 							case "1":
-								irbApprovalRequired = true;
 								newComplianceInfo.setIacucPending(false);
 								if (complianceInfo != null
 										&& complianceInfo.has("IACUC")) {
@@ -1631,12 +1631,12 @@ public class ProposalService {
 							.textValue()) {
 					case "1":
 						newComplianceInfo.setInvolveBiosafetyConcerns(true);
+						irbApprovalRequired = true;
 						if (complianceInfo != null
 								&& complianceInfo.has("IBCPending")) {
 							switch (complianceInfo.get("IBCPending")
 									.textValue()) {
 							case "1":
-								irbApprovalRequired = true;
 								newComplianceInfo.setIbcPending(false);
 								if (complianceInfo != null
 										&& complianceInfo.has("IBC")) {
@@ -1667,9 +1667,9 @@ public class ProposalService {
 							"InvolveEnvironmentalHealthAndSafetyConcerns")
 							.textValue()) {
 					case "1":
-						irbApprovalRequired = true;
 						newComplianceInfo
 								.setInvolveEnvironmentalHealthAndSafetyConcerns(true);
+						irbApprovalRequired = true;
 						break;
 					case "2":
 						newComplianceInfo
@@ -2390,46 +2390,38 @@ public class ProposalService {
 							existingProposal.getAppendices().clear();
 
 							for (Appendix uploadFile : appendixInfo) {
-								Appendix newAppendix = new Appendix();
-
 								String fileName = uploadFile.getFilename();
 								File file = new File(UPLOAD_PATH + fileName);
 
-								newAppendix.setFilename(fileName);
 								String extension = "";
 								int i = fileName.lastIndexOf('.');
 								if (i > 0) {
 									extension = fileName.substring(i + 1);
-									newAppendix.setExtension(extension);
+									uploadFile.setExtension(extension);
 								}
-								newAppendix.setFilesize(file.length());
-								newAppendix.setFilepath("/uploads/" + fileName);
+								uploadFile.setFilesize(file.length());
+								uploadFile.setFilepath("/uploads/" + fileName);
 
-								newAppendix.setTitle(uploadFile.getTitle());
-
-								existingProposal.getAppendices().add(
-										newAppendix);
+								existingProposal.getAppendices()
+										.add(uploadFile);
 							}
 						}
 						// }
 					} else {
 						for (Appendix uploadFile : appendixInfo) {
-							Appendix newAppendix = new Appendix();
-
 							String fileName = uploadFile.getFilename();
 							File file = new File(UPLOAD_PATH + fileName);
 
-							newAppendix.setFilename(fileName);
 							String extension = "";
 							int i = fileName.lastIndexOf('.');
 							if (i > 0) {
 								extension = fileName.substring(i + 1);
-								newAppendix.setExtension(extension);
+								uploadFile.setExtension(extension);
 							}
-							newAppendix.setFilesize(file.length());
-							newAppendix.setFilepath("\\uploads\\" + fileName);
+							uploadFile.setFilesize(file.length());
+							uploadFile.setFilepath("/uploads/" + fileName);
 
-							newProposal.getAppendices().add(newAppendix);
+							newProposal.getAppendices().add(uploadFile);
 						}
 					}
 				}
@@ -3007,9 +2999,6 @@ public class ProposalService {
 									// TODO check the compliance and IRB
 									// approvable needed or not?
 									if (irbApprovalRequired) {
-										// existingProposal
-										// .setChairApproval(ApprovalType.APPROVED);
-
 										existingProposal
 												.setIrbApproval(ApprovalType.READYFORAPPROVAL);
 
@@ -3063,7 +3052,7 @@ public class ProposalService {
 								}
 							} else if (existingProposal.getIrbApproval() == ApprovalType.READYFORAPPROVAL
 									&& proposalUserTitle.textValue().equals(
-											"IRB")) {
+											"IRB") && irbApprovalRequired) {
 								for (SignatureInfo irbSign : signatures) {
 									if (irbSign.getPositionTitle()
 											.equals("IRB")) {

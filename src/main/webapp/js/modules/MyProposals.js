@@ -789,7 +789,8 @@ $(function() {
 											checkFor : '24',
 											elemClass : 'attrChkbox',
 											elemDefault : false,
-											controlclass : 'attribHeaderChkbox'
+											controlclass : 'attribHeaderChkbox',
+											hide : true
 										},
 										{
 											display : 'Proposal No',
@@ -1006,7 +1007,7 @@ $(function() {
 											hide : true
 										},
 										{
-											display : 'Current User Roles',
+											display : 'Your Role',
 											name : 'proposal_roles',
 											cssclass : '',
 											controlclass : '',
@@ -1157,7 +1158,8 @@ $(function() {
 											coltype : 'label',
 											align : 'left',
 											type : 'boolean',
-											format : 'True/False'
+											format : 'True/False',
+											hide : true
 										}, {
 											display : 'Actions',
 											name : 'action',
@@ -3636,7 +3638,7 @@ $(function() {
 		case 15:
 			if (myProposal.config.proposalId != '0') {
 				alert("You are allowed to Edit this Section!");
-				$(myProposal.config.content).find('input, select, textarea')
+				 $(myProposal.config.content).find('input, select, textarea')
 						.each(function() {
 							// $(this).addClass("ignore");
 							$(this).prop('disabled', false);

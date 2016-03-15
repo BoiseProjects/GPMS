@@ -720,8 +720,7 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 					|| positionTitle
 							.equals("Department Administrative Assistant")
 					|| positionTitle.equals("Department Chair")
-					|| positionTitle.equals("Associate Chair")
-					|| positionTitle.equals("IRB")) {
+					|| positionTitle.equals("Associate Chair")) {
 				proposalQuery
 						.and(proposalQuery
 								.or(proposalQuery.criteria(
@@ -748,6 +747,35 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 														.criteria(
 																"investigator info.senior personnel.department")
 														.equal(department)));
+			} else if (positionTitle.equals("IRB")) {
+				proposalQuery
+						.and(proposalQuery
+								.or(proposalQuery.criteria(
+										"investigator info.pi.college").equal(
+										college),
+										proposalQuery
+												.criteria(
+														"investigator info.co_pi.college")
+												.equal(college),
+										proposalQuery
+												.criteria(
+														"investigator info.senior personnel.college")
+												.equal(college)),
+								proposalQuery
+										.or(proposalQuery
+												.criteria(
+														"investigator info.pi.department")
+												.equal(department),
+												proposalQuery
+														.criteria(
+																"investigator info.co_pi.department")
+														.equal(department),
+												proposalQuery
+														.criteria(
+																"investigator info.senior personnel.department")
+														.equal(department)),
+								proposalQuery.criteria("irb approval required")
+										.equal(true));
 			} else {
 				proposalQuery
 						.or(proposalQuery.and(
