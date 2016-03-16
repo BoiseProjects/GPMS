@@ -16,6 +16,7 @@ import gpms.model.UserProfile;
 import gpms.model.UserProposalCount;
 import gpms.utils.EmailUtil;
 import gpms.utils.MultimapAdapter;
+import gpms.utils.ObjectCloner;
 import gpms.utils.PasswordHash;
 import gpms.utils.SerializationHelper;
 
@@ -44,6 +45,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.SerializationUtils;
 import org.bson.types.ObjectId;
 import org.glassfish.jersey.media.sse.OutboundEvent;
 import org.mongodb.morphia.Morphia;
@@ -963,8 +965,28 @@ public class UserService {
 					ObjectId id = new ObjectId(userID);
 					existingUserProfile = userProfileDAO
 							.findUserDetailsByProfileID(id);
-					oldUserProfile = SerializationHelper
+
+					// deep copy
+					oldUserProfile = (UserProfile) (ObjectCloner
+							.deepCopy(existingUserProfile));
+
+					UserProfile oldUserProfile2 = SerializationUtils
+							.clone(existingUserProfile);
+
+					UserProfile oldUserProfile3 = SerializationHelper
 							.cloneThroughSerialize(existingUserProfile);
+					if (existingUserProfile.equals(oldUserProfile)) {
+						System.out.println("Equals! using ObjectCloner");
+					}
+
+					if (existingUserProfile.equals(oldUserProfile2)) {
+						System.out.println("Equals! using SerializationUtils");
+					}
+
+					if (existingUserProfile.equals(oldUserProfile3)) {
+						System.out.println("Equals!");
+					}
+
 				} else {
 					newAccount.setAddedOn(new Date());
 				}

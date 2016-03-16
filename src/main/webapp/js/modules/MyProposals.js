@@ -789,7 +789,8 @@ $(function() {
 											checkFor : '24',
 											elemClass : 'attrChkbox',
 											elemDefault : false,
-											controlclass : 'attribHeaderChkbox'
+											controlclass : 'attribHeaderChkbox',
+											hide : true
 										},
 										{
 											display : 'Proposal No',
@@ -1006,7 +1007,7 @@ $(function() {
 											hide : true
 										},
 										{
-											display : 'Current User Roles',
+											display : 'Your Role',
 											name : 'proposal_roles',
 											cssclass : '',
 											controlclass : '',
@@ -1157,7 +1158,8 @@ $(function() {
 											coltype : 'label',
 											align : 'left',
 											type : 'boolean',
-											format : 'True/False'
+											format : 'True/False',
+											hide : true
 										}, {
 											display : 'Actions',
 											name : 'action',
@@ -1339,16 +1341,16 @@ $(function() {
 				$("#trSignDirector").show();
 
 				// OSP Section
-				$('#ui-id-25').show();
+				$('#ui-id-23').show();
 				if (GPMS.utils.GetUserPositionTitle() == "University Research Administrator"
 						|| GPMS.utils.GetUserPositionTitle() == "University Research Director") {
-					$('#ui-id-26').find('input, select, textarea').each(
+					$('#ui-id-24').find('input, select, textarea').each(
 							function() {
 								// $(this).addClass("ignore");
 								$(this).prop('disabled', false);
 							});
 				} else {
-					$('#ui-id-26').find('input, select, textarea').each(
+					$('#ui-id-24').find('input, select, textarea').each(
 							function() {
 								// $(this).addClass("ignore");
 								$(this).prop('disabled', true);
