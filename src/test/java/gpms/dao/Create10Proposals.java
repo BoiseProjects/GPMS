@@ -161,7 +161,7 @@ public class Create10Proposals {
 			SignatureInfo newSignInfo = new SignatureInfo();
 
 			List<String> deptsList = new ArrayList<String>();
-
+			List<String> collegeList = new ArrayList<String>();
 			List<UserProfile> deanList = new ArrayList<UserProfile>();
 			List<UserProfile> deptChairList = new ArrayList<UserProfile>();
 			List<UserProfile> IRBList = new ArrayList<UserProfile>();
@@ -172,22 +172,34 @@ public class Create10Proposals {
 					deptsList.add(copi.getDepartment());
 				}
 			}
-
-			for (InvestigatorRefAndPosition seniorp : newInfo
-					.getSeniorPersonnel()) {
-				if (!deptsList.contains(seniorp.getDepartment())) {
-					deptsList.add(seniorp.getDepartment());
+			
+			collegeList.add(newInfo.getPi().getCollege());
+			for (InvestigatorRefAndPosition copi : newInfo.getCo_pi()) {
+				if (!collegeList.contains(copi.getCollege())) {
+					collegeList.add(copi.getCollege());
 				}
 			}
 
-			for (String dept : deptsList) {
-				deanList = newUserProfileDAO.getSupervisoryPersonnels(dept,
-						"Dean");
-				deptChairList = newUserProfileDAO.getSupervisoryPersonnels(
-						dept, "Department Chair");
-				IRBList = newUserProfileDAO.getSupervisoryPersonnels(dept,
-						"IRB");
+//			for (InvestigatorRefAndPosition seniorp : newInfo
+//					.getSeniorPersonnel()) {
+//				if (!deptsList.contains(seniorp.getDepartment())) {
+//					deptsList.add(seniorp.getDepartment());
+//				}
+//			}
+
+			for(String college : collegeList)
+			{
+				deanList.addAll(newUserProfileDAO.getSupervisoryPersonnels(college,
+						"Dean", "", true));
+				for (String dept : deptsList) 
+				{
+					deptChairList.addAll(newUserProfileDAO.getSupervisoryPersonnels(
+							college, dept, "Department Chair", false));
+					IRBList.addAll(newUserProfileDAO.getSupervisoryPersonnels(college,
+							dept, "IRB", false));
+				}
 			}
+			
 
 			if (!(propNumb % 2 == 0)) {
 				if (deanList.size() > 0) {

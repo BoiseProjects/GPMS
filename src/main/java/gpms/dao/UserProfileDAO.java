@@ -987,18 +987,26 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 	 * @param2 the department we need to find them in
 	 * @return
 	 */
-	public List<UserProfile> getSupervisoryPersonnels(String department,
-			String positionTitle) {
+	public List<UserProfile> getSupervisoryPersonnels(String College, String department,
+			String positionTitle, boolean isAdmin) {
 		Datastore ds = getDatastore();
 
 		Query<UserProfile> profileQuery = ds.createQuery(UserProfile.class);
 
+		if(isAdmin)
+		{
+			profileQuery.and(
+					profileQuery.criteria("details.college").equal(College),
+					profileQuery.criteria("details.position title").equal(positionTitle));
+		}else
+		{
 		profileQuery.and(
 				// profileQuery.criteria("details.college").equal(college),
 				profileQuery.criteria("details.department").equal(department),
-				profileQuery.criteria("details.position title").equal(
-						positionTitle));
-
+				profileQuery.criteria("details.position title").equal(positionTitle),
+				profileQuery.criteria("details.college").equal(College));
+		}
+		
 		return profileQuery.asList();
 	}
 }
