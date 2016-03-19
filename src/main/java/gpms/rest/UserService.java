@@ -757,6 +757,7 @@ public class UserService {
 		notification.setUserProfileId(userProfile.getId().toString());
 		notification.setUsername(userAccount.getUserName());
 		notification.setForAdmin(true);
+		notification.setCritical(isCritical);
 		notificationDAO.save(notification);
 
 		// To All User Roles based on positions
@@ -975,6 +976,8 @@ public class UserService {
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode root = mapper.readTree(message);
 
+		boolean isActiveUser = false;
+
 		if (root != null && root.has("userInfo")) {
 			JsonNode userInfo = root.get("userInfo");
 
@@ -1022,6 +1025,8 @@ public class UserService {
 							"IsActive").booleanValue()) {
 						existingUserAccount.setActive(userInfo.get("IsActive")
 								.booleanValue());
+
+						isActiveUser = userInfo.get("IsActive").booleanValue();
 					}
 				} else {
 					newAccount.setActive(userInfo.get("IsActive")
@@ -1366,7 +1371,6 @@ public class UserService {
 		NotificationLog notification = new NotificationLog();
 		if (!userID.equals("0")) {
 			if (!oldUserProfile.equals(existingUserProfile)) {
-
 				// Save the User Account
 				if (!oldUserProfile.getUserAccount()
 						.equals(existingUserAccount)) {
@@ -1378,7 +1382,11 @@ public class UserService {
 				// For Admin
 				notification = new NotificationLog();
 				notification.setType("User");
-				notification.setAction("Account is updated.");
+				if (isActiveUser) {
+					notification.setAction("Account is activated.");
+				} else {
+					notification.setAction("Account is updated.");
+				}
 				notification.setUserProfileId(existingUserProfile.getId()
 						.toString());
 				notification.setUsername(existingUserProfile.getUserAccount()
