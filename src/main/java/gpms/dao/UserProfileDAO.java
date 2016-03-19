@@ -513,6 +513,12 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 		return ds.createQuery(UserProfile.class).field("_id").equal(id).get();
 	}
 
+	public UserProfile findUserInfoByProfileID(ObjectId id) {
+		Datastore ds = getDatastore();
+		return ds.createQuery(UserProfile.class)
+				.retrievedFields(true, "user id").field("_id").equal(id).get();
+	}
+
 	public UserProfile findByUserAccount(UserAccount userAccount) {
 		Datastore ds = getDatastore();
 
@@ -987,26 +993,28 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 	 * @param2 the department we need to find them in
 	 * @return
 	 */
-	public List<UserProfile> getSupervisoryPersonnels(String College, String department,
-			String positionTitle, boolean isAdmin) {
+	public List<UserProfile> getSupervisoryPersonnels(String College,
+			String department, String positionTitle, boolean isAdmin) {
 		Datastore ds = getDatastore();
 
 		Query<UserProfile> profileQuery = ds.createQuery(UserProfile.class);
 
-		if(isAdmin)
-		{
+		if (isAdmin) {
 			profileQuery.and(
 					profileQuery.criteria("details.college").equal(College),
-					profileQuery.criteria("details.position title").equal(positionTitle));
-		}else
-		{
-		profileQuery.and(
-				// profileQuery.criteria("details.college").equal(college),
-				profileQuery.criteria("details.department").equal(department),
-				profileQuery.criteria("details.position title").equal(positionTitle),
-				profileQuery.criteria("details.college").equal(College));
+					profileQuery.criteria("details.position title").equal(
+							positionTitle));
+		} else {
+			profileQuery.and(
+					// profileQuery.criteria("details.college").equal(college),
+					profileQuery.criteria("details.department").equal(
+							department),
+					profileQuery.criteria("details.position title").equal(
+							positionTitle),
+					profileQuery.criteria("details.college").equal(College));
 		}
-		
+
 		return profileQuery.asList();
 	}
+
 }

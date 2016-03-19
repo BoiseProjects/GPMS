@@ -14,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties({ "id", "version", "auditLog" })
 public abstract class BaseEntity {
+
 	@Id
 	@Property("id")
 	@JsonProperty("id")
@@ -54,12 +55,6 @@ public abstract class BaseEntity {
 
 	public void setAuditLog(List<AuditLog> auditLog) {
 		this.auditLog = auditLog;
-	}
-
-	@Override
-	public String toString() {
-		return "BaseEntity [id=" + id + ", version=" + version + ", auditLog="
-				+ auditLog + "]";
 	}
 
 }

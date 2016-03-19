@@ -16,7 +16,6 @@ import gpms.model.UserProfile;
 import gpms.model.UserProposalCount;
 import gpms.utils.EmailUtil;
 import gpms.utils.MultimapAdapter;
-import gpms.utils.ObjectCloner;
 import gpms.utils.PasswordHash;
 import gpms.utils.SerializationHelper;
 
@@ -45,7 +44,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.commons.lang3.SerializationUtils;
 import org.bson.types.ObjectId;
 import org.glassfish.jersey.media.sse.OutboundEvent;
 import org.mongodb.morphia.Morphia;
@@ -325,6 +323,28 @@ public class UserService {
 
 		return mapper.setDateFormat(formatter).writerWithDefaultPrettyPrinter()
 				.writeValueAsString(user);
+	}
+
+	@POST
+	@Path("/GetUserInfoByProfileId")
+	public String produceUserInfoByProfileId(String message)
+			throws JsonProcessingException, IOException {
+		UserProfile user = new UserProfile();
+		String profileId = new String();
+
+		ObjectMapper mapper = new ObjectMapper();
+		JsonNode root = mapper.readTree(message);
+
+		if (root != null && root.has("userId")) {
+			profileId = root.get("userId").textValue();
+		}
+
+		ObjectId id = new ObjectId(profileId);
+
+		user = userProfileDAO.findUserInfoByProfileID(id);
+
+		return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(
+				user.getUserAccount().getPassword());
 	}
 
 	@POST
@@ -965,28 +985,8 @@ public class UserService {
 					ObjectId id = new ObjectId(userID);
 					existingUserProfile = userProfileDAO
 							.findUserDetailsByProfileID(id);
-
-					// deep copy
-					oldUserProfile = (UserProfile) (ObjectCloner
-							.deepCopy(existingUserProfile));
-
-					UserProfile oldUserProfile2 = SerializationUtils
-							.clone(existingUserProfile);
-
-					UserProfile oldUserProfile3 = SerializationHelper
+					oldUserProfile = SerializationHelper
 							.cloneThroughSerialize(existingUserProfile);
-					if (existingUserProfile.equals(oldUserProfile)) {
-						System.out.println("Equals! using ObjectCloner");
-					}
-
-					if (existingUserProfile.equals(oldUserProfile2)) {
-						System.out.println("Equals! using SerializationUtils");
-					}
-
-					if (existingUserProfile.equals(oldUserProfile3)) {
-						System.out.println("Equals!");
-					}
-
 				} else {
 					newAccount.setAddedOn(new Date());
 				}
@@ -1363,17 +1363,17 @@ public class UserService {
 		UserProfile authorProfile = userProfileDAO
 				.findUserDetailsByProfileID(authorId);
 
-		// Save the User Account
-		if (!userID.equals("0")) {
-			userAccountDAO.save(existingUserAccount);
-		} else {
-			userAccountDAO.save(newAccount);
-		}
-
 		// Save the User Profile
 		NotificationLog notification = new NotificationLog();
 		if (!userID.equals("0")) {
 			if (!oldUserProfile.equals(existingUserProfile)) {
+
+				// Save the User Account
+				if (!oldUserProfile.getUserAccount()
+						.equals(existingUserAccount)) {
+					userAccountDAO.save(existingUserAccount);
+				}
+
 				userProfileDAO.updateUser(existingUserProfile, authorProfile);
 
 				// For Admin
@@ -1406,6 +1406,8 @@ public class UserService {
 				}
 			}
 		} else {
+			userAccountDAO.save(newAccount);
+
 			userProfileDAO.saveUser(newProfile, authorProfile);
 
 			// For Admin

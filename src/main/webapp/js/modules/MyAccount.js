@@ -206,6 +206,19 @@ $(function() {
 					});
 		},
 
+		RefreshUserData : function(userProfileId) {
+			myAccount.config.url = myAccount.config.baseURL
+					+ "GetUserInfoByProfileId";
+			myAccount.config.data = JSON2.stringify({
+				userId : userProfileId
+			});
+			myAccount.config.ajaxCallMode = 6;
+			myAccount.ajaxCall(myAccount.config);
+
+			myAccount.BindUserAuditLogGrid(userProfileId, null, null, null,
+					null);
+		},
+
 		EditUser : function(userProfileId) {
 			$('#txtPassword').rules("remove");
 			$('#txtConfirmPassword').rules("remove");
@@ -1068,10 +1081,13 @@ $(function() {
 				$('#txtConfirmPassword').val('');
 				$('#txtPassword').rules("remove");
 				$('#txtConfirmPassword').rules("remove");
-				myAccount.BindUserAuditLogGrid(userProfileId, null, null, null,
-						null);
+				myAccount.RefreshUserData(userProfileId);
 				csscody.info("<h2>" + 'Successful Message' + "</h2><p>"
 						+ 'User has been updated successfully.' + "</p>");
+				break;
+
+			case 6:
+				$('#txtPassword').val(msg);
 				break;
 			}
 		},
@@ -1101,6 +1117,11 @@ $(function() {
 			case 5:
 				csscody.error("<h2>" + 'Error Message' + "</h2><p>"
 						+ 'Failed to update user!' + "</p>");
+				break;
+
+			case 6:
+				csscody.error("<h2>" + 'Error Message' + "</h2><p>"
+						+ 'Failed to get user information!' + "</p>");
 				break;
 			}
 		},

@@ -1232,7 +1232,7 @@ $(function() {
 			if (proposalStatus != ""
 					&& (($.inArray("PI", currentProposalRoles) !== -1
 							&& config.submittedByPI == "NOTSUBMITTED"
-							&& config.readyForSubmitionByPI == "READYFORSUBMIT" && config.deletedByPI == "NOTDELETED") || (currentPositionTitle == "University Research Administrator"
+							&& config.readyForSubmitionByPI && config.deletedByPI == "NOTDELETED") || (currentPositionTitle == "University Research Administrator"
 							&& config.researchAdministratorSubmission == "NOTSUBMITTED" && config.researchDirectorApproval == "APPROVED"))) {
 				$("#btnSubmitProposal").show();
 			} else {
@@ -1240,9 +1240,8 @@ $(function() {
 			}
 
 			if (proposalStatus != ""
-					&& ($.inArray("PI", currentProposalRoles) !== -1
-							|| ($.inArray("CO-PI", currentProposalRoles) !== -1 && config.readyForSubmitionByPI == "NOTREADYFORSUBMIT") || ($
-							.inArray("Senior", currentProposalRoles) !== -1 && config.readyForSubmitionByPI == "NOTREADYFORSUBMIT"))
+					&& ($.inArray("PI", currentProposalRoles) !== -1 || ($
+							.inArray("CO-PI", currentProposalRoles) !== -1 && !config.readyForSubmitionByPI))
 					&& config.submittedByPI == "NOTSUBMITTED") {
 				$("#btnUpdateProposal").show();
 			} else {
@@ -3467,7 +3466,6 @@ $(function() {
 								switch (item.positionTitle) {
 								case "PI":
 								case "Co-PI":
-								case "Senior":
 									$(cloneRow).appendTo("#trSignPICOPI tbody");
 									break;
 								case "Department Chair":

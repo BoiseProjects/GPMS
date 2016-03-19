@@ -1,13 +1,7 @@
 package gpms.model;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import gpms.DAL.MongoDBConnector;
-import gpms.dao.NotificationDAO;
 import gpms.dao.ProposalDAO;
-import gpms.dao.UserAccountDAO;
 import gpms.dao.UserProfileDAO;
 import gpms.utils.ObjectCloner;
 import gpms.utils.SerializationHelper;
@@ -25,88 +19,85 @@ public class Demo {
 		MongoClient mongoClient = null;
 		Morphia morphia = null;
 		String dbName = "db_gpms";
-		UserAccountDAO userAccountDAO = null;
-		UserProfileDAO userProfileDAO = null;
 		ProposalDAO proposalDAO = null;
-		NotificationDAO notificationDAO = null;
-
-		DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-
+		UserProfileDAO userProfileDAO = null;
 		mongoClient = MongoDBConnector.getMongo();
 		morphia = new Morphia();
 		morphia.map(UserProfile.class).map(UserAccount.class);
-		userAccountDAO = new UserAccountDAO(mongoClient, morphia, dbName);
-		userProfileDAO = new UserProfileDAO(mongoClient, morphia, dbName);
 		proposalDAO = new ProposalDAO(mongoClient, morphia, dbName);
-		notificationDAO = new NotificationDAO(mongoClient, morphia, dbName);
+		userProfileDAO = new UserProfileDAO(mongoClient, morphia, dbName);
 
+		// User Starts here
 		String userID = "56e459c1af68c71ea4248ed8";
 		ObjectId id = new ObjectId(userID);
+
 		UserProfile existingUserProfile = userProfileDAO
 				.findUserDetailsByProfileID(id);
 
 		// deep copy
-		UserProfile oldUserProfile = (UserProfile) (ObjectCloner
-				.deepCopy(existingUserProfile));
+		UserProfile ceDeepClone = SerializationUtils.clone(existingUserProfile);
 
-		UserProfile oldUserProfile2 = SerializationUtils
-				.clone(existingUserProfile);
+		// ce.setNum(200);
 
-		UserProfile oldUserProfile3 = SerializationHelper
-				.cloneThroughSerialize(existingUserProfile);
-		if (existingUserProfile.equals(oldUserProfile)) {
-			System.out.println("Equals! using ObjectCloner");
-		}
-
-		if (existingUserProfile.equals(oldUserProfile2)) {
+		if (existingUserProfile.equals(ceDeepClone)) {
 			System.out.println("Equals! using SerializationUtils");
 		}
 
-		if (existingUserProfile.equals(oldUserProfile3)) {
-			System.out.println("Equals!");
+		UserProfile ceDeepCopy = (UserProfile) (ObjectCloner
+				.deepCopy(existingUserProfile));
+
+		if (existingUserProfile.equals(ceDeepCopy)) {
+			System.out.println("Equals! using ObjectCloner");
 		}
 
-		// CloneExample ce = new CloneExample();
-		// AuditLog newLog = new AuditLog();
-		// newLog.setAction("Edited!");
-		// newLog.setActivityDate(new Date());
-		// ce.getAuditLog().add(newLog);
-		// ce.setNum(3);
-		// ce.setThing(new Thing("Fred"));
-		// System.out.println("Before cloning");
-		// System.out.println("ce:" + ce);
-		//
-		// CloneExample ceShallowClone = ce.clone();
-		// CloneExample cdDeepClone = SerializationHelper
-		// .cloneThroughSerialize(ce);
-		//
-		// CloneExample normalCopy = ce;
-		//
-		// // System.out.println("\nAfter cloning, setting ce num to 5");
-		// // ce.setNum(5);
-		// //
-		// System.out.println("After cloning, setting ce thing name to Barney");
-		// // Thing thing = ce.getThing();
-		// // thing.setName("Barney");
-		//
-		// System.out.println("ce:" + ce);
-		// System.out.println("ceShallowClone:" + ceShallowClone);
-		// System.out.println("cdDeepClone:" + cdDeepClone);
-		//
-		// // ce.setNum(500);
-		// if (cdDeepClone.equals(ce)) {
-		// System.out.println("Equals");
-		//
-		// }
-		//
-		// if (ceShallowClone.equals(ce)) {
-		// System.out.println("Equals");
-		//
-		// }
-		//
+		UserProfile ceDeepClone2 = SerializationHelper
+				.cloneThroughSerialize(existingUserProfile);
+
+		if (existingUserProfile.equals(ceDeepClone2)) {
+			System.out.println("Equals! using SerializationHelper");
+		}
+
+		UserProfile normalCopy = existingUserProfile;
+
 		// normalCopy.setNum(100);
+
+		if (normalCopy.equals(existingUserProfile)) {
+			System.out.println("Equals");
+		}
+
+		// // Proposal Starts here
+		// String proposalID = "56e84538d87e7b1a989d7df2";
+		// ObjectId id = new ObjectId(proposalID);
+		// Proposal existingProposal = proposalDAO.findProposalByProposalID(id);
 		//
-		// if (normalCopy.equals(ce)) {
+		// // deep copy
+		// Proposal ceDeepClone = SerializationUtils.clone(existingProposal);
+		//
+		// // ce.setNum(200);
+		//
+		// if (existingProposal.equals(ceDeepClone)) {
+		// System.out.println("Equals! using SerializationUtils");
+		// }
+		//
+		// Proposal ceDeepCopy = (Proposal) (ObjectCloner
+		// .deepCopy(existingProposal));
+		//
+		// if (existingProposal.equals(ceDeepCopy)) {
+		// System.out.println("Equals! using ObjectCloner");
+		// }
+		//
+		// Proposal ceDeepClone2 = SerializationHelper
+		// .cloneThroughSerialize(existingProposal);
+		//
+		// if (existingProposal.equals(ceDeepClone2)) {
+		// System.out.println("Equals! using SerializationHelper");
+		// }
+		//
+		// Proposal normalCopy = existingProposal;
+		//
+		// // normalCopy.setNum(100);
+		//
+		// if (normalCopy.equals(existingProposal)) {
 		// System.out.println("Equals");
 		// }
 

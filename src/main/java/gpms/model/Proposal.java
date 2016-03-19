@@ -8,7 +8,6 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Indexed;
@@ -45,7 +44,7 @@ public class Proposal extends BaseEntity implements Serializable {
 	private SubmitType submittedByPI = SubmitType.NOTSUBMITTED;
 
 	@Property("ready for submission by PI")
-	private ReadyType readyForSubmissionByPI = ReadyType.NOTREADYFORSUBMIT;
+	private boolean readyForSubmissionByPI = false;
 
 	@Property("deleted by PI")
 	private DeleteType deletedByPI = DeleteType.NOTDELETED;
@@ -168,11 +167,11 @@ public class Proposal extends BaseEntity implements Serializable {
 		this.submittedByPI = submittedByPI;
 	}
 
-	public ReadyType getReadyForSubmissionByPI() {
+	public boolean isReadyForSubmissionByPI() {
 		return readyForSubmissionByPI;
 	}
 
-	public void setReadyForSubmissionByPI(ReadyType readyForSubmissionByPI) {
+	public void setReadyForSubmissionByPI(boolean readyForSubmissionByPI) {
 		this.readyForSubmissionByPI = readyForSubmissionByPI;
 	}
 
@@ -464,10 +463,7 @@ public class Proposal extends BaseEntity implements Serializable {
 		result = prime * result + proposalNo;
 		result = prime * result
 				+ ((proposalStatus == null) ? 0 : proposalStatus.hashCode());
-		result = prime
-				* result
-				+ ((readyForSubmissionByPI == null) ? 0
-						: readyForSubmissionByPI.hashCode());
+		result = prime * result + (readyForSubmissionByPI ? 1231 : 1237);
 		result = prime
 				* result
 				+ ((researchAdministratorApproval == null) ? 0

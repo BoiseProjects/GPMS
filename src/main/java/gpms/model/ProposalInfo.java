@@ -142,7 +142,7 @@ public class ProposalInfo {
 	private SubmitType submittedByPI = SubmitType.NOTSUBMITTED;
 
 	@JsonProperty("readyForSubmissionByPI")
-	private ReadyType readyForSubmissionByPI = ReadyType.NOTREADYFORSUBMIT;
+	private boolean readyForSubmissionByPI = false;
 
 	@JsonProperty("deletedByPI")
 	private DeleteType deletedByPI = DeleteType.NOTDELETED;
@@ -410,11 +410,11 @@ public class ProposalInfo {
 		this.submittedByPI = submittedByPI;
 	}
 
-	public ReadyType getReadyForSubmissionByPI() {
+	public boolean isReadyForSubmissionByPI() {
 		return readyForSubmissionByPI;
 	}
 
-	public void setReadyForSubmissionByPI(ReadyType readyForSubmissionByPI) {
+	public void setReadyForSubmissionByPI(boolean readyForSubmissionByPI) {
 		this.readyForSubmissionByPI = readyForSubmissionByPI;
 	}
 
