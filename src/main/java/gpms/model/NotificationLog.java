@@ -21,6 +21,7 @@ public class NotificationLog extends BaseEntity implements
 	private static final long serialVersionUID = 1L;
 
 	@Property("type")
+	// User, Investigator, Proposal, Signature
 	private String type = new String();
 
 	@Property("action")
