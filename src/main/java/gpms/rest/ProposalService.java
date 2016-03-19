@@ -454,7 +454,7 @@ public class ProposalService {
 			// + File.separator + filename);
 			// System.out.println("Absolute Path at server=" +
 			// file.getAbsolutePath());
-			String downloadLocation = this.getClass().getResource("/tmpfiles")
+			String downloadLocation = this.getClass().getResource("/uploads")
 					.toURI().getPath();
 
 			xcelite.write(new File(downloadLocation + fileName));
@@ -800,7 +800,7 @@ public class ProposalService {
 			// + File.separator + filename);
 			// System.out.println("Absolute Path at server=" +
 			// file.getAbsolutePath());
-			String downloadLocation = this.getClass().getResource("/tmpfiles")
+			String downloadLocation = this.getClass().getResource("/uploads")
 					.toURI().getPath();
 
 			xcelite.write(new File(downloadLocation + fileName));
