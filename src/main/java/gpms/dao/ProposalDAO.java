@@ -1638,70 +1638,70 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 			}
 		}
 
-		for (InvestigatorRefAndPosition seniors : proposal
-				.getInvestigatorInfo().getSeniorPersonnel()) {
-			// Adding Seniors
-			SignatureInfo seniorSign = new SignatureInfo();
-
-			boolean seniorAlreadySigned = false;
-			for (SignatureInfo signature : proposal.getSignatureInfo()) {
-				if (seniors.getUserRef().getId().toString()
-						.equals(signature.getUserProfileId())
-						&& signature.getPositionTitle().equals("Senior")) {
-					seniorSign.setUserProfileId(signature.getUserProfileId());
-					seniorSign.setFullName(signature.getFullName());
-					seniorSign.setSignature(signature.getSignature());
-					seniorSign.setSignedDate(signature.getSignedDate());
-					seniorSign.setNote(signature.getNote());
-					seniorSign.setPositionTitle(signature.getPositionTitle());
-					seniorSign.setDelegated(signature.isDelegated());
-					if (!signatures.contains(seniorSign)) {
-						signatures.add(seniorSign);
-					}
-					boolean seniorAlreadyExist = false;
-					for (SignatureInfo sign : signatures) {
-						if (sign.getUserProfileId().equalsIgnoreCase(
-								seniorSign.getUserProfileId())) {
-							seniorAlreadyExist = true;
-							break;
-						}
-					}
-					if (!seniorAlreadyExist) {
-						signatures.add(seniorSign);
-					}
-					seniorAlreadySigned = true;
-				}
-			}
-
-			if (!seniorAlreadySigned) {
-				seniorSign.setUserProfileId(seniors.getUserRef().getId()
-						.toString());
-				seniorSign.setFullName(seniors.getUserRef().getFullName());
-				seniorSign.setSignature("");
-				seniorSign.setNote("");
-				seniorSign.setPositionTitle("Senior");
-				seniorSign.setDelegated(false);
-				boolean seniorAlreadyExist = false;
-				for (SignatureInfo sign : signatures) {
-					if (sign.getUserProfileId().equalsIgnoreCase(
-							seniorSign.getUserProfileId())) {
-						seniorAlreadyExist = true;
-						break;
-					}
-				}
-				if (!seniorAlreadyExist) {
-					signatures.add(seniorSign);
-				}
-			}
-
-			if (!colleges.contains(seniors.getCollege())) {
-				colleges.add(seniors.getCollege());
-			}
-			if (!departments.contains(seniors.getDepartment())) {
-				departments.add(seniors.getDepartment());
-			}
-		}
+		// for (InvestigatorRefAndPosition seniors : proposal
+		// .getInvestigatorInfo().getSeniorPersonnel()) {
+		// // Adding Seniors
+		// SignatureInfo seniorSign = new SignatureInfo();
+		//
+		// boolean seniorAlreadySigned = false;
+		// for (SignatureInfo signature : proposal.getSignatureInfo()) {
+		// if (seniors.getUserRef().getId().toString()
+		// .equals(signature.getUserProfileId())
+		// && signature.getPositionTitle().equals("Senior")) {
+		// seniorSign.setUserProfileId(signature.getUserProfileId());
+		// seniorSign.setFullName(signature.getFullName());
+		// seniorSign.setSignature(signature.getSignature());
+		// seniorSign.setSignedDate(signature.getSignedDate());
+		// seniorSign.setNote(signature.getNote());
+		// seniorSign.setPositionTitle(signature.getPositionTitle());
+		// seniorSign.setDelegated(signature.isDelegated());
+		// if (!signatures.contains(seniorSign)) {
+		// signatures.add(seniorSign);
 		// }
+		// boolean seniorAlreadyExist = false;
+		// for (SignatureInfo sign : signatures) {
+		// if (sign.getUserProfileId().equalsIgnoreCase(
+		// seniorSign.getUserProfileId())) {
+		// seniorAlreadyExist = true;
+		// break;
+		// }
+		// }
+		// if (!seniorAlreadyExist) {
+		// signatures.add(seniorSign);
+		// }
+		// seniorAlreadySigned = true;
+		// }
+		// }
+		//
+		// if (!seniorAlreadySigned) {
+		// seniorSign.setUserProfileId(seniors.getUserRef().getId()
+		// .toString());
+		// seniorSign.setFullName(seniors.getUserRef().getFullName());
+		// seniorSign.setSignature("");
+		// seniorSign.setNote("");
+		// seniorSign.setPositionTitle("Senior");
+		// seniorSign.setDelegated(false);
+		// boolean seniorAlreadyExist = false;
+		// for (SignatureInfo sign : signatures) {
+		// if (sign.getUserProfileId().equalsIgnoreCase(
+		// seniorSign.getUserProfileId())) {
+		// seniorAlreadyExist = true;
+		// break;
+		// }
+		// }
+		// if (!seniorAlreadyExist) {
+		// signatures.add(seniorSign);
+		// }
+		// }
+		//
+		// if (!colleges.contains(seniors.getCollege())) {
+		// colleges.add(seniors.getCollege());
+		// }
+		// if (!departments.contains(seniors.getDepartment())) {
+		// departments.add(seniors.getDepartment());
+		// }
+		// }
+
 		// 2. Get all Users filter using College in<> and Department in <> and
 		// Position Title equal <>
 		// Department Chair

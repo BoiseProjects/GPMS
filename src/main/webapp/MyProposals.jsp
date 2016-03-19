@@ -1004,8 +1004,7 @@
 														id="trSignPICOPI">
 														<thead>
 															<tr>
-																<th><span class="cssClassLabelTitle">Principal/Co-Investigator(s)/Senior
-																		Personnel(s)</span></th>
+																<th><span class="cssClassLabelTitle">Principal/Co-Investigator(s)</span></th>
 																<th><span class="cssClassLabelTitle">Signature(s)</span></th>
 																<th><span class="cssClassLabelTitle">Date</span></th>
 																<th><span class="cssClassLabelTitle">Note</span></th>
