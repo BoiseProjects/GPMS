@@ -26,7 +26,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 		"Direct Costs", "F&A Costs", "Total Costs", "F&A Rate", "Date Created",
 		"Date Submitted", "Due Date", "Project Period From",
 		"Project Period To", "Proposal Status", "Last Audited",
-		"Last Audited By", "Last Audit Action", "Is Deleted?" })
+		"Last Audited By", "Last Audit Action", "Is Deleted?",
+		"IRB Approval Required?" })
 public class ProposalInfo {
 	@JsonProperty("rowTotal")
 	private int rowTotal;

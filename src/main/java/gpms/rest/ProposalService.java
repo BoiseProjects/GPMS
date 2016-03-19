@@ -443,7 +443,6 @@ public class ProposalService {
 
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy_MM_dd");
 			Date date = new Date();
-			System.out.println(); // 2016/02/10 16:16:39
 
 			String fileName = String.format(
 					"%s.%s",
@@ -455,10 +454,10 @@ public class ProposalService {
 			// + File.separator + filename);
 			// System.out.println("Absolute Path at server=" +
 			// file.getAbsolutePath());
-			String policyLocation = this.getClass().getResource("/tmpfiles")
+			String downloadLocation = this.getClass().getResource("/tmpfiles")
 					.toURI().getPath();
 
-			xcelite.write(new File(policyLocation + fileName));
+			xcelite.write(new File(downloadLocation + fileName));
 
 			// xcelite.write(new File(request.getServletContext().getAttribute(
 			// "FILES_DIR")
@@ -790,7 +789,6 @@ public class ProposalService {
 
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy_MM_dd");
 			Date date = new Date();
-			System.out.println(); // 2016/02/10 16:16:39
 
 			String fileName = String.format(
 					"%s.%s",
@@ -802,10 +800,10 @@ public class ProposalService {
 			// + File.separator + filename);
 			// System.out.println("Absolute Path at server=" +
 			// file.getAbsolutePath());
-			String policyLocation = this.getClass().getResource("/tmpfiles")
+			String downloadLocation = this.getClass().getResource("/tmpfiles")
 					.toURI().getPath();
 
-			xcelite.write(new File(policyLocation + fileName));
+			xcelite.write(new File(downloadLocation + fileName));
 
 			// xcelite.write(new File(request.getServletContext().getAttribute(
 			// "FILES_DIR")
