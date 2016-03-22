@@ -1503,63 +1503,63 @@
 
 											<div class="sfButtonwrapper">
 												<p>
-													<button title="Go Back" type="button" id="btnBack"
-														class="sfBtn">
+													<button class="sfBtn" id="btnBack" type="button"
+														title="Go Back">
 														<span class="icon-arrow-slim-w">Back</span>
 													</button>
 												</p>
 												<p>
-													<button title="Reset" type="button" id="btnReset"
-														class="sfBtn">
+													<button class="sfBtn" id="btnReset" type="button"
+														title="Reset">
 														<span class="icon-refresh">Reset</span>
 													</button>
 												</p>
 												<p>
-													<button title="Save Proposal As Draft" type="button"
-														id="btnSaveProposal" class="sfBtn">
-														<span class="icon-save">Create</span>
+													<button class="sfBtn" id="btnSaveProposal" type="button"
+														title="Save Proposal As Draft">
+														<span class="icon-edit">Create</span>
 													</button>
 												</p>
 												<p>
-													<button title="Update Proposal" type="button"
-														id="btnUpdateProposal" class="sfBtn">
+													<button class="sfBtn" id="btnUpdateProposal" type="button"
+														title="Update Proposal">
 														<span class="icon-save">Update</span>
 													</button>
 												</p>
 												<p>
-													<button title="Delete Proposal" type="button"
-														id="btnDeleteProposal" class="sfBtn">
+													<button class="sfBtn" id="btnDeleteProposal" type="button"
+														title="Delete Proposal">
 														<span class="icon-delete">Delete</span>
 													</button>
 												</p>
 												<p>
-													<button title="Submit Proposal" type="button"
-														id="btnSubmitProposal" class="sfBtn">
-														<span class="icon-save">Submit</span>
+													<button class="sfBtn" id="btnSubmitProposal" type="button"
+														title="Submit Proposal">
+														<span class="icon-send">Submit</span>
 													</button>
 												</p>
 												<p>
-													<button title="Approve Proposal" type="button"
-														id="btnApproveProposal" class="sfBtn">
-														<span class="icon-save">Approve</span>
+													<button class="sfBtn" id="btnApproveProposal" type="button"
+														title="Approve Proposal">
+														<span class="icon-success">Approve</span>
 													</button>
 												</p>
 												<p>
-													<button title="Disapprove Proposal" type="button"
-														id="btnDisapproveProposal" class="sfBtn">
-														<span class="icon-save">Disapprove</span>
+													<button class="sfBtn" id="btnDisapproveProposal"
+														type="button" title="Disapprove Proposal">
+														<span class="icon-close">Disapprove</span>
 													</button>
 												</p>
 												<p>
-													<button title="Withdraw Proposal" type="button"
-														id="btnWithdrawProposal" class="sfBtn">
-														<span class="icon-save">Withdraw</span>
+													<button class="sfBtn" id="btnWithdrawProposal"
+														type="button" title="Withdraw Proposal">
+														<span class="icon-event-log">Withdraw</span>
 													</button>
 												</p>
 												<p>
-													<button title="Archive Proposal" type="button"
-														id="btnArchiveProposal" class="sfBtn">
-														<span class="icon-save">Archive</span>
+													<button class="sfBtn" id="btnArchiveProposal" type="button"
+														title="Archive Proposal">
+														<span class="icon-extract">Archive</span>
 													</button>
 												</p>
 											</div>
