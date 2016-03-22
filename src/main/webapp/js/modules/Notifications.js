@@ -133,7 +133,6 @@
 						.addEventListener(
 								'notification',
 								function(e) {
-									console.log("User " + e.data);
 									if (e.data != "0"
 											&& !NotificationView.config.firstTimeLoad) {
 										NotificationView
@@ -150,7 +149,7 @@
 				};
 
 				source.onopen = function(event) {
-					console.log("eventsource opened!");
+					// console.log("eventsource opened!");
 				};
 
 				source.onmessage = function(event) {

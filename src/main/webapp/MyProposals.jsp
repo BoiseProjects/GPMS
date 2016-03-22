@@ -1515,8 +1515,8 @@
 													</button>
 												</p>
 												<p>
-													<button class="sfBtn" id="btnSaveProposal" type="button"
-														title="Save Proposal As Draft">
+													<button class="sfBtn" id="btnCreateProposal" type="button"
+														title="Create a New Proposal">
 														<span class="icon-edit">Create</span>
 													</button>
 												</p>

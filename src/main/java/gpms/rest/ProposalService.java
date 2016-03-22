@@ -2651,14 +2651,13 @@ public class ProposalService {
 					switch (buttonType.textValue()) {
 					case "Create":
 						// This is Hack
-						// TODO check for if no Co-PI/ Senior Personnel in first create
+						// TODO check for if no Co-PI/ Senior Personnel in first
+						// create
 						// case
 						// Change status to ready to submitted by PI
 						if (proposalID.equals("0")) {
-							if ((newProposal.getInvestigatorInfo().getCo_pi()
-									.size() == 0)
-									&& (newProposal.getInvestigatorInfo()
-											.getSeniorPersonnel().size() == 0)) {
+							if (newProposal.getInvestigatorInfo().getCo_pi()
+									.size() == 0) {
 								newProposal.setReadyForSubmissionByPI(true);
 
 								newProposal.getProposalStatus().add(
@@ -2684,7 +2683,7 @@ public class ProposalService {
 											.equals("University Research Administrator")) {
 
 								boolean foundCoPI = false;
-								// Check if all PI/ Co-PI
+								// Check if all PI/ Co-PI signed
 								boolean signedByPI = false;
 								boolean signedByAllCoPIs = false;
 
@@ -3455,6 +3454,7 @@ public class ProposalService {
 		notification.setAction(notificationMessage);
 		notification.setProposalId(proposalID);
 		notification.setProposalTitle(projectTitle);
+		notification.setForAdmin(true);
 		notificationDAO.save(notification);
 
 		InvestigatorRefAndPosition newPI = existingProposal
@@ -3639,20 +3639,21 @@ public class ProposalService {
 
 				// Need to add Environment to detect the Campus or outside
 				// network
-				// network-type
+				// network.type
 
 				// Device type
-				// device-type
+				// device.type
 
-				// String decision = ac.getXACMLdecision(attrMap);
-				// if (decision.equals("Permit")) {
-				return Response.status(200).type(MediaType.APPLICATION_JSON)
-						.entity("true").build();
-				// } else {
-				// return Response.status(403)
-				// .type(MediaType.APPLICATION_JSON)
-				// .entity("Your permission is: " + decision).build();
-				// }
+				String decision = ac.getXACMLdecision(attrMap);
+				if (decision.equals("Permit")) {
+					return Response.status(200)
+							.type(MediaType.APPLICATION_JSON).entity("true")
+							.build();
+				} else {
+					return Response.status(403)
+							.type(MediaType.APPLICATION_JSON)
+							.entity("Your permission is: " + decision).build();
+				}
 			} else {
 				return Response.status(403).type(MediaType.APPLICATION_JSON)
 						.entity("No User Permission Attributes are send!")
