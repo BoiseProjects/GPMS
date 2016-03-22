@@ -2502,7 +2502,7 @@ public class ProposalService {
 			if (proposalInfo != null && proposalInfo.has("InvestigatorInfo")) {
 
 				if (!proposalID.equals("0")) {
-					// MUST Clear all co-PI and Seniors
+					// MUST Clear all co-PI and Senior Personnel
 					existingProposal.getInvestigatorInfo().getCo_pi().clear();
 					existingProposal.getInvestigatorInfo().getSeniorPersonnel()
 							.clear();
@@ -2651,7 +2651,7 @@ public class ProposalService {
 					switch (buttonType.textValue()) {
 					case "Create":
 						// This is Hack
-						// TODO check for if no CO-PI/ Seniors in first create
+						// TODO check for if no Co-PI/ Senior Personnel in first create
 						// case
 						// Change status to ready to submitted by PI
 						if (proposalID.equals("0")) {
@@ -2780,7 +2780,7 @@ public class ProposalService {
 						if (!proposalID.equals("0")
 								&& currentProposalRoles != null) {
 							if ((currentProposalRoles.contains("PI") || (currentProposalRoles
-									.contains("CO-PI") && !existingProposal
+									.contains("Co-PI") && !existingProposal
 									.isReadyForSubmissionByPI()))
 									&& existingProposal.getSubmittedByPI() == SubmitType.NOTSUBMITTED) {
 								// TODO : check all pi/copi/seniors

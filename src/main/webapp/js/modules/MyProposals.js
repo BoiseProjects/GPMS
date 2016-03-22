@@ -1241,7 +1241,7 @@ $(function() {
 
 			if (proposalStatus != ""
 					&& ($.inArray("PI", currentProposalRoles) !== -1 || ($
-							.inArray("CO-PI", currentProposalRoles) !== -1 && !config.readyForSubmitionByPI))
+							.inArray("Co-PI", currentProposalRoles) !== -1 && !config.readyForSubmitionByPI))
 					&& config.submittedByPI == "NOTSUBMITTED") {
 				$("#btnUpdateProposal").show();
 			} else {
@@ -1958,7 +1958,7 @@ $(function() {
 			});
 
 			$.each(investigatorInfo.seniorPersonnel, function(j, senior) {
-				myProposal.BindUserToPositionDetails(senior, "Senior");
+				myProposal.BindUserToPositionDetails(senior, "Senior Personnel");
 			});
 
 			$('#dataTable>tbody tr:first').remove();
@@ -2026,7 +2026,7 @@ $(function() {
 											$(this).prop('disabled', true);
 											$(this).find('option').not(
 													':selected').remove();
-										} else if (userType == "Senior") {
+										} else if (userType == "Senior Personnel") {
 											$(this).val(2).prop('selected',
 													'selected');
 											$(this).prop('disabled', true);
@@ -2043,7 +2043,7 @@ $(function() {
 											$(this).prop('disabled', true);
 											$(this).find('option').not(
 													':selected').remove();
-										} else if (userType == "Senior") {
+										} else if (userType == "Senior Personnel") {
 											$(this).prop('disabled', true);
 											$(this).find('option').not(
 													':selected').remove();

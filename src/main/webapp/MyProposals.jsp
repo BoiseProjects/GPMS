@@ -265,8 +265,8 @@
 																		class="sfListmenu" style="width: 58px;">
 																			<option value="0">--All--</option>
 																			<option value="PI">PI</option>
-																			<option value="CO-PI">CO-PI</option>
-																			<option value="Senior">Senior</option>
+																			<option value="Co-PI">Co-PI</option>
+																			<option value="Senior Personnel">Senior Personnel</option>
 																	</select></td>
 
 																	<td><label class="cssClassLabel">&nbsp;</label>

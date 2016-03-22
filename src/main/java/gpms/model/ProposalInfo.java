@@ -112,7 +112,7 @@ public class ProposalInfo {
 	@Column(name = "Last Audit Action")
 	private String lastAuditAction = new String();
 
-	// PI, CO-PI and Senior UserProfiles
+	// PI, Co-PI and Senior Personnel UserProfiles
 	@JsonProperty("piUser")
 	private String piUser = new String();
 

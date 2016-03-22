@@ -459,13 +459,13 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 					proposalQuery.criteria("investigator info.pi.user profile")
 							.in(profileQuery.asKeyList());
 					break;
-				case "CO-PI":
+				case "Co-PI":
 					proposalQuery.criteria(
 							"investigator info.co_pi.user profile").in(
 							profileQuery.asKeyList());
 					break;
 
-				case "Senior":
+				case "Senior Personnel":
 					proposalQuery.criteria(
 							"investigator info.senior personnel.user profile")
 							.in(profileQuery.asKeyList());
@@ -861,13 +861,13 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 					proposalQuery.criteria("investigator info.pi.user profile")
 							.in(profileQuery.asKeyList());
 					break;
-				case "CO-PI":
+				case "Co-PI":
 					proposalQuery.criteria(
 							"investigator info.co_pi.user profile").in(
 							profileQuery.asKeyList());
 					break;
 
-				case "Senior":
+				case "Senior Personnel":
 					proposalQuery.criteria(
 							"investigator info.senior personnel.user profile")
 							.in(profileQuery.asKeyList());
@@ -895,13 +895,13 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 				proposalQuery.criteria("investigator info.pi.user profile id")
 						.equal(userId);
 				break;
-			case "CO-PI":
+			case "Co-PI":
 				proposalQuery.criteria(
 						"investigator info.co_pi.user profile id")
 						.equal(userId);
 				break;
 
-			case "Senior":
+			case "Senior Personnel":
 				proposalQuery.criteria(
 						"investigator info.senior personnel.user profile id")
 						.equal(userId);
@@ -1073,7 +1073,7 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 				}
 
 				if (coPI.getUserProfileId().equals(userId)) {
-					proposal.getCurrentuserProposalRoles().add("CO-PI");
+					proposal.getCurrentuserProposalRoles().add("Co-PI");
 				}
 			}
 
@@ -1088,7 +1088,7 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 
 				// TODO Bind Proposal Roles for the User
 				if (senior.getUserProfileId().equals(userId)) {
-					proposal.getCurrentuserProposalRoles().add("Senior");
+					proposal.getCurrentuserProposalRoles().add("Senior Personnel");
 				}
 			}
 
@@ -1267,13 +1267,13 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 					proposalQuery.criteria("investigator info.pi.user profile")
 							.in(profileQuery.asKeyList());
 					break;
-				case "CO-PI":
+				case "Co-PI":
 					proposalQuery.criteria(
 							"investigator info.co_pi.user profile").in(
 							profileQuery.asKeyList());
 					break;
 
-				case "Senior":
+				case "Senior Personnel":
 					proposalQuery.criteria(
 							"investigator info.senior personnel.user profile")
 							.in(profileQuery.asKeyList());
@@ -1301,13 +1301,13 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 				proposalQuery.criteria("investigator info.pi.user profile id")
 						.equal(userId);
 				break;
-			case "CO-PI":
+			case "Co-PI":
 				proposalQuery.criteria(
 						"investigator info.co_pi.user profile id")
 						.equal(userId);
 				break;
 
-			case "Senior":
+			case "Senior Personnel":
 				proposalQuery.criteria(
 						"investigator info.senior personnel.user profile id")
 						.equal(userId);
@@ -1479,7 +1479,7 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 				}
 
 				if (coPI.getUserProfileId().equals(userId)) {
-					proposal.getCurrentuserProposalRoles().add("CO-PI");
+					proposal.getCurrentuserProposalRoles().add("Co-PI");
 				}
 			}
 
@@ -1494,7 +1494,7 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 
 				// TODO Bind Proposal Roles for the User
 				if (senior.getUserProfileId().equals(userId)) {
-					proposal.getCurrentuserProposalRoles().add("Senior");
+					proposal.getCurrentuserProposalRoles().add("Senior Personnel");
 				}
 			}
 
@@ -1647,7 +1647,7 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 		// for (SignatureInfo signature : proposal.getSignatureInfo()) {
 		// if (seniors.getUserRef().getId().toString()
 		// .equals(signature.getUserProfileId())
-		// && signature.getPositionTitle().equals("Senior")) {
+		// && signature.getPositionTitle().equals("Senior Personnel")) {
 		// seniorSign.setUserProfileId(signature.getUserProfileId());
 		// seniorSign.setFullName(signature.getFullName());
 		// seniorSign.setSignature(signature.getSignature());
@@ -1679,7 +1679,7 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 		// seniorSign.setFullName(seniors.getUserRef().getFullName());
 		// seniorSign.setSignature("");
 		// seniorSign.setNote("");
-		// seniorSign.setPositionTitle("Senior");
+		// seniorSign.setPositionTitle("Senior Personnel");
 		// seniorSign.setDelegated(false);
 		// boolean seniorAlreadyExist = false;
 		// for (SignatureInfo sign : signatures) {

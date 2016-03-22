@@ -835,7 +835,7 @@ $(function() {
 			$("#btnWithdrawProposal").data("name", proposalId);
 			$("#btnArchiveProposal").data("name", proposalId);
 
-			var canUpdateRoles = [ "PI", "CO-PI" ];
+			var canUpdateRoles = [ "PI", "Co-PI" ];
 			var canUpdateTitles = [ "Business Manager",
 					"University Research Administrator", "Department Chair", "Dean" ];
 			var canSubmitRoles = [ "PI" ];
@@ -1472,7 +1472,7 @@ $(function() {
 			});
 
 			$.each(investigatorInfo.seniorPersonnel, function(j, senior) {
-				proposalsManage.BindUserToPositionDetails(senior, "Senior");
+				proposalsManage.BindUserToPositionDetails(senior, "Senior Personnel");
 			});
 
 			$('#dataTable>tbody tr:first').remove();
@@ -1574,7 +1574,7 @@ $(function() {
 													'selected');
 											$(this).prop('disabled', true);
 											$(this).find('option').not(':selected').remove();
-										} else if (userType == "Senior") {
+										} else if (userType == "Senior Personnel") {
 											$(this).val(2).prop('selected',
 													'selected');
 											$(this).prop('disabled', true);
@@ -1589,7 +1589,7 @@ $(function() {
 										} else if (userType == "Co-PI") {
 											$(this).prop('disabled', true);
 											$(this).find('option').not(':selected').remove();
-										} else if (userType == "Senior") {
+										} else if (userType == "Senior Personnel") {
 											$(this).prop('disabled', true);
 											$(this).find('option').not(':selected').remove();
 										}
@@ -2933,7 +2933,6 @@ $(function() {
 								switch (item.positionTitle) {
 								case "PI":
 								case "Co-PI":
-								case "Senior":
 									$(cloneRow).appendTo("#trSignPICOPI tbody");
 									break;
 								case "Department Chair":

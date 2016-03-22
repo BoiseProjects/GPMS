@@ -143,7 +143,7 @@
 											proposal(s)</a></li>
 									<li>As PI: <a href="#"><span id="spanPICount"></span>
 											proposal(s)</a></li>
-									<li>As CO-PI: <a href="#"><span id="spanCoPICount"></span>
+									<li>As Co-PI: <a href="#"><span id="spanCoPICount"></span>
 											proposal(s)</a></li>
 									<li>As Senior Personnel: <a href="#"><span
 											id="spanSeniorCount"></span> proposal(s)</a></li>

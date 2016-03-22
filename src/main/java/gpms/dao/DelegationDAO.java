@@ -106,14 +106,14 @@ public class DelegationDAO extends BasicDAO<Delegation, String> {
 				signatures.add(signature);
 				break;
 
-			case "Senior":
+			case "Senior Personnel":
 				signature.setUserProfileId(delegation.getUserProfile().getId()
 						.toString());
 				signature
 						.setFullName(delegation.getUserProfile().getFullName());
 
 				signature.setDelegated(true);
-				signature.setDelegatedAs("Senior");
+				signature.setDelegatedAs("Senior Personnel");
 				signatures.add(signature);
 				break;
 

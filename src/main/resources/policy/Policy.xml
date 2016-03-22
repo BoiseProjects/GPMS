@@ -406,8 +406,8 @@
 		</Target>
 	</Rule>	
 	
-	<Rule Effect="Permit" RuleId="CO-PICanViewProposalSection-Rule4">
-		<Description>“CO-PI” can “View” “Investigator Information”, “Project Information”, 
+	<Rule Effect="Permit" RuleId="Co-PICanViewProposalSection-Rule4">
+		<Description>“Co-PI” can “View” “Investigator Information”, “Project Information”, 
 		“Sponsor and Budget Information”, “Cost Share Information”, “University Commitments”,
 		 “Conflict of Interest and Commitment Information”, “Compliance Information”, 
 		 “Additional Information”, “Collaboration Information”, “Proprietary/Confidential Information”, 
@@ -417,7 +417,7 @@
 		  <AnyOf>
 		   	<AllOf>
 	               <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">CO-PI</AttributeValue>
+	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Co-PI</AttributeValue>
 	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal-role" Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
 	               </Match>
 				   <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
@@ -431,7 +431,7 @@
 				</AllOf>
 		      <AllOf>
 	               <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">CO-PI</AttributeValue>
+	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Co-PI</AttributeValue>
 	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal-role" Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
 	               </Match>
 				   <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
@@ -445,7 +445,7 @@
 				</AllOf>
 				<AllOf>
 	               <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">CO-PI</AttributeValue>
+	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Co-PI</AttributeValue>
 	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal-role" Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
 	               </Match>
 				   <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
@@ -459,7 +459,7 @@
 				</AllOf>
 				<AllOf>
 	               <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">CO-PI</AttributeValue>
+	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Co-PI</AttributeValue>
 	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal-role" Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
 	               </Match>
 				   <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
@@ -473,7 +473,7 @@
 				</AllOf>
 				<AllOf>
 	               <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">CO-PI</AttributeValue>
+	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Co-PI</AttributeValue>
 	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal-role" Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
 	               </Match>
 				   <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
@@ -487,7 +487,7 @@
 				</AllOf>
 				<AllOf>
 	               <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">CO-PI</AttributeValue>
+	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Co-PI</AttributeValue>
 	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal-role" Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
 	               </Match>
 				   <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
@@ -501,7 +501,7 @@
 				</AllOf>
 				<AllOf>
 	               <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">CO-PI</AttributeValue>
+	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Co-PI</AttributeValue>
 	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal-role" Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
 	               </Match>
 				   <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
@@ -515,7 +515,7 @@
 				</AllOf>
 				<AllOf>
 	               <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">CO-PI</AttributeValue>
+	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Co-PI</AttributeValue>
 	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal-role" Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
 	               </Match>
 				   <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
@@ -529,7 +529,7 @@
 				</AllOf>
 				<AllOf>
 	               <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">CO-PI</AttributeValue>
+	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Co-PI</AttributeValue>
 	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal-role" Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
 	               </Match>
 				   <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
@@ -543,7 +543,7 @@
 				</AllOf>
 				<AllOf>
 	               <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">CO-PI</AttributeValue>
+	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Co-PI</AttributeValue>
 	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal-role" Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
 	               </Match>
 				   <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
@@ -557,7 +557,7 @@
 				</AllOf>
 				<AllOf>
 	               <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">CO-PI</AttributeValue>
+	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Co-PI</AttributeValue>
 	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal-role" Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
 	               </Match>
 				   <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
@@ -571,7 +571,7 @@
 				</AllOf>
 				<AllOf>
 	               <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">CO-PI</AttributeValue>
+	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Co-PI</AttributeValue>
 	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal-role" Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
 	               </Match>
 				   <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
@@ -585,7 +585,7 @@
 				</AllOf>
 				<AllOf>
 	               <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">CO-PI</AttributeValue>
+	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Co-PI</AttributeValue>
 	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal-role" Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
 	               </Match>
 				   <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
@@ -601,7 +601,7 @@
 		</Target>
 	</Rule>	
 	<Rule Effect="Permit" RuleId="SeniorPersonnelCanViewProposalSection-Rule5">
-		<Description>“Senior” can “View” “Investigator Information”, “Project Information”, 
+		<Description>“Senior Personnel” can “View” “Investigator Information”, “Project Information”, 
 		“Sponsor and Budget Information”, “Cost Share Information”, “University Commitments”,
 		 “Conflict of Interest and Commitment Information”, “Compliance Information”, 
 		 “Additional Information”, “Collaboration Information”, “Proprietary/Confidential Information”, 
@@ -611,7 +611,7 @@
 		  <AnyOf>
 		   	<AllOf>
 	               <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Senior</AttributeValue>
+	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Senior Personnel</AttributeValue>
 	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal-role" Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
 	               </Match>
 				   <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
@@ -625,7 +625,7 @@
 				</AllOf>
 		      <AllOf>
 	               <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Senior</AttributeValue>
+	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Senior Personnel</AttributeValue>
 	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal-role" Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
 	               </Match>
 				   <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
@@ -639,7 +639,7 @@
 				</AllOf>
 				<AllOf>
 	               <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Senior</AttributeValue>
+	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Senior Personnel</AttributeValue>
 	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal-role" Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
 	               </Match>
 				   <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
@@ -653,7 +653,7 @@
 				</AllOf>
 				<AllOf>
 	               <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Senior</AttributeValue>
+	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Senior Personnel</AttributeValue>
 	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal-role" Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
 	               </Match>
 				   <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
@@ -667,7 +667,7 @@
 				</AllOf>
 				<AllOf>
 	               <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Senior</AttributeValue>
+	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Senior Personnel</AttributeValue>
 	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal-role" Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
 	               </Match>
 				   <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
@@ -681,7 +681,7 @@
 				</AllOf>
 				<AllOf>
 	               <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Senior</AttributeValue>
+	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Senior Personnel</AttributeValue>
 	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal-role" Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
 	               </Match>
 				   <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
@@ -695,7 +695,7 @@
 				</AllOf>
 				<AllOf>
 	               <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Senior</AttributeValue>
+	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Senior Personnel</AttributeValue>
 	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal-role" Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
 	               </Match>
 				   <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
@@ -709,7 +709,7 @@
 				</AllOf>
 				<AllOf>
 	               <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Senior</AttributeValue>
+	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Senior Personnel</AttributeValue>
 	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal-role" Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
 	               </Match>
 				   <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
@@ -723,7 +723,7 @@
 				</AllOf>
 				<AllOf>
 	               <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Senior</AttributeValue>
+	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Senior Personnel</AttributeValue>
 	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal-role" Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
 	               </Match>
 				   <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
@@ -737,7 +737,7 @@
 				</AllOf>
 				<AllOf>
 	               <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Senior</AttributeValue>
+	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Senior Personnel</AttributeValue>
 	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal-role" Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
 	               </Match>
 				   <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
@@ -751,7 +751,7 @@
 				</AllOf>
 				<AllOf>
 	               <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Senior</AttributeValue>
+	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Senior Personnel</AttributeValue>
 	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal-role" Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
 	               </Match>
 				   <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
@@ -765,7 +765,7 @@
 				</AllOf>
 				<AllOf>
 	               <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Senior</AttributeValue>
+	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Senior Personnel</AttributeValue>
 	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal-role" Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
 	               </Match>
 				   <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
@@ -779,7 +779,7 @@
 				</AllOf>
 				<AllOf>
 	               <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Senior</AttributeValue>
+	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Senior Personnel</AttributeValue>
 	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal-role" Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
 	               </Match>
 				   <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
@@ -2238,14 +2238,14 @@
 			</AnyOf>
 		</Target>
 	</Rule>
-	<Rule Effect="Permit" RuleId="CO-PICanEditAppendices-Rule16">
-		<Description> “CO-PI” can “Edit” a “Appendices” .
+	<Rule Effect="Permit" RuleId="Co-PICanEditAppendices-Rule16">
+		<Description> “Co-PI” can “Edit” a “Appendices” .
 		</Description>
 		<Target>
 		  <AnyOf>
 		      <AllOf>
 	               <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">CO-PI</AttributeValue>
+	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Co-PI</AttributeValue>
 	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal-role" 
 	                  Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" 
 	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
@@ -2267,7 +2267,7 @@
 			</AnyOf>
 		</Target>
 	</Rule>
-	<Rule Effect="Permit" RuleId="CO-PICanEditAppendices-Rule17">
+	<Rule Effect="Permit" RuleId="Co-PICanEditAppendices-Rule17">
 		<Description> “Research Administrator” can “Edit” a “OSP Section” .
 		</Description>
 		<Target>
