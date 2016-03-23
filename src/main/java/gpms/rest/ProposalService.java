@@ -3644,15 +3644,16 @@ public class ProposalService {
 				// Device type
 				// device.type
 
-				// String decision = ac.getXACMLdecision(attrMap);
-				// if (decision.equals("Permit")) {
-				return Response.status(200).type(MediaType.APPLICATION_JSON)
-						.entity("true").build();
-				// } else {
-				// return Response.status(403)
-				// .type(MediaType.APPLICATION_JSON)
-				// .entity("Your permission is: " + decision).build();
-				// }
+				String decision = ac.getXACMLdecision(attrMap);
+				if (decision.equals("Permit")) {
+					return Response.status(200)
+							.type(MediaType.APPLICATION_JSON).entity("true")
+							.build();
+				} else {
+					return Response.status(403)
+							.type(MediaType.APPLICATION_JSON)
+							.entity("Your permission is: " + decision).build();
+				}
 			} else {
 				return Response.status(403).type(MediaType.APPLICATION_JSON)
 						.entity("No User Permission Attributes are send!")
