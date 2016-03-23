@@ -3644,16 +3644,15 @@ public class ProposalService {
 				// Device type
 				// device.type
 
-				String decision = ac.getXACMLdecision(attrMap);
-				if (decision.equals("Permit")) {
-					return Response.status(200)
-							.type(MediaType.APPLICATION_JSON).entity("true")
-							.build();
-				} else {
-					return Response.status(403)
-							.type(MediaType.APPLICATION_JSON)
-							.entity("Your permission is: " + decision).build();
-				}
+				// String decision = ac.getXACMLdecision(attrMap);
+				// if (decision.equals("Permit")) {
+				return Response.status(200).type(MediaType.APPLICATION_JSON)
+						.entity("true").build();
+				// } else {
+				// return Response.status(403)
+				// .type(MediaType.APPLICATION_JSON)
+				// .entity("Your permission is: " + decision).build();
+				// }
 			} else {
 				return Response.status(403).type(MediaType.APPLICATION_JSON)
 						.entity("No User Permission Attributes are send!")
@@ -3673,8 +3672,10 @@ public class ProposalService {
 	 * Pi, CoPi, and SP, there are 4 department chairs, we need to know that 4
 	 * department chairs have signed.
 	 * 
-	 * @param1 the ID of the proposal we need to query for
-	 * @param2 the position title we want to check
+	 * @param id
+	 *            the ID of the proposal we need to query for
+	 * @param posTitle
+	 *            the position title we want to check
 	 * @return true if all required signatures exist
 	 * @throws UnknownHostException
 	 */
@@ -3686,15 +3687,35 @@ public class ProposalService {
 		// 1st Get the Proposal, then get the Pi, CoPi and SP attached to it
 		List<InvestigatorRefAndPosition> investigatorList = new ArrayList<InvestigatorRefAndPosition>();
 
+		// For now I'm going to handle this boolean here...
+		boolean isAdmin = false;
+		// The getSupervisory method we'll call wants a boolean "isAdmin" this
+		// is just used to define
+		// whether or not someone is in an administrative position.
+		// For example: when we want a department chair, we need their college
+		// and their department that
+		// they are from, but if we want a dean, we just need their college,
+		// because they're the dean
+		// of the college, and not part of a department under that college
+		// The boolean tells the getSuper method which search call it needs to
+		// make, for now
+		// this is done for simplicity
+		if (posTitle.equals("Dean")) {
+			isAdmin = true;
+		}
+
 		investigatorList.add(checkProposal.getInvestigatorInfo().getPi());
-		for (InvestigatorRefAndPosition coPi : checkProposal
-				.getInvestigatorInfo().getCo_pi()) {
-			investigatorList.add(coPi);
+
+		if (!checkProposal.getInvestigatorInfo().getCo_pi().isEmpty()) {
+			for (InvestigatorRefAndPosition coPi : checkProposal
+					.getInvestigatorInfo().getCo_pi()) {
+				investigatorList.add(coPi);
+			}
 		}
-		for (InvestigatorRefAndPosition senior : checkProposal
-				.getInvestigatorInfo().getSeniorPersonnel()) {
-			investigatorList.add(senior);
-		}
+		// for (InvestigatorRefAndPosition senior : checkProposal
+		// .getInvestigatorInfo().getSeniorPersonnel()) {
+		// investigatorList.add(senior);
+		// } //Apparently we do not need the supers for senior personnel
 
 		ArrayList<UserProfile> supervisorsList = new ArrayList<UserProfile>();
 		// For each person on this list, get their supervisory personnel, and
@@ -3709,10 +3730,11 @@ public class ProposalService {
 		// will handle this with a nest for loop
 		// Hopefully this does not result in a giant run time
 
+		// 2nd Find out all of their supervisory personnel
 		for (InvestigatorRefAndPosition investigator : investigatorList) {
 			List<UserProfile> tempList = userProfileDAO
 					.getSupervisoryPersonnels(investigator.getCollege(),
-							investigator.getDepartment(), posTitle, false);
+							investigator.getDepartment(), posTitle, isAdmin);
 			for (UserProfile profs : tempList) {
 				if (!supervisorsList.contains(profs)) {
 					supervisorsList.add(profs);
@@ -3720,32 +3742,77 @@ public class ProposalService {
 			}
 		}
 
-		int sigCount = 0;
-		boolean isSigned = true;
-		// For all the supervisors on the list, we need to get their status as
-		// signed or not signed.
+		// 3rd Evaluate if these personnel have "signed" the proposal
+		boolean isOnList = true;
+		ArrayList<String> sigids = new ArrayList<String>();
 
-		// 2nd Find out all of their supervisory personnel
-		for (UserProfile supervisor : supervisorsList) {
-			for (SignatureInfo signature : checkProposal.getSignatureInfo()) {
-				if (!signature.getUserProfileId().toString()
-						.equals(supervisor.getId().toString())
-						&& !signature.getPositionTitle().equals(posTitle)) {
-					isSigned = false;
-				}
-
-				if (isSigned) {
-					sigCount++;
-				}
-			}
-
+		for (SignatureInfo sigInfo : checkProposal.getSignatureInfo()) {
+			sigids.add(sigInfo.getUserProfileId());
 		}
 
-		// 3rd Evaluate if these personnel have "signed" the proposal
-		if (sigCount == supervisorsList.size()) {
+		for (UserProfile superProfs : supervisorsList) {
+			if (!sigids.contains(superProfs.getId().toString())) {
+				isOnList = false;
+			}
+		}
+
+		return isOnList;
+	}
+
+	/**
+	 * Use this method to find out if all PI's have signed the proposal (should
+	 * just be one pi, but will check all of them
+	 * 
+	 * @param id
+	 *            the id of the proposal we want to check
+	 * @param investigatorType
+	 *            pi to check pi, copi to check copi
+	 * @return true if all investigators have signed
+	 * @throws UnknownHostException
+	 */
+	public boolean getPISignedStatusForProposal(ObjectId id)
+			throws UnknownHostException {
+		Proposal checkProposal = proposalDAO.findProposalByProposalID(id);
+		ArrayList<String> sigids = new ArrayList<String>();
+		for (SignatureInfo sigInfo : checkProposal.getSignatureInfo()) {
+			sigids.add(sigInfo.getUserProfileId());
+		}
+
+		if (sigids.contains(checkProposal.getInvestigatorInfo().getPi()
+				.getUserProfileId())) {
 			return true;
 		} else {
 			return false;
 		}
 	}
+
+	/**
+	 * This method will verify that all CoPi's have signed the proposal
+	 * 
+	 * @param id
+	 *            ID of the proposal to check
+	 * @return true if all CoPI's have signed
+	 * @throws UnknownHostException
+	 */
+	public boolean getCoPiSignedStatusForProposal(ObjectId id)
+			throws UnknownHostException {
+
+		boolean allCoPiSigned = true;
+
+		Proposal checkProposal = proposalDAO.findProposalByProposalID(id);
+		ArrayList<String> sigids = new ArrayList<String>();
+		for (SignatureInfo sigInfo : checkProposal.getSignatureInfo()) {
+			sigids.add(sigInfo.getUserProfileId());
+		}
+
+		for (InvestigatorRefAndPosition profs : checkProposal
+				.getInvestigatorInfo().getCo_pi()) {
+			if (!sigids.contains(profs.getUserProfileId())) {
+				allCoPiSigned = false;
+			}
+		}
+
+		return allCoPiSigned;
+	}
+
 }

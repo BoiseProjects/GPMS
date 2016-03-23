@@ -71,6 +71,16 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 		super(mongo, morphia, dbName);
 	}
 
+	/**
+	 * Get all the proposals in the database Used mostly in testing
+	 * 
+	 * @return a list of all proposals in the database
+	 */
+	public List<Proposal> findAllProposals() {
+		Datastore ds = getDatastore();
+		return ds.createQuery(Proposal.class).asList();
+	}
+
 	public Proposal findProposalByProposalID(ObjectId id)
 			throws UnknownHostException {
 		Datastore ds = getDatastore();
@@ -1088,7 +1098,8 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 
 				// TODO Bind Proposal Roles for the User
 				if (senior.getUserProfileId().equals(userId)) {
-					proposal.getCurrentuserProposalRoles().add("Senior Personnel");
+					proposal.getCurrentuserProposalRoles().add(
+							"Senior Personnel");
 				}
 			}
 
@@ -1494,7 +1505,8 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 
 				// TODO Bind Proposal Roles for the User
 				if (senior.getUserProfileId().equals(userId)) {
-					proposal.getCurrentuserProposalRoles().add("Senior Personnel");
+					proposal.getCurrentuserProposalRoles().add(
+							"Senior Personnel");
 				}
 			}
 

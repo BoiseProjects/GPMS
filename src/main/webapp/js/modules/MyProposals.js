@@ -486,39 +486,6 @@ $(function() {
 					});
 		},
 
-		CheckUserPermissionForCreate : function(buttonType, proposalSection,
-				config) {
-			var attributeArray = [];
-
-			attributeArray.push({
-				attributeType : "Subject",
-				attributeName : "position.type",
-				attributeValue : GPMS.utils.GetUserPositionType()
-			});
-
-			attributeArray.push({
-				attributeType : "Resource",
-				attributeName : "proposal.section",
-				attributeValue : proposalSection
-			});
-
-			attributeArray.push({
-				attributeType : "Action",
-				attributeName : "proposal.action",
-				attributeValue : buttonType
-			});
-
-			this.config.url = this.config.baseURL
-					+ "CheckPermissionForAProposal";
-			this.config.data = JSON2.stringify({
-				policyInfo : attributeArray,
-				gpmsCommonObj : gpmsCommonObj()
-			});
-
-			this.config.buttonType = buttonType;
-			this.ajaxCall(this.config);
-		},
-
 		CheckUserPermissionWithProposalRole : function(buttonType,
 				proposal_roles, proposal_id, proposalSection, config) {
 			var attributeArray = [];
@@ -587,6 +554,39 @@ $(function() {
 			this.ajaxCall(this.config);
 		},
 
+		CheckUserPermissionForCreate : function(buttonType, proposalSection,
+				config) {
+			var attributeArray = [];
+
+			attributeArray.push({
+				attributeType : "Subject",
+				attributeName : "position.type",
+				attributeValue : GPMS.utils.GetUserPositionType()
+			});
+
+			attributeArray.push({
+				attributeType : "Resource",
+				attributeName : "proposal.section",
+				attributeValue : proposalSection
+			});
+
+			attributeArray.push({
+				attributeType : "Action",
+				attributeName : "proposal.action",
+				attributeValue : buttonType
+			});
+
+			this.config.url = this.config.baseURL
+					+ "CheckPermissionForAProposal";
+			this.config.data = JSON2.stringify({
+				policyInfo : attributeArray,
+				gpmsCommonObj : gpmsCommonObj()
+			});
+
+			this.config.buttonType = buttonType;
+			this.ajaxCall(this.config);
+		},
+
 		CheckUserPermissionForSubmit : function(buttonType, proposalSection,
 				config) {
 			var attributeArray = [];
@@ -600,7 +600,7 @@ $(function() {
 				attributeArray.push({
 					attributeType : "Subject",
 					attributeName : "proposal.role",
-					attributeValue : config.proposalRoles
+					attributeValue : currentProposalRoles
 				});
 
 				attributeArray.push({
@@ -643,7 +643,6 @@ $(function() {
 					attributeName : "ApprovedByUniversityResearchDirector",
 					attributeValue : config.researchDirectorApproval
 				});
-
 			}
 
 			attributeArray.push({
@@ -1196,7 +1195,7 @@ $(function() {
 			// $("#btnSubmitProposal").hide();
 			// }
 
-			currentProposalRoles = config.proposalRoles.split(', ');
+			var currentProposalRoles = config.proposalRoles.split(', ');
 
 			if (proposalStatus != ""
 					&& (($.inArray("PI", currentProposalRoles) !== -1
@@ -2201,19 +2200,10 @@ $(function() {
 					myProposal.config.proposalRoles = proposal_roles;
 					myProposal.config.proposalId = argus[0];
 					myProposal.config.proposalStatus = argus[3];
-					if (proposal_roles != "") {
-						myProposal
-								.CheckUserPermissionWithProposalRoleAndStatus(
-										"Delete",
-										myProposal.config.proposalRoles,
-										myProposal.config.proposalId,
-										"Whole Proposal", myProposal.config);
-					} else {
-						myProposal
-								.CheckUserPermissionWithPositionTitleAndStatus(
-										"Delete", myProposal.config.proposalId,
-										"Whole Proposal", myProposal.config);
-					}
+					myProposal.CheckUserPermissionForDelete("Delete",
+							myProposal.config.proposalRoles,
+							myProposal.config.proposalId, "Whole Proposal",
+							myProposal.config);
 					return false;
 				} else {
 					csscody.alert('<h2>' + 'Information Alert' + '</h2><p>'
@@ -4214,22 +4204,17 @@ $(function() {
 
 									myProposal.config.ajaxCallMode = 10;
 
-									if (myProposal.config.proposalRoles != "") {
-										myProposal
-												.CheckUserPermissionWithProposalRoleAndStatus(
-														$buttonType,
-														myProposal.config.proposalRoles,
-														myProposal.config.proposalId,
-														"Whole Proposal",
-														myProposal.config);
-									} else {
-										myProposal
-												.CheckUserPermissionWithPositionTitleAndStatus(
-														$buttonType,
-														myProposal.config.proposalId,
-														"Whole Proposal",
-														myProposal.config);
-									}
+									CheckUserPermissionForDelete("Delete",
+											myProposal.config.proposalRoles,
+											myProposal.config.proposalId,
+											"Whole Proposal", myProposal.config);
+									myProposal
+											.CheckUserPermissionForDelete(
+													$buttonType,
+													myProposal.config.proposalRoles,
+													myProposal.config.proposalId,
+													"Whole Proposal",
+													myProposal.config);
 
 									$(this).enableAgain();
 									e.preventDefault();

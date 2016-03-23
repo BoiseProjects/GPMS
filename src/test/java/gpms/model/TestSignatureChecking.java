@@ -1,6 +1,10 @@
 package gpms.model;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
+import gpms.DAL.MongoDBConnector;
+import gpms.dao.ProposalDAO;
+import gpms.dao.UserAccountDAO;
+import gpms.dao.UserProfileDAO;
 
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -12,11 +16,6 @@ import org.junit.Test;
 import org.mongodb.morphia.Morphia;
 
 import com.mongodb.MongoClient;
-
-import gpms.DAL.MongoDBConnector;
-import gpms.dao.ProposalDAO;
-import gpms.dao.UserAccountDAO;
-import gpms.dao.UserProfileDAO;
 
 /**
  * This Junit test is meant to check if the signature verification method is
@@ -59,56 +58,55 @@ public class TestSignatureChecking {
 	 * @throws UnknownHostException
 	 */
 	@Test
-	public void testOneDeanWithOnlyPI() throws UnknownHostException {
-		Proposal testProposal;
-		InvestigatorInfo testInfo;
-		testProposal = new Proposal();
-		testInfo = new InvestigatorInfo();
+	public void testAllPISigned() throws UnknownHostException {
+		boolean allSigned = true;
+		List<Proposal> propList = newProposalDAO.findAllProposals();
+		for (Proposal prop : propList) {
+			if (!getPISignedStatusForProposal(prop.getId())) {
+				allSigned = false;
+			}
+		}
 
-		// Set Proposal Number
-		testProposal.setProposalNo(1);
-		// Set PI Info
-		InvestigatorRefAndPosition pi = new InvestigatorRefAndPosition();
-		UserProfile profile1 = new UserProfile();
-		// Create the PI
-		profile1.setFirstName("Donald");
-		profile1.setLastName("Trump");
-		UserAccount account1 = new UserAccount();
-		account1.setUserName("dTrump");
-		profile1.setUserAccount(account1);
-		newUserAccountDAO.save(account1);
-		newUserProfileDAO.save(profile1);
+		assertTrue(allSigned);
+	}
 
-		pi.setUserRef(profile1);
-		pi.setCollege("Science");
-		pi.setDepartment("Chemistry");
+	@Test
+	public void testAllCoPiSigned() throws UnknownHostException {
+		boolean allSigned = true;
+		List<Proposal> propList = newProposalDAO.findAllProposals();
+		for (Proposal prop : propList) {
+			if (!getCoPiSignedStatusForProposal(prop.getId())) {
+				allSigned = false;
+			}
+		}
 
-		testInfo.setPi(pi);
-		testProposal.setInvestigatorInfo(testInfo);
+		assertTrue(allSigned);
+	}
 
-		// Create his Dean
-		UserProfile deanProfile = new UserProfile();
-		deanProfile.setFirstName("Bruce");
-		deanProfile.setLastName("Jenner");
-		UserAccount deanAccount = new UserAccount();
-		deanAccount.setUserName("bJenner");
-		deanProfile.setUserAccount(deanAccount);
-		newUserAccountDAO.save(deanAccount);
-		newUserProfileDAO.save(deanProfile);
+	@Test
+	public void testAllDeanSigned() throws UnknownHostException {
+		boolean allSigned = true;
+		List<Proposal> propList = newProposalDAO.findAllProposals();
+		for (Proposal prop : propList) {
+			if (!getSignedStatusForAProposal(prop.getId(), "Dean")) {
+				allSigned = false;
+			}
+		}
 
-		// Sign the Proposal
-		SignatureInfo newSig = new SignatureInfo();
-		newSig.setFullName(deanProfile.getFullName());
-		newSig.setUserProfileId(deanProfile.getId().toString());
-		newSig.setPositionTitle("Dean");
-		List<SignatureInfo> sigList = new ArrayList<SignatureInfo>();
-		sigList.add(newSig);
-		testProposal.setSignatureInfo(sigList);
+		assertTrue(allSigned);
+	}
 
-		// Save the proposal
-		newProposalDAO.save(testProposal);
-		assertTrue(getSignedStatusForAProposal(testProposal.getId(), "Dean"));
+	@Test
+	public void testAllDepartmentChairSigned() throws UnknownHostException {
+		boolean allSigned = true;
+		List<Proposal> propList = newProposalDAO.findAllProposals();
+		for (Proposal prop : propList) {
+			if (!getSignedStatusForAProposal(prop.getId(), "Department Chair")) {
+				allSigned = false;
+			}
+		}
 
+		assertTrue(allSigned);
 	}
 
 	// ///////////////////////////////////////////
@@ -125,8 +123,10 @@ public class TestSignatureChecking {
 	 * Pi, CoPi, and SP, there are 4 department chairs, we need to know that 4
 	 * department chairs have signed.
 	 * 
-	 * @param1 the ID of the proposal we need to query for
-	 * @param2 the position title we want to check
+	 * @param id
+	 *            the ID of the proposal we need to query for
+	 * @param posTitle
+	 *            the position title we want to check
 	 * @return true if all required signatures exist
 	 * @throws UnknownHostException
 	 */
@@ -194,29 +194,76 @@ public class TestSignatureChecking {
 		}
 
 		// 3rd Evaluate if these personnel have "signed" the proposal
-		List<SignatureInfo> checkSigs = checkProposal.getSignatureInfo();
-		boolean isOnList = false;
-		int sigsCount = 0;
-		for (UserProfile superProfs : supervisorsList) {
-			for (SignatureInfo sigsProfs : checkSigs) {
-				if (sigsProfs.getFullName().equals(superProfs.getFullName())) {
-					if (sigsProfs.getPositionTitle().equals(posTitle)) {
-						isOnList = true;
-					}
-				}
+		boolean isOnList = true;
+		ArrayList<String> sigids = new ArrayList<String>();
 
-			}
-			if (isOnList) {
-				sigsCount++;
+		for (SignatureInfo sigInfo : checkProposal.getSignatureInfo()) {
+			sigids.add(sigInfo.getUserProfileId());
+		}
+
+		for (UserProfile superProfs : supervisorsList) {
+			if (!sigids.contains(superProfs.getId().toString())) {
 				isOnList = false;
 			}
 		}
 
-		if (sigsCount == supervisorsList.size()) {
+		return isOnList;
+	}
+
+	/**
+	 * Use this method to find out if all PI's have signed the proposal (should
+	 * just be one pi, but will check all of them
+	 * 
+	 * @param id
+	 *            the id of the proposal we want to check
+	 * @param investigatorType
+	 *            pi to check pi, copi to check copi
+	 * @return true if all investigators have signed
+	 * @throws UnknownHostException
+	 */
+	public boolean getPISignedStatusForProposal(ObjectId id)
+			throws UnknownHostException {
+		Proposal checkProposal = newProposalDAO.findProposalByProposalID(id);
+		ArrayList<String> sigids = new ArrayList<String>();
+		for (SignatureInfo sigInfo : checkProposal.getSignatureInfo()) {
+			sigids.add(sigInfo.getUserProfileId());
+		}
+
+		if (sigids.contains(checkProposal.getInvestigatorInfo().getPi()
+				.getUserProfileId())) {
 			return true;
 		} else {
 			return false;
 		}
+	}
+
+	/**
+	 * This method will verify that all CoPi's have signed the proposal
+	 * 
+	 * @param id
+	 *            ID of the proposal to check
+	 * @return true if all CoPI's have signed
+	 * @throws UnknownHostException
+	 */
+	public boolean getCoPiSignedStatusForProposal(ObjectId id)
+			throws UnknownHostException {
+
+		boolean allCoPiSigned = true;
+
+		Proposal checkProposal = newProposalDAO.findProposalByProposalID(id);
+		ArrayList<String> sigids = new ArrayList<String>();
+		for (SignatureInfo sigInfo : checkProposal.getSignatureInfo()) {
+			sigids.add(sigInfo.getUserProfileId());
+		}
+
+		for (InvestigatorRefAndPosition profs : checkProposal
+				.getInvestigatorInfo().getCo_pi()) {
+			if (!sigids.contains(profs.getUserProfileId())) {
+				allCoPiSigned = false;
+			}
+		}
+
+		return allCoPiSigned;
 	}
 
 }
