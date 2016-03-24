@@ -37,10 +37,10 @@ public class Create10Proposals {
 	UserProfileDAO newUserProfileDAO;
 	ProposalDAO newProposalDAO;
 	String dbName = "db_gpms";
-	final int MAXIMUM_PROPOSALS = 10; // Adjust this to make more or less
+	final int MAXIMUM_PROPOSALS = 5; // Adjust this to make more or less
 										// profiles with the generator.
 
-	private int SIGNATURE_MODE = 3;
+	private int SIGNATURE_MODE = 1;
 
 	// This switch can be used to determine the signature creation mode you
 	// would like to use.
@@ -192,28 +192,32 @@ public class Create10Proposals {
 				// PI Signs proposal
 				newProposal.getInvestigatorInfo().getPi();
 				newSignInfo = new SignatureInfo();
+				newSignInfo.setUserProfileId(newProposal.getInvestigatorInfo()
+						.getPi().getUserProfileId());
 				newSignInfo.setFullName(newProposal.getInvestigatorInfo()
+						.getPi().getUserRef().getFullName());
+				newSignInfo.setSignature(newProposal.getInvestigatorInfo()
 						.getPi().getUserRef().getFullName());
 				newSignInfo.setPositionTitle(newProposal.getInvestigatorInfo()
 						.getPi().getPositionTitle());
-				newSignInfo.setUserProfileId(newProposal.getInvestigatorInfo()
-						.getPi().getUserProfileId());
-				newSignInfo.setSignature(newProposal.getInvestigatorInfo()
-						.getPi().getUserRef().getFullName());
+				newSignInfo.setSignedDate(new Date());
+				newSignInfo.setNote("This is Note from PI");
 				newProposal.getSignatureInfo().add(newSignInfo);
 
 				// CoPI's sign the proposal
 
-				for (InvestigatorRefAndPosition cops : newProposal
-						.getInvestigatorInfo().getCo_pi()) {
-					newSignInfo = new SignatureInfo();
-					newSignInfo.setFullName(cops.getUserRef().getFullName());
-					newSignInfo.setPositionTitle(cops.getPositionTitle());
-					newSignInfo.setUserProfileId(cops.getUserProfileId());
-					newSignInfo.setSignature(cops.getUserRef().getFullName());
-					newProposal.getSignatureInfo().add(newSignInfo);
-
-				}
+				// for (InvestigatorRefAndPosition cops : newProposal
+				// .getInvestigatorInfo().getCo_pi()) {
+				// newSignInfo = new SignatureInfo();
+				// newSignInfo.setUserProfileId(cops.getUserProfileId());
+				// newSignInfo.setFullName(cops.getUserRef().getFullName());
+				// newSignInfo.setSignature(cops.getUserRef().getFullName());
+				// newSignInfo.setPositionTitle(cops.getPositionTitle());
+				// newSignInfo.setSignedDate(new Date());
+				// newSignInfo.setNote("This is Note from Co-PI");
+				// newProposal.getSignatureInfo().add(newSignInfo);
+				//
+				// }
 
 			}
 

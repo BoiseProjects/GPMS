@@ -671,7 +671,7 @@ $(function() {
 			if (currentProposalRoles != ""
 					&& ($.inArray("PI", currentProposalRoles) !== -1 || ($
 							.inArray("Co-PI", currentProposalRoles) !== -1 && !config.readyForSubmitionByPI))) {
-				myProposal.SaveProposal($buttonType, config.proposalRoles,
+				myProposal.SaveProposal(buttonType, config.proposalRoles,
 						config.proposalId, false);
 			}
 		},

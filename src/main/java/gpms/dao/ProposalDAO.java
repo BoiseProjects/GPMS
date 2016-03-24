@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.regex.Pattern;
 
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.Datastore;
@@ -379,12 +378,13 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 
 		Query<Proposal> proposalQuery = ds.createQuery(Proposal.class);
 
-		Pattern pattern = Pattern.compile("^" + newProjectTitle + "$",
-				Pattern.CASE_INSENSITIVE);
+		// Pattern pattern = Pattern.compile("^" + newProjectTitle + "$",
+		// Pattern.CASE_INSENSITIVE);
 
+		// Updated with new version of Morphia
 		proposalQuery.and(proposalQuery.criteria("_id").notEqual(id),
 				proposalQuery.criteria("project info.project title")
-						.containsIgnoreCase(pattern.pattern()));
+						.equalIgnoreCase(newProjectTitle));
 		return proposalQuery.get();
 	}
 
@@ -393,11 +393,14 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 
 		Query<Proposal> proposalQuery = ds.createQuery(Proposal.class);
 
-		Pattern pattern = Pattern.compile("^" + newProjectTitle + "$",
-				Pattern.CASE_INSENSITIVE);
+		// Pattern pattern = Pattern.compile("^" + newProjectTitle + "$",
+		// Pattern.CASE_INSENSITIVE);
+		// proposalQuery.criteria("project info.project title")
+		// .containsIgnoreCase(pattern.pattern());
 
-		proposalQuery.criteria("project info.project title")
-				.containsIgnoreCase(pattern.pattern());
+		// Updated with new version of Morphia
+		proposalQuery.criteria("project info.project title").equalIgnoreCase(
+				newProjectTitle);
 		return proposalQuery.get();
 	}
 

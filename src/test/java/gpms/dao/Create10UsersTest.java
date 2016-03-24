@@ -29,7 +29,7 @@ public class Create10UsersTest {
 	UserAccountDAO newUserAccountDAO;
 	UserProfileDAO newUserProfileDAO;
 	ProposalDAO newProposalDAO;
-	final int MAXIMUM_PROFILES = 100; // Adjust this to make more or less
+	final int MAXIMUM_PROFILES = 5; // Adjust this to make more or less
 										// profiles
 										// with the generator.
 
@@ -128,7 +128,7 @@ public class Create10UsersTest {
 			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 			Date dateDOB = formatter.parse(strDOB);
 
-			String newPassword = userAccount + "PW";
+			String newPassword = "password";
 			newProfile.getUserAccount().setPassword(newPassword);
 
 			newProfile.setDateOfBirth(dateDOB);

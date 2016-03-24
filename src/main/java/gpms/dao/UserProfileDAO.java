@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.regex.Pattern;
 
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.Datastore;
@@ -82,12 +81,22 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 			throws UnknownHostException {
 		Datastore ds = getDatastore();
 		Query<UserProfile> profileQuery = ds.createQuery(UserProfile.class);
-		profileQuery.and(
-				profileQuery.criteria("details").notEqual(null),
-				profileQuery.criteria("details.position type").notEqual(
-						"Professional staff"),
-				profileQuery.criteria("details.position type").notEqual(
-						"Administrator"));
+		profileQuery
+				.and(profileQuery.criteria("details").notEqual(null),
+						profileQuery
+								.or(profileQuery.criteria(
+										"details.position type")
+										.equalIgnoreCase(
+												"Tenured/tenure-track faculty"),
+										profileQuery
+												.criteria(
+														"details.position type")
+												.equalIgnoreCase(
+														"Non-tenure-track research faculty"),
+										profileQuery.criteria(
+												"details.position type")
+												.equalIgnoreCase(
+														"Teaching faculty")));
 		return profileQuery.retrievedFields(true, "_id", "first name",
 				"middle name", "last name").asList();
 	}
@@ -660,10 +669,13 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 		// c.lower(x);
 		//
 
-		Pattern pattern = Pattern.compile("^" + userName + "$",
-				Pattern.CASE_INSENSITIVE);
+		// Pattern pattern = Pattern.compile("^" + userName + "$",
+		// Pattern.CASE_INSENSITIVE);
+		//
+		// accountQuery.criteria("username").containsIgnoreCase(pattern.pattern());
 
-		accountQuery.criteria("username").containsIgnoreCase(pattern.pattern());
+		// Updated with new version of Morphia
+		accountQuery.criteria("username").equalIgnoreCase(userName);
 
 		profileQuery.and(profileQuery.criteria("_id").notEqual(id),
 				profileQuery.criteria("user id").in(accountQuery.asKeyList()));
@@ -675,11 +687,13 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 
 		Query<UserProfile> profileQuery = ds.createQuery(UserProfile.class);
 		Query<UserAccount> accountQuery = ds.createQuery(UserAccount.class);
+		//
+		// Pattern pattern = Pattern.compile("^" + newUserName + "$",
+		// Pattern.CASE_INSENSITIVE);
+		// accountQuery.criteria("username").containsIgnoreCase(pattern.pattern());
 
-		Pattern pattern = Pattern.compile("^" + newUserName + "$",
-				Pattern.CASE_INSENSITIVE);
-
-		accountQuery.criteria("username").containsIgnoreCase(pattern.pattern());
+		// Updated with new version of Morphia
+		accountQuery.criteria("username").equalIgnoreCase(newUserName);
 		profileQuery.criteria("user id").in(accountQuery.asKeyList());
 		return profileQuery.get();
 	}
@@ -719,12 +733,10 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 		Datastore ds = getDatastore();
 		List<InvestigatorUsersAndPositions> userPositions = new ArrayList<InvestigatorUsersAndPositions>();
 
-		Query<UserProfile> q = ds
-				.createQuery(UserProfile.class)
-				.field("_id")
-				.equal(id)
+		Query<UserProfile> q = ds.createQuery(UserProfile.class)
 				.retrievedFields(true, "_id", "first name", "middle name",
 						"last name", "details", "mobile number");
+		q.and(q.criteria("details").notEqual(null), q.criteria("_id").equal(id));
 		List<UserProfile> userProfile = q.asList();
 
 		for (UserProfile user : userProfile) {
@@ -736,20 +748,24 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 			userPosition.setMobileNumber(user.getMobileNumbers().get(0));
 
 			for (PositionDetails userDetails : user.getDetails()) {
-				Multimap<String, Object> mapTypeTitle = ArrayListMultimap
-						.create();
-				Multimap<String, Object> mapDeptType = ArrayListMultimap
-						.create();
 				String college = userDetails.getCollege();
 				String department = userDetails.getDepartment();
 				String positionType = userDetails.getPositionType();
 				String positionTitle = userDetails.getPositionTitle();
 
-				if (college.equals(userCollege)
+				if (((positionType
+						.equalsIgnoreCase("Tenured/tenure-track faculty")
+						|| positionType
+								.equalsIgnoreCase("Non-tenure-track research faculty") || positionType
+							.equalsIgnoreCase("Teaching faculty")) && positionType
+						.equals(userPositionType))
+						&& college.equals(userCollege)
 						&& department.equals(userDepartment)
-						&& positionType.equals(userPositionType)
 						&& positionTitle.equals(userPositionTitle)) {
-
+					Multimap<String, Object> mapTypeTitle = ArrayListMultimap
+							.create();
+					Multimap<String, Object> mapDeptType = ArrayListMultimap
+							.create();
 					mapTypeTitle.put(positionType, positionTitle);
 					mapDeptType.put(department, mapTypeTitle.asMap());
 
@@ -767,12 +783,10 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 		Datastore ds = getDatastore();
 		List<InvestigatorUsersAndPositions> userPositions = new ArrayList<InvestigatorUsersAndPositions>();
 
-		Query<UserProfile> q = ds
-				.createQuery(UserProfile.class)
-				.field("_id")
-				.equal(id)
+		Query<UserProfile> q = ds.createQuery(UserProfile.class)
 				.retrievedFields(true, "_id", "first name", "middle name",
 						"last name", "details", "mobile number");
+		q.and(q.criteria("details").notEqual(null), q.criteria("_id").equal(id));
 		List<UserProfile> userProfile = q.asList();
 
 		for (UserProfile user : userProfile) {
@@ -784,18 +798,25 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 			userPosition.setMobileNumber(user.getMobileNumbers().get(0));
 
 			for (PositionDetails userDetails : user.getDetails()) {
-				Multimap<String, Object> mapTypeTitle = ArrayListMultimap
-						.create();
-				Multimap<String, Object> mapDeptType = ArrayListMultimap
-						.create();
+				if (userDetails.getPositionType().equalsIgnoreCase(
+						"Tenured/tenure-track faculty")
+						|| userDetails.getPositionType().equalsIgnoreCase(
+								"Non-tenure-track research faculty")
+						|| userDetails.getPositionType().equalsIgnoreCase(
+								"Teaching faculty")) {
+					Multimap<String, Object> mapTypeTitle = ArrayListMultimap
+							.create();
+					Multimap<String, Object> mapDeptType = ArrayListMultimap
+							.create();
 
-				mapTypeTitle.put(userDetails.getPositionType(),
-						userDetails.getPositionTitle());
-				mapDeptType.put(userDetails.getDepartment(),
-						mapTypeTitle.asMap());
+					mapTypeTitle.put(userDetails.getPositionType(),
+							userDetails.getPositionTitle());
+					mapDeptType.put(userDetails.getDepartment(),
+							mapTypeTitle.asMap());
 
-				htUser.put(userDetails.getCollege(), mapDeptType.asMap());
-				userPosition.setPositions(htUser);
+					htUser.put(userDetails.getCollege(), mapDeptType.asMap());
+					userPosition.setPositions(htUser);
+				}
 			}
 			userPositions.add(userPosition);
 		}
@@ -807,12 +828,11 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 		Datastore ds = getDatastore();
 		List<InvestigatorUsersAndPositions> userPositions = new ArrayList<InvestigatorUsersAndPositions>();
 
-		Query<UserProfile> q = ds
-				.createQuery(UserProfile.class)
-				.field("_id")
-				.in(userIds)
+		Query<UserProfile> q = ds.createQuery(UserProfile.class)
 				.retrievedFields(true, "_id", "first name", "middle name",
 						"last name", "details", "mobile number");
+		q.and(q.criteria("details").notEqual(null),
+				q.criteria("_id").in(userIds));
 		List<UserProfile> userProfile = q.asList();
 
 		for (UserProfile user : userProfile) {
@@ -824,18 +844,25 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 			userPosition.setMobileNumber(user.getMobileNumbers().get(0));
 
 			for (PositionDetails userDetails : user.getDetails()) {
-				Multimap<String, Object> mapTypeTitle = ArrayListMultimap
-						.create();
-				Multimap<String, Object> mapDeptType = ArrayListMultimap
-						.create();
+				if (userDetails.getPositionType().equalsIgnoreCase(
+						"Tenured/tenure-track faculty")
+						|| userDetails.getPositionType().equalsIgnoreCase(
+								"Non-tenure-track research faculty")
+						|| userDetails.getPositionType().equalsIgnoreCase(
+								"Teaching faculty")) {
+					Multimap<String, Object> mapTypeTitle = ArrayListMultimap
+							.create();
+					Multimap<String, Object> mapDeptType = ArrayListMultimap
+							.create();
 
-				mapTypeTitle.put(userDetails.getPositionType(),
-						userDetails.getPositionTitle());
-				mapDeptType.put(userDetails.getDepartment(),
-						mapTypeTitle.asMap());
+					mapTypeTitle.put(userDetails.getPositionType(),
+							userDetails.getPositionTitle());
+					mapDeptType.put(userDetails.getDepartment(),
+							mapTypeTitle.asMap());
 
-				htUser.put(userDetails.getCollege(), mapDeptType.asMap());
-				userPosition.setPositions(htUser);
+					htUser.put(userDetails.getCollege(), mapDeptType.asMap());
+					userPosition.setPositions(htUser);
+				}
 			}
 			userPositions.add(userPosition);
 		}
