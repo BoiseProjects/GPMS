@@ -3679,29 +3679,42 @@ $(function() {
 										+ ' title="Proposal Notes" class="cssClassTextArea" >'
 										+ item.note + '</textarea></td></tr>';
 
+								$('#trSignChair').hide();
+								$('#trSignDean').hide();
+								$('#trSignBusinessManager').hide();
+								$('#trSignIRB').hide();
+								$('#trSignAdministrator').hide();
+								$('#trSignDirector').hide();
+
 								switch (item.positionTitle) {
 								case "PI":
 								case "Co-PI":
 									$(cloneRow).appendTo("#trSignPICOPI tbody");
 									break;
 								case "Department Chair":
+									$('#trSignChair:hidden').show();
 									$(cloneRow).appendTo("#trSignChair tbody");
 									break;
 								case "Dean":
+									$('#trSignDean:hidden').show();
 									$(cloneRow).appendTo("#trSignDean tbody");
 									break;
 								case "Business Manager":
+									$('#trSignBusinessManager:hidden').show();
 									$(cloneRow).appendTo(
 											"#trSignBusinessManager tbody");
 									break;
 								case "IRB":
+									$('#trSignIRB:hidden').show();
 									$(cloneRow).appendTo("#trSignIRB tbody");
 									break;
 								case "University Research Administrator":
+									$('#trSignAdministrator:hidden').show();
 									$(cloneRow).appendTo(
 											"#trSignAdministrator tbody");
 									break;
 								case "University Research Director":
+									$('#trSignDirector:hidden').show();
 									$(cloneRow).appendTo(
 											"#trSignDirector tbody");
 									break;
@@ -4612,85 +4625,120 @@ $(function() {
 					.on(
 							"click",
 							function() {
-								if ($(this).prop("name") == "DeleteOption") {
-									var t = $(this).closest('tr');
+								alert(myProposal.config.proposalRoles + ":::"
+										+ myProposal.config.proposalId + ":::"
+										+ $(this).attr("name"));
+								var currentProposalRoles = myProposal.config.proposalRoles
+										.split(', ');
+								if ($.inArray("PI", currentProposalRoles) !== -1
+										|| $.inArray("Co-PI",
+												currentProposalRoles) !== -1
+										|| myProposal.config.proposalId == "0") {
+									if ($(this).prop("name") == "DeleteOption") {
+										var t = $(this).closest('tr');
 
-									t.find("td").wrapInner(
-											"<div style='display: block'/>")
-											.parent().find("td div").slideUp(
-													300, function() {
-														t.remove();
-													});
+										t
+												.find("td")
+												.wrapInner(
+														"<div style='display: block'/>")
+												.parent().find("td div")
+												.slideUp(300, function() {
+													t.remove();
+												});
 
-								} else if ($(this).prop("name") == "AddMore") {
-									var cloneRow = $(this).closest('tr').clone(
-											true);
-									$(cloneRow).find("input").each(
-											function(i) {
-												if ($(this).is(".AddOption")) {
-													$(this).prop("name",
-															"DeleteOption");
-													$(this).prop("value",
-															"Delete ");
-													$(this).prop("title",
-															"Delete");
-												}
-											});
-									$(cloneRow)
-											.find("select")
-											.each(
-													function(j) {
-														$(this).removeAttr(
-																"disabled");
-														$(this).removeAttr(
-																"required");
-														// Remove PI option
-														// after first row
-														if (j == 0) {
+									} else if ($(this).prop("name") == "AddMore") {
+										var cloneRow = $(this).closest('tr')
+												.clone(true);
+										$(cloneRow)
+												.find("input")
+												.each(
+														function(i) {
+															if ($(this)
+																	.is(
+																			".AddOption")) {
+																$(this)
+																		.prop(
+																				"name",
+																				"DeleteOption");
+																$(this)
+																		.prop(
+																				"value",
+																				"Delete ");
+																$(this)
+																		.prop(
+																				"title",
+																				"Delete");
+															}
+														});
+										$(cloneRow)
+												.find("select")
+												.each(
+														function(j) {
+															$(this).removeAttr(
+																	"disabled");
+															$(this).removeAttr(
+																	"required");
+															// Remove PI option
+															// after first row
+															if (j == 0) {
+																$(this)
+																		.find(
+																				'option:first')
+																		.remove();
+																if ($
+																		.inArray(
+																				"Co-PI",
+																				currentProposalRoles) !== -1) {
+																	$(this)
+																			.find(
+																					'option:first')
+																			.remove();
+																}
+															} else if (j == 1) {
+																$(this)
+																		.prop(
+																				"disabled",
+																				false);
+																$('#ui-id-2')
+																		.find(
+																				"select[name='ddlName']")
+																		.each(
+																				function(
+																						k) {
+																					$(
+																							cloneRow)
+																							.find(
+																									'option[value='
+																											+ $(
+																													this)
+																													.val()
+																											+ ']')
+																							.remove();
+																				});
+															}
 															$(this)
 																	.find(
-																			'option:first')
-																	.remove();
-														} else if (j == 1) {
-															$(this).prop(
-																	"disabled",
-																	false);
-															$('#ui-id-2')
-																	.find(
-																			"select[name='ddlName']")
-																	.each(
-																			function(
-																					k) {
-																				$(
-																						cloneRow)
-																						.find(
-																								'option[value='
-																										+ $(
-																												this)
-																												.val()
-																										+ ']')
-																						.remove();
-																			});
-														}
-														$(this)
-																.find("option")
-																.removeAttr(
-																		"selected");
-													});
+																			"option")
+																	.removeAttr(
+																			"selected");
+														});
 
-									if ($(cloneRow).find(
-											"select[name='ddlName'] option").length > 0) {
-										$('#dataTable tr:last').find(
-												"select[name='ddlName']").prop(
-												"disabled", true);
+										if ($(cloneRow)
+												.find(
+														"select[name='ddlName'] option").length > 0) {
+											$('#dataTable tr:last').find(
+													"select[name='ddlName']")
+													.prop("disabled", true);
 
-										$(cloneRow).appendTo("#dataTable")
-												.hide().fadeIn(1200);
+											$(cloneRow).appendTo("#dataTable")
+													.hide().fadeIn(1200);
 
-										rowIndex = $('#dataTable > tbody tr')
-												.size() - 1;
-										myProposal
-												.BindDefaultUserPosition(rowIndex);
+											rowIndex = $(
+													'#dataTable > tbody tr')
+													.size() - 1;
+											myProposal
+													.BindDefaultUserPosition(rowIndex);
+										}
 									}
 								}
 							});

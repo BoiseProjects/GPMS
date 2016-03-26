@@ -37,7 +37,7 @@ public class Create10Proposals {
 	UserProfileDAO newUserProfileDAO;
 	ProposalDAO newProposalDAO;
 	String dbName = "db_gpms";
-	final int MAXIMUM_PROPOSALS = 5; // Adjust this to make more or less
+	final int MAXIMUM_PROPOSALS = 100; // Adjust this to make more or less
 										// profiles with the generator.
 
 	private int SIGNATURE_MODE = 1;
