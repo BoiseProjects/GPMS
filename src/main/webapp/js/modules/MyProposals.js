@@ -4778,19 +4778,25 @@ $(function() {
 																	"disabled");
 															$(this).removeProp(
 																	"required");
-															// Remove PI option
-															// after first row
+															// Remove PI
+															// option
+															// after first
+															// row
 															if (j == 0) {
 																$(this)
 																		.find(
 																				'option:first')
 																		.remove();
 
-																// Maximum of
-																// co-PIs is 4,
-																// and maximum
+																// Maximum
+																// of
+																// co-PIs is
+																// 4,
+																// and
+																// maximum
 																// of senior
-																// personnel is
+																// personnel
+																// is
 																// 10
 																if (myProposal
 																		.countCoPIs() == 4) {
@@ -4854,18 +4860,30 @@ $(function() {
 										if ($(cloneRow)
 												.find(
 														"select[name='ddlName'] option").length > 0) {
-											$('#dataTable tr:last').find(
-													"select[name='ddlName']")
-													.prop("disabled", true);
+											if ($(cloneRow)
+													.find(
+															"select[name='ddlRole'] option").length > 0) {
+												$('#dataTable tr:last')
+														.find(
+																"select[name='ddlName']")
+														.prop("disabled", true);
 
-											$(cloneRow).appendTo("#dataTable")
-													.hide().fadeIn(1200);
+												$(cloneRow).appendTo(
+														"#dataTable").hide()
+														.fadeIn(1200);
 
-											rowIndex = $(
-													'#dataTable > tbody tr')
-													.size() - 1;
-											myProposal
-													.BindDefaultUserPosition(rowIndex);
+												rowIndex = $(
+														'#dataTable > tbody tr')
+														.size() - 1;
+												myProposal
+														.BindDefaultUserPosition(rowIndex);
+											} else {
+												csscody
+														.error('<h2>'
+																+ 'Error Message'
+																+ '</h2><p>'
+																+ 'Maximum of Co-PIs is 4 and maximum of Senior Personnel is 10!</p>');
+											}
 										}
 									}
 								}
