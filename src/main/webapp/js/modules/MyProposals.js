@@ -2661,7 +2661,7 @@ $(function() {
 		BindPICoPISignatures : function() {
 			var fullName = $('select[name="ddlName"]').eq(0).find(
 					"option:selected").text();
-			var cloneRow = '<tr allowchange="true" allowsign="true"><td><span class="cssClassLabel" name ="fullname" role="PI" delegated="false">'
+			var cloneRow = '<tr><td><span class="cssClassLabel" name ="fullname" role="PI" delegated="false">'
 					+ fullName
 					+ '</span></td><td><input id="pi_signature" data-for="signature" data-value="'
 					+ $('select[name="ddlName"]').eq(0).val()
@@ -2674,6 +2674,9 @@ $(function() {
 					+ $('select[name="ddlName"]').eq(0).val()
 					+ 'PI" required="true" title="Proposal Notes" class="cssClassTextArea"></textarea></td></tr>';
 			$(cloneRow).appendTo("#trSignPICOPI tbody");
+
+			$('#trSignPICOPI tbody tr:last').data("allowchange", "true").data(
+					"allowsign", "true");
 		},
 
 		InitializeAccordion : function() {
@@ -2768,8 +2771,8 @@ $(function() {
 		},
 
 		GetUserSignature : function(obj) {
-			var allowedChangeAttr = obj.attr('allowchange');
-			var allowedSignAttr = obj.attr('allowsign');
+			var allowedChangeAttr = obj.data('allowchange');
+			var allowedSignAttr = obj.data('allowsign');
 
 			if (typeof allowedChangeAttr !== typeof undefined
 					&& allowedChangeAttr !== false
@@ -3620,30 +3623,7 @@ $(function() {
 									signedDate = item.signedDate;
 								}
 
-								if (GPMS.utils.GetUserProfileID() != item.userProfileId) {
-									readOnly = 'readonly="true"';
-								} else if (GPMS.utils.GetUserProfileID() == item.userProfileId) {
-									// if (item.signature != ""
-									// && item.signedDate != null) {
-									// readOnly = 'readonly="true"';
-									// } else
-									// myProposal.config.proposalRoles
-									if (item.signedDate == null) {
-										focusMethod = 'onfocus="myProposal.BindCurrentDateTime(this);" required="true"';
-										readOnly = 'required="true"';
-										allowedSign = true;
-										allowedChange = true;
-									}
-								}
-
-								// if (readOnly == '') {
-								// allowedChange = true;
-								// }
-								var cloneRow = '<tr allowchange="'
-										+ allowedChange
-										+ '" allowsign="'
-										+ allowedSign
-										+ '"><td><span class="cssClassLabel" name="fullname" role="'
+								var cloneRow = '<tr><td><span class="cssClassLabel" name="fullname" role="'
 										+ item.positionTitle
 										+ '" delegated="'
 										+ item.delegated
@@ -3657,35 +3637,28 @@ $(function() {
 										+ item.positionTitle
 										+ '\'s Signature" type="text" value="'
 										+ item.signature
-										+ '"'
-										+ ' name="'
+										+ '" name="'
 										+ item.userProfileId
 										+ item.positionTitle
-										+ '" '
-										+ readOnly
-										+ '>'
+										+ '" readonly="true">'
 										+ '</td><td><input data-for="signaturedate" name="signaturedate'
 										+ item.userProfileId
 										+ item.positionTitle
-										+ '" title="Signed Date" class="sfInputbox" placeholder="Signed Date" type="text" readonly="true" '
-										+ focusMethod
-										+ ' value="'
+										+ '" title="Signed Date" class="sfInputbox" placeholder="Signed Date" type="text" readonly="true" value="'
 										+ $.format.date(signedDate,
 												'yyyy/MM/dd hh:mm:ss a')
 										+ '"></td><td><textarea rows="2" cols="26" name="proposalNotes'
 										+ item.userProfileId
 										+ item.positionTitle
-										+ '" '
-										+ readOnly
-										+ ' title="Proposal Notes" class="cssClassTextArea" >'
+										+ '" readonly="true" title="Proposal Notes" class="cssClassTextArea" >'
 										+ item.note + '</textarea></td></tr>';
 
-								$('#trSignChair').hide();
-								$('#trSignDean').hide();
-								$('#trSignBusinessManager').hide();
-								$('#trSignIRB').hide();
-								$('#trSignAdministrator').hide();
-								$('#trSignDirector').hide();
+								// $('#trSignChair').hide();
+								// $('#trSignDean').hide();
+								// $('#trSignBusinessManager').hide();
+								// $('#trSignIRB').hide();
+								// $('#trSignAdministrator').hide();
+								// $('#trSignDirector').hide();
 
 								switch (item.positionTitle) {
 								case "PI":
@@ -3723,6 +3696,81 @@ $(function() {
 									break;
 								}
 							});
+
+			var signTable = '';
+			var currentProposalRoles = myProposal.config.proposalRoles
+					.split(', ');
+			if ($.inArray("PI", currentProposalRoles) !== -1
+					|| $.inArray("Co-PI", currentProposalRoles) !== -1) {
+				signTable = "#trSignPICOPI";
+			} else {
+				switch (GPMS.utils.GetUserPositionTitle()) {
+				case "Department Chair":
+					signTable = "#trSignChair";
+					break;
+				case "Dean":
+					signTable = "#trSignDean";
+					break;
+				case "Business Manager":
+					signTable = "#trSignBusinessManager";
+					break;
+				case "IRB":
+					signTable = "#trSignIRB";
+					break;
+				case "University Research Administrator":
+					signTable = "#trSignAdministrator";
+					break;
+				case "University Research Director":
+					signTable = "#trSignDirector";
+					break;
+				default:
+					break;
+				}
+			}
+
+			if (signTable !== "") {
+				$(signTable + " tbody tr")
+						.find('input:eq(0)')
+						.each(
+								function(index) {
+
+									if (GPMS.utils.GetUserProfileID() == $(this)
+											.attr("data-value")) {
+										// if (item.signedDate == null) {
+										$(this).parents('tr').data(
+												"allowchange", "true").data(
+												"allowsign", "true");
+										$(this)
+												.parents('tr')
+												.find('input, textarea')
+												.each(
+														function(index) {
+															$(this).removeAttr(
+																	"readonly");
+
+															if (index == 1) {// Date
+																$(this)
+																		.click(
+																				function() {
+																					myProposal
+																							.BindCurrentDateTime(this);
+																				});
+																$(this)
+																		.attr(
+																				"required",
+																				"true");
+															} else { // Signature,
+																// Note
+																$(this)
+																		.attr(
+																				"required",
+																				"true");
+															}
+														});
+										// }
+									}
+								});
+			}
 
 			break;
 

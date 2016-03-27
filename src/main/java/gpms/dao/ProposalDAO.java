@@ -1066,26 +1066,46 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 			proposal.setLastAuditAction(lastAuditAction);
 
 			String piUserId = userProposal.getInvestigatorInfo().getPi()
-					.getUserRef().getId().toString();
+					.getUserProfileId();
+			String piUserCollege = userProposal.getInvestigatorInfo().getPi()
+					.getCollege();
+			String piUserDepartment = userProposal.getInvestigatorInfo()
+					.getPi().getDepartment();
+			String piUserPositionType = userProposal.getInvestigatorInfo()
+					.getPi().getPositionType();
+			String piUserPositionTitle = userProposal.getInvestigatorInfo()
+					.getPi().getPositionTitle();
+
 			proposal.setPiUser(piUserId);
 			if (!proposal.getAllUsers().contains(piUserId)) {
 				proposal.getAllUsers().add(piUserId);
 			}
 
-			if (piUserId.equals(userId)) {
+			if (piUserId.equals(userId) && piUserCollege.equals(college)
+					&& piUserDepartment.equals(department)
+					&& piUserPositionType.equals(positionType)
+					&& piUserPositionTitle.equals(positionTitle)) {
 				proposal.getCurrentuserProposalRoles().add("PI");
 			}
 
 			List<InvestigatorRefAndPosition> allCoPI = userProposal
 					.getInvestigatorInfo().getCo_pi();
 			for (InvestigatorRefAndPosition coPI : allCoPI) {
-				String coPIUser = coPI.getUserRef().getId().toString();
+				String coPIUser = coPI.getUserProfileId();
+				String coPIUserCollege = coPI.getCollege();
+				String coPIUserDepartment = coPI.getDepartment();
+				String coPIUserPositionType = coPI.getPositionType();
+				String coPIUserPositionTitle = coPI.getPositionTitle();
+
 				proposal.getCopiUsers().add(coPIUser);
 				if (!proposal.getAllUsers().contains(coPIUser)) {
 					proposal.getAllUsers().add(coPIUser);
 				}
 
-				if (coPI.getUserProfileId().equals(userId)) {
+				if (coPIUser.equals(userId) && coPIUserCollege.equals(college)
+						&& coPIUserDepartment.equals(department)
+						&& coPIUserPositionType.equals(positionType)
+						&& coPIUserPositionTitle.equals(positionTitle)) {
 					proposal.getCurrentuserProposalRoles().add("Co-PI");
 				}
 			}
@@ -1093,14 +1113,23 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 			List<InvestigatorRefAndPosition> allSeniors = userProposal
 					.getInvestigatorInfo().getSeniorPersonnel();
 			for (InvestigatorRefAndPosition senior : allSeniors) {
-				String seniorUser = senior.getUserRef().getId().toString();
+				String seniorUser = senior.getUserProfileId();
+				String seniorUserCollege = senior.getCollege();
+				String seniorUserDepartment = senior.getDepartment();
+				String seniorUserPositionType = senior.getPositionType();
+				String seniorUserPositionTitle = senior.getPositionTitle();
+
 				proposal.getSeniorUsers().add(seniorUser);
 				if (!proposal.getAllUsers().contains(seniorUser)) {
 					proposal.getAllUsers().add(seniorUser);
 				}
 
 				// TODO Bind Proposal Roles for the User
-				if (senior.getUserProfileId().equals(userId)) {
+				if (seniorUser.equals(userId)
+						&& seniorUserCollege.equals(college)
+						&& seniorUserDepartment.equals(department)
+						&& seniorUserPositionType.equals(positionType)
+						&& seniorUserPositionTitle.equals(positionTitle)) {
 					proposal.getCurrentuserProposalRoles().add(
 							"Senior Personnel");
 				}
