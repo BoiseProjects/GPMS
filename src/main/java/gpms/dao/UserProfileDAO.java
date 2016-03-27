@@ -72,6 +72,36 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 	 * @return list of all users in the ds
 	 * @throws UnknownHostException
 	 */
+
+	/**
+	 * 
+	 * @return list of all users with position details to get as PI, Co-PI and
+	 *         Senior
+	 * @throws UnknownHostException
+	 */
+	public List<UserProfile> findAllUserForInvestigator()
+			throws UnknownHostException {
+		Datastore ds = getDatastore();
+		Query<UserProfile> profileQuery = ds.createQuery(UserProfile.class);
+		profileQuery
+				.and(profileQuery.criteria("details").notEqual(null),
+						profileQuery
+								.or(profileQuery.criteria(
+										"details.position type")
+										.equalIgnoreCase(
+												"Tenured/tenure-track faculty"),
+										profileQuery
+												.criteria(
+														"details.position type")
+												.equalIgnoreCase(
+														"Non-tenure-track research faculty"),
+										profileQuery.criteria(
+												"details.position type")
+												.equalIgnoreCase(
+														"Teaching faculty")));
+		return profileQuery.asList();
+	}
+
 	public List<UserProfile> findAll() throws UnknownHostException {
 		Datastore ds = getDatastore();
 		return ds.createQuery(UserProfile.class).asList();

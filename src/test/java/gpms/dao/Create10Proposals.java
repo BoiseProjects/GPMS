@@ -3,6 +3,7 @@ package gpms.dao;
 import gpms.DAL.MongoDBConnector;
 import gpms.model.InvestigatorInfo;
 import gpms.model.InvestigatorRefAndPosition;
+import gpms.model.PositionDetails;
 import gpms.model.ProjectInfo;
 import gpms.model.ProjectLocation;
 import gpms.model.ProjectPeriod;
@@ -13,6 +14,7 @@ import gpms.model.SponsorAndBudgetInfo;
 import gpms.model.TypeOfRequest;
 import gpms.model.UserAccount;
 import gpms.model.UserProfile;
+import gpms.utils.SerializationHelper;
 
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -37,7 +39,7 @@ public class Create10Proposals {
 	UserProfileDAO newUserProfileDAO;
 	ProposalDAO newProposalDAO;
 	String dbName = "db_gpms";
-	final int MAXIMUM_PROPOSALS = 100; // Adjust this to make more or less
+	final int MAXIMUM_PROPOSALS = 10; // Adjust this to make more or less
 										// profiles with the generator.
 
 	private int SIGNATURE_MODE = 1;
@@ -62,92 +64,111 @@ public class Create10Proposals {
 	}
 
 	@Test
-	public void creationTest() throws UnknownHostException {
+	public void creationTest() throws Exception {
 		// We'll make 100 proposals. Each user will be made to have one
 		// proposal.
 		// We'll have up to 4 co-pi's added, and up to 2 senior personnel added
-		List<UserProfile> masterList = newUserProfileDAO.findAll();
-		List<UserProfile> pullList = newUserProfileDAO.findAll();
+		List<UserProfile> masterList = newUserProfileDAO
+				.findAllUserForInvestigator();
 		int propNumb = 1;
 
-		while (!pullList.isEmpty()) {
+		while (!masterList.isEmpty()) {
 			// Remove a user from the list
 			Random rand = new Random();
-			int choice = rand.nextInt(pullList.size());
+			int choice = rand.nextInt(masterList.size());
+			UserProfile propProfile = masterList.get(choice);
+			masterList.remove(choice);
 
-			// UserProfile propProfile = pullList.remove(choice);
-			UserProfile propProfile = pullList.remove(pullList.size() - 1);
+			List<UserProfile> dupMasterList = masterList;
+
+			// dupMasterList.remove(choice);
 			// This will populate the investigator info position with details
 			// Currently this is set up to just use the first pos det item from
 			// the list of them from each user
 			Proposal newProposal = new Proposal();
 
-			// ProjectInfo newPI = new ProjectInfo();
-			//
-			// // Set Proposal Details here
-			// ProjectLocation newPL = new ProjectLocation();
-			// newPL.setOffCampus(true);
-			//
-			// newPI.setProjectLocation(newPL);
-			//
-			// ProjectPeriod newPP = new ProjectPeriod();
-			// newPP.setFrom(new Date());
-			//
-			// // SimpleDateFormat sdf = new SimpleDateFormat(
-			// // "yyyy-MM-dd'T'HH:mm:ssX");
-			// Calendar c = Calendar.getInstance();
-			// c.setTime(new Date()); // Now use today date.
-			// c.add(Calendar.DATE, 5); // Adding 5 days
-			// newPP.setTo(c.getTime());
-			//
-			// newPI.setProjectPeriod(newPP);
-			//
-			// TypeOfRequest newTR = new TypeOfRequest();
-			// newTR.setContinuation(true);
-			// newPI.setTypeOfRequest(newTR);
-			//
-			// ProjectType newPT = new ProjectType();
-			// newPT.setIsResearchApplied(true);
-			// newPI.setProjectType(newPT);
-			//
-			// c.add(Calendar.DATE, 60); // Adding 60 days
-			//
-			// newPI.setDueDate(c.getTime());
-			//
-			// newProposal.setProjectInfo(newPI);
-
-			// --------------------------------------------------------
-			// newProposalDAO.save(newProposal);
-
 			InvestigatorInfo newInfo = new InvestigatorInfo();
 
 			InvestigatorRefAndPosition newInvPos = new InvestigatorRefAndPosition();
-			Random randomizer = new Random();
-			int posChoice = randomizer.nextInt(propProfile.getDetails().size());
 
-			newInvPos
-					.setCollege(propProfile.getDetails(posChoice).getCollege());
-			newInvPos.setDepartment(propProfile.getDetails(posChoice)
-					.getDepartment());
-			newInvPos.setPositionType(propProfile.getDetails(posChoice)
-					.getPositionType());
-			newInvPos.setPositionTitle(propProfile.getDetails(posChoice)
-					.getPositionTitle());
-			newInvPos.setUserProfileId(propProfile.getId().toString());
-			newInvPos.setUserRef(propProfile);
+			for (PositionDetails details : propProfile.getDetails()) {
+				if (details.getPositionType().equals(
+						"Tenured/tenure-track faculty")
+						|| details.getPositionType().equals(
+								"Non-tenure-track research faculty")
+						|| details.getPositionType().equals("Teaching faculty")) {
+					newInvPos.setCollege(details.getCollege());
+					newInvPos.setDepartment(details.getDepartment());
+					newInvPos.setPositionType(details.getPositionType());
+					newInvPos.setPositionTitle(details.getPositionTitle());
+					newInvPos.setUserProfileId(propProfile.getId().toString());
+					newInvPos.setUserRef(propProfile);
 
-			newInfo.setPi(newInvPos);
-
-			int totalCops = rand.nextInt(5);
-			for (int a = 0; a < totalCops; a++) {
-				newInfo.getCo_pi().add(makeCoPI(masterList, newInfo));
-
+					newInfo.setPi(newInvPos);
+					break;
+				}
 			}
 
-			int totalSeniors = rand.nextInt(2) + 1;
+			int totalCops = 0;
+			if (dupMasterList.size() > 0) {
+				totalCops = rand.nextInt(5);
+			}
+			for (int a = 0; a < totalCops; a++) {
+				int coPIChoice = rand.nextInt(dupMasterList.size());
+				UserProfile coPIProfile = dupMasterList.get(coPIChoice);
+				dupMasterList.remove(coPIChoice);
+				newInvPos = new InvestigatorRefAndPosition();
+
+				for (PositionDetails details : coPIProfile.getDetails()) {
+					if (details.getPositionType().equals(
+							"Tenured/tenure-track faculty")
+							|| details.getPositionType().equals(
+									"Non-tenure-track research faculty")
+							|| details.getPositionType().equals(
+									"Teaching faculty")) {
+						newInvPos.setCollege(details.getCollege());
+						newInvPos.setDepartment(details.getDepartment());
+						newInvPos.setPositionType(details.getPositionType());
+						newInvPos.setPositionTitle(details.getPositionTitle());
+						newInvPos.setUserProfileId(coPIProfile.getId()
+								.toString());
+						newInvPos.setUserRef(coPIProfile);
+
+						newInfo.getCo_pi().add(newInvPos);
+						break;
+					}
+				}
+			}
+
+			int totalSeniors = 0;
+			if (dupMasterList.size() > 0) {
+				totalSeniors = rand.nextInt(3);
+			}
 			for (int b = 0; b < totalSeniors; b++) {
-				newInfo.getSeniorPersonnel().add(
-						makeSenior(masterList, newInfo));
+				int seniorChoice = rand.nextInt(dupMasterList.size());
+				UserProfile seniorProfile = dupMasterList.get(seniorChoice);
+				dupMasterList.remove(seniorChoice);
+				newInvPos = new InvestigatorRefAndPosition();
+
+				for (PositionDetails details : seniorProfile.getDetails()) {
+					if (details.getPositionType().equals(
+							"Tenured/tenure-track faculty")
+							|| details.getPositionType().equals(
+									"Non-tenure-track research faculty")
+							|| details.getPositionType().equals(
+									"Teaching faculty")) {
+						newInvPos.setCollege(details.getCollege());
+						newInvPos.setDepartment(details.getDepartment());
+						newInvPos.setPositionType(details.getPositionType());
+						newInvPos.setPositionTitle(details.getPositionTitle());
+						newInvPos.setUserProfileId(seniorProfile.getId()
+								.toString());
+						newInvPos.setUserRef(seniorProfile);
+
+						newInfo.getSeniorPersonnel().add(newInvPos);
+						break;
+					}
+				}
 			}
 
 			newProposal.setInvestigatorInfo(newInfo);
@@ -198,27 +219,23 @@ public class Create10Proposals {
 						.getPi().getUserRef().getFullName());
 				newSignInfo.setSignature(newProposal.getInvestigatorInfo()
 						.getPi().getUserRef().getFullName());
-				newSignInfo.setPositionTitle(newProposal.getInvestigatorInfo()
-						.getPi().getPositionTitle());
+				newSignInfo.setPositionTitle("PI");
 				newSignInfo.setSignedDate(new Date());
 				newSignInfo.setNote("This is Note from PI");
 				newProposal.getSignatureInfo().add(newSignInfo);
 
 				// CoPI's sign the proposal
-
-				// for (InvestigatorRefAndPosition cops : newProposal
-				// .getInvestigatorInfo().getCo_pi()) {
-				// newSignInfo = new SignatureInfo();
-				// newSignInfo.setUserProfileId(cops.getUserProfileId());
-				// newSignInfo.setFullName(cops.getUserRef().getFullName());
-				// newSignInfo.setSignature(cops.getUserRef().getFullName());
-				// newSignInfo.setPositionTitle(cops.getPositionTitle());
-				// newSignInfo.setSignedDate(new Date());
-				// newSignInfo.setNote("This is Note from Co-PI");
-				// newProposal.getSignatureInfo().add(newSignInfo);
-				//
-				// }
-
+				for (InvestigatorRefAndPosition cops : newProposal
+						.getInvestigatorInfo().getCo_pi()) {
+					newSignInfo = new SignatureInfo();
+					newSignInfo.setUserProfileId(cops.getUserProfileId());
+					newSignInfo.setFullName(cops.getUserRef().getFullName());
+					newSignInfo.setSignature(cops.getUserRef().getFullName());
+					newSignInfo.setPositionTitle("Co-PI");
+					newSignInfo.setSignedDate(new Date());
+					newSignInfo.setNote("This is Note from Co-PI");
+					newProposal.getSignatureInfo().add(newSignInfo);
+				}
 			}
 
 			if (SIGNATURE_MODE == 2) {
@@ -531,39 +548,5 @@ public class Create10Proposals {
 
 		}
 
-	}
-
-	public InvestigatorRefAndPosition makeCoPI(List<UserProfile> theMasterList,
-			InvestigatorInfo theInfo) {
-		Random rand = new Random();
-		int coChoice = rand.nextInt(theMasterList.size());
-		UserProfile copProfile = theMasterList.get(coChoice);
-		InvestigatorRefAndPosition newInvPos = new InvestigatorRefAndPosition();
-
-		newInvPos.setCollege(copProfile.getDetails(0).getCollege());
-		newInvPos.setDepartment(copProfile.getDetails(0).getDepartment());
-		newInvPos.setPositionType(copProfile.getDetails(0).getPositionType());
-		newInvPos.setPositionTitle(copProfile.getDetails(0).getPositionTitle());
-		newInvPos.setUserProfileId(copProfile.getId().toString());
-		newInvPos.setUserRef(copProfile);
-
-		return newInvPos;
-	}
-
-	public InvestigatorRefAndPosition makeSenior(
-			List<UserProfile> theMasterList, InvestigatorInfo theInfo) {
-		Random rand = new Random();
-		int coChoice = rand.nextInt(theMasterList.size());
-		UserProfile copProfile = theMasterList.get(coChoice);
-		InvestigatorRefAndPosition newInvPos = new InvestigatorRefAndPosition();
-
-		newInvPos.setCollege(copProfile.getDetails(0).getCollege());
-		newInvPos.setDepartment(copProfile.getDetails(0).getDepartment());
-		newInvPos.setPositionType(copProfile.getDetails(0).getPositionType());
-		newInvPos.setPositionTitle(copProfile.getDetails(0).getPositionTitle());
-		newInvPos.setUserProfileId(copProfile.getId().toString());
-		newInvPos.setUserRef(copProfile);
-
-		return newInvPos;
 	}
 }

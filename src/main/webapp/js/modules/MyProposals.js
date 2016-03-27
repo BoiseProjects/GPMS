@@ -3627,6 +3627,7 @@ $(function() {
 									// && item.signedDate != null) {
 									// readOnly = 'readonly="true"';
 									// } else
+									// myProposal.config.proposalRoles
 									if (item.signedDate == null) {
 										focusMethod = 'onfocus="myProposal.BindCurrentDateTime(this);" required="true"';
 										readOnly = 'required="true"';
