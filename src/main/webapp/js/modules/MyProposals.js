@@ -1604,6 +1604,27 @@ $(function() {
 				myProposal.BindAllSignatureForAProposal(argus[0], argus[20]);
 
 				// Delegation Info
+
+				$("#fileuploader").hide();
+				$("#dataTable tbody tr").find('input.AddOption').hide();
+
+				var currentProposalRoles = myProposal.config.proposalRoles
+						.split(', ');
+				if ($.inArray("PI", currentProposalRoles) !== -1) {
+					$("#fileuploader").show();
+					$("#dataTable tbody tr").find('input.AddOption').show();
+				} else if ($.inArray("Co-PI", currentProposalRoles) !== -1) {
+					$("#fileuploader").show();
+					$("#dataTable tbody tr:eq(0)").find('input.AddOption')
+							.show();
+					$("#dataTable tbody tr:gt(0)").find('select:first').each(
+							function(index) {
+								if ($(this).val() == 2) {
+									$(this).parents('tr').find(
+											'input.AddOption').show();
+								}
+							});
+				}
 				break;
 			default:
 				break;
@@ -1716,7 +1737,7 @@ $(function() {
 
 			// Project Information
 			$("#txtProjectTitle").val(response.projectInfo.projectTitle).prop(
-					"disabled", "disabled");
+					"disabled", true);
 
 			if (response.projectInfo.projectType.researchBasic) {
 				$("#ddlProjectType").val(1);
@@ -2243,35 +2264,30 @@ $(function() {
 									if (this.name == "ddlRole") {
 										if (userType == "PI") {
 											$(this).val(0).prop('selected',
-													'selected');
-											$(this)
-													.prop('disabled',
-															'disabled');
+													'selected').prop(
+													'disabled', true);
 										} else if (userType == "Co-PI") {
 											$(this).val(1).prop('selected',
-													'selected');
-											$(this).prop('disabled', true);
+													'selected').prop(
+													'disabled', true);
 											$(this).find('option').not(
 													':selected').remove();
 										} else if (userType == "Senior Personnel") {
 											$(this).val(2).prop('selected',
-													'selected');
-											$(this).prop('disabled', true);
+													'selected').prop(
+													'disabled', true);
 											$(this).find('option').not(
 													':selected').remove();
 										}
 									} else if (this.name == "ddlName") {
 										$(this).val(userDetails.userProfileId)
-												.prop('selected', 'selected');
+												.prop('selected', 'selected')
+												.prop('disabled', true);
 
-										if (userType == "PI") {
-											$(this).prop('disabled', true);
-										} else if (userType == "Co-PI") {
-											$(this).prop('disabled', true);
+										if (userType == "Co-PI") {
 											$(this).find('option').not(
 													':selected').remove();
 										} else if (userType == "Senior Personnel") {
-											$(this).prop('disabled', true);
 											$(this).find('option').not(
 													':selected').remove();
 										}
@@ -2285,7 +2301,8 @@ $(function() {
 												rowIndex).val());
 									} else if (this.name == "ddlCollege") {
 										$(this).val(userDetails.college).prop(
-												'selected', 'selected');
+												'selected', 'selected').prop(
+												'disabled', true);
 										myProposal.BindDepartmentDropDown($(
 												'select[name="ddlName"]').eq(
 												rowIndex).val(), $(
@@ -2293,7 +2310,8 @@ $(function() {
 												.eq(rowIndex).val());
 									} else if (this.name == "ddlDepartment") {
 										$(this).val(userDetails.department)
-												.prop('selected', 'selected');
+												.prop('selected', 'selected')
+												.prop('disabled', true);
 										myProposal.BindPositionTypeDropDown($(
 												'select[name="ddlName"]').eq(
 												rowIndex).val(), $(
@@ -2303,7 +2321,8 @@ $(function() {
 												.eq(rowIndex).val());
 									} else if (this.name == "ddlPositionType") {
 										$(this).val(userDetails.positionType)
-												.prop('selected', 'selected');
+												.prop('selected', 'selected')
+												.prop('disabled', true);
 										myProposal
 												.BindPositionTitleDropDown(
 														$(
@@ -2324,7 +2343,8 @@ $(function() {
 																.val());
 									} else if (this.name == "ddlPositionTitle") {
 										$(this).val(userDetails.positionTitle)
-												.prop('selected', 'selected');
+												.prop('selected', 'selected')
+												.prop('disabled', true);
 									}
 								});
 
@@ -2590,13 +2610,13 @@ $(function() {
 			$("#trSignAdministrator tbody").empty();
 			$("#trSignDirector tbody").empty();
 
-			$('#txtProjectTitle').removeAttr('disabled');
+			$('#txtProjectTitle').removeProp('disabled');
 
 			rowIndex = 0;
 			$("#dataTable tbody>tr:gt(0)").remove();
 
 			$('select[name=ddlRole]').eq(0).val(0).prop('selected', 'selected')
-					.prop('disabled', 'disabled');
+					.prop('disabled', true);
 
 			var container = $("#accordion > div").slice(1, 12);
 			var inputs = container.find('INPUT, SELECT, TEXTAREA');
@@ -3745,7 +3765,7 @@ $(function() {
 												.find('input, textarea')
 												.each(
 														function(index) {
-															$(this).removeAttr(
+															$(this).removeProp(
 																	"readonly");
 
 															if (index == 1) {// Date
@@ -3882,10 +3902,12 @@ $(function() {
 
 				$('select[name=ddlName]').eq(0).val(
 						GPMS.utils.GetUserProfileID()).prop('selected',
-						'selected').prop('disabled', 'disabled');
+						'selected').prop('disabled', true);
 
 				// TODO for admin this need to be not set!
 				myProposal.BindCurrentUserPosition(0);
+
+				$("#dataTable tbody tr").find('select').prop('disabled', true);
 
 				myProposal.BindPICoPISignatures();
 
@@ -3914,11 +3936,17 @@ $(function() {
 		case 15:
 			if (myProposal.config.proposalId != '0') {
 				alert("You are allowed to Edit this Section!");
-				$(myProposal.config.content).find('input, select, textarea')
-						.each(function() {
-							// $(this).addClass("ignore");
-							$(this).prop('disabled', false);
-						});
+				if (myProposal.config.content.attr("id") != "ui-id-2") {
+					$(myProposal.config.content)
+							.find('input, select, textarea').each(function() {
+								// $(this).addClass("ignore");
+								$(this).prop('disabled', false);
+							});
+				}
+
+				if (myProposal.config.content.attr("id") == "ui-id-4") {
+					$("#txtProjectTitle").prop("disabled", true);
+				}
 			}
 			break;
 
@@ -4123,6 +4151,28 @@ $(function() {
 			this.config.ajaxCallMode = 17;
 			this.ajaxCall(this.config);
 			return false;
+		},
+
+		countCoPIs : function() {
+			var countCoPIs = 0;
+			$("#dataTable tbody tr:gt(0)").find('select:first').each(
+					function(index) {
+						if ($(this).val() == 1) {
+							countCoPIs++;
+						}
+					});
+			return countCoPIs;
+		},
+
+		countSeniorPersonnels : function() {
+			var countSeniors = 0;
+			$("#dataTable tbody tr:gt(0)").find('select:first').each(
+					function(index) {
+						if ($(this).val() == 2) {
+							countSeniors++;
+						}
+					});
+			return countSeniors;
 		},
 
 		init : function(config) {
@@ -4470,7 +4520,7 @@ $(function() {
 
 						$('select[name=ddlName]').eq(0).val(
 								GPMS.utils.GetUserProfileID()).prop('selected',
-								'selected').prop('disabled', 'disabled');
+								'selected').prop('disabled', true);
 
 						// TODO for admin this need to be not set!
 						myProposal.BindCurrentUserPosition(0);
@@ -4719,13 +4769,14 @@ $(function() {
 																				"Delete");
 															}
 														});
+
 										$(cloneRow)
 												.find("select")
 												.each(
 														function(j) {
-															$(this).removeAttr(
+															$(this).removeProp(
 																	"disabled");
-															$(this).removeAttr(
+															$(this).removeProp(
 																	"required");
 															// Remove PI option
 															// after first row
@@ -4734,13 +4785,41 @@ $(function() {
 																		.find(
 																				'option:first')
 																		.remove();
+
+																// Maximum of
+																// co-PIs is 4,
+																// and maximum
+																// of senior
+																// personnel is
+																// 10
+																if (myProposal
+																		.countCoPIs() == 4) {
+																	$(this)
+																			.find(
+																					'option[value="'
+																							+ 1
+																							+ '"]')
+																			.remove();
+																}
+																if (myProposal
+																		.countSeniorPersonnels() == 10) {
+																	$(this)
+																			.find(
+																					'option[value="'
+																							+ 2
+																							+ '"]')
+																			.remove();
+																}
+
 																if ($
 																		.inArray(
 																				"Co-PI",
 																				currentProposalRoles) !== -1) {
 																	$(this)
 																			.find(
-																					'option:first')
+																					'option[value="'
+																							+ 1
+																							+ '"]')
 																			.remove();
 																}
 															} else if (j == 1) {
@@ -4768,7 +4847,7 @@ $(function() {
 															$(this)
 																	.find(
 																			"option")
-																	.removeAttr(
+																	.removeProp(
 																			"selected");
 														});
 
