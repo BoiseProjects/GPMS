@@ -382,8 +382,10 @@
 																	readonly="readonly" class="sfTextBoxSmall"
 																	name="txtPhoneNo" placeholder="Phone #"
 																	style="width: 90px !important" required="true" /></td>
-																<td><input type="Button" value="Add More"
-																	name="AddMore" class="AddOption cssClassButtonSubmit" /></td>
+																<td><input type="Button" value="Add Co-PI"
+																	name="AddCoPI" class="AddCoPI cssClassButtonSubmit" /></td>
+																<td><input type="Button" value="Add Senior Personnel"
+																	name="AddSenior" class="AddSenior cssClassButtonSubmit" /></td>
 															</tr>
 														</tbody>
 													</table>
@@ -1515,15 +1517,9 @@
 													</button>
 												</p>
 												<p>
-													<button class="sfBtn" id="btnCreateProposal" type="button"
-														title="Create a New Proposal">
-														<span class="icon-edit">Create</span>
-													</button>
-												</p>
-												<p>
-													<button class="sfBtn" id="btnUpdateProposal" type="button"
-														title="Update Proposal">
-														<span class="icon-save">Update</span>
+													<button class="sfBtn" id="btnSaveProposal" type="button"
+														title="Save Proposal">
+														<span class="icon-edit">Save</span>
 													</button>
 												</p>
 												<p>
