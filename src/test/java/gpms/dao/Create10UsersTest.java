@@ -29,7 +29,7 @@ public class Create10UsersTest {
 	UserAccountDAO newUserAccountDAO;
 	UserProfileDAO newUserProfileDAO;
 	ProposalDAO newProposalDAO;
-	final int MAXIMUM_PROFILES = 1000; // Adjust this to make more or less
+	final int MAXIMUM_PROFILES = 100; // Adjust this to make more or less
 										// profiles
 										// with the generator.
 

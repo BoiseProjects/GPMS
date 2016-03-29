@@ -1,6 +1,7 @@
 package gpms.dao;
 
 import gpms.DAL.MongoDBConnector;
+import gpms.model.ComplianceInfo;
 import gpms.model.InvestigatorInfo;
 import gpms.model.InvestigatorRefAndPosition;
 import gpms.model.PositionDetails;
@@ -42,7 +43,7 @@ public class Create10Proposals {
 	final int MAXIMUM_PROPOSALS = 1000; // Adjust this to make more or less
 										// profiles with the generator.
 
-	private int SIGNATURE_MODE = 1;
+	private int SIGNATURE_MODE = 3;
 
 	// This switch can be used to determine the signature creation mode you
 	// would like to use.
@@ -50,8 +51,20 @@ public class Create10Proposals {
 	// SIGNATURE_MODE=2 Only Deans will be pulled to populate the signature list
 	// SIGNATURE_MODE=3 Only Department Chairs will be used to populate
 	// signatures
-	// SIGNATURE_MODE=5 Pi's will sign, CoPi's will sign, Deans will sign, and
-	// Department Chairs will sign *//Unimplemented
+	// SIGNATURE_MODE=5 Pi's, CoPi's, Deans, and Department Chairs will sign
+
+	// SIGNATURE_MODE=6 This will create signatures in a more realistic fashion
+	// PI's will always sign and we will assign a logical check to other
+	// signatures.
+	// CoPi's may sign, Department Chairs can't sign if CoPi's haven't
+	// Business Managers can't sign if Department Chairs haven't.
+	// The IRB may need to sign iff there is IRB approval needed and can only
+	// sign
+	// iff all preceding required signatures exist.
+	// And Deans as well, only sign if all others before have signed.
+	// This creation will be somewhat random, hoping to mirror the realistic way
+	// we can expect signatures to be required for a real proposal
+	// allowing us more effective testing methods.
 
 	@Before
 	public void initiate() {
@@ -68,8 +81,7 @@ public class Create10Proposals {
 		// We'll make 100 proposals. Each user will be made to have one
 		// proposal.
 		// We'll have up to 4 co-pi's added, and up to 2 senior personnel added
-		List<UserProfile> masterList = newUserProfileDAO
-				.findAllUserForInvestigator();
+		List<UserProfile> masterList = newUserProfileDAO.findAllUserForInvestigator();
 		int propNumb = 1;
 
 		while (!masterList.isEmpty()) {
@@ -92,10 +104,8 @@ public class Create10Proposals {
 			InvestigatorRefAndPosition newInvPos = new InvestigatorRefAndPosition();
 
 			for (PositionDetails details : propProfile.getDetails()) {
-				if (details.getPositionType().equals(
-						"Tenured/tenure-track faculty")
-						|| details.getPositionType().equals(
-								"Non-tenure-track research faculty")
+				if (details.getPositionType().equals("Tenured/tenure-track faculty")
+						|| details.getPositionType().equals("Non-tenure-track research faculty")
 						|| details.getPositionType().equals("Teaching faculty")) {
 					newInvPos.setCollege(details.getCollege());
 					newInvPos.setDepartment(details.getDepartment());
@@ -112,30 +122,26 @@ public class Create10Proposals {
 			int totalCops = 0;
 			if (dupMasterList.size() > 0) {
 				totalCops = rand.nextInt(5);
-			}
-			for (int a = 0; a < totalCops; a++) {
-				int coPIChoice = rand.nextInt(dupMasterList.size());
-				UserProfile coPIProfile = dupMasterList.get(coPIChoice);
-				dupMasterList.remove(coPIChoice);
-				newInvPos = new InvestigatorRefAndPosition();
+				for (int a = 0; a < totalCops; a++) {
+					int coPIChoice = rand.nextInt(dupMasterList.size());
+					UserProfile coPIProfile = dupMasterList.get(coPIChoice);
+					dupMasterList.remove(coPIChoice);
+					newInvPos = new InvestigatorRefAndPosition();
 
-				for (PositionDetails details : coPIProfile.getDetails()) {
-					if (details.getPositionType().equals(
-							"Tenured/tenure-track faculty")
-							|| details.getPositionType().equals(
-									"Non-tenure-track research faculty")
-							|| details.getPositionType().equals(
-									"Teaching faculty")) {
-						newInvPos.setCollege(details.getCollege());
-						newInvPos.setDepartment(details.getDepartment());
-						newInvPos.setPositionType(details.getPositionType());
-						newInvPos.setPositionTitle(details.getPositionTitle());
-						newInvPos.setUserProfileId(coPIProfile.getId()
-								.toString());
-						newInvPos.setUserRef(coPIProfile);
+					for (PositionDetails details : coPIProfile.getDetails()) {
+						if (details.getPositionType().equals("Tenured/tenure-track faculty")
+								|| details.getPositionType().equals("Non-tenure-track research faculty")
+								|| details.getPositionType().equals("Teaching faculty")) {
+							newInvPos.setCollege(details.getCollege());
+							newInvPos.setDepartment(details.getDepartment());
+							newInvPos.setPositionType(details.getPositionType());
+							newInvPos.setPositionTitle(details.getPositionTitle());
+							newInvPos.setUserProfileId(coPIProfile.getId().toString());
+							newInvPos.setUserRef(coPIProfile);
 
-						newInfo.getCo_pi().add(newInvPos);
-						break;
+							newInfo.getCo_pi().add(newInvPos);
+							break;
+						}
 					}
 				}
 			}
@@ -151,18 +157,14 @@ public class Create10Proposals {
 				newInvPos = new InvestigatorRefAndPosition();
 
 				for (PositionDetails details : seniorProfile.getDetails()) {
-					if (details.getPositionType().equals(
-							"Tenured/tenure-track faculty")
-							|| details.getPositionType().equals(
-									"Non-tenure-track research faculty")
-							|| details.getPositionType().equals(
-									"Teaching faculty")) {
+					if (details.getPositionType().equals("Tenured/tenure-track faculty")
+							|| details.getPositionType().equals("Non-tenure-track research faculty")
+							|| details.getPositionType().equals("Teaching faculty")) {
 						newInvPos.setCollege(details.getCollege());
 						newInvPos.setDepartment(details.getDepartment());
 						newInvPos.setPositionType(details.getPositionType());
 						newInvPos.setPositionTitle(details.getPositionTitle());
-						newInvPos.setUserProfileId(seniorProfile.getId()
-								.toString());
+						newInvPos.setUserProfileId(seniorProfile.getId().toString());
 						newInvPos.setUserRef(seniorProfile);
 
 						newInfo.getSeniorPersonnel().add(newInvPos);
@@ -213,20 +215,16 @@ public class Create10Proposals {
 				// PI Signs proposal
 				newProposal.getInvestigatorInfo().getPi();
 				newSignInfo = new SignatureInfo();
-				newSignInfo.setUserProfileId(newProposal.getInvestigatorInfo()
-						.getPi().getUserProfileId());
-				newSignInfo.setFullName(newProposal.getInvestigatorInfo()
-						.getPi().getUserRef().getFullName());
-				newSignInfo.setSignature(newProposal.getInvestigatorInfo()
-						.getPi().getUserRef().getFullName());
+				newSignInfo.setUserProfileId(newProposal.getInvestigatorInfo().getPi().getUserProfileId());
+				newSignInfo.setFullName(newProposal.getInvestigatorInfo().getPi().getUserRef().getFullName());
+				newSignInfo.setSignature(newProposal.getInvestigatorInfo().getPi().getUserRef().getFullName());
 				newSignInfo.setPositionTitle("PI");
 				newSignInfo.setSignedDate(new Date());
 				newSignInfo.setNote("This is Note from PI");
 				newProposal.getSignatureInfo().add(newSignInfo);
 
 				// CoPI's sign the proposal
-				for (InvestigatorRefAndPosition cops : newProposal
-						.getInvestigatorInfo().getCo_pi()) {
+				for (InvestigatorRefAndPosition cops : newProposal.getInvestigatorInfo().getCo_pi()) {
 					newSignInfo = new SignatureInfo();
 					newSignInfo.setUserProfileId(cops.getUserProfileId());
 					newSignInfo.setFullName(cops.getUserRef().getFullName());
@@ -240,242 +238,198 @@ public class Create10Proposals {
 
 			if (SIGNATURE_MODE == 2) {
 				// This will populate the signatures with Deans only
-
-				List<String> collegeList = new ArrayList<String>();
-				List<UserProfile> deanList = new ArrayList<UserProfile>();
-
-				collegeList.add(newInfo.getPi().getCollege());
-				for (InvestigatorRefAndPosition copi : newInfo.getCo_pi()) {
-					if (!collegeList.contains(copi.getCollege())) {
-						collegeList.add(copi.getCollege());
-					}
-				}
-
-				for (String college : collegeList) {
-					deanList.addAll(newUserProfileDAO.getSupervisoryPersonnels(
-							college, "", "Dean", true));
-				}
-
-				if (deanList.size() > 0) {
-					System.out.println("deanList not empty");
-					for (UserProfile dean : deanList) {
-						newSignInfo = new SignatureInfo();
-						newSignInfo.setFullName(dean.getFullName());
-						newSignInfo.setPositionTitle("Dean");
-						newSignInfo.setUserProfileId(dean.getId().toString());
-						newSignInfo.setSignature(dean.getFullName());
-						newProposal.getSignatureInfo().add(newSignInfo);
-					}
-
-				} else {
-					System.out.println("Dean list is empty");
-				}
+				signDean(newProposal, newUserProfileDAO, newSignInfo, newInfo);
+				// List<String> collegeList = new ArrayList<String>();
+				// List<UserProfile> deanList = new ArrayList<UserProfile>();
+				//
+				// collegeList.add(newInfo.getPi().getCollege());
+				// for (InvestigatorRefAndPosition copi : newInfo.getCo_pi()) {
+				// if (!collegeList.contains(copi.getCollege())) {
+				// collegeList.add(copi.getCollege());
+				// }
+				// }
+				//
+				// for (String college : collegeList) {
+				// deanList.addAll(newUserProfileDAO.getSupervisoryPersonnels(
+				// college, "", "Dean", true));
+				// }
+				//
+				// if (deanList.size() > 0) {
+				// System.out.println("deanList not empty");
+				// for (UserProfile dean : deanList) {
+				// newSignInfo = new SignatureInfo();
+				// newSignInfo.setFullName(dean.getFullName());
+				// newSignInfo.setPositionTitle("Dean");
+				// newSignInfo.setUserProfileId(dean.getId().toString());
+				// newSignInfo.setSignature(dean.getFullName());
+				// newProposal.getSignatureInfo().add(newSignInfo);
+				// }
+				//
+				// } else {
+				// System.out.println("Dean list is empty");
+				// }
 			}
 
 			if (SIGNATURE_MODE == 3) {
 				// This will populate the signatures with Department Chairs only
 
-				List<String> collegeList = new ArrayList<String>();
-				List<String> departmentList = new ArrayList<String>();
-				List<UserProfile> chairList = new ArrayList<UserProfile>();
-				List<UserProfile> coChairList = new ArrayList<UserProfile>();
+				// Attempting consolidation here:
+				signChairs(newProposal, newUserProfileDAO, newSignInfo);
+				// If this works, will remove code below and just use the
+				// consolidated method.
 
-				String college, department;
-
-				college = newProposal.getInvestigatorInfo().getPi()
-						.getCollege();
-				department = newProposal.getInvestigatorInfo().getPi()
-						.getDepartment();
-
-				chairList.addAll(newUserProfileDAO.getSupervisoryPersonnels(
-						college, department, "Department Chair", false));
-
-				for (InvestigatorRefAndPosition copi : newProposal
-						.getInvestigatorInfo().getCo_pi()) {
-					coChairList = newUserProfileDAO.getSupervisoryPersonnels(
-							copi.getCollege(), copi.getDepartment(),
-							"Department Chair", false);
-
-					for (UserProfile prof : coChairList) {
-						if (!chairList.contains(prof)) {
-							chairList.add(prof);
-						}
-					}
-
-				}
-
-				if (chairList.size() > 0) {
-					System.out.println("chairList not empty");
-					for (UserProfile chair : chairList) {
-						newSignInfo = new SignatureInfo();
-						newSignInfo.setFullName(chair.getFullName());
-						newSignInfo.setPositionTitle("Department Chair");
-						newSignInfo.setUserProfileId(chair.getId().toString());
-						newSignInfo.setSignature(chair.getFullName());
-						newProposal.getSignatureInfo().add(newSignInfo);
-					}
-
-				} else {
-					System.out.println("Chair list is empty");
-				}
+				// List<String> collegeList = new ArrayList<String>();
+				// List<String> departmentList = new ArrayList<String>();
+				// List<UserProfile> chairList = new ArrayList<UserProfile>();
+				// List<UserProfile> coChairList = new ArrayList<UserProfile>();
+				//
+				// String college, department;
+				//
+				// college = newProposal.getInvestigatorInfo().getPi()
+				// .getCollege();
+				// department = newProposal.getInvestigatorInfo().getPi()
+				// .getDepartment();
+				//
+				// chairList.addAll(newUserProfileDAO.getSupervisoryPersonnels(
+				// college, department, "Department Chair", false));
+				//
+				// for (InvestigatorRefAndPosition copi : newProposal
+				// .getInvestigatorInfo().getCo_pi()) {
+				// coChairList = newUserProfileDAO.getSupervisoryPersonnels(
+				// copi.getCollege(), copi.getDepartment(),
+				// "Department Chair", false);
+				//
+				// for (UserProfile prof : coChairList) {
+				// if (!chairList.contains(prof)) {
+				// chairList.add(prof);
+				// }
+				// }
+				//
+				// }
+				//
+				// if (chairList.size() > 0) {
+				// System.out.println("chairList not empty");
+				// for (UserProfile chair : chairList) {
+				// newSignInfo = new SignatureInfo();
+				// newSignInfo.setFullName(chair.getFullName());
+				// newSignInfo.setPositionTitle("Department Chair");
+				// newSignInfo.setUserProfileId(chair.getId().toString());
+				// newSignInfo.setSignature(chair.getFullName());
+				// newProposal.getSignatureInfo().add(newSignInfo);
+				// }
+				//
+				// } else {
+				// System.out.println("Chair list is empty");
+				// }
 
 			}
 
-			// //////////////////////////////////////////////////////////////////
-			// //////////////////////////////////////////////////////////////////
-			// ///FOR NOW I AM DEACTIVATING THIS, I WILL IMPLEMENT A SIMPLER
-			// ////
-			// ///WAY OF CREATING SIGNATURES WITH A PROPOSAL USING A DEBUG
-			// //////
-			// ///TYPE SWITCH, THIS SHOULD MAKE IT EASIER, SO I DON'T HAVE
-			// //////
-			// ///TO WORRY ABOUT CREATING A PROPOSAL AND AVOIDING ALL OF THE
-			// ////
-			// ///DUPLICATE KEY ERRORS THAT COME FROM NOT FILLING OUT ALL THE
-			// ///
-			// ///FIELDS WHEN SOMETHING IS CREATED IN THE MONGO DB
-			// //////////////
-			// //////////////////////////////////////////////////////////////////
-			// //////////////////////////////////////////////////////////////////
+			if (SIGNATURE_MODE == 6) {
 
-			//
-			// List<String> deptsList = new ArrayList<String>();
-			// List<String> collegeList = new ArrayList<String>();
-			// List<UserProfile> deanList = new ArrayList<UserProfile>();
-			// List<UserProfile> deptChairList = new ArrayList<UserProfile>();
-			// List<UserProfile> IRBList = new ArrayList<UserProfile>();
-			//
-			// deptsList.add(newInfo.getPi().getDepartment());
-			// for (InvestigatorRefAndPosition copi : newInfo.getCo_pi()) {
-			// if (!deptsList.contains(copi.getDepartment())) {
-			// deptsList.add(copi.getDepartment());
-			// }
-			// }
-			//
-			// collegeList.add(newInfo.getPi().getCollege());
-			// for (InvestigatorRefAndPosition copi : newInfo.getCo_pi()) {
-			// if (!collegeList.contains(copi.getCollege())) {
-			// collegeList.add(copi.getCollege());
-			// }
-			// }
-			//
-			// // for (InvestigatorRefAndPosition seniorp : newInfo
-			// // .getSeniorPersonnel()) {
-			// // if (!deptsList.contains(seniorp.getDepartment())) {
-			// // deptsList.add(seniorp.getDepartment());
-			// // }
-			// // }
-			//
-			// for(String college : collegeList)
-			// {
-			// deanList.addAll(newUserProfileDAO.getSupervisoryPersonnels(college,
-			// "Dean", "", true));
-			// for (String dept : deptsList)
-			// {
-			// deptChairList.addAll(newUserProfileDAO.getSupervisoryPersonnels(
-			// college, dept, "Department Chair", false));
-			// IRBList.addAll(newUserProfileDAO.getSupervisoryPersonnels(college,
-			// dept, "IRB", false));
-			// }
-			// }
-			//
-			//
-			// if (!(propNumb % 2 == 0)) {
-			// if (deanList.size() > 0) {
-			// System.out.println("deanList not empty");
-			// for (UserProfile dean : deanList) {
-			// newSignInfo = new SignatureInfo();
-			// newSignInfo.setFullName(dean.getFullName());
-			// newSignInfo.setPositionTitle("Dean");
-			// newSignInfo.setUserProfileId(dean.getId().toString());
-			// newSignInfo.setSignature(dean.getFullName());
-			// newProposal.getSignatureInfo().add(newSignInfo);
-			// }
-			// } else {
-			// System.out.println("No deans in database");
-			// }
-			// //
-			// if (deptChairList.size() > 0) {
-			// System.out.println("chair list not empty");
-			// for (UserProfile dChair : deptChairList) {
-			// newSignInfo = new SignatureInfo();
-			// newSignInfo.setFullName(dChair.getFullName());
-			// newSignInfo.setPositionTitle("Department Chair");
-			// newSignInfo.setUserProfileId(dChair.getId().toString());
-			// newSignInfo.setSignature(dChair.getFullName());
-			// newProposal.getSignatureInfo().add(newSignInfo);
-			// }
-			// } else {
-			// System.out.println("no chairs in database");
-			// }
-			// //
-			// if (IRBList.size() > 0) {
-			// for (UserProfile irb : IRBList) {
-			// newSignInfo = new SignatureInfo();
-			// newSignInfo.setFullName(irb.getFullName());
-			// newSignInfo.setPositionTitle("IRB");
-			// newSignInfo.setUserProfileId(irb.getId().toString());
-			// newSignInfo.setSignature(irb.getFullName());
-			// newProposal.getSignatureInfo().add(newSignInfo);
-			// }
-			// }
-			// } // this was here,
-			// //
-			// // //On even number proposals, I'm going to purposefully screw
-			// // this
-			// // up, so that I can see
-			// // //failed tests when I'm running a signature check
-			// // //Meaning I want inadequate numbers of signatures, not
-			// // exactly
-			// // the wrong people signing
-			// if ((propNumb % 2) == 0) {
-			// Random rDean, rChair, rirb;
-			// rDean = new Random();
-			// rChair = new Random();
-			// rirb = new Random();
-			// //
-			// //
-			// if (deanList.size() > 0) {
-			// int rando = rDean.nextInt(deanList.size());
-			// for (int a = 0; a < rando; a++) {
-			// newSignInfo = new SignatureInfo();
-			// newSignInfo.setFullName(deanList.get(a).getFullName());
-			// newSignInfo.setPositionTitle("Dean");
-			// newSignInfo.setUserProfileId(deanList.get(a).getId()
-			// .toString());
-			// newSignInfo.setSignature(deanList.get(a).getFullName());
-			// newProposal.getSignatureInfo().add(newSignInfo);
-			// }
-			// }
-			// //
-			// if (deptChairList.size() > 0) {
-			// int rando = rChair.nextInt(deptChairList.size());
-			// for (int b = 0; b < rando; b++) {
-			// newSignInfo = new SignatureInfo();
-			// newSignInfo.setFullName(deptChairList.get(b)
-			// .getFullName());
-			// newSignInfo.setPositionTitle("Department Chair");
-			// newSignInfo.setUserProfileId(deptChairList.get(b)
-			// .getId().toString());
-			// newSignInfo.setSignature(deptChairList.get(b)
-			// .getFullName());
-			// newProposal.getSignatureInfo().add(newSignInfo);
-			// }
-			// }
-			// //
-			// if (IRBList.size() > 0) {
-			// int rando = rirb.nextInt(IRBList.size());
-			// for (int c = 0; c < rando; c++) {
-			// newSignInfo = new SignatureInfo();
-			// newSignInfo.setFullName(IRBList.get(c).getFullName());
-			// newSignInfo.setPositionTitle("IRB");
-			// newSignInfo.setUserProfileId(IRBList.get(c).getId()
-			// .toString());
-			// newSignInfo.setSignature(IRBList.get(c).getFullName());
-			// newProposal.getSignatureInfo().add(newSignInfo);
-			// }
-			// }
-			// }
+				// This will create signatures in a more realistic fashion
+				// PI's will always sign and we will assign a logical check to
+				// other signatures.
+				// CoPi's may sign, Department Chairs can't sign if CoPi's
+				// haven't
+				// Business Managers can't sign if Department Chairs haven't.
+				// The IRB may need to sign iff there is IRB approval needed and
+				// can only sign
+				// iff all preceding required signatures exist.
+				// And Deans as well, only sign if all others before have
+				// signed.
+				// This creation will be somewhat random, hoping to mirror the
+				// realistic way
+				// we can expect signatures to be required for a real proposal
+				// allowing us more effective testing methods.
+
+				Random signRand = new Random();
+				int willSign = signRand.nextInt(3);
+
+				// PI Signs proposal
+				newProposal.getInvestigatorInfo().getPi();
+				newSignInfo = new SignatureInfo();
+				newSignInfo.setUserProfileId(newProposal.getInvestigatorInfo().getPi().getUserProfileId());
+				newSignInfo.setFullName(newProposal.getInvestigatorInfo().getPi().getUserRef().getFullName());
+				newSignInfo.setSignature(newProposal.getInvestigatorInfo().getPi().getUserRef().getFullName());
+				newSignInfo.setPositionTitle("PI");
+				newSignInfo.setSignedDate(new Date());
+				newSignInfo.setNote("This is Note from PI");
+				newProposal.getSignatureInfo().add(newSignInfo);
+
+				// The pi will always sign but for others...
+				// We will have a 2/3 chance that the next required group of
+				// personnel
+				// will sign the proposal...
+				// but this will only occur if the required preceding group has
+				// signed
+
+				boolean coSigned = false;
+
+				// CoPI's sign the proposal
+				if (willSign > 0) {
+					coSigned = true;
+					for (InvestigatorRefAndPosition cops : newProposal.getInvestigatorInfo().getCo_pi()) {
+						newSignInfo = new SignatureInfo();
+						newSignInfo.setUserProfileId(cops.getUserProfileId());
+						newSignInfo.setFullName(cops.getUserRef().getFullName());
+						newSignInfo.setSignature(cops.getUserRef().getFullName());
+						newSignInfo.setPositionTitle("Co-PI");
+						newSignInfo.setSignedDate(new Date());
+						newSignInfo.setNote("This is Note from Co-PI");
+						newProposal.getSignatureInfo().add(newSignInfo);
+					}
+				}
+
+				// So if we want to see if the Department Chairs will sign
+				// we need to make sure that the CoPi's have all signed.
+
+				willSign = signRand.nextInt(3);
+				boolean chairSigned = false;
+
+				if (willSign > 0 && coSigned) {
+					// This will populate the signatures with Department Chairs
+					chairSigned = true;
+					signChairs(newProposal, newUserProfileDAO, newSignInfo);
+
+				}
+
+				willSign = signRand.nextInt(3);
+				boolean busManSigned = false;
+
+				if (willSign > 0 && coSigned) {
+					busManSigned = true;
+					signBusinessManager(newProposal, newUserProfileDAO, newSignInfo);
+				}
+
+				willSign = signRand.nextInt(3);
+				boolean irbSigned = false;
+				Random needRand = new Random();
+				int needIRB = needRand.nextInt(1);
+				if (willSign > 0 && busManSigned && coSigned) {
+
+					if (needIRB > 0) {
+						irbSigned = true;
+						ComplianceInfo makeComp = new ComplianceInfo();
+						makeComp.setInvolveEnvironmentalHealthAndSafetyConcerns(true);
+						newProposal.setComplianceInfo(makeComp);
+						signIRB(newProposal, newUserProfileDAO, newSignInfo);
+					}
+				}
+
+				willSign = signRand.nextInt(3);
+				// Decide to get the Dean.
+
+				if (needIRB > 0) {
+					if (willSign > 3 && irbSigned && busManSigned && coSigned) {
+						signDean(newProposal, newUserProfileDAO, newSignInfo, newInfo);
+					}
+				} else {
+					if (willSign > 3 && busManSigned && coSigned) {
+						signDean(newProposal, newUserProfileDAO, newSignInfo, newInfo);
+					}
+				}
+
+			} // End SIGNATURE_MODE=6
 
 			// End Signature Info Section
 
@@ -549,4 +503,163 @@ public class Create10Proposals {
 		}
 
 	}
+
+	/**
+	 * Get the chairs to sign
+	 * 
+	 * @param newProposal
+	 * @param newUserProfileDAO
+	 * @param newSignInfo
+	 */
+	private static void signChairs(Proposal newProposal, UserProfileDAO newUserProfileDAO, SignatureInfo newSignInfo) {
+		List<UserProfile> chairList = new ArrayList<UserProfile>();
+		List<UserProfile> coChairList = new ArrayList<UserProfile>();
+
+		String college, department;
+
+		college = newProposal.getInvestigatorInfo().getPi().getCollege();
+		department = newProposal.getInvestigatorInfo().getPi().getDepartment();
+
+		chairList.addAll(newUserProfileDAO.getSupervisoryPersonnels(college, department, "Department Chair", false));
+
+		for (InvestigatorRefAndPosition copi : newProposal.getInvestigatorInfo().getCo_pi()) {
+			coChairList = newUserProfileDAO.getSupervisoryPersonnels(copi.getCollege(), copi.getDepartment(),
+					"Department Chair", false);
+
+			for (UserProfile prof : coChairList) {
+				if (!chairList.contains(prof)) {
+					chairList.add(prof);
+				}
+			}
+
+		}
+
+		if (chairList.size() > 0) {
+			System.out.println("chairList not empty");
+			for (UserProfile chair : chairList) {
+				newSignInfo = new SignatureInfo();
+				newSignInfo.setFullName(chair.getFullName());
+				newSignInfo.setPositionTitle("Department Chair");
+				newSignInfo.setUserProfileId(chair.getId().toString());
+				newSignInfo.setSignature(chair.getFullName());
+				newProposal.getSignatureInfo().add(newSignInfo);
+			}
+
+		} else {
+			System.out.println("Chair list is empty");
+		}
+	}// end signChairs
+
+	private static void signBusinessManager(Proposal newProposal, UserProfileDAO newUserProfileDAO,
+			SignatureInfo newSignInfo) {
+		List<UserProfile> busList = new ArrayList<UserProfile>();
+		List<UserProfile> coBusList = new ArrayList<UserProfile>();
+
+		String college, department;
+
+		college = newProposal.getInvestigatorInfo().getPi().getCollege();
+		department = newProposal.getInvestigatorInfo().getPi().getDepartment();
+
+		busList.addAll(newUserProfileDAO.getSupervisoryPersonnels(college, department, "Business Manager", false));
+
+		for (InvestigatorRefAndPosition copi : newProposal.getInvestigatorInfo().getCo_pi()) {
+			coBusList = newUserProfileDAO.getSupervisoryPersonnels(copi.getCollege(), copi.getDepartment(),
+					"Department Chair", false);
+
+			for (UserProfile prof : coBusList) {
+				if (!busList.contains(prof)) {
+					busList.add(prof);
+				}
+			}
+
+		}
+
+		if (busList.size() > 0) {
+			System.out.println("chairList not empty");
+			for (UserProfile bus : busList) {
+				newSignInfo = new SignatureInfo();
+				newSignInfo.setFullName(bus.getFullName());
+				newSignInfo.setPositionTitle("Business Manager");
+				newSignInfo.setUserProfileId(bus.getId().toString());
+				newSignInfo.setSignature(bus.getFullName());
+				newProposal.getSignatureInfo().add(newSignInfo);
+			}
+
+		} else {
+			System.out.println("Business Manager list is empty");
+		}
+	}// end signBusinessManager
+
+	private static void signIRB(Proposal newProposal, UserProfileDAO newUserProfileDAO, SignatureInfo newSignInfo) {
+		List<UserProfile> irbList = new ArrayList<UserProfile>();
+		List<UserProfile> coIrbList = new ArrayList<UserProfile>();
+
+		String college, department;
+
+		college = newProposal.getInvestigatorInfo().getPi().getCollege();
+		department = newProposal.getInvestigatorInfo().getPi().getDepartment();
+
+		irbList.addAll(newUserProfileDAO.getSupervisoryPersonnels(college, department, "Business Manager", false));
+
+		for (InvestigatorRefAndPosition copi : newProposal.getInvestigatorInfo().getCo_pi()) {
+			coIrbList = newUserProfileDAO.getSupervisoryPersonnels(copi.getCollege(), copi.getDepartment(),
+					"Department Chair", false);
+
+			for (UserProfile prof : coIrbList) {
+				if (!irbList.contains(prof)) {
+					irbList.add(prof);
+				}
+			}
+
+		}
+
+		if (irbList.size() > 0) {
+			System.out.println("chairList not empty");
+			for (UserProfile irb : irbList) {
+				newSignInfo = new SignatureInfo();
+				newSignInfo.setFullName(irb.getFullName());
+				newSignInfo.setPositionTitle("IRB");
+				newSignInfo.setUserProfileId(irb.getId().toString());
+				newSignInfo.setSignature(irb.getFullName());
+				newProposal.getSignatureInfo().add(newSignInfo);
+			}
+
+		} else {
+			System.out.println("IRB list is empty");
+		}
+	}// End signIRB
+
+	private static void signDean(Proposal newProposal, UserProfileDAO newUserProfileDAO, SignatureInfo newSignInfo,
+			InvestigatorInfo newInfo) {
+		// This will populate the signatures with Deans only
+
+		List<String> collegeList = new ArrayList<String>();
+		List<UserProfile> deanList = new ArrayList<UserProfile>();
+
+		collegeList.add(newInfo.getPi().getCollege());
+		for (InvestigatorRefAndPosition copi : newInfo.getCo_pi()) {
+			if (!collegeList.contains(copi.getCollege())) {
+				collegeList.add(copi.getCollege());
+			}
+		}
+
+		for (String college : collegeList) {
+			deanList.addAll(newUserProfileDAO.getSupervisoryPersonnels(college, "", "Dean", true));
+		}
+
+		if (deanList.size() > 0) {
+			System.out.println("deanList not empty");
+			for (UserProfile dean : deanList) {
+				newSignInfo = new SignatureInfo();
+				newSignInfo.setFullName(dean.getFullName());
+				newSignInfo.setPositionTitle("Dean");
+				newSignInfo.setUserProfileId(dean.getId().toString());
+				newSignInfo.setSignature(dean.getFullName());
+				newProposal.getSignatureInfo().add(newSignInfo);
+			}
+
+		} else {
+			System.out.println("Dean list is empty");
+		}
+	}// end signDean
 }
