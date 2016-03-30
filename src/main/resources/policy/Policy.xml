@@ -2279,8 +2279,7 @@
 	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:SubmittedByPI" 
 	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
 	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
-	               </Match>
-	               
+	               </Match>	               
 				   <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action"
@@ -2306,14 +2305,7 @@
 	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:SubmittedByPI" 
 	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
 	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
-	               </Match>
-	                <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">False</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ReadyForSubmissionByPI" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
-	               </Match>
-	               
+	               </Match>	               
 				   <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action"
@@ -2339,14 +2331,7 @@
 	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:SubmittedByPI" 
 	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
 	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
-	               </Match>
-	                <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">False</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ReadyForSubmissionByPI" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
-	               </Match>
-	               
+	               </Match>	               
 				   <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action"
@@ -2372,14 +2357,7 @@
 	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:SubmittedByPI" 
 	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
 	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
-	               </Match>
-	                <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">False</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ReadyForSubmissionByPI" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
-	               </Match>
-	               
+	               </Match>	               
 				   <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action"
@@ -2405,13 +2383,6 @@
 	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:SubmittedByPI" 
 	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
 	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
-	               </Match>
-	                <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">False</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ReadyForSubmissionByPI" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
-	             
 	               </Match>
 				   <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
@@ -2439,13 +2410,6 @@
 	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
 	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
 	               </Match>
-	                <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">False</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ReadyForSubmissionByPI" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
-	             
-	               </Match> 
 				   <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action" 
@@ -2471,13 +2435,6 @@
 	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:SubmittedByPI" 
 	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
 	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
-	               </Match>
-	                <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">False</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ReadyForSubmissionByPI" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
-	             
 	               </Match>
 				   <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
@@ -2505,13 +2462,6 @@
 	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
 	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
 	               </Match>
-	                <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">False</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ReadyForSubmissionByPI" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
-	             
-	               </Match>
 				   <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action" 
@@ -2537,13 +2487,6 @@
 	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:SubmittedByPI" 
 	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
 	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
-	               </Match>
-	                <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">False</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ReadyForSubmissionByPI" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
-	             
 	               </Match>
 				   <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
@@ -2571,13 +2514,6 @@
 	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
 	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
 	               </Match>
-	                <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">False</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ReadyForSubmissionByPI" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
-	             
-	               </Match>
 				   <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action"
@@ -2603,13 +2539,6 @@
 	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:SubmittedByPI" 
 	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
 	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
-	               </Match>
-	                <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">False</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ReadyForSubmissionByPI" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
-	             
 	               </Match>
 				   <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
@@ -2637,13 +2566,6 @@
 	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
 	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
 	               </Match>
-	                <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">False</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ReadyForSubmissionByPI" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
-	             
-	               </Match>
 				   <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action" 
@@ -2669,13 +2591,6 @@
 	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:SubmittedByPI" 
 	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
 	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
-	               </Match>
-	                <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">False</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ReadyForSubmissionByPI" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
-	             
 	               </Match>
 				   <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
@@ -2703,13 +2618,6 @@
 	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
 	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
 	               </Match>
-	                <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">False</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ReadyForSubmissionByPI" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
-	             
-	               </Match>
 				   <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action" 
@@ -2735,13 +2643,6 @@
 	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:SubmittedByPI" 
 	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
 	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
-	               </Match>
-	                <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">False</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ReadyForSubmissionByPI" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
-	             
 	               </Match>
 				   <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
@@ -2776,13 +2677,6 @@
 	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:SubmittedByPI" 
 	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
 	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
-	               </Match>
-	                <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">False</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ReadyForSubmissionByPI" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
-	             
 	               </Match>
 				   <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>

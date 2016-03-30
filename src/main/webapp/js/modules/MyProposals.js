@@ -2424,6 +2424,9 @@ $(function() {
 
 				rowIndex = $('#dataTable > tbody tr').size() - 1;
 				myProposal.BindDefaultUserPosition(rowIndex);
+			} else {
+				csscody.alert('<h2>' + 'Error Message' + '</h2><p>'
+						+ 'There are no user available to be added!</p>');
 			}
 		},
 
@@ -2472,6 +2475,9 @@ $(function() {
 
 				rowIndex = $('#dataTable > tbody tr').size() - 1;
 				myProposal.BindDefaultUserPosition(rowIndex);
+			} else {
+				csscody.alert('<h2>' + 'Error Message' + '</h2><p>'
+						+ 'There are no user available to be added!</p>');
 			}
 		},
 
