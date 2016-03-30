@@ -459,7 +459,8 @@ $(function() {
 			arguments : [],
 			events : "",
 			content : [],
-			uploadObj : ""
+			uploadObj : "",
+			investigatorButton : ""
 		},
 
 		ajaxCall : function(config) {
@@ -587,6 +588,255 @@ $(function() {
 			this.ajaxCall(this.config);
 		},
 
+		CheckUserPermissionWithProposalRoleEditSection : function(buttonType,
+				proposal_roles, proposal_id, proposalSection, config) {
+			var attributeArray = [];
+
+			var currentProposalRoles = config.proposalRoles.split(', ');
+			if (currentProposalRoles != ""
+					&& ($.inArray("PI", currentProposalRoles) !== -1 || ($
+							.inArray("Co-PI", currentProposalRoles) !== -1 && config.readyForSubmitionByPI == "False"))) {
+				attributeArray.push({
+					attributeType : "Subject",
+					attributeName : "proposal.role",
+					attributeValue : config.proposalRoles
+				});
+
+				attributeArray.push({
+					attributeType : "Resource",
+					attributeName : "SubmittedByPI",
+					attributeValue : config.submittedByPI
+				});
+
+				if ($.inArray("Co-PI", currentProposalRoles) !== -1
+						&& config.readyForSubmitionByPI == "False") {
+					attributeArray.push({
+						attributeType : "Resource",
+						attributeName : "ReadyForSubmissionByPI",
+						attributeValue : config.readyForSubmitionByPI
+					});
+				}
+
+				// attributeArray.push({
+				// attributeType : "Resource",
+				// attributeName : "DeletedByPI",
+				// attributeValue : config.deletedByPI
+				// });
+			} else {
+				var currentPositionTitle = GPMS.utils.GetUserPositionTitle();
+
+				attributeArray.push({
+					attributeType : "Subject",
+					attributeName : "position.title",
+					attributeValue : currentPositionTitle
+				});
+
+				switch (GPMS.utils.GetUserPositionTitle()) {
+				case "Department Chair":
+					attributeArray.push({
+						attributeType : "Resource",
+						attributeName : "ApprovedByDepartmentChair",
+						attributeValue : config.chairApproval
+					});
+					break;
+				case "Business Manager":
+					attributeArray.push({
+						attributeType : "Resource",
+						attributeName : "ApprovedByBusinessManager",
+						attributeValue : config.businessManagerApproval
+					});
+					break;
+				case "IRB":
+					attributeArray.push({
+						attributeType : "Resource",
+						attributeName : "ApprovedByIRB",
+						attributeValue : config.irbapproval
+					});
+					break;
+				case "Dean":
+					attributeArray.push({
+						attributeType : "Resource",
+						attributeName : "ApprovedByDean",
+						attributeValue : config.deanApproval
+					});
+					break;
+				case "University Research Administrator":
+					attributeArray
+							.push({
+								attributeType : "Resource",
+								attributeName : "ApprovedByUniversityResearchAdministrator",
+								attributeValue : config.researchAdministratorApproval
+							});
+					break;
+				case "University Research Director":
+					attributeArray.push({
+						attributeType : "Resource",
+						attributeName : "ApprovedByUniversityResearchDirector",
+						attributeValue : config.researchDirectorApproval
+					});
+					break;
+				default:
+					break;
+				}
+			}
+
+			attributeArray.push({
+				attributeType : "Resource",
+				attributeName : "proposal.section",
+				attributeValue : proposalSection
+			});
+
+			attributeArray.push({
+				attributeType : "Action",
+				attributeName : "proposal.action",
+				attributeValue : buttonType
+			});
+
+			this.config.url = this.config.baseURL
+					+ "CheckPermissionForAProposal";
+			this.config.data = JSON2.stringify({
+				policyInfo : attributeArray,
+				gpmsCommonObj : gpmsCommonObj(),
+				proposalId : proposal_id
+			});
+
+			this.config.buttonType = buttonType;
+			this.ajaxCall(this.config);
+		},
+
+		CheckUserPermissionForInvestigator : function(buttonType,
+				proposalSection, config) {
+			var attributeArray = [];
+			var currentProposalRoles = config.proposalRoles.split(', ');
+			if (($.inArray("PI", currentProposalRoles) !== -1 || ($.inArray(
+					"Co-PI", currentProposalRoles) !== -1 && config.readyForSubmitionByPI == "False"))
+					&& config.submittedByPI == "NOTSUBMITTED") {
+				attributeArray.push({
+					attributeType : "Subject",
+					attributeName : "proposal.role",
+					attributeValue : config.proposalRoles
+				});
+
+				attributeArray.push({
+					attributeType : "Resource",
+					attributeName : "SubmittedByPI",
+					attributeValue : config.submittedByPI
+				});
+
+				if ($.inArray("Co-PI", currentProposalRoles) !== -1
+						&& config.readyForSubmitionByPI == "False") {
+					attributeArray.push({
+						attributeType : "Resource",
+						attributeName : "ReadyForSubmissionByPI",
+						attributeValue : config.readyForSubmitionByPI
+					});
+				}
+			}
+
+			attributeArray.push({
+				attributeType : "Resource",
+				attributeName : "proposal.section",
+				attributeValue : proposalSection
+			});
+
+			attributeArray.push({
+				attributeType : "Action",
+				attributeName : "proposal.action",
+				attributeValue : buttonType
+			});
+
+			this.config.url = this.config.baseURL
+					+ "CheckPermissionForAProposal";
+			this.config.data = JSON2.stringify({
+				policyInfo : attributeArray,
+				gpmsCommonObj : gpmsCommonObj()
+			});
+
+			this.config.buttonType = buttonType;
+			this.ajaxCall(this.config);
+		},
+
+		CheckUserPermissionForSave : function(buttonType, config) {
+			var currentProposalRoles = config.proposalRoles.split(', ');
+			if (currentProposalRoles != ""
+					&& ($.inArray("PI", currentProposalRoles) !== -1 || ($
+							.inArray("Co-PI", currentProposalRoles) !== -1 && config.readyForSubmitionByPI == "False"))) {
+				myProposal.SaveProposal(buttonType, config.proposalRoles,
+						config.proposalId, false);
+			}
+		},
+
+		CheckUserPermissionForDelete : function(buttonType, proposalSection,
+				config) {
+			var attributeArray = [];
+
+			var currentProposalRoles = config.proposalRoles.split(', ');
+
+			if ($.inArray("PI", currentProposalRoles) !== -1
+					&& config.submittedByPI == "NOTSUBMITTED"
+					&& config.deletedByPI == "NOTDELETED") {
+				attributeArray.push({
+					attributeType : "Subject",
+					attributeName : "proposal.role",
+					attributeValue : config.proposalRoles
+				});
+
+				attributeArray.push({
+					attributeType : "Resource",
+					attributeName : "SubmittedByPI",
+					attributeValue : config.submittedByPI
+				});
+
+				attributeArray.push({
+					attributeType : "Resource",
+					attributeName : "DeletedByPI",
+					attributeValue : config.deletedByPI
+				});
+			} else if (GPMS.utils.GetUserPositionTitle() == "University Research Director"
+					&& config.researchDirectorDeletion == "NOTDELETED"
+					&& config.researchDirectorApproval == "READYFORAPPROVAL") {
+				attributeArray.push({
+					attributeType : "Subject",
+					attributeName : "position.title",
+					attributeValue : GPMS.utils.GetUserPositionTitle()
+				});
+
+				attributeArray.push({
+					attributeType : "Resource",
+					attributeName : "DeletedByUniversityResearchDirector",
+					attributeValue : config.researchDirectorDeletion
+				});
+
+				attributeArray.push({
+					attributeType : "Resource",
+					attributeName : "ApprovedByUniversityResearchDirector",
+					attributeValue : config.researchDirectorApproval
+				});
+			}
+
+			attributeArray.push({
+				attributeType : "Resource",
+				attributeName : "proposal.section",
+				attributeValue : proposalSection
+			});
+
+			attributeArray.push({
+				attributeType : "Action",
+				attributeName : "proposal.action",
+				attributeValue : buttonType
+			});
+
+			this.config.url = this.config.baseURL
+					+ "CheckPermissionForAProposal";
+			this.config.data = JSON2.stringify({
+				policyInfo : attributeArray,
+				gpmsCommonObj : gpmsCommonObj()
+			});
+
+			this.config.buttonType = buttonType;
+			this.ajaxCall(this.config);
+		},
+
 		CheckUserPermissionForSubmit : function(buttonType, proposalSection,
 				config) {
 			var attributeArray = [];
@@ -594,12 +844,12 @@ $(function() {
 			var currentProposalRoles = config.proposalRoles.split(', ');
 			if ($.inArray("PI", currentProposalRoles) !== -1
 					&& config.submittedByPI == "NOTSUBMITTED"
-					&& config.readyForSubmitionByPI
+					&& config.readyForSubmitionByPI == "True"
 					&& config.deletedByPI == "NOTDELETED") {
 				attributeArray.push({
 					attributeType : "Subject",
 					attributeName : "proposal.role",
-					attributeValue : currentProposalRoles
+					attributeValue : config.proposalRoles
 				});
 
 				attributeArray.push({
@@ -635,86 +885,6 @@ $(function() {
 							attributeName : "SubmittedByUniversityResearchAdministrator",
 							attributeValue : config.researchAdministratorSubmission
 						});
-
-				attributeArray.push({
-					attributeType : "Resource",
-					attributeName : "ApprovedByUniversityResearchDirector",
-					attributeValue : config.researchDirectorApproval
-				});
-			}
-
-			attributeArray.push({
-				attributeType : "Resource",
-				attributeName : "proposal.section",
-				attributeValue : proposalSection
-			});
-
-			attributeArray.push({
-				attributeType : "Action",
-				attributeName : "proposal.action",
-				attributeValue : buttonType
-			});
-
-			this.config.url = this.config.baseURL
-					+ "CheckPermissionForAProposal";
-			this.config.data = JSON2.stringify({
-				policyInfo : attributeArray,
-				gpmsCommonObj : gpmsCommonObj()
-			});
-
-			this.config.buttonType = buttonType;
-			this.ajaxCall(this.config);
-		},
-
-		CheckUserPermissionForUpdate : function(buttonType, config) {
-			var currentProposalRoles = config.proposalRoles.split(', ');
-			if (currentProposalRoles != ""
-					&& ($.inArray("PI", currentProposalRoles) !== -1 || ($
-							.inArray("Co-PI", currentProposalRoles) !== -1 && !config.readyForSubmitionByPI))) {
-				myProposal.SaveProposal(buttonType, config.proposalRoles,
-						config.proposalId, false);
-			}
-		},
-
-		CheckUserPermissionForDelete : function(buttonType, proposalSection,
-				config) {
-			var attributeArray = [];
-
-			var currentProposalRoles = config.proposalRoles.split(', ');
-			if ($.inArray("PI", currentProposalRoles) !== -1
-					&& config.submittedByPI == "NOTSUBMITTED"
-					&& config.deletedByPI == "NOTDELETED") {
-				attributeArray.push({
-					attributeType : "Subject",
-					attributeName : "proposal.role",
-					attributeValue : currentProposalRoles
-				});
-
-				attributeArray.push({
-					attributeType : "Resource",
-					attributeName : "SubmittedByPI",
-					attributeValue : config.submittedByPI
-				});
-
-				attributeArray.push({
-					attributeType : "Resource",
-					attributeName : "DeletedByPI",
-					attributeValue : config.deletedByPI
-				});
-			} else if (GPMS.utils.GetUserPositionTitle() == "University Research Director"
-					&& config.researchDirectorDeletion == "NOTDELETED"
-					&& config.researchDirectorApproval == "READYFORAPPROVAL") {
-				attributeArray.push({
-					attributeType : "Subject",
-					attributeName : "position.title",
-					attributeValue : GPMS.utils.GetUserPositionTitle()
-				});
-
-				attributeArray.push({
-					attributeType : "Resource",
-					attributeName : "DeletedByUniversityResearchDirector",
-					attributeValue : config.researchDirectorDeletion
-				});
 
 				attributeArray.push({
 					attributeType : "Resource",
@@ -1277,6 +1447,8 @@ $(function() {
 											controlclass : '',
 											coltype : 'label',
 											align : 'left',
+											type : 'boolean',
+											format : 'True/False',
 											hide : true
 										},
 										{
@@ -1441,8 +1613,7 @@ $(function() {
 
 		ButtonHideShow : function(config) {
 			$("#btnReset").hide();
-			$("#btnCreateProposal").hide();
-			$("#btnUpdateProposal").hide();
+			$("#btnSaveProposal").hide();
 			$("#btnDeleteProposal").hide();
 			$("#btnSubmitProposal").hide();
 			$("#btnApproveProposal").hide();
@@ -1465,7 +1636,7 @@ $(function() {
 			if (proposalStatus != ""
 					&& (($.inArray("PI", currentProposalRoles) !== -1
 							&& config.submittedByPI == "NOTSUBMITTED"
-							&& config.readyForSubmitionByPI && config.deletedByPI == "NOTDELETED") || (currentPositionTitle == "University Research Administrator"
+							&& config.readyForSubmitionByPI == "True" && config.deletedByPI == "NOTDELETED") || (currentPositionTitle == "University Research Administrator"
 							&& config.researchAdministratorSubmission == "NOTSUBMITTED" && config.researchDirectorApproval == "APPROVED"))) {
 				$("#btnSubmitProposal").show();
 			} else {
@@ -1474,11 +1645,11 @@ $(function() {
 
 			if (proposalStatus != ""
 					&& ($.inArray("PI", currentProposalRoles) !== -1 || ($
-							.inArray("Co-PI", currentProposalRoles) !== -1 && !config.readyForSubmitionByPI))
+							.inArray("Co-PI", currentProposalRoles) !== -1 && config.readyForSubmitionByPI == "False"))
 					&& config.submittedByPI == "NOTSUBMITTED") {
-				$("#btnUpdateProposal").show();
+				$("#btnSaveProposal").show();
 			} else {
-				$("#btnUpdateProposal").hide();
+				$("#btnSaveProposal").hide();
 			}
 
 			$
@@ -1606,24 +1777,20 @@ $(function() {
 				// Delegation Info
 
 				$("#fileuploader").hide();
-				$("#dataTable tbody tr").find('input.AddOption').hide();
+				$("#dataTable tbody tr").find('input.AddCoPI').hide();
+				$("#dataTable tbody tr").find('input.AddSenior').hide();
 
 				var currentProposalRoles = myProposal.config.proposalRoles
 						.split(', ');
 				if ($.inArray("PI", currentProposalRoles) !== -1) {
 					$("#fileuploader").show();
-					$("#dataTable tbody tr").find('input.AddOption').show();
+					$("#dataTable tbody tr").find('input.AddCoPI').show();
+					$("#dataTable tbody tr:eq(0)").find('input.AddSenior')
+							.show();
 				} else if ($.inArray("Co-PI", currentProposalRoles) !== -1) {
 					$("#fileuploader").show();
-					$("#dataTable tbody tr:eq(0)").find('input.AddOption')
+					$("#dataTable tbody tr:eq(0)").find('input.AddSenior')
 							.show();
-					$("#dataTable tbody tr:gt(0)").find('select:first').each(
-							function(index) {
-								if ($(this).val() == 2) {
-									$(this).parents('tr').find(
-											'input.AddOption').show();
-								}
-							});
 				}
 				break;
 			default:
@@ -2212,6 +2379,108 @@ $(function() {
 			$('#dataTable>tbody tr:first').remove();
 		},
 
+		AddCoPIInvestigator : function(button) {
+			var cloneRow = button.closest('tr').clone(true)
+					.addClass("trStatic");
+			$(cloneRow).find("input").each(function(i) {
+				if ($(this).is(".AddCoPI")) {
+					$(this).prop("name", "DeleteOption");
+					$(this).prop("value", "Delete");
+					$(this).prop("title", "Delete");
+				} else if ($(this).is(".AddSenior")) {
+					$(this).remove();
+				}
+			});
+
+			$(cloneRow).find("select").each(
+					function(j) {
+						$(this).removeProp("disabled");
+						$(this).removeProp("required");
+						// Remove PI
+						// option
+						// after first
+						// row
+						if (j == 0) {
+							$(this).find('option:first').remove();
+							$(this).find('option:last').remove();
+							$(this).prop("disabled", true);
+						} else if (j == 1) {
+							$(this).prop("disabled", false);
+							$('#ui-id-2').find("select[name='ddlName']").each(
+									function(k) {
+										$(cloneRow).find(
+												'option[value=' + $(this).val()
+														+ ']').remove();
+									});
+						}
+						$(this).find("option").removeProp("selected");
+					});
+
+			if ($(cloneRow).find("select[name='ddlName'] option").length > 0) {
+				$('#dataTable tr:last').find("select[name='ddlName']").prop(
+						"disabled", true);
+
+				$(cloneRow).appendTo("#dataTable").hide().fadeIn(1200);
+
+				rowIndex = $('#dataTable > tbody tr').size() - 1;
+				myProposal.BindDefaultUserPosition(rowIndex);
+			} else {
+				csscody.alert('<h2>' + 'Error Message' + '</h2><p>'
+						+ 'There are no user available to be added!</p>');
+			}
+		},
+
+		AddSeniorPersonnelInvestigator : function(button) {
+			var cloneRow = button.closest('tr').clone(true)
+					.addClass("trStatic");
+			$(cloneRow).find("input").each(function(i) {
+				if ($(this).is(".AddCoPI")) {
+					$(this).prop("name", "DeleteOption");
+					$(this).prop("value", "Delete");
+					$(this).prop("title", "Delete");
+				} else if ($(this).is(".AddSenior")) {
+					$(this).remove();
+				}
+			});
+
+			$(cloneRow).find("select").each(
+					function(j) {
+						$(this).removeProp("disabled");
+						$(this).removeProp("required");
+						// Remove PI
+						// option
+						// after first
+						// row
+						if (j == 0) {
+							$(this).find('option:lt(2)').remove();
+							$(this).prop("disabled", true);
+							;
+						} else if (j == 1) {
+							$(this).prop("disabled", false);
+							$('#ui-id-2').find("select[name='ddlName']").each(
+									function(k) {
+										$(cloneRow).find(
+												'option[value=' + $(this).val()
+														+ ']').remove();
+									});
+						}
+						$(this).find("option").removeProp("selected");
+					});
+
+			if ($(cloneRow).find("select[name='ddlName'] option").length > 0) {
+				$('#dataTable tr:last').find("select[name='ddlName']").prop(
+						"disabled", true);
+
+				$(cloneRow).appendTo("#dataTable").hide().fadeIn(1200);
+
+				rowIndex = $('#dataTable > tbody tr').size() - 1;
+				myProposal.BindDefaultUserPosition(rowIndex);
+			} else {
+				csscody.alert('<h2>' + 'Error Message' + '</h2><p>'
+						+ 'There are no user available to be added!</p>');
+			}
+		},
+
 		SelectFirstAccordion : function() {
 			myProposal.OpenAccordionTab($('#ui-id-2'));
 		},
@@ -2248,11 +2517,11 @@ $(function() {
 				$(cloneRow).appendTo("#dataTable");
 
 				rowIndex += 1;
-				var btnOption = "[+] Add";
-				var btnTitle = "Add More"
-				var btnName = "AddMore";
+				var btnOption = "Add Co-PI";
+				var btnTitle = "Add Co-PI"
+				var btnName = "AddCoPI";
 				if (rowIndex > 1) {
-					btnOption = "Delete ";
+					btnOption = "Delete";
 					btnTitle = "Delete";
 					btnName = "DeleteOption";
 				}
@@ -2350,7 +2619,7 @@ $(function() {
 
 				$('#dataTable tbody>tr:eq(' + rowIndex + ')').find("input")
 						.each(function(l) {
-							if ($(this).is(".AddOption")) {
+							if ($(this).is(".AddCoPI")) {
 								$(this).prop("name", btnName);
 								$(this).prop("value", btnOption);
 								$(this).prop("title", btnTitle);
@@ -2481,12 +2750,40 @@ $(function() {
 			case "gdvProposals":
 				var proposal_roles = $.trim(argus[1]);
 				if (argus[2].toLowerCase() != "yes") {
-					myProposal.config.ajaxCallMode = 10;
-					myProposal.config.proposalRoles = proposal_roles;
-					myProposal.config.proposalId = argus[0];
-					myProposal.config.proposalStatus = argus[3];
-					myProposal.CheckUserPermissionForDelete("Delete",
-							"Whole Proposal", myProposal.config);
+					var properties = {
+						onComplete : function(e) {
+							if (e) {
+								myProposal.config.ajaxCallMode = 10;
+								myProposal.config.proposalRoles = proposal_roles;
+								myProposal.config.proposalId = argus[0];
+								myProposal.config.proposalStatus = argus[3];
+								myProposal.config.submittedByPI = argus[4];
+								myProposal.config.readyForSubmissionByPI = argus[5];
+								myProposal.config.deletedByPI = argus[6];
+								myProposal.config.chairApproval = argus[7];
+								myProposal.config.businessManagerApproval = argus[8];
+								myProposal.config.irbapproval = argus[9];
+								myProposal.config.deanApproval = argus[10];
+								myProposal.config.researchAdministratorApproval = argus[11];
+								myProposal.config.researchAdministratorWithdraw = argus[12];
+								myProposal.config.researchDirectorApproval = argus[13];
+								myProposal.config.researchDirectorDeletion = argus[14];
+								myProposal.config.researchAdministratorSubmission = argus[15];
+								myProposal.config.researchDirectorArchived = argus[16];
+
+								myProposal.CheckUserPermissionForDelete(
+										"Delete", "Whole Proposal",
+										myProposal.config);
+							}
+						}
+					};
+					csscody
+							.confirm(
+									"<h2>"
+											+ 'Delete Confirmation'
+											+ "</h2><p>"
+											+ 'Are you certain you want to delete this proposal?'
+											+ "</p>", properties);
 					return false;
 				} else {
 					csscody.alert('<h2>' + 'Information Alert' + '</h2><p>'
@@ -2497,18 +2794,6 @@ $(function() {
 			default:
 				break;
 			}
-		},
-
-		DeleteProposalById : function(_proposalId, _proposalRoles) {
-			var properties = {
-				onComplete : function(e) {
-					myProposal.ConfirmSingleDelete(_proposalId, _proposalRoles,
-							e);
-				}
-			};
-			csscody.confirm("<h2>" + 'Delete Confirmation' + "</h2><p>"
-					+ 'Are you certain you want to delete this proposal?'
-					+ "</p>", properties);
 		},
 
 		ConfirmDeleteMultiple : function(proposal_ids, event) {
@@ -2532,13 +2817,7 @@ $(function() {
 			return false;
 		},
 
-		ConfirmSingleDelete : function(proposal_id, proposalRoles, event) {
-			if (event) {
-				myProposal.DeleteSingleUser(proposal_id, proposalRoles);
-			}
-		},
-
-		DeleteSingleUser : function(_proposalId, _proposalRoles) {
+		DeleteSingleProposal : function(_proposalId, _proposalRoles) {
 			this.config.url = this.config.baseURL
 					+ "DeleteProposalByProposalID";
 			this.config.data = JSON2.stringify({
@@ -2566,6 +2845,7 @@ $(function() {
 			myProposal.config.arguments = [];
 			myProposal.config.events = "";
 			myProposal.config.content = [];
+			myProposal.config.investigatorButton = "";
 
 			$('.cssClassRight').hide();
 			$('.cssClassError').hide();
@@ -2625,7 +2905,8 @@ $(function() {
 				$(this).val('');
 				$(this).val($(this).find('option').first().val());
 			});
-			$(".AddOption").val("[+] Add");
+			$(".AddCoPI").val("Add Co-PI");
+			$(".AddSenior").val("Add Senior Personnel");
 			return false;
 		},
 
@@ -2721,7 +3002,7 @@ $(function() {
 										myProposal.config.content = ui.newPanel;
 										if (myProposal.config.proposalRoles != "") {
 											myProposal
-													.CheckUserPermissionWithProposalRole(
+													.CheckUserPermissionWithProposalRoleEditSection(
 															"Edit",
 															myProposal.config.proposalRoles,
 															myProposal.config.proposalId,
@@ -2730,7 +3011,7 @@ $(function() {
 															myProposal.config);
 										} else {
 											myProposal
-													.CheckUserPermissionWithPositionTitle(
+													.CheckUserPermissionWithPositionTitleEditSection(
 															"Edit",
 															myProposal.config.proposalId,
 															$.trim(ui.newHeader
@@ -3171,6 +3452,8 @@ $(function() {
 					myProposal.AddProposalInfo(_buttonType, _proposalRoles,
 							proposalInfo);
 
+				} else {
+					myProposal.focusTabWithErrors("#accordion");
 				}
 			} else {
 				myProposal.focusTabWithErrors("#accordion");
@@ -3571,6 +3854,7 @@ $(function() {
 				myProposal.config.arguments = [];
 				myProposal.config.events = "";
 				myProposal.config.content = [];
+				myProposal.config.investigatorButton = "";
 				break;
 			break;
 
@@ -3673,12 +3957,12 @@ $(function() {
 										+ '" readonly="true" title="Proposal Notes" class="cssClassTextArea" >'
 										+ item.note + '</textarea></td></tr>';
 
-								// $('#trSignChair').hide();
-								// $('#trSignDean').hide();
-								// $('#trSignBusinessManager').hide();
-								// $('#trSignIRB').hide();
-								// $('#trSignAdministrator').hide();
-								// $('#trSignDirector').hide();
+								$('#trSignChair').hide();
+								$('#trSignDean').hide();
+								$('#trSignBusinessManager').hide();
+								$('#trSignIRB').hide();
+								$('#trSignAdministrator').hide();
+								$('#trSignDirector').hide();
 
 								switch (item.positionTitle) {
 								case "PI":
@@ -3804,6 +4088,7 @@ $(function() {
 			myProposal.config.arguments = [];
 			myProposal.config.events = "";
 			myProposal.config.content = [];
+			myProposal.config.investigatorButton = "";
 
 			// $("#accordion").accordion("option", "active", 0);
 
@@ -3850,13 +4135,8 @@ $(function() {
 			break;
 
 		case 10:
-			if (myProposal.config.proposalId != '0') {
-				myProposal.DeleteProposalById(myProposal.config.proposalId,
-						myProposal.config.proposalRoles);
-			} else {
-				csscody.error('<h2>' + 'Error Message' + '</h2><p>'
-						+ 'Failed to load Proposal.' + '</p>');
-			}
+			myProposal.DeleteSingleProposal(myProposal.config.proposalId,
+					myProposal.config.proposalRoles);
 			break;
 
 		case 11:
@@ -3868,7 +4148,6 @@ $(function() {
 				myProposal.SaveProposal(myProposal.config.buttonType, "", "0",
 						true);
 			}
-
 			break;
 
 		case 12:
@@ -3879,8 +4158,7 @@ $(function() {
 				myProposal.InitializeUploader("");
 
 				$("#btnReset").show();
-				$("#btnCreateProposal").show();
-				$("#btnUpdateProposal").hide();
+				$("#btnSaveProposal").show();
 				$("#btnDeleteProposal").hide();
 
 				// For old Proposal only visible
@@ -3996,6 +4274,24 @@ $(function() {
 			$('input[name="txtPhoneNo"]').eq(0).val('');
 			break;
 
+		case 19:
+			myProposal
+					.AddCoPIInvestigator(myProposal.config.investigatorButton);
+			break;
+
+		case 20:
+			myProposal
+					.AddSeniorPersonnelInvestigator(myProposal.config.investigatorButton);
+			break;
+
+		case 21:
+			var t = myProposal.config.investigatorButton.closest('tr');
+			t.find("td").wrapInner("<div style='display: block'/>").parent()
+					.find("td div").slideUp(300, function() {
+						t.remove();
+					});
+			break;
+
 		}
 	},
 
@@ -4106,6 +4402,26 @@ $(function() {
 						+ 'Cannot create and download Excel report!' + "</p>");
 				break;
 
+			case 18:
+				csscody.error("<h2>" + 'Error Message' + "</h2><p>"
+						+ 'Cannot load user position details!' + "</p>");
+				break;
+
+			case 19:
+				csscody.error("<h2>" + 'Error Message' + "</h2><p>"
+						+ 'Cannot add Co-PI!' + "</p>");
+				break;
+
+			case 20:
+				csscody.error("<h2>" + 'Error Message' + "</h2><p>"
+						+ 'Cannot add Senior Personnel!' + "</p>");
+				break;
+
+			case 21:
+				csscody.error("<h2>" + 'Error Message' + "</h2><p>"
+						+ 'Cannot delete Investigator!' + "</p>");
+				break;
+
 			}
 		},
 
@@ -4202,6 +4518,7 @@ $(function() {
 				myProposal.config.arguments = [];
 				myProposal.config.events = "";
 				myProposal.config.content = [];
+				myProposal.config.investigatorButton = "";
 			});
 
 			$("#txtSearchSubmittedOnFrom").datepicker(
@@ -4508,26 +4825,10 @@ $(function() {
 				myProposal.config.arguments = [];
 				myProposal.config.events = "";
 				myProposal.config.content = [];
-
+				myProposal.config.investigatorButton = "";
 				// $("#accordion").accordion("option", "active",
 				// 0);
 			});
-
-			$('#btnReset').on(
-					"click",
-					function() {
-						myProposal.ClearForm();
-
-						$('select[name=ddlName]').eq(0).val(
-								GPMS.utils.GetUserProfileID()).prop('selected',
-								'selected').prop('disabled', true);
-
-						// TODO for admin this need to be not set!
-						myProposal.BindCurrentUserPosition(0);
-
-						myProposal.BindPICoPISignatures();
-						// $("#accordion").accordion("option", "active", 0);
-					});
 
 			$('#btnAddNew').on(
 					"click",
@@ -4538,174 +4839,345 @@ $(function() {
 
 					});
 
-			// Create
-			$('#btnCreateProposal').click(function(e) {
-				var $buttonType = $.trim($(this).text());
-				$(this).disableWith('Creating...');
+			$('#btnReset')
+					.on(
+							"click",
+							function() {
+								var properties = {
+									onComplete : function(e) {
+										if (e) {
+											myProposal.ClearForm();
 
-				if (myProposal.config.proposalId == "0") {
-					myProposal.SaveProposal($buttonType, "", "0", true);
-				}
+											$('select[name=ddlName]')
+													.eq(0)
+													.val(
+															GPMS.utils
+																	.GetUserProfileID())
+													.prop('selected',
+															'selected').prop(
+															'disabled', true);
 
-				$(this).enableAgain();
-				e.preventDefault();
-				return false;
-			});
+											// TODO for admin this need to be
+											// not set!
+											myProposal
+													.BindCurrentUserPosition(0);
+
+											myProposal.BindPICoPISignatures();
+											// $("#accordion").accordion("option",
+											// "active", 0);
+										}
+									}
+								};
+								csscody
+										.confirm(
+												"<h2>"
+														+ 'Reset Confirmation'
+														+ "</h2><p>"
+														+ 'Are you certain you want to reset this proposal?'
+														+ "</p>", properties);
+							});
+
+			// Save
+			$('#btnSaveProposal')
+					.click(
+							function(event) {
+								var properties = {
+									onComplete : function(e) {
+										if (e) {
+											var $buttonType = $.trim($(
+													'#btnSaveProposal').text());
+											$('#btnSaveProposal').disableWith(
+													'Saving...');
+
+											if (myProposal.config.proposalId == "0") {
+												myProposal.SaveProposal(
+														$buttonType, "", "0",
+														true);
+											} else if (myProposal.config.proposalRoles != ""
+													&& myProposal.config.proposalId != "0"
+													&& myProposal.config.proposalStatus != ""
+													&& myProposal.config.submittedByPI == "NOTSUBMITTED") {
+												myProposal
+														.CheckUserPermissionForSave(
+																$buttonType,
+																myProposal.config);
+											}
+
+											$('#btnSaveProposal').enableAgain();
+											event.preventDefault();
+											return false;
+										}
+									}
+								};
+								csscody
+										.confirm(
+												"<h2>"
+														+ 'Save Confirmation'
+														+ "</h2><p>"
+														+ 'Are you certain you want to save this proposal?'
+														+ "</p>", properties);
+							});
 
 			// Submit
-			$('#btnSubmitProposal').click(
-					function(e) {
-						var $buttonType = $.trim($(this).text());
-						$(this).disableWith('Submitting...');
-
-						myProposal.config.ajaxCallMode = 11;
-
-						if (myProposal.config.proposalId != "0") {
-							myProposal.CheckUserPermissionForSubmit(
-									$buttonType, "Whole Proposal",
-									myProposal.config);
-						}
-
-						$(this).enableAgain();
-						e.preventDefault();
-						return false;
-					});
-
-			// Update
-			$('#btnUpdateProposal')
+			$('#btnSubmitProposal')
 					.click(
-							function(e) {
-								var $buttonType = $.trim($(this).text());
-								$(this).disableWith('Updating...');
+							function(event) {
+								var properties = {
+									onComplete : function(e) {
+										if (e) {
+											var $buttonType = $.trim($(
+													'#btnSubmitProposal')
+													.text());
+											$('#btnSubmitProposal')
+													.disableWith(
+															'Submitting...');
 
-								if (myProposal.config.proposalRoles != ""
-										&& myProposal.config.proposalId != "0"
-										&& myProposal.config.proposalStatus != ""
-										&& myProposal.config.submittedByPI == "NOTSUBMITTED") {
-									myProposal.CheckUserPermissionForUpdate(
-											$buttonType, myProposal.config);
-								}
+											myProposal.config.ajaxCallMode = 11;
 
-								$(this).enableAgain();
-								e.preventDefault();
-								return false;
+											if (myProposal.config.proposalId != "0") {
+												myProposal
+														.CheckUserPermissionForSubmit(
+																$buttonType,
+																"Whole Proposal",
+																myProposal.config);
+											}
+
+											$('#btnSubmitProposal')
+													.enableAgain();
+											event.preventDefault();
+											return false;
+										}
+									}
+								};
+								csscody
+										.confirm(
+												"<h2>"
+														+ 'Submit Confirmation'
+														+ "</h2><p>"
+														+ 'Are you certain you want to submit this proposal?'
+														+ "</p>", properties);
 							});
 
 			// Delete
-			$('#btnDeleteProposal').click(
-					function(e) {
-						if (validator.form()) {
-							var $buttonType = $.trim($(this).text());
-							$(this).disableWith('Deleting...');
+			$('#btnDeleteProposal')
+					.click(
+							function(event) {
+								var properties = {
+									onComplete : function(e) {
+										if (e) {
+											// if (validator.form()) {
+											var $buttonType = $.trim($(
+													'#btnDeleteProposal')
+													.text());
+											$('#btnDeleteProposal')
+													.disableWith('Deleting...');
 
-							myProposal.config.ajaxCallMode = 10;
+											myProposal.config.ajaxCallMode = 10;
 
-							if (myProposal.config.proposalId != "0"
-									&& myProposal.config.proposalStatus != "") {
-								myProposal.CheckUserPermissionForDelete(
-										$buttonType, "Whole Proposal",
-										myProposal.config);
-							}
+											if (myProposal.config.proposalId != "0"
+													&& myProposal.config.proposalStatus != "") {
+												myProposal
+														.CheckUserPermissionForDelete(
+																$buttonType,
+																"Whole Proposal",
+																myProposal.config);
+											}
 
-							$(this).enableAgain();
-							e.preventDefault();
-							return false;
-						} else {
-							myProposal.focusTabWithErrors("#accordion");
-						}
-					});
+											$('#btnDeleteProposal')
+													.enableAgain();
+											event.preventDefault();
+											return false;
+											// } else {
+											// myProposal.focusTabWithErrors("#accordion");
+											// }
+										}
+									}
+								};
+								csscody
+										.confirm(
+												"<h2>"
+														+ 'Delete Confirmation'
+														+ "</h2><p>"
+														+ 'Are you certain you want to delete this proposal?'
+														+ "</p>", properties);
+							});
 
 			// Approve
-			$('#btnApproveProposal').click(
-					function(e) {
-						var $buttonType = $.trim($(this).text());
-						$(this).disableWith('Approving...');
+			$('#btnApproveProposal')
+					.click(
+							function(event) {
+								var properties = {
+									onComplete : function(e) {
+										if (e) {
+											var $buttonType = $.trim($(
+													'#btnApproveProposal')
+													.text());
+											$('#btnApproveProposal')
+													.disableWith('Approving...');
 
-						myProposal.config.ajaxCallMode = 11;
+											myProposal.config.ajaxCallMode = 11;
 
-						if (myProposal.config.proposalRoles == ""
-								&& myProposal.config.proposalId != "0"
-								&& myProposal.config.proposalStatus != "") {
-							myProposal.CheckUserPermissionForApproveDisapprove(
-									$buttonType, "Whole Proposal",
-									myProposal.config);
-						}
+											if (myProposal.config.proposalRoles == ""
+													&& myProposal.config.proposalId != "0"
+													&& myProposal.config.proposalStatus != "") {
+												myProposal
+														.CheckUserPermissionForApproveDisapprove(
+																$buttonType,
+																"Whole Proposal",
+																myProposal.config);
+											}
 
-						$(this).enableAgain();
-						e.preventDefault();
-						return false;
-					});
+											$('#btnApproveProposal')
+													.enableAgain();
+											event.preventDefault();
+											return false;
+										}
+									}
+								};
+								csscody
+										.confirm(
+												"<h2>"
+														+ 'Approve Confirmation'
+														+ "</h2><p>"
+														+ 'Are you certain you want to approve this proposal?'
+														+ "</p>", properties);
+							});
 
 			// Disapprove
-			$('#btnDisapproveProposal').click(
-					function(e) {
-						var $buttonType = $.trim($(this).text());
-						$(this).disableWith('Disapproving...');
+			$('#btnDisapproveProposal')
+					.click(
+							function(event) {
+								var properties = {
+									onComplete : function(e) {
+										if (e) {
+											var $buttonType = $.trim($(
+													'#btnDisapproveProposal')
+													.text());
+											$('#btnDisapproveProposal')
+													.disableWith(
+															'Disapproving...');
 
-						myProposal.config.ajaxCallMode = 11;
+											myProposal.config.ajaxCallMode = 11;
 
-						if (myProposal.config.proposalRoles == ""
-								&& myProposal.config.proposalId != "0"
-								&& myProposal.config.proposalStatus != "") {
-							myProposal.CheckUserPermissionForApproveDisapprove(
-									$buttonType, "Whole Proposal",
-									myProposal.config);
-						}
+											if (myProposal.config.proposalRoles == ""
+													&& myProposal.config.proposalId != "0"
+													&& myProposal.config.proposalStatus != "") {
+												myProposal
+														.CheckUserPermissionForApproveDisapprove(
+																$buttonType,
+																"Whole Proposal",
+																myProposal.config);
+											}
 
-						$(this).enableAgain();
-						e.preventDefault();
-						return false;
-					});
+											$('#btnDisapproveProposal')
+													.enableAgain();
+											event.preventDefault();
+											return false;
+										}
+									}
+								};
+								csscody
+										.confirm(
+												"<h2>"
+														+ 'Disapprove Confirmation'
+														+ "</h2><p>"
+														+ 'Are you certain you want to disapprove this proposal?'
+														+ "</p>", properties);
+							});
 
 			// Withdraw
-			$('#btnWithdrawProposal').click(
-					function(e) {
-						if (validator.form()) {
-							var $buttonType = $.trim($(this).text());
-							$(this).disableWith('Withdrawing...');
+			$('#btnWithdrawProposal')
+					.click(
+							function(event) {
+								if (validator.form()) {
+									var properties = {
+										onComplete : function(e) {
+											if (e) {
+												var $buttonType = $.trim($(
+														'#btnWithdrawProposal')
+														.text());
+												$('#btnWithdrawProposal')
+														.disableWith(
+																'Withdrawing...');
 
-							myProposal.config.ajaxCallMode = 13;
+												myProposal.config.ajaxCallMode = 13;
 
-							if (myProposal.config.proposalRoles == ""
-									&& myProposal.config.proposalId != "0"
-									&& myProposal.config.proposalStatus != "") {
-								myProposal.CheckUserPermissionForWithdraw(
-										$buttonType, "Whole Proposal",
-										myProposal.config);
-							}
+												if (myProposal.config.proposalRoles == ""
+														&& myProposal.config.proposalId != "0"
+														&& myProposal.config.proposalStatus != "") {
+													myProposal
+															.CheckUserPermissionForWithdraw(
+																	$buttonType,
+																	"Whole Proposal",
+																	myProposal.config);
+												}
 
-							$(this).enableAgain();
-							e.preventDefault();
-							return false;
-						} else {
-							myProposal.focusTabWithErrors("#accordion");
-						}
-					});
+												$('#btnWithdrawProposal')
+														.enableAgain();
+												event.preventDefault();
+												return false;
+											}
+										}
+									};
+									csscody
+											.confirm(
+													"<h2>"
+															+ 'Withdraw Confirmation'
+															+ "</h2><p>"
+															+ 'Are you certain you want to withdraw this proposal?'
+															+ "</p>",
+													properties);
+								} else {
+									myProposal.focusTabWithErrors("#accordion");
+								}
+							});
 
 			// Archive
-			$('#btnArchiveProposal').click(
-					function(e) {
-						if (validator.form()) {
-							var $buttonType = $.trim($(this).text());
-							$(this).disableWith('Archiving...');
+			$('#btnArchiveProposal')
+					.click(
+							function(event) {
+								if (validator.form()) {
+									var properties = {
+										onComplete : function(e) {
+											if (e) {
+												var $buttonType = $.trim($(
+														'#btnArchiveProposal')
+														.text());
+												$('#btnArchiveProposal')
+														.disableWith(
+																'Archiving...');
 
-							myProposal.config.ajaxCallMode = 13;
+												myProposal.config.ajaxCallMode = 13;
 
-							if (myProposal.config.proposalRoles == ""
-									&& myProposal.config.proposalId != "0"
-									&& myProposal.config.proposalStatus != "") {
-								myProposal.CheckUserPermissionForArchive(
-										$buttonType, "Whole Proposal",
-										myProposal.config);
-							}
+												if (myProposal.config.proposalRoles == ""
+														&& myProposal.config.proposalId != "0"
+														&& myProposal.config.proposalStatus != "") {
+													myProposal
+															.CheckUserPermissionForArchive(
+																	$buttonType,
+																	"Whole Proposal",
+																	myProposal.config);
+												}
 
-							$(this).enableAgain();
-							e.preventDefault();
-							return false;
-						} else {
-							myProposal.focusTabWithErrors("#accordion");
-						}
-					});
+												$('#btnArchiveProposal')
+														.enableAgain();
+												event.preventDefault();
+												return false;
+											}
+										}
+									};
+									csscody
+											.confirm(
+													"<h2>"
+															+ 'Archive Confirmation'
+															+ "</h2><p>"
+															+ 'Are you certain you want to archive this proposal?'
+															+ "</p>",
+													properties);
+								} else {
+									myProposal.focusTabWithErrors("#accordion");
+								}
+							});
 
 			$('#txtProjectTitle').on("focus", function() {
 				$(this).siblings('.cssClassRight').hide();
@@ -4720,13 +5192,10 @@ $(function() {
 						return false;
 					});
 
-			$("input[type=button].AddOption")
+			$("input[type=button].AddCoPI")
 					.on(
 							"click",
 							function() {
-								alert(myProposal.config.proposalRoles + ":::"
-										+ myProposal.config.proposalId + ":::"
-										+ $(this).attr("name"));
 								var currentProposalRoles = myProposal.config.proposalRoles
 										.split(', ');
 								if ($.inArray("PI", currentProposalRoles) !== -1
@@ -4735,158 +5204,119 @@ $(function() {
 										|| myProposal.config.proposalId == "0") {
 									if ($(this).prop("name") == "DeleteOption") {
 										var t = $(this).closest('tr');
+										myProposal.config.investigatorButton = $(this);
+										var properties = {
+											onComplete : function(e) {
+												if (e) {
+													if (t.hasClass("trStatic")) {
+														t
+																.find("td")
+																.wrapInner(
+																		"<div style='display: block'/>")
+																.parent()
+																.find("td div")
+																.slideUp(
+																		300,
+																		function() {
+																			t
+																					.remove();
+																		});
+													} else {
+														var subSection = "";
+														if (t.find(
+																"select:first")
+																.val() == 1) {
+															subSection = "InvestigatorInformation.Co-PI";
+														} else if (t.find(
+																"select:first")
+																.val() == 2) {
+															subSection = "InvestigatorInformation.Senior-Personnel";
+														}
+														myProposal.config.ajaxCallMode = 21;
 
-										t
-												.find("td")
-												.wrapInner(
-														"<div style='display: block'/>")
-												.parent().find("td div")
-												.slideUp(300, function() {
-													t.remove();
-												});
-
-									} else if ($(this).prop("name") == "AddMore") {
-										var cloneRow = $(this).closest('tr')
-												.clone(true);
-										$(cloneRow)
-												.find("input")
-												.each(
-														function(i) {
-															if ($(this)
-																	.is(
-																			".AddOption")) {
-																$(this)
-																		.prop(
-																				"name",
-																				"DeleteOption");
-																$(this)
-																		.prop(
-																				"value",
-																				"Delete ");
-																$(this)
-																		.prop(
-																				"title",
-																				"Delete");
-															}
-														});
-
-										$(cloneRow)
-												.find("select")
-												.each(
-														function(j) {
-															$(this).removeProp(
-																	"disabled");
-															$(this).removeProp(
-																	"required");
-															// Remove PI
-															// option
-															// after first
-															// row
-															if (j == 0) {
-																$(this)
-																		.find(
-																				'option:first')
-																		.remove();
-
-																// Maximum
-																// of
-																// co-PIs is
-																// 4,
-																// and
-																// maximum
-																// of senior
-																// personnel
-																// is
-																// 10
-																if (myProposal
-																		.countCoPIs() == 4) {
-																	$(this)
-																			.find(
-																					'option[value="'
-																							+ 1
-																							+ '"]')
-																			.remove();
-																}
-																if (myProposal
-																		.countSeniorPersonnels() == 10) {
-																	$(this)
-																			.find(
-																					'option[value="'
-																							+ 2
-																							+ '"]')
-																			.remove();
-																}
-
-																if ($
-																		.inArray(
-																				"Co-PI",
-																				currentProposalRoles) !== -1) {
-																	$(this)
-																			.find(
-																					'option[value="'
-																							+ 1
-																							+ '"]')
-																			.remove();
-																}
-															} else if (j == 1) {
-																$(this)
-																		.prop(
-																				"disabled",
-																				false);
-																$('#ui-id-2')
-																		.find(
-																				"select[name='ddlName']")
-																		.each(
-																				function(
-																						k) {
-																					$(
-																							cloneRow)
-																							.find(
-																									'option[value='
-																											+ $(
-																													this)
-																													.val()
-																											+ ']')
-																							.remove();
-																				});
-															}
-															$(this)
-																	.find(
-																			"option")
-																	.removeProp(
-																			"selected");
-														});
-
-										if ($(cloneRow)
-												.find(
-														"select[name='ddlName'] option").length > 0) {
-											if ($(cloneRow)
-													.find(
-															"select[name='ddlRole'] option").length > 0) {
-												$('#dataTable tr:last')
-														.find(
-																"select[name='ddlName']")
-														.prop("disabled", true);
-
-												$(cloneRow).appendTo(
-														"#dataTable").hide()
-														.fadeIn(1200);
-
-												rowIndex = $(
-														'#dataTable > tbody tr')
-														.size() - 1;
-												myProposal
-														.BindDefaultUserPosition(rowIndex);
-											} else {
-												csscody
-														.error('<h2>'
-																+ 'Error Message'
-																+ '</h2><p>'
-																+ 'Maximum of Co-PIs is 4 and maximum of Senior Personnel is 10!</p>');
+														myProposal
+																.CheckUserPermissionForInvestigator(
+																		"Delete",
+																		subSection,
+																		myProposal.config);
+													}
+												}
 											}
+										};
+										csscody
+												.confirm(
+														"<h2>"
+																+ 'Delete Confirmation'
+																+ "</h2><p>"
+																+ 'Are you certain you want to delete this investigator?'
+																+ "</p>",
+														properties);
+
+									} else if ($(this).prop("name") == "AddCoPI") {
+										if (myProposal.countCoPIs() < 4) {
+											if (myProposal.config.proposalId == "0") {
+												myProposal
+														.AddCoPIInvestigator($(this));
+											} else {
+												myProposal.config.ajaxCallMode = 19;
+												myProposal.config.investigatorButton = $(this);
+
+												var $buttonType = $
+														.trim($(this).val());
+
+												myProposal
+														.CheckUserPermissionForInvestigator(
+																$buttonType,
+																"InvestigatorInformation.Co-PI",
+																myProposal.config);
+											}
+										} else {
+											csscody
+													.error('<h2>'
+															+ 'Error Message'
+															+ '</h2><p>'
+															+ 'Maximum of Co-PIs is 4!</p>');
 										}
 									}
 								}
+
+							});
+
+			$("input[type=button].AddSenior")
+					.on(
+							"click",
+							function() {
+								var currentProposalRoles = myProposal.config.proposalRoles
+										.split(', ');
+								if ($.inArray("PI", currentProposalRoles) !== -1
+										|| $.inArray("Co-PI",
+												currentProposalRoles) !== -1
+										|| myProposal.config.proposalId == "0") {
+									if (myProposal.countSeniorPersonnels() < 10) {
+										if (myProposal.config.proposalId == "0") {
+											myProposal
+													.AddSeniorPersonnelInvestigator($(this));
+										} else {
+											myProposal.config.ajaxCallMode = 20;
+											myProposal.config.investigatorButton = $(this);
+
+											var $buttonType = $.trim($(this)
+													.val());
+											myProposal
+													.CheckUserPermissionForInvestigator(
+															$buttonType,
+															"InvestigatorInformation.Senior-Personnel",
+															myProposal.config);
+										}
+									} else {
+										csscody
+												.error('<h2>'
+														+ 'Error Message'
+														+ '</h2><p>'
+														+ 'Maximum of Senior Personnel is 10!</p>');
+									}
+								}
+
 							});
 
 			$("#btnSearchProposal").on("click", function() {

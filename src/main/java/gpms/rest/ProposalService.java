@@ -2649,7 +2649,7 @@ public class ProposalService {
 				// For Proposal Status
 				if (buttonType != null) {
 					switch (buttonType.textValue()) {
-					case "Create":
+					case "Save":
 						// This is Hack
 						// TODO check for if no Co-PI/ Senior Personnel in first
 						// create
@@ -2662,6 +2662,75 @@ public class ProposalService {
 
 								newProposal.getProposalStatus().add(
 										Status.READYFORSUBMITBYPI);
+							}
+						} else if (!proposalID.equals("0")
+								&& currentProposalRoles != null) {
+							if ((currentProposalRoles.contains("PI") || (currentProposalRoles
+									.contains("Co-PI") && !existingProposal
+									.isReadyForSubmissionByPI()))
+									&& existingProposal.getSubmittedByPI() == SubmitType.NOTSUBMITTED) {
+								boolean foundCoPI = false;
+								// Check if all PI/ Co-PI
+								boolean signedByPI = false;
+								boolean signedByAllCoPIs = false;
+
+								for (SignatureInfo sign : existingProposal
+										.getSignatureInfo()) {
+									if (existingProposal.getInvestigatorInfo()
+											.getPi().getUserProfileId()
+											.equals(sign.getUserProfileId())
+											&& sign.getPositionTitle().equals(
+													"PI")) {
+										signedByPI = true;
+										break;
+									}
+								}
+
+								int coPICount = existingProposal
+										.getInvestigatorInfo().getCo_pi()
+										.size();
+								if (coPICount > 0) {
+									for (InvestigatorRefAndPosition copi : existingProposal
+											.getInvestigatorInfo().getCo_pi()) {
+										for (SignatureInfo sign : existingProposal
+												.getSignatureInfo()) {
+											if (copi.getUserProfileId().equals(
+													sign.getUserProfileId())
+													&& sign.getPositionTitle()
+															.equals("Co-PI")) {
+												foundCoPI = true;
+												break;
+											}
+										}
+										if (!foundCoPI) {
+											signedByAllCoPIs = false;
+											break;
+										} else {
+											signedByAllCoPIs = true;
+										}
+										foundCoPI = false;
+									}
+								} else {
+									signedByAllCoPIs = true;
+								}
+
+								if (signedByPI && signedByAllCoPIs) {
+									existingProposal
+											.setReadyForSubmissionByPI(true);
+
+									existingProposal.getProposalStatus()
+											.clear();
+									existingProposal.getProposalStatus().add(
+											Status.READYFORSUBMITBYPI);
+								} else {
+									existingProposal
+											.setReadyForSubmissionByPI(false);
+
+									existingProposal.getProposalStatus()
+											.clear();
+									existingProposal.getProposalStatus().add(
+											Status.NOTSUBMITTEDBYPI);
+								}
 							}
 						}
 						break;
@@ -2773,84 +2842,6 @@ public class ProposalService {
 							}
 						}
 
-						break;
-
-					case "Update":
-						if (!proposalID.equals("0")
-								&& currentProposalRoles != null) {
-							if ((currentProposalRoles.contains("PI") || (currentProposalRoles
-									.contains("Co-PI") && !existingProposal
-									.isReadyForSubmissionByPI()))
-									&& existingProposal.getSubmittedByPI() == SubmitType.NOTSUBMITTED) {
-								// TODO : check all pi/copi/seniors
-								// signed the proposal
-								// existingProposal.getInvestigatorInfo().getCo_pi()
-								// existingProposal.getSignatureInfo()
-
-								boolean foundCoPI = false;
-								// Check if all PI/ Co-PI
-								boolean signedByPI = false;
-								boolean signedByAllCoPIs = false;
-
-								for (SignatureInfo sign : existingProposal
-										.getSignatureInfo()) {
-									if (existingProposal.getInvestigatorInfo()
-											.getPi().getUserProfileId()
-											.equals(sign.getUserProfileId())
-											&& sign.getPositionTitle().equals(
-													"PI")) {
-										signedByPI = true;
-										break;
-									}
-								}
-
-								int coPICount = existingProposal
-										.getInvestigatorInfo().getCo_pi()
-										.size();
-								if (coPICount > 0) {
-									for (InvestigatorRefAndPosition copi : existingProposal
-											.getInvestigatorInfo().getCo_pi()) {
-										for (SignatureInfo sign : existingProposal
-												.getSignatureInfo()) {
-											if (copi.getUserProfileId().equals(
-													sign.getUserProfileId())
-													&& sign.getPositionTitle()
-															.equals("Co-PI")) {
-												foundCoPI = true;
-												break;
-											}
-										}
-										if (!foundCoPI) {
-											signedByAllCoPIs = false;
-											break;
-										} else {
-											signedByAllCoPIs = true;
-										}
-										foundCoPI = false;
-									}
-								} else {
-									signedByAllCoPIs = true;
-								}
-
-								if (signedByPI && signedByAllCoPIs) {
-									existingProposal
-											.setReadyForSubmissionByPI(true);
-
-									existingProposal.getProposalStatus()
-											.clear();
-									existingProposal.getProposalStatus().add(
-											Status.READYFORSUBMITBYPI);
-								} else {
-									existingProposal
-											.setReadyForSubmissionByPI(false);
-
-									existingProposal.getProposalStatus()
-											.clear();
-									existingProposal.getProposalStatus().add(
-											Status.NOTSUBMITTEDBYPI);
-								}
-							}
-						}
 						break;
 
 					case "Approve":
@@ -3644,16 +3635,16 @@ public class ProposalService {
 				// Device type
 				// device.type
 
-//				String decision = ac.getXACMLdecision(attrMap);
-//				if (decision.equals("Permit")) {
+				String decision = ac.getXACMLdecision(attrMap);
+				if (decision.equals("Permit")) {
 					return Response.status(200)
 							.type(MediaType.APPLICATION_JSON).entity("true")
 							.build();
-				// } else {
-				// return Response.status(403)
-				// .type(MediaType.APPLICATION_JSON)
-				// .entity("Your permission is: " + decision).build();
-				// }
+				} else {
+					return Response.status(403)
+							.type(MediaType.APPLICATION_JSON)
+							.entity("Your permission is: " + decision).build();
+				}
 			} else {
 				return Response.status(403).type(MediaType.APPLICATION_JSON)
 						.entity("No User Permission Attributes are send!")
