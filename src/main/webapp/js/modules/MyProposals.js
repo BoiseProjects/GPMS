@@ -3452,6 +3452,8 @@ $(function() {
 					myProposal.AddProposalInfo(_buttonType, _proposalRoles,
 							proposalInfo);
 
+				} else {
+					myProposal.focusTabWithErrors("#accordion");
 				}
 			} else {
 				myProposal.focusTabWithErrors("#accordion");
