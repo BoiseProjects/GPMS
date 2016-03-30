@@ -95,8 +95,7 @@ public class Create10Proposals {
 				if (details.getPositionType().equals(
 						"Tenured/tenure-track faculty")
 						|| details.getPositionType().equals(
-								"Non-tenure-track research faculty")
-						|| details.getPositionType().equals("Teaching faculty")) {
+								"Non-tenure-track research faculty")) {
 					newInvPos.setCollege(details.getCollege());
 					newInvPos.setDepartment(details.getDepartment());
 					newInvPos.setPositionType(details.getPositionType());

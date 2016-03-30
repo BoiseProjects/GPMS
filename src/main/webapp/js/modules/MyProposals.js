@@ -588,6 +588,63 @@ $(function() {
 			this.ajaxCall(this.config);
 		},
 
+		CheckUserPermissionWithProposalRoleEditSection : function(buttonType,
+				proposal_roles, proposal_id, proposalSection, config) {
+			var attributeArray = [];
+
+			var currentProposalRoles = config.proposalRoles.split(', ');
+			if ($.inArray("PI", currentProposalRoles) !== -1
+					&& config.submittedByPI == "NOTSUBMITTED"
+					&& config.readyForSubmitionByPI == "False") {
+				attributeArray.push({
+					attributeType : "Subject",
+					attributeName : "proposal.role",
+					attributeValue : config.proposalRoles
+				});
+
+				attributeArray.push({
+					attributeType : "Resource",
+					attributeName : "SubmittedByPI",
+					attributeValue : config.submittedByPI
+				});
+
+				attributeArray.push({
+					attributeType : "Resource",
+					attributeName : "ReadyForSubmissionByPI",
+					attributeValue : config.readyForSubmitionByPI
+				});
+
+				// attributeArray.push({
+				// attributeType : "Resource",
+				// attributeName : "DeletedByPI",
+				// attributeValue : config.deletedByPI
+				// });
+			}
+
+			attributeArray.push({
+				attributeType : "Resource",
+				attributeName : "proposal.section",
+				attributeValue : proposalSection
+			});
+
+			attributeArray.push({
+				attributeType : "Action",
+				attributeName : "proposal.action",
+				attributeValue : buttonType
+			});
+
+			this.config.url = this.config.baseURL
+					+ "CheckPermissionForAProposal";
+			this.config.data = JSON2.stringify({
+				policyInfo : attributeArray,
+				gpmsCommonObj : gpmsCommonObj(),
+				proposalId : proposal_id
+			});
+
+			this.config.buttonType = buttonType;
+			this.ajaxCall(this.config);
+		},
+
 		CheckUserPermissionForSubmit : function(buttonType, proposalSection,
 				config) {
 			var attributeArray = [];
@@ -600,7 +657,7 @@ $(function() {
 				attributeArray.push({
 					attributeType : "Subject",
 					attributeName : "proposal.role",
-					attributeValue : currentProposalRoles
+					attributeValue : config.proposalRoles
 				});
 
 				attributeArray.push({
@@ -689,7 +746,7 @@ $(function() {
 				attributeArray.push({
 					attributeType : "Subject",
 					attributeName : "proposal.role",
-					attributeValue : currentProposalRoles
+					attributeValue : config.proposalRoles
 				});
 
 				attributeArray.push({
@@ -935,7 +992,7 @@ $(function() {
 			this.ajaxCall(this.config);
 		},
 
-		CheckUserPermissionForAddInvestigator : function(buttonType,
+		CheckUserPermissionForInvestigator : function(buttonType,
 				proposalSection, config) {
 			var attributeArray = [];
 			var currentProposalRoles = config.proposalRoles.split(', ');
@@ -946,7 +1003,7 @@ $(function() {
 				attributeArray.push({
 					attributeType : "Subject",
 					attributeName : "proposal.role",
-					attributeValue : currentProposalRoles
+					attributeValue : config.proposalRoles
 				});
 
 				attributeArray.push({
@@ -2261,6 +2318,102 @@ $(function() {
 			$('#dataTable>tbody tr:first').remove();
 		},
 
+		AddCoPIInvestigator : function(button) {
+			var cloneRow = button.closest('tr').clone(true)
+					.addClass("trStatic");
+			$(cloneRow).find("input").each(function(i) {
+				if ($(this).is(".AddCoPI")) {
+					$(this).prop("name", "DeleteOption");
+					$(this).prop("value", "Delete");
+					$(this).prop("title", "Delete");
+				} else if ($(this).is(".AddSenior")) {
+					$(this).remove();
+				}
+			});
+
+			$(cloneRow).find("select").each(
+					function(j) {
+						$(this).removeProp("disabled");
+						$(this).removeProp("required");
+						// Remove PI
+						// option
+						// after first
+						// row
+						if (j == 0) {
+							$(this).find('option:first').remove();
+							$(this).find('option:last').remove();
+							$(this).prop("disabled", true);
+						} else if (j == 1) {
+							$(this).prop("disabled", false);
+							$('#ui-id-2').find("select[name='ddlName']").each(
+									function(k) {
+										$(cloneRow).find(
+												'option[value=' + $(this).val()
+														+ ']').remove();
+									});
+						}
+						$(this).find("option").removeProp("selected");
+					});
+
+			if ($(cloneRow).find("select[name='ddlName'] option").length > 0) {
+				$('#dataTable tr:last').find("select[name='ddlName']").prop(
+						"disabled", true);
+
+				$(cloneRow).appendTo("#dataTable").hide().fadeIn(1200);
+
+				rowIndex = $('#dataTable > tbody tr').size() - 1;
+				myProposal.BindDefaultUserPosition(rowIndex);
+			}
+		},
+
+		AddSeniorPersonnelInvestigator : function(button) {
+			var cloneRow = button.closest('tr').clone(true)
+					.addClass("trStatic");
+			$(cloneRow).find("input").each(function(i) {
+				if ($(this).is(".AddCoPI")) {
+					$(this).prop("name", "DeleteOption");
+					$(this).prop("value", "Delete");
+					$(this).prop("title", "Delete");
+				} else if ($(this).is(".AddSenior")) {
+					$(this).remove();
+				}
+			});
+
+			$(cloneRow).find("select").each(
+					function(j) {
+						$(this).removeProp("disabled");
+						$(this).removeProp("required");
+						// Remove PI
+						// option
+						// after first
+						// row
+						if (j == 0) {
+							$(this).find('option:lt(2)').remove();
+							$(this).prop("disabled", true);
+							;
+						} else if (j == 1) {
+							$(this).prop("disabled", false);
+							$('#ui-id-2').find("select[name='ddlName']").each(
+									function(k) {
+										$(cloneRow).find(
+												'option[value=' + $(this).val()
+														+ ']').remove();
+									});
+						}
+						$(this).find("option").removeProp("selected");
+					});
+
+			if ($(cloneRow).find("select[name='ddlName'] option").length > 0) {
+				$('#dataTable tr:last').find("select[name='ddlName']").prop(
+						"disabled", true);
+
+				$(cloneRow).appendTo("#dataTable").hide().fadeIn(1200);
+
+				rowIndex = $('#dataTable > tbody tr').size() - 1;
+				myProposal.BindDefaultUserPosition(rowIndex);
+			}
+		},
+
 		SelectFirstAccordion : function() {
 			myProposal.OpenAccordionTab($('#ui-id-2'));
 		},
@@ -2530,14 +2683,40 @@ $(function() {
 			case "gdvProposals":
 				var proposal_roles = $.trim(argus[1]);
 				if (argus[2].toLowerCase() != "yes") {
-					myProposal.config.ajaxCallMode = 10;
-					myProposal.config.proposalRoles = proposal_roles;
-					myProposal.config.proposalId = argus[0];
-					myProposal.config.proposalStatus = argus[3];
+					var properties = {
+						onComplete : function(e) {
+							if (e) {
+								myProposal.config.ajaxCallMode = 10;
+								myProposal.config.proposalRoles = proposal_roles;
+								myProposal.config.proposalId = argus[0];
+								myProposal.config.proposalStatus = argus[3];
+								myProposal.config.submittedByPI = argus[4];
+								myProposal.config.readyForSubmissionByPI = argus[5];
+								myProposal.config.deletedByPI = argus[6];
+								myProposal.config.chairApproval = argus[7];
+								myProposal.config.businessManagerApproval = argus[8];
+								myProposal.config.irbapproval = argus[9];
+								myProposal.config.deanApproval = argus[10];
+								myProposal.config.researchAdministratorApproval = argus[11];
+								myProposal.config.researchAdministratorWithdraw = argus[12];
+								myProposal.config.researchDirectorApproval = argus[13];
+								myProposal.config.researchDirectorDeletion = argus[14];
+								myProposal.config.researchAdministratorSubmission = argus[15];
+								myProposal.config.researchDirectorArchived = argus[16];
 
-					alert("TO set all config for delete");
-					myProposal.CheckUserPermissionForDelete("Delete",
-							"Whole Proposal", myProposal.config);
+								myProposal.CheckUserPermissionForDelete(
+										"Delete", "Whole Proposal",
+										myProposal.config);
+							}
+						}
+					};
+					csscody
+							.confirm(
+									"<h2>"
+											+ 'Delete Confirmation'
+											+ "</h2><p>"
+											+ 'Are you certain you want to delete this proposal?'
+											+ "</p>", properties);
 					return false;
 				} else {
 					csscody.alert('<h2>' + 'Information Alert' + '</h2><p>'
@@ -2548,18 +2727,6 @@ $(function() {
 			default:
 				break;
 			}
-		},
-
-		DeleteProposalById : function(_proposalId, _proposalRoles) {
-			var properties = {
-				onComplete : function(e) {
-					myProposal.ConfirmSingleDelete(_proposalId, _proposalRoles,
-							e);
-				}
-			};
-			csscody.confirm("<h2>" + 'Delete Confirmation' + "</h2><p>"
-					+ 'Are you certain you want to delete this proposal?'
-					+ "</p>", properties);
 		},
 
 		ConfirmDeleteMultiple : function(proposal_ids, event) {
@@ -2583,13 +2750,7 @@ $(function() {
 			return false;
 		},
 
-		ConfirmSingleDelete : function(proposal_id, proposalRoles, event) {
-			if (event) {
-				myProposal.DeleteSingleUser(proposal_id, proposalRoles);
-			}
-		},
-
-		DeleteSingleUser : function(_proposalId, _proposalRoles) {
+		DeleteSingleProposal : function(_proposalId, _proposalRoles) {
 			this.config.url = this.config.baseURL
 					+ "DeleteProposalByProposalID";
 			this.config.data = JSON2.stringify({
@@ -2617,6 +2778,7 @@ $(function() {
 			myProposal.config.arguments = [];
 			myProposal.config.events = "";
 			myProposal.config.content = [];
+			myProposal.config.investigatorButton = "";
 
 			$('.cssClassRight').hide();
 			$('.cssClassError').hide();
@@ -2773,7 +2935,7 @@ $(function() {
 										myProposal.config.content = ui.newPanel;
 										if (myProposal.config.proposalRoles != "") {
 											myProposal
-													.CheckUserPermissionWithProposalRole(
+													.CheckUserPermissionWithProposalRoleEditSection(
 															"Edit",
 															myProposal.config.proposalRoles,
 															myProposal.config.proposalId,
@@ -2782,7 +2944,7 @@ $(function() {
 															myProposal.config);
 										} else {
 											myProposal
-													.CheckUserPermissionWithPositionTitle(
+													.CheckUserPermissionWithPositionTitleEditSection(
 															"Edit",
 															myProposal.config.proposalId,
 															$.trim(ui.newHeader
@@ -3623,6 +3785,7 @@ $(function() {
 				myProposal.config.arguments = [];
 				myProposal.config.events = "";
 				myProposal.config.content = [];
+				myProposal.config.investigatorButton = "";
 				break;
 			break;
 
@@ -3856,6 +4019,7 @@ $(function() {
 			myProposal.config.arguments = [];
 			myProposal.config.events = "";
 			myProposal.config.content = [];
+			myProposal.config.investigatorButton = "";
 
 			// $("#accordion").accordion("option", "active", 0);
 
@@ -3902,13 +4066,8 @@ $(function() {
 			break;
 
 		case 10:
-			if (myProposal.config.proposalId != '0') {
-				myProposal.DeleteProposalById(myProposal.config.proposalId,
-						myProposal.config.proposalRoles);
-			} else {
-				csscody.error('<h2>' + 'Error Message' + '</h2><p>'
-						+ 'Failed to load Proposal.' + '</p>');
-			}
+			myProposal.DeleteSingleProposal(myProposal.config.proposalId,
+					myProposal.config.proposalRoles);
 			break;
 
 		case 11:
@@ -3920,7 +4079,6 @@ $(function() {
 				myProposal.SaveProposal(myProposal.config.buttonType, "", "0",
 						true);
 			}
-
 			break;
 
 		case 12:
@@ -4048,110 +4206,21 @@ $(function() {
 			break;
 
 		case 19:
-			var cloneRow = myProposal.config.investigatorButton.closest('tr')
-					.clone(true);
-			alert($(cloneRow).find("select[name='ddlName'] option").length);
-			$(cloneRow).find("input").each(function(i) {
-				if ($(this).is(".AddCoPI")) {
-					$(this).prop("name", "DeleteOption");
-					$(this).prop("value", "Delete");
-					$(this).prop("title", "Delete");
-				} else if ($(this).is(".AddSenior")) {
-					$(this).remove();
-				}
-			});
-
-			$(cloneRow).find("select").each(
-					function(j) {
-						$(this).removeProp("disabled");
-						$(this).removeProp("required");
-						// Remove PI
-						// option
-						// after first
-						// row
-						if (j == 0) {
-							$(this).find('option:first').remove();
-							$(this).find('option:last').remove();
-							$(this).prop("disabled", true);
-						} else if (j == 1) {
-							$(this).prop("disabled", false);
-							$('#ui-id-2').find("select[name='ddlName']").each(
-									function(k) {
-										$(cloneRow).find(
-												'option[value=' + $(this).val()
-														+ ']').remove();
-									});
-						}
-						$(this).find("option").removeProp("selected");
-					});
-
-			if ($(cloneRow).find("select[name='ddlName'] option").length > 0) {
-				$('#dataTable tr:last').find("select[name='ddlName']").prop(
-						"disabled", true);
-
-				$(cloneRow).appendTo("#dataTable").hide().fadeIn(1200);
-
-				rowIndex = $('#dataTable > tbody tr').size() - 1;
-				myProposal.BindDefaultUserPosition(rowIndex);
-			}
+			myProposal
+					.AddCoPIInvestigator(myProposal.config.investigatorButton);
 			break;
 
 		case 20:
-			var cloneRow = myProposal.config.investigatorButton.closest('tr')
-					.clone(true);
-			$(cloneRow).find("input").each(function(i) {
-				if ($(this).is(".AddCoPI")) {
-					$(this).prop("name", "DeleteOption");
-					$(this).prop("value", "Delete");
-					$(this).prop("title", "Delete");
-				} else if ($(this).is(".AddSenior")) {
-					$(this).remove();
-				}
-			});
-
-			$(cloneRow).find("select").each(
-					function(j) {
-						$(this).removeProp("disabled");
-						$(this).removeProp("required");
-						// Remove PI
-						// option
-						// after first
-						// row
-						if (j == 0) {
-							$(this).find('option:lt(2)').remove();
-							$(this).prop("disabled", true);
-							;
-						} else if (j == 1) {
-							$(this).prop("disabled", false);
-							$('#ui-id-2').find("select[name='ddlName']").each(
-									function(k) {
-										$(cloneRow).find(
-												'option[value=' + $(this).val()
-														+ ']').remove();
-									});
-						}
-						$(this).find("option").removeProp("selected");
-					});
-
-			if ($(cloneRow).find("select[name='ddlName'] option").length > 0) {
-				$('#dataTable tr:last').find("select[name='ddlName']").prop(
-						"disabled", true);
-
-				$(cloneRow).appendTo("#dataTable").hide().fadeIn(1200);
-
-				rowIndex = $('#dataTable > tbody tr').size() - 1;
-				myProposal.BindDefaultUserPosition(rowIndex);
-			}
+			myProposal
+					.AddSeniorPersonnelInvestigator(myProposal.config.investigatorButton);
 			break;
 
 		case 21:
-			csscody.error("<h2>" + 'Error Message' + "</h2><p>"
-					+ 'Cannot delete Co-PI!' + "</p>");
-			break;
-
-		case 22:
-			csscody.error("<h2>" + 'Error Message' + "</h2><p>"
-					+ 'Cannot delete Senior Personnel!' + "</p>");
+			var t = myProposal.config.investigatorButton.closest('tr');
+			t.find("td").wrapInner("<div style='display: block'/>").parent()
+					.find("td div").slideUp(300, function() {
+						t.remove();
+					});
 			break;
 
 		}
@@ -4281,12 +4350,7 @@ $(function() {
 
 			case 21:
 				csscody.error("<h2>" + 'Error Message' + "</h2><p>"
-						+ 'Cannot delete Co-PI!' + "</p>");
-				break;
-
-			case 22:
-				csscody.error("<h2>" + 'Error Message' + "</h2><p>"
-						+ 'Cannot delete Senior Personnel!' + "</p>");
+						+ 'Cannot delete Investigator!' + "</p>");
 				break;
 
 			}
@@ -4385,6 +4449,7 @@ $(function() {
 				myProposal.config.arguments = [];
 				myProposal.config.events = "";
 				myProposal.config.content = [];
+				myProposal.config.investigatorButton = "";
 			});
 
 			$("#txtSearchSubmittedOnFrom").datepicker(
@@ -4691,7 +4756,7 @@ $(function() {
 				myProposal.config.arguments = [];
 				myProposal.config.events = "";
 				myProposal.config.content = [];
-
+				myProposal.config.investigatorButton = "";
 				// $("#accordion").accordion("option", "active",
 				// 0);
 			});
@@ -4746,13 +4811,14 @@ $(function() {
 			// Save
 			$('#btnSaveProposal')
 					.click(
-							function(e) {
+							function(event) {
 								var properties = {
 									onComplete : function(e) {
 										if (e) {
-											var $buttonType = $.trim($(this)
-													.text());
-											$(this).disableWith('Saving...');
+											var $buttonType = $.trim($(
+													'#btnSaveProposal').text());
+											$('#btnSaveProposal').disableWith(
+													'Saving...');
 
 											if (myProposal.config.proposalId == "0") {
 												myProposal.SaveProposal(
@@ -4768,8 +4834,8 @@ $(function() {
 																myProposal.config);
 											}
 
-											$(this).enableAgain();
-											e.preventDefault();
+											$('#btnSaveProposal').enableAgain();
+											event.preventDefault();
 											return false;
 										}
 									}
@@ -4786,13 +4852,14 @@ $(function() {
 			// Submit
 			$('#btnSubmitProposal')
 					.click(
-							function(e) {
+							function(event) {
 								var properties = {
 									onComplete : function(e) {
 										if (e) {
-											var $buttonType = $.trim($(this)
+											var $buttonType = $.trim($(
+													'#btnSubmitProposal')
 													.text());
-											$(this)
+											$('#btnSubmitProposal')
 													.disableWith(
 															'Submitting...');
 
@@ -4806,8 +4873,9 @@ $(function() {
 																myProposal.config);
 											}
 
-											$(this).enableAgain();
-											e.preventDefault();
+											$('#btnSubmitProposal')
+													.enableAgain();
+											event.preventDefault();
 											return false;
 										}
 									}
@@ -4822,39 +4890,61 @@ $(function() {
 							});
 
 			// Delete
-			$('#btnDeleteProposal').click(
-					function(e) {
-						// if (validator.form()) {
-						var $buttonType = $.trim($(this).text());
-						$(this).disableWith('Deleting...');
+			$('#btnDeleteProposal')
+					.click(
+							function(event) {
+								var properties = {
+									onComplete : function(e) {
+										if (e) {
+											// if (validator.form()) {
+											var $buttonType = $.trim($(
+													'#btnDeleteProposal')
+													.text());
+											$('#btnDeleteProposal')
+													.disableWith('Deleting...');
 
-						myProposal.config.ajaxCallMode = 10;
+											myProposal.config.ajaxCallMode = 10;
 
-						if (myProposal.config.proposalId != "0"
-								&& myProposal.config.proposalStatus != "") {
-							myProposal.CheckUserPermissionForDelete(
-									$buttonType, "Whole Proposal",
-									myProposal.config);
-						}
+											if (myProposal.config.proposalId != "0"
+													&& myProposal.config.proposalStatus != "") {
+												myProposal
+														.CheckUserPermissionForDelete(
+																$buttonType,
+																"Whole Proposal",
+																myProposal.config);
+											}
 
-						$(this).enableAgain();
-						e.preventDefault();
-						return false;
-						// } else {
-						// myProposal.focusTabWithErrors("#accordion");
-						// }
-					});
+											$('#btnDeleteProposal')
+													.enableAgain();
+											event.preventDefault();
+											return false;
+											// } else {
+											// myProposal.focusTabWithErrors("#accordion");
+											// }
+										}
+									}
+								};
+								csscody
+										.confirm(
+												"<h2>"
+														+ 'Delete Confirmation'
+														+ "</h2><p>"
+														+ 'Are you certain you want to delete this proposal?'
+														+ "</p>", properties);
+							});
 
 			// Approve
 			$('#btnApproveProposal')
 					.click(
-							function(e) {
+							function(event) {
 								var properties = {
 									onComplete : function(e) {
 										if (e) {
-											var $buttonType = $.trim($(this)
+											var $buttonType = $.trim($(
+													'#btnApproveProposal')
 													.text());
-											$(this).disableWith('Approving...');
+											$('#btnApproveProposal')
+													.disableWith('Approving...');
 
 											myProposal.config.ajaxCallMode = 11;
 
@@ -4868,8 +4958,9 @@ $(function() {
 																myProposal.config);
 											}
 
-											$(this).enableAgain();
-											e.preventDefault();
+											$('#btnApproveProposal')
+													.enableAgain();
+											event.preventDefault();
 											return false;
 										}
 									}
@@ -4886,14 +4977,16 @@ $(function() {
 			// Disapprove
 			$('#btnDisapproveProposal')
 					.click(
-							function(e) {
+							function(event) {
 								var properties = {
 									onComplete : function(e) {
 										if (e) {
-											var $buttonType = $.trim($(this)
+											var $buttonType = $.trim($(
+													'#btnDisapproveProposal')
 													.text());
-											$(this).disableWith(
-													'Disapproving...');
+											$('#btnDisapproveProposal')
+													.disableWith(
+															'Disapproving...');
 
 											myProposal.config.ajaxCallMode = 11;
 
@@ -4907,8 +5000,9 @@ $(function() {
 																myProposal.config);
 											}
 
-											$(this).enableAgain();
-											e.preventDefault();
+											$('#btnDisapproveProposal')
+													.enableAgain();
+											event.preventDefault();
 											return false;
 										}
 									}
@@ -4925,15 +5019,17 @@ $(function() {
 			// Withdraw
 			$('#btnWithdrawProposal')
 					.click(
-							function(e) {
+							function(event) {
 								if (validator.form()) {
 									var properties = {
 										onComplete : function(e) {
 											if (e) {
-												var $buttonType = $
-														.trim($(this).text());
-												$(this).disableWith(
-														'Withdrawing...');
+												var $buttonType = $.trim($(
+														'#btnWithdrawProposal')
+														.text());
+												$('#btnWithdrawProposal')
+														.disableWith(
+																'Withdrawing...');
 
 												myProposal.config.ajaxCallMode = 13;
 
@@ -4947,8 +5043,9 @@ $(function() {
 																	myProposal.config);
 												}
 
-												$(this).enableAgain();
-												e.preventDefault();
+												$('#btnWithdrawProposal')
+														.enableAgain();
+												event.preventDefault();
 												return false;
 											}
 										}
@@ -4969,15 +5066,17 @@ $(function() {
 			// Archive
 			$('#btnArchiveProposal')
 					.click(
-							function(e) {
+							function(event) {
 								if (validator.form()) {
 									var properties = {
 										onComplete : function(e) {
 											if (e) {
-												var $buttonType = $
-														.trim($(this).text());
-												$(this).disableWith(
-														'Archiving...');
+												var $buttonType = $.trim($(
+														'#btnArchiveProposal')
+														.text());
+												$('#btnArchiveProposal')
+														.disableWith(
+																'Archiving...');
 
 												myProposal.config.ajaxCallMode = 13;
 
@@ -4991,8 +5090,9 @@ $(function() {
 																	myProposal.config);
 												}
 
-												$(this).enableAgain();
-												e.preventDefault();
+												$('#btnArchiveProposal')
+														.enableAgain();
+												event.preventDefault();
 												return false;
 											}
 										}
@@ -5027,38 +5127,80 @@ $(function() {
 					.on(
 							"click",
 							function() {
-								alert(myProposal.config.proposalRoles + ":::"
-										+ myProposal.config.proposalId + ":::"
-										+ $(this).attr("name"));
 								var currentProposalRoles = myProposal.config.proposalRoles
 										.split(', ');
 								if ($.inArray("PI", currentProposalRoles) !== -1
+										|| $.inArray("Co-PI",
+												currentProposalRoles) !== -1
 										|| myProposal.config.proposalId == "0") {
 									if ($(this).prop("name") == "DeleteOption") {
 										var t = $(this).closest('tr');
+										myProposal.config.investigatorButton = $(this);
+										var properties = {
+											onComplete : function(e) {
+												if (e) {
+													if (t.hasClass("trStatic")) {
+														t
+																.find("td")
+																.wrapInner(
+																		"<div style='display: block'/>")
+																.parent()
+																.find("td div")
+																.slideUp(
+																		300,
+																		function() {
+																			t
+																					.remove();
+																		});
+													} else {
+														var subSection = "";
+														if (t.find(
+																"select:first")
+																.val() == 1) {
+															subSection = "InvestigatorInformation.Co-PI";
+														} else if (t.find(
+																"select:first")
+																.val() == 2) {
+															subSection = "InvestigatorInformation.Senior-Personnel";
+														}
+														myProposal.config.ajaxCallMode = 21;
 
-										t
-												.find("td")
-												.wrapInner(
-														"<div style='display: block'/>")
-												.parent().find("td div")
-												.slideUp(300, function() {
-													t.remove();
-												});
+														myProposal
+																.CheckUserPermissionForInvestigator(
+																		"Delete",
+																		subSection,
+																		myProposal.config);
+													}
+												}
+											}
+										};
+										csscody
+												.confirm(
+														"<h2>"
+																+ 'Delete Confirmation'
+																+ "</h2><p>"
+																+ 'Are you certain you want to delete this investigator?'
+																+ "</p>",
+														properties);
 
 									} else if ($(this).prop("name") == "AddCoPI") {
 										if (myProposal.countCoPIs() < 4) {
-											myProposal.config.ajaxCallMode = 19;
-											myProposal.config.investigatorButton = $(this);
+											if (myProposal.config.proposalId == "0") {
+												myProposal
+														.AddCoPIInvestigator($(this));
+											} else {
+												myProposal.config.ajaxCallMode = 19;
+												myProposal.config.investigatorButton = $(this);
 
-											var $buttonType = $.trim($(this)
-													.val());
+												var $buttonType = $
+														.trim($(this).val());
 
-											myProposal
-													.CheckUserPermissionForAddInvestigator(
-															$buttonType,
-															"InvestigatorInformation.Co-PI",
-															myProposal.config);
+												myProposal
+														.CheckUserPermissionForInvestigator(
+																$buttonType,
+																"InvestigatorInformation.Co-PI",
+																myProposal.config);
+											}
 										} else {
 											csscody
 													.error('<h2>'
@@ -5075,9 +5217,6 @@ $(function() {
 					.on(
 							"click",
 							function() {
-								alert(myProposal.config.proposalRoles + ":::"
-										+ myProposal.config.proposalId + ":::"
-										+ $(this).attr("name"));
 								var currentProposalRoles = myProposal.config.proposalRoles
 										.split(', ');
 								if ($.inArray("PI", currentProposalRoles) !== -1
@@ -5085,15 +5224,21 @@ $(function() {
 												currentProposalRoles) !== -1
 										|| myProposal.config.proposalId == "0") {
 									if (myProposal.countSeniorPersonnels() < 10) {
-										myProposal.config.ajaxCallMode = 20;
-										myProposal.config.investigatorButton = $(this);
+										if (myProposal.config.proposalId == "0") {
+											myProposal
+													.AddSeniorPersonnelInvestigator($(this));
+										} else {
+											myProposal.config.ajaxCallMode = 20;
+											myProposal.config.investigatorButton = $(this);
 
-										var $buttonType = $.trim($(this).val());
-										myProposal
-												.CheckUserPermissionForAddInvestigator(
-														$buttonType,
-														"InvestigatorInformation.Senior-Personnel",
-														myProposal.config);
+											var $buttonType = $.trim($(this)
+													.val());
+											myProposal
+													.CheckUserPermissionForInvestigator(
+															$buttonType,
+															"InvestigatorInformation.Senior-Personnel",
+															myProposal.config);
+										}
 									} else {
 										csscody
 												.error('<h2>'
