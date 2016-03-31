@@ -4219,7 +4219,6 @@ $(function() {
 
 		case 15:
 			if (myProposal.config.proposalId != '0') {
-				debugger;
 				if (myProposal.config.content.attr("id") != "ui-id-2") {
 					$(myProposal.config.content)
 							.find('input, select, textarea').each(function() {
