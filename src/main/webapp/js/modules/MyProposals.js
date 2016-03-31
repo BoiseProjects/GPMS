@@ -458,7 +458,7 @@ $(function() {
 			buttonType : "",
 			arguments : [],
 			events : "",
-			content : [],
+			content : "",
 			uploadObj : "",
 			investigatorButton : ""
 		},
@@ -2849,7 +2849,7 @@ $(function() {
 			myProposal.config.buttonType = "";
 			myProposal.config.arguments = [];
 			myProposal.config.events = "";
-			myProposal.config.content = [];
+			myProposal.config.content = "";
 			myProposal.config.investigatorButton = "";
 
 			$('.cssClassRight').hide();
@@ -3004,7 +3004,7 @@ $(function() {
 										// alert($.trim(ui.newHeader.text()));
 										myProposal.config.ajaxCallMode = 15;
 										// myProposal.config.event = event;
-										myProposal.config.content = ui.newPanel;
+
 										if (myProposal.config.proposalRoles != "") {
 											myProposal
 													.CheckUserPermissionWithProposalRoleEditSection(
@@ -3033,6 +3033,7 @@ $(function() {
 										// alert($.trim(ui.newHeader.text()));
 										myProposal.config.ajaxCallMode = 14;
 										myProposal.config.event = event;
+										myProposal.config.content = ui.newPanel;
 										if (myProposal.config.proposalRoles != "") {
 											myProposal
 													.CheckUserPermissionWithProposalRole(
@@ -3858,7 +3859,7 @@ $(function() {
 				myProposal.config.buttonType = "";
 				myProposal.config.arguments = [];
 				myProposal.config.events = "";
-				myProposal.config.content = [];
+				myProposal.config.content = "";
 				myProposal.config.investigatorButton = "";
 				break;
 			break;
@@ -4092,7 +4093,7 @@ $(function() {
 			myProposal.config.buttonType = "";
 			myProposal.config.arguments = [];
 			myProposal.config.events = "";
-			myProposal.config.content = [];
+			myProposal.config.content = "";
 			myProposal.config.investigatorButton = "";
 
 			// $("#accordion").accordion("option", "active", 0);
@@ -4211,13 +4212,14 @@ $(function() {
 			break;
 
 		case 14:
-			if (myProposal.config.proposalId != '0') {
-				return false;
-			}
+			// if (myProposal.config.proposalId != '0') {
+			// return false;
+			// }
 			break;
 
 		case 15:
 			if (myProposal.config.proposalId != '0') {
+				debugger;
 				if (myProposal.config.content.attr("id") != "ui-id-2") {
 					$(myProposal.config.content)
 							.find('input, select, textarea').each(function() {
@@ -4389,10 +4391,17 @@ $(function() {
 				// + msg.responseText + '</p>');
 				// myProposal.config.event.preventDefault();
 				$(myProposal.config.content).find('input, select, textarea')
-						.each(function() {
-							// $(this).addClass("ignore");
-							$(this).prop('disabled', true);
-						});
+						.each(
+								function() {
+									// $(this).addClass("ignore");
+									$(this).prop('disabled', true);
+
+									if ($(this).hasClass('AddCoPI')
+											|| $(this).hasClass('AddSenior')) {
+										$(this).hide();
+									}
+								});
+				// myProposal.config.event.preventDefault();
 				break;
 
 			case 16:
@@ -4523,7 +4532,7 @@ $(function() {
 				myProposal.config.buttonType = "";
 				myProposal.config.arguments = [];
 				myProposal.config.events = "";
-				myProposal.config.content = [];
+				myProposal.config.content = "";
 				myProposal.config.investigatorButton = "";
 			});
 
@@ -4830,7 +4839,7 @@ $(function() {
 				myProposal.config.buttonType = "";
 				myProposal.config.arguments = [];
 				myProposal.config.events = "";
-				myProposal.config.content = [];
+				myProposal.config.content = "";
 				myProposal.config.investigatorButton = "";
 				// $("#accordion").accordion("option", "active",
 				// 0);
