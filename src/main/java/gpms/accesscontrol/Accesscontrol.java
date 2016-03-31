@@ -9,6 +9,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.wso2.balana.Balana;
+import org.wso2.balana.ObligationResult;
 import org.wso2.balana.PDP;
 import org.wso2.balana.PDPConfig;
 import org.wso2.balana.ctx.AbstractRequestCtx;
@@ -219,6 +220,7 @@ public class Accesscontrol {
 		while (it.hasNext()) {
 			ar = it.next();
 			intDecision = ar.getDecision();
+			List<ObligationResult> obligationList = ar.getObligations();
 			if (intDecision >= 4 && intDecision <= 6) {
 				intDecision = 2;
 			}

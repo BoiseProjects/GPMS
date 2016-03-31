@@ -3004,6 +3004,7 @@ $(function() {
 										// alert($.trim(ui.newHeader.text()));
 										myProposal.config.ajaxCallMode = 15;
 										// myProposal.config.event = event;
+										myProposal.config.content = ui.newPanel;
 
 										if (myProposal.config.proposalRoles != "") {
 											myProposal
@@ -3024,37 +3025,38 @@ $(function() {
 															myProposal.config);
 										}
 									}
-								},
-								beforeActivate : function(event, ui) {
-									// Size = 0 --> collapsing
-									// Size = 1 --> Expanding
-									if (myProposal.config.proposalId != "0"
-											&& ui.newHeader.length != 0) {
-										// alert($.trim(ui.newHeader.text()));
-										myProposal.config.ajaxCallMode = 14;
-										myProposal.config.event = event;
-										myProposal.config.content = ui.newPanel;
-										if (myProposal.config.proposalRoles != "") {
-											myProposal
-													.CheckUserPermissionWithProposalRole(
-															"View",
-															myProposal.config.proposalRoles,
-															myProposal.config.proposalId,
-															$.trim(ui.newHeader
-																	.text()),
-															myProposal.config);
-										} else {
-											myProposal
-													.CheckUserPermissionWithPositionTitle(
-															"View",
-															myProposal.config.proposalId,
-															$.trim(ui.newHeader
-																	.text()),
-															myProposal.config);
-										}
-
-									}
 								}
+							// ,
+							// beforeActivate : function(event, ui) {
+							// // Size = 0 --> collapsing
+							// // Size = 1 --> Expanding
+							// if (myProposal.config.proposalId != "0"
+							// && ui.newHeader.length != 0) {
+							// // alert($.trim(ui.newHeader.text()));
+							// myProposal.config.ajaxCallMode = 14;
+							// myProposal.config.event = event;
+							// myProposal.config.content = ui.newPanel;
+							// if (myProposal.config.proposalRoles != "") {
+							// myProposal
+							// .CheckUserPermissionWithProposalRole(
+							// "View",
+							// myProposal.config.proposalRoles,
+							// myProposal.config.proposalId,
+							// $.trim(ui.newHeader
+							// .text()),
+							// myProposal.config);
+							// } else {
+							// myProposal
+							// .CheckUserPermissionWithPositionTitle(
+							// "View",
+							// myProposal.config.proposalId,
+							// $.trim(ui.newHeader
+							// .text()),
+							// myProposal.config);
+							// }
+							//
+							// }
+							// }
 							});
 			// myProposal.SelectFirstAccordion();
 			// $("#accordion").accordion("option", "active", 0);

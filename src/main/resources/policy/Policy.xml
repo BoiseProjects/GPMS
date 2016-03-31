@@ -59,7 +59,7 @@
 	</Rule>
 	
 	<Rule Effect="Deny" RuleId="OtherStaffCannotCreateProposal-Rule2">
-		<Description>"Teaching faculty", "Research staff", "Professional staff", "Administrator" cannot "Add" a "Whole Proposal" unless delegated by faculty;</Description>
+		<Description>"Teaching faculty", "Research staff", "Professional staff", "Administrator" cannot "Add" a "Whole Proposal" unless delegated by faculty</Description>
 		<Target>
 			<AnyOf>
 				<AllOf>
@@ -2969,7 +2969,7 @@
 		   <AllOf>
 	              <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Department Chair</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role" 
+	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title" 
 	                  Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" 
 	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
 	               </Match>
@@ -3005,7 +3005,7 @@
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Department Chair</AttributeValue>
 						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
 							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
@@ -3034,7 +3034,7 @@
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Department Chair</AttributeValue>
 						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
 							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
@@ -3063,7 +3063,7 @@
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Department Chair</AttributeValue>
 						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
 							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
@@ -3092,7 +3092,7 @@
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Department Chair</AttributeValue>
 						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
 							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
@@ -3121,7 +3121,7 @@
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Department Chair</AttributeValue>
 						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
 							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
@@ -3150,7 +3150,7 @@
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Department Chair</AttributeValue>
 						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
 							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
@@ -3179,7 +3179,7 @@
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Department Chair</AttributeValue>
 						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
 							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
@@ -3208,7 +3208,7 @@
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Department Chair</AttributeValue>
 						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
 							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
@@ -3237,7 +3237,7 @@
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Department Chair</AttributeValue>
 						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
 							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
@@ -3266,7 +3266,7 @@
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Department Chair</AttributeValue>
 						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
 							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
@@ -3296,7 +3296,7 @@
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Department Chair</AttributeValue>
 						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
 							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
@@ -3325,7 +3325,7 @@
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Department Chair</AttributeValue>
 						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
 							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
@@ -3670,7 +3670,7 @@
 		  		<AllOf>
 	              <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Business Manager</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role" 
+	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title" 
 	                  Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" 
 	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
 	               </Match>
@@ -3696,7 +3696,7 @@
 		        <AllOf>
 	              <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Business Manager</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role" 
+	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title" 
 	                  Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" 
 	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
 	               </Match>
@@ -3732,7 +3732,7 @@
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Business Manager</AttributeValue>
 						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
 							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
@@ -3761,7 +3761,7 @@
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Business Manager</AttributeValue>
 						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
 							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
@@ -3790,7 +3790,7 @@
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Business Manager</AttributeValue>
 						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
 							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
@@ -3819,7 +3819,7 @@
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Business Manager</AttributeValue>
 						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
 							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
@@ -3848,7 +3848,7 @@
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Business Manager</AttributeValue>
 						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
 							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
@@ -3877,7 +3877,7 @@
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Business Manager</AttributeValue>
 						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
 							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
@@ -3906,7 +3906,7 @@
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Business Manager</AttributeValue>
 						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
 							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
@@ -3935,7 +3935,7 @@
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Business Manager</AttributeValue>
 						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
 							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
@@ -3964,7 +3964,7 @@
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Business Manager</AttributeValue>
 						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
 							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
@@ -3993,7 +3993,7 @@
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Business Manager</AttributeValue>
 						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
 							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
@@ -4022,7 +4022,7 @@
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Business Manager</AttributeValue>
 						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
 							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
@@ -4367,7 +4367,7 @@
 		   <AllOf>
 	              <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Dean</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role" 
+	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title" 
 	                  Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" 
 	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
 	               </Match>
@@ -4403,7 +4403,7 @@
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Dean</AttributeValue>
 						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
 							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
@@ -4432,7 +4432,7 @@
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Dean</AttributeValue>
 						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
 							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
@@ -4461,7 +4461,7 @@
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Dean</AttributeValue>
 						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
 							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
@@ -4490,7 +4490,7 @@
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Dean</AttributeValue>
 						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
 							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
@@ -4519,7 +4519,7 @@
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Dean</AttributeValue>
 						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
 							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
@@ -4548,7 +4548,7 @@
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Dean</AttributeValue>
 						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
 							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
@@ -4577,7 +4577,7 @@
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Dean</AttributeValue>
 						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
 							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
@@ -4606,7 +4606,7 @@
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Dean</AttributeValue>
 						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
 							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
@@ -4635,7 +4635,7 @@
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Dean</AttributeValue>
 						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
 							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
@@ -4664,7 +4664,7 @@
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Dean</AttributeValue>
 						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
 							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
@@ -4693,7 +4693,7 @@
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Dean</AttributeValue>
 						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
 							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
@@ -4722,7 +4722,7 @@
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Dean</AttributeValue>
 						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
 							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
@@ -5065,7 +5065,7 @@
 		   <AllOf>
 	              <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">IRB</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role" 
+	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title" 
 	                  Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" 
 	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
 	               </Match>
@@ -5101,7 +5101,7 @@
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">IRB</AttributeValue>
 						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
 							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
@@ -5130,7 +5130,7 @@
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">IRB</AttributeValue>
 						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
 							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
@@ -5159,7 +5159,7 @@
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">IRB</AttributeValue>
 						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
 							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
@@ -5188,7 +5188,7 @@
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">IRB</AttributeValue>
 						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
 							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
@@ -5217,7 +5217,7 @@
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">IRB</AttributeValue>
 						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
 							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
@@ -5246,7 +5246,7 @@
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">IRB</AttributeValue>
 						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
 							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
@@ -5275,7 +5275,7 @@
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">IRB</AttributeValue>
 						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
 							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
@@ -5304,7 +5304,7 @@
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">IRB</AttributeValue>
 						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
 							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
@@ -5333,7 +5333,7 @@
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">IRB</AttributeValue>
 						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
 							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
@@ -5362,7 +5362,7 @@
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">IRB</AttributeValue>
 						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
 							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
@@ -5391,7 +5391,7 @@
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">IRB</AttributeValue>
 						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
 							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
@@ -5420,7 +5420,7 @@
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">IRB</AttributeValue>
 						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
 							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
@@ -5765,7 +5765,7 @@
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">University Research Administrator</AttributeValue>
 						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
 							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
@@ -5794,7 +5794,7 @@
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">University Research Administrator</AttributeValue>
 						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
 							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
@@ -5823,7 +5823,7 @@
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">University Research Administrator</AttributeValue>
 						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
 							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
@@ -5852,7 +5852,7 @@
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">University Research Administrator</AttributeValue>
 						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
 							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
@@ -5881,7 +5881,7 @@
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">University Research Administrator</AttributeValue>
 						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
 							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
@@ -5910,7 +5910,7 @@
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">University Research Administrator</AttributeValue>
 						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
 							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
@@ -5939,7 +5939,7 @@
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">University Research Administrator</AttributeValue>
 						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
 							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
@@ -5968,7 +5968,7 @@
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">University Research Administrator</AttributeValue>
 						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
 							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
@@ -5997,7 +5997,7 @@
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">University Research Administrator</AttributeValue>
 						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
 							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
@@ -6026,7 +6026,7 @@
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">University Research Administrator</AttributeValue>
 						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
 							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
@@ -6055,7 +6055,7 @@
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">University Research Administrator</AttributeValue>
 						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
 							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
@@ -6084,7 +6084,7 @@
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">University Research Administrator</AttributeValue>
 						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
 							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
@@ -6122,7 +6122,7 @@
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">University Research Administrator</AttributeValue>
 						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
 							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
@@ -6459,7 +6459,7 @@
 	</Rule>
 	
 	<Rule Effect="Permit" RuleId="ProposalSectionEditByUniversityResearchDirector-Rule34">
-		<Description>"University Research Director" can edit "Certification/Signatures" and "OSP Section"
+		<Description>"University Research Director" can edit "Certification/Signatures" and  "OSP Section"
 			when ApprovedByUniversityResearchDirector= READYFORAPPROVAL;</Description>
 		<Target>
 			<AnyOf>
@@ -6467,7 +6467,7 @@
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">University Research Director</AttributeValue>
 						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
 							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
@@ -6496,7 +6496,7 @@
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">University Research Director</AttributeValue>
 						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
 							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
@@ -6534,7 +6534,7 @@
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">University Research Director</AttributeValue>
 						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
 							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
@@ -6563,7 +6563,7 @@
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">University Research Director</AttributeValue>
 						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
 							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
@@ -6592,7 +6592,7 @@
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">University Research Director</AttributeValue>
 						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
 							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
@@ -6621,7 +6621,7 @@
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">University Research Director</AttributeValue>
 						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
 							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
@@ -6650,7 +6650,7 @@
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">University Research Director</AttributeValue>
 						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
 							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
@@ -6679,7 +6679,7 @@
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">University Research Director</AttributeValue>
 						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
 							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
@@ -6708,7 +6708,7 @@
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">University Research Director</AttributeValue>
 						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
 							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
@@ -6737,7 +6737,7 @@
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">University Research Director</AttributeValue>
 						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
 							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
@@ -6766,7 +6766,7 @@
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">University Research Director</AttributeValue>
 						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
 							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
@@ -6795,7 +6795,7 @@
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">University Research Director</AttributeValue>
 						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
 							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
@@ -6824,7 +6824,7 @@
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">University Research Director</AttributeValue>
 						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
 							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
@@ -6855,7 +6855,7 @@
 	
 	<!--Need to add UpdateExistingProposalByInvestigator-Rule30 : PI and Co-PI can Save/ Update the changes for existing Proposal-->
 
-	<Rule Effect="Permit" RuleId="SubmitProposalByPI-Rule31">
+	<Rule Effect="Permit" RuleId="SubmitProposalByPI-Rule36">
 		<Description>"PI" can "Submit" a "Whole Proposal" when SubmittedByPI = NOTSUBMITTED and ReadyForSubmissionByPI = True and DeletedByPI = NOTDELETED;</Description>
 		<Target>
 			<AnyOf>
@@ -6907,4 +6907,732 @@
 		</Target>
 	</Rule>
 	
+	<Rule Effect="Permit" RuleId="SubmitProposalByUniversityResearchAdministrator-Rule37">
+		<Description>"University Research Administrator" can "Submit" a "Whole Proposal" when SubmittedByUniversityResearchAdministrator = NOTSUBMITTED and ApprovedByUniversityResearchDirector=APPROVED;</Description>
+		<Target>
+			<AnyOf>
+				<AllOf>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">University Research Administrator</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
+							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Whole Proposal</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:proposal.section"
+							Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">NOTSUBMITTED</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:SubmittedByUniversityResearchAdministrator"
+							Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">APPROVED</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByUniversityResearchDirector"
+							Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Submit</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action"
+							Category="urn:oasis:names:tc:xacml:1.0:attribute-category:action"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+				</AllOf>
+			</AnyOf>
+		</Target>
+	</Rule>
+	
+	<Rule Effect="Permit" RuleId="SignProposalByCo-PI-Rule38">
+		<Description>"Co-PI" can "Save" a "Whole Proposal" when SubmittedByPI= NOTSUBMITTED and ReadyForSubmissionByPI = False;</Description>
+		<Target>
+			<AnyOf>
+				<AllOf>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Co-PI</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Whole Proposal</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:proposal.section"
+							Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">NOTSUBMITTED</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:SubmittedByPI"
+							Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">False</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ReadyForSubmissionByPI"
+							Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Save</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action"
+							Category="urn:oasis:names:tc:xacml:1.0:attribute-category:action"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+				</AllOf>
+			</AnyOf>
+		</Target>
+	</Rule>
+	
+	<Rule Effect="Permit" RuleId="DeleteProposalByPI-Rule39">
+		<Description>"PI" can "Delete" a "Whole Proposal" when SubmittedByPI= NOTSUBMITTED and DeletedByPI=NOTDELETED;</Description>
+		<Target>
+			<AnyOf>
+				<AllOf>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">PI</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Whole Proposal</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:proposal.section"
+							Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">NOTSUBMITTED</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:SubmittedByPI"
+							Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">NOTDELETED</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:DeletedByPI"
+							Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Delete</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action"
+							Category="urn:oasis:names:tc:xacml:1.0:attribute-category:action"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+				</AllOf>
+			</AnyOf>
+		</Target>
+	</Rule>
+	
+	<Rule Effect="Permit" RuleId="ApproveProposalByDepartmentChair-Rule40">
+		<Description>"Department Chair" can "Approve" a "Whole Proposal" when ApprovedByDepartmentChair= READYFORAPPROVAL;</Description>
+		<Target>
+			<AnyOf>
+				<AllOf>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Department Chair</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
+							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Whole Proposal</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:proposal.section"
+							Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDepartmentChair"
+							Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Approve</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action"
+							Category="urn:oasis:names:tc:xacml:1.0:attribute-category:action"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+				</AllOf>
+			</AnyOf>
+		</Target>
+	</Rule>
+	
+	<Rule Effect="Permit" RuleId="DisapproveProposalByDepartmentChair-Rule41">
+		<Description>"Department Chair" can "Disapprove" a "Whole Proposal" when ApprovedByDepartmentChair= READYFORAPPROVAL;</Description>
+		<Target>
+			<AnyOf>
+				<AllOf>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Department Chair</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
+							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Whole Proposal</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:proposal.section"
+							Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDepartmentChair"
+							Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Disapprove</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action"
+							Category="urn:oasis:names:tc:xacml:1.0:attribute-category:action"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+				</AllOf>
+			</AnyOf>
+		</Target>
+	</Rule>
+	
+	<Rule Effect="Permit" RuleId="ApproveProposalByBusinessManager-Rule42">
+		<Description>"Business Manager" can "Approve" a "Whole Proposal" when ApprovedByBusinessManager= READYFORAPPROVAL;</Description>
+		<Target>
+			<AnyOf>
+				<AllOf>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Business Manager</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
+							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Whole Proposal</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:proposal.section"
+							Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByBusinessManager"
+							Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Approve</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action"
+							Category="urn:oasis:names:tc:xacml:1.0:attribute-category:action"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+				</AllOf>
+			</AnyOf>
+		</Target>
+	</Rule>
+	
+	<Rule Effect="Permit" RuleId="DisapproveProposalByBusinessManager-Rule43">
+		<Description>"Business Manager" can "Disapprove" a "Whole Proposal" when ApprovedByBusinessManager= READYFORAPPROVAL;</Description>
+		<Target>
+			<AnyOf>
+				<AllOf>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Business Manager</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
+							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Whole Proposal</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:proposal.section"
+							Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByBusinessManager"
+							Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Disapprove</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action"
+							Category="urn:oasis:names:tc:xacml:1.0:attribute-category:action"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+				</AllOf>
+			</AnyOf>
+		</Target>
+	</Rule>
+	
+	<Rule Effect="Permit" RuleId="ApproveProposalByIRB-Rule44">
+		<Description>"IRB" can "Approve" a "Whole Proposal" when ApprovedByIRB= READYFORAPPROVAL;</Description>
+		<Target>
+			<AnyOf>
+				<AllOf>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">IRB</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
+							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Whole Proposal</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:proposal.section"
+							Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByIRB"
+							Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Approve</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action"
+							Category="urn:oasis:names:tc:xacml:1.0:attribute-category:action"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+				</AllOf>
+			</AnyOf>
+		</Target>
+	</Rule>
+	
+	<Rule Effect="Permit" RuleId="DispproveProposalByIRB-Rule45">
+		<Description>"IRB" can "Disapprove" a "Whole Proposal" when ApprovedByIRB= READYFORAPPROVAL;</Description>
+		<Target>
+			<AnyOf>
+				<AllOf>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">IRB</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
+							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Whole Proposal</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:proposal.section"
+							Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByIRB"
+							Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Disapprove</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action"
+							Category="urn:oasis:names:tc:xacml:1.0:attribute-category:action"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+				</AllOf>
+			</AnyOf>
+		</Target>
+	</Rule>
+	
+	<Rule Effect="Permit" RuleId="ApproveProposalByDean-Rule46">
+		<Description>"Dean" can "Approve" a "Whole Proposal" when ApprovedByDean= READYFORAPPROVAL;</Description>
+		<Target>
+			<AnyOf>
+				<AllOf>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Dean</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
+							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Whole Proposal</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:proposal.section"
+							Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDean"
+							Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Approve</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action"
+							Category="urn:oasis:names:tc:xacml:1.0:attribute-category:action"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+				</AllOf>
+			</AnyOf>
+		</Target>
+	</Rule>
+	
+	<Rule Effect="Permit" RuleId="DisapproveProposalByDean-Rule47">
+		<Description>"Dean" can "Disapprove" a "Whole Proposal" when ApprovedByDean= READYFORAPPROVAL;</Description>
+		<Target>
+			<AnyOf>
+				<AllOf>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Dean</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
+							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Whole Proposal</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:proposal.section"
+							Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDean"
+							Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Disapprove</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action"
+							Category="urn:oasis:names:tc:xacml:1.0:attribute-category:action"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+				</AllOf>
+			</AnyOf>
+		</Target>
+	</Rule>
+	
+	<Rule Effect="Permit" RuleId="ApproveProposalByUniversityResearchAdministrator-Rule48">
+		<Description>"University Research Administrator" can "Approve" a "Whole Proposal" when ApprovedByUniversityResearchAdministrator= READYFORAPPROVAL;</Description>
+		<Target>
+			<AnyOf>
+				<AllOf>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">University Research Administrator</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
+							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Whole Proposal</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:proposal.section"
+							Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByUniversityResearchAdministrator"
+							Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Approve</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action"
+							Category="urn:oasis:names:tc:xacml:1.0:attribute-category:action"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+				</AllOf>
+			</AnyOf>
+		</Target>
+	</Rule>
+	
+	<Rule Effect="Permit" RuleId="DisapproveProposalByUniversityResearchAdministrator-Rule49">
+		<Description>"University Research Administrator" can "Disapprove" a "Whole Proposal" when ApprovedByUniversityResearchAdministrator= READYFORAPPROVAL;</Description>
+		<Target>
+			<AnyOf>
+				<AllOf>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">University Research Administrator</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
+							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Whole Proposal</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:proposal.section"
+							Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByUniversityResearchAdministrator"
+							Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Disapprove</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action"
+							Category="urn:oasis:names:tc:xacml:1.0:attribute-category:action"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+				</AllOf>
+			</AnyOf>
+		</Target>
+	</Rule>
+	
+    <Rule Effect="Permit" RuleId="WithdrawProposalByUniversityResearchAdministrator-Rule50">
+		<Description>"University Research Administrator" can "Withdraw" a "Whole Proposal" when ApprovedByUniversityResearchAdministrator= READYFORAPPROVAL
+		and WithdrawnByUniversityResearchAdministrator= NOTWITHDRAWN;</Description>
+		<Target>
+			<AnyOf>
+				<AllOf>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">University Research Administrator</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
+							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Whole Proposal</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:proposal.section"
+							Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByUniversityResearchAdministrator"
+							Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">NOTWITHDRAWN</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:WithdrawnByUniversityResearchAdministrator"
+							Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Withdraw</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action"
+							Category="urn:oasis:names:tc:xacml:1.0:attribute-category:action"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+				</AllOf>
+			</AnyOf>
+		</Target>
+	</Rule>
+    
+    <Rule Effect="Permit" RuleId="ApproveProposalByUniversityResearchDirector-Rule51">
+		<Description>"University Research Director" can "Approve" a "Whole Proposal" when ApproveByUniversityResearchDirector=READYFORAPPROVAL;</Description>
+		<Target>
+			<AnyOf>
+				<AllOf>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">University Research Director</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
+							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Whole Proposal</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:proposal.section"
+							Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApproveByUniversityResearchDirector"
+							Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Approve</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action"
+							Category="urn:oasis:names:tc:xacml:1.0:attribute-category:action"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+				</AllOf>
+			</AnyOf>
+		</Target>
+	</Rule>
+	
+	<Rule Effect="Permit" RuleId="DisapproveProposalByUniversityResearchDirector-Rule52">
+		<Description>"University Research Director" can "Disapprove" a "Whole Proposal" when ApproveByUniversityResearchDirector=READYFORAPPROVAL;</Description>
+		<Target>
+			<AnyOf>
+				<AllOf>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">University Research Director</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
+							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Whole Proposal</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:proposal.section"
+							Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApproveByUniversityResearchDirector"
+							Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Disapprove</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action"
+							Category="urn:oasis:names:tc:xacml:1.0:attribute-category:action"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+				</AllOf>
+			</AnyOf>
+		</Target>
+	</Rule>
+	
+	<Rule Effect="Permit" RuleId="DeleteProposalByUniversityResearchDirector-Rule53">
+		<Description>"University Research Director" can "Delete" a "Whole Proposal" when ApproveByUniversityResearchDirector=READYFORAPPROVAL and
+		DeletedByUniversityResearchDirector=NOTDELETED;</Description>
+		<Target>
+			<AnyOf>
+				<AllOf>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">University Research Director</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
+							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Whole Proposal</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:proposal.section"
+							Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApproveByUniversityResearchDirector"
+							Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">NOTDELETED</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:DeletedByUniversityResearchDirector"
+							Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Delete</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action"
+							Category="urn:oasis:names:tc:xacml:1.0:attribute-category:action"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+				</AllOf>
+			</AnyOf>
+		</Target>
+	</Rule>
+	
+	<Rule Effect="Permit" RuleId="ArchiveProposalByUniversityResearchDirector-Rule54">
+		<Description>"University Research Director" can "Archive" a "Whole Proposal" when ArchivedByUniversityResearchDirector= NOTARCHIVED and
+		SubmittedByUniversityResearchAdministrator=SUBMITTED;</Description>
+		<Target>
+			<AnyOf>
+				<AllOf>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">University Research Director</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
+							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Whole Proposal</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:proposal.section"
+							Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">NOTARCHIVED</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ArchivedByUniversityResearchDirector"
+							Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">SUBMITTED</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:SubmittedByUniversityResearchAdministrator"
+							Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Archive</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action"
+							Category="urn:oasis:names:tc:xacml:1.0:attribute-category:action"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+				</AllOf>
+			</AnyOf>
+		</Target>
+	</Rule>		
 </Policy>

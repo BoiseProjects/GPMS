@@ -29,7 +29,7 @@ public class Create10UsersTest {
 	UserAccountDAO newUserAccountDAO;
 	UserProfileDAO newUserProfileDAO;
 	ProposalDAO newProposalDAO;
-	final int MAXIMUM_PROFILES = 100; // Adjust this to make more or less
+	final int MAXIMUM_PROFILES = 10; // Adjust this to make more or less
 										// profiles
 										// with the generator.
 
@@ -161,18 +161,24 @@ public class Create10UsersTest {
 		Random rand = new Random();
 
 		int choice1 = rand.nextInt(firstList.size());
-		newDetails.setCollege(CollectionUtils.get(firstList, choice1).toString());
+		newDetails.setCollege(CollectionUtils.get(firstList, choice1)
+				.toString());
 
-		Set<String> secondList = newThing.getDepartmentKeys(CollectionUtils.get(firstList, choice1).toString());
+		Set<String> secondList = newThing.getDepartmentKeys(CollectionUtils
+				.get(firstList, choice1).toString());
 		int choice2 = rand.nextInt(secondList.size());
-		newDetails.setDepartment(CollectionUtils.get(secondList, choice2).toString());
+		newDetails.setDepartment(CollectionUtils.get(secondList, choice2)
+				.toString());
 
-		Set<String> thirdList = newThing.getPositionType(CollectionUtils.get(firstList, choice1).toString(),
+		Set<String> thirdList = newThing.getPositionType(
+				CollectionUtils.get(firstList, choice1).toString(),
 				CollectionUtils.get(secondList, choice2).toString());
 		int choice3 = rand.nextInt(thirdList.size());
-		newDetails.setPositionType(CollectionUtils.get(thirdList, choice3).toString());
+		newDetails.setPositionType(CollectionUtils.get(thirdList, choice3)
+				.toString());
 
-		List<String> fourthList = newThing.getPositionTitle(CollectionUtils.get(firstList, choice1).toString(),
+		List<String> fourthList = newThing.getPositionTitle(CollectionUtils
+				.get(firstList, choice1).toString(),
 				CollectionUtils.get(secondList, choice2).toString(),
 				CollectionUtils.get(thirdList, choice3).toString());
 		int choice4 = rand.nextInt(fourthList.size());
