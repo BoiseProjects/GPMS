@@ -1,2 +1,16 @@
+//Permit if resource-id=='/pages/MyPage.jsp' AND current-time>09:00AM AND current-time<05:00PM
+namespace com.stackoverflow.xacml{
+import Attributes.*
+policy accessPages{
+    apply firstApplicable
+    rule accessPage1{
+        target clause resourceId=="/pages/MyPage.jspx" 
+               and currentTime>"09:00:00":time 
+               and currentTime<"17:00:00":time
+        permit
+    }
+}
+}
+
 namespace test { policy testpolicy { target clause Attributes.subjectId ==
 "alice" apply permitOverrides rule { permit } } }

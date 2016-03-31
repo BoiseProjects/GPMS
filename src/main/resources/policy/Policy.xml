@@ -57,6 +57,14 @@
 				</AllOf>
 			</AnyOf>
 		</Target>
+		
+		<ObligationExpressions>
+		    <ObligationExpression FulfillOn="Permit" ObligationId="sendemail">
+		      <AttributeAssignmentExpression AttributeId="emailId" Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" Issuer="">
+		        <AttributeDesignator AttributeId="manager-email" Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+		      </AttributeAssignmentExpression>
+		    </ObligationExpression>
+		</ObligationExpressions>
 	</Rule>
 
 	<Rule Effect="Deny" RuleId="OtherStaffCannotCreateProposal-Rule2">
@@ -5619,8 +5627,7 @@
 		</Target>
 	</Rule>
 
-	<Rule Effect="Permit"
-		RuleId="ProposalSectionViewByUniversityResearchAdministrator-Rule30">
+	<Rule Effect="Permit" RuleId="ProposalSectionViewByUniversityResearchAdministrator-Rule30">
 		<Description>"University Research Administrator" can "View"
 			"Investigator Information", "Project Information", "Sponsor and
 			Budget Information", "Cost Share Information", "University
@@ -5934,8 +5941,7 @@
 		</Target>
 	</Rule>
 
-	<Rule Effect="Permit"
-		RuleId="ProposalSectionEditByUniversityResearchAdministrator-Rule31">
+	<Rule Effect="Permit" RuleId="ProposalSectionEditByUniversityResearchAdministrator-Rule31">
 		<Description>"University Research Administrator" can "Edit"
 			"Investigator Information", "Project Information", "Sponsor and
 			Budget Information", "Cost Share Information", "University
@@ -6312,8 +6318,7 @@
 		</Target>
 	</Rule>
 
-	<Rule Effect="Deny"
-		RuleId="ProposalSectionNotEditByUniversityResearchAdministrator-Rule32">
+	<Rule Effect="Deny" RuleId="ProposalSectionNotEditByUniversityResearchAdministrator-Rule32">
 		<Description>"University Research Administrator" cannot edit
 			Appendices
 			when ApprovedByUniversityResearchAdministrator = READYFORAPPROVAL
@@ -6354,8 +6359,7 @@
 		</Target>
 	</Rule>
 
-	<Rule Effect="Permit"
-		RuleId="ProposalSectionViewByUniversityResearchDirector-Rule33">
+	<Rule Effect="Permit" RuleId="ProposalSectionViewByUniversityResearchDirector-Rule33">
 		<Description>"University Research Administrator" can "View"
 			"Investigator Information", "Project Information", "Sponsor and
 			Budget Information", "Cost Share Information", "University
@@ -6669,8 +6673,7 @@
 		</Target>
 	</Rule>
 
-	<Rule Effect="Permit"
-		RuleId="ProposalSectionEditByUniversityResearchDirector-Rule34">
+	<Rule Effect="Permit" RuleId="ProposalSectionEditByUniversityResearchDirector-Rule34">
 		<Description>"University Research Director" can edit
 			"Certification/Signatures" and "OSP Section"
 			when
@@ -6742,8 +6745,7 @@
 		</Target>
 	</Rule>
 
-	<Rule Effect="Deny"
-		RuleId="ProposalSectionNotEditByUniversityResearchDirector-Rule35">
+	<Rule Effect="Deny" RuleId="ProposalSectionNotEditByUniversityResearchDirector-Rule35">
 		<Description>"University Research Administrator" cannot "Edit"
 			"Investigator Information", "Project Information", "Sponsor and
 			Budget Information", "Cost Share Information", "University
@@ -7148,8 +7150,7 @@
 		</Target>
 	</Rule>
 
-	<Rule Effect="Permit"
-		RuleId="SubmitProposalByUniversityResearchAdministrator-Rule37">
+	<Rule Effect="Permit" RuleId="SubmitProposalByUniversityResearchAdministrator-Rule37">
 		<Description>"University Research Administrator" can "Submit" a "Whole
 			Proposal"
 			when SubmittedByUniversityResearchAdministrator = NOTSUBMITTED and
@@ -7612,8 +7613,7 @@
 		</Target>
 	</Rule>
 
-	<Rule Effect="Permit"
-		RuleId="ApproveProposalByUniversityResearchAdministrator-Rule48">
+	<Rule Effect="Permit" RuleId="ApproveProposalByUniversityResearchAdministrator-Rule48">
 		<Description>"University Research Administrator" can "Approve" a
 			"Whole Proposal"
 			when ApprovedByUniversityResearchAdministrator = READYFORAPPROVAL
@@ -7654,8 +7654,7 @@
 		</Target>
 	</Rule>
 
-	<Rule Effect="Permit"
-		RuleId="DisapproveProposalByUniversityResearchAdministrator-Rule49">
+	<Rule Effect="Permit" RuleId="DisapproveProposalByUniversityResearchAdministrator-Rule49">
 		<Description>"University Research Administrator" can "Disapprove" a
 			"Whole Proposal"
 			when ApprovedByUniversityResearchAdministrator = READYFORAPPROVAL
@@ -7696,8 +7695,7 @@
 		</Target>
 	</Rule>
 
-	<Rule Effect="Permit"
-		RuleId="WithdrawProposalByUniversityResearchAdministrator-Rule50">
+	<Rule Effect="Permit" RuleId="WithdrawProposalByUniversityResearchAdministrator-Rule50">
 		<Description>"University Research Administrator" can "Withdraw" a
 			"Whole Proposal"
 			when ApprovedByUniversityResearchAdministrator = READYFORAPPROVAL and
@@ -7787,8 +7785,7 @@
 		</Target>
 	</Rule>
 
-	<Rule Effect="Permit"
-		RuleId="DisapproveProposalByUniversityResearchDirector-Rule52">
+	<Rule Effect="Permit" RuleId="DisapproveProposalByUniversityResearchDirector-Rule52">
 		<Description>"University Research Director" can "Disapprove" a "Whole
 			Proposal"
 			when ApproveByUniversityResearchDirector = READYFORAPPROVAL
@@ -7926,4 +7923,5 @@
 			</AnyOf>
 		</Target>
 	</Rule>
+	
 </Policy>

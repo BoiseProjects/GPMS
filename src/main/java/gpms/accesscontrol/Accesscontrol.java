@@ -1,6 +1,7 @@
 package gpms.accesscontrol;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -220,7 +221,6 @@ public class Accesscontrol {
 		while (it.hasNext()) {
 			ar = it.next();
 			intDecision = ar.getDecision();
-			List<ObligationResult> obligationList = ar.getObligations();
 			if (intDecision >= 4 && intDecision <= 6) {
 				intDecision = 2;
 			}
@@ -296,6 +296,11 @@ public class Accesscontrol {
 		while (it.hasNext()) {
 			ar = it.next();
 			intDecision = ar.getDecision();
+
+			List<ObligationResult> obligations = ar.getObligations();
+
+			System.out.println("Obligations = " + obligations.get(0));
+
 			if (intDecision >= 4 && intDecision <= 6) {
 				intDecision = 2;
 			}
