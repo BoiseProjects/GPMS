@@ -299,7 +299,7 @@ public class Accesscontrol {
 
 			List<ObligationResult> obligations = ar.getObligations();
 
-			System.out.println("Obligations = " + obligations.get(0));
+			System.out.println("Obligations = " + obligations);
 
 			if (intDecision >= 4 && intDecision <= 6) {
 				intDecision = 2;
