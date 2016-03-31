@@ -2389,7 +2389,7 @@
 	</Rule>
 
 	<Rule Effect="Deny" RuleId="ProposalSectionNotEditBySeniorPersonnel-Rule17">
-		<Description>"Senior Personnel" cann't "Edit" "Investigator
+		<Description>"Senior Personnel" cannot "Edit" "Investigator
 			Information", "Project Information", "Sponsor and Budget
 			Information", "Cost Share Information", "University Commitments",
 			"Conflict of Interest and Commitment Information", "Compliance
@@ -3055,7 +3055,7 @@
 	</Rule>
 
 	<Rule Effect="Deny" RuleId="ProposalSectionNotEditByDepartmentChair-Rule20">
-		<Description>"Department Chair" cann't "Edit" "Investigator
+		<Description>"Department Chair" cannot "Edit" "Investigator
 			Information", "Project Information", "Sponsor and Budget
 			Information", "Cost Share Information", "University Commitments",
 			"Conflict of Interest and Commitment Information", "Compliance
@@ -3817,7 +3817,7 @@
 	</Rule>
 
 	<Rule Effect="Deny" RuleId="ProposalSectionNotEditByBusinessManager-Rule23">
-		<Description>"Business Manager" cann't "Edit" "Investigator
+		<Description>"Business Manager" cannot "Edit" "Investigator
 			Information", "Project Information", "Cost Share Information",
 			"University Commitments", "Conflict of Interest and Commitment
 			Information", "Compliance Information", "Additional Information",
@@ -4516,7 +4516,7 @@
 	</Rule>
 
 	<Rule Effect="Deny" RuleId="ProposalSectionNotEditByDean-Rule26">
-		<Description>"Dean" cann't "Edit" "Investigator Information", "Project
+		<Description>"Dean" cannot "Edit" "Investigator Information", "Project
 			Information", "Sponsor and Budget Information", "Cost Share
 			Information", "University Commitments", "Conflict of Interest and
 			Commitment Information", "Compliance Information", "Additional
@@ -5244,7 +5244,7 @@
 	</Rule>
 
 	<Rule Effect="Deny" RuleId="ProposalSectionNotEditByIRB-Rule29">
-		<Description>"IRB" cann't "Edit" "Investigator Information", "Project
+		<Description>"IRB" cannot "Edit" "Investigator Information", "Project
 			Information", "Sponsor and Budget Information", "Cost Share
 			Information", "University Commitments", "Conflict of Interest and
 			Commitment Information", "Compliance Information", "Additional
@@ -6314,7 +6314,7 @@
 
 	<Rule Effect="Deny"
 		RuleId="ProposalSectionNotEditByUniversityResearchAdministrator-Rule32">
-		<Description>"University Research Administrator" cann't edit
+		<Description>"University Research Administrator" cannot edit
 			Appendices
 			when ApprovedByUniversityResearchAdministrator = READYFORAPPROVAL
 		</Description>
@@ -6651,8 +6651,7 @@
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Appendices
-						</AttributeValue>
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Appendices</AttributeValue>
 						<AttributeDesignator
 							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:proposal.section"
 							Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource"
@@ -6745,7 +6744,7 @@
 
 	<Rule Effect="Deny"
 		RuleId="ProposalSectionNotEditByUniversityResearchDirector-Rule35">
-		<Description>"University Research Administrator" cann't "Edit"
+		<Description>"University Research Administrator" cannot "Edit"
 			"Investigator Information", "Project Information", "Sponsor and
 			Budget Information", "Cost Share Information", "University
 			Commitments", "Conflict of Interest and Commitment Information",
@@ -7275,8 +7274,7 @@
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">NOTDELETED
-						</AttributeValue>
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">NOTDELETED</AttributeValue>
 						<AttributeDesignator
 							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:DeletedByPI"
 							Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource"
