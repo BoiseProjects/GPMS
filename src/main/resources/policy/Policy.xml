@@ -466,7 +466,7 @@
 	</Rule>
 	
 	<Rule Effect="Permit" RuleId="AuditLogViewByPI-Rule4">
-		<Description> "PI" can "View" proposal "Audit Log"; </Description>
+		<Description> "PI" can "View" proposal "Audit Log"</Description>
 		<Target>
 			<AnyOf>
 				<AllOf>
@@ -499,7 +499,7 @@
 	<Rule Effect="Permit" RuleId="ProposalSectionCanEditByPI-Rule5">
 		<Description>"PI" can "Edit" "Investigator Information", "InvestigatorInformation.PI", "InvestigatorInformation.Co-PI", "InvestigatorInformation.Senior-Personnel", "Project Information","Sponsor and Budget Information", "Cost Share Information", "University Commitments", "Conflict of Interest and Commitment Information", "Compliance Information",
 		"Additional Information", "Collaboration Information", "Proprietary/Confidential Information", "Certification/Signatures", "Appendices"
-			when SubmittedByPI is NOTSUBMITTED;</Description>
+			when SubmittedByPI is NOTSUBMITTED</Description>
 		<Target>
 			<AnyOf>
 				<AllOf>
@@ -867,7 +867,7 @@
 	</Rule>
 	
 	<Rule Effect="Deny" RuleId="OSPSectionCannotEditByPI-Rule6">
-		<Description>"PI" can not "Edit" "OSP Section";</Description>
+		<Description>"PI" can not "Edit" "OSP Section"</Description>
 		<Target>
 			<AnyOf>
 				<AllOf>
@@ -905,7 +905,7 @@
 	</Rule>
 	
 	<Rule Effect="Permit" RuleId="CoPIAndSeniorPersonnelAddByPI-Rule7">
-		<Description>"PI" can "Add" "InvestigatorInformation.Co-PI" and "InvestigatorInformation.Senior-Personnel" Only;</Description>
+		<Description>"PI" can "Add" "InvestigatorInformation.Co-PI" and "InvestigatorInformation.Senior-Personnel" Only</Description>
 		<Target>
 			<AnyOf>
 				<AllOf>
@@ -973,7 +973,7 @@
 	</Rule>
 	
 	<Rule Effect="Permit" RuleId="CoPIAndSeniorPersonnelDeleteByPI-Rule8">
-		<Description>"PI" can "Delete" both "InvestigatorInformation.Co-PI" and "InvestigatorInformation.Senior-Personnel";</Description>
+		<Description>"PI" can "Delete" both "InvestigatorInformation.Co-PI" and "InvestigatorInformation.Senior-Personnel"</Description>
 		<Target>
 			<AnyOf>
 				<AllOf>
@@ -1348,7 +1348,7 @@
 	</Rule>
 
 	<Rule Effect="Permit" RuleId="ProposalSectionCanEditByCoPI-Rule10">
-		<Description>"Co-PI" can "Edit" "Investigator Information", "Appendices" and "Certification/Signatures" Only;</Description>
+		<Description>"Co-PI" can "Edit" "Investigator Information", "Appendices" and "Certification/Signatures" Only</Description>
 		<Target>
 			<AnyOf>
 				<AllOf>
@@ -1470,10 +1470,10 @@
 	
 	<Rule Effect="Deny" RuleId="SomeProposalSectionCannotEditByCoPI-Rule11">
 		<Description>"Co-PI" can not "Edit" "Project Information","Sponsor and Budget Information", "Cost Share Information", "University Commitments", "Conflict of Interest and Commitment Information", "Compliance Information", "Additional Information", "Collaboration Information", "Proprietary/Confidential Information","OSP Section" 
-			when SubmittedByPI is NOTSUBMITTED and ReadyForSubmissionByPI is false;</Description>
+			when SubmittedByPI is NOTSUBMITTED and ReadyForSubmissionByPI is False</Description>
 		<Target>
 			<AnyOf>
-			   	<AllOf>
+			  	<AllOf>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Co-PI</AttributeValue>
 						<AttributeDesignator
@@ -1857,7 +1857,7 @@
 	</Rule>
 	
 	<Rule Effect="Permit" RuleId="SeniorPersonnelAddByCoPI-Rule12">
-		<Description>"Co-PI" can "Add" Only "InvestigatorInformation.Senior-Personnel";</Description>
+		<Description>"Co-PI" can "Add" Only "InvestigatorInformation.Senior-Personnel"</Description>
 		<Target>
 			<AnyOf>
 				<AllOf>
@@ -1903,7 +1903,7 @@
 	</Rule>
 	
 	<Rule Effect="Permit" RuleId="SeniorPersonnelDeleteByCoPI-Rule13">
-		<Description> "Co-PI" can "Delete" "InvestigatorInformation.Senior-Personnel" Only;</Description>
+		<Description> "Co-PI" can "Delete" "InvestigatorInformation.Senior-Personnel" Only</Description>
 		<Target>
 			<AnyOf>
 				<AllOf>
@@ -1948,7 +1948,7 @@
 	</Rule>
 	
 	<Rule Effect="Deny" RuleId="CoPICannotAddByCoPI-Rule14">
-		<Description>"Co-PI" cannot "Add" "InvestigatorInformation.Co-PI";</Description>
+		<Description>"Co-PI" cannot "Add" "InvestigatorInformation.Co-PI"</Description>
 		<Target>
 			<AnyOf>
 				<AllOf>
@@ -1994,7 +1994,7 @@
 	</Rule>
 	
 	<Rule Effect="Deny" RuleId="CoPICannotDeleteByCoPI-Rule15">
-		<Description>"Co-PI" cannot "Delete" "InvestigatorInformation.Co-PI";</Description>
+		<Description>"Co-PI" cannot "Delete" "InvestigatorInformation.Co-PI"</Description>
 		<Target>
 			<AnyOf>
 				<AllOf>
@@ -2040,7 +2040,7 @@
 	</Rule>
 
 	<Rule Effect="Permit" RuleId="ProposalSectionViewBySeniorPersonnel-Rule16">
-		<Description>"Senior Personnel" can "View" "Investigator Information", "Project Information", "Sponsor and Budget Information", "Cost Share Information", "University Commitments", "Conflict of Interest and Commitment Information", "Compliance Information", "Additional Information", "Collaboration Information", "Proprietary/Confidential Information", "Certification/Signatures", "OSP Section", "Appendices" Section;</Description>
+		<Description>"Senior Personnel" can "View" "Investigator Information", "Project Information", "Sponsor and Budget Information", "Cost Share Information", "University Commitments", "Conflict of Interest and Commitment Information", "Compliance Information", "Additional Information", "Collaboration Information", "Proprietary/Confidential Information", "Certification/Signatures", "OSP Section", "Appendices" Section</Description>
 		<Target>
 			<AnyOf>
 				<AllOf>
@@ -2347,7 +2347,7 @@
 	</Rule>
 	
 	<Rule Effect="Deny" RuleId="ProposalSectionNotEditBySeniorPersonnel-Rule17">
-		<Description>"Senior Personnel" cann't "Edit" "Investigator Information", "Project Information", "Sponsor and Budget Information", "Cost Share Information", "University Commitments", "Conflict of Interest and Commitment Information", "Compliance Information", "Additional Information", "Collaboration Information", "Proprietary/Confidential Information", "Certification/Signatures", "OSP Section", "Appendices" Section;</Description>
+		<Description>"Senior Personnel" cann't "Edit" "Investigator Information", "Project Information", "Sponsor and Budget Information", "Cost Share Information", "University Commitments", "Conflict of Interest and Commitment Information", "Compliance Information", "Additional Information", "Collaboration Information", "Proprietary/Confidential Information", "Certification/Signatures", "OSP Section", "Appendices" Section</Description>
 		<Target>
 			<AnyOf>
 				<AllOf>
@@ -2654,7 +2654,7 @@
 	</Rule>
 	
 	<Rule Effect="Permit" RuleId="ProposalSectionViewByDepartmentChair-Rule18">
-		<Description>"Department Chair" can "View" "Investigator Information", "Project Information", "Sponsor and Budget Information", "Cost Share Information", "University Commitments", "Conflict of Interest and Commitment Information", "Compliance Information", "Additional Information", "Collaboration Information", "Proprietary/Confidential Information", "Certification/Signatures", "OSP Section", "Appendices" section;</Description>
+		<Description>"Department Chair" can "View" "Investigator Information", "Project Information", "Sponsor and Budget Information", "Cost Share Information", "University Commitments", "Conflict of Interest and Commitment Information", "Compliance Information", "Additional Information", "Collaboration Information", "Proprietary/Confidential Information", "Certification/Signatures", "OSP Section", "Appendices" Section</Description>
 		<Target>
 			<AnyOf>
 				<AllOf>
@@ -2961,44 +2961,43 @@
 	</Rule>
 
 	<Rule Effect="Permit" RuleId="ProposalSectionEditByDepartmentChair-Rule19">
-		<Description>"Department Chair" can  "Edit" "Certification/Signatures" 
-			when ApprovedByDepartmentChair= READYFORAPPROVAL 
-		</Description>
+		<Description>"Department Chair" can "Edit" "Certification/Signatures" 
+			when ApprovedByDepartmentChair = READYFORAPPROVAL</Description>
 		<Target>
-		  <AnyOf>
-		   <AllOf>
-	              <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Department Chair</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
-				   <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Certification/Signatures</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:proposal.section" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
-	               <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDepartmentChair" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
-				   <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action"
-	                   Category="urn:oasis:names:tc:xacml:1.0:attribute-category:action" 
-	                   DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	          		</Match>
+		 <AnyOf>
+		  <AllOf>
+	       <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Department Chair</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title" 
+	         Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
+				  <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Certification/Signatures</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:proposal.section" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
+	        <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDepartmentChair" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
+				  <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action"
+	          Category="urn:oasis:names:tc:xacml:1.0:attribute-category:action" 
+	          DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	     		</Match>
 				</AllOf>
-		  </AnyOf>
+		 </AnyOf>
 		</Target>
 	</Rule>
 	
 	<Rule Effect="Deny" RuleId="ProposalSectionNotEditByDepartmentChair-Rule20">
-		<Description>"Department Chair" cann't "Edit" "Investigator Information", "Project Information", "Sponsor and Budget Information", "Cost Share Information", "University Commitments", "Conflict of Interest and Commitment Information", "Compliance Information", "Additional Information", "Collaboration Information", "Proprietary/Confidential Information", "OSP Section", "Appendices" Section
-		ApprovedByDepartmentChair= READYFORAPPROVAL;</Description>
+		<Description>"Department Chair" cann't "Edit" "Investigator Information", "Project Information", "Sponsor and Budget Information", "Cost Share Information", "University Commitments", "Conflict of Interest and Commitment Information", "Compliance Information", "Additional Information", "Collaboration Information", "Proprietary/Confidential Information", "OSP Section", "Appendices" Section 
+			when ApprovedByDepartmentChair = READYFORAPPROVAL</Description>
 		<Target>
 			<AnyOf>
 				<AllOf>
@@ -3017,11 +3016,11 @@
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDepartmentChair" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDepartmentChair" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 						<AttributeDesignator
@@ -3046,11 +3045,11 @@
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDepartmentChair" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDepartmentChair" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 						<AttributeDesignator
@@ -3075,11 +3074,11 @@
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDepartmentChair" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDepartmentChair" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 						<AttributeDesignator
@@ -3104,11 +3103,11 @@
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDepartmentChair" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDepartmentChair" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 						<AttributeDesignator
@@ -3133,11 +3132,11 @@
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDepartmentChair" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDepartmentChair" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 						<AttributeDesignator
@@ -3162,11 +3161,11 @@
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDepartmentChair" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDepartmentChair" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 						<AttributeDesignator
@@ -3191,11 +3190,11 @@
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDepartmentChair" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDepartmentChair" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 						<AttributeDesignator
@@ -3220,11 +3219,11 @@
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDepartmentChair" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDepartmentChair" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 						<AttributeDesignator
@@ -3249,11 +3248,11 @@
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDepartmentChair" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDepartmentChair" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 						<AttributeDesignator
@@ -3278,11 +3277,11 @@
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDepartmentChair" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDepartmentChair" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 						<AttributeDesignator
@@ -3308,11 +3307,11 @@
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDepartmentChair" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDepartmentChair" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 						<AttributeDesignator
@@ -3337,11 +3336,11 @@
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDepartmentChair" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDepartmentChair" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 						<AttributeDesignator
@@ -3355,7 +3354,7 @@
 	</Rule>
 	
 	<Rule Effect="Permit" RuleId="ProposalSectionViewByBusinessManager-Rule21">
-		<Description>"Business Manager" can "View" "Investigator Information", "Project Information", "Sponsor and Budget Information", "Cost Share Information", "University Commitments", "Conflict of Interest and Commitment Information", "Compliance Information", "Additional Information", "Collaboration Information", "Proprietary/Confidential Information", "Certification/Signatures", "OSP Section", "Appendices" section;</Description>
+		<Description>"Business Manager" can "View" "Investigator Information", "Project Information", "Sponsor and Budget Information", "Cost Share Information", "University Commitments", "Conflict of Interest and Commitment Information", "Compliance Information", "Additional Information", "Collaboration Information", "Proprietary/Confidential Information", "Certification/Signatures", "OSP Section", "Appendices" Section</Description>
 		<Target>
 			<AnyOf>
 				<AllOf>
@@ -3662,70 +3661,69 @@
 	</Rule>
 	
 	<Rule Effect="Permit" RuleId="ProposalSectionEditByBusinessManager-Rule22">
-		<Description>"Business Manager" can  "Edit" "Sponsor and Budget Information" and "Certification/Signatures"
-		when ApprovedByBusinessManager= READYFORAPPROVAL  
-		</Description>
+		<Description>"Business Manager" can "Edit" "Sponsor and Budget Information" and "Certification/Signatures"
+			when ApprovedByBusinessManager = READYFORAPPROVAL</Description>
 		<Target>
-		  <AnyOf>
-		  		<AllOf>
-	              <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Business Manager</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
-				   <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Sponsor and Budget Information</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:proposal.section" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
-	               <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByBusinessManager" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
-				   <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action"
-	                   Category="urn:oasis:names:tc:xacml:1.0:attribute-category:action" 
-	                   DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	          		</Match>
+		 <AnyOf>
+		 		<AllOf>
+	       <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Business Manager</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title" 
+	         Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
+				  <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Sponsor and Budget Information</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:proposal.section" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
+	        <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByBusinessManager" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
+				  <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action"
+	          Category="urn:oasis:names:tc:xacml:1.0:attribute-category:action" 
+	          DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	     		</Match>
 				</AllOf>
-		        <AllOf>
-	              <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Business Manager</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
-				   <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Certification/Signatures</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:proposal.section" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
-	               <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByBusinessManager" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
-				   <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action"
-	                   Category="urn:oasis:names:tc:xacml:1.0:attribute-category:action" 
-	                   DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	          		</Match>
+		    <AllOf>
+	       <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Business Manager</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title" 
+	         Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
+				  <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Certification/Signatures</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:proposal.section" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
+	        <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByBusinessManager" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
+				  <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action"
+	          Category="urn:oasis:names:tc:xacml:1.0:attribute-category:action" 
+	          DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	     		</Match>
 				</AllOf>
-		   </AnyOf>
+		  </AnyOf>
 		 </Target>
 	</Rule>
 	
 	<Rule Effect="Deny" RuleId="ProposalSectionNotEditByBusinessManager-Rule23">
 		<Description>"Business Manager" cann't "Edit" "Investigator Information", "Project Information", "Cost Share Information", "University Commitments", "Conflict of Interest and Commitment Information", "Compliance Information", "Additional Information", "Collaboration Information", "Proprietary/Confidential Information", "OSP Section", "Appendices" Section 
-			when ApprovedByBusinessManager= READYFORAPPROVAL;</Description>
+			when ApprovedByBusinessManager = READYFORAPPROVAL</Description>
 		<Target>
 			<AnyOf>
 				<AllOf>
@@ -3744,11 +3742,11 @@
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByBusinessManager" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByBusinessManager" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 						<AttributeDesignator
@@ -3773,11 +3771,11 @@
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByBusinessManager" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByBusinessManager" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 						<AttributeDesignator
@@ -3802,11 +3800,11 @@
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByBusinessManager" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByBusinessManager" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 						<AttributeDesignator
@@ -3831,11 +3829,11 @@
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByBusinessManager" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByBusinessManager" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 						<AttributeDesignator
@@ -3860,11 +3858,11 @@
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByBusinessManager" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByBusinessManager" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 						<AttributeDesignator
@@ -3889,11 +3887,11 @@
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByBusinessManager" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByBusinessManager" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 						<AttributeDesignator
@@ -3918,11 +3916,11 @@
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByBusinessManager" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByBusinessManager" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 						<AttributeDesignator
@@ -3947,11 +3945,11 @@
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByBusinessManager" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByBusinessManager" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 						<AttributeDesignator
@@ -3976,11 +3974,11 @@
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByBusinessManager" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByBusinessManager" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 						<AttributeDesignator
@@ -4005,11 +4003,11 @@
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByBusinessManager" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByBusinessManager" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 						<AttributeDesignator
@@ -4034,11 +4032,11 @@
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByBusinessManager" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByBusinessManager" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 						<AttributeDesignator
@@ -4052,7 +4050,7 @@
 	</Rule>
 	
 	<Rule Effect="Permit" RuleId="ProposalSectionViewByDean-Rule24">
-		<Description>"Dean" can "View" "Investigator Information", "Project Information", "Sponsor and Budget Information", "Cost Share Information", "University Commitments", "Conflict of Interest and Commitment Information", "Compliance Information", "Additional Information", "Collaboration Information", "Proprietary/Confidential Information", "Certification/Signatures", "OSP Section", "Appendices" section;</Description>
+		<Description>"Dean" can "View" "Investigator Information", "Project Information", "Sponsor and Budget Information", "Cost Share Information", "University Commitments", "Conflict of Interest and Commitment Information", "Compliance Information", "Additional Information", "Collaboration Information", "Proprietary/Confidential Information", "Certification/Signatures", "OSP Section", "Appendices" Section</Description>
 		<Target>
 			<AnyOf>
 				<AllOf>
@@ -4359,44 +4357,43 @@
 	</Rule>
 	
 	<Rule Effect="Permit" RuleId="ProposalSectionEditByDean-Rule25">
-		<Description>"Dean" can  "Edit"  and "Certification/Signatures"
-		when ApprovedByDean= READYFORAPPROVAL
-		</Description>
+		<Description>"Dean" can "Edit" and "Certification/Signatures"
+			when ApprovedByDean = READYFORAPPROVAL</Description>
 		<Target>
-		  <AnyOf>
-		   <AllOf>
-	              <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Dean</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
-				   <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Certification/Signatures</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:proposal.section" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
-	               <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDean" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
-				   <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action"
-	                   Category="urn:oasis:names:tc:xacml:1.0:attribute-category:action" 
-	                   DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	          		</Match>
+		 <AnyOf>
+		  <AllOf>
+	       <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Dean</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title" 
+	         Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
+				  <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Certification/Signatures</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:proposal.section" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
+	        <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDean" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
+				  <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action"
+	          Category="urn:oasis:names:tc:xacml:1.0:attribute-category:action" 
+	          DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	     		</Match>
 				</AllOf>
-		  </AnyOf>
+		 </AnyOf>
 		</Target>
 	</Rule>
 	
 	<Rule Effect="Deny" RuleId="ProposalSectionNotEditByDean-Rule26">
-		<Description>"Dean" cann't "Edit" "Investigator Information", "Project Information", "Sponsor and Budget Information", "Cost Share Information", "University Commitments", "Conflict of Interest and Commitment Information", "Compliance Information", "Additional Information", "Collaboration Information", "Proprietary/Confidential Information", "OSP Section", "Appendices" Section when
-		ApprovedByDean= READYFORAPPROVAL;</Description>
+		<Description>"Dean" cann't "Edit" "Investigator Information", "Project Information", "Sponsor and Budget Information", "Cost Share Information", "University Commitments", "Conflict of Interest and Commitment Information", "Compliance Information", "Additional Information", "Collaboration Information", "Proprietary/Confidential Information", "OSP Section", "Appendices" Section 
+			when ApprovedByDean = READYFORAPPROVAL</Description>
 		<Target>
 			<AnyOf>
 				<AllOf>
@@ -4415,11 +4412,11 @@
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDean" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDean" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 						<AttributeDesignator
@@ -4444,11 +4441,11 @@
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDean" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDean" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 						<AttributeDesignator
@@ -4473,11 +4470,11 @@
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDean" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDean" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 						<AttributeDesignator
@@ -4502,11 +4499,11 @@
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDean" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDean" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 						<AttributeDesignator
@@ -4531,11 +4528,11 @@
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDean" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDean" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 						<AttributeDesignator
@@ -4560,11 +4557,11 @@
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDean" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDean" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 						<AttributeDesignator
@@ -4589,11 +4586,11 @@
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDean" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDean" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 						<AttributeDesignator
@@ -4618,11 +4615,11 @@
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDean" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDean" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 						<AttributeDesignator
@@ -4647,11 +4644,11 @@
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDean" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDean" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 						<AttributeDesignator
@@ -4676,11 +4673,11 @@
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDean" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDean" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 						<AttributeDesignator
@@ -4705,11 +4702,11 @@
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDean" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDean" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 						<AttributeDesignator
@@ -4734,11 +4731,11 @@
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDean" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDean" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 						<AttributeDesignator
@@ -4752,7 +4749,7 @@
 	</Rule>
 	
 	<Rule Effect="Permit" RuleId="ProposalSectionViewByIRB-Rule27">
-		<Description>"IRB" can "View" "Investigator Information", "Project Information", "Sponsor and Budget Information", "Cost Share Information", "University Commitments", "Conflict of Interest and Commitment Information", "Compliance Information", "Additional Information", "Collaboration Information", "Proprietary/Confidential Information", "Certification/Signatures", "OSP Section", "Appendices" section;</Description>
+		<Description>"IRB" can "View" "Investigator Information", "Project Information", "Sponsor and Budget Information", "Cost Share Information", "University Commitments", "Conflict of Interest and Commitment Information", "Compliance Information", "Additional Information", "Collaboration Information", "Proprietary/Confidential Information", "Certification/Signatures", "OSP Section", "Appendices" Section</Description>
 		<Target>
 			<AnyOf>
 				<AllOf>
@@ -5059,42 +5056,43 @@
 	</Rule>
 	
 	<Rule Effect="Permit" RuleId="ProposalSectionEditByIRB-Rule28">
-		<Description>"IRB" can "Edit" and "Certification/Signatures" when ApprovedByIRB= READYFORAPPROVAL</Description>
+		<Description>"IRB" can "Edit" and "Certification/Signatures" 
+			when ApprovedByIRB = READYFORAPPROVAL</Description>
 		<Target>
-		  <AnyOf>		 
-		   <AllOf>
-	              <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">IRB</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
-				   <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Certification/Signatures</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:proposal.section" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
-	               <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByIRB" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
-				   <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action"
-	                   Category="urn:oasis:names:tc:xacml:1.0:attribute-category:action" 
-	                   DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	          		</Match>
+		 <AnyOf>		 
+		  <AllOf>
+	       <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">IRB</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title" 
+	         Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
+				  <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Certification/Signatures</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:proposal.section" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
+	        <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByIRB" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
+				  <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action"
+	          Category="urn:oasis:names:tc:xacml:1.0:attribute-category:action" 
+	          DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	     		</Match>
 				</AllOf>
-		  </AnyOf>
-	   </Target>
+		 </AnyOf>
+	  </Target>
 	</Rule>
 	
 	<Rule Effect="Deny" RuleId="ProposalSectionNotEditByIRB-Rule29">
 		<Description>"IRB" cann't "Edit" "Investigator Information", "Project Information", "Sponsor and Budget Information", "Cost Share Information", "University Commitments", "Conflict of Interest and Commitment Information", "Compliance Information", "Additional Information", "Collaboration Information", "Proprietary/Confidential Information", "OSP Section", "Appendices" Section
-		when ApprovedByIRB= READYFORAPPROVAL;</Description>
+			when ApprovedByIRB = READYFORAPPROVAL</Description>
 		<Target>
 			<AnyOf>
 				<AllOf>
@@ -5113,11 +5111,11 @@
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByIRB" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByIRB" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 						<AttributeDesignator
@@ -5142,11 +5140,11 @@
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByIRB" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByIRB" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 						<AttributeDesignator
@@ -5171,11 +5169,11 @@
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByIRB" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByIRB" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 						<AttributeDesignator
@@ -5200,11 +5198,11 @@
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByIRB" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByIRB" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 						<AttributeDesignator
@@ -5229,11 +5227,11 @@
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByIRB" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByIRB" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 						<AttributeDesignator
@@ -5258,11 +5256,11 @@
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByIRB" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByIRB" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 						<AttributeDesignator
@@ -5287,11 +5285,11 @@
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByIRB" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByIRB" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 						<AttributeDesignator
@@ -5316,11 +5314,11 @@
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByIRB" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByIRB" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 						<AttributeDesignator
@@ -5345,11 +5343,11 @@
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByIRB" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByIRB" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 						<AttributeDesignator
@@ -5374,11 +5372,11 @@
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByIRB" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByIRB" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 						<AttributeDesignator
@@ -5403,11 +5401,11 @@
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByIRB" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByIRB" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 						<AttributeDesignator
@@ -5432,11 +5430,11 @@
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByIRB" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByIRB" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 						<AttributeDesignator
@@ -5450,7 +5448,7 @@
 	</Rule>
 	
 	<Rule Effect="Permit" RuleId="ProposalSectionViewByUniversityResearchAdministrator-Rule30">
-		<Description>"University Research Administrator" can "View" "Investigator Information", "Project Information", "Sponsor and Budget Information", "Cost Share Information", "University Commitments", "Conflict of Interest and Commitment Information", "Compliance Information", "Additional Information", "Collaboration Information", "Proprietary/Confidential Information", "Certification/Signatures", "OSP Section", "Appendices" section;</Description>
+		<Description>"University Research Administrator" can "View" "Investigator Information", "Project Information", "Sponsor and Budget Information", "Cost Share Information", "University Commitments", "Conflict of Interest and Commitment Information", "Compliance Information", "Additional Information", "Collaboration Information", "Proprietary/Confidential Information", "Certification/Signatures", "OSP Section", "Appendices" Section</Description>
 		<Target>
 			<AnyOf>
 				<AllOf>
@@ -5758,7 +5756,7 @@
 	
 	<Rule Effect="Permit" RuleId="ProposalSectionEditByUniversityResearchAdministrator-Rule31">
 		<Description>"University Research Administrator" can "Edit" "Investigator Information", "Project Information", "Sponsor and Budget Information", "Cost Share Information", "University Commitments", "Conflict of Interest and Commitment Information", "Compliance Information", "Additional Information", "Collaboration Information", "Proprietary/Confidential Information", "OSP Section", "Certification/Signatures" Section
-		when ApprovedByUniversityResearchAdministrator= READYFORAPPROVAL;</Description>
+			when ApprovedByUniversityResearchAdministrator = READYFORAPPROVAL</Description>
 		<Target>
 			<AnyOf>
 				<AllOf>
@@ -5777,11 +5775,11 @@
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByUniversityResearchAdministrator" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByUniversityResearchAdministrator" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 						<AttributeDesignator
@@ -5806,11 +5804,11 @@
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByUniversityResearchAdministrator" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByUniversityResearchAdministrator" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 						<AttributeDesignator
@@ -5835,11 +5833,11 @@
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByUniversityResearchAdministrator" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByUniversityResearchAdministrator" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 						<AttributeDesignator
@@ -5864,11 +5862,11 @@
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByUniversityResearchAdministrator" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByUniversityResearchAdministrator" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 						<AttributeDesignator
@@ -5893,11 +5891,11 @@
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByUniversityResearchAdministrator" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByUniversityResearchAdministrator" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 						<AttributeDesignator
@@ -5922,11 +5920,11 @@
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByUniversityResearchAdministrator" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByUniversityResearchAdministrator" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 						<AttributeDesignator
@@ -5951,11 +5949,11 @@
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByUniversityResearchAdministrator" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByUniversityResearchAdministrator" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 						<AttributeDesignator
@@ -5980,11 +5978,11 @@
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByUniversityResearchAdministrator" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByUniversityResearchAdministrator" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 						<AttributeDesignator
@@ -6009,11 +6007,11 @@
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByUniversityResearchAdministrator" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByUniversityResearchAdministrator" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 						<AttributeDesignator
@@ -6038,11 +6036,11 @@
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByUniversityResearchAdministrator" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByUniversityResearchAdministrator" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 						<AttributeDesignator
@@ -6067,11 +6065,11 @@
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByUniversityResearchAdministrator" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByUniversityResearchAdministrator" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 						<AttributeDesignator
@@ -6096,11 +6094,11 @@
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByUniversityResearchAdministrator" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByUniversityResearchAdministrator" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 						<AttributeDesignator
@@ -6115,7 +6113,7 @@
 	
 	<Rule Effect="Deny" RuleId="ProposalSectionNotEditByUniversityResearchAdministrator-Rule32">
 		<Description>"University Research Administrator" cann't edit Appendices 
-		when ApprovedByUniversityResearchAdministrator= READYFORAPPROVAL;</Description>
+			when ApprovedByUniversityResearchAdministrator = READYFORAPPROVAL</Description>
 		<Target>
 			<AnyOf>
 				<AllOf>
@@ -6134,11 +6132,11 @@
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByUniversityResearchAdministrator" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByUniversityResearchAdministrator" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 						<AttributeDesignator
@@ -6147,12 +6145,12 @@
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 				</AllOf>
-		     </AnyOf>
-		   </Target>
+		   </AnyOf>
+		  </Target>
 	</Rule>
 
 	<Rule Effect="Permit" RuleId="ProposalSectionViewByUniversityResearchDirector-Rule33">
-		<Description>"University Research Administrator" can "View" "Investigator Information", "Project Information", "Sponsor and Budget Information", "Cost Share Information", "University Commitments", "Conflict of Interest and Commitment Information", "Compliance Information", "Additional Information", "Collaboration Information", "Proprietary/Confidential Information", "Certification/Signatures", "OSP Section", "Appendices" section;</Description>
+		<Description>"University Research Administrator" can "View" "Investigator Information", "Project Information", "Sponsor and Budget Information", "Cost Share Information", "University Commitments", "Conflict of Interest and Commitment Information", "Compliance Information", "Additional Information", "Collaboration Information", "Proprietary/Confidential Information", "Certification/Signatures", "OSP Section", "Appendices" Section</Description>
 		<Target>
 			<AnyOf>
 				<AllOf>
@@ -6459,8 +6457,8 @@
 	</Rule>
 	
 	<Rule Effect="Permit" RuleId="ProposalSectionEditByUniversityResearchDirector-Rule34">
-		<Description>"University Research Director" can edit "Certification/Signatures" and  "OSP Section"
-			when ApprovedByUniversityResearchDirector= READYFORAPPROVAL;</Description>
+		<Description>"University Research Director" can edit "Certification/Signatures" and "OSP Section"
+			when ApprovedByUniversityResearchDirector = READYFORAPPROVAL</Description>
 		<Target>
 			<AnyOf>
 				<AllOf>
@@ -6479,11 +6477,11 @@
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByUniversityResearchDirector" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByUniversityResearchDirector" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 						<AttributeDesignator
@@ -6508,11 +6506,11 @@
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByUniversityResearchDirector" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByUniversityResearchDirector" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 						<AttributeDesignator
@@ -6521,13 +6519,13 @@
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 				</AllOf>
-		     </AnyOf>
-		   </Target>
+		   </AnyOf>
+		  </Target>
 	</Rule>
 	
 	<Rule Effect="Deny" RuleId="ProposalSectionNotEditByUniversityResearchDirector-Rule35">
 		<Description>"University Research Administrator" cann't "Edit" "Investigator Information", "Project Information", "Sponsor and Budget Information", "Cost Share Information", "University Commitments", "Conflict of Interest and Commitment Information", "Compliance Information", "Additional Information", "Collaboration Information", "Proprietary/Confidential Information" "Appendices"Section
-			when ApprovedByUniversityResearchDirector= READYFORAPPROVAL;</Description>
+			when ApprovedByUniversityResearchDirector = READYFORAPPROVAL</Description>
 		<Target>
 			<AnyOf>
 				<AllOf>
@@ -6546,11 +6544,11 @@
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByUniversityResearchDirector" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByUniversityResearchDirector" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 						<AttributeDesignator
@@ -6575,11 +6573,11 @@
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByUniversityResearchDirector" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByUniversityResearchDirector" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 						<AttributeDesignator
@@ -6604,11 +6602,11 @@
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByUniversityResearchDirector" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByUniversityResearchDirector" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 						<AttributeDesignator
@@ -6633,11 +6631,11 @@
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByUniversityResearchDirector" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByUniversityResearchDirector" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 						<AttributeDesignator
@@ -6662,11 +6660,11 @@
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByUniversityResearchDirector" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByUniversityResearchDirector" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 						<AttributeDesignator
@@ -6691,11 +6689,11 @@
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByUniversityResearchDirector" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByUniversityResearchDirector" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 						<AttributeDesignator
@@ -6720,11 +6718,11 @@
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByUniversityResearchDirector" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByUniversityResearchDirector" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 						<AttributeDesignator
@@ -6749,11 +6747,11 @@
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByUniversityResearchDirector" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByUniversityResearchDirector" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 						<AttributeDesignator
@@ -6778,11 +6776,11 @@
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByUniversityResearchDirector" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByUniversityResearchDirector" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 						<AttributeDesignator
@@ -6807,11 +6805,11 @@
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByUniversityResearchDirector" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByUniversityResearchDirector" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 						<AttributeDesignator
@@ -6836,11 +6834,11 @@
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-	                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByUniversityResearchDirector" 
-	                  Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
-	                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-	               </Match>
+	         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+	         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByUniversityResearchDirector" 
+	         Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource" 
+	         DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+	        </Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
 						<AttributeDesignator
@@ -6856,7 +6854,8 @@
 	<!--Need to add UpdateExistingProposalByInvestigator-Rule30 : PI and Co-PI can Save/ Update the changes for existing Proposal-->
 
 	<Rule Effect="Permit" RuleId="SubmitProposalByPI-Rule36">
-		<Description>"PI" can "Submit" a "Whole Proposal" when SubmittedByPI = NOTSUBMITTED and ReadyForSubmissionByPI = True and DeletedByPI = NOTDELETED;</Description>
+		<Description>"PI" can "Submit" a "Whole Proposal" 
+			when SubmittedByPI = NOTSUBMITTED and ReadyForSubmissionByPI = True and DeletedByPI = NOTDELETED</Description>
 		<Target>
 			<AnyOf>
 				<AllOf>
@@ -6908,7 +6907,8 @@
 	</Rule>
 	
 	<Rule Effect="Permit" RuleId="SubmitProposalByUniversityResearchAdministrator-Rule37">
-		<Description>"University Research Administrator" can "Submit" a "Whole Proposal" when SubmittedByUniversityResearchAdministrator = NOTSUBMITTED and ApprovedByUniversityResearchDirector=APPROVED;</Description>
+		<Description>"University Research Administrator" can "Submit" a "Whole Proposal" 
+			when SubmittedByUniversityResearchAdministrator = NOTSUBMITTED and ApprovedByUniversityResearchDirector = APPROVED</Description>
 		<Target>
 			<AnyOf>
 				<AllOf>
@@ -6953,7 +6953,8 @@
 	</Rule>
 	
 	<Rule Effect="Permit" RuleId="SignProposalByCo-PI-Rule38">
-		<Description>"Co-PI" can "Save" a "Whole Proposal" when SubmittedByPI= NOTSUBMITTED and ReadyForSubmissionByPI = False;</Description>
+		<Description>"Co-PI" can "Save" a "Whole Proposal" 
+			when SubmittedByPI = NOTSUBMITTED and ReadyForSubmissionByPI = False</Description>
 		<Target>
 			<AnyOf>
 				<AllOf>
@@ -6998,7 +6999,8 @@
 	</Rule>
 	
 	<Rule Effect="Permit" RuleId="DeleteProposalByPI-Rule39">
-		<Description>"PI" can "Delete" a "Whole Proposal" when SubmittedByPI= NOTSUBMITTED and DeletedByPI=NOTDELETED;</Description>
+		<Description>"PI" can "Delete" a "Whole Proposal" 
+			when SubmittedByPI = NOTSUBMITTED and DeletedByPI = NOTDELETED</Description>
 		<Target>
 			<AnyOf>
 				<AllOf>
@@ -7043,7 +7045,8 @@
 	</Rule>
 	
 	<Rule Effect="Permit" RuleId="ApproveProposalByDepartmentChair-Rule40">
-		<Description>"Department Chair" can "Approve" a "Whole Proposal" when ApprovedByDepartmentChair= READYFORAPPROVAL;</Description>
+		<Description>"Department Chair" can "Approve" a "Whole Proposal" 
+			when ApprovedByDepartmentChair = READYFORAPPROVAL</Description>
 		<Target>
 			<AnyOf>
 				<AllOf>
@@ -7081,7 +7084,8 @@
 	</Rule>
 	
 	<Rule Effect="Permit" RuleId="DisapproveProposalByDepartmentChair-Rule41">
-		<Description>"Department Chair" can "Disapprove" a "Whole Proposal" when ApprovedByDepartmentChair= READYFORAPPROVAL;</Description>
+		<Description>"Department Chair" can "Disapprove" a "Whole Proposal" 
+			when ApprovedByDepartmentChair = READYFORAPPROVAL</Description>
 		<Target>
 			<AnyOf>
 				<AllOf>
@@ -7119,7 +7123,8 @@
 	</Rule>
 	
 	<Rule Effect="Permit" RuleId="ApproveProposalByBusinessManager-Rule42">
-		<Description>"Business Manager" can "Approve" a "Whole Proposal" when ApprovedByBusinessManager= READYFORAPPROVAL;</Description>
+		<Description>"Business Manager" can "Approve" a "Whole Proposal" 
+			when ApprovedByBusinessManager = READYFORAPPROVAL</Description>
 		<Target>
 			<AnyOf>
 				<AllOf>
@@ -7157,7 +7162,8 @@
 	</Rule>
 	
 	<Rule Effect="Permit" RuleId="DisapproveProposalByBusinessManager-Rule43">
-		<Description>"Business Manager" can "Disapprove" a "Whole Proposal" when ApprovedByBusinessManager= READYFORAPPROVAL;</Description>
+		<Description>"Business Manager" can "Disapprove" a "Whole Proposal" 
+			when ApprovedByBusinessManager = READYFORAPPROVAL</Description>
 		<Target>
 			<AnyOf>
 				<AllOf>
@@ -7195,7 +7201,8 @@
 	</Rule>
 	
 	<Rule Effect="Permit" RuleId="ApproveProposalByIRB-Rule44">
-		<Description>"IRB" can "Approve" a "Whole Proposal" when ApprovedByIRB= READYFORAPPROVAL;</Description>
+		<Description>"IRB" can "Approve" a "Whole Proposal" 
+			when ApprovedByIRB = READYFORAPPROVAL</Description>
 		<Target>
 			<AnyOf>
 				<AllOf>
@@ -7233,7 +7240,8 @@
 	</Rule>
 	
 	<Rule Effect="Permit" RuleId="DispproveProposalByIRB-Rule45">
-		<Description>"IRB" can "Disapprove" a "Whole Proposal" when ApprovedByIRB= READYFORAPPROVAL;</Description>
+		<Description>"IRB" can "Disapprove" a "Whole Proposal" 
+			when ApprovedByIRB = READYFORAPPROVAL</Description>
 		<Target>
 			<AnyOf>
 				<AllOf>
@@ -7271,7 +7279,8 @@
 	</Rule>
 	
 	<Rule Effect="Permit" RuleId="ApproveProposalByDean-Rule46">
-		<Description>"Dean" can "Approve" a "Whole Proposal" when ApprovedByDean= READYFORAPPROVAL;</Description>
+		<Description>"Dean" can "Approve" a "Whole Proposal" 
+			when ApprovedByDean = READYFORAPPROVAL</Description>
 		<Target>
 			<AnyOf>
 				<AllOf>
@@ -7309,7 +7318,8 @@
 	</Rule>
 	
 	<Rule Effect="Permit" RuleId="DisapproveProposalByDean-Rule47">
-		<Description>"Dean" can "Disapprove" a "Whole Proposal" when ApprovedByDean= READYFORAPPROVAL;</Description>
+		<Description>"Dean" can "Disapprove" a "Whole Proposal" 
+			when ApprovedByDean = READYFORAPPROVAL</Description>
 		<Target>
 			<AnyOf>
 				<AllOf>
@@ -7347,7 +7357,8 @@
 	</Rule>
 	
 	<Rule Effect="Permit" RuleId="ApproveProposalByUniversityResearchAdministrator-Rule48">
-		<Description>"University Research Administrator" can "Approve" a "Whole Proposal" when ApprovedByUniversityResearchAdministrator= READYFORAPPROVAL;</Description>
+		<Description>"University Research Administrator" can "Approve" a "Whole Proposal" 
+			when ApprovedByUniversityResearchAdministrator = READYFORAPPROVAL</Description>
 		<Target>
 			<AnyOf>
 				<AllOf>
@@ -7385,7 +7396,8 @@
 	</Rule>
 	
 	<Rule Effect="Permit" RuleId="DisapproveProposalByUniversityResearchAdministrator-Rule49">
-		<Description>"University Research Administrator" can "Disapprove" a "Whole Proposal" when ApprovedByUniversityResearchAdministrator= READYFORAPPROVAL;</Description>
+		<Description>"University Research Administrator" can "Disapprove" a "Whole Proposal" 
+			when ApprovedByUniversityResearchAdministrator = READYFORAPPROVAL</Description>
 		<Target>
 			<AnyOf>
 				<AllOf>
@@ -7423,8 +7435,8 @@
 	</Rule>
 	
     <Rule Effect="Permit" RuleId="WithdrawProposalByUniversityResearchAdministrator-Rule50">
-		<Description>"University Research Administrator" can "Withdraw" a "Whole Proposal" when ApprovedByUniversityResearchAdministrator= READYFORAPPROVAL
-		and WithdrawnByUniversityResearchAdministrator= NOTWITHDRAWN;</Description>
+		<Description>"University Research Administrator" can "Withdraw" a "Whole Proposal" 
+			when ApprovedByUniversityResearchAdministrator = READYFORAPPROVAL and WithdrawnByUniversityResearchAdministrator = NOTWITHDRAWN</Description>
 		<Target>
 			<AnyOf>
 				<AllOf>
@@ -7467,9 +7479,10 @@
 			</AnyOf>
 		</Target>
 	</Rule>
-    
+  
     <Rule Effect="Permit" RuleId="ApproveProposalByUniversityResearchDirector-Rule51">
-		<Description>"University Research Director" can "Approve" a "Whole Proposal" when ApproveByUniversityResearchDirector=READYFORAPPROVAL;</Description>
+		<Description>"University Research Director" can "Approve" a "Whole Proposal" 
+			when ApproveByUniversityResearchDirector=READYFORAPPROVAL</Description>
 		<Target>
 			<AnyOf>
 				<AllOf>
@@ -7507,7 +7520,8 @@
 	</Rule>
 	
 	<Rule Effect="Permit" RuleId="DisapproveProposalByUniversityResearchDirector-Rule52">
-		<Description>"University Research Director" can "Disapprove" a "Whole Proposal" when ApproveByUniversityResearchDirector=READYFORAPPROVAL;</Description>
+		<Description>"University Research Director" can "Disapprove" a "Whole Proposal" 
+			when ApproveByUniversityResearchDirector = READYFORAPPROVAL</Description>
 		<Target>
 			<AnyOf>
 				<AllOf>
@@ -7545,8 +7559,8 @@
 	</Rule>
 	
 	<Rule Effect="Permit" RuleId="DeleteProposalByUniversityResearchDirector-Rule53">
-		<Description>"University Research Director" can "Delete" a "Whole Proposal" when ApproveByUniversityResearchDirector=READYFORAPPROVAL and
-		DeletedByUniversityResearchDirector=NOTDELETED;</Description>
+		<Description>"University Research Director" can "Delete" a "Whole Proposal" 
+			when ApproveByUniversityResearchDirector = READYFORAPPROVAL and DeletedByUniversityResearchDirector = NOTDELETED</Description>
 		<Target>
 			<AnyOf>
 				<AllOf>
@@ -7591,8 +7605,8 @@
 	</Rule>
 	
 	<Rule Effect="Permit" RuleId="ArchiveProposalByUniversityResearchDirector-Rule54">
-		<Description>"University Research Director" can "Archive" a "Whole Proposal" when ArchivedByUniversityResearchDirector= NOTARCHIVED and
-		SubmittedByUniversityResearchAdministrator=SUBMITTED;</Description>
+		<Description>"University Research Director" can "Archive" a "Whole Proposal" 
+			when ArchivedByUniversityResearchDirector = NOTARCHIVED and SubmittedByUniversityResearchAdministrator = SUBMITTED</Description>
 		<Target>
 			<AnyOf>
 				<AllOf>
