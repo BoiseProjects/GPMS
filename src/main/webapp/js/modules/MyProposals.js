@@ -1779,18 +1779,21 @@ $(function() {
 				$("#fileuploader").hide();
 				$("#dataTable tbody tr").find('input.AddCoPI').hide();
 				$("#dataTable tbody tr").find('input.AddSenior').hide();
+				$("#dataTable tbody tr:gt(0)").find('input.AddSenior').remove();
 
 				var currentProposalRoles = myProposal.config.proposalRoles
 						.split(', ');
 				if ($.inArray("PI", currentProposalRoles) !== -1) {
 					$("#fileuploader").show();
 					$("#dataTable tbody tr").find('input.AddCoPI').show();
-					$("#dataTable tbody tr:eq(0)").find('input.AddSenior')
-							.show();
+					$("#dataTable tbody tr").find('input.AddSenior').show();
 				} else if ($.inArray("Co-PI", currentProposalRoles) !== -1) {
 					$("#fileuploader").show();
-					$("#dataTable tbody tr:eq(0)").find('input.AddSenior')
-							.show();
+					$("#dataTable tbody tr").find('input.AddSenior').show();
+					$("#dataTable tbody tr:gt(0)").each(function(index) {
+						if ($(this).find("select:first").val() == 2)
+							$(this).find('input.AddCoPI').show();
+					});
 				}
 				break;
 			default:
@@ -2387,6 +2390,7 @@ $(function() {
 					$(this).prop("name", "DeleteOption");
 					$(this).prop("value", "Delete");
 					$(this).prop("title", "Delete");
+					$(this).show();
 				} else if ($(this).is(".AddSenior")) {
 					$(this).remove();
 				}
@@ -2438,6 +2442,7 @@ $(function() {
 					$(this).prop("name", "DeleteOption");
 					$(this).prop("value", "Delete");
 					$(this).prop("title", "Delete");
+					$(this).show();
 				} else if ($(this).is(".AddSenior")) {
 					$(this).remove();
 				}
@@ -2996,7 +3001,7 @@ $(function() {
 								activate : function(event, ui) {
 									if (myProposal.config.proposalId != "0"
 											&& ui.newHeader.length != 0) {
-										alert($.trim(ui.newHeader.text()));
+										// alert($.trim(ui.newHeader.text()));
 										myProposal.config.ajaxCallMode = 15;
 										// myProposal.config.event = event;
 										myProposal.config.content = ui.newPanel;
@@ -3025,7 +3030,7 @@ $(function() {
 									// Size = 1 --> Expanding
 									if (myProposal.config.proposalId != "0"
 											&& ui.newHeader.length != 0) {
-										alert($.trim(ui.newHeader.text()));
+										// alert($.trim(ui.newHeader.text()));
 										myProposal.config.ajaxCallMode = 14;
 										myProposal.config.event = event;
 										if (myProposal.config.proposalRoles != "") {
@@ -4207,13 +4212,12 @@ $(function() {
 
 		case 14:
 			if (myProposal.config.proposalId != '0') {
-				alert("You are allowed to View this Section!");
+				return false;
 			}
 			break;
 
 		case 15:
 			if (myProposal.config.proposalId != '0') {
-				alert("You are allowed to Edit this Section!");
 				if (myProposal.config.content.attr("id") != "ui-id-2") {
 					$(myProposal.config.content)
 							.find('input, select, textarea').each(function() {
@@ -4373,16 +4377,16 @@ $(function() {
 				break;
 
 			case 14:
-				csscody.error('<h2>' + 'Error Message' + '</h2><p>'
-						+ 'You are not Allowed to View this Section! '
-						+ msg.responseText + '</p>');
+				// csscody.error('<h2>' + 'Error Message' + '</h2><p>'
+				// + 'You are not Allowed to View this Section! '
+				// + msg.responseText + '</p>');
 				myProposal.config.event.preventDefault();
 				break;
 
 			case 15:
-				csscody.error('<h2>' + 'Error Message' + '</h2><p>'
-						+ 'You are not Allowed to EDIT this Section! '
-						+ msg.responseText + '</p>');
+				// csscody.error('<h2>' + 'Error Message' + '</h2><p>'
+				// + 'You are not Allowed to EDIT this Section! '
+				// + msg.responseText + '</p>');
 				// myProposal.config.event.preventDefault();
 				$(myProposal.config.content).find('input, select, textarea')
 						.each(function() {
@@ -4409,17 +4413,19 @@ $(function() {
 
 			case 19:
 				csscody.error("<h2>" + 'Error Message' + "</h2><p>"
-						+ 'Cannot add Co-PI!' + "</p>");
+						+ 'Cannot add Co-PI! ' + msg.responseText + "</p>");
 				break;
 
 			case 20:
 				csscody.error("<h2>" + 'Error Message' + "</h2><p>"
-						+ 'Cannot add Senior Personnel!' + "</p>");
+						+ 'Cannot add Senior Personnel! ' + msg.responseText
+						+ "</p>");
 				break;
 
 			case 21:
 				csscody.error("<h2>" + 'Error Message' + "</h2><p>"
-						+ 'Cannot delete Investigator!' + "</p>");
+						+ 'Cannot delete Investigator! ' + msg.responseText
+						+ "</p>");
 				break;
 
 			}
