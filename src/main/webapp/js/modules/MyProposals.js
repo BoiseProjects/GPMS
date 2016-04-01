@@ -4227,6 +4227,11 @@ $(function() {
 								// $(this).addClass("ignore");
 								$(this).prop('disabled', false);
 							});
+				} else {
+					$(myProposal.config.content).find('input.AddCoPI').prop(
+							'disabled', false);
+					$(myProposal.config.content).find('input.AddSenior').prop(
+							'disabled', false);
 				}
 
 				if (myProposal.config.content.attr("id") == "ui-id-4") {
