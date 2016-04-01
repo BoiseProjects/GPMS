@@ -594,8 +594,9 @@ $(function() {
 
 			var currentProposalRoles = config.proposalRoles.split(', ');
 			if (currentProposalRoles != ""
-					&& ($.inArray("PI", currentProposalRoles) !== -1 || ($
-							.inArray("Co-PI", currentProposalRoles) !== -1 && config.readyForSubmitionByPI == "False"))) {
+					&& ($.inArray("PI", currentProposalRoles) !== -1 || (($
+							.inArray("Co-PI", currentProposalRoles) !== -1 || $
+							.inArray("Senior Personnel", currentProposalRoles) !== -1) && config.readyForSubmitionByPI == "False"))) {
 				attributeArray.push({
 					attributeType : "Subject",
 					attributeName : "proposal.role",
@@ -608,6 +609,12 @@ $(function() {
 					attributeValue : config.submittedByPI
 				});
 
+				attributeArray.push({
+					attributeType : "Resource",
+					attributeName : "DeletedByPI",
+					attributeValue : config.deletedByPI
+				});
+
 				if ($.inArray("Co-PI", currentProposalRoles) !== -1
 						&& config.readyForSubmitionByPI == "False") {
 					attributeArray.push({
@@ -616,12 +623,6 @@ $(function() {
 						attributeValue : config.readyForSubmitionByPI
 					});
 				}
-
-				// attributeArray.push({
-				// attributeType : "Resource",
-				// attributeName : "DeletedByPI",
-				// attributeValue : config.deletedByPI
-				// });
 			} else {
 				var currentPositionTitle = GPMS.utils.GetUserPositionTitle();
 
@@ -723,6 +724,12 @@ $(function() {
 					attributeValue : config.submittedByPI
 				});
 
+				attributeArray.push({
+					attributeType : "Resource",
+					attributeName : "DeletedByPI",
+					attributeValue : config.deletedByPI
+				});
+
 				if ($.inArray("Co-PI", currentProposalRoles) !== -1
 						&& config.readyForSubmitionByPI == "False") {
 					attributeArray.push({
@@ -756,14 +763,57 @@ $(function() {
 			this.ajaxCall(this.config);
 		},
 
-		CheckUserPermissionForSave : function(buttonType, config) {
+		CheckUserPermissionForSave : function(buttonType, proposalSection,
+				config) {
+			var attributeArray = [];
+
 			var currentProposalRoles = config.proposalRoles.split(', ');
+
 			if (currentProposalRoles != ""
 					&& ($.inArray("PI", currentProposalRoles) !== -1 || ($
-							.inArray("Co-PI", currentProposalRoles) !== -1 && config.readyForSubmitionByPI == "False"))) {
-				myProposal.SaveProposal(buttonType, config.proposalRoles,
-						config.proposalId, false);
+							.inArray("Co-PI", currentProposalRoles) !== -1 && config.readyForSubmitionByPI == "False"))
+					&& config.submittedByPI == "NOTSUBMITTED"
+					&& config.deletedByPI == "NOTDELETED") {
+				attributeArray.push({
+					attributeType : "Subject",
+					attributeName : "proposal.role",
+					attributeValue : config.proposalRoles
+				});
+
+				attributeArray.push({
+					attributeType : "Resource",
+					attributeName : "SubmittedByPI",
+					attributeValue : config.submittedByPI
+				});
+
+				attributeArray.push({
+					attributeType : "Resource",
+					attributeName : "DeletedByPI",
+					attributeValue : config.deletedByPI
+				});
 			}
+
+			attributeArray.push({
+				attributeType : "Resource",
+				attributeName : "proposal.section",
+				attributeValue : proposalSection
+			});
+
+			attributeArray.push({
+				attributeType : "Action",
+				attributeName : "proposal.action",
+				attributeValue : buttonType
+			});
+
+			this.config.url = this.config.baseURL
+					+ "CheckPermissionForAProposal";
+			this.config.data = JSON2.stringify({
+				policyInfo : attributeArray,
+				gpmsCommonObj : gpmsCommonObj()
+			});
+
+			this.config.buttonType = buttonType;
+			this.ajaxCall(this.config);
 		},
 
 		CheckUserPermissionForDelete : function(buttonType, proposalSection,
@@ -1646,7 +1696,8 @@ $(function() {
 			if (proposalStatus != ""
 					&& ($.inArray("PI", currentProposalRoles) !== -1 || ($
 							.inArray("Co-PI", currentProposalRoles) !== -1 && config.readyForSubmitionByPI == "False"))
-					&& config.submittedByPI == "NOTSUBMITTED") {
+					&& config.submittedByPI == "NOTSUBMITTED"
+					&& config.deletedByPI == "NOTDELETED") {
 				$("#btnSaveProposal").show();
 			} else {
 				$("#btnSaveProposal").hide();
@@ -4152,9 +4203,6 @@ $(function() {
 				myProposal.SaveProposal(myProposal.config.buttonType,
 						myProposal.config.proposalRoles,
 						myProposal.config.proposalId, false);
-			} else {
-				myProposal.SaveProposal(myProposal.config.buttonType, "", "0",
-						true);
 			}
 			break;
 
@@ -4396,17 +4444,21 @@ $(function() {
 				// + 'You are not Allowed to EDIT this Section! '
 				// + msg.responseText + '</p>');
 				// myProposal.config.event.preventDefault();
-				$(myProposal.config.content).find('input, select, textarea')
-						.each(
-								function() {
-									// $(this).addClass("ignore");
-									$(this).prop('disabled', true);
 
-									if ($(this).hasClass('AddCoPI')
-											|| $(this).hasClass('AddSenior')) {
-										$(this).hide();
-									}
-								});
+				if (myProposal.config.content.attr("id") == "ui-id-2") {
+					$("input.AddCoPI").hide();
+					$("input.AddSenior").hide();
+				} else if (myProposal.config.content.attr("id") == "ui-id-26") {
+					$("#fileuploader").hide();
+					$('.ajax-file-upload-red').hide();
+				}
+
+				$(myProposal.config.content).find('input, select, textarea')
+						.each(function() {
+							// $(this).addClass("ignore");
+							$(this).prop('disabled', true);
+
+						});
 				// myProposal.config.event.preventDefault();
 				break;
 
@@ -4857,7 +4909,6 @@ $(function() {
 						myProposal.config.ajaxCallMode = 12;
 						myProposal.CheckUserPermissionWithPositionType("Add",
 								"Whole Proposal", myProposal.config);
-
 					});
 
 			$('#btnReset')
@@ -4910,18 +4961,21 @@ $(function() {
 											$('#btnSaveProposal').disableWith(
 													'Saving...');
 
-											if (myProposal.config.proposalId == "0") {
-												myProposal.SaveProposal(
-														$buttonType, "", "0",
-														true);
-											} else if (myProposal.config.proposalRoles != ""
+											myProposal.config.ajaxCallMode = 11;
+
+											if (myProposal.config.proposalRoles != ""
 													&& myProposal.config.proposalId != "0"
-													&& myProposal.config.proposalStatus != ""
-													&& myProposal.config.submittedByPI == "NOTSUBMITTED") {
+													&& myProposal.config.proposalStatus != "") {
 												myProposal
 														.CheckUserPermissionForSave(
 																$buttonType,
+																"Whole Proposal",
 																myProposal.config);
+											} else {
+												myProposal
+														.SaveProposal(
+																myProposal.config.buttonType,
+																"", "0", true);
 											}
 
 											$('#btnSaveProposal').enableAgain();
