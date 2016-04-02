@@ -4962,11 +4962,9 @@ $(function() {
 																	"Whole Proposal",
 																	myProposal.config);
 												} else {
-													myProposal
-															.SaveProposal(
-																	myProposal.config.buttonType,
-																	"", "0",
-																	true);
+													myProposal.SaveProposal(
+															$buttonType, "",
+															"0", true);
 												}
 
 												$('#btnSaveProposal')
