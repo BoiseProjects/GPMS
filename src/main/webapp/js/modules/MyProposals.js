@@ -791,6 +791,15 @@ $(function() {
 					attributeName : "DeletedByPI",
 					attributeValue : config.deletedByPI
 				});
+
+				if ($.inArray("Co-PI", currentProposalRoles) !== -1
+						&& config.readyForSubmitionByPI == "False") {
+					attributeArray.push({
+						attributeType : "Resource",
+						attributeName : "ReadyForSubmissionByPI",
+						attributeValue : config.readyForSubmitionByPI
+					});
+				}
 			}
 
 			attributeArray.push({
@@ -3057,24 +3066,14 @@ $(function() {
 										// myProposal.config.event = event;
 										myProposal.config.content = ui.newPanel;
 
-										if (myProposal.config.proposalRoles != "") {
-											myProposal
-													.CheckUserPermissionWithProposalRoleEditSection(
-															"Edit",
-															myProposal.config.proposalRoles,
-															myProposal.config.proposalId,
-															$.trim(ui.newHeader
-																	.text()),
-															myProposal.config);
-										} else {
-											myProposal
-													.CheckUserPermissionWithPositionTitleEditSection(
-															"Edit",
-															myProposal.config.proposalId,
-															$.trim(ui.newHeader
-																	.text()),
-															myProposal.config);
-										}
+										myProposal
+												.CheckUserPermissionWithProposalRoleEditSection(
+														"Edit",
+														myProposal.config.proposalRoles,
+														myProposal.config.proposalId,
+														$.trim(ui.newHeader
+																.text()),
+														myProposal.config);
 									}
 								}
 							// ,
@@ -3219,304 +3218,292 @@ $(function() {
 		},
 
 		SaveProposal : function(_buttonType, _proposalRoles, _proposalId, _flag) {
-			if (validator.form()) {
-				var $projectTitle = $('#txtProjectTitle');
-				var projectTitle = $.trim($projectTitle.val());
-				var validateErrorMessage = myProposal.checkUniqueProjectTitle(
-						_proposalId, projectTitle, $projectTitle);
+			// if (validator.form()) {
+			var $projectTitle = $('#txtProjectTitle');
+			var projectTitle = $.trim($projectTitle.val());
+			var validateErrorMessage = myProposal.checkUniqueProjectTitle(
+					_proposalId, projectTitle, $projectTitle);
 
-				if (validateErrorMessage == "") {
-					var investigatorInfo = '';
-					$('#dataTable > tbody  > tr')
-							.each(
-									function() {
-										$(this)
-												.find("select")
-												.each(
-														function() {
-															var optionsText = $(
-																	this).val();
-															if (!optionsText
-																	&& $(this)
-																			.prop(
-																					"name") != "ddlPositionTitle") {
-																validateErrorMessage = 'Please select all position details for this user.'
-																		+ "<br/>";
-																$(this).focus();
-															} else if (optionsText
-																	&& $(this)
-																			.prop(
-																					"name") != "ddlPositionTitle") {
-																investigatorInfo += optionsText
-																		+ "!#!";
-															} else {
-																investigatorInfo += optionsText
-																		+ "!#!";
-															}
-														});
+			if (validateErrorMessage == "") {
+				var investigatorInfo = '';
+				$('#dataTable > tbody  > tr')
+						.each(
+								function() {
+									$(this)
+											.find("select")
+											.each(
+													function() {
+														var optionsText = $(
+																this).val();
+														if (!optionsText
+																&& $(this)
+																		.prop(
+																				"name") != "ddlPositionTitle") {
+															validateErrorMessage = 'Please select all position details for this user.'
+																	+ "<br/>";
+															$(this).focus();
+														} else if (optionsText
+																&& $(this)
+																		.prop(
+																				"name") != "ddlPositionTitle") {
+															investigatorInfo += optionsText
+																	+ "!#!";
+														} else {
+															investigatorInfo += optionsText
+																	+ "!#!";
+														}
+													});
 
-										investigatorInfo += $(this).find(
-												'input[name="txtPhoneNo"]')
-												.mask()
-												+ "#!#";
-									});
+									investigatorInfo += $(this).find(
+											'input[name="txtPhoneNo"]').mask()
+											+ "#!#";
+								});
 
-					investigatorInfo = investigatorInfo.substring(0,
-							investigatorInfo.length - 3);
+				investigatorInfo = investigatorInfo.substring(0,
+						investigatorInfo.length - 3);
 
-					signatureInfo = '';
+				signatureInfo = '';
 
-					$(
-							'#trSignPICOPI > tbody  > tr, #trSignChair > tbody  > tr, #trSignDean > tbody  > tr, #trSignBusinessManager > tbody  > tr, #trSignIRB > tbody  > tr, #trSignAdministrator > tbody  > tr, #trSignDirector > tbody  > tr')
-							.each(function() {
-								myProposal.GetUserSignature($(this));
-							});
+				$(
+						'#trSignPICOPI > tbody  > tr, #trSignChair > tbody  > tr, #trSignDean > tbody  > tr, #trSignBusinessManager > tbody  > tr, #trSignIRB > tbody  > tr, #trSignAdministrator > tbody  > tr, #trSignDirector > tbody  > tr')
+						.each(function() {
+							myProposal.GetUserSignature($(this));
+						});
 
-					signatureInfo = signatureInfo.substring(0,
-							signatureInfo.length - 3);
+				signatureInfo = signatureInfo.substring(0,
+						signatureInfo.length - 3);
 
-					var projectInfo = {
-						ProjectTitle : $.trim($("#txtProjectTitle").val()),
-						ProjectType : $("#ddlProjectType").val(),
-						TypeOfRequest : $("#ddlTypeOfRequest").val(),
-						ProjectLocation : $("#ddlLocationOfProject").val(),
-						DueDate : $("#txtDueDate").val(),
-						ProjectPeriodFrom : $("#txtProjectPeriodFrom").val(),
-						ProjectPeriodTo : $("#txtProjectPeriodTo").val()
-					};
+				var projectInfo = {
+					ProjectTitle : $.trim($("#txtProjectTitle").val()),
+					ProjectType : $("#ddlProjectType").val(),
+					TypeOfRequest : $("#ddlTypeOfRequest").val(),
+					ProjectLocation : $("#ddlLocationOfProject").val(),
+					DueDate : $("#txtDueDate").val(),
+					ProjectPeriodFrom : $("#txtProjectPeriodFrom").val(),
+					ProjectPeriodTo : $("#txtProjectPeriodTo").val()
+				};
 
-					var sponsorAndBudgetInfo = {
-						GrantingAgency : $.trim($("#txtNameOfGrantingAgency")
-								.val()),
-						DirectCosts : $('#txtDirectCosts').autoNumeric('get'),
-						FACosts : $("#txtFACosts").autoNumeric('get'),
-						TotalCosts : $("#txtTotalCosts").autoNumeric('get'),
-						FARate : $("#txtFARate").autoNumeric('get')
-					};
+				var sponsorAndBudgetInfo = {
+					GrantingAgency : $
+							.trim($("#txtNameOfGrantingAgency").val()),
+					DirectCosts : $('#txtDirectCosts').autoNumeric('get'),
+					FACosts : $("#txtFACosts").autoNumeric('get'),
+					TotalCosts : $("#txtTotalCosts").autoNumeric('get'),
+					FARate : $("#txtFARate").autoNumeric('get')
+				};
 
-					var costShareInfo = {
-						InstitutionalCommitted : $(
-								"#ddlInstitutionalCommitmentCost").val(),
-						ThirdPartyCommitted : $("#ddlThirdPartyCommitmentCost")
-								.val()
-					};
+				var costShareInfo = {
+					InstitutionalCommitted : $(
+							"#ddlInstitutionalCommitmentCost").val(),
+					ThirdPartyCommitted : $("#ddlThirdPartyCommitmentCost")
+							.val()
+				};
 
-					var univCommitments = {
-						NewRenovatedFacilitiesRequired : $(
-								"#ddlNewSpaceRequired").val(),
-						RentalSpaceRequired : $("#ddlRentalSpaceRequired")
-								.val(),
-						InstitutionalCommitmentRequired : $(
-								"#ddlInstitutionalCommitmentsRequired").val()
-					};
+				var univCommitments = {
+					NewRenovatedFacilitiesRequired : $("#ddlNewSpaceRequired")
+							.val(),
+					RentalSpaceRequired : $("#ddlRentalSpaceRequired").val(),
+					InstitutionalCommitmentRequired : $(
+							"#ddlInstitutionalCommitmentsRequired").val()
+				};
 
-					var conflicOfInterestInfo = {
-						FinancialCOI : $("#ddlFinancialCOI").val(),
-						ConflictDisclosed : $("#ddlDisclosedFinancialCOI")
-								.val(),
-						DisclosureFormChange : $("#ddlMaterialChanged").val()
-					};
+				var conflicOfInterestInfo = {
+					FinancialCOI : $("#ddlFinancialCOI").val(),
+					ConflictDisclosed : $("#ddlDisclosedFinancialCOI").val(),
+					DisclosureFormChange : $("#ddlMaterialChanged").val()
+				};
 
-					var complianceInfo = {
-						InvolveUseOfHumanSubjects : $("#ddlUseHumanSubjects")
-								.val(),
-						InvolveUseOfVertebrateAnimals : $(
-								"#ddlUseVertebrateAnimals").val(),
-						InvolveBiosafetyConcerns : $("#ddlInvovleBioSafety")
-								.val(),
-						InvolveEnvironmentalHealthAndSafetyConcerns : $(
-								"#ddlEnvironmentalConcerns").val()
-					};
+				var complianceInfo = {
+					InvolveUseOfHumanSubjects : $("#ddlUseHumanSubjects").val(),
+					InvolveUseOfVertebrateAnimals : $(
+							"#ddlUseVertebrateAnimals").val(),
+					InvolveBiosafetyConcerns : $("#ddlInvovleBioSafety").val(),
+					InvolveEnvironmentalHealthAndSafetyConcerns : $(
+							"#ddlEnvironmentalConcerns").val()
+				};
 
-					if ($("#ddlUseHumanSubjects").val() == "1") {
-						complianceInfo.IRBPending = $("#ddlIRBOptions").val();
-					}
-
-					if ($("#ddlIRBOptions").val() == "1") {
-						complianceInfo.IRB = $("#txtIRB").val();
-					}
-
-					if ($("#ddlUseVertebrateAnimals").val() == "1") {
-						complianceInfo.IACUCPending = $("#ddlIACUCOptions")
-								.val();
-					}
-
-					if ($("#ddlIACUCOptions").val() == "1") {
-						complianceInfo.IACUC = $("#txtIACUC").val();
-					}
-
-					if ($("#ddlInvovleBioSafety").val() == "1") {
-						complianceInfo.IBCPending = $("#ddlIBCOptions").val();
-					}
-
-					if ($("#ddlIBCOptions").val() == "1") {
-						complianceInfo.IBC = $("#txtIBC").val();
-					}
-
-					var additionalInfo = {
-						AnticipatesForeignNationalsPayment : $(
-								"#ddlAnticipateForeignNationals").val(),
-						AnticipatesCourseReleaseTime : $(
-								"#ddlAnticipateReleaseTime").val(),
-						RelatedToCenterForAdvancedEnergyStudies : $(
-								"#ddlRelatedToEnergyStudies").val()
-					};
-
-					var collaborationInfo = {
-						InvolveNonFundedCollab : $(
-								"#ddlInvolveNonFundedCollabs").val()
-					};
-
-					if ($("#ddlInvolveNonFundedCollabs").val() == "1") {
-						collaborationInfo.Collaborators = $("#txtCollaborators")
-								.val();
-					}
-
-					var confidentialInfo = {
-						ContainConfidentialInformation : $(
-								"#ddlProprietaryInformation").val(),
-						InvolveIntellectualProperty : $(
-								"#ddlOwnIntellectualProperty").val()
-					};
-
-					if ($("#ddlProprietaryInformation").val() == "1") {
-						confidentialInfo.OnPages = $.trim($(
-								"#txtPagesWithProprietaryInfo").val());
-						confidentialInfo.Patentable = $("#chkPatentable").prop(
-								"checked");
-						confidentialInfo.Copyrightable = $("#chkCopyrightable")
-								.prop("checked");
-					}
-
-					var proposalInfo = {
-						ProposalID : _proposalId,
-						InvestigatorInfo : investigatorInfo,
-						ProjectInfo : projectInfo,
-						SponsorAndBudgetInfo : sponsorAndBudgetInfo,
-						CostShareInfo : costShareInfo,
-						UnivCommitments : univCommitments,
-						ConflicOfInterestInfo : conflicOfInterestInfo,
-						ComplianceInfo : complianceInfo,
-						AdditionalInfo : additionalInfo,
-						CollaborationInfo : collaborationInfo,
-						ConfidentialInfo : confidentialInfo
-					};
-
-					if (signatureInfo != "") {
-						proposalInfo.SignatureInfo = signatureInfo;
-					}
-
-					// TODO check if the OSP section is allowed to edit ?
-					if (!_flag) {
-						// proposalInfo.ProposalStatus = $("#ddlProposalStatus")
-						// .val();
-
-						var OSPSection = {
-							ListAgency : $.trim($("#txtAgencyList").val()),
-
-							Federal : $("#chkFederal").prop("checked"),
-							FederalFlowThrough : $("#chkFederalFlowThrough")
-									.prop("checked"),
-							StateOfIdahoEntity : $("#chkStateOfIdahoEntity")
-									.prop("checked"),
-							PrivateForProfit : $("#chkPrivateForProfit").prop(
-									"checked"),
-							NonProfitOrganization : $(
-									"#chkNonProfitOrganization")
-									.prop("checked"),
-							NonIdahoStateEntity : $("#chkNonIdahoStateEntity")
-									.prop("checked"),
-							CollegeOrUniversity : $("#chkCollegeUniversity")
-									.prop("checked"),
-							LocalEntity : $("#chkLocalEntity").prop("checked"),
-							NonIdahoLocalEntity : $("#chkNonIdahoLocalEntity")
-									.prop("checked"),
-							TirbalGovernment : $("#chkTribalGovernment").prop(
-									"checked"),
-							Foreign : $("#chkForeign").prop("checked"),
-
-							CFDANo : $.trim($("#txtCFDANo").val()),
-							ProgramNo : $.trim($("#txtProgramNo").val()),
-							ProgramTitle : $.trim($("#txtProgramTitle").val()),
-
-							// --------------------------
-							FullRecovery : $("#chkFullRecovery")
-									.prop("checked"),
-							NoRecoveryNormalSponsorPolicy : $(
-									"#chkNoRecoveryNormal").prop("checked"),
-							NoRecoveryInstitutionalWaiver : $(
-									"#chkNoRecoveryInstitutional").prop(
-									"checked"),
-							LimitedRecoveryNormalSponsorPolicy : $(
-									"#chkLimitedRecoveryNormal")
-									.prop("checked"),
-							LimitedRecoveryInstitutionalWaiver : $(
-									"#chkLimitedRecoveryInstitutional").prop(
-									"checked"),
-
-							MTDC : $("#chkMTDC").prop("checked"),
-							TDC : $("#chkTDC").prop("checked"),
-							TC : $("#chkTC").prop("checked"),
-							Other : $("#chkOther").prop("checked"),
-							NotApplicable : $("#chkNA").prop("checked"),
-
-							// --------------------------
-							IsPISalaryIncluded : $("#ddlPISalaryIncluded")
-									.val(),
-							PISalary : $("#txtPISalary").autoNumeric('get'),
-							PIFringe : $("#txtPIFringe").autoNumeric('get'),
-							DepartmentId : $.trim($("#txtDepartmentID").val()),
-							InstitutionalCostDocumented : $(
-									"#ddlInstitutionalCostDocumented").val(),
-							ThirdPartyCostDocumented : $(
-									"#ddlThirdPartyCostDocumented").val(),
-
-							// --------------------------
-							IsAnticipatedSubRecipients : $("#ddlSubrecipients")
-									.val(),
-
-							// --------------------------
-							PIEligibilityWaiver : $("#ddlPIEligibilityWaiver")
-									.val(),
-							ConflictOfInterestForms : $("#ddlCOIForms").val(),
-							ExcludedPartyListChecked : $(
-									"#ddlCheckedExcludedPartyList").val()
-						};
-
-						if ($("#ddlSubrecipients").val() == "1") {
-							OSPSection.AnticipatedSubRecipientsNames = $
-									.trim($("#txtNamesSubrecipients").val());
-						}
-
-						proposalInfo.OSPSectionInfo = OSPSection;
-					}
-
-					$
-							.each(
-									this.config.uploadObj.getResponses()
-											.reverse(),
-									function(i, val) {
-										val['title'] = $(
-												myProposal.config.uploadObj.container
-														.children(
-																".ajax-file-upload-statusbar")
-														.find('.extrahtml')
-														.find("input").get(i))
-												.val();
-									});
-
-					proposalInfo.AppendixInfo = this.config.uploadObj
-							.getResponses().reverse();
-
-					myProposal.AddProposalInfo(_buttonType, _proposalRoles,
-							proposalInfo);
-
-				} else {
-					myProposal.focusTabWithErrors("#accordion");
+				if ($("#ddlUseHumanSubjects").val() == "1") {
+					complianceInfo.IRBPending = $("#ddlIRBOptions").val();
 				}
+
+				if ($("#ddlIRBOptions").val() == "1") {
+					complianceInfo.IRB = $("#txtIRB").val();
+				}
+
+				if ($("#ddlUseVertebrateAnimals").val() == "1") {
+					complianceInfo.IACUCPending = $("#ddlIACUCOptions").val();
+				}
+
+				if ($("#ddlIACUCOptions").val() == "1") {
+					complianceInfo.IACUC = $("#txtIACUC").val();
+				}
+
+				if ($("#ddlInvovleBioSafety").val() == "1") {
+					complianceInfo.IBCPending = $("#ddlIBCOptions").val();
+				}
+
+				if ($("#ddlIBCOptions").val() == "1") {
+					complianceInfo.IBC = $("#txtIBC").val();
+				}
+
+				var additionalInfo = {
+					AnticipatesForeignNationalsPayment : $(
+							"#ddlAnticipateForeignNationals").val(),
+					AnticipatesCourseReleaseTime : $(
+							"#ddlAnticipateReleaseTime").val(),
+					RelatedToCenterForAdvancedEnergyStudies : $(
+							"#ddlRelatedToEnergyStudies").val()
+				};
+
+				var collaborationInfo = {
+					InvolveNonFundedCollab : $("#ddlInvolveNonFundedCollabs")
+							.val()
+				};
+
+				if ($("#ddlInvolveNonFundedCollabs").val() == "1") {
+					collaborationInfo.Collaborators = $("#txtCollaborators")
+							.val();
+				}
+
+				var confidentialInfo = {
+					ContainConfidentialInformation : $(
+							"#ddlProprietaryInformation").val(),
+					InvolveIntellectualProperty : $(
+							"#ddlOwnIntellectualProperty").val()
+				};
+
+				if ($("#ddlProprietaryInformation").val() == "1") {
+					confidentialInfo.OnPages = $.trim($(
+							"#txtPagesWithProprietaryInfo").val());
+					confidentialInfo.Patentable = $("#chkPatentable").prop(
+							"checked");
+					confidentialInfo.Copyrightable = $("#chkCopyrightable")
+							.prop("checked");
+				}
+
+				var proposalInfo = {
+					ProposalID : _proposalId,
+					InvestigatorInfo : investigatorInfo,
+					ProjectInfo : projectInfo,
+					SponsorAndBudgetInfo : sponsorAndBudgetInfo,
+					CostShareInfo : costShareInfo,
+					UnivCommitments : univCommitments,
+					ConflicOfInterestInfo : conflicOfInterestInfo,
+					ComplianceInfo : complianceInfo,
+					AdditionalInfo : additionalInfo,
+					CollaborationInfo : collaborationInfo,
+					ConfidentialInfo : confidentialInfo
+				};
+
+				if (signatureInfo != "") {
+					proposalInfo.SignatureInfo = signatureInfo;
+				}
+
+				// TODO check if the OSP section is allowed to edit ?
+				if (!_flag) {
+					// proposalInfo.ProposalStatus = $("#ddlProposalStatus")
+					// .val();
+
+					var OSPSection = {
+						ListAgency : $.trim($("#txtAgencyList").val()),
+
+						Federal : $("#chkFederal").prop("checked"),
+						FederalFlowThrough : $("#chkFederalFlowThrough").prop(
+								"checked"),
+						StateOfIdahoEntity : $("#chkStateOfIdahoEntity").prop(
+								"checked"),
+						PrivateForProfit : $("#chkPrivateForProfit").prop(
+								"checked"),
+						NonProfitOrganization : $("#chkNonProfitOrganization")
+								.prop("checked"),
+						NonIdahoStateEntity : $("#chkNonIdahoStateEntity")
+								.prop("checked"),
+						CollegeOrUniversity : $("#chkCollegeUniversity").prop(
+								"checked"),
+						LocalEntity : $("#chkLocalEntity").prop("checked"),
+						NonIdahoLocalEntity : $("#chkNonIdahoLocalEntity")
+								.prop("checked"),
+						TirbalGovernment : $("#chkTribalGovernment").prop(
+								"checked"),
+						Foreign : $("#chkForeign").prop("checked"),
+
+						CFDANo : $.trim($("#txtCFDANo").val()),
+						ProgramNo : $.trim($("#txtProgramNo").val()),
+						ProgramTitle : $.trim($("#txtProgramTitle").val()),
+
+						// --------------------------
+						FullRecovery : $("#chkFullRecovery").prop("checked"),
+						NoRecoveryNormalSponsorPolicy : $(
+								"#chkNoRecoveryNormal").prop("checked"),
+						NoRecoveryInstitutionalWaiver : $(
+								"#chkNoRecoveryInstitutional").prop("checked"),
+						LimitedRecoveryNormalSponsorPolicy : $(
+								"#chkLimitedRecoveryNormal").prop("checked"),
+						LimitedRecoveryInstitutionalWaiver : $(
+								"#chkLimitedRecoveryInstitutional").prop(
+								"checked"),
+
+						MTDC : $("#chkMTDC").prop("checked"),
+						TDC : $("#chkTDC").prop("checked"),
+						TC : $("#chkTC").prop("checked"),
+						Other : $("#chkOther").prop("checked"),
+						NotApplicable : $("#chkNA").prop("checked"),
+
+						// --------------------------
+						IsPISalaryIncluded : $("#ddlPISalaryIncluded").val(),
+						PISalary : $("#txtPISalary").autoNumeric('get'),
+						PIFringe : $("#txtPIFringe").autoNumeric('get'),
+						DepartmentId : $.trim($("#txtDepartmentID").val()),
+						InstitutionalCostDocumented : $(
+								"#ddlInstitutionalCostDocumented").val(),
+						ThirdPartyCostDocumented : $(
+								"#ddlThirdPartyCostDocumented").val(),
+
+						// --------------------------
+						IsAnticipatedSubRecipients : $("#ddlSubrecipients")
+								.val(),
+
+						// --------------------------
+						PIEligibilityWaiver : $("#ddlPIEligibilityWaiver")
+								.val(),
+						ConflictOfInterestForms : $("#ddlCOIForms").val(),
+						ExcludedPartyListChecked : $(
+								"#ddlCheckedExcludedPartyList").val()
+					};
+
+					if ($("#ddlSubrecipients").val() == "1") {
+						OSPSection.AnticipatedSubRecipientsNames = $.trim($(
+								"#txtNamesSubrecipients").val());
+					}
+
+					proposalInfo.OSPSectionInfo = OSPSection;
+				}
+
+				$
+						.each(
+								this.config.uploadObj.getResponses().reverse(),
+								function(i, val) {
+									val['title'] = $(
+											myProposal.config.uploadObj.container
+													.children(
+															".ajax-file-upload-statusbar")
+													.find('.extrahtml').find(
+															"input").get(i))
+											.val();
+								});
+
+				proposalInfo.AppendixInfo = this.config.uploadObj
+						.getResponses().reverse();
+
+				myProposal.AddProposalInfo(_buttonType, _proposalRoles,
+						proposalInfo);
+
 			} else {
 				myProposal.focusTabWithErrors("#accordion");
 			}
+			// } else {
+			// myProposal.focusTabWithErrors("#accordion");
+			// }
 		},
 
 		AddProposalInfo : function(buttonClicked, _proposalRoles, info) {
@@ -4016,12 +4003,12 @@ $(function() {
 										+ '" readonly="true" title="Proposal Notes" class="cssClassTextArea" >'
 										+ item.note + '</textarea></td></tr>';
 
-								$('#trSignChair').hide();
-								$('#trSignDean').hide();
-								$('#trSignBusinessManager').hide();
-								$('#trSignIRB').hide();
-								$('#trSignAdministrator').hide();
-								$('#trSignDirector').hide();
+								// $('#trSignChair').hide();
+								// $('#trSignDean').hide();
+								// $('#trSignBusinessManager').hide();
+								// $('#trSignIRB').hide();
+								// $('#trSignAdministrator').hide();
+								// $('#trSignDirector').hide();
 
 								switch (item.positionTitle) {
 								case "PI":
@@ -4029,31 +4016,31 @@ $(function() {
 									$(cloneRow).appendTo("#trSignPICOPI tbody");
 									break;
 								case "Department Chair":
-									$('#trSignChair:hidden').show();
 									$(cloneRow).appendTo("#trSignChair tbody");
+									$('#trSignChair').show();
 									break;
 								case "Dean":
-									$('#trSignDean:hidden').show();
 									$(cloneRow).appendTo("#trSignDean tbody");
+									$('#trSignDean').show();
 									break;
 								case "Business Manager":
-									$('#trSignBusinessManager:hidden').show();
 									$(cloneRow).appendTo(
 											"#trSignBusinessManager tbody");
+									$('#trSignBusinessManager').show();
 									break;
 								case "IRB":
-									$('#trSignIRB:hidden').show();
 									$(cloneRow).appendTo("#trSignIRB tbody");
+									$('#trSignIRB').show();
 									break;
 								case "University Research Administrator":
-									$('#trSignAdministrator:hidden').show();
 									$(cloneRow).appendTo(
 											"#trSignAdministrator tbody");
+									$('#trSignAdministrator').show();
 									break;
 								case "University Research Director":
-									$('#trSignDirector:hidden').show();
 									$(cloneRow).appendTo(
 											"#trSignDirector tbody");
+									$('#trSignDirector').show();
 									break;
 								default:
 									break;
@@ -4953,84 +4940,98 @@ $(function() {
 			$('#btnSaveProposal')
 					.click(
 							function(event) {
-								var properties = {
-									onComplete : function(e) {
-										if (e) {
-											var $buttonType = $.trim($(
-													'#btnSaveProposal').text());
-											$('#btnSaveProposal').disableWith(
-													'Saving...');
+								if (validator.form()) {
+									var properties = {
+										onComplete : function(e) {
+											if (e) {
+												var $buttonType = $.trim($(
+														'#btnSaveProposal')
+														.text());
+												$('#btnSaveProposal')
+														.disableWith(
+																'Saving...');
 
-											myProposal.config.ajaxCallMode = 11;
+												myProposal.config.ajaxCallMode = 11;
 
-											if (myProposal.config.proposalRoles != ""
-													&& myProposal.config.proposalId != "0"
-													&& myProposal.config.proposalStatus != "") {
-												myProposal
-														.CheckUserPermissionForSave(
-																$buttonType,
-																"Whole Proposal",
-																myProposal.config);
-											} else {
-												myProposal
-														.SaveProposal(
-																myProposal.config.buttonType,
-																"", "0", true);
+												if (myProposal.config.proposalRoles != ""
+														&& myProposal.config.proposalId != "0"
+														&& myProposal.config.proposalStatus != "") {
+													myProposal
+															.CheckUserPermissionForSave(
+																	$buttonType,
+																	"Whole Proposal",
+																	myProposal.config);
+												} else {
+													myProposal
+															.SaveProposal(
+																	myProposal.config.buttonType,
+																	"", "0",
+																	true);
+												}
+
+												$('#btnSaveProposal')
+														.enableAgain();
+												event.preventDefault();
+												return false;
 											}
-
-											$('#btnSaveProposal').enableAgain();
-											event.preventDefault();
-											return false;
 										}
-									}
-								};
-								csscody
-										.confirm(
-												"<h2>"
-														+ 'Save Confirmation'
-														+ "</h2><p>"
-														+ 'Are you certain you want to save this proposal?'
-														+ "</p>", properties);
+									};
+									csscody
+											.confirm(
+													"<h2>"
+															+ 'Save Confirmation'
+															+ "</h2><p>"
+															+ 'Are you certain you want to save this proposal?'
+															+ "</p>",
+													properties);
+								} else {
+									myProposal.focusTabWithErrors("#accordion");
+								}
 							});
 
 			// Submit
 			$('#btnSubmitProposal')
 					.click(
 							function(event) {
-								var properties = {
-									onComplete : function(e) {
-										if (e) {
-											var $buttonType = $.trim($(
-													'#btnSubmitProposal')
-													.text());
-											$('#btnSubmitProposal')
-													.disableWith(
-															'Submitting...');
+								if (validator.form()) {
+									var properties = {
+										onComplete : function(e) {
+											if (e) {
+												var $buttonType = $.trim($(
+														'#btnSubmitProposal')
+														.text());
+												$('#btnSubmitProposal')
+														.disableWith(
+																'Submitting...');
 
-											myProposal.config.ajaxCallMode = 11;
+												myProposal.config.ajaxCallMode = 11;
 
-											if (myProposal.config.proposalId != "0") {
-												myProposal
-														.CheckUserPermissionForSubmit(
-																$buttonType,
-																"Whole Proposal",
-																myProposal.config);
+												if (myProposal.config.proposalId != "0") {
+													myProposal
+															.CheckUserPermissionForSubmit(
+																	$buttonType,
+																	"Whole Proposal",
+																	myProposal.config);
+												}
+
+												$('#btnSubmitProposal')
+														.enableAgain();
+												event.preventDefault();
+												return false;
 											}
-
-											$('#btnSubmitProposal')
-													.enableAgain();
-											event.preventDefault();
-											return false;
 										}
-									}
-								};
-								csscody
-										.confirm(
-												"<h2>"
-														+ 'Submit Confirmation'
-														+ "</h2><p>"
-														+ 'Are you certain you want to submit this proposal?'
-														+ "</p>", properties);
+									};
+									csscody
+											.confirm(
+													"<h2>"
+															+ 'Submit Confirmation'
+															+ "</h2><p>"
+															+ 'Are you certain you want to submit this proposal?'
+															+ "</p>",
+													properties);
+								} else {
+									myProposal.focusTabWithErrors("#accordion");
+								}
 							});
 
 			// Delete
@@ -5081,83 +5082,95 @@ $(function() {
 			$('#btnApproveProposal')
 					.click(
 							function(event) {
-								var properties = {
-									onComplete : function(e) {
-										if (e) {
-											var $buttonType = $.trim($(
-													'#btnApproveProposal')
-													.text());
-											$('#btnApproveProposal')
-													.disableWith('Approving...');
+								if (validator.form()) {
+									var properties = {
+										onComplete : function(e) {
+											if (e) {
+												var $buttonType = $.trim($(
+														'#btnApproveProposal')
+														.text());
+												$('#btnApproveProposal')
+														.disableWith(
+																'Approving...');
 
-											myProposal.config.ajaxCallMode = 11;
+												myProposal.config.ajaxCallMode = 11;
 
-											if (myProposal.config.proposalRoles == ""
-													&& myProposal.config.proposalId != "0"
-													&& myProposal.config.proposalStatus != "") {
-												myProposal
-														.CheckUserPermissionForApproveDisapprove(
-																$buttonType,
-																"Whole Proposal",
-																myProposal.config);
+												if (myProposal.config.proposalRoles == ""
+														&& myProposal.config.proposalId != "0"
+														&& myProposal.config.proposalStatus != "") {
+													myProposal
+															.CheckUserPermissionForApproveDisapprove(
+																	$buttonType,
+																	"Whole Proposal",
+																	myProposal.config);
+												}
+
+												$('#btnApproveProposal')
+														.enableAgain();
+												event.preventDefault();
+												return false;
 											}
-
-											$('#btnApproveProposal')
-													.enableAgain();
-											event.preventDefault();
-											return false;
 										}
-									}
-								};
-								csscody
-										.confirm(
-												"<h2>"
-														+ 'Approve Confirmation'
-														+ "</h2><p>"
-														+ 'Are you certain you want to approve this proposal?'
-														+ "</p>", properties);
+									};
+									csscody
+											.confirm(
+													"<h2>"
+															+ 'Approve Confirmation'
+															+ "</h2><p>"
+															+ 'Are you certain you want to approve this proposal?'
+															+ "</p>",
+													properties);
+								} else {
+									myProposal.focusTabWithErrors("#accordion");
+								}
 							});
 
 			// Disapprove
 			$('#btnDisapproveProposal')
 					.click(
 							function(event) {
-								var properties = {
-									onComplete : function(e) {
-										if (e) {
-											var $buttonType = $.trim($(
-													'#btnDisapproveProposal')
-													.text());
-											$('#btnDisapproveProposal')
-													.disableWith(
-															'Disapproving...');
+								if (validator.form()) {
+									var properties = {
+										onComplete : function(e) {
+											if (e) {
+												var $buttonType = $
+														.trim($(
+																'#btnDisapproveProposal')
+																.text());
+												$('#btnDisapproveProposal')
+														.disableWith(
+																'Disapproving...');
 
-											myProposal.config.ajaxCallMode = 11;
+												myProposal.config.ajaxCallMode = 11;
 
-											if (myProposal.config.proposalRoles == ""
-													&& myProposal.config.proposalId != "0"
-													&& myProposal.config.proposalStatus != "") {
-												myProposal
-														.CheckUserPermissionForApproveDisapprove(
-																$buttonType,
-																"Whole Proposal",
-																myProposal.config);
+												if (myProposal.config.proposalRoles == ""
+														&& myProposal.config.proposalId != "0"
+														&& myProposal.config.proposalStatus != "") {
+													myProposal
+															.CheckUserPermissionForApproveDisapprove(
+																	$buttonType,
+																	"Whole Proposal",
+																	myProposal.config);
+												}
+
+												$('#btnDisapproveProposal')
+														.enableAgain();
+												event.preventDefault();
+												return false;
 											}
-
-											$('#btnDisapproveProposal')
-													.enableAgain();
-											event.preventDefault();
-											return false;
 										}
-									}
-								};
-								csscody
-										.confirm(
-												"<h2>"
-														+ 'Disapprove Confirmation'
-														+ "</h2><p>"
-														+ 'Are you certain you want to disapprove this proposal?'
-														+ "</p>", properties);
+									};
+									csscody
+											.confirm(
+													"<h2>"
+															+ 'Disapprove Confirmation'
+															+ "</h2><p>"
+															+ 'Are you certain you want to disapprove this proposal?'
+															+ "</p>",
+													properties);
+								} else {
+									myProposal.focusTabWithErrors("#accordion");
+								}
 							});
 
 			// Withdraw

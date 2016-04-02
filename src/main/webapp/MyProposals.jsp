@@ -333,19 +333,19 @@
 														id="dataTable">
 														<thead>
 															<tr>
-																<th><span class="cssClassLabel">Role:</span> <span
+																<th><span class="cssClassLabelTitle">Role:</span> <span
 																	class="cssClassRequired">*</span></th>
-																<th><span class="cssClassLabel">Name:</span> <span
+																<th><span class="cssClassLabelTitle">Name:</span> <span
 																	class="cssClassRequired">*</span></th>
-																<th><span class="cssClassLabel">College:</span> <span
+																<th><span class="cssClassLabelTitle">College:</span> <span
 																	class="cssClassRequired">*</span></th>
-																<th><span class="cssClassLabel">Department:</span>
+																<th><span class="cssClassLabelTitle">Department:</span>
 																	<span class="cssClassRequired">*</span></th>
-																<th><span class="cssClassLabel">Position
+																<th><span class="cssClassLabelTitle">Position
 																		Type:</span> <span class="cssClassRequired">*</span></th>
-																<th><span class="cssClassLabel">Position
+																<th><span class="cssClassLabelTitle">Position
 																		Title:</span> <span class="cssClassRequired">*</span></th>
-																<th><span class="cssClassLabel">Phone #:</span> <span
+																<th><span class="cssClassLabelTitle">Phone #:</span> <span
 																	class="cssClassRequired">*</span></th>
 																<th></th>
 															</tr>
@@ -942,7 +942,7 @@
 													</table>
 
 													<span class="cssClassFooter"> <span
-														class="cssClassLabel"><strong>Note:</strong>
+														class="cssClassLabelTitle"><strong>Note:</strong>
 															Contact the Office of Technology Transfer for additional
 															assistance on proprietary and patentable information at
 															208-426-5765.</span>
@@ -1006,7 +1006,7 @@
 														id="trSignPICOPI">
 														<thead>
 															<tr>
-																<th><span class="cssClassLabelTitle">Principal/Co-Investigator(s)</span></th>
+																<th class="cssClassSignName"><span class="cssClassLabelTitle">Principal/Co-Investigator(s)</span></th>
 																<th><span class="cssClassLabelTitle">Signature(s)</span></th>
 																<th><span class="cssClassLabelTitle">Date</span></th>
 																<th><span class="cssClassLabelTitle">Note</span></th>
@@ -1020,7 +1020,7 @@
 														id="trSignChair">
 														<thead>
 															<tr>
-																<th><span class="cssClassLabelTitle">Department
+																<th class="cssClassSignName"><span class="cssClassLabelTitle">Department
 																		Chair(s)</span></th>
 																<th><span class="cssClassLabelTitle">Signature(s)</span></th>
 																<th><span class="cssClassLabelTitle">Date</span></th>
@@ -1035,8 +1035,8 @@
 														id="trSignDean">
 														<thead>
 															<tr>
-																<th><span class="cssClassLabelTitle">Dean(s)</span></th>
-																<th><span class="cssClassLabelTitle">Name(s)</span></th>
+																<th class="cssClassSignName"><span class="cssClassLabelTitle">Dean(s)</span></th>
+																<th><span class="cssClassLabelTitle">Signature(s)</span></th>
 																<th><span class="cssClassLabelTitle">Date</span></th>
 																<th><span class="cssClassLabelTitle">Note</span></th>
 															</tr>
@@ -1049,9 +1049,9 @@
 														id="trSignAdministrator">
 														<thead>
 															<tr>
-																<th><span class="cssClassLabelTitle">Research
-																		Administrator</span></th>
-																<th><span class="cssClassLabelTitle">Signature</span></th>
+																<th class="cssClassSignName"><span class="cssClassLabelTitle">Research
+																		Administrator(s)</span></th>
+																<th><span class="cssClassLabelTitle">Signature(s)</span></th>
 																<th><span class="cssClassLabelTitle">Date</span></th>
 																<th><span class="cssClassLabelTitle">Note</span></th>
 															</tr>
@@ -1064,9 +1064,9 @@
 														id="trSignDirector">
 														<thead>
 															<tr>
-																<th><span class="cssClassLabelTitle">Research
-																		Director</span></th>
-																<th><span class="cssClassLabelTitle">Signature</span></th>
+																<th class="cssClassSignName"><span class="cssClassLabelTitle">Research
+																		Director(s)</span></th>
+																<th><span class="cssClassLabelTitle">Signature(s)</span></th>
 																<th><span class="cssClassLabelTitle">Date</span></th>
 																<th><span class="cssClassLabelTitle">Note</span></th>
 															</tr>
@@ -1079,9 +1079,9 @@
 														id="trSignBusinessManager">
 														<thead>
 															<tr>
-																<th><span class="cssClassLabelTitle">Business
-																		Manager</span>(if applicable) has reviewed this proposal.</th>
-																<th><span class="cssClassLabelTitle">Signature</span>
+																<th class="cssClassSignName"><span class="cssClassLabelTitle">Business
+																		Manager(s)</span></th>
+																<th><span class="cssClassLabelTitle">Signature(s)</span>
 																<th><span class="cssClassLabelTitle">Date</span></th>
 																<th><span class="cssClassLabelTitle">Note</span></th>
 															</tr>
@@ -1094,9 +1094,8 @@
 														id="trSignIRB">
 														<thead>
 															<tr>
-																<th><span class="cssClassLabelTitle">IRB</span>(if
-																	applicable) has reviewed this proposal.</th>
-																<th><span class="cssClassLabelTitle">Signature</span>
+																<th class="cssClassSignName"><span class="cssClassLabelTitle">IRB(s)</span></th>
+																<th><span class="cssClassLabelTitle">Signature(s)</span>
 																<th><span class="cssClassLabelTitle">Date</span></th>
 																<th><span class="cssClassLabelTitle">Note</span></th>
 															</tr>
@@ -1111,8 +1110,7 @@
 												</h3>
 												<div class="sfFormwrapper ui-tabs-panel">
 													<div class="cssClassHeader">
-														<span class="cssClassLabel">Office of Sponsored
-															Programs Administrative Use Only</span>
+														<span class="cssClassLabelTitle">Office of Sponsored Programs Administrative Use Only</span>
 													</div>
 													<table cellspacing="0" cellpadding="0" border="0">
 														<tbody>
@@ -1488,7 +1486,7 @@
 													</table>
 
 													<div class="cssClassFooter">
-														<span class="cssClassLabel">Send Original to Office
+														<span class="cssClassLabelTitle">Send Original to Office
 															of Sponsored Programs, MS 1135 or osp@boisestate.edu.
 															Please Send email to osp@boisestate.edu to request a
 															final copy of the Porposal Data Sheet.</span>

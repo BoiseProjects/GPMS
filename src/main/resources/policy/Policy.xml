@@ -57,41 +57,6 @@
 				</AllOf>
 			</AnyOf>
 		</Target>
-		
-		<ObligationExpressions>
-		    <ObligationExpression FulfillOn="Permit" ObligationId="sendemail">
-		      <AttributeAssignmentExpression AttributeId="emailId" Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" Issuer="">
-		        <AttributeDesignator AttributeId="manager-email" Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
-		      </AttributeAssignmentExpression>
-		    </ObligationExpression>
-		</ObligationExpressions>
-		
-		<ObligationExpressions>
-	    <ObligationExpression ObligationId="urn:oasis:names:tc:xacml:example:obligation:email"
-	      FulfillOn="Permit">
-	      <AttributeAssignmentExpression
-	        AttributeId="urn:oasis:names:tc:xacml:3.0:example:attribute:mailto">
-	        <AttributeSelector
-	          MustBePresent="true"
-	          Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
-	          Path="md:record/md:patient/md:patientContact/md:email"
-	          DataType="http://www.w3.org/2001/XMLSchema#string"/>
-	      </AttributeAssignmentExpression>
-	      <AttributeAssignmentExpression
-	        AttributeId="urn:oasis:names:tc:xacml:3.0:example:attribute:text">
-	        <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string"
-	        >Your medical record has been accessed by:</AttributeValue>
-	      </AttributeAssignmentExpression>
-	      <AttributeAssignmentExpression
-	        AttributeId="urn:oasis:names:tc:xacml:3.0:example:attribute:text">
-	        <AttributeDesignator
-	          MustBePresent="false"
-	         Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
-	          AttributeId="urn:oasis:names:tc:xacml:1.0:subject:subject-id" 
-	          DataType="http://www.w3.org/2001/XMLSchema#string"/>
-	      </AttributeAssignmentExpression>
-	    </ObligationExpression>
-	  </ObligationExpressions>
 	</Rule>
 
 	<Rule Effect="Deny" RuleId="OtherStaffCannotCreateProposal-Rule2">
@@ -5543,7 +5508,7 @@
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
 						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApproveByUniversityResearchDirector"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByUniversityResearchDirector"
 							Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
@@ -5584,7 +5549,7 @@
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
 						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApproveByUniversityResearchDirector"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByUniversityResearchDirector"
 							Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
