@@ -1,7 +1,5 @@
 package gpms.model;
 
-import org.mongodb.morphia.annotations.Property;
-
 public class CollegeDepartmentInfo {
 	private String college = new String();
 

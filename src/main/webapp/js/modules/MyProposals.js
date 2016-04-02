@@ -4269,9 +4269,9 @@ $(function() {
 							'disabled', false);
 				}
 
-				if (myProposal.config.content.attr("id") == "ui-id-4") {
-					$("#txtProjectTitle").prop("disabled", true);
-				}
+				// if (myProposal.config.content.attr("id") == "ui-id-4") {
+				// $("#txtProjectTitle").prop("disabled", true);
+				// }
 			}
 			break;
 

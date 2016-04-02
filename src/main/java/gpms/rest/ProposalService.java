@@ -2372,40 +2372,41 @@ public class ProposalService {
 						e.printStackTrace();
 					}
 
+					List<String> existingFiles = new ArrayList<String>();
 					if (!proposalID.equals("0")) {
 						boolean alreadyExist = false;
-						for (Appendix appendixObj : appendixInfo) {
-							for (Appendix appendix : existingProposal
-									.getAppendices()) {
+						for (Appendix appendix : oldProposal.getAppendices()) {
+							for (Appendix appendixObj : appendixInfo) {
 								if (appendix.getFilename().equals(
 										appendixObj.getFilename())) {
 									alreadyExist = true;
+									existingFiles
+											.add(appendixObj.getFilename());
 									break;
 								}
 							}
+							if (!alreadyExist) {
+								existingProposal.getAppendices().remove(
+										appendix);
+							}
 						}
-						if (!alreadyExist) {
-							if (!existingProposal.getAppendices().equals(
-									appendixInfo)) {
-								existingProposal.getAppendices().clear();
 
-								for (Appendix uploadFile : appendixInfo) {
-									String fileName = uploadFile.getFilename();
-									File file = new File(UPLOAD_PATH + fileName);
+						for (Appendix uploadFile : appendixInfo) {
+							String fileName = uploadFile.getFilename();
+							if (!existingFiles.contains(fileName)) {
+								File file = new File(UPLOAD_PATH + fileName);
 
-									String extension = "";
-									int i = fileName.lastIndexOf('.');
-									if (i > 0) {
-										extension = fileName.substring(i + 1);
-										uploadFile.setExtension(extension);
-									}
-									uploadFile.setFilesize(file.length());
-									uploadFile.setFilepath("/uploads/"
-											+ fileName);
-
-									existingProposal.getAppendices().add(
-											uploadFile);
+								String extension = "";
+								int i = fileName.lastIndexOf('.');
+								if (i > 0) {
+									extension = fileName.substring(i + 1);
+									uploadFile.setExtension(extension);
 								}
+								uploadFile.setFilesize(file.length());
+								uploadFile.setFilepath("/uploads/" + fileName);
+
+								existingProposal.getAppendices()
+										.add(uploadFile);
 							}
 						}
 					} else {
@@ -2620,14 +2621,15 @@ public class ProposalService {
 						}
 					}
 
-					for (InvestigatorRefAndPosition senior : existingInvestigators
-							.getSeniorPersonnel()) {
-						if (!existingProposal.getInvestigatorInfo()
-								.getSeniorPersonnel().contains(senior)) {
-							deletedInvestigators.getSeniorPersonnel().add(
-									senior);
-						}
-					}
+					// for (InvestigatorRefAndPosition senior :
+					// existingInvestigators
+					// .getSeniorPersonnel()) {
+					// if (!existingProposal.getInvestigatorInfo()
+					// .getSeniorPersonnel().contains(senior)) {
+					// deletedInvestigators.getSeniorPersonnel().add(
+					// senior);
+					// }
+					// }
 				}
 			}
 
@@ -3401,6 +3403,30 @@ public class ProposalService {
 				// .findProposalByProposalID(proposalId);
 
 				if (!existingProposal.equals(oldProposal)) {
+					if (deletedInvestigators.getPi() != null) {
+						for (SignatureInfo sign : oldProposal
+								.getSignatureInfo()) {
+							if (deletedInvestigators.getPi().getUserProfileId()
+									.equalsIgnoreCase(sign.getUserProfileId())) {
+								existingProposal.getSignatureInfo()
+										.remove(sign);
+
+							}
+						}
+					}
+
+					for (InvestigatorRefAndPosition coPI : deletedInvestigators
+							.getCo_pi()) {
+						for (SignatureInfo sign : oldProposal
+								.getSignatureInfo()) {
+							if (coPI.getUserProfileId().equalsIgnoreCase(
+									sign.getUserProfileId())) {
+								existingProposal.getSignatureInfo()
+										.remove(sign);
+							}
+						}
+					}
+
 					proposalDAO.updateProposal(existingProposal, authorProfile);
 					currentProposal = existingProposal;
 
