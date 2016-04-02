@@ -4905,25 +4905,29 @@ $(function() {
 								var properties = {
 									onComplete : function(e) {
 										if (e) {
-											myProposal.ClearForm();
+											if (myProposal.config.proposalId == "0") {
+												myProposal.ClearForm();
 
-											$('select[name=ddlName]')
-													.eq(0)
-													.val(
-															GPMS.utils
-																	.GetUserProfileID())
-													.prop('selected',
-															'selected').prop(
-															'disabled', true);
+												$('select[name=ddlName]')
+														.eq(0)
+														.val(
+																GPMS.utils
+																		.GetUserProfileID())
+														.prop('selected',
+																'selected')
+														.prop('disabled', true);
 
-											// TODO for admin this need to be
-											// not set!
-											myProposal
-													.BindCurrentUserPosition(0);
+												// TODO for admin this need to
+												// be
+												// not set!
+												myProposal
+														.BindCurrentUserPosition(0);
 
-											myProposal.BindPICoPISignatures();
-											// $("#accordion").accordion("option",
-											// "active", 0);
+												myProposal
+														.BindPICoPISignatures();
+												// $("#accordion").accordion("option",
+												// "active", 0);
+											}
 										}
 									}
 								};
@@ -4961,10 +4965,17 @@ $(function() {
 																	$buttonType,
 																	"Whole Proposal",
 																	myProposal.config);
-												} else {
+												} else if (myProposal.config.proposalId == "0") {
 													myProposal.SaveProposal(
 															$buttonType, "",
 															"0", true);
+												} else {
+													csscody
+															.error('<h2>'
+																	+ 'Error Message'
+																	+ '</h2><p>'
+																	+ 'You are not allowed to perform this OPERATION!'
+																	+ '</p>');
 												}
 
 												$('#btnSaveProposal')
