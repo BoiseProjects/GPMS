@@ -5486,7 +5486,7 @@
 	<Rule Effect="Permit" RuleId="ApproveProposalByUniversityResearchDirector-Rule42">
 		<Description>"University Research Director" can "Approve" a "Whole
 			Proposal"
-			when ApproveByUniversityResearchDirector=READYFORAPPROVAL
+			when ApprovedByUniversityResearchDirector=READYFORAPPROVAL
 		</Description>
 		<Target>
 			<AnyOf>
@@ -5527,7 +5527,7 @@
 	<Rule Effect="Permit" RuleId="DisapproveProposalByUniversityResearchDirector-Rule43">
 		<Description>"University Research Director" can "Disapprove" a "Whole
 			Proposal"
-			when ApproveByUniversityResearchDirector = READYFORAPPROVAL
+			when ApprovedByUniversityResearchDirector = READYFORAPPROVAL
 		</Description>
 		<Target>
 			<AnyOf>
@@ -5568,7 +5568,7 @@
 	<Rule Effect="Permit" RuleId="DeleteProposalByUniversityResearchDirector-Rule44">
 		<Description>"University Research Director" can "Delete" a "Whole
 			Proposal"
-			when ApproveByUniversityResearchDirector = READYFORAPPROVAL and
+			when ApprovedByUniversityResearchDirector = READYFORAPPROVAL and
 			DeletedByUniversityResearchDirector = NOTDELETED
 		</Description>
 		<Target>
@@ -5591,7 +5591,7 @@
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
 						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApproveByUniversityResearchDirector"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByUniversityResearchDirector"
 							Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
