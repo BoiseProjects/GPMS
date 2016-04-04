@@ -3386,11 +3386,12 @@ $(function() {
 								attributeValue : config.researchAdministratorWithdraw
 							});
 
-					attributeArray.push({
-						attributeType : "Resource",
-						attributeName : "ApprovedByUniversityResearchDirector",
-						attributeValue : config.researchAdministratorApproval
-					});
+					attributeArray
+							.push({
+								attributeType : "Resource",
+								attributeName : "ApprovedByUniversityResearchAdministrator",
+								attributeValue : config.researchAdministratorApproval
+							});
 				}
 
 				break;
@@ -5086,90 +5087,87 @@ $(function() {
 			$('#btnWithdrawProposal')
 					.click(
 							function(event) {
-								if (validator.form()) {
-									var properties = {
-										onComplete : function(e) {
-											if (e) {
-												var $buttonType = $.trim($(
-														'#btnWithdrawProposal')
-														.text());
-												$('#btnWithdrawProposal')
-														.disableWith(
-																'Withdrawing...');
+								// if (validator.form()) {
+								var properties = {
+									onComplete : function(e) {
+										if (e) {
+											var $buttonType = $.trim($(
+													'#btnWithdrawProposal')
+													.text());
+											$('#btnWithdrawProposal')
+													.disableWith(
+															'Withdrawing...');
 
-												if (myProposal.config.proposalRoles == ""
-														&& myProposal.config.proposalId != "0"
-														&& myProposal.config.proposalStatus != "") {
-													myProposal
-															.UpdateProposalStatus(
-																	$buttonType,
-																	"Whole Proposal",
-																	myProposal.config);
-												}
-
-												$('#btnWithdrawProposal')
-														.enableAgain();
-												event.preventDefault();
-												return false;
+											if (myProposal.config.proposalRoles == ""
+													&& myProposal.config.proposalId != "0"
+													&& myProposal.config.proposalStatus != "") {
+												myProposal
+														.UpdateProposalStatus(
+																$buttonType,
+																"Whole Proposal",
+																myProposal.config);
 											}
+
+											$('#btnWithdrawProposal')
+													.enableAgain();
+											event.preventDefault();
+											return false;
 										}
-									};
-									csscody
-											.confirm(
-													"<h2>"
-															+ 'Withdraw Confirmation'
-															+ "</h2><p>"
-															+ 'Are you certain you want to withdraw this proposal?'
-															+ "</p>",
-													properties);
-								} else {
-									myProposal.focusTabWithErrors("#accordion");
-								}
+									}
+								};
+								csscody
+										.confirm(
+												"<h2>"
+														+ 'Withdraw Confirmation'
+														+ "</h2><p>"
+														+ 'Are you certain you want to withdraw this proposal?'
+														+ "</p>", properties);
+								// } else {
+								// myProposal.focusTabWithErrors("#accordion");
+								// }
 							});
 
 			// Archive
 			$('#btnArchiveProposal')
 					.click(
 							function(event) {
-								if (validator.form()) {
-									var properties = {
-										onComplete : function(e) {
-											if (e) {
-												var $buttonType = $.trim($(
-														'#btnArchiveProposal')
-														.text());
-												$('#btnArchiveProposal')
-														.disableWith(
-																'Archiving...');
+								// if (validator.form()) {
+								var properties = {
+									onComplete : function(e) {
+										if (e) {
+											var $buttonType = $.trim($(
+													'#btnArchiveProposal')
+													.text());
+											$('#btnArchiveProposal')
+													.disableWith('Archiving...');
 
-												if (myProposal.config.proposalRoles == ""
-														&& myProposal.config.proposalId != "0"
-														&& myProposal.config.proposalStatus != "") {
-													myProposal
-															.UpdateProposalStatus(
-																	$buttonType,
-																	"Whole Proposal",
-																	myProposal.config);
-												}
-
-												$('#btnArchiveProposal')
-														.enableAgain();
-												event.preventDefault();
-												return false;
+											if (myProposal.config.proposalRoles == ""
+													&& myProposal.config.proposalId != "0"
+													&& myProposal.config.proposalStatus != "") {
+												myProposal
+														.UpdateProposalStatus(
+																$buttonType,
+																"Whole Proposal",
+																myProposal.config);
 											}
+
+											$('#btnArchiveProposal')
+													.enableAgain();
+											event.preventDefault();
+											return false;
 										}
-									};
-									csscody
-											.confirm(
-													"<h2>"
-															+ 'Archive Confirmation'
-															+ "</h2><p>"
-															+ 'Are you certain you want to archive this proposal?'
-															+ "</p>",
-													properties);
-								} else {
-									myProposal.focusTabWithErrors("#accordion");
-								}
+									}
+								};
+								csscody
+										.confirm(
+												"<h2>"
+														+ 'Archive Confirmation'
+														+ "</h2><p>"
+														+ 'Are you certain you want to archive this proposal?'
+														+ "</p>", properties);
+								// } else {
+								// myProposal.focusTabWithErrors("#accordion");
+								// }
 							});
 
 			$('#txtProjectTitle').on("focus", function() {

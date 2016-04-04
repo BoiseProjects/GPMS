@@ -148,6 +148,7 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 				&& proposalUserTitle.equals("University Research Director")) {
 
 			proposal.setResearchDirectorDeletion(DeleteType.DELETED);
+			proposal.setResearchDirectorApproval(ApprovalType.NOTREADYFORAPPROVAL);
 
 			// Proposal Status
 			proposal.getProposalStatus().clear();

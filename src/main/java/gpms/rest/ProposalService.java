@@ -474,14 +474,15 @@ public class ProposalService {
 
 	@POST
 	@Path("/DeleteProposalByProposalID")
-	public Response deleteUserByProposalID(String message) throws Exception {
+	public Response deleteProposalByProposalID(String message) throws Exception {
 
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode root = mapper.readTree(message);
 
 		if (root != null && root.has("policyInfo")) {
 			JsonNode policyInfo = root.get("policyInfo");
-			if (policyInfo != null && policyInfo.isArray()) {
+			if (policyInfo != null && policyInfo.isArray()
+					&& policyInfo.size() > 0) {
 				Accesscontrol ac = new Accesscontrol();
 				HashMap<String, Multimap<String, String>> attrMap = new HashMap<String, Multimap<String, String>>();
 
@@ -1062,7 +1063,8 @@ public class ProposalService {
 
 		if (root != null && root.has("policyInfo")) {
 			JsonNode policyInfo = root.get("policyInfo");
-			if (policyInfo != null && policyInfo.isArray()) {
+			if (policyInfo != null && policyInfo.isArray()
+					&& policyInfo.size() > 0) {
 				Accesscontrol ac = new Accesscontrol();
 				HashMap<String, Multimap<String, String>> attrMap = new HashMap<String, Multimap<String, String>>();
 
@@ -1169,6 +1171,8 @@ public class ProposalService {
 																		.equals("University Research Administrator")) {
 															existingProposal
 																	.setResearchAdministratorWithdraw(WithdrawType.WITHDRAWN);
+															existingProposal
+																	.setResearchAdministratorApproval(ApprovalType.NOTREADYFORAPPROVAL);
 
 															// Proposal Status
 															existingProposal
@@ -1194,6 +1198,8 @@ public class ProposalService {
 																		.equals("University Research Director")) {
 															existingProposal
 																	.setResearchDirectorArchived(ArchiveType.ARCHIVED);
+															existingProposal
+																	.setResearchDirectorApproval(ApprovalType.NOTREADYFORAPPROVAL);
 
 															// Proposal Status
 															existingProposal
@@ -3849,7 +3855,8 @@ public class ProposalService {
 
 		if (root != null && root.has("policyInfo")) {
 			JsonNode policyInfo = root.get("policyInfo");
-			if (policyInfo != null && policyInfo.isArray()) {
+			if (policyInfo != null && policyInfo.isArray()
+					&& policyInfo.size() > 0) {
 				Accesscontrol ac = new Accesscontrol();
 				HashMap<String, Multimap<String, String>> attrMap = new HashMap<String, Multimap<String, String>>();
 
