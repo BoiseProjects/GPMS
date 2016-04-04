@@ -3497,8 +3497,8 @@ public class ProposalService {
 										.setSubmittedByPI(SubmitType.NOTSUBMITTED);
 
 								// if (coPICount > 0) {
-								// existingProposal
-								// .setReadyForSubmissionByPI(false);
+								existingProposal
+										.setReadyForSubmissionByPI(false);
 								// }
 								existingProposal.getSignatureInfo().clear();
 
@@ -3521,8 +3521,8 @@ public class ProposalService {
 										.setIrbApproval(ApprovalType.NOTREADYFORAPPROVAL);
 
 								// if (coPICount > 0) {
-								// existingProposal
-								// .setReadyForSubmissionByPI(false);
+								existingProposal
+										.setReadyForSubmissionByPI(false);
 								// }
 
 								existingProposal.getSignatureInfo().clear();
@@ -3543,8 +3543,8 @@ public class ProposalService {
 										.setSubmittedByPI(SubmitType.NOTSUBMITTED);
 
 								// if (coPICount > 0) {
-								// existingProposal
-								// .setReadyForSubmissionByPI(false);
+								existingProposal
+										.setReadyForSubmissionByPI(false);
 								// }
 
 								existingProposal.getSignatureInfo().clear();
@@ -3565,8 +3565,8 @@ public class ProposalService {
 										.setSubmittedByPI(SubmitType.NOTSUBMITTED);
 
 								// if (coPICount > 0) {
-								// existingProposal
-								// .setReadyForSubmissionByPI(false);
+								existingProposal
+										.setReadyForSubmissionByPI(false);
 								// }
 
 								existingProposal.getSignatureInfo().clear();
@@ -3590,8 +3590,8 @@ public class ProposalService {
 										.setSubmittedByPI(SubmitType.NOTSUBMITTED);
 
 								// if (coPICount > 0) {
-								// existingProposal
-								// .setReadyForSubmissionByPI(false);
+								existingProposal
+										.setReadyForSubmissionByPI(false);
 								// }
 
 								existingProposal.getSignatureInfo().clear();
@@ -3615,8 +3615,8 @@ public class ProposalService {
 										.setSubmittedByPI(SubmitType.NOTSUBMITTED);
 
 								// if (coPICount > 0) {
-								// existingProposal
-								// .setReadyForSubmissionByPI(false);
+								existingProposal
+										.setReadyForSubmissionByPI(false);
 								// }
 
 								existingProposal.getSignatureInfo().clear();
