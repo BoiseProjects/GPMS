@@ -69,6 +69,7 @@ import javax.ws.rs.core.Response;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.bson.types.ObjectId;
 import org.glassfish.jersey.media.sse.OutboundEvent;
+import org.junit.internal.runners.model.EachTestNotifier;
 import org.mongodb.morphia.Morphia;
 
 import com.ebay.xcelite.Xcelite;
@@ -2854,10 +2855,6 @@ public class ProposalService {
 											investigatorRefAndPosition);
 								}
 							}
-							// if
-							// (!existingInvestigators.getCo_pi().contains(
-							// investigatorRefAndPosition)) {
-							// }
 						} else {
 							newInvestigatorInfo.getCo_pi().add(
 									investigatorRefAndPosition);
@@ -2899,32 +2896,48 @@ public class ProposalService {
 					// Existing Investigator Info to compare
 					existingInvestigators = oldProposal.getInvestigatorInfo();
 
-					if (!existingProposal.getInvestigatorInfo().getPi()
-							.equals(existingInvestigators.getPi())) {
-						if (!deletedInvestigators.getPi().equals(
-								existingInvestigators.getPi())) {
-							deletedInvestigators.setPi(existingInvestigators
-									.getPi());
-						}
-					}
+					// THIS IS HACK NO ONE CAN DELETE PI
+					// if (!existingProposal.getInvestigatorInfo().getPi()
+					// .equals(existingInvestigators.getPi())) {
+					// if (!deletedInvestigators.getPi().equals(
+					// existingInvestigators.getPi())) {
+					// deletedInvestigators.setPi(existingInvestigators
+					// .getPi());
+					// existingProposal.getInvestigatorInfo().getPi()
+					// .remove(existingInvestigators.getPi());
+					// }
+					// }
 
 					for (InvestigatorRefAndPosition coPI : existingInvestigators
 							.getCo_pi()) {
 						if (!existingProposal.getInvestigatorInfo().getCo_pi()
 								.contains(coPI)) {
-							deletedInvestigators.getCo_pi().add(coPI);
+							if (!deletedInvestigators.getCo_pi().contains(coPI)) {
+								deletedInvestigators.getCo_pi().add(coPI);
+								existingProposal.getInvestigatorInfo()
+										.getCo_pi().remove(coPI);
+							}
+						} else {
+							addedInvestigators.getCo_pi().remove(coPI);
 						}
 					}
 
-					// for (InvestigatorRefAndPosition senior :
-					// existingInvestigators
-					// .getSeniorPersonnel()) {
-					// if (!existingProposal.getInvestigatorInfo()
-					// .getSeniorPersonnel().contains(senior)) {
-					// deletedInvestigators.getSeniorPersonnel().add(
-					// senior);
-					// }
-					// }
+					for (InvestigatorRefAndPosition senior : existingInvestigators
+							.getSeniorPersonnel()) {
+						if (!existingProposal.getInvestigatorInfo()
+								.getSeniorPersonnel().contains(senior)) {
+							if (!deletedInvestigators.getSeniorPersonnel()
+									.contains(senior)) {
+								deletedInvestigators.getSeniorPersonnel().add(
+										senior);
+								existingProposal.getInvestigatorInfo()
+										.getSeniorPersonnel().remove(senior);
+							}
+						} else {
+							addedInvestigators.getSeniorPersonnel().remove(
+									senior);
+						}
+					}
 				}
 			}
 
