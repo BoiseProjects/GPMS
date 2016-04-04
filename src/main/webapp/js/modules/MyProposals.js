@@ -632,7 +632,7 @@ $(function() {
 					attributeValue : currentPositionTitle
 				});
 
-				switch (GPMS.utils.GetUserPositionTitle()) {
+				switch (currentPositionTitle) {
 				case "Department Chair":
 					attributeArray.push({
 						attributeType : "Resource",
@@ -1405,8 +1405,11 @@ $(function() {
 
 				// OSP Section
 				$('#ui-id-23').show();
-				if (GPMS.utils.GetUserPositionTitle() == "University Research Administrator"
-						|| GPMS.utils.GetUserPositionTitle() == "University Research Director") {
+
+				var currentPositionTitle = GPMS.utils.GetUserPositionTitle();
+
+				if (currentPositionTitle == "University Research Administrator"
+						|| currentPositionTitle == "University Research Director") {
 					$('#ui-id-24').find('input, select, textarea').each(
 							function() {
 								// $(this).addClass("ignore");
@@ -2485,6 +2488,7 @@ $(function() {
 
 			var attributeArray = [];
 
+			var currentPositionTitle = GPMS.utils.GetUserPositionTitle();
 			var currentProposalRoles = config.proposalRoles.split(', ');
 
 			if ($.inArray("PI", currentProposalRoles) !== -1
@@ -2507,13 +2511,13 @@ $(function() {
 					attributeName : "DeletedByPI",
 					attributeValue : config.deletedByPI
 				});
-			} else if (GPMS.utils.GetUserPositionTitle() == "University Research Director"
+			} else if (currentPositionTitle == "University Research Director"
 					&& config.researchDirectorDeletion == "NOTDELETED"
 					&& config.researchDirectorApproval == "READYFORAPPROVAL") {
 				attributeArray.push({
 					attributeType : "Subject",
 					attributeName : "position.title",
-					attributeValue : GPMS.utils.GetUserPositionTitle()
+					attributeValue : currentPositionTitle
 				});
 
 				attributeArray.push({
@@ -2546,7 +2550,7 @@ $(function() {
 			this.config.data = JSON2.stringify({
 				proposalId : config.proposalId,
 				proposalRoles : config.proposalRoles,
-				proposalUserTitle : GPMS.utils.GetUserPositionTitle(),
+				proposalUserTitle : currentPositionTitle,
 				policyInfo : attributeArray,
 				gpmsCommonObj : gpmsCommonObj()
 			});
@@ -2877,7 +2881,7 @@ $(function() {
 			return projectTitleIsUnique;
 		},
 
-		SaveProposal : function(buttonClicked, proposalSection, config, _flag) {
+		SaveProposal : function(buttonType, proposalSection, config, _flag) {
 			// if (validator.form()) {
 
 			var $projectTitle = $('#txtProjectTitle');
@@ -3156,7 +3160,8 @@ $(function() {
 				proposalInfo.AppendixInfo = this.config.uploadObj
 						.getResponses().reverse();
 
-				myProposal.AddProposalInfo(buttonClicked, config, proposalInfo);
+				myProposal.AddProposalInfo(buttonType, proposalSection, config,
+						proposalInfo, _flag);
 
 			} else {
 				myProposal.focusTabWithErrors("#accordion");
@@ -3166,199 +3171,204 @@ $(function() {
 			// }
 		},
 
-		AddProposalInfo : function(buttonClicked, config, info) {
-			alert(buttonClicked);
+		AddProposalInfo : function(buttonType, proposalSection, config, info,
+				flag) {
+			alert(buttonType);
+
 			var attributeArray = [];
 
-			var currentProposalRoles = config.proposalRoles.split(', ');
+			if (!flag) {
+				var currentPositionTitle = GPMS.utils.GetUserPositionTitle();
+				var currentProposalRoles = config.proposalRoles.split(', ');
 
-			switch (buttonClicked) {
-			case "Save":
-				if (currentProposalRoles != ""
-						&& ($.inArray("PI", currentProposalRoles) !== -1 || ($
-								.inArray("Co-PI", currentProposalRoles) !== -1 && config.readyForSubmitionByPI == "False"))
-						&& config.submittedByPI == "NOTSUBMITTED"
-						&& config.deletedByPI == "NOTDELETED") {
-					attributeArray.push({
-						attributeType : "Subject",
-						attributeName : "proposal.role",
-						attributeValue : config.proposalRoles
-					});
+				switch (buttonType) {
+				case "Save":
+					if (currentProposalRoles != ""
+							&& ($.inArray("PI", currentProposalRoles) !== -1 || ($
+									.inArray("Co-PI", currentProposalRoles) !== -1 && config.readyForSubmitionByPI == "False"))
+							&& config.submittedByPI == "NOTSUBMITTED"
+							&& config.deletedByPI == "NOTDELETED") {
+						attributeArray.push({
+							attributeType : "Subject",
+							attributeName : "proposal.role",
+							attributeValue : config.proposalRoles
+						});
 
-					attributeArray.push({
-						attributeType : "Resource",
-						attributeName : "SubmittedByPI",
-						attributeValue : config.submittedByPI
-					});
+						attributeArray.push({
+							attributeType : "Resource",
+							attributeName : "SubmittedByPI",
+							attributeValue : config.submittedByPI
+						});
 
-					attributeArray.push({
-						attributeType : "Resource",
-						attributeName : "DeletedByPI",
-						attributeValue : config.deletedByPI
-					});
+						attributeArray.push({
+							attributeType : "Resource",
+							attributeName : "DeletedByPI",
+							attributeValue : config.deletedByPI
+						});
 
-					if ($.inArray("Co-PI", currentProposalRoles) !== -1
-							&& config.readyForSubmitionByPI == "False") {
+						if ($.inArray("Co-PI", currentProposalRoles) !== -1
+								&& config.readyForSubmitionByPI == "False") {
+							attributeArray.push({
+								attributeType : "Resource",
+								attributeName : "ReadyForSubmissionByPI",
+								attributeValue : config.readyForSubmitionByPI
+							});
+						}
+					}
+
+					break;
+
+				case "Submit":
+					if ($.inArray("PI", currentProposalRoles) !== -1
+							&& config.submittedByPI == "NOTSUBMITTED"
+							&& config.readyForSubmitionByPI == "True"
+							&& config.deletedByPI == "NOTDELETED") {
+						attributeArray.push({
+							attributeType : "Subject",
+							attributeName : "proposal.role",
+							attributeValue : config.proposalRoles
+						});
+
+						attributeArray.push({
+							attributeType : "Resource",
+							attributeName : "SubmittedByPI",
+							attributeValue : config.submittedByPI
+						});
+
 						attributeArray.push({
 							attributeType : "Resource",
 							attributeName : "ReadyForSubmissionByPI",
 							attributeValue : config.readyForSubmitionByPI
 						});
+
+						attributeArray.push({
+							attributeType : "Resource",
+							attributeName : "DeletedByPI",
+							attributeValue : config.deletedByPI
+						});
+
+					} else if (currentPositionTitle == "University Research Administrator"
+							&& config.researchAdministratorSubmission == "NOTSUBMITTED"
+							&& config.researchDirectorApproval == "APPROVED") {
+						attributeArray.push({
+							attributeType : "Subject",
+							attributeName : "position.title",
+							attributeValue : currentPositionTitle
+						});
+
+						attributeArray
+								.push({
+									attributeType : "Resource",
+									attributeName : "SubmittedByUniversityResearchAdministrator",
+									attributeValue : config.researchAdministratorSubmission
+								});
+
+						attributeArray
+								.push({
+									attributeType : "Resource",
+									attributeName : "ApprovedByUniversityResearchDirector",
+									attributeValue : config.researchDirectorApproval
+								});
 					}
-				}
 
-				break;
-
-			case "Submit":
-				if ($.inArray("PI", currentProposalRoles) !== -1
-						&& config.submittedByPI == "NOTSUBMITTED"
-						&& config.readyForSubmitionByPI == "True"
-						&& config.deletedByPI == "NOTDELETED") {
-					attributeArray.push({
-						attributeType : "Subject",
-						attributeName : "proposal.role",
-						attributeValue : config.proposalRoles
-					});
-
-					attributeArray.push({
-						attributeType : "Resource",
-						attributeName : "SubmittedByPI",
-						attributeValue : config.submittedByPI
-					});
-
-					attributeArray.push({
-						attributeType : "Resource",
-						attributeName : "ReadyForSubmissionByPI",
-						attributeValue : config.readyForSubmitionByPI
-					});
-
-					attributeArray.push({
-						attributeType : "Resource",
-						attributeName : "DeletedByPI",
-						attributeValue : config.deletedByPI
-					});
-
-				} else if (GPMS.utils.GetUserPositionTitle() == "University Research Administrator"
-						&& config.researchAdministratorSubmission == "NOTSUBMITTED"
-						&& config.researchDirectorApproval == "APPROVED") {
+					break;
+				case "Approve":
+				case "Disapprove":
 					attributeArray.push({
 						attributeType : "Subject",
 						attributeName : "position.title",
-						attributeValue : GPMS.utils.GetUserPositionTitle()
+						attributeValue : currentPositionTitle
 					});
 
-					attributeArray
-							.push({
-								attributeType : "Resource",
-								attributeName : "SubmittedByUniversityResearchAdministrator",
-								attributeValue : config.researchAdministratorSubmission
-							});
+					switch (currentPositionTitle) {
+					case "Department Chair":
+						attributeArray.push({
+							attributeType : "Resource",
+							attributeName : "ApprovedByDepartmentChair",
+							attributeValue : config.chairApproval
+						});
+						break;
+					case "Business Manager":
+						attributeArray.push({
+							attributeType : "Resource",
+							attributeName : "ApprovedByBusinessManager",
+							attributeValue : config.businessManagerApproval
+						});
+						break;
+					case "IRB":
+						attributeArray.push({
+							attributeType : "Resource",
+							attributeName : "ApprovedByIRB",
+							attributeValue : config.irbapproval
+						});
+						break;
+					case "Dean":
+						attributeArray.push({
+							attributeType : "Resource",
+							attributeName : "ApprovedByDean",
+							attributeValue : config.deanApproval
+						});
+						break;
+					case "University Research Administrator":
+						attributeArray
+								.push({
+									attributeType : "Resource",
+									attributeName : "ApprovedByUniversityResearchAdministrator",
+									attributeValue : config.researchAdministratorApproval
+								});
+						break;
+					case "University Research Director":
+						attributeArray
+								.push({
+									attributeType : "Resource",
+									attributeName : "ApprovedByUniversityResearchDirector",
+									attributeValue : config.researchDirectorApproval
+								});
+						break;
+					default:
+						break;
+					}
 
-					attributeArray.push({
-						attributeType : "Resource",
-						attributeName : "ApprovedByUniversityResearchDirector",
-						attributeValue : config.researchDirectorApproval
-					});
-				}
-
-				break;
-			case "Approve":
-			case "Disapprove":
-				var currentPositionTitle = GPMS.utils.GetUserPositionTitle();
-
-				attributeArray.push({
-					attributeType : "Subject",
-					attributeName : "position.title",
-					attributeValue : currentPositionTitle
-				});
-
-				switch (currentPositionTitle) {
-				case "Department Chair":
-					attributeArray.push({
-						attributeType : "Resource",
-						attributeName : "ApprovedByDepartmentChair",
-						attributeValue : config.chairApproval
-					});
-					break;
-				case "Business Manager":
-					attributeArray.push({
-						attributeType : "Resource",
-						attributeName : "ApprovedByBusinessManager",
-						attributeValue : config.businessManagerApproval
-					});
-					break;
-				case "IRB":
-					attributeArray.push({
-						attributeType : "Resource",
-						attributeName : "ApprovedByIRB",
-						attributeValue : config.irbapproval
-					});
-					break;
-				case "Dean":
-					attributeArray.push({
-						attributeType : "Resource",
-						attributeName : "ApprovedByDean",
-						attributeValue : config.deanApproval
-					});
-					break;
-				case "University Research Administrator":
-					attributeArray
-							.push({
-								attributeType : "Resource",
-								attributeName : "ApprovedByUniversityResearchAdministrator",
-								attributeValue : config.researchAdministratorApproval
-							});
-					break;
-				case "University Research Director":
-					attributeArray.push({
-						attributeType : "Resource",
-						attributeName : "ApprovedByUniversityResearchDirector",
-						attributeValue : config.researchDirectorApproval
-					});
 					break;
 				default:
 					break;
 				}
 
-				break;
-			default:
-				break;
+				attributeArray.push({
+					attributeType : "Resource",
+					attributeName : "proposal.section",
+					attributeValue : proposalSection
+				});
 
-			attributeArray.push({
-				attributeType : "Resource",
-				attributeName : "proposal.section",
-				attributeValue : proposalSection
+				attributeArray.push({
+					attributeType : "Action",
+					attributeName : "proposal.action",
+					attributeValue : buttonType
+				});
+			}
+
+			this.config.url = this.config.baseURL + "SaveUpdateProposal";
+			this.config.data = JSON2.stringify({
+				buttonType : buttonType,
+				proposalRoles : config.proposalRoles,
+				proposalUserTitle : currentPositionTitle,
+				proposalInfo : info,
+				policyInfo : attributeArray,
+				gpmsCommonObj : gpmsCommonObj()
 			});
+			this.config.ajaxCallMode = 9;
+			this.config.buttonType = buttonType;
+			this.ajaxCall(this.config);
+			return false;
+		},
 
-			attributeArray.push({
-				attributeType : "Action",
-				attributeName : "proposal.action",
-				attributeValue : buttonClicked
-			});
-		}
-
-		this.config.url = this.config.baseURL + "SaveUpdateProposal";
-		this.config.data = JSON2.stringify({
-			buttonType : buttonClicked,
-			proposalRoles : config.proposalRoles,
-			proposalUserTitle : GPMS.utils.GetUserPositionTitle(),
-			proposalInfo : info,
-			policyInfo : attributeArray,
-			gpmsCommonObj : gpmsCommonObj()
-		});
-		this.config.ajaxCallMode = 9;
-		this.config.buttonType = buttonClicked;
-		this.ajaxCall(this.config);
-		return false;
-	},
-
-		UpdateProposalStatus : function(buttonClicked, proposalSection, config) {
-			alert(buttonClicked);
+		UpdateProposalStatus : function(buttonType, proposalSection, config) {
+			alert(buttonType);
 			var attributeArray = [];
 
 			var currentPositionTitle = GPMS.utils.GetUserPositionTitle();
 
-			switch (buttonClicked) {
+			switch (buttonType) {
 			case "Withdraw":
 				if (config.researchAdministratorWithdraw == "NOTWITHDRAWN"
 						&& config.researchAdministratorApproval == "READYFORAPPROVAL"
@@ -3422,12 +3432,12 @@ $(function() {
 			attributeArray.push({
 				attributeType : "Action",
 				attributeName : "proposal.action",
-				attributeValue : buttonClicked
+				attributeValue : buttonType
 			});
 
 			this.config.url = this.config.baseURL + "UpdateProposalStatus";
 			this.config.data = JSON2.stringify({
-				buttonType : buttonClicked,
+				buttonType : buttonType,
 				proposalUserTitle : currentPositionTitle,
 				proposalId : config.proposalId,
 				policyInfo : attributeArray,
@@ -4905,8 +4915,10 @@ $(function() {
 
 													// TODO ::???
 													myProposal.SaveProposal(
-															$buttonType, "",
-															"0", true);
+															$buttonType,
+															"Whole Proposal",
+															myProposal.config,
+															true);
 												} else {
 													csscody
 															.error('<h2>'
