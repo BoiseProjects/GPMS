@@ -651,10 +651,9 @@ public class ProposalService {
 						.entity("No User Permission Attributes are send!")
 						.build();
 			}
-		} else {
-			return Response.status(403).type(MediaType.APPLICATION_JSON)
-					.entity("No User Permission Attributes are send!").build();
 		}
+		return Response.status(403).type(MediaType.APPLICATION_JSON)
+				.entity("No User Permission Attributes are send!").build();
 	}
 
 	@POST
@@ -1057,7 +1056,6 @@ public class ProposalService {
 	@POST
 	@Path("/UpdateProposalStatus")
 	public Response updateProposalStatus(String message) throws Exception {
-
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode root = mapper.readTree(message);
 
@@ -1065,6 +1063,7 @@ public class ProposalService {
 			JsonNode policyInfo = root.get("policyInfo");
 			if (policyInfo != null && policyInfo.isArray()
 					&& policyInfo.size() > 0) {
+
 				Accesscontrol ac = new Accesscontrol();
 				HashMap<String, Multimap<String, String>> attrMap = new HashMap<String, Multimap<String, String>>();
 
@@ -1335,11 +1334,9 @@ public class ProposalService {
 						.entity("No User Permission Attributes are send!")
 						.build();
 			}
-		} else {
-			return Response.status(403).type(MediaType.APPLICATION_JSON)
-					.entity("No User Permission Attributes are send!").build();
 		}
-		return null;
+		return Response.status(403).type(MediaType.APPLICATION_JSON)
+				.entity("No User Permission Attributes are send!").build();
 	}
 
 	@POST
@@ -1429,10 +1426,9 @@ public class ProposalService {
 						.entity("true").build();
 				// return Response.status(200).entity(true).build();
 			}
-		} else {
-			return Response.status(403).type(MediaType.APPLICATION_JSON)
-					.entity("No User Permission Attributes are send!").build();
 		}
+		return Response.status(403).type(MediaType.APPLICATION_JSON)
+				.entity("No User Permission Attributes are send!").build();
 	}
 
 	private void saveProposal(String message) throws UnknownHostException,
@@ -3976,10 +3972,9 @@ public class ProposalService {
 						.entity("No User Permission Attributes are send!")
 						.build();
 			}
-		} else {
-			return Response.status(403).type(MediaType.APPLICATION_JSON)
-					.entity("No User Permission Attributes are send!").build();
 		}
+		return Response.status(403).type(MediaType.APPLICATION_JSON)
+				.entity("No User Permission Attributes are send!").build();
 	}
 
 	/**
