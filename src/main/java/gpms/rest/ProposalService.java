@@ -1317,6 +1317,11 @@ public class ProposalService {
 														existingProposal,
 														notificationMessage,
 														"Proposal", false);
+
+												return Response
+														.status(200)
+														.type(MediaType.APPLICATION_JSON)
+														.entity("true").build();
 											}
 										}
 									}
@@ -2720,7 +2725,7 @@ public class ProposalService {
 			if (proposalInfo != null && !proposalInfo.has("ProposalNo")
 					&& proposalID.equals("0")) {
 				newProposal
-						.setProposalNo(proposalDAO.findLatestProposalNo() + 1);
+						.setProposalNo(proposalDAO.findLatestProposalNo() + 2);
 			}
 
 			// START
@@ -2953,6 +2958,7 @@ public class ProposalService {
 									.size() == 0) {
 								newProposal.setReadyForSubmissionByPI(true);
 
+								newProposal.getProposalStatus().clear();
 								newProposal.getProposalStatus().add(
 										Status.READYFORSUBMITBYPI);
 							}
@@ -3479,8 +3485,8 @@ public class ProposalService {
 						if (!proposalID.equals("0")
 								&& currentProposalRoles != null) {
 
-							// int coPICount = existingProposal
-							// .getInvestigatorInfo().getCo_pi().size();
+							int coPICount = existingProposal
+									.getInvestigatorInfo().getCo_pi().size();
 
 							// int seniorCount = existingProposal
 							// .getInvestigatorInfo().getSeniorPersonnel()
@@ -3496,10 +3502,11 @@ public class ProposalService {
 								existingProposal
 										.setSubmittedByPI(SubmitType.NOTSUBMITTED);
 
-								// if (coPICount > 0) {
-								existingProposal
-										.setReadyForSubmissionByPI(false);
-								// }
+								if (coPICount > 0) {
+									existingProposal
+											.setReadyForSubmissionByPI(false);
+								}
+
 								existingProposal.getSignatureInfo().clear();
 
 								// Proposal Status
@@ -3520,10 +3527,10 @@ public class ProposalService {
 								existingProposal
 										.setIrbApproval(ApprovalType.NOTREADYFORAPPROVAL);
 
-								// if (coPICount > 0) {
-								existingProposal
-										.setReadyForSubmissionByPI(false);
-								// }
+								if (coPICount > 0) {
+									existingProposal
+											.setReadyForSubmissionByPI(false);
+								}
 
 								existingProposal.getSignatureInfo().clear();
 
@@ -3542,10 +3549,10 @@ public class ProposalService {
 								existingProposal
 										.setSubmittedByPI(SubmitType.NOTSUBMITTED);
 
-								// if (coPICount > 0) {
-								existingProposal
-										.setReadyForSubmissionByPI(false);
-								// }
+								if (coPICount > 0) {
+									existingProposal
+											.setReadyForSubmissionByPI(false);
+								}
 
 								existingProposal.getSignatureInfo().clear();
 
@@ -3564,10 +3571,10 @@ public class ProposalService {
 								existingProposal
 										.setSubmittedByPI(SubmitType.NOTSUBMITTED);
 
-								// if (coPICount > 0) {
-								existingProposal
-										.setReadyForSubmissionByPI(false);
-								// }
+								if (coPICount > 0) {
+									existingProposal
+											.setReadyForSubmissionByPI(false);
+								}
 
 								existingProposal.getSignatureInfo().clear();
 
@@ -3589,10 +3596,10 @@ public class ProposalService {
 								existingProposal
 										.setSubmittedByPI(SubmitType.NOTSUBMITTED);
 
-								// if (coPICount > 0) {
-								existingProposal
-										.setReadyForSubmissionByPI(false);
-								// }
+								if (coPICount > 0) {
+									existingProposal
+											.setReadyForSubmissionByPI(false);
+								}
 
 								existingProposal.getSignatureInfo().clear();
 
@@ -3614,10 +3621,10 @@ public class ProposalService {
 								existingProposal
 										.setSubmittedByPI(SubmitType.NOTSUBMITTED);
 
-								// if (coPICount > 0) {
-								existingProposal
-										.setReadyForSubmissionByPI(false);
-								// }
+								if (coPICount > 0) {
+									existingProposal
+											.setReadyForSubmissionByPI(false);
+								}
 
 								existingProposal.getSignatureInfo().clear();
 

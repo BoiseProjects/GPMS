@@ -1433,7 +1433,9 @@ $(function() {
 
 				myProposal.BindProposalDetailsByProposalId(argus[0]);
 
-				myProposal.ButtonHideShow(myProposal.config);
+				$('.sfButtonwrapper>p>button').show();
+
+				// myProposal.ButtonHideShow(myProposal.config);
 
 				// Certification/ Signatures Info
 				myProposal.BindAllSignatureForAProposal(argus[0], argus[20]);
@@ -3176,9 +3178,9 @@ $(function() {
 			alert(buttonType);
 
 			var attributeArray = [];
+			var currentPositionTitle = GPMS.utils.GetUserPositionTitle();
 
 			if (!flag) {
-				var currentPositionTitle = GPMS.utils.GetUserPositionTitle();
 				var currentProposalRoles = config.proposalRoles.split(', ');
 
 				switch (buttonType) {
