@@ -1,4 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
+-- XML schema extracted from ITU-T X.1144 (10/2013)
+
+ï»¿<?xml version="1.0" encoding="UTF-8"?>
 <Policy
   xmlns="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17"
   xmlns:xacml ="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17"
@@ -14,7 +16,7 @@
   </Description>
   <PolicyDefaults>
     <XPathVersion>http://www.w3.org/TR/1999/REC-xpath-19991116</XPathVersion>
-  </PolicyDefaults>
+  </PolicyDefaults> 
   <Target>
     <AnyOf>
       <AllOf>
@@ -25,7 +27,7 @@
           <AttributeDesignator
             MustBePresent="false"
             Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
-            AttributeId="urn:oasis:names:tc:xacml:2.0:resource:target-namespace"
+            AttributeId="urn:oasis:names:tc:xacml:2.0:resource:target-namespace" 
             DataType="http://www.w3.org/2001/XMLSchema#anyURI"/>
         </Match>
       </AllOf>
@@ -44,70 +46,47 @@
           <Match
             MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
             <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string"
-              >Department Chair</AttributeValue>
+              >physician</AttributeValue>
             <AttributeDesignator
               MustBePresent="false"
          Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
-              AttributeId="urn:oasis:names:tc:xacml:3.0:example:position.title"
+              AttributeId="urn:oasis:names:tc:xacml:3.0:example:attribute:role" 
               DataType="http://www.w3.org/2001/XMLSchema#string"/>
           </Match>
         </AllOf>
       </AnyOf>
-
-      <AnyOf>
-        <AllOf>
-          <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Whole Proposal</AttributeValue>
-            <AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:proposal.section"
-							Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource"
-							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
-          </Match>
-          <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
-            <AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDepartmentChair"
-							Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource"
-							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
-          </Match>
-        </AllOf>
-      </AnyOf>
-      <!--
       <AnyOf>
         <AllOf>
           <Match
              MatchId="urn:oasis:names:tc:xacml:3.0:function:xpath-node-match">
-            <AttributeValue
-             DataType="urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression"
-      XPathCategory="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
-                >md:record/md:proposal/md:investigators/md:pi/md:userid</AttributeValue>
-            <AttributeDesignator
-              MustBePresent="false"
-            Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
-              AttributeId="urn:oasis:names:tc:xacml:3.0:content-selector"
-            DataType="urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression"/>
+             <AttributeValue 
+              DataType="urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression"
+       XPathCategory="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+                >md:record/md:medical</AttributeValue>
+             <AttributeDesignator
+               MustBePresent="false"
+             Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+               AttributeId="urn:oasis:names:tc:xacml:3.0:content-selector" 
+             DataType="urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression"/>
           </Match>
         </AllOf>
       </AnyOf>
-      -->
       <AnyOf>
         <AllOf>
           <Match
             MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-            <AttributeValue
+            <AttributeValue 
               DataType="http://www.w3.org/2001/XMLSchema#string"
-              >Approve</AttributeValue>
+              >write</AttributeValue>
             <AttributeDesignator
               MustBePresent="false"
               Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action"
-              AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action"
+              AttributeId="urn:oasis:names:tc:xacml:1.0:action:action-id" 
               DataType="http://www.w3.org/2001/XMLSchema#string"/>
           </Match>
         </AllOf>
       </AnyOf>
     </Target>
-    
-    <!--
     <Condition>
       <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
         <Apply
@@ -128,8 +107,6 @@
         </Apply>
       </Apply>
     </Condition>
-    -->
-    
   </Rule>
   <ObligationExpressions>
     <ObligationExpression ObligationId="urn:oasis:names:tc:xacml:example:obligation:email"
@@ -139,7 +116,7 @@
         <AttributeSelector
           MustBePresent="true"
           Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
-          Path="md:record/md:proposal/md:investigators/md:pi/md:workemail"
+          Path="md:record/md:patient/md:patientContact/md:email"
           DataType="http://www.w3.org/2001/XMLSchema#string"/>
       </AttributeAssignmentExpression>
       <AttributeAssignmentExpression
@@ -152,7 +129,7 @@
         <AttributeDesignator
           MustBePresent="false"
          Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
-          AttributeId="urn:oasis:names:tc:xacml:1.0:subject:subject-id"
+          AttributeId="urn:oasis:names:tc:xacml:1.0:subject:subject-id" 
           DataType="http://www.w3.org/2001/XMLSchema#string"/>
       </AttributeAssignmentExpression>
     </ObligationExpression>
