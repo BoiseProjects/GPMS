@@ -34,9 +34,9 @@
   <Rule RuleId="urn:oasis:names:tc:xacml:3.0:example:ruleid:3"
     Effect="Permit">
     <Description>
-      A physician may write any medical element in a record
-      for which he or she is the designated primary care
-      physician, provided an email is sent to the patient
+      "Department Chair" can "Approve" a "Whole Proposal"
+      when ApprovedByDepartmentChair = READYFORAPPROVAL, 
+      provided an email is sent to the PI
     </Description>
     <Target>
       <AnyOf>
