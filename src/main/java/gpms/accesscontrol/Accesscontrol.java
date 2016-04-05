@@ -14,6 +14,7 @@ import org.wso2.balana.PDP;
 import org.wso2.balana.PDPConfig;
 import org.wso2.balana.ctx.AbstractRequestCtx;
 import org.wso2.balana.ctx.AbstractResult;
+import org.wso2.balana.ctx.AttributeAssignment;
 import org.wso2.balana.ctx.RequestCtxFactory;
 import org.wso2.balana.ctx.ResponseCtx;
 import org.wso2.balana.finder.AttributeFinder;
@@ -296,9 +297,21 @@ public class Accesscontrol {
 			ar = it.next();
 			intDecision = ar.getDecision();
 
-			List<ObligationResult> obligations = ar.getObligations();
+			// List<ObligationResult> obligations = ar.getObligations();
+			//
+			// System.out.println("Obligations = " + obligations);
 
-			System.out.println("Obligations = " + obligations);
+			List<ObligationResult> obligations = ar.getObligations();
+			for (ObligationResult obligation : obligations) {
+				if (obligation instanceof org.wso2.balana.xacml3.Obligation) {
+					List<AttributeAssignment> assignments = ((org.wso2.balana.xacml3.Obligation) obligation)
+							.getAssignments();
+					for (AttributeAssignment assignment : assignments) {
+						System.out.println("Obligation :  "
+								+ assignment.getContent() + "\n\n");
+					}
+				}
+			}
 
 			if (intDecision >= 4 && intDecision <= 6) {
 				intDecision = 2;

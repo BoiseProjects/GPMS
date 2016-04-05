@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Request xmlns="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17 http://docs.oasis-open.org/xacml/3.0/xacml-core-v3-schema-wd-17.xsd"
+ReturnPolicyIdList="false">
+  <Attributes Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject">
+    <Attribute IncludeInResult="false"
+  AttributeId="urn:oasis:names:tc:xacml:1.0:subject:subject-id"
+   Issuer="med.example.com">
+      <AttributeValue
+     DataType="http://www.w3.org/2001/XMLSchema#string">Name of Department Chair</AttributeValue>
+    </Attribute>
+    <Attribute IncludeInResult="false"
+   AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
+   Issuer="med.example.com">
+      <AttributeValue
+      DataType="http://www.w3.org/2001/XMLSchema#string">Department Chair</AttributeValue>
+    </Attribute>
+
+    <!--<Attribute IncludeInResult="false"
+    AttributeId="urn:oasis:names:tc:xacml:3.0:example:attribute:physician-id"
+         Issuer="med.example.com">
+      <AttributeValue
+         DataType="http://www.w3.org/2001/XMLSchema#string">jh1234</AttributeValue>
+    </Attribute>-->
+
+  </Attributes>
+
+
+  <Attributes
+    Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource">
+    <Content>
+      <md:record xmlns:md="urn:example:med:schemas:record"
+         xsi:schemaLocation="urn:example:med:schemas:record
+         http://www.med.example.com/schemas/record.xsd">
+        <md:proposal>
+          <md:investigators>
+            <md:pi>
+              <md:firstname>Admin</md:firstname>
+              <md:middlename></md:middlename>
+              <md:lastname>Admin</md:lastname>
+              <md:workemail>milsonmun@gmail.com</md:workemail>
+              <md:userid>56e459c1af68c71ea4248ed7</md:userid>
+            </md:pi>
+          </md:investigators>
+        </md:proposal>
+      </md:record>
+    </Content>
+
+    <!--
+    <Attribute IncludeInResult="false"
+         AttributeId="urn:oasis:names:tc:xacml:3.0:content-selector" >
+      <AttributeValue
+      XPathCategory="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+    DataType=" urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression"
+            >md:record/md:proposal/md:investigators/md:pi/md:userid</AttributeValue>
+    </Attribute>
+    
+    -->
+
+    <Attribute IncludeInResult="false"
+  AttributeId="urn:oasis:names:tc:xacml:1.0:resource:proposal.section"
+  Issuer="med.example.com">
+      <AttributeValue
+      DataType="http://www.w3.org/2001/XMLSchema#string">Whole Proposal</AttributeValue>
+    </Attribute>
+
+    <Attribute IncludeInResult="false"
+   AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDepartmentChair"
+   Issuer="med.example.com">
+      <AttributeValue
+      DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+    </Attribute>
+
+    <Attribute IncludeInResult="false"
+     AttributeId="urn:oasis:names:tc:xacml:2.0:resource:target-namespace" >
+      <AttributeValue
+         DataType="http://www.w3.org/2001/XMLSchema#anyURI"
+           >urn:example:med:schemas:record</AttributeValue>
+    </Attribute>
+  </Attributes>
+  <Attributes
+      Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action">
+    <Attribute IncludeInResult="false"
+      AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action" >
+      <AttributeValue
+         DataType="http://www.w3.org/2001/XMLSchema#string">Approve</AttributeValue>
+    </Attribute>
+  </Attributes>
+  
+  <!--
+   <Attributes
+    Category="urn:oasis:names:tc:xacml:3.0:attribute-category:environment">
+    <Attribute IncludeInResult="false"
+         AttributeId="urn:oasis:names:tc:xacml:1.0:environment:current-date" >
+      <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#date"
+                 >2010-01-11</AttributeValue>
+    </Attribute>
+  </Attributes>
+  --> 
+</Request>

@@ -14,3 +14,49 @@ policy accessPages{
 
 namespace test { policy testpolicy { target clause Attributes.subjectId ==
 "alice" apply permitOverrides rule { permit } } }
+
+namespace stackoverflow{
+
+    attribute subjectId{
+        category = subjectCat
+        id = "urn:oasis:names:tc:xacml:1.0:subject:subject-id"
+        type = string
+    }
+
+    attribute resourceId{
+        category = resourceCat
+        id = "urn:oasis:names:tc:xacml:1.0:resource:resource-id"
+        type = string
+
+    }
+
+    attribute resourceType{
+        category = resourceCat
+        id = "urn:oasis:names:tc:xacml:1.0:resource:type"
+        type = string
+
+    }
+
+    attribute actionId{
+        category = actionCat
+        id = "urn:oasis:names:tc:xacml:1.0:action:action-id"
+        type = string
+    }
+
+    obligation displayAttributes = "obligation.displayAttributes"
+
+    policy example{
+        apply firstApplicable
+        rule example{
+            permit
+            on permit{
+                obligation displayAttributes{
+                    subjectId = subjectId
+                    resourceId = resourceId
+                    resourceType = resourceType
+                    actionId = actionId
+                }
+            }
+        }
+    }
+}

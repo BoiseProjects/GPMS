@@ -2938,6 +2938,32 @@ public class ProposalService {
 									senior);
 						}
 					}
+
+					// Remove Signatures FOR Deleted Investigators
+
+					// THIS IS HACK PI CANNOT BE DELETED FROM PROPOSAL
+					// if (deletedInvestigators.getPi() != null) {
+					// for (SignatureInfo sign : oldProposal
+					// .getSignatureInfo()) {
+					// if (deletedInvestigators.getPi().getUserProfileId()
+					// .equalsIgnoreCase(sign.getUserProfileId())) {
+					// existingProposal.getSignatureInfo()
+					// .remove(sign);
+					// }
+					// }
+					// }
+
+					for (InvestigatorRefAndPosition coPI : deletedInvestigators
+							.getCo_pi()) {
+						for (SignatureInfo sign : oldProposal
+								.getSignatureInfo()) {
+							if (coPI.getUserProfileId().equalsIgnoreCase(
+									sign.getUserProfileId())) {
+								existingProposal.getSignatureInfo()
+										.remove(sign);
+							}
+						}
+					}
 				}
 			}
 
@@ -3721,30 +3747,6 @@ public class ProposalService {
 				// .findProposalByProposalID(proposalId);
 
 				if (!existingProposal.equals(oldProposal)) {
-					if (deletedInvestigators.getPi() != null) {
-						for (SignatureInfo sign : oldProposal
-								.getSignatureInfo()) {
-							if (deletedInvestigators.getPi().getUserProfileId()
-									.equalsIgnoreCase(sign.getUserProfileId())) {
-								existingProposal.getSignatureInfo()
-										.remove(sign);
-
-							}
-						}
-					}
-
-					for (InvestigatorRefAndPosition coPI : deletedInvestigators
-							.getCo_pi()) {
-						for (SignatureInfo sign : oldProposal
-								.getSignatureInfo()) {
-							if (coPI.getUserProfileId().equalsIgnoreCase(
-									sign.getUserProfileId())) {
-								existingProposal.getSignatureInfo()
-										.remove(sign);
-							}
-						}
-					}
-
 					proposalDAO.updateProposal(existingProposal, authorProfile);
 					currentProposal = existingProposal;
 
