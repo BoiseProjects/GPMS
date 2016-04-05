@@ -287,7 +287,48 @@ public class Accesscontrol {
 
 	public String getXACMLdecision(
 			HashMap<String, Multimap<String, String>> attrMap) {
-		String request = createXACMLRequest(attrMap);
+		// String request = createXACMLRequest(attrMap);
+		String request = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+				+ "<Request xmlns=\"urn:oasis:names:tc:xacml:3.0:core:schema:wd-17\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"urn:oasis:names:tc:xacml:3.0:core:schema:wd-17 http://docs.oasis-open.org/xacml/3.0/xacml-core-v3-schema-wd-17.xsd\" CombinedDecision=\"false\" ReturnPolicyIdList=\"false\">\n"
+				+ "<Attributes Category=\"urn:oasis:names:tc:xacml:1.0:subject-category:access-subject\">\n"
+				+ "<Attribute IncludeInResult=\"false\" AttributeId=\"urn:oasis:names:tc:xacml:1.0:subject:subject-id\" Issuer=\"med.example.com\">\n"
+				+ "<AttributeValue DataType=\"http://www.w3.org/2001/XMLSchema#string\">Name of Department Chair</AttributeValue>\n"
+				+ "</Attribute>\n"
+				+ "<Attribute IncludeInResult=\"false\" AttributeId=\"urn:oasis:names:tc:xacml:1.0:subject:position.title\" Issuer=\"med.example.com\">\n"
+				+ "<AttributeValue DataType=\"http://www.w3.org/2001/XMLSchema#string\">Department Chair</AttributeValue>\n"
+				+ "</Attribute>\n"
+				+ "</Attributes>\n"
+				+ "<Attributes Category=\"urn:oasis:names:tc:xacml:3.0:attribute-category:resource\">\n"
+				+ "<Content>\n"
+				+ "<md:record xmlns:md=\"urn:example:med:schemas:record\" xsi:schemaLocation=\"urn:example:med:schemas:record http://www.med.example.com/schemas/record.xsd\">\n"
+				+ "<md:proposal>\n"
+				+ "<md:investigators>\n"
+				+ "<md:pi>\n"
+				+ "<md:firstname>Admin</md:firstname>\n"
+				+ "<md:middlename></md:middlename>\n"
+				+ "<md:lastname>Admin</md:lastname>\n"
+				+ "<md:workemail>milsonmun@gmail.com</md:workemail>\n"
+				+ "<md:userid>56e459c1af68c71ea4248ed7</md:userid>\n"
+				+ "</md:pi>\n"
+				+ "</md:investigators>\n"
+				+ "</md:proposal>\n"
+				+ "</md:record>\n"
+				+ "</Content>\n"
+				+ "<Attribute IncludeInResult=\"false\" AttributeId=\"urn:oasis:names:tc:xacml:1.0:resource:proposal.section\" Issuer=\"med.example.com\">\n"
+				+ "<AttributeValue DataType=\"http://www.w3.org/2001/XMLSchema#string\">Whole Proposal</AttributeValue>\n"
+				+ "</Attribute>\n"
+				+ "<Attribute IncludeInResult=\"false\" AttributeId=\"urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDepartmentChair\" Issuer=\"med.example.com\">\n"
+				+ "<AttributeValue DataType=\"http://www.w3.org/2001/XMLSchema#string\">READYFORAPPROVAL</AttributeValue>\n"
+				+ "</Attribute>\n"
+				+ "<Attribute IncludeInResult=\"false\" AttributeId=\"urn:oasis:names:tc:xacml:2.0:resource:target-namespace\" >\n"
+				+ "<AttributeValue DataType=\"http://www.w3.org/2001/XMLSchema#anyURI\">urn:example:med:schemas:record</AttributeValue>\n"
+				+ "</Attribute>\n"
+				+ "</Attributes>\n"
+				+ "<Attributes Category=\"urn:oasis:names:tc:xacml:1.0:attribute-category:action\">\n"
+				+ "<Attribute IncludeInResult=\"false\" AttributeId=\"urn:oasis:names:tc:xacml:1.0:action:proposal.action\">\n"
+				+ "<AttributeValue DataType=\"http://www.w3.org/2001/XMLSchema#string\">Approve</AttributeValue>\n"
+				+ "</Attribute>\n" + "</Attributes>\n" + "</Request>";
+
 		ResponseCtx responseCtx = getResponse(request);
 
 		Set<AbstractResult> set = responseCtx.getResults();
