@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="urn:example:med:schemas:record" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="urn:example:med:schemas:record" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="record">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="patient">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="patientDoB" type="xs:date" />
+              <xs:element name="patient-number" type="xs:unsignedInt" />
+              <xs:element name="patientContact">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="email" type="xs:string" />
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

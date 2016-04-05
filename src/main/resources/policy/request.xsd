@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:md="urn:example:med:schemas:record" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import namespace="urn:example:med:schemas:record" />
+  <xs:element name="Request">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" name="Attributes">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element minOccurs="0" name="Content">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element ref="md:record" />
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element maxOccurs="unbounded" name="Attribute">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="AttributeValue">
+                      <xs:complexType>
+                        <xs:simpleContent>
+                          <xs:extension base="xs:string">
+                            <xs:attribute name="DataType" type="xs:string" use="required" />
+                            <xs:attribute name="XPathCategory" type="xs:string" use="optional" />
+                          </xs:extension>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute name="IncludeInResult" type="xs:boolean" use="required" />
+                  <xs:attribute name="AttributeId" type="xs:string" use="required" />
+                  <xs:attribute name="Issuer" type="xs:string" use="optional" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+            <xs:attribute name="Category" type="xs:string" use="required" />
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute name="ReturnPolicyIdList" type="xs:boolean" use="required" />
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

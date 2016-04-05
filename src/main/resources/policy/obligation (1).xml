@@ -1,0 +1,128 @@
+-- XML schema extracted from ITU-T X.1144 (10/2013)
+
+<?xml version="1.0" encoding="UTF-8"?>
+<Policy
+  xmlns="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17"
+  xmlns:xacml ="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17 http://docs.oasis-open.org/xacml/3.0/xacml-core-v3-schema-wd-17.xsd"
+  xmlns:md="http:www.med.example.com/schemas/record.xsd"
+  PolicyId="urn:oasis:names:tc:xacml:3.0:example:policyid:3"
+  Version="1.0"
+  RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:deny-overrides">
+  <Description>
+  </Description>
+  <PolicyDefaults>
+    <XPathVersion>http://www.w3.org/TR/1999/REC-xpath-19991116</XPathVersion>
+  </PolicyDefaults>
+  <Target>
+    <AnyOf>
+      <AllOf>
+        <Match
+          MatchId="urn:oasis:names:tc:xacml:1.0:function:anyURI-equal">
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#anyURI"
+            >urn:example:med:schemas:record</AttributeValue>
+          <AttributeDesignator
+            MustBePresent="false"
+            Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+            AttributeId="urn:oasis:names:tc:xacml:2.0:resource:target-namespace"
+            DataType="http://www.w3.org/2001/XMLSchema#anyURI"/>
+        </Match>
+      </AllOf>
+    </AnyOf>
+  </Target>
+  <Rule RuleId="urn:oasis:names:tc:xacml:3.0:example:ruleid:3"
+    Effect="Permit">
+    <Description>
+      "IRB" can "Approve" a "Whole Proposal"
+      when ApprovedByIRB = READYFORAPPROVAL
+    </Description>
+    <Target>
+      <AnyOf>
+        <AllOf>
+          <Match
+            MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string"
+              >IRB</AttributeValue>
+            <AttributeDesignator
+              MustBePresent="false"
+			Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
+              AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
+              DataType="http://www.w3.org/2001/XMLSchema#string"/>
+          </Match>
+        </AllOf>
+      </AnyOf>
+      <AnyOf>
+        <AllOf>
+          <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+            <AttributeDesignator
+            AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByIRB"
+            Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource"
+            DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+          </Match>
+          <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Whole Proposal</AttributeValue>
+            <AttributeDesignator
+            AttributeId="urn:oasis:names:tc:xacml:1.0:resource:proposal.section"
+            Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource"
+            DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+          </Match>
+          <Match
+               MatchId="urn:oasis:names:tc:xacml:3.0:function:xpath-node-match">
+            <AttributeValue
+             DataType="urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression"
+      XPathCategory="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+                >md:record/md:medical</AttributeValue>
+            <AttributeDesignator
+              MustBePresent="false"
+            Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+              AttributeId="urn:oasis:names:tc:xacml:3.0:content-selector"
+            DataType="urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression"/>
+          </Match>
+        </AllOf>
+      </AnyOf>
+      <AnyOf>
+        <AllOf>
+          <Match
+            MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+            <AttributeValue
+              DataType="http://www.w3.org/2001/XMLSchema#string"
+              >Approve</AttributeValue>
+            <AttributeDesignator
+              MustBePresent="false"
+              Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action"
+              AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action"
+              DataType="http://www.w3.org/2001/XMLSchema#string"/>
+          </Match>
+        </AllOf>
+      </AnyOf>
+    </Target>
+  </Rule>
+  <ObligationExpressions>
+    <ObligationExpression ObligationId="urn:oasis:names:tc:xacml:example:obligation:email"
+      FulfillOn="Permit">
+      <AttributeAssignmentExpression
+        AttributeId="urn:oasis:names:tc:xacml:3.0:example:attribute:mailto">
+        <AttributeSelector
+          MustBePresent="true"
+          Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+          Path="md:record/md:role/md:PIContact/md:email"
+          DataType="http://www.w3.org/2001/XMLSchema#string"/>
+      </AttributeAssignmentExpression>
+      <AttributeAssignmentExpression
+        AttributeId="urn:oasis:names:tc:xacml:3.0:example:attribute:text">
+        <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string"
+        >Your medical record has been accessed by:</AttributeValue>
+      </AttributeAssignmentExpression>
+      <AttributeAssignmentExpression
+        AttributeId="urn:oasis:names:tc:xacml:3.0:example:attribute:text">
+        <AttributeDesignator
+          MustBePresent="false"
+         Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
+          AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title"
+          DataType="http://www.w3.org/2001/XMLSchema#string"/>
+      </AttributeAssignmentExpression>
+    </ObligationExpression>
+  </ObligationExpressions>
+</Policy>
