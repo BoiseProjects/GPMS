@@ -109,6 +109,31 @@ public class TestSignatureChecking {
 		assertTrue(allSigned);
 	}
 
+	@Test
+	public void verifyNoDuplicatesExist() throws UnknownHostException {
+		boolean noDupes = true;
+		List<Proposal> propList = newProposalDAO.findAllProposals();
+		for (Proposal prop : propList) {
+			
+			for(SignatureInfo sigs : prop.getSignatureInfo())
+			{
+				int unique = 0;
+				for(SignatureInfo otherSigs : prop.getSignatureInfo())
+				{
+					if(sigs.equals(otherSigs))
+					{
+						unique++;
+					}
+					if(unique>1)
+					{
+						noDupes = false;
+					}
+				}
+			}
+		}
+		assertTrue(noDupes);
+	}
+	
 	// ///////////////////////////////////////////
 	// THIS IS THE EXACT COPY OF THE METHOD FROM//
 	// PROPOSALSERVICE.JAVA, IF THIS WORKS, THAT//

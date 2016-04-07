@@ -21,7 +21,7 @@ import org.mongodb.morphia.Morphia;
 
 import com.mongodb.MongoClient;
 
-public class Create10UsersTest {
+public class CreateXUsersTest {
 
 	MongoClient mongoClient;
 	Morphia morphia;
@@ -29,7 +29,7 @@ public class Create10UsersTest {
 	UserAccountDAO newUserAccountDAO;
 	UserProfileDAO newUserProfileDAO;
 	ProposalDAO newProposalDAO;
-	final int MAXIMUM_PROFILES = 10; // Adjust this to make more or less
+	final int MAXIMUM_PROFILES = 100; // Adjust this to make more or less
 										// profiles
 										// with the generator.
 

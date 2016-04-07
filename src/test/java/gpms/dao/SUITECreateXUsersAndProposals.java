@@ -4,7 +4,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
-@Suite.SuiteClasses({ Create10UsersTest.class, Create10Proposals.class })
+@Suite.SuiteClasses({ CreateXUsersTest.class, CreateXProposals.class })
 public class SUITECreateXUsersAndProposals {
 
 }
