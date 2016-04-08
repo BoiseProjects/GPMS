@@ -110,7 +110,7 @@ public class CreateXProposals {
 					newInvPos.setUserRef(propProfile);
 
 					newInfo.setPi(newInvPos);
-					continue;
+					break;
 				}
 			}
 
@@ -127,7 +127,7 @@ public class CreateXProposals {
 //					System.out.println("coPiChoice rand: " + coPIChoice);
 					UserProfile coPIProfile = dupMasterList.get(coPIChoice);
 					
-//					dupMasterList.remove(coPIChoice);
+                    dupMasterList.remove(coPIChoice);
 					newInvPos = new InvestigatorRefAndPosition();
 					if(!copiList.contains(coPIProfile)){
 					for (PositionDetails details : coPIProfile.getDetails()) {
@@ -147,7 +147,8 @@ public class CreateXProposals {
 
 							newInfo.getCo_pi().add(newInvPos);
 							copiList.add(coPIProfile);
-							continue;
+							
+							break;
 						}
 					}
 					
@@ -162,7 +163,7 @@ public class CreateXProposals {
 				for (int b = 0; b < totalSeniors; b++) {
 					int seniorChoice = rand.nextInt(dupMasterList.size());
 					UserProfile seniorProfile = dupMasterList.get(seniorChoice);
-//					dupMasterList.remove(seniorChoice);
+ 			        dupMasterList.remove(seniorChoice);
 					newInvPos = new InvestigatorRefAndPosition();
 
 					for (PositionDetails details : seniorProfile.getDetails()) {
@@ -181,7 +182,8 @@ public class CreateXProposals {
 							newInvPos.setUserRef(seniorProfile);
 
 							newInfo.getSeniorPersonnel().add(newInvPos);
-//							continue;
+							
+							break;
 						}
 					}
 				}
