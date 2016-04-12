@@ -36,8 +36,7 @@ public class Accesscontrol {
 		InputStream inputStream = this.getClass().getResourceAsStream(file);
 
 		String policyFolderName = "/policy";
-		policyLocation = this.getClass().getResource(policyFolderName).toURI()
-				.getPath();
+		policyLocation = this.getClass().getResource(policyFolderName).toURI().getPath();
 
 		this.attrSpreadSheet = new AttributeSpreadSheet(inputStream);
 
@@ -51,9 +50,7 @@ public class Accesscontrol {
 					try {
 						// String policyLocation = (new File("."))
 						// .getCanonicalPath() + File.separator + "policy";
-						System.setProperty(
-								FileBasedPolicyFinderModule.POLICY_DIR_PROPERTY,
-								policyLocation);
+						System.setProperty(FileBasedPolicyFinderModule.POLICY_DIR_PROPERTY, policyLocation);
 
 						policies.add(FileBasedPolicyFinderModule.POLICY_DIR_PROPERTY);
 
@@ -66,66 +63,43 @@ public class Accesscontrol {
 		}
 	}
 
-	private String createXACMLRequest(String userName, String resource,
-			String action) {
+	private String createXACMLRequest(String userName, String resource, String action) {
 
 		return "<Request xmlns=\"urn:oasis:names:tc:xacml:3.0:core:schema:wd-17\" CombinedDecision=\"false\" ReturnPolicyIdList=\"false\">\n"
 				+ "<Attributes Category=\"urn:oasis:names:tc:xacml:3.0:attribute-category:resource\">\n"
 				+ "<Attribute AttributeId=\"urn:oasis:names:tc:xacml:1.0:resource:resource-id\" IncludeInResult=\"false\">\n"
-				+ "<AttributeValue DataType=\"http://www.w3.org/2001/XMLSchema#string\">"
-				+ resource
-				+ "</AttributeValue>\n"
-				+ "</Attribute>\n"
-				+ "</Attributes>\n"
+				+ "<AttributeValue DataType=\"http://www.w3.org/2001/XMLSchema#string\">" + resource
+				+ "</AttributeValue>\n" + "</Attribute>\n" + "</Attributes>\n"
 				+ "<Attributes Category=\"urn:oasis:names:tc:xacml:3.0:action-category:action\">\n"
 				+ "<Attribute AttributeId=\"urn:oasis:names:tc:xacml:1.0:action:action-id\" IncludeInResult=\"false\">\n"
-				+ "<AttributeValue DataType=\"http://www.w3.org/2001/XMLSchema#string\">"
-				+ action
-				+ "</AttributeValue>\n"
-				+ "</Attribute>\n"
-				+ "</Attributes>\n"
+				+ "<AttributeValue DataType=\"http://www.w3.org/2001/XMLSchema#string\">" + action
+				+ "</AttributeValue>\n" + "</Attribute>\n" + "</Attributes>\n"
 				+ "<Attributes Category=\"urn:oasis:names:tc:xacml:1.0:subject-category:access-subject\">\n"
 				+ "<Attribute AttributeId=\"urn:oasis:names:tc:xacml:1.0:subject:subject-id\" IncludeInResult=\"false\">\n"
-				+ "<AttributeValue DataType=\"http://www.w3.org/2001/XMLSchema#string\">"
-				+ userName
-				+ "</AttributeValue>\n"
-				+ "</Attribute>\n"
-				+ "</Attributes>\n" + "</Request>";
+				+ "<AttributeValue DataType=\"http://www.w3.org/2001/XMLSchema#string\">" + userName
+				+ "</AttributeValue>\n" + "</Attribute>\n" + "</Attributes>\n" + "</Request>";
 
 	}
 
-	private String createXACMLRequest(String userName, String resource,
-			String action, String environment) {
+	private String createXACMLRequest(String userName, String resource, String action, String environment) {
 
 		return "<Request xmlns=\"urn:oasis:names:tc:xacml:3.0:core:schema:wd-17\" CombinedDecision=\"false\" ReturnPolicyIdList=\"false\">\n"
 				+ "<Attributes Category=\"urn:oasis:names:tc:xacml:3.0:attribute-category:action\">\n"
 				+ "<Attribute AttributeId=\"urn:oasis:names:tc:xacml:1.0:action:action-id\" IncludeInResult=\"false\">\n"
-				+ "<AttributeValue DataType=\"http://www.w3.org/2001/XMLSchema#string\">"
-				+ action
-				+ "</AttributeValue>\n"
-				+ "</Attribute>\n"
-				+ "</Attributes>\n"
+				+ "<AttributeValue DataType=\"http://www.w3.org/2001/XMLSchema#string\">" + action
+				+ "</AttributeValue>\n" + "</Attribute>\n" + "</Attributes>\n"
 				+ "<Attributes Category=\"urn:oasis:names:tc:xacml:1.0:subject-category:access-subject\">\n"
 				+ "<Attribute AttributeId=\"urn:oasis:names:tc:xacml:1.0:subject:subject-id\" IncludeInResult=\"false\">\n"
-				+ "<AttributeValue DataType=\"http://www.w3.org/2001/XMLSchema#string\">"
-				+ userName
-				+ "</AttributeValue>\n"
-				+ "</Attribute>\n"
-				+ "</Attributes>\n"
+				+ "<AttributeValue DataType=\"http://www.w3.org/2001/XMLSchema#string\">" + userName
+				+ "</AttributeValue>\n" + "</Attribute>\n" + "</Attributes>\n"
 				+ "<Attributes Category=\"urn:oasis:names:tc:xacml:3.0:attribute-category:resource\">\n"
 				+ "<Attribute AttributeId=\"urn:oasis:names:tc:xacml:1.0:resource:resource-id\" IncludeInResult=\"false\">\n"
-				+ "<AttributeValue DataType=\"http://www.w3.org/2001/XMLSchema#string\">"
-				+ resource
-				+ "</AttributeValue>\n"
-				+ "</Attribute>\n"
-				+ "</Attributes>\n"
+				+ "<AttributeValue DataType=\"http://www.w3.org/2001/XMLSchema#string\">" + resource
+				+ "</AttributeValue>\n" + "</Attribute>\n" + "</Attributes>\n"
 				+ "<Attributes Category=\"urn:oasis:names:tc:xacml:3.0:attribute-category:environment\">\n"
 				+ "<Attribute AttributeId=\"urn:oasis:names:tc:xacml:1.0:environment:environment-id\" IncludeInResult=\"false\">\n"
-				+ "<AttributeValue DataType=\"http://www.w3.org/2001/XMLSchema#string\">"
-				+ environment
-				+ "</AttributeValue>\n"
-				+ "</Attribute>\n"
-				+ "</Attributes>\n" + "</Request>";
+				+ "<AttributeValue DataType=\"http://www.w3.org/2001/XMLSchema#string\">" + environment
+				+ "</AttributeValue>\n" + "</Attribute>\n" + "</Attributes>\n" + "</Request>";
 
 	}
 
@@ -133,11 +107,9 @@ public class Accesscontrol {
 		ResponseCtx rc = null;
 		initBalana();
 		PDP pdp = getPDPNewInstance();
-		System.out
-				.println("\n======================== XACML Request ====================");
+		System.out.println("\n======================== XACML Request ====================");
 		System.out.println(request);
-		System.out
-				.println("===========================================================");
+		System.out.println("===========================================================");
 		try {
 
 			RequestCtxFactory rcf = RequestCtxFactory.getFactory();
@@ -150,8 +122,7 @@ public class Accesscontrol {
 		return rc;
 	}
 
-	public String getXACMLdecision(String userName, String resource,
-			String action) {
+	public String getXACMLdecision(String userName, String resource, String action) {
 		String request = createXACMLRequest(userName, resource, action);
 		ResponseCtx responseCtx = getResponse(request);
 
@@ -164,18 +135,15 @@ public class Accesscontrol {
 			if (intDecision >= 4 && intDecision <= 6) {
 				intDecision = 2;
 			}
-			System.out.println("Decision:" + intDecision + " that is: "
-					+ AbstractResult.DECISIONS[intDecision]);
+			System.out.println("Decision:" + intDecision + " that is: " + AbstractResult.DECISIONS[intDecision]);
 			break; // WARNING: We currently take the first decision as the final
 					// one, but multipul decisions may be returned
 		}
 		return AbstractResult.DECISIONS[intDecision];
 	}
 
-	public String getXACMLdecision(String userName, String resource,
-			String action, String environment) {
-		String request = createXACMLRequest(userName, resource, action,
-				environment);
+	public String getXACMLdecision(String userName, String resource, String action, String environment) {
+		String request = createXACMLRequest(userName, resource, action, environment);
 		ResponseCtx responseCtx = getResponse(request);
 
 		Set<AbstractResult> set = responseCtx.getResults();
@@ -187,156 +155,150 @@ public class Accesscontrol {
 			if (intDecision >= 4 && intDecision <= 6) {
 				intDecision = 2;
 			}
-			System.out.println("Decision:" + intDecision + " that is: "
-					+ AbstractResult.DECISIONS[intDecision]);
+			System.out.println("Decision:" + intDecision + " that is: " + AbstractResult.DECISIONS[intDecision]);
 			break; // WARNING: We currently take the first decision as the final
 					// one, but multipul decisions may be returned
 		}
 		return AbstractResult.DECISIONS[intDecision];
 	}
 
-	public String getXACMLdecision(
-			HashMap<String, Multimap<String, String>> attrMap) {
+	public String getXACMLdecision(HashMap<String, Multimap<String, String>> attrMap) {
 		// String request = createXACMLRequest(attrMap);
 
-//		String request = "<Request xmlns=\"urn:oasis:names:tc:xacml:3.0:core:schema:wd-17\" ReturnPolicyIdList=\"false\" CombinedDecision=\"false\">\n"
-//				+ "<Attributes Category=\"urn:oasis:names:tc:xacml:1.0:subject-category:access-subject\" >\n"
-//				+ "<Attribute IncludeInResult=\"false\" AttributeId=\"urn:oasis:names:tc:xacml:1.0:subject:subject-id\">\n"
-//				+ "<AttributeValue DataType=\"http://www.w3.org/2001/XMLSchema#string\">asela@asela.com</AttributeValue>\n"
-//				+ "</Attribute>\n"
-//				+ "</Attributes>\n"
-//				+ "<Attributes Category=\"urn:oasis:names:tc:xacml:3.0:attribute-category:resource\">\n"
-//				+ "<Content>\n"
-//				+ "<ak:record xmlns:ak=\"http://akpower.org\">\n"
-//				+ "<ak:patient>\n"
-//				+ "<ak:patientId>p111</ak:patientId>\n"
-//				+ "<ak:patientName>\n"
-//				+ "<ak:first>Bob</ak:first>\n"
-//				+ "<ak:last>Allan</ak:last>\n"
-//				+ "</ak:patientName>\n"
-//				+ "<ak:patientContact>\n"
-//				+ "<ak:street>51 Main road</ak:street>\n"
-//				+ "<ak:city>Gampaha</ak:city>\n"
-//				+ "<ak:state>Western</ak:state>\n"
-//				+ "<ak:zip>11730</ak:zip>\n"
-//				+ "<ak:phone>94332189873</ak:phone>\n"
-//				+ "<ak:email>bob@asela.com</ak:email>\n"
-//				+ "</ak:patientContact>\n"
-//				+ "<ak:patientDoB>1991-05-11</ak:patientDoB>\n"
-//				+ "<ak:patientGender>male</ak:patientGender>\n"
-//				+ "</ak:patient>\n"
-//				+ "<ak:patient>\n"
-//				+ "<ak:patientId>p222</ak:patientId>\n"
-//				+ "<ak:patientName>\n"
-//				+ "<ak:first>Joe</ak:first>\n"
-//				+ "<ak:last>Allan</ak:last>\n"
-//				+ "</ak:patientName>\n"
-//				+ "<ak:patientContact>\n"
-//				+ "<ak:street>51 Main road</ak:street>\n"
-//				+ "<ak:city>Gampaha</ak:city>\n"
-//				+ "<ak:state>Western</ak:state>\n"
-//				+ "<ak:zip>11730</ak:zip>\n"
-//				+ "<ak:phone>94332189873</ak:phone>\n"
-//				+ "<ak:email>joe@xacmlinfo.com</ak:email>\n"
-//				+ "</ak:patientContact>\n"
-//				+ "<ak:patientDoB>1991-05-11</ak:patientDoB>\n"
-//				+ "<ak:patientGender>male</ak:patientGender>\n"
-//				+ "</ak:patient>\n"
-//				+ "<ak:patient>\n"
-//				+ "<ak:patientId>p333</ak:patientId>\n"
-//				+ "<ak:patientName>\n"
-//				+ "<ak:first>Peter</ak:first>\n"
-//				+ "<ak:last>Allan</ak:last>\n"
-//				+ "</ak:patientName>\n"
-//				+ "<ak:patientContact>\n"
-//				+ "<ak:street>51 Main road</ak:street>\n"
-//				+ "<ak:city>Gampaha</ak:city>\n"
-//				+ "<ak:state>Western</ak:state>\n"
-//				+ "<ak:zip>11730</ak:zip>\n"
-//				+ "<ak:phone>94332189873</ak:phone>\n"
-//				+ "<ak:email>peter@xacmlinfo.com</ak:email>\n"
-//				+ "</ak:patientContact>\n"
-//				+ "<ak:patientDoB>1991-05-11</ak:patientDoB>\n"
-//				+ "<ak:patientGender>male</ak:patientGender>\n"
-//				+ "</ak:patient>\n"
-//				+ "<ak:patient>\n"
-//				+ "<ak:patientId>p444</ak:patientId>\n"
-//				+ "<ak:patientName>\n"
-//				+ "<ak:first>Alice</ak:first>\n"
-//				+ "<ak:last>Allan</ak:last>\n"
-//				+ "</ak:patientName>\n"
-//				+ "<ak:patientContact>\n"
-//				+ "<ak:street>51 Main road</ak:street>\n"
-//				+ "<ak:city>Gampaha</ak:city>\n"
-//				+ "<ak:state>Western</ak:state>\n"
-//				+ "<ak:zip>11730</ak:zip>\n"
-//				+ "<ak:phone>94332189873</ak:phone>\n"
-//				+ "<ak:email>alice@asela.com</ak:email>\n"
-//				+ "</ak:patientContact>\n"
-//				+ "<ak:patientDoB>1991-05-11</ak:patientDoB>\n"
-//				+ "<ak:patientGender>male</ak:patientGender>\n"
-//				+ "</ak:patient>\n"
-//				+ "</ak:record>\n"
-//				+ "</Content>\n"
-//				+ "<Attribute IncludeInResult=\"false\" AttributeId=\"urn:oasis:names:tc:xacml:3.0:profile:multiple:content-selector\">\n"
-//				+ "<AttributeValue XPathCategory=\"urn:oasis:names:tc:xacml:3.0:attribute-category:resource\" DataType=\"urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression\">/ak:record/ak:patient</AttributeValue>\n"
-//				+ "</Attribute>\n"
-//				+ "</Attributes>\n"
-//				+ "<Attributes Category=\"urn:oasis:names:tc:xacml:3.0:attribute-category:action\">\n"
-//				+ "<Attribute IncludeInResult=\"false\" AttributeId=\"urn:oasis:names:tc:xacml:1.0:action:action-id\">\n"
-//				+ "<AttributeValue DataType=\"http://www.w3.org/2001/XMLSchema#string\">read</AttributeValue>\n"
-//				+ "</Attribute>\n" + "</Attributes>\n" + "</Request>";
-		
-		 String request = "<Request xmlns=\"urn:oasis:names:tc:xacml:3.0:core:schema:wd-17\" CombinedDecision=\"false\" ReturnPolicyIdList=\"false\">\n"
-				 + "<Attributes Category=\"urn:oasis:names:tc:xacml:1.0:subject-category:access-subject\">\n"		
-				 + "<Attribute IncludeInResult=\"false\" AttributeId=\"urn:oasis:names:tc:xacml:1.0:subject:subject-id\" Issuer=\"med.example.com\">\n"
-				 + "<AttributeValue DataType=\"http://www.w3.org/2001/XMLSchema#string\">Name of Department Chair</AttributeValue>\n"
-				 + "</Attribute>\n"
-				 + "<Attribute IncludeInResult=\"false\" AttributeId=\"urn:oasis:names:tc:xacml:1.0:subject:position.type\">\n"
-				 + "<AttributeValue DataType=\"http://www.w3.org/2001/XMLSchema#string\">Tenured/tenure-track faculty</AttributeValue>\n"
-				 + "</Attribute>\n"
-				 + "</Attributes>\n"
-				 + "<Attributes Category=\"urn:oasis:names:tc:xacml:3.0:attribute-category:resource\">\n"
-				 + "<Content>\n"
-				 + "<ak:record xmlns:ak='http://akpower.org'>\n"
-				 + "<ak:patient>\n"
-				 + "<ak:patientId>bob</ak:patientId>\n"
-				 + "<ak:patientName>\n"
-				 + "<ak:first>Bob</ak:first>\n"
-				 + "<ak:last>Allan</ak:last>\n"
-				 + "</ak:patientName>\n"
-				 + "<ak:patientContact>\n"
-				 + "<ak:street>51 Main road</ak:street>\n"
-				 + "<ak:city>Gampaha</ak:city>\n"
-				 + "<ak:state>Western</ak:state>\n"
-				 + "<ak:zip>11730</ak:zip>\n"
-				 + "<ak:phone>94332189873</ak:phone>\n"
-				 + "<ak:email>asela@gmail.com</ak:email>\n"
-				 + "</ak:patientContact>\n"
-				 + "<ak:patientDoB>1991-05-11</ak:patientDoB>\n"
-				 + "<ak:patientGender>male</ak:patientGender>\n"
-				 + "</ak:patient>\n"
-				 + "</ak:record>\n"
-				 + "</Content>\n"
-				 + "<Attribute IncludeInResult=\"false\" AttributeId=\"urn:oasis:names:tc:xacml:3.0:profile:multiple:content-selector\">\n"
-				 + "<AttributeValue XPathCategory=\"urn:oasis:names:tc:xacml:3.0:attribute-category:resource\" DataType=\"urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression\">/ak:record/ak:patient</AttributeValue>\n"
-				 + "</Attribute>\n"
-				 + "<Attribute IncludeInResult=\"false\" AttributeId=\"urn:oasis:names:tc:xacml:1.0:resource:proposal.section\">\n"
-				 + "<AttributeValue DataType=\"http://www.w3.org/2001/XMLSchema#string\">Whole Proposal</AttributeValue>\n"
-				 + "</Attribute>\n"
-				 + "</Attributes>\n"
-				 + "<Attributes Category=\"urn:oasis:names:tc:xacml:3.0:attribute-category:action\">\n"
-				 + "<Attribute IncludeInResult=\"false\" AttributeId=\"urn:oasis:names:tc:xacml:1.0:action:proposal.action\">\n"
-				 + "<AttributeValue DataType=\"http://www.w3.org/2001/XMLSchema#string\">Add</AttributeValue>\n"
-				 + "</Attribute>\n" + "</Attributes>\n" + "</Request>";
-		
+		// String request = "<Request
+		// xmlns=\"urn:oasis:names:tc:xacml:3.0:core:schema:wd-17\"
+		// ReturnPolicyIdList=\"false\" CombinedDecision=\"false\">\n"
+		// + "<Attributes
+		// Category=\"urn:oasis:names:tc:xacml:1.0:subject-category:access-subject\"
+		// >\n"
+		// + "<Attribute IncludeInResult=\"false\"
+		// AttributeId=\"urn:oasis:names:tc:xacml:1.0:subject:subject-id\">\n"
+		// + "<AttributeValue
+		// DataType=\"http://www.w3.org/2001/XMLSchema#string\">asela@asela.com</AttributeValue>\n"
+		// + "</Attribute>\n"
+		// + "</Attributes>\n"
+		// + "<Attributes
+		// Category=\"urn:oasis:names:tc:xacml:3.0:attribute-category:resource\">\n"
+		// + "<Content>\n"
+		// + "<ak:record xmlns:ak=\"http://akpower.org\">\n"
+		// + "<ak:patient>\n"
+		// + "<ak:patientId>p111</ak:patientId>\n"
+		// + "<ak:patientName>\n"
+		// + "<ak:first>Bob</ak:first>\n"
+		// + "<ak:last>Allan</ak:last>\n"
+		// + "</ak:patientName>\n"
+		// + "<ak:patientContact>\n"
+		// + "<ak:street>51 Main road</ak:street>\n"
+		// + "<ak:city>Gampaha</ak:city>\n"
+		// + "<ak:state>Western</ak:state>\n"
+		// + "<ak:zip>11730</ak:zip>\n"
+		// + "<ak:phone>94332189873</ak:phone>\n"
+		// + "<ak:email>bob@asela.com</ak:email>\n"
+		// + "</ak:patientContact>\n"
+		// + "<ak:patientDoB>1991-05-11</ak:patientDoB>\n"
+		// + "<ak:patientGender>male</ak:patientGender>\n"
+		// + "</ak:patient>\n"
+		// + "<ak:patient>\n"
+		// + "<ak:patientId>p222</ak:patientId>\n"
+		// + "<ak:patientName>\n"
+		// + "<ak:first>Joe</ak:first>\n"
+		// + "<ak:last>Allan</ak:last>\n"
+		// + "</ak:patientName>\n"
+		// + "<ak:patientContact>\n"
+		// + "<ak:street>51 Main road</ak:street>\n"
+		// + "<ak:city>Gampaha</ak:city>\n"
+		// + "<ak:state>Western</ak:state>\n"
+		// + "<ak:zip>11730</ak:zip>\n"
+		// + "<ak:phone>94332189873</ak:phone>\n"
+		// + "<ak:email>joe@xacmlinfo.com</ak:email>\n"
+		// + "</ak:patientContact>\n"
+		// + "<ak:patientDoB>1991-05-11</ak:patientDoB>\n"
+		// + "<ak:patientGender>male</ak:patientGender>\n"
+		// + "</ak:patient>\n"
+		// + "<ak:patient>\n"
+		// + "<ak:patientId>p333</ak:patientId>\n"
+		// + "<ak:patientName>\n"
+		// + "<ak:first>Peter</ak:first>\n"
+		// + "<ak:last>Allan</ak:last>\n"
+		// + "</ak:patientName>\n"
+		// + "<ak:patientContact>\n"
+		// + "<ak:street>51 Main road</ak:street>\n"
+		// + "<ak:city>Gampaha</ak:city>\n"
+		// + "<ak:state>Western</ak:state>\n"
+		// + "<ak:zip>11730</ak:zip>\n"
+		// + "<ak:phone>94332189873</ak:phone>\n"
+		// + "<ak:email>peter@xacmlinfo.com</ak:email>\n"
+		// + "</ak:patientContact>\n"
+		// + "<ak:patientDoB>1991-05-11</ak:patientDoB>\n"
+		// + "<ak:patientGender>male</ak:patientGender>\n"
+		// + "</ak:patient>\n"
+		// + "<ak:patient>\n"
+		// + "<ak:patientId>p444</ak:patientId>\n"
+		// + "<ak:patientName>\n"
+		// + "<ak:first>Alice</ak:first>\n"
+		// + "<ak:last>Allan</ak:last>\n"
+		// + "</ak:patientName>\n"
+		// + "<ak:patientContact>\n"
+		// + "<ak:street>51 Main road</ak:street>\n"
+		// + "<ak:city>Gampaha</ak:city>\n"
+		// + "<ak:state>Western</ak:state>\n"
+		// + "<ak:zip>11730</ak:zip>\n"
+		// + "<ak:phone>94332189873</ak:phone>\n"
+		// + "<ak:email>alice@asela.com</ak:email>\n"
+		// + "</ak:patientContact>\n"
+		// + "<ak:patientDoB>1991-05-11</ak:patientDoB>\n"
+		// + "<ak:patientGender>male</ak:patientGender>\n"
+		// + "</ak:patient>\n"
+		// + "</ak:record>\n"
+		// + "</Content>\n"
+		// + "<Attribute IncludeInResult=\"false\"
+		// AttributeId=\"urn:oasis:names:tc:xacml:3.0:profile:multiple:content-selector\">\n"
+		// + "<AttributeValue
+		// XPathCategory=\"urn:oasis:names:tc:xacml:3.0:attribute-category:resource\"
+		// DataType=\"urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression\">/ak:record/ak:patient</AttributeValue>\n"
+		// + "</Attribute>\n"
+		// + "</Attributes>\n"
+		// + "<Attributes
+		// Category=\"urn:oasis:names:tc:xacml:3.0:attribute-category:action\">\n"
+		// + "<Attribute IncludeInResult=\"false\"
+		// AttributeId=\"urn:oasis:names:tc:xacml:1.0:action:action-id\">\n"
+		// + "<AttributeValue
+		// DataType=\"http://www.w3.org/2001/XMLSchema#string\">read</AttributeValue>\n"
+		// + "</Attribute>\n" + "</Attributes>\n" + "</Request>";
+
+		String request = "<Request xmlns=\"urn:oasis:names:tc:xacml:3.0:core:schema:wd-17\" CombinedDecision=\"false\" ReturnPolicyIdList=\"false\">\n"
+				+ "<Attributes Category=\"urn:oasis:names:tc:xacml:1.0:subject-category:access-subject\">\n"
+				+ "<Attribute IncludeInResult=\"false\" AttributeId=\"urn:oasis:names:tc:xacml:1.0:subject:subject-id\" Issuer=\"med.example.com\">\n"
+				+ "<AttributeValue DataType=\"http://www.w3.org/2001/XMLSchema#string\">Name of Department Chair</AttributeValue>\n"
+				+ "</Attribute>\n"
+				+ "<Attribute IncludeInResult=\"false\" AttributeId=\"urn:oasis:names:tc:xacml:1.0:subject:position.type\">\n"
+				+ "<AttributeValue DataType=\"http://www.w3.org/2001/XMLSchema#string\">Tenured/tenure-track faculty</AttributeValue>\n"
+				+ "</Attribute>\n" + "</Attributes>\n"
+				+ "<Attributes Category=\"urn:oasis:names:tc:xacml:3.0:attribute-category:resource\">\n" + "<Content>\n"
+				+ "<ak:record xmlns:ak='http://akpower.org'>\n" + "<ak:patient>\n"
+				+ "<ak:patientId>bob</ak:patientId>\n" + "<ak:patientName>\n" + "<ak:first>Bob</ak:first>\n"
+				+ "<ak:last>Allan</ak:last>\n" + "</ak:patientName>\n" + "<ak:patientContact>\n"
+				+ "<ak:street>51 Main road</ak:street>\n" + "<ak:city>Gampaha</ak:city>\n"
+				+ "<ak:state>Western</ak:state>\n" + "<ak:zip>11730</ak:zip>\n" + "<ak:phone>94332189873</ak:phone>\n"
+				+ "<ak:email>asela@gmail.com</ak:email>\n" + "</ak:patientContact>\n"
+				+ "<ak:patientDoB>1991-05-11</ak:patientDoB>\n" + "<ak:patientGender>male</ak:patientGender>\n"
+				+ "</ak:patient>\n" + "</ak:record>\n" + "</Content>\n"
+				+ "<Attribute IncludeInResult=\"false\" AttributeId=\"urn:oasis:names:tc:xacml:3.0:profile:multiple:content-selector\">\n"
+				+ "<AttributeValue XPathCategory=\"urn:oasis:names:tc:xacml:3.0:attribute-category:resource\" DataType=\"urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression\">/ak:record/ak:patient</AttributeValue>\n"
+				+ "</Attribute>\n"
+				+ "<Attribute IncludeInResult=\"false\" AttributeId=\"urn:oasis:names:tc:xacml:1.0:resource:proposal.section\">\n"
+				+ "<AttributeValue DataType=\"http://www.w3.org/2001/XMLSchema#string\">Whole Proposal</AttributeValue>\n"
+				+ "</Attribute>\n" + "</Attributes>\n"
+				+ "<Attributes Category=\"urn:oasis:names:tc:xacml:3.0:attribute-category:action\">\n"
+				+ "<Attribute IncludeInResult=\"false\" AttributeId=\"urn:oasis:names:tc:xacml:1.0:action:proposal.action\">\n"
+				+ "<AttributeValue DataType=\"http://www.w3.org/2001/XMLSchema#string\">Add</AttributeValue>\n"
+				+ "</Attribute>\n" + "</Attributes>\n" + "</Request>";
+
 		// ResponseCtx responseCtx = getResponse(request);
 		System.out.println(request);
-		ResponseCtx responseCtx = TestUtil.evaluate(getPDPNewInstance(),
-				request);
+		ResponseCtx responseCtx = TestUtil.evaluate(getPDPNewInstance(), request);
 		if (responseCtx != null) {
-			System.out.println("Response that is received from the PDP :  "
-					+ responseCtx.encode());
+			System.out.println("Response that is received from the PDP :  " + responseCtx.encode());
 			Set<AbstractResult> set = responseCtx.getResults();
 			Iterator<AbstractResult> it = set.iterator();
 			int intDecision = 3;
@@ -355,8 +317,7 @@ public class Accesscontrol {
 						List<AttributeAssignment> assignments = ((org.wso2.balana.xacml3.Obligation) obligation)
 								.getAssignments();
 						for (AttributeAssignment assignment : assignments) {
-							System.out.println("Obligation :  "
-									+ assignment.getContent() + "\n\n");
+							System.out.println("Obligation :  " + assignment.getContent() + "\n\n");
 						}
 					}
 				}
@@ -368,8 +329,7 @@ public class Accesscontrol {
 						List<AttributeAssignment> assignments = ((org.wso2.balana.xacml3.Advice) advice)
 								.getAssignments();
 						for (AttributeAssignment assignment : assignments) {
-							System.out.println("Advice :  "
-									+ assignment.getContent() + "\n\n");
+							System.out.println("Advice :  " + assignment.getContent() + "\n\n");
 						}
 					}
 				}
@@ -377,8 +337,7 @@ public class Accesscontrol {
 				if (intDecision >= 4 && intDecision <= 6) {
 					intDecision = 2;
 				}
-				System.out.println("Decision:" + intDecision + " that is: "
-						+ AbstractResult.DECISIONS[intDecision]);
+				System.out.println("Decision:" + intDecision + " that is: " + AbstractResult.DECISIONS[intDecision]);
 				break; // WARNING: We currently take the first decision as the
 						// final
 				// one, but multipul decisions may be returned
@@ -392,12 +351,9 @@ public class Accesscontrol {
 
 	private PDP getPDPNewInstance() {
 		initBalana();
-
-		Balana balana = Balana.getInstance();
 		PDPConfig pdpConfig = balana.getPdpConfig();
-		pdpConfig = new PDPConfig(pdpConfig.getAttributeFinder(),
-				pdpConfig.getPolicyFinder(), pdpConfig.getResourceFinder(),
-				true);
+		pdpConfig = new PDPConfig(pdpConfig.getAttributeFinder(), pdpConfig.getPolicyFinder(),
+				pdpConfig.getResourceFinder(), true);
 		return new PDP(pdpConfig);
 
 	}
