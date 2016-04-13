@@ -33,36 +33,21 @@
  * the design, construction, operation or maintenance of any nuclear facility.
  */
 
-package gpms.accesscontrol;
+package gpms.utils;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.w3c.dom.Document;
 import org.wso2.balana.ObligationResult;
 import org.wso2.balana.PDP;
 import org.wso2.balana.ParsingException;
 import org.wso2.balana.ctx.AbstractRequestCtx;
 import org.wso2.balana.ctx.AbstractResult;
-import org.wso2.balana.ctx.EvaluationCtx;
-import org.wso2.balana.ctx.EvaluationCtxFactory;
 import org.wso2.balana.ctx.RequestCtxFactory;
 import org.wso2.balana.ctx.ResponseCtx;
-import org.wso2.balana.ctx.ResultFactory;
 import org.wso2.balana.ctx.Status;
 import org.wso2.balana.ctx.xacml3.Result;
 import org.wso2.balana.xacml3.Advice;
@@ -73,9 +58,9 @@ import org.wso2.balana.xacml3.Attributes;
  *
  * @author Seth Proctor
  */
-public class TestUtil {
+public class PolicyTestUtil {
 
-	private static Log log = LogFactory.getLog(TestUtil.class);
+	private static Log log = LogFactory.getLog(PolicyTestUtil.class);
 
 	/**
 	 * Checks matching of result that got from PDP and expected response from a

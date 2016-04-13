@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Policy xmlns="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17"
+	xmlns:xacml="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17 http://docs.oasis-open.org/xacml/3.0/xacml-core-v3-schema-wd-17.xsd"
 	PolicyId="Proposal-Rules"
 	RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:deny-overrides"
-	Version="1.0">
+	Version="3.0">
+	<Description>
+		Policy for any proposal in the
+		http://www.med.example.com/schemas/record.xsd namespace
+	</Description>
 	<PolicyDefaults>
-		<XPathVersion>http://www.w3.org/TR/1999/REC-xpath-19991116
-		</XPathVersion>
+		<XPathVersion>http://www.w3.org/TR/1999/REC-xpath-19991116</XPathVersion>
 	</PolicyDefaults>
 	<Target />
-	<Rule Effect="Permit" RuleId="AddProposalByFaculty-Rule1">
+	<Rule Effect="Deny" RuleId="AddProposalByFaculty-Rule1">
 		<Description>
 			Only "Tenured/tenure-track faculty" or "Non-tenure-track
 			research faculty" can "Add" a "Whole Proposal"
@@ -40,30 +45,6 @@
 				</AllOf>
 			</AnyOf>
 		</Target>
-		<AdviceExpressions>
-			<AdviceExpression AdviceId="patientId" AppliesTo="Permit">
-				<AttributeAssignmentExpression
-					AttributeId="urn:oasis:names:tc:xacml:2.0:example:attribute:text">
-					<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
-						<AttributeSelector MustBePresent="false"
-							ContextSelectorId="urn:oasis:names:tc:xacml:3.0:content-selector"
-							Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
-							Path="/ak:patient/ak:patientId/text()" DataType="http://www.w3.org/2001/XMLSchema#string" />
-					</Apply>
-				</AttributeAssignmentExpression>
-			</AdviceExpression>
-			<AdviceExpression AdviceId="patientId" AppliesTo="Deny">
-				<AttributeAssignmentExpression
-					AttributeId="urn:oasis:names:tc:xacml:2.0:example:attribute:mailto">
-					<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
-						<AttributeSelector MustBePresent="false"
-							ContextSelectorId="urn:oasis:names:tc:xacml:3.0:content-selector"
-							Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
-							Path="/ak:patient/ak:patientContact/ak:email/text()" DataType="http://www.w3.org/2001/XMLSchema#string" />
-					</Apply>
-				</AttributeAssignmentExpression>
-			</AdviceExpression>
-		</AdviceExpressions>
 		<ObligationExpressions>
 			<ObligationExpression
 				ObligationId="urn:oasis:names:tc:xacml:example:obligation:email"
@@ -114,35 +95,60 @@
 				</AttributeAssignmentExpression>
 			</ObligationExpression>
 		</ObligationExpressions>
+
+		<AdviceExpressions>
+			<AdviceExpression AdviceId="patientId" AppliesTo="Permit">
+				<AttributeAssignmentExpression
+					AttributeId="urn:oasis:names:tc:xacml:2.0:example:attribute:text">
+					<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
+						<AttributeSelector MustBePresent="false"
+							ContextSelectorId="urn:oasis:names:tc:xacml:3.0:content-selector"
+							Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+							Path="/ak:patient/ak:patientId/text()" DataType="http://www.w3.org/2001/XMLSchema#string" />
+					</Apply>
+				</AttributeAssignmentExpression>
+			</AdviceExpression>
+			<AdviceExpression AdviceId="patientId" AppliesTo="Deny">
+				<AttributeAssignmentExpression
+					AttributeId="urn:oasis:names:tc:xacml:2.0:example:attribute:mailto">
+					<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
+						<AttributeSelector MustBePresent="false"
+							ContextSelectorId="urn:oasis:names:tc:xacml:3.0:content-selector"
+							Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+							Path="/ak:patient/ak:patientContact/ak:email/text()" DataType="http://www.w3.org/2001/XMLSchema#string" />
+					</Apply>
+				</AttributeAssignmentExpression>
+			</AdviceExpression>
+		</AdviceExpressions>
 	</Rule>
 	<Rule Effect="Permit" RuleId="AuditLogViewByPI-Rule3">
-    	<Description> "PI" can "View" proposal "Audit Log"</Description>
-	    <Target>
-	      <AnyOf>
-	        <AllOf>
-	          <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">PI</AttributeValue>
-	            <AttributeDesignator
-								AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
-								Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
-								DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
-	          </Match>
-	          <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Audit Log</AttributeValue>
-	            <AttributeDesignator
-								AttributeId="urn:oasis:names:tc:xacml:1.0:resource:proposal.section"
-								Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource"
-								DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
-	          </Match>
-	          <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-	            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">View</AttributeValue>
-	            <AttributeDesignator
-								AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action"
-								Category="urn:oasis:names:tc:xacml:1.0:attribute-category:action"
-								DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
-	          </Match>
-	        </AllOf>
-	      </AnyOf>
-	    </Target>
-  </Rule>
+		<Description> "PI" can "View" proposal "Audit Log"</Description>
+		<Target>
+			<AnyOf>
+				<AllOf>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">PI</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Audit Log</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:proposal.section"
+							Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">View</AttributeValue>
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action"
+							Category="urn:oasis:names:tc:xacml:1.0:attribute-category:action"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+				</AllOf>
+			</AnyOf>
+		</Target>
+	</Rule>
 </Policy>
