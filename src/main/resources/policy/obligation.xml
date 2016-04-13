@@ -13,7 +13,7 @@
 		<XPathVersion>http://www.w3.org/TR/1999/REC-xpath-19991116</XPathVersion>
 	</PolicyDefaults>
 	<Target />
-	<Rule Effect="Deny" RuleId="AddProposalByFaculty-Rule1">
+	<Rule Effect="Permit" RuleId="AddProposalByFaculty-Rule1">
 		<Description>
 			Only "Tenured/tenure-track faculty" or "Non-tenure-track
 			research faculty" can "Add" a "Whole Proposal"
@@ -55,7 +55,7 @@
 						<AttributeSelector MustBePresent="false"
 							ContextSelectorId="urn:oasis:names:tc:xacml:3.0:content-selector"
 							Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
-							Path="/ak:patient/ak:patientId/text()" DataType="http://www.w3.org/2001/XMLSchema#string" />
+							Path="/ak:proposal/ak:pi/ak:workemail/text()" DataType="http://www.w3.org/2001/XMLSchema#string" />
 					</Apply>
 				</AttributeAssignmentExpression>
 				<AttributeAssignmentExpression
@@ -64,10 +64,12 @@
 				</AttributeAssignmentExpression>
 				<AttributeAssignmentExpression
 					AttributeId="urn:oasis:names:tc:xacml:3.0:example:attribute:text">
-					<AttributeDesignator MustBePresent="false"
-						Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
-						AttributeId="urn:oasis:names:tc:xacml:1.0:subject:subject-id"
-						DataType="http://www.w3.org/2001/XMLSchema#string" />
+					<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
+						<AttributeSelector MustBePresent="false"
+							ContextSelectorId="urn:oasis:names:tc:xacml:3.0:content-selector"
+							Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+							Path="/ak:proposal/ak:pi/ak:fullname/text()" DataType="http://www.w3.org/2001/XMLSchema#string" />
+					</Apply>
 				</AttributeAssignmentExpression>
 			</ObligationExpression>
 			<ObligationExpression
@@ -79,7 +81,7 @@
 						<AttributeSelector MustBePresent="false"
 							ContextSelectorId="urn:oasis:names:tc:xacml:3.0:content-selector"
 							Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
-							Path="/ak:patient/ak:patientContact/ak:email/text()" DataType="http://www.w3.org/2001/XMLSchema#string" />
+							Path="/ak:pi/ak:workemail/text()" DataType="http://www.w3.org/2001/XMLSchema#string" />
 					</Apply>
 				</AttributeAssignmentExpression>
 				<AttributeAssignmentExpression
@@ -104,7 +106,7 @@
 						<AttributeSelector MustBePresent="false"
 							ContextSelectorId="urn:oasis:names:tc:xacml:3.0:content-selector"
 							Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
-							Path="/ak:patient/ak:patientId/text()" DataType="http://www.w3.org/2001/XMLSchema#string" />
+							Path="/ak:pi/ak:workemail/text()" DataType="http://www.w3.org/2001/XMLSchema#string" />
 					</Apply>
 				</AttributeAssignmentExpression>
 			</AdviceExpression>
@@ -115,7 +117,7 @@
 						<AttributeSelector MustBePresent="false"
 							ContextSelectorId="urn:oasis:names:tc:xacml:3.0:content-selector"
 							Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
-							Path="/ak:patient/ak:patientContact/ak:email/text()" DataType="http://www.w3.org/2001/XMLSchema#string" />
+							Path="/ak:pi/ak:workemail/text()" DataType="http://www.w3.org/2001/XMLSchema#string" />
 					</Apply>
 				</AttributeAssignmentExpression>
 			</AdviceExpression>
