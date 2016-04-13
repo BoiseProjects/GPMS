@@ -81,7 +81,7 @@
 						<AttributeSelector MustBePresent="false"
 							ContextSelectorId="urn:oasis:names:tc:xacml:3.0:content-selector"
 							Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
-							Path="/ak:pi/ak:workemail/text()" DataType="http://www.w3.org/2001/XMLSchema#string" />
+							Path="/ak:proposal/ak:pi/ak:workemail/text()" DataType="http://www.w3.org/2001/XMLSchema#string" />
 					</Apply>
 				</AttributeAssignmentExpression>
 				<AttributeAssignmentExpression
@@ -106,7 +106,7 @@
 						<AttributeSelector MustBePresent="false"
 							ContextSelectorId="urn:oasis:names:tc:xacml:3.0:content-selector"
 							Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
-							Path="/ak:pi/ak:workemail/text()" DataType="http://www.w3.org/2001/XMLSchema#string" />
+							Path="/ak:proposal/ak:pi/ak:workemail/text()" DataType="http://www.w3.org/2001/XMLSchema#string" />
 					</Apply>
 				</AttributeAssignmentExpression>
 			</AdviceExpression>
@@ -117,7 +117,7 @@
 						<AttributeSelector MustBePresent="false"
 							ContextSelectorId="urn:oasis:names:tc:xacml:3.0:content-selector"
 							Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
-							Path="/ak:pi/ak:workemail/text()" DataType="http://www.w3.org/2001/XMLSchema#string" />
+							Path="/ak:proposal/ak:authorprofile/ak:fullname/text()" DataType="http://www.w3.org/2001/XMLSchema#string" />
 					</Apply>
 				</AttributeAssignmentExpression>
 			</AdviceExpression>
