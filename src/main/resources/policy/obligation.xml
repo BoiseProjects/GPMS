@@ -59,8 +59,8 @@
 					</Apply>
 				</AttributeAssignmentExpression>
 				<AttributeAssignmentExpression
-					AttributeId="urn:oasis:names:tc:xacml:2.0:example:attribute:text">
-					<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">A proposal has been created by:</AttributeValue>
+					AttributeId="urn:oasis:names:tc:xacml:3.0:example:attribute:text">
+					<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">A proposal has been created by: </AttributeValue>
 				</AttributeAssignmentExpression>
 				<AttributeAssignmentExpression
 					AttributeId="urn:oasis:names:tc:xacml:3.0:example:attribute:text">
@@ -73,7 +73,7 @@
 				</AttributeAssignmentExpression>
 			</ObligationExpression>
 			<ObligationExpression
-				ObligationId="urn:oasis:names:tc:xacml:example:obligation:email"
+				ObligationId="urn:oasis:names:tc:xacml:example:obligation:log"
 				FulfillOn="Deny">
 				<AttributeAssignmentExpression
 					AttributeId="urn:oasis:names:tc:xacml:3.0:example:attribute:mailto">
@@ -85,8 +85,8 @@
 					</Apply>
 				</AttributeAssignmentExpression>
 				<AttributeAssignmentExpression
-					AttributeId="urn:oasis:names:tc:xacml:2.0:example:attribute:text">
-					<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Denied Case:</AttributeValue>
+					AttributeId="urn:oasis:names:tc:xacml:3.0:example:attribute:text">
+					<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Denied Case: </AttributeValue>
 				</AttributeAssignmentExpression>
 				<AttributeAssignmentExpression
 					AttributeId="urn:oasis:names:tc:xacml:3.0:example:attribute:text">
@@ -97,9 +97,8 @@
 				</AttributeAssignmentExpression>
 			</ObligationExpression>
 		</ObligationExpressions>
-
 		<AdviceExpressions>
-			<AdviceExpression AdviceId="patientId" AppliesTo="Permit">
+			<AdviceExpression AdviceId="role" AppliesTo="Permit">
 				<AttributeAssignmentExpression
 					AttributeId="urn:oasis:names:tc:xacml:2.0:example:attribute:text">
 					<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
@@ -117,7 +116,7 @@
 						<AttributeSelector MustBePresent="false"
 							ContextSelectorId="urn:oasis:names:tc:xacml:3.0:content-selector"
 							Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
-							Path="/ak:proposal/ak:authorprofile/ak:fullname/text()" DataType="http://www.w3.org/2001/XMLSchema#string" />
+							Path="/ak:proposal/ak:pi/ak:workemail/text()" DataType="http://www.w3.org/2001/XMLSchema#string" />
 					</Apply>
 				</AttributeAssignmentExpression>
 			</AdviceExpression>
@@ -139,18 +138,26 @@
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Audit Log</AttributeValue>
 						<AttributeDesignator
 							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:proposal.section"
-							Category="urn:oasis:names:tc:xacml:1.0:attribute-category:resource"
+							Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">View</AttributeValue>
 						<AttributeDesignator
 							AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action"
-							Category="urn:oasis:names:tc:xacml:1.0:attribute-category:action"
+							Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
 				</AllOf>
 			</AnyOf>
 		</Target>
+		<AdviceExpressions>
+			<AdviceExpression AdviceId="role" AppliesTo="Permit">
+				<AttributeAssignmentExpression
+					AttributeId="role">
+					<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">mechanic</AttributeValue>
+				</AttributeAssignmentExpression>
+			</AdviceExpression>
+		</AdviceExpressions>
 	</Rule>
 </Policy>
