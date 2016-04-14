@@ -1402,6 +1402,7 @@ public class ProposalService {
 		ObjectId authorId = new ObjectId(userProfileID);
 		UserProfile authorProfile = userProfileDAO
 				.findUserDetailsByProfileID(authorId);
+		String authorFullName = authorProfile.getFullName();
 
 		if (root != null && root.has("policyInfo")) {
 			JsonNode policyInfo = root.get("policyInfo");
@@ -1594,7 +1595,7 @@ public class ProposalService {
 							// contentProfile.append("</ak:lastname>");
 
 							contentProfile.append("<ak:fullname>");
-							contentProfile.append(authorProfile.getFullName());
+							contentProfile.append(authorFullName);
 							contentProfile.append("</ak:fullname>");
 							contentProfile.append("</ak:authorprofile>");
 
@@ -1622,7 +1623,7 @@ public class ProposalService {
 							contentProfile.append("</ak:record>");
 							contentProfile.append("</Content>");
 							contentProfile
-									.append("<Attribute IncludeInResult=\"false\" AttributeId=\"urn:oasis:names:tc:xacml:3.0:profile:multiple:content-selector\">");
+									.append("<Attribute AttributeId=\"urn:oasis:names:tc:xacml:3.0:profile:multiple:content-selector\" IncludeInResult=\"false\">");
 							contentProfile
 									.append("<AttributeValue XPathCategory=\"urn:oasis:names:tc:xacml:3.0:attribute-category:resource\" DataType=\"urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression\">/ak:record/ak:proposal</AttributeValue>");
 							contentProfile.append("</Attribute>");
@@ -1632,7 +1633,7 @@ public class ProposalService {
 				}
 
 				Set<AbstractResult> set = ac.getXACMLdecisionWithObligations(
-						attrMap, contentProfile);
+						attrMap, contentProfile, authorFullName);
 				Iterator<AbstractResult> it = set.iterator();
 				int intDecision = 3;
 				while (it.hasNext()) {

@@ -13,7 +13,7 @@
 		<XPathVersion>http://www.w3.org/TR/1999/REC-xpath-19991116</XPathVersion>
 	</PolicyDefaults>
 	<Target />
-	<Rule Effect="Permit" RuleId="AddProposalByFaculty-Rule1">
+	<Rule Effect="Deny" RuleId="AddProposalByFaculty-Rule1">
 		<Description>
 			Only "Tenured/tenure-track faculty" or "Non-tenure-track
 			research faculty" can "Add" a "Whole Proposal"

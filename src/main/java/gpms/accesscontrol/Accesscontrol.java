@@ -180,79 +180,6 @@ public class Accesscontrol {
 			HashMap<String, Multimap<String, String>> attrMap) {
 		String request = createXACMLRequest(attrMap);
 
-		// String request =
-		// "<Request xmlns=\"urn:oasis:names:tc:xacml:3.0:core:schema:wd-17\" CombinedDecision=\"false\" ReturnPolicyIdList=\"false\">\n"
-		// +
-		// "<Attributes Category=\"urn:oasis:names:tc:xacml:1.0:subject-category:access-subject\">\n"
-		// //+
-		// "<Attribute IncludeInResult=\"false\" AttributeId=\"urn:oasis:names:tc:xacml:1.0:subject:subject-id\" Issuer=\"med.example.com\">\n"
-		// //+
-		// "<AttributeValue DataType=\"http://www.w3.org/2001/XMLSchema#string\">Name of Department Chair</AttributeValue>\n"
-		// //+ "</Attribute>\n"
-		// +
-		// "<Attribute IncludeInResult=\"false\" AttributeId=\"urn:oasis:names:tc:xacml:1.0:subject:position.type\">\n"
-		// +
-		// "<AttributeValue DataType=\"http://www.w3.org/2001/XMLSchema#string\">Tenured/tenure-track faculty</AttributeValue>\n"
-		// + "</Attribute>\n"
-		// + "</Attributes>\n"
-		// +
-		// "<Attributes Category=\"urn:oasis:names:tc:xacml:3.0:attribute-category:resource\">\n"
-		// + "<Content>\n"
-		// + "<ak:record xmlns:ak='http://akpower.org'>\n"
-		// + "<ak:proposal>\n"
-		// + "<ak:proposalid>5702a60865dbb30b09a492cf</ak:proposalid>\n"
-		// + "<ak:proposaltitle>Proposal1</ak:proposaltitle>\n"
-		// + "<ak:submittedbypi>Not Submitted</ak:submittedbypi>\n"
-		// + "<ak:readyforsubmissionbypi>false</ak:readyforsubmissionbypi>\n"
-		// + "<ak:deletedbypi>Deleted</ak:deletedbypi>\n"
-		// +
-		// "<ak:approvedbydepartmentchair>Not Ready for Approval</ak:approvedbydepartmentchair>\n"
-		// +
-		// "<ak:approvedbybusinessmanager>Not Ready for Approval</ak:approvedbybusinessmanager>\n"
-		// + "<ak:approvedbyirb>Not Ready for Approval</ak:approvedbyirb>\n"
-		// + "<ak:approvedbydean>Not Ready for Approval</ak:approvedbydean>\n"
-		// +
-		// "<ak:approvedbyuniversityresearchadministrator>Not Ready for Approval</ak:approvedbyuniversityresearchadministrator>\n"
-		// +
-		// "<ak:withdwarnbyuniversityresearchadmisntrator>Not Withdrawn</ak:withdwarnbyuniversityresearchadmisntrator>\n"
-		// +
-		// "<ak:submittedbyuniversityresearchadminstrator>Not Submitted</ak:submittedbyuniversityresearchadminstrator>\n"
-		// +
-		// "<ak:approvedbyuniversityresearchdirector>Not Deleted</ak:approvedbyuniversityresearchdirector>\n"
-		// +
-		// "<ak:deletedbyuniversityresearchdirector>Not Deleted</ak:deletedbyuniversityresearchdirector>\n"
-		// +
-		// "<ak:archivedbyuniversityresearchdirector>Not Archived</ak:archivedbyuniversityresearchdirector>\n"
-		// + "<ak:authorprofile>\n"
-		// + "<ak:fullname>Milson Munakami</ak:fullname>\n"
-		// + "</ak:authorprofile>\n"
-		// + "<ak:pi>\n"
-		// + "<ak:fullname>Milson Munakami</ak:fullname>\n"
-		// + "<ak:workemail>milsonmun@yahoo.com</ak:workemail>\n"
-		// + "<ak:userid>56e45a50af68c71ea4248edf</ak:userid>\n"
-		// + "</ak:pi>\n"
-		// + "</ak:proposal>\n"
-		// + "</ak:record>\n"
-		// + "</Content>\n"
-		// +
-		// "<Attribute IncludeInResult=\"false\" AttributeId=\"urn:oasis:names:tc:xacml:3.0:profile:multiple:content-selector\">\n"
-		// +
-		// "<AttributeValue XPathCategory=\"urn:oasis:names:tc:xacml:3.0:attribute-category:resource\" DataType=\"urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression\">/ak:record/ak:proposal</AttributeValue>\n"
-		// + "</Attribute>\n"
-		// +
-		// "<Attribute IncludeInResult=\"false\" AttributeId=\"urn:oasis:names:tc:xacml:1.0:resource:proposal.section\">\n"
-		// +
-		// "<AttributeValue DataType=\"http://www.w3.org/2001/XMLSchema#string\">Whole Proposal</AttributeValue>\n"
-		// + "</Attribute>\n"
-		// + "</Attributes>\n"
-		// +
-		// "<Attributes Category=\"urn:oasis:names:tc:xacml:3.0:attribute-category:action\">\n"
-		// +
-		// "<Attribute IncludeInResult=\"false\" AttributeId=\"urn:oasis:names:tc:xacml:1.0:action:proposal.action\">\n"
-		// +
-		// "<AttributeValue DataType=\"http://www.w3.org/2001/XMLSchema#string\">Add</AttributeValue>\n"
-		// + "</Attribute>\n" + "</Attributes>\n" + "</Request>";
-
 		ResponseCtx response = getResponse(request);
 
 		// initBalana();
@@ -321,82 +248,62 @@ public class Accesscontrol {
 
 	public Set<AbstractResult> getXACMLdecisionWithObligations(
 			HashMap<String, Multimap<String, String>> attrMap,
-			StringBuffer contentProfile) {
-		String request = createXACMLRequestWithProfile(attrMap, contentProfile);
+			StringBuffer contentProfile, String authorFullName) {
+		// String request = createXACMLRequestWithProfile(attrMap,
+		// contentProfile);
 
-		// String request =
-		// "<Request xmlns=\"urn:oasis:names:tc:xacml:3.0:core:schema:wd-17\" CombinedDecision=\"false\" ReturnPolicyIdList=\"false\">"
-		// +
-		// "<Attributes Category=\"urn:oasis:names:tc:xacml:1.0:subject-category:access-subject\">"
-		// +
-		// "<Attribute IncludeInResult=\"false\" AttributeId=\"urn:oasis:names:tc:xacml:1.0:subject:subject-id\" Issuer=\"med.example.com\">"
-		// +
-		// "<AttributeValue DataType=\"http://www.w3.org/2001/XMLSchema#string\">Name of Department Chair</AttributeValue>"
-		// + "</Attribute>"
-		// +
-		// "<Attribute IncludeInResult=\"false\" AttributeId=\"urn:oasis:names:tc:xacml:1.0:subject:position.type\">"
-		// +
-		// "<AttributeValue DataType=\"http://www.w3.org/2001/XMLSchema#string\">Tenured/tenure-track faculty</AttributeValue>"
-		// + "</Attribute>"
-		// + "</Attributes>"
-		// +
-		// "<Attributes Category=\"urn:oasis:names:tc:xacml:3.0:attribute-category:resource\">"
-		// + "<Content>"
-		// + "<ak:record xmlns:ak='http://akpower.org'>"
-		// + "<ak:patient>"
-		// + "<ak:patientId>bob</ak:patientId>"
-		// + "<ak:patientName>"
-		// + "<ak:first>Bob</ak:first>"
-		// + "<ak:last>Allan</ak:last>"
-		// + "</ak:patientName>"
-		// + "<ak:patientContact>"
-		// + "<ak:street>51 Main road</ak:street>"
-		// + "<ak:city>Gampaha</ak:city>"
-		// + "<ak:state>Western</ak:state>"
-		// + "<ak:zip>11730</ak:zip>"
-		// + "<ak:phone>94332189873</ak:phone>"
-		// + "<ak:email>asela@gmail.com</ak:email>"
-		// + "</ak:patientContact>"
-		// + "<ak:patientDoB>1991-05-11</ak:patientDoB>"
-		// + "<ak:patientGender>male</ak:patientGender>"
-		// + "</ak:patient>"
-		// + "<ak:patient>"
-		// + "<ak:patientId>alice</ak:patientId>"
-		// + "<ak:patientName>"
-		// + "<ak:first>Alice</ak:first>"
-		// + "<ak:last>In Wonderland</ak:last>"
-		// + "</ak:patientName>"
-		// + "<ak:patientContact>"
-		// + "<ak:street>51 Main road</ak:street>"
-		// + "<ak:city>Gampaha</ak:city>"
-		// + "<ak:state>Western</ak:state>"
-		// + "<ak:zip>11730</ak:zip>"
-		// + "<ak:phone>94332189873</ak:phone>"
-		// + "<ak:email>alice@gmail.com</ak:email>"
-		// + "</ak:patientContact>"
-		// + "<ak:patientDoB>1991-05-11</ak:patientDoB>"
-		// + "<ak:patientGender>male</ak:patientGender>"
-		// + "</ak:patient>"
-		// + "</ak:record>"
-		// + "</Content>"
-		// +
-		// "<Attribute IncludeInResult=\"false\" AttributeId=\"urn:oasis:names:tc:xacml:3.0:profile:multiple:content-selector\">"
-		// +
-		// "<AttributeValue XPathCategory=\"urn:oasis:names:tc:xacml:3.0:attribute-category:resource\" DataType=\"urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression\">/ak:record/ak:patient</AttributeValue>"
-		// + "</Attribute>"
-		// +
-		// "<Attribute IncludeInResult=\"false\" AttributeId=\"urn:oasis:names:tc:xacml:1.0:resource:proposal.section\">"
-		// +
-		// "<AttributeValue DataType=\"http://www.w3.org/2001/XMLSchema#string\">Whole Proposal</AttributeValue>"
-		// + "</Attribute>"
-		// + "</Attributes>"
-		// +
-		// "<Attributes Category=\"urn:oasis:names:tc:xacml:3.0:attribute-category:action\">"
-		// +
-		// "<Attribute IncludeInResult=\"false\" AttributeId=\"urn:oasis:names:tc:xacml:1.0:action:proposal.action\">"
-		// +
-		// "<AttributeValue DataType=\"http://www.w3.org/2001/XMLSchema#string\">Add</AttributeValue>"
-		// + "</Attribute>" + "</Attributes>" + "</Request>";
+		String request = "<Request xmlns=\"urn:oasis:names:tc:xacml:3.0:core:schema:wd-17\" CombinedDecision=\"false\" ReturnPolicyIdList=\"false\">"
+				+ "<Attributes Category=\"urn:oasis:names:tc:xacml:1.0:subject-category:access-subject\">"
+				+ "<Attribute AttributeId=\"urn:oasis:names:tc:xacml:1.0:subject:subject-id\" IncludeInResult=\"false\" Issuer=\"med.example.com\">"
+				+ "<AttributeValue DataType=\"http://www.w3.org/2001/XMLSchema#string\">"
+				+ authorFullName
+				+ "</AttributeValue>"
+				+ "</Attribute>"
+				+ "<Attribute AttributeId=\"urn:oasis:names:tc:xacml:1.0:subject:position.type\" IncludeInResult=\"false\">"
+				+ "<AttributeValue DataType=\"http://www.w3.org/2001/XMLSchema#string\">Tenured/tenure-track faculty</AttributeValue>"
+				+ "</Attribute>"
+				+ "</Attributes>"
+				+ "<Attributes Category=\"urn:oasis:names:tc:xacml:3.0:attribute-category:resource\">"
+				+ "<Content>"
+				+ "<ak:record xmlns:ak='http://akpower.org'>"
+				+ "<ak:proposal>"
+				+ "<ak:proposalid>5702a60865dbb30b09a492cf</ak:proposalid>"
+				+ "<ak:proposaltitle>Proposal1</ak:proposaltitle>"
+				+ "<ak:submittedbypi>Not Submitted</ak:submittedbypi>"
+				+ "<ak:readyforsubmissionbypi>false</ak:readyforsubmissionbypi>"
+				+ "<ak:deletedbypi>Deleted</ak:deletedbypi>"
+				+ "<ak:approvedbydepartmentchair>Not Ready for Approval</ak:approvedbydepartmentchair>"
+				+ "<ak:approvedbybusinessmanager>Not Ready for Approval</ak:approvedbybusinessmanager>"
+				+ "<ak:approvedbyirb>Not Ready for Approval</ak:approvedbyirb>"
+				+ "<ak:approvedbydean>Not Ready for Approval</ak:approvedbydean>"
+				+ "<ak:approvedbyuniversityresearchadministrator>Not Ready for Approval</ak:approvedbyuniversityresearchadministrator>"
+				+ "<ak:withdwarnbyuniversityresearchadmisntrator>Not Withdrawn</ak:withdwarnbyuniversityresearchadmisntrator>"
+				+ "<ak:submittedbyuniversityresearchadminstrator>Not Submitted</ak:submittedbyuniversityresearchadminstrator>"
+				+ "<ak:approvedbyuniversityresearchdirector>Not Deleted</ak:approvedbyuniversityresearchdirector>"
+				+ "<ak:deletedbyuniversityresearchdirector>Not Deleted</ak:deletedbyuniversityresearchdirector>"
+				+ "<ak:archivedbyuniversityresearchdirector>Not Archived</ak:archivedbyuniversityresearchdirector>"
+				+ "<ak:authorprofile>"
+				+ "<ak:fullname>Milson Munakami</ak:fullname>"
+				+ "</ak:authorprofile>"
+				+ "<ak:pi>"
+				+ "<ak:fullname>Milson Munakami</ak:fullname>"
+				+ "<ak:workemail>milsonmun@yahoo.com</ak:workemail>"
+				+ "<ak:userid>56e45a50af68c71ea4248edf</ak:userid>"
+				+ "</ak:pi>"
+				+ "</ak:proposal>"
+				+ "</ak:record>"
+				+ "</Content>"
+				+ "<Attribute AttributeId=\"urn:oasis:names:tc:xacml:3.0:profile:multiple:content-selector\" IncludeInResult=\"false\">"
+				+ "<AttributeValue XPathCategory=\"urn:oasis:names:tc:xacml:3.0:attribute-category:resource\" DataType=\"urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression\">/ak:record/ak:proposal</AttributeValue>"
+				+ "</Attribute>"
+				+ "<Attribute AttributeId=\"urn:oasis:names:tc:xacml:1.0:resource:proposal.section\" IncludeInResult=\"false\">"
+				+ "<AttributeValue DataType=\"http://www.w3.org/2001/XMLSchema#string\">Whole Proposal</AttributeValue>"
+				+ "</Attribute>"
+				+ "</Attributes>"
+				+ "<Attributes Category=\"urn:oasis:names:tc:xacml:3.0:attribute-category:action\">"
+				+ "<Attribute AttributeId=\"urn:oasis:names:tc:xacml:1.0:action:proposal.action\" IncludeInResult=\"false\">"
+				+ "<AttributeValue DataType=\"http://www.w3.org/2001/XMLSchema#string\">Add</AttributeValue>"
+				+ "</Attribute>" + "</Attributes>" + "</Request>";
 
 		ResponseCtx response = getResponse(request);
 

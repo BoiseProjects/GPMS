@@ -80,34 +80,8 @@ public class TestAccessControl {
 		// environmentMap.put("device-type", "Android Device");
 		// attrMap.put("Environment", environmentMap);
 
-		// ac.getXACMLdecision("Tenured", "Proposal", "Create");
-		// ac.getXACMLdecision("Research Staff", "Proposal", "Create");
-		// ac.getXACMLdecision("Tenured", "Proposal", "Delete");
-		// ac.getXACMLdecision("PI", "Proposal", "Delete");
-		// ac.getXACMLdecision("PI", "Co-PI-List", "Edit");
-		// ac.getXACMLdecision("PI", "Co-PI-List", "View");
-		// ac.getXACMLdecision("Co-PI", "Co-PI-List", "Edit");
-		// ac.getXACMLdecision("Co-PI", "Co-PI-List", "View");
-		// ac.getXACMLdecision("Senior-Personnel", "Co-PI-List", "Edit");
-		// ac.getXACMLdecision("Senior-Personnel", "Co-PI-List", "View");
-		// ac.getXACMLdecision("PI", "Senior-Personnel-List", "View");
-		// ac.getXACMLdecision("PI", "Senior-Personnel-List", "View");
-		// ac.getXACMLdecision("Co-PI", "Senior-Personnel-List", "Edit");
-		// ac.getXACMLdecision("Co-PI", "Senior-Personnel-List", "View");
-		// ac.getXACMLdecision("Senior-Personnel", "Senior-Personnel-List",
-		// "Edit");
-		// ac.getXACMLdecision("Senior-Personnel", "Senior-Personnel-List",
-		// "View");
-		// ac.getXACMLdecision("PI", "Project-Info", "View");
-		// ac.getXACMLdecision("PI", "Project-Info", "Edit");
-		// ac.getXACMLdecision("Co-PI", "Project-Info", "View");
-		// ac.getXACMLdecision("Co-PI", "Project-Info", "Edit");
-		// ac.getXACMLdecision("Senior-Personnel", "Project-Info", "View");
-		// ac.getXACMLdecision("Research-Administrator", "OSP-Section", "Edit");
-
-		// String decision = ac.getXACMLdecision("PI", "Project-Info", "View");
-
 		String proposalID = "56fee06865dbb35ce580c907";
+		String authorFullName = "Milson Munakami";
 
 		ObjectId proposalId = new ObjectId(proposalID);
 
@@ -226,13 +200,13 @@ public class TestAccessControl {
 		contentProfile.append("</ak:record>");
 		contentProfile.append("</Content>");
 		contentProfile
-				.append("<Attribute IncludeInResult=\"false\" AttributeId=\"urn:oasis:names:tc:xacml:3.0:profile:multiple:content-selector\">");
+				.append("<Attribute AttributeId=\"urn:oasis:names:tc:xacml:3.0:profile:multiple:content-selector\" IncludeInResult=\"false\">");
 		contentProfile
 				.append("<AttributeValue XPathCategory=\"urn:oasis:names:tc:xacml:3.0:attribute-category:resource\" DataType=\"urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression\">/ak:record/ak:proposal</AttributeValue>");
 		contentProfile.append("</Attribute>");
 
 		Set<AbstractResult> set = ac.getXACMLdecisionWithObligations(attrMap,
-				contentProfile);
+				contentProfile, authorFullName);
 
 		Iterator<AbstractResult> it = set.iterator();
 		int intDecision = 3;
