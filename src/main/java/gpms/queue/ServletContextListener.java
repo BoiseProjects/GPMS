@@ -1,7 +1,9 @@
 package gpms.queue;
 
+import java.io.File;
 import java.util.Properties;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 
 public class ServletContextListener implements
@@ -36,6 +38,18 @@ public class ServletContextListener implements
 
 		// Start the queue and the thread factory here
 		ProcessingFactory.create("processing-queue", properties);
+
+		// String rootPath = System.getProperty("catalina.home");
+		// ServletContext ctx = event.getServletContext();
+		// String relativePath = ctx.getInitParameter("tempfile.dir");
+		// File file = new File(rootPath + File.separator + relativePath);
+		// if (!file.exists())
+		// file.mkdirs();
+		// System.out
+		// .println("File Directory created to be used for storing files");
+		// ctx.setAttribute("FILES_DIR_FILE", file);
+		// ctx.setAttribute("FILES_DIR", rootPath + File.separator +
+		// relativePath);
 
 	}
 

@@ -26,31 +26,26 @@
 		<location>/Error.jsp</location>
 	</error-page>
 
-	<context-param>
-		<param-name>tempfile.dir</param-name>
-		<param-value>tmpfiles</param-value>
-	</context-param>
+	<!-- <context-param> -->
+	<!-- <param-name>tempfile.dir</param-name> -->
+	<!-- <param-value>tmpfiles</param-value> -->
+	<!-- </context-param> -->
 
-	<context-param>
-		<param-name>proposalupload.dir</param-name>
-		<param-value>proposalfiles</param-value>
-	</context-param>
-
-	<context-param>
-		<param-name>gpms.workers</param-name>
-		<param-value>5</param-value>
-	</context-param>
-	<context-param>
-		<param-name>gpms.timeout</param-name>
-		<param-value>20</param-value>
-	</context-param>
-	<context-param>
-		<param-name>gpms.queuedepth</param-name>
-		<param-value>5000</param-value>
-	</context-param>
-	<listener>
-		<listener-class>gpms.queue.ServletContextListener</listener-class>
-	</listener>
+	<!-- <context-param> -->
+	<!-- <param-name>gpms.workers</param-name> -->
+	<!-- <param-value>5</param-value> -->
+	<!-- </context-param> -->
+	<!-- <context-param> -->
+	<!-- <param-name>gpms.timeout</param-name> -->
+	<!-- <param-value>20</param-value> -->
+	<!-- </context-param> -->
+	<!-- <context-param> -->
+	<!-- <param-name>gpms.queuedepth</param-name> -->
+	<!-- <param-value>5000</param-value> -->
+	<!-- </context-param> -->
+	<!-- <listener> -->
+	<!-- <listener-class>gpms.queue.ServletContextListener</listener-class> -->
+	<!-- </listener> -->
 	<servlet>
 		<display-name>GPMS-rest</display-name>
 		<servlet-name>GPMS-rest</servlet-name>

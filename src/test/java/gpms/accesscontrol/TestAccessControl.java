@@ -3,6 +3,7 @@ package gpms.accesscontrol;
 import static org.junit.Assert.assertEquals;
 import gpms.DAL.MongoDBConnector;
 import gpms.dao.ProposalDAO;
+import gpms.model.InvestigatorRefAndPosition;
 import gpms.model.Proposal;
 import gpms.model.UserAccount;
 import gpms.model.UserProfile;
@@ -57,30 +58,30 @@ public class TestAccessControl {
 		HashMap<String, Multimap<String, String>> attrMap = new HashMap<String, Multimap<String, String>>();
 
 		Multimap<String, String> subjectMap = ArrayListMultimap.create();
-		subjectMap.put("position.type", "Tenured/tenure-track faculty");
-		// subjectMap.put("Proposal Role", "PI");
-
+		// subjectMap.put("position.type", "Tenured/tenure-track faculty");
 		// subjectMap.put("position.title", "Department Chair");
+		subjectMap.put("proposal.role", "PI");
+
 		attrMap.put("Subject", subjectMap);
 
 		Multimap<String, String> resourceMap = ArrayListMultimap.create();
+		resourceMap.put("DeletedByPI", "NOTDELETED");
 		resourceMap.put("proposal.section", "Whole Proposal");
-		// resourceMap.put("status", "Withdraw by Research Office");
+		resourceMap.put("SubmittedByPI", "NOTSUBMITTED");
 
-		// resourceMap.put("ApprovedByDepartmentChair", "READYFORAPPROVAL");
 		attrMap.put("Resource", resourceMap);
 
 		Multimap<String, String> actionMap = ArrayListMultimap.create();
-		actionMap.put("proposal.action", "Add");
+		// actionMap.put("proposal.action", "Add");
+		actionMap.put("proposal.action", "Save");
 
-		// actionMap.put("proposal.action", "Approve");
 		attrMap.put("Action", actionMap);
 
 		// Multimap<String, String> environmentMap = ArrayListMultimap.create();
 		// environmentMap.put("device-type", "Android Device");
 		// attrMap.put("Environment", environmentMap);
 
-		String proposalID = "56fee06865dbb35ce580c907";
+		String proposalID = "5702a60865dbb30b09a492cf";
 		String authorFullName = "Milson Munakami";
 
 		ObjectId proposalId = new ObjectId(proposalID);
@@ -91,7 +92,7 @@ public class TestAccessControl {
 		StringBuffer contentProfile = new StringBuffer();
 
 		contentProfile.append("<Content>");
-		contentProfile.append("<ak:record xmlns:ak='http://akpower.org'>");
+		contentProfile.append("<ak:record xmlns:ak=\"http://akpower.org\">");
 		contentProfile.append("<ak:proposal>");
 
 		contentProfile.append("<ak:proposalid>");
@@ -99,66 +100,62 @@ public class TestAccessControl {
 		contentProfile.append("</ak:proposalid>");
 
 		contentProfile.append("<ak:proposaltitle>");
-		contentProfile.append(existingProposal.getProjectInfo()
-				.getProjectTitle());
+		contentProfile.append("Proposal 11");
 		contentProfile.append("</ak:proposaltitle>");
 
 		contentProfile.append("<ak:submittedbypi>");
-		contentProfile.append(existingProposal.getSubmittedByPI());
+		contentProfile.append("Not Submitted");
 		contentProfile.append("</ak:submittedbypi>");
 
 		contentProfile.append("<ak:readyforsubmissionbypi>");
-		contentProfile.append(existingProposal.isReadyForSubmissionByPI());
+		contentProfile.append(false);
 		contentProfile.append("</ak:readyforsubmissionbypi>");
 
 		contentProfile.append("<ak:deletedbypi>");
-		contentProfile.append(existingProposal.getDeletedByPI());
+		contentProfile.append("Not Ready for Approval");
 		contentProfile.append("</ak:deletedbypi>");
 
 		contentProfile.append("<ak:approvedbydepartmentchair>");
-		contentProfile.append(existingProposal.getChairApproval());
+		contentProfile.append("Not Ready for Approval");
 		contentProfile.append("</ak:approvedbydepartmentchair>");
 
 		contentProfile.append("<ak:approvedbybusinessmanager>");
-		contentProfile.append(existingProposal.getBusinessManagerApproval());
+		contentProfile.append("Not Ready for Approval");
 		contentProfile.append("</ak:approvedbybusinessmanager>");
 
 		contentProfile.append("<ak:approvedbyirb>");
-		contentProfile.append(existingProposal.getIrbApproval());
+		contentProfile.append("Not Ready for Approval");
 		contentProfile.append("</ak:approvedbyirb>");
 
 		contentProfile.append("<ak:approvedbydean>");
-		contentProfile.append(existingProposal.getDeanApproval());
+		contentProfile.append("Not Ready for Approval");
 		contentProfile.append("</ak:approvedbydean>");
 
 		contentProfile.append("<ak:approvedbyuniversityresearchadministrator>");
-		contentProfile.append(existingProposal
-				.getResearchAdministratorApproval());
+		contentProfile.append("Not Ready for Approval");
 		contentProfile
 				.append("</ak:approvedbyuniversityresearchadministrator>");
 
 		contentProfile.append("<ak:withdwarnbyuniversityresearchadmisntrator>");
-		contentProfile.append(existingProposal
-				.getResearchAdministratorWithdraw());
+		contentProfile.append("Not Withdrawn");
 		contentProfile
 				.append("</ak:withdwarnbyuniversityresearchadmisntrator>");
 
 		contentProfile.append("<ak:submittedbyuniversityresearchadminstrator>");
-		contentProfile.append(existingProposal
-				.getResearchAdministratorSubmission());
+		contentProfile.append("Not Submitted");
 		contentProfile
 				.append("</ak:submittedbyuniversityresearchadminstrator>");
 
 		contentProfile.append("<ak:approvedbyuniversityresearchdirector>");
-		contentProfile.append(existingProposal.getResearchDirectorDeletion());
+		contentProfile.append("Not Deleted");
 		contentProfile.append("</ak:approvedbyuniversityresearchdirector>");
 
 		contentProfile.append("<ak:deletedbyuniversityresearchdirector>");
-		contentProfile.append(existingProposal.getResearchDirectorDeletion());
+		contentProfile.append("Not Deleted");
 		contentProfile.append("</ak:deletedbyuniversityresearchdirector>");
 
 		contentProfile.append("<ak:archivedbyuniversityresearchdirector>");
-		contentProfile.append(existingProposal.getResearchDirectorArchived());
+		contentProfile.append("Not Archived");
 		contentProfile.append("</ak:archivedbyuniversityresearchdirector>");
 
 		contentProfile.append("<ak:authorprofile>");
@@ -175,26 +172,78 @@ public class TestAccessControl {
 		// contentProfile.append("</ak:lastname>");
 
 		contentProfile.append("<ak:fullname>");
-		contentProfile.append("Milson Munakami");
+		contentProfile.append(authorFullName);
 		contentProfile.append("</ak:fullname>");
 		contentProfile.append("</ak:authorprofile>");
 
 		contentProfile.append("<ak:pi>");
 		contentProfile.append("<ak:fullname>");
-		contentProfile.append(existingProposal.getInvestigatorInfo().getPi()
-				.getUserRef().getFullName());
+		contentProfile.append("Milson Munakami");
 		contentProfile.append("</ak:fullname>");
 
 		contentProfile.append("<ak:workemail>");
-		contentProfile.append(existingProposal.getInvestigatorInfo().getPi()
-				.getUserRef().getWorkEmails().get(0));
+		contentProfile.append("milsonmun@yahoo.com");
 		contentProfile.append("</ak:workemail>");
 
 		contentProfile.append("<ak:userid>");
-		contentProfile.append(existingProposal.getInvestigatorInfo().getPi()
-				.getUserProfileId());
+		contentProfile.append("56fee3e965dbb35ce5c900fa");
 		contentProfile.append("</ak:userid>");
 		contentProfile.append("</ak:pi>");
+
+		contentProfile.append("<ak:copis>");
+
+		contentProfile.append("<ak:copi>");
+		contentProfile.append("<ak:fullname>");
+		contentProfile.append("PS Wang");
+		contentProfile.append("</ak:fullname>");
+		contentProfile.append("<ak:workemail>");
+		contentProfile.append("fdsafda@yahoo.comss");
+		contentProfile.append("</ak:workemail>");
+		contentProfile.append("<ak:userid>");
+		contentProfile.append("56fee3e965dbb35ce5c900fx");
+		contentProfile.append("</ak:userid>");
+		contentProfile.append("</ak:copi>");
+
+		contentProfile.append("<ak:copi>");
+		contentProfile.append("<ak:fullname>");
+		contentProfile.append("Thomas Voltz");
+		contentProfile.append("</ak:fullname>");
+		contentProfile.append("<ak:workemail>");
+		contentProfile.append("fdsafda@yahoo.comsss");
+		contentProfile.append("</ak:workemail>");
+		contentProfile.append("<ak:userid>");
+		contentProfile.append("56fee3e965dbb35ce5c900fx");
+		contentProfile.append("</ak:userid>");
+		contentProfile.append("</ak:copi>");
+
+		contentProfile.append("</ak:copis>");
+
+		contentProfile.append("<ak:seniors>");
+
+		contentProfile.append("<ak:senior>");
+		contentProfile.append("<ak:fullname>");
+		contentProfile.append("Nisha Shrestha");
+		contentProfile.append("</ak:fullname>");
+		contentProfile.append("<ak:workemail>");
+		contentProfile.append("fdsafda@yahoo.cdomss");
+		contentProfile.append("</ak:workemail>");
+		contentProfile.append("<ak:userid>");
+		contentProfile.append("56fee3e965dbb35ce5c910dx");
+		contentProfile.append("</ak:userid>");
+		contentProfile.append("</ak:senior>");
+
+		contentProfile.append("<ak:senior>");
+		contentProfile.append("<ak:fullname>");
+		contentProfile.append("Arthur Shu");
+		contentProfile.append("</ak:fullname>");
+		contentProfile.append("<ak:workemail>");
+		contentProfile.append("fdsafda@yahoo.camss");
+		contentProfile.append("</ak:workemail>");
+		contentProfile.append("<ak:userid>");
+		contentProfile.append("56fee3e965dbb35ce5c920dx");
+		contentProfile.append("</ak:userid>");
+		contentProfile.append("</ak:senior>");
+		contentProfile.append("</ak:seniors>");
 
 		contentProfile.append("</ak:proposal>");
 		contentProfile.append("</ak:record>");
@@ -202,11 +251,164 @@ public class TestAccessControl {
 		contentProfile
 				.append("<Attribute AttributeId=\"urn:oasis:names:tc:xacml:3.0:profile:multiple:content-selector\" IncludeInResult=\"false\">");
 		contentProfile
-				.append("<AttributeValue XPathCategory=\"urn:oasis:names:tc:xacml:3.0:attribute-category:resource\" DataType=\"urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression\">/ak:record/ak:proposal</AttributeValue>");
+				.append("<AttributeValue XPathCategory=\"urn:oasis:names:tc:xacml:3.0:attribute-category:resource\" DataType=\"urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression\">//ak:record/ak:proposal</AttributeValue>");
 		contentProfile.append("</Attribute>");
 
+		// contentProfile.append("<Content>");
+		// contentProfile.append("<ak:record xmlns:ak=\"http://akpower.org\">");
+		// contentProfile.append("<ak:proposal>");
+		//
+		// contentProfile.append("<ak:proposalid>");
+		// contentProfile.append(proposalID);
+		// contentProfile.append("</ak:proposalid>");
+		//
+		// contentProfile.append("<ak:proposaltitle>");
+		// contentProfile.append(existingProposal.getProjectInfo()
+		// .getProjectTitle());
+		// contentProfile.append("</ak:proposaltitle>");
+		//
+		// contentProfile.append("<ak:submittedbypi>");
+		// contentProfile.append(existingProposal.getSubmittedByPI());
+		// contentProfile.append("</ak:submittedbypi>");
+		//
+		// contentProfile.append("<ak:readyforsubmissionbypi>");
+		// contentProfile.append(existingProposal.isReadyForSubmissionByPI());
+		// contentProfile.append("</ak:readyforsubmissionbypi>");
+		//
+		// contentProfile.append("<ak:deletedbypi>");
+		// contentProfile.append(existingProposal.getDeletedByPI());
+		// contentProfile.append("</ak:deletedbypi>");
+		//
+		// contentProfile.append("<ak:approvedbydepartmentchair>");
+		// contentProfile.append(existingProposal.getChairApproval());
+		// contentProfile.append("</ak:approvedbydepartmentchair>");
+		//
+		// contentProfile.append("<ak:approvedbybusinessmanager>");
+		// contentProfile.append(existingProposal.getBusinessManagerApproval());
+		// contentProfile.append("</ak:approvedbybusinessmanager>");
+		//
+		// contentProfile.append("<ak:approvedbyirb>");
+		// contentProfile.append(existingProposal.getIrbApproval());
+		// contentProfile.append("</ak:approvedbyirb>");
+		//
+		// contentProfile.append("<ak:approvedbydean>");
+		// contentProfile.append(existingProposal.getDeanApproval());
+		// contentProfile.append("</ak:approvedbydean>");
+		//
+		// contentProfile.append("<ak:approvedbyuniversityresearchadministrator>");
+		// contentProfile.append(existingProposal
+		// .getResearchAdministratorApproval());
+		// contentProfile
+		// .append("</ak:approvedbyuniversityresearchadministrator>");
+		//
+		// contentProfile.append("<ak:withdwarnbyuniversityresearchadmisntrator>");
+		// contentProfile.append(existingProposal
+		// .getResearchAdministratorWithdraw());
+		// contentProfile
+		// .append("</ak:withdwarnbyuniversityresearchadmisntrator>");
+		//
+		// contentProfile.append("<ak:submittedbyuniversityresearchadminstrator>");
+		// contentProfile.append(existingProposal
+		// .getResearchAdministratorSubmission());
+		// contentProfile
+		// .append("</ak:submittedbyuniversityresearchadminstrator>");
+		//
+		// contentProfile.append("<ak:approvedbyuniversityresearchdirector>");
+		// contentProfile.append(existingProposal.getResearchDirectorDeletion());
+		// contentProfile.append("</ak:approvedbyuniversityresearchdirector>");
+		//
+		// contentProfile.append("<ak:deletedbyuniversityresearchdirector>");
+		// contentProfile.append(existingProposal.getResearchDirectorDeletion());
+		// contentProfile.append("</ak:deletedbyuniversityresearchdirector>");
+		//
+		// contentProfile.append("<ak:archivedbyuniversityresearchdirector>");
+		// contentProfile.append(existingProposal.getResearchDirectorArchived());
+		// contentProfile.append("</ak:archivedbyuniversityresearchdirector>");
+		//
+		// contentProfile.append("<ak:authorprofile>");
+		// // contentProfile.append("<ak:firstname>");
+		// // contentProfile.append(authorProfile.getFirstName());
+		// // contentProfile.append("</ak:firstname>");
+		// // contentProfile.append("<ak:middlename>");
+		// // contentProfile
+		// // .append(authorProfile.getMiddleName());
+		// // contentProfile.append("</ak:middlename>");
+		// //
+		// // contentProfile.append("<ak:lastname>");
+		// // contentProfile.append(authorProfile.getLastName());
+		// // contentProfile.append("</ak:lastname>");
+		//
+		// contentProfile.append("<ak:fullname>");
+		// contentProfile.append(authorFullName);
+		// contentProfile.append("</ak:fullname>");
+		// contentProfile.append("</ak:authorprofile>");
+		//
+		// contentProfile.append("<ak:pi>");
+		// contentProfile.append("<ak:fullname>");
+		// contentProfile.append(existingProposal.getInvestigatorInfo().getPi()
+		// .getUserRef().getFullName());
+		// contentProfile.append("</ak:fullname>");
+		//
+		// contentProfile.append("<ak:workemail>");
+		// contentProfile.append(existingProposal.getInvestigatorInfo().getPi()
+		// .getUserRef().getWorkEmails().get(0));
+		// contentProfile.append("</ak:workemail>");
+		//
+		// contentProfile.append("<ak:userid>");
+		// contentProfile.append(existingProposal.getInvestigatorInfo().getPi()
+		// .getUserProfileId());
+		// contentProfile.append("</ak:userid>");
+		// contentProfile.append("</ak:pi>");
+		//
+		// contentProfile.append("<ak:copis>");
+		// for (InvestigatorRefAndPosition copis : existingProposal
+		// .getInvestigatorInfo().getCo_pi()) {
+		// contentProfile.append("<ak:copi>");
+		// contentProfile.append("<ak:fullname>");
+		// contentProfile.append(copis.getUserRef().getFullName());
+		// contentProfile.append("</ak:fullname>");
+		//
+		// contentProfile.append("<ak:workemail>");
+		// contentProfile.append(copis.getUserRef().getWorkEmails().get(0));
+		// contentProfile.append("</ak:workemail>");
+		//
+		// contentProfile.append("<ak:userid>");
+		// contentProfile.append(copis.getUserProfileId());
+		// contentProfile.append("</ak:userid>");
+		// contentProfile.append("</ak:copi>");
+		// }
+		// contentProfile.append("</ak:copis>");
+		//
+		// contentProfile.append("<ak:seniors>");
+		// for (InvestigatorRefAndPosition seniors : existingProposal
+		// .getInvestigatorInfo().getSeniorPersonnel()) {
+		// contentProfile.append("<ak:senior>");
+		// contentProfile.append("<ak:fullname>");
+		// contentProfile.append(seniors.getUserRef().getFullName());
+		// contentProfile.append("</ak:fullname>");
+		//
+		// contentProfile.append("<ak:workemail>");
+		// contentProfile.append(seniors.getUserRef().getWorkEmails().get(0));
+		// contentProfile.append("</ak:workemail>");
+		//
+		// contentProfile.append("<ak:userid>");
+		// contentProfile.append(seniors.getUserProfileId());
+		// contentProfile.append("</ak:userid>");
+		// contentProfile.append("</ak:senior>");
+		// }
+		// contentProfile.append("</ak:seniors>");
+		//
+		// contentProfile.append("</ak:proposal>");
+		// contentProfile.append("</ak:record>");
+		// contentProfile.append("</Content>");
+		// contentProfile
+		// .append("<Attribute AttributeId=\"urn:oasis:names:tc:xacml:3.0:profile:multiple:content-selector\" IncludeInResult=\"false\">");
+		// contentProfile
+		// .append("<AttributeValue XPathCategory=\"urn:oasis:names:tc:xacml:3.0:attribute-category:resource\" DataType=\"urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression\">//ak:record/ak:proposal</AttributeValue>");
+		// contentProfile.append("</Attribute>");
+
 		Set<AbstractResult> set = ac.getXACMLdecisionWithObligations(attrMap,
-				contentProfile, authorFullName);
+				contentProfile);
 
 		Iterator<AbstractResult> it = set.iterator();
 		int intDecision = 3;

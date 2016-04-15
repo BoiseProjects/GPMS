@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Policy xmlns="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17"
-	xmlns:xacml="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17 http://docs.oasis-open.org/xacml/3.0/xacml-core-v3-schema-wd-17.xsd"
+	xmlns:xacml="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17"
+ 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17 http://docs.oasis-open.org/xacml/3.0/xacml-core-v3-schema-wd-17.xsd"
 	PolicyId="Proposal-Rules"
 	RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:deny-overrides"
 	Version="3.0">
@@ -67,83 +68,7 @@
           </Match>
         </AllOf>
       </AnyOf>
-    </Target>
-    <ObligationExpressions>
-      <ObligationExpression
-        ObligationId="urn:oasis:names:tc:xacml:example:obligation:email"
-        FulfillOn="Permit">
-        <AttributeAssignmentExpression
-          AttributeId="urn:oasis:names:tc:xacml:3.0:example:attribute:mailto">
-          <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
-            <AttributeSelector MustBePresent="false"
-              ContextSelectorId="urn:oasis:names:tc:xacml:3.0:content-selector"
-              Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
-              Path="/ak:proposal/ak:pi/ak:workemail/text()" DataType="http://www.w3.org/2001/XMLSchema#string" />
-          </Apply>
-        </AttributeAssignmentExpression>
-        <AttributeAssignmentExpression
-          AttributeId="urn:oasis:names:tc:xacml:3.0:example:attribute:text">
-          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">A proposal has been created by: </AttributeValue>
-        </AttributeAssignmentExpression>
-        <AttributeAssignmentExpression
-          AttributeId="urn:oasis:names:tc:xacml:3.0:example:attribute:text">
-          <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
-            <AttributeSelector MustBePresent="false"
-              ContextSelectorId="urn:oasis:names:tc:xacml:3.0:content-selector"
-              Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
-              Path="/ak:proposal/ak:pi/ak:fullname/text()" DataType="http://www.w3.org/2001/XMLSchema#string" />
-          </Apply>
-        </AttributeAssignmentExpression>
-      </ObligationExpression>
-      <ObligationExpression
-        ObligationId="urn:oasis:names:tc:xacml:example:obligation:log"
-        FulfillOn="Deny">
-        <AttributeAssignmentExpression
-          AttributeId="urn:oasis:names:tc:xacml:3.0:example:attribute:mailto">
-          <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
-            <AttributeSelector MustBePresent="false"
-              ContextSelectorId="urn:oasis:names:tc:xacml:3.0:content-selector"
-              Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
-              Path="/ak:proposal/ak:pi/ak:workemail/text()" DataType="http://www.w3.org/2001/XMLSchema#string" />
-          </Apply>
-        </AttributeAssignmentExpression>
-        <AttributeAssignmentExpression
-          AttributeId="urn:oasis:names:tc:xacml:3.0:example:attribute:text">
-          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Denied Case: </AttributeValue>
-        </AttributeAssignmentExpression>
-        <AttributeAssignmentExpression
-          AttributeId="urn:oasis:names:tc:xacml:3.0:example:attribute:text">
-          <AttributeDesignator MustBePresent="false"
-            Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
-            AttributeId="urn:oasis:names:tc:xacml:1.0:subject:subject-id"
-            DataType="http://www.w3.org/2001/XMLSchema#string" />
-        </AttributeAssignmentExpression>
-      </ObligationExpression>
-    </ObligationExpressions>
-    <AdviceExpressions>
-      <AdviceExpression AdviceId="role" AppliesTo="Permit">
-        <AttributeAssignmentExpression
-          AttributeId="urn:oasis:names:tc:xacml:2.0:example:attribute:text">
-          <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
-            <AttributeSelector MustBePresent="false"
-              ContextSelectorId="urn:oasis:names:tc:xacml:3.0:content-selector"
-              Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
-              Path="/ak:proposal/ak:pi/ak:workemail/text()" DataType="http://www.w3.org/2001/XMLSchema#string" />
-          </Apply>
-        </AttributeAssignmentExpression>
-      </AdviceExpression>
-      <AdviceExpression AdviceId="patientId" AppliesTo="Deny">
-        <AttributeAssignmentExpression
-          AttributeId="urn:oasis:names:tc:xacml:2.0:example:attribute:mailto">
-          <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
-            <AttributeSelector MustBePresent="false"
-              ContextSelectorId="urn:oasis:names:tc:xacml:3.0:content-selector"
-              Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
-              Path="/ak:proposal/ak:pi/ak:workemail/text()" DataType="http://www.w3.org/2001/XMLSchema#string" />
-          </Apply>
-        </AttributeAssignmentExpression>
-      </AdviceExpression>
-    </AdviceExpressions>
+    </Target>        
   </Rule>
 
   <Rule Effect="Deny" RuleId="OtherStaffCannotCreateProposal-Rule2">
@@ -279,11 +204,48 @@
         </AllOf>
       </AnyOf>
     </Target>
-    <AdviceExpressions>
-      <AdviceExpression AdviceId="role" AppliesTo="Permit">
+    <ObligationExpressions>
+      <ObligationExpression
+        ObligationId="auditLogViewSuccessNotify"
+        FulfillOn="Permit">
         <AttributeAssignmentExpression
-          AttributeId="role">
-          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">mechanic</AttributeValue>
+          AttributeId="urn:oasis:names:tc:xacml:3.0:example:attribute:text">
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Audit log is viewed</AttributeValue>
+        </AttributeAssignmentExpression>
+        <AttributeAssignmentExpression
+          AttributeId="auditLogUserProposalRole">
+          <AttributeDesignator MustBePresent="false"
+            Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
+            AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+            DataType="http://www.w3.org/2001/XMLSchema#string" />
+        </AttributeAssignmentExpression>
+      </ObligationExpression>
+      <ObligationExpression
+        ObligationId="auditLogViewFailNotify"
+        FulfillOn="Deny">
+        <AttributeAssignmentExpression
+          AttributeId="urn:oasis:names:tc:xacml:3.0:example:attribute:text">
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Audit log is unable to be viewed</AttributeValue>
+        </AttributeAssignmentExpression>
+      </ObligationExpression>
+    </ObligationExpressions>
+    <AdviceExpressions>
+      <AdviceExpression AdviceId="AuditLogViewAdvice1" AppliesTo="Permit">
+        <AttributeAssignmentExpression AttributeId="role">
+          <!--           <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only"> -->
+          <!--             <AttributeSelector MustBePresent="false" -->
+          <!--                                ContextSelectorId="urn:oasis:names:tc:xacml:3.0:content-selector" -->
+          <!--                                Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" -->
+          <!--                                Path="/ak:proposal/ak:pi/ak:workemail/text()" -->
+          <!--                                DataType="http://www.w3.org/2001/XMLSchema#string"/> -->
+          <!--           </Apply> -->
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">do notify</AttributeValue>
+        </AttributeAssignmentExpression>
+      </AdviceExpression>
+      <AdviceExpression AdviceId="AuditLogViewAdvice2" AppliesTo="Deny">
+        <AttributeAssignmentExpression
+          AttributeId="logText">
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">do logging</AttributeValue>
         </AttributeAssignmentExpression>
       </AdviceExpression>
     </AdviceExpressions>
@@ -2493,6 +2455,82 @@
         </AllOf>
       </AnyOf>
     </Target>
+    <ObligationExpressions>
+      <ObligationExpression
+        ObligationId="sendEmail"
+        FulfillOn="Permit">
+        <AttributeAssignmentExpression
+          AttributeId="piEmail">
+          <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
+            <AttributeSelector MustBePresent="false"
+              ContextSelectorId="urn:oasis:names:tc:xacml:3.0:content-selector"
+              Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+              Path="/ak:proposal/ak:pi/ak:workemail/text()" DataType="http://www.w3.org/2001/XMLSchema#string" />
+          </Apply>
+        </AttributeAssignmentExpression>
+        <AttributeAssignmentExpression
+          AttributeId="urn:oasis:names:tc:xacml:3.0:example:attribute:text">
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">A proposal has been created by: </AttributeValue>
+        </AttributeAssignmentExpression>
+        <AttributeAssignmentExpression
+          AttributeId="piFullName">
+          <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
+            <AttributeSelector MustBePresent="false"
+              ContextSelectorId="urn:oasis:names:tc:xacml:3.0:content-selector"
+              Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+              Path="/ak:proposal/ak:pi/ak:fullname/text()" DataType="http://www.w3.org/2001/XMLSchema#string" />
+          </Apply>
+        </AttributeAssignmentExpression>
+      </ObligationExpression>
+      <ObligationExpression
+        ObligationId="logging"
+        FulfillOn="Deny">
+        <AttributeAssignmentExpression
+          AttributeId="piEmail">
+          <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
+            <AttributeSelector MustBePresent="false"
+              ContextSelectorId="urn:oasis:names:tc:xacml:3.0:content-selector"
+              Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+              Path="/ak:proposal/ak:pi/ak:workemail/text()" DataType="http://www.w3.org/2001/XMLSchema#string" />
+          </Apply>
+        </AttributeAssignmentExpression>
+        <AttributeAssignmentExpression
+          AttributeId="urn:oasis:names:tc:xacml:3.0:example:attribute:text">
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Denied Case: </AttributeValue>
+        </AttributeAssignmentExpression>
+        <AttributeAssignmentExpression
+          AttributeId="urn:oasis:names:tc:xacml:3.0:example:attribute:text">
+          <AttributeDesignator MustBePresent="false"
+            Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
+            AttributeId="urn:oasis:names:tc:xacml:1.0:subject:subject-id"
+            DataType="http://www.w3.org/2001/XMLSchema#string" />
+        </AttributeAssignmentExpression>
+      </ObligationExpression>
+    </ObligationExpressions>
+    <AdviceExpressions>
+      <AdviceExpression AdviceId="role" AppliesTo="Permit">
+        <AttributeAssignmentExpression
+          AttributeId="urn:oasis:names:tc:xacml:3.0:example:attribute:text">
+          <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
+            <AttributeSelector MustBePresent="false"
+              ContextSelectorId="urn:oasis:names:tc:xacml:3.0:content-selector"
+              Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+              Path="/ak:proposal/ak:pi/ak:workemail/text()" DataType="http://www.w3.org/2001/XMLSchema#string" />
+          </Apply>
+        </AttributeAssignmentExpression>
+      </AdviceExpression>
+      <AdviceExpression AdviceId="patientId" AppliesTo="Deny">
+        <AttributeAssignmentExpression
+          AttributeId="piEmail">
+          <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
+            <AttributeSelector MustBePresent="false"
+              ContextSelectorId="urn:oasis:names:tc:xacml:3.0:content-selector"
+              Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+              Path="/ak:proposal/ak:pi/ak:workemail/text()" DataType="http://www.w3.org/2001/XMLSchema#string" />
+          </Apply>
+        </AttributeAssignmentExpression>
+      </AdviceExpression>
+    </AdviceExpressions>
   </Rule>
 
   <Rule Effect="Permit" RuleId="SubmitProposalByPI-Rule16">

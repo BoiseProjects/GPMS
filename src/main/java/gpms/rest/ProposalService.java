@@ -1404,236 +1404,451 @@ public class ProposalService {
 				.findUserDetailsByProfileID(authorId);
 		String authorFullName = authorProfile.getFullName();
 
-		if (root != null && root.has("policyInfo")) {
-			JsonNode policyInfo = root.get("policyInfo");
-			if (policyInfo != null && policyInfo.isArray()
-					&& policyInfo.size() > 0) {
-				Accesscontrol ac = new Accesscontrol();
-				HashMap<String, Multimap<String, String>> attrMap = new HashMap<String, Multimap<String, String>>();
+		String proposalID = new String();
+		Proposal newProposal = new Proposal();
+		Proposal existingProposal = new Proposal();
+		Proposal oldProposal = new Proposal();
 
-				Multimap<String, String> subjectMap = ArrayListMultimap
-						.create();
-				Multimap<String, String> resourceMap = ArrayListMultimap
-						.create();
-				Multimap<String, String> actionMap = ArrayListMultimap.create();
-				Multimap<String, String> environmentMap = ArrayListMultimap
-						.create();
-				for (JsonNode node : policyInfo) {
-					String attributeName = node.path("attributeName").asText();
-					String attributeValue = node.path("attributeValue")
-							.asText();
-					String attributeType = node.path("attributeType").asText();
-					switch (attributeType) {
-					case "Subject":
-						subjectMap.put(attributeName, attributeValue);
-						attrMap.put("Subject", subjectMap);
+		StringBuffer contentProfile = new StringBuffer();
+		Accesscontrol ac = new Accesscontrol();
+		HashMap<String, Multimap<String, String>> attrMap = new HashMap<String, Multimap<String, String>>();
+
+		if (root != null && root.has("proposalInfo")) {
+			JsonNode proposalInfo = root.get("proposalInfo");
+
+			if (proposalInfo != null && proposalInfo.has("ProposalID")) {
+				proposalID = proposalInfo.get("ProposalID").textValue();
+				if (!proposalID.equals("0")) {
+					ObjectId proposalId = new ObjectId(proposalID);
+					existingProposal = proposalDAO
+							.findProposalByProposalID(proposalId);
+					// using our serializable method for cloning
+					oldProposal = SerializationHelper
+							.cloneThroughSerialize(existingProposal);
+				}
+			}
+
+			// InvestigatorInfo
+			// To hold all new Investigators list to get notified
+			InvestigatorInfo addedInvestigators = new InvestigatorInfo();
+			InvestigatorInfo existingInvestigators = new InvestigatorInfo();
+			InvestigatorInfo deletedInvestigators = new InvestigatorInfo();
+
+			if (proposalInfo != null && proposalInfo.has("InvestigatorInfo")) {
+
+				if (!proposalID.equals("0")) {
+					// MUST Clear all co-PI and Senior Personnel
+					existingProposal.getInvestigatorInfo().getCo_pi().clear();
+					existingProposal.getInvestigatorInfo().getSeniorPersonnel()
+							.clear();
+				}
+
+				String[] rows = proposalInfo.get("InvestigatorInfo")
+						.textValue().split("#!#");
+
+				InvestigatorInfo newInvestigatorInfo = new InvestigatorInfo();
+
+				for (String col : rows) {
+					String[] cols = col.split("!#!");
+					InvestigatorRefAndPosition investigatorRefAndPosition = new InvestigatorRefAndPosition();
+					ObjectId id = new ObjectId(cols[1]);
+					UserProfile userRef = userProfileDAO
+							.findUserDetailsByProfileID(id);
+					investigatorRefAndPosition.setUserRef(userRef);
+					investigatorRefAndPosition.setUserProfileId(cols[1]);
+					investigatorRefAndPosition.setCollege(cols[2]);
+					investigatorRefAndPosition.setDepartment(cols[3]);
+					investigatorRefAndPosition.setPositionType(cols[4]);
+					investigatorRefAndPosition.setPositionTitle(cols[5]);
+					switch (cols[0]) {
+					case "0":
+						if (!proposalID.equals("0")) {
+							// if
+							// (!existingProposal.getInvestigatorInfo().getPi()
+							// .equals(investigatorRefAndPosition))
+							// {
+							// existingProposal.getInvestigatorInfo().setPi(
+							// investigatorRefAndPosition);
+							// if
+							// (!addedInvestigators.getPi().equals(
+							// investigatorRefAndPosition)) {
+							// addedInvestigators
+							// .setPi(investigatorRefAndPosition);
+							// }
+							// }
+						} else {
+							newInvestigatorInfo
+									.setPi(investigatorRefAndPosition);
+						}
 						break;
-					case "Resource":
-						resourceMap.put(attributeName, attributeValue);
-						attrMap.put("Resource", resourceMap);
+					case "1":
+						if (!proposalID.equals("0")) {
+							if (!existingProposal.getInvestigatorInfo()
+									.getCo_pi()
+									.contains(investigatorRefAndPosition)) {
+								existingProposal.getInvestigatorInfo()
+										.getCo_pi()
+										.add(investigatorRefAndPosition);
+
+								if (!addedInvestigators.getCo_pi().contains(
+										investigatorRefAndPosition)) {
+									addedInvestigators.getCo_pi().add(
+											investigatorRefAndPosition);
+								}
+							}
+						} else {
+							newInvestigatorInfo.getCo_pi().add(
+									investigatorRefAndPosition);
+						}
 						break;
-					case "Action":
-						actionMap.put(attributeName, attributeValue);
-						attrMap.put("Action", actionMap);
-						break;
-					case "Environment":
-						environmentMap.put(attributeName, attributeValue);
-						attrMap.put("Environment", environmentMap);
+					case "2":
+						if (!proposalID.equals("0")) {
+							if (!existingProposal.getInvestigatorInfo()
+									.getSeniorPersonnel()
+									.contains(investigatorRefAndPosition)) {
+								existingProposal.getInvestigatorInfo()
+										.getSeniorPersonnel()
+										.add(investigatorRefAndPosition);
+
+								if (!addedInvestigators.getSeniorPersonnel()
+										.contains(investigatorRefAndPosition)) {
+									addedInvestigators.getSeniorPersonnel()
+											.add(investigatorRefAndPosition);
+								}
+							}
+						} else {
+							newInvestigatorInfo.getSeniorPersonnel().add(
+									investigatorRefAndPosition);
+						}
 						break;
 					default:
 						break;
 					}
 				}
 
-				// // TODO only check this for required not all XACML call
-				// if (root != null && root.has("proposalId")) {
-				// String proposalId = new String();
-				// JsonNode proposal_Id = root.get("proposalId");
-				// proposalId = proposal_Id.textValue();
-				// if (!proposalId.equals("")) {
-				// ObjectId id = new ObjectId(proposalId);
-				// Proposal proposal = proposalDAO
-				// .findProposalByProposalID(id);
-				// resourceMap.put("status", proposal.getProposalStatus()
-				// .toString());
-				// attrMap.put("Resource", resourceMap);
-				// }
-				// }
+				// InvestigatorInfo
+				if (proposalID.equals("0")) {
+					newProposal.setInvestigatorInfo(newInvestigatorInfo);
+					addedInvestigators = newInvestigatorInfo;
+				} else {
 
-				// Need to add Environment to detect the Campus or outside
-				// network
-				// network.type
+					// TO see the deleted from addedInvestigators vs
+					// existingInvestigators
+					// Existing Investigator Info to compare
+					existingInvestigators = oldProposal.getInvestigatorInfo();
 
-				// Device type
-				// device.type
+					// THIS IS HACK NO ONE CAN DELETE PI
+					// if (!existingProposal.getInvestigatorInfo().getPi()
+					// .equals(existingInvestigators.getPi())) {
+					// if (!deletedInvestigators.getPi().equals(
+					// existingInvestigators.getPi())) {
+					// deletedInvestigators.setPi(existingInvestigators
+					// .getPi());
+					// existingProposal.getInvestigatorInfo().getPi()
+					// .remove(existingInvestigators.getPi());
+					// }
+					// }
 
-				String proposalID = new String();
+					for (InvestigatorRefAndPosition coPI : existingInvestigators
+							.getCo_pi()) {
+						if (!existingProposal.getInvestigatorInfo().getCo_pi()
+								.contains(coPI)) {
+							if (!deletedInvestigators.getCo_pi().contains(coPI)) {
+								deletedInvestigators.getCo_pi().add(coPI);
+								existingProposal.getInvestigatorInfo()
+										.getCo_pi().remove(coPI);
+							}
+						} else {
+							addedInvestigators.getCo_pi().remove(coPI);
+						}
+					}
 
-				Proposal existingProposal = new Proposal();
+					for (InvestigatorRefAndPosition senior : existingInvestigators
+							.getSeniorPersonnel()) {
+						if (!existingProposal.getInvestigatorInfo()
+								.getSeniorPersonnel().contains(senior)) {
+							if (!deletedInvestigators.getSeniorPersonnel()
+									.contains(senior)) {
+								deletedInvestigators.getSeniorPersonnel().add(
+										senior);
+								existingProposal.getInvestigatorInfo()
+										.getSeniorPersonnel().remove(senior);
+							}
+						} else {
+							addedInvestigators.getSeniorPersonnel().remove(
+									senior);
+						}
+					}
 
-				JsonNode proposalInfo = null;
+					// Remove Signatures FOR Deleted Investigators
 
-				StringBuffer contentProfile = new StringBuffer();
+					// THIS IS HACK PI CANNOT BE DELETED FROM PROPOSAL
+					// if (deletedInvestigators.getPi() != null) {
+					// for (SignatureInfo sign : oldProposal
+					// .getSignatureInfo()) {
+					// if (deletedInvestigators.getPi().getUserProfileId()
+					// .equalsIgnoreCase(sign.getUserProfileId())) {
+					// existingProposal.getSignatureInfo()
+					// .remove(sign);
+					// }
+					// }
+					// }
 
-				if (root != null && root.has("proposalInfo")) {
-					proposalInfo = root.get("proposalInfo");
-					if (proposalInfo != null && proposalInfo.has("ProposalID")) {
-						proposalID = proposalInfo.get("ProposalID").textValue();
-						if (!proposalID.equals("0")) {
-							ObjectId proposalId = new ObjectId(proposalID);
-							existingProposal = proposalDAO
-									.findProposalByProposalID(proposalId);
-
-							contentProfile.append("<Content>");
-							contentProfile
-									.append("<ak:record xmlns:ak='http://akpower.org'>");
-							contentProfile.append("<ak:proposal>");
-
-							contentProfile.append("<ak:proposalid>");
-							contentProfile.append(proposalID);
-							contentProfile.append("</ak:proposalid>");
-
-							contentProfile.append("<ak:proposaltitle>");
-							contentProfile.append(existingProposal
-									.getProjectInfo().getProjectTitle());
-							contentProfile.append("</ak:proposaltitle>");
-
-							contentProfile.append("<ak:submittedbypi>");
-							contentProfile.append(existingProposal
-									.getSubmittedByPI());
-							contentProfile.append("</ak:submittedbypi>");
-
-							contentProfile
-									.append("<ak:readyforsubmissionbypi>");
-							contentProfile.append(existingProposal
-									.isReadyForSubmissionByPI());
-							contentProfile
-									.append("</ak:readyforsubmissionbypi>");
-
-							contentProfile.append("<ak:deletedbypi>");
-							contentProfile.append(existingProposal
-									.getDeletedByPI());
-							contentProfile.append("</ak:deletedbypi>");
-
-							contentProfile
-									.append("<ak:approvedbydepartmentchair>");
-							contentProfile.append(existingProposal
-									.getChairApproval());
-							contentProfile
-									.append("</ak:approvedbydepartmentchair>");
-
-							contentProfile
-									.append("<ak:approvedbybusinessmanager>");
-							contentProfile.append(existingProposal
-									.getBusinessManagerApproval());
-							contentProfile
-									.append("</ak:approvedbybusinessmanager>");
-
-							contentProfile.append("<ak:approvedbyirb>");
-							contentProfile.append(existingProposal
-									.getIrbApproval());
-							contentProfile.append("</ak:approvedbyirb>");
-
-							contentProfile.append("<ak:approvedbydean>");
-							contentProfile.append(existingProposal
-									.getDeanApproval());
-							contentProfile.append("</ak:approvedbydean>");
-
-							contentProfile
-									.append("<ak:approvedbyuniversityresearchadministrator>");
-							contentProfile.append(existingProposal
-									.getResearchAdministratorApproval());
-							contentProfile
-									.append("</ak:approvedbyuniversityresearchadministrator>");
-
-							contentProfile
-									.append("<ak:withdwarnbyuniversityresearchadmisntrator>");
-							contentProfile.append(existingProposal
-									.getResearchAdministratorWithdraw());
-							contentProfile
-									.append("</ak:withdwarnbyuniversityresearchadmisntrator>");
-
-							contentProfile
-									.append("<ak:submittedbyuniversityresearchadminstrator>");
-							contentProfile.append(existingProposal
-									.getResearchAdministratorSubmission());
-							contentProfile
-									.append("</ak:submittedbyuniversityresearchadminstrator>");
-
-							contentProfile
-									.append("<ak:approvedbyuniversityresearchdirector>");
-							contentProfile.append(existingProposal
-									.getResearchDirectorDeletion());
-							contentProfile
-									.append("</ak:approvedbyuniversityresearchdirector>");
-
-							contentProfile
-									.append("<ak:deletedbyuniversityresearchdirector>");
-							contentProfile.append(existingProposal
-									.getResearchDirectorDeletion());
-							contentProfile
-									.append("</ak:deletedbyuniversityresearchdirector>");
-
-							contentProfile
-									.append("<ak:archivedbyuniversityresearchdirector>");
-							contentProfile.append(existingProposal
-									.getResearchDirectorArchived());
-							contentProfile
-									.append("</ak:archivedbyuniversityresearchdirector>");
-
-							contentProfile.append("<ak:authorprofile>");
-							// contentProfile.append("<ak:firstname>");
-							// contentProfile.append(authorProfile.getFirstName());
-							// contentProfile.append("</ak:firstname>");
-							// contentProfile.append("<ak:middlename>");
-							// contentProfile
-							// .append(authorProfile.getMiddleName());
-							// contentProfile.append("</ak:middlename>");
-							//
-							// contentProfile.append("<ak:lastname>");
-							// contentProfile.append(authorProfile.getLastName());
-							// contentProfile.append("</ak:lastname>");
-
-							contentProfile.append("<ak:fullname>");
-							contentProfile.append(authorFullName);
-							contentProfile.append("</ak:fullname>");
-							contentProfile.append("</ak:authorprofile>");
-
-							contentProfile.append("<ak:pi>");
-							contentProfile.append("<ak:fullname>");
-							contentProfile.append(existingProposal
-									.getInvestigatorInfo().getPi().getUserRef()
-									.getFullName());
-							contentProfile.append("</ak:fullname>");
-
-							contentProfile.append("<ak:workemail>");
-							contentProfile.append(existingProposal
-									.getInvestigatorInfo().getPi().getUserRef()
-									.getWorkEmails().get(0));
-							contentProfile.append("</ak:workemail>");
-
-							contentProfile.append("<ak:userid>");
-							contentProfile.append(existingProposal
-									.getInvestigatorInfo().getPi()
-									.getUserProfileId());
-							contentProfile.append("</ak:userid>");
-							contentProfile.append("</ak:pi>");
-
-							contentProfile.append("</ak:proposal>");
-							contentProfile.append("</ak:record>");
-							contentProfile.append("</Content>");
-							contentProfile
-									.append("<Attribute AttributeId=\"urn:oasis:names:tc:xacml:3.0:profile:multiple:content-selector\" IncludeInResult=\"false\">");
-							contentProfile
-									.append("<AttributeValue XPathCategory=\"urn:oasis:names:tc:xacml:3.0:attribute-category:resource\" DataType=\"urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression\">/ak:record/ak:proposal</AttributeValue>");
-							contentProfile.append("</Attribute>");
-
+					for (InvestigatorRefAndPosition coPI : deletedInvestigators
+							.getCo_pi()) {
+						for (SignatureInfo sign : oldProposal
+								.getSignatureInfo()) {
+							if (coPI.getUserProfileId().equalsIgnoreCase(
+									sign.getUserProfileId())) {
+								existingProposal.getSignatureInfo()
+										.remove(sign);
+							}
 						}
 					}
 				}
+			}
+
+			if (root != null && root.has("policyInfo")) {
+				JsonNode policyInfo = root.get("policyInfo");
+				if (policyInfo != null && policyInfo.isArray()
+						&& policyInfo.size() > 0) {
+
+					Multimap<String, String> subjectMap = ArrayListMultimap
+							.create();
+					Multimap<String, String> resourceMap = ArrayListMultimap
+							.create();
+					Multimap<String, String> actionMap = ArrayListMultimap
+							.create();
+					Multimap<String, String> environmentMap = ArrayListMultimap
+							.create();
+					for (JsonNode node : policyInfo) {
+						String attributeName = node.path("attributeName")
+								.asText();
+						String attributeValue = node.path("attributeValue")
+								.asText();
+						String attributeType = node.path("attributeType")
+								.asText();
+						switch (attributeType) {
+						case "Subject":
+							subjectMap.put(attributeName, attributeValue);
+							attrMap.put("Subject", subjectMap);
+							break;
+						case "Resource":
+							resourceMap.put(attributeName, attributeValue);
+							attrMap.put("Resource", resourceMap);
+							break;
+						case "Action":
+							actionMap.put(attributeName, attributeValue);
+							attrMap.put("Action", actionMap);
+							break;
+						case "Environment":
+							environmentMap.put(attributeName, attributeValue);
+							attrMap.put("Environment", environmentMap);
+							break;
+						default:
+							break;
+						}
+					}
+
+					// // TODO only check this for required not all XACML call
+					// if (root != null && root.has("proposalId")) {
+					// String proposalId = new String();
+					// JsonNode proposal_Id = root.get("proposalId");
+					// proposalId = proposal_Id.textValue();
+					// if (!proposalId.equals("")) {
+					// ObjectId id = new ObjectId(proposalId);
+					// Proposal proposal = proposalDAO
+					// .findProposalByProposalID(id);
+					// resourceMap.put("status", proposal.getProposalStatus()
+					// .toString());
+					// attrMap.put("Resource", resourceMap);
+					// }
+					// }
+
+					// Need to add Environment to detect the Campus or outside
+					// network
+					// network.type
+
+					// Device type
+					// device.type
+
+					contentProfile.append("<Content>");
+					contentProfile
+							.append("<ak:record xmlns:ak=\"http://akpower.org\">");
+					contentProfile.append("<ak:proposal>");
+
+					contentProfile.append("<ak:proposalid>");
+					contentProfile.append(proposalID);
+					contentProfile.append("</ak:proposalid>");
+
+					contentProfile.append("<ak:proposaltitle>");
+					contentProfile.append(existingProposal.getProjectInfo()
+							.getProjectTitle());
+					contentProfile.append("</ak:proposaltitle>");
+
+					contentProfile.append("<ak:submittedbypi>");
+					contentProfile.append(existingProposal.getSubmittedByPI());
+					contentProfile.append("</ak:submittedbypi>");
+
+					contentProfile.append("<ak:readyforsubmissionbypi>");
+					contentProfile.append(existingProposal
+							.isReadyForSubmissionByPI());
+					contentProfile.append("</ak:readyforsubmissionbypi>");
+
+					contentProfile.append("<ak:deletedbypi>");
+					contentProfile.append(existingProposal.getDeletedByPI());
+					contentProfile.append("</ak:deletedbypi>");
+
+					contentProfile.append("<ak:approvedbydepartmentchair>");
+					contentProfile.append(existingProposal.getChairApproval());
+					contentProfile.append("</ak:approvedbydepartmentchair>");
+
+					contentProfile.append("<ak:approvedbybusinessmanager>");
+					contentProfile.append(existingProposal
+							.getBusinessManagerApproval());
+					contentProfile.append("</ak:approvedbybusinessmanager>");
+
+					contentProfile.append("<ak:approvedbyirb>");
+					contentProfile.append(existingProposal.getIrbApproval());
+					contentProfile.append("</ak:approvedbyirb>");
+
+					contentProfile.append("<ak:approvedbydean>");
+					contentProfile.append(existingProposal.getDeanApproval());
+					contentProfile.append("</ak:approvedbydean>");
+
+					contentProfile
+							.append("<ak:approvedbyuniversityresearchadministrator>");
+					contentProfile.append(existingProposal
+							.getResearchAdministratorApproval());
+					contentProfile
+							.append("</ak:approvedbyuniversityresearchadministrator>");
+
+					contentProfile
+							.append("<ak:withdwarnbyuniversityresearchadmisntrator>");
+					contentProfile.append(existingProposal
+							.getResearchAdministratorWithdraw());
+					contentProfile
+							.append("</ak:withdwarnbyuniversityresearchadmisntrator>");
+
+					contentProfile
+							.append("<ak:submittedbyuniversityresearchadminstrator>");
+					contentProfile.append(existingProposal
+							.getResearchAdministratorSubmission());
+					contentProfile
+							.append("</ak:submittedbyuniversityresearchadminstrator>");
+
+					contentProfile
+							.append("<ak:approvedbyuniversityresearchdirector>");
+					contentProfile.append(existingProposal
+							.getResearchDirectorDeletion());
+					contentProfile
+							.append("</ak:approvedbyuniversityresearchdirector>");
+
+					contentProfile
+							.append("<ak:deletedbyuniversityresearchdirector>");
+					contentProfile.append(existingProposal
+							.getResearchDirectorDeletion());
+					contentProfile
+							.append("</ak:deletedbyuniversityresearchdirector>");
+
+					contentProfile
+							.append("<ak:archivedbyuniversityresearchdirector>");
+					contentProfile.append(existingProposal
+							.getResearchDirectorArchived());
+					contentProfile
+							.append("</ak:archivedbyuniversityresearchdirector>");
+
+					contentProfile.append("<ak:authorprofile>");
+					// contentProfile.append("<ak:firstname>");
+					// contentProfile.append(authorProfile.getFirstName());
+					// contentProfile.append("</ak:firstname>");
+					// contentProfile.append("<ak:middlename>");
+					// contentProfile
+					// .append(authorProfile.getMiddleName());
+					// contentProfile.append("</ak:middlename>");
+					//
+					// contentProfile.append("<ak:lastname>");
+					// contentProfile.append(authorProfile.getLastName());
+					// contentProfile.append("</ak:lastname>");
+
+					contentProfile.append("<ak:fullname>");
+					contentProfile.append(authorFullName);
+					contentProfile.append("</ak:fullname>");
+					contentProfile.append("</ak:authorprofile>");
+
+					contentProfile.append("<ak:pi>");
+					contentProfile.append("<ak:fullname>");
+					contentProfile.append(existingProposal
+							.getInvestigatorInfo().getPi().getUserRef()
+							.getFullName());
+					contentProfile.append("</ak:fullname>");
+
+					contentProfile.append("<ak:workemail>");
+					contentProfile.append(existingProposal
+							.getInvestigatorInfo().getPi().getUserRef()
+							.getWorkEmails().get(0));
+					contentProfile.append("</ak:workemail>");
+
+					contentProfile.append("<ak:userid>");
+					contentProfile.append(existingProposal
+							.getInvestigatorInfo().getPi().getUserProfileId());
+					contentProfile.append("</ak:userid>");
+					contentProfile.append("</ak:pi>");
+
+					contentProfile.append("<ak:copis>");
+					for (InvestigatorRefAndPosition copis : existingProposal
+							.getInvestigatorInfo().getCo_pi()) {
+						contentProfile.append("<ak:copi>");
+						contentProfile.append("<ak:fullname>");
+						contentProfile.append(copis.getUserRef().getFullName());
+						contentProfile.append("</ak:fullname>");
+
+						contentProfile.append("<ak:workemail>");
+						contentProfile.append(copis.getUserRef()
+								.getWorkEmails().get(0));
+						contentProfile.append("</ak:workemail>");
+
+						contentProfile.append("<ak:userid>");
+						contentProfile.append(copis.getUserProfileId());
+						contentProfile.append("</ak:userid>");
+						contentProfile.append("</ak:copi>");
+					}
+					contentProfile.append("</ak:copis>");
+
+					contentProfile.append("<ak:seniors>");
+					for (InvestigatorRefAndPosition seniors : existingProposal
+							.getInvestigatorInfo().getSeniorPersonnel()) {
+						contentProfile.append("<ak:senior>");
+						contentProfile.append("<ak:fullname>");
+						contentProfile.append(seniors.getUserRef()
+								.getFullName());
+						contentProfile.append("</ak:fullname>");
+
+						contentProfile.append("<ak:workemail>");
+						contentProfile.append(seniors.getUserRef()
+								.getWorkEmails().get(0));
+						contentProfile.append("</ak:workemail>");
+
+						contentProfile.append("<ak:userid>");
+						contentProfile.append(seniors.getUserProfileId());
+						contentProfile.append("</ak:userid>");
+						contentProfile.append("</ak:senior>");
+					}
+					contentProfile.append("</ak:seniors>");
+
+					contentProfile.append("</ak:proposal>");
+					contentProfile.append("</ak:record>");
+					contentProfile.append("</Content>");
+					contentProfile
+							.append("<Attribute AttributeId=\"urn:oasis:names:tc:xacml:3.0:profile:multiple:content-selector\" IncludeInResult=\"false\">");
+					contentProfile
+							.append("<AttributeValue XPathCategory=\"urn:oasis:names:tc:xacml:3.0:attribute-category:resource\" DataType=\"urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression\">//ak:record/ak:proposal</AttributeValue>");
+					contentProfile.append("</Attribute>");
+
+				}
 
 				Set<AbstractResult> set = ac.getXACMLdecisionWithObligations(
-						attrMap, contentProfile, authorFullName);
+						attrMap, contentProfile);
 				Iterator<AbstractResult> it = set.iterator();
 				int intDecision = 3;
 				while (it.hasNext()) {
@@ -1647,7 +1862,8 @@ public class ProposalService {
 							+ AbstractResult.DECISIONS[intDecision]);
 
 					if (AbstractResult.DECISIONS[intDecision].equals("Permit")) {
-						saveProposal(message, existingProposal, authorProfile);
+						saveProposal(message, existingProposal, oldProposal,
+								authorProfile, proposalID);
 
 						System.out
 								.println("\n======================== Printing Obligations ====================");
@@ -1694,7 +1910,8 @@ public class ProposalService {
 					}
 				}
 			} else {
-				saveProposal(message, null, authorProfile);
+				saveProposal(message, newProposal, null, authorProfile,
+						proposalID);
 				return Response.status(200).type(MediaType.APPLICATION_JSON)
 						.entity("true").build();
 				// return Response.status(200).entity(true).build();
@@ -1705,31 +1922,16 @@ public class ProposalService {
 	}
 
 	private void saveProposal(String message, Proposal existingProposal,
-			UserProfile authorProfile) throws UnknownHostException, Exception,
-			ParseException, IOException, JsonParseException,
-			JsonMappingException {
+			Proposal oldProposal, UserProfile authorProfile, String proposalID)
+			throws UnknownHostException, Exception, ParseException,
+			IOException, JsonParseException, JsonMappingException {
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode root = mapper.readTree(message);
-
-		String proposalID = new String();
-		Proposal newProposal = new Proposal();
-		Proposal oldProposal = new Proposal();
 
 		JsonNode proposalInfo = null;
 
 		if (root != null && root.has("proposalInfo")) {
 			proposalInfo = root.get("proposalInfo");
-			if (proposalInfo != null && proposalInfo.has("ProposalID")) {
-				proposalID = proposalInfo.get("ProposalID").textValue();
-				if (!proposalID.equals("0") && existingProposal != null) {
-					// proposalId = new ObjectId(proposalID);
-					// existingProposal = proposalDAO
-					// .findProposalByProposalID(proposalId);
-					// using our serializable method for cloning
-					oldProposal = SerializationHelper
-							.cloneThroughSerialize(existingProposal);
-				}
-			}
 
 			ProjectInfo newProjectInfo = new ProjectInfo();
 
@@ -1878,7 +2080,7 @@ public class ProposalService {
 
 			// ProjectInfo
 			if (proposalID.equals("0")) {
-				newProposal.setProjectInfo(newProjectInfo);
+				existingProposal.setProjectInfo(newProjectInfo);
 			}
 
 			SponsorAndBudgetInfo newSponsorAndBudgetInfo = new SponsorAndBudgetInfo();
@@ -1932,7 +2134,8 @@ public class ProposalService {
 							.setSponsorAndBudgetInfo(newSponsorAndBudgetInfo);
 				}
 			} else {
-				newProposal.setSponsorAndBudgetInfo(newSponsorAndBudgetInfo);
+				existingProposal
+						.setSponsorAndBudgetInfo(newSponsorAndBudgetInfo);
 			}
 
 			CostShareInfo newCostShareInfo = new CostShareInfo();
@@ -1975,7 +2178,7 @@ public class ProposalService {
 					existingProposal.setCostShareInfo(newCostShareInfo);
 				}
 			} else {
-				newProposal.setCostShareInfo(newCostShareInfo);
+				existingProposal.setCostShareInfo(newCostShareInfo);
 			}
 
 			UniversityCommitments newUnivCommitments = new UniversityCommitments();
@@ -2040,7 +2243,7 @@ public class ProposalService {
 							.setUniversityCommitments(newUnivCommitments);
 				}
 			} else {
-				newProposal.setUniversityCommitments(newUnivCommitments);
+				existingProposal.setUniversityCommitments(newUnivCommitments);
 			}
 
 			ConflictOfInterest newConflictOfInterest = new ConflictOfInterest();
@@ -2101,7 +2304,7 @@ public class ProposalService {
 							.setConflicOfInterest(newConflictOfInterest);
 				}
 			} else {
-				newProposal.setConflicOfInterest(newConflictOfInterest);
+				existingProposal.setConflicOfInterest(newConflictOfInterest);
 			}
 
 			ComplianceInfo newComplianceInfo = new ComplianceInfo();
@@ -2244,8 +2447,8 @@ public class ProposalService {
 							.setIrbApprovalRequired(irbApprovalRequired);
 				}
 			} else {
-				newProposal.setComplianceInfo(newComplianceInfo);
-				newProposal.setIrbApprovalRequired(irbApprovalRequired);
+				existingProposal.setComplianceInfo(newComplianceInfo);
+				existingProposal.setIrbApprovalRequired(irbApprovalRequired);
 			}
 
 			AdditionalInfo newAdditionalInfo = new AdditionalInfo();
@@ -2311,7 +2514,7 @@ public class ProposalService {
 					existingProposal.setAdditionalInfo(newAdditionalInfo);
 				}
 			} else {
-				newProposal.setAdditionalInfo(newAdditionalInfo);
+				existingProposal.setAdditionalInfo(newAdditionalInfo);
 			}
 
 			CollaborationInfo newCollaborationInfo = new CollaborationInfo();
@@ -2346,7 +2549,7 @@ public class ProposalService {
 					existingProposal.setCollaborationInfo(newCollaborationInfo);
 				}
 			} else {
-				newProposal.setCollaborationInfo(newCollaborationInfo);
+				existingProposal.setCollaborationInfo(newCollaborationInfo);
 			}
 
 			ConfidentialInfo newConfidentialInfo = new ConfidentialInfo();
@@ -2411,7 +2614,7 @@ public class ProposalService {
 					existingProposal.setConfidentialInfo(newConfidentialInfo);
 				}
 			} else {
-				newProposal.setConfidentialInfo(newConfidentialInfo);
+				existingProposal.setConfidentialInfo(newConfidentialInfo);
 			}
 
 			// OSP Section Info
@@ -2981,7 +3184,7 @@ public class ProposalService {
 							uploadFile.setFilesize(file.length());
 							uploadFile.setFilepath("/uploads/" + fileName);
 
-							newProposal.getAppendices().add(uploadFile);
+							existingProposal.getAppendices().add(uploadFile);
 						}
 					}
 				}
@@ -2990,15 +3193,16 @@ public class ProposalService {
 			// Proposal No
 			if (proposalInfo != null && !proposalInfo.has("ProposalNo")
 					&& proposalID.equals("0")) {
-				newProposal
-						.setProposalNo(proposalDAO.findLatestProposalNo() + 2);
+				existingProposal.setProposalNo(proposalDAO
+						.findLatestProposalNo() + 2);
 			}
 
 			// START
 
 			// Signature
 			// To hold all new Investigators list to get notified
-			List<SignatureInfo> addedSignatures = new ArrayList<SignatureInfo>();
+			// List<SignatureInfo> addedSignatures = new
+			// ArrayList<SignatureInfo>();
 
 			if (proposalInfo != null && proposalInfo.has("SignatureInfo")) {
 				String[] rows = proposalInfo.get("SignatureInfo").textValue()
@@ -3038,7 +3242,7 @@ public class ProposalService {
 					}
 				}
 				// SignatureInfo
-				addedSignatures = newSignatureInfo;
+				// addedSignatures = newSignatureInfo;
 				if (!proposalID.equals("0")) {
 					if (!existingProposal.getSignatureInfo().equals(
 							allSignatureInfo)) {
@@ -3048,187 +3252,7 @@ public class ProposalService {
 						}
 					}
 				} else {
-					newProposal.setSignatureInfo(allSignatureInfo);
-				}
-			}
-
-			// InvestigatorInfo
-			// To hold all new Investigators list to get notified
-			InvestigatorInfo addedInvestigators = new InvestigatorInfo();
-			InvestigatorInfo existingInvestigators = new InvestigatorInfo();
-			InvestigatorInfo deletedInvestigators = new InvestigatorInfo();
-
-			if (proposalInfo != null && proposalInfo.has("InvestigatorInfo")) {
-
-				if (!proposalID.equals("0")) {
-					// MUST Clear all co-PI and Senior Personnel
-					existingProposal.getInvestigatorInfo().getCo_pi().clear();
-					existingProposal.getInvestigatorInfo().getSeniorPersonnel()
-							.clear();
-				}
-
-				String[] rows = proposalInfo.get("InvestigatorInfo")
-						.textValue().split("#!#");
-
-				InvestigatorInfo newInvestigatorInfo = new InvestigatorInfo();
-
-				for (String col : rows) {
-					String[] cols = col.split("!#!");
-					InvestigatorRefAndPosition investigatorRefAndPosition = new InvestigatorRefAndPosition();
-					ObjectId id = new ObjectId(cols[1]);
-					UserProfile userRef = userProfileDAO
-							.findUserDetailsByProfileID(id);
-					investigatorRefAndPosition.setUserRef(userRef);
-					investigatorRefAndPosition.setUserProfileId(cols[1]);
-					investigatorRefAndPosition.setCollege(cols[2]);
-					investigatorRefAndPosition.setDepartment(cols[3]);
-					investigatorRefAndPosition.setPositionType(cols[4]);
-					investigatorRefAndPosition.setPositionTitle(cols[5]);
-					switch (cols[0]) {
-					case "0":
-						if (!proposalID.equals("0")) {
-							// if
-							// (!existingProposal.getInvestigatorInfo().getPi()
-							// .equals(investigatorRefAndPosition))
-							// {
-							// existingProposal.getInvestigatorInfo().setPi(
-							// investigatorRefAndPosition);
-							// if
-							// (!addedInvestigators.getPi().equals(
-							// investigatorRefAndPosition)) {
-							// addedInvestigators
-							// .setPi(investigatorRefAndPosition);
-							// }
-							// }
-						} else {
-							newInvestigatorInfo
-									.setPi(investigatorRefAndPosition);
-						}
-						break;
-					case "1":
-						if (!proposalID.equals("0")) {
-							if (!existingProposal.getInvestigatorInfo()
-									.getCo_pi()
-									.contains(investigatorRefAndPosition)) {
-								existingProposal.getInvestigatorInfo()
-										.getCo_pi()
-										.add(investigatorRefAndPosition);
-
-								if (!addedInvestigators.getCo_pi().contains(
-										investigatorRefAndPosition)) {
-									addedInvestigators.getCo_pi().add(
-											investigatorRefAndPosition);
-								}
-							}
-						} else {
-							newInvestigatorInfo.getCo_pi().add(
-									investigatorRefAndPosition);
-						}
-						break;
-					case "2":
-						if (!proposalID.equals("0")) {
-							if (!existingProposal.getInvestigatorInfo()
-									.getSeniorPersonnel()
-									.contains(investigatorRefAndPosition)) {
-								existingProposal.getInvestigatorInfo()
-										.getSeniorPersonnel()
-										.add(investigatorRefAndPosition);
-
-								if (!addedInvestigators.getSeniorPersonnel()
-										.contains(investigatorRefAndPosition)) {
-									addedInvestigators.getSeniorPersonnel()
-											.add(investigatorRefAndPosition);
-								}
-							}
-						} else {
-							newInvestigatorInfo.getSeniorPersonnel().add(
-									investigatorRefAndPosition);
-						}
-						break;
-					default:
-						break;
-					}
-				}
-
-				// InvestigatorInfo
-				if (proposalID.equals("0")) {
-					newProposal.setInvestigatorInfo(newInvestigatorInfo);
-					addedInvestigators = newInvestigatorInfo;
-				} else {
-
-					// TO see the deleted from addedInvestigators vs
-					// existingInvestigators
-					// Existing Investigator Info to compare
-					existingInvestigators = oldProposal.getInvestigatorInfo();
-
-					// THIS IS HACK NO ONE CAN DELETE PI
-					// if (!existingProposal.getInvestigatorInfo().getPi()
-					// .equals(existingInvestigators.getPi())) {
-					// if (!deletedInvestigators.getPi().equals(
-					// existingInvestigators.getPi())) {
-					// deletedInvestigators.setPi(existingInvestigators
-					// .getPi());
-					// existingProposal.getInvestigatorInfo().getPi()
-					// .remove(existingInvestigators.getPi());
-					// }
-					// }
-
-					for (InvestigatorRefAndPosition coPI : existingInvestigators
-							.getCo_pi()) {
-						if (!existingProposal.getInvestigatorInfo().getCo_pi()
-								.contains(coPI)) {
-							if (!deletedInvestigators.getCo_pi().contains(coPI)) {
-								deletedInvestigators.getCo_pi().add(coPI);
-								existingProposal.getInvestigatorInfo()
-										.getCo_pi().remove(coPI);
-							}
-						} else {
-							addedInvestigators.getCo_pi().remove(coPI);
-						}
-					}
-
-					for (InvestigatorRefAndPosition senior : existingInvestigators
-							.getSeniorPersonnel()) {
-						if (!existingProposal.getInvestigatorInfo()
-								.getSeniorPersonnel().contains(senior)) {
-							if (!deletedInvestigators.getSeniorPersonnel()
-									.contains(senior)) {
-								deletedInvestigators.getSeniorPersonnel().add(
-										senior);
-								existingProposal.getInvestigatorInfo()
-										.getSeniorPersonnel().remove(senior);
-							}
-						} else {
-							addedInvestigators.getSeniorPersonnel().remove(
-									senior);
-						}
-					}
-
-					// Remove Signatures FOR Deleted Investigators
-
-					// THIS IS HACK PI CANNOT BE DELETED FROM PROPOSAL
-					// if (deletedInvestigators.getPi() != null) {
-					// for (SignatureInfo sign : oldProposal
-					// .getSignatureInfo()) {
-					// if (deletedInvestigators.getPi().getUserProfileId()
-					// .equalsIgnoreCase(sign.getUserProfileId())) {
-					// existingProposal.getSignatureInfo()
-					// .remove(sign);
-					// }
-					// }
-					// }
-
-					for (InvestigatorRefAndPosition coPI : deletedInvestigators
-							.getCo_pi()) {
-						for (SignatureInfo sign : oldProposal
-								.getSignatureInfo()) {
-							if (coPI.getUserProfileId().equalsIgnoreCase(
-									sign.getUserProfileId())) {
-								existingProposal.getSignatureInfo()
-										.remove(sign);
-							}
-						}
-					}
+					existingProposal.setSignatureInfo(allSignatureInfo);
 				}
 			}
 
@@ -3258,12 +3282,13 @@ public class ProposalService {
 						// case
 						// Change status to ready to submitted by PI
 						if (proposalID.equals("0")) {
-							if (newProposal.getInvestigatorInfo().getCo_pi()
-									.size() == 0) {
-								newProposal.setReadyForSubmissionByPI(true);
+							if (existingProposal.getInvestigatorInfo()
+									.getCo_pi().size() == 0) {
+								existingProposal
+										.setReadyForSubmissionByPI(true);
 
-								newProposal.getProposalStatus().clear();
-								newProposal.getProposalStatus().add(
+								existingProposal.getProposalStatus().clear();
+								existingProposal.getProposalStatus().add(
 										Status.READYFORSUBMITBYPI);
 							}
 						} else if (!proposalID.equals("0")
@@ -3958,7 +3983,7 @@ public class ProposalService {
 					proposalDAO.updateProposal(existingProposal, authorProfile);
 				}
 			} else {
-				proposalDAO.saveProposal(newProposal, authorProfile);
+				proposalDAO.saveProposal(existingProposal, authorProfile);
 			}
 		}
 	}

@@ -155,8 +155,12 @@ public class AttributeSpreadSheet {
 					.toString() : "";
 			String values = row.getCell(4) != null ? row.getCell(4).toString()
 					: "";
-			allAttributeRecords.add(new AttributeRecord(attributeName,
-					fullAttributeName, category, dataType, values));
+			AttributeRecord attributeRecord = new AttributeRecord(
+					attributeName, fullAttributeName, category, dataType,
+					values);
+			if (!allAttributeRecords.contains(attributeRecord)) {
+				allAttributeRecords.add(attributeRecord);
+			}
 		}
 	}
 
