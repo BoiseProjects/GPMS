@@ -24,6 +24,6 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/org.wso2.balana-1.0.3-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/org.wso2.balana-1.0.3-SNAPSHOT.jar" sourcepath="D:/balanaSVN"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

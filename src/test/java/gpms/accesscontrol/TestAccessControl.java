@@ -8,6 +8,7 @@ import gpms.model.Proposal;
 import gpms.model.UserAccount;
 import gpms.model.UserProfile;
 
+import java.net.URI;
 import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -19,6 +20,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mongodb.morphia.Morphia;
+import org.w3c.dom.NamedNodeMap;
 import org.wso2.balana.ObligationResult;
 import org.wso2.balana.ctx.AbstractResult;
 import org.wso2.balana.ctx.AttributeAssignment;
@@ -269,12 +271,25 @@ public class TestAccessControl {
 			List<ObligationResult> obligations = ar.getObligations();
 			for (ObligationResult obligation : obligations) {
 				if (obligation instanceof org.wso2.balana.xacml3.Obligation) {
+
+					// obligation.encode();
+
+					// Object root;
+					// NamedNodeMap nodeAttributes = root.getAttributes();
+					// attributeId = new URI(((Object)
+					// obligations).getNamedItem(
+					// "obligationId").getNodeValue());
+
+					System.out.println("Obligation Id: "
+							+ ((org.wso2.balana.xacml3.Obligation) obligation)
+									.getObligationId());
 					List<AttributeAssignment> assignments = ((org.wso2.balana.xacml3.Obligation) obligation)
 							.getAssignments();
 
 					for (AttributeAssignment assignment : assignments) {
 						System.out.println("Obligation :  "
-								+ assignment.getContent() + "\n");
+								+ assignment.getContent() + " ::::: "
+								+ assignment.getAttributeId() + "\n");
 					}
 				}
 			}
