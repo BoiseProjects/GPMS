@@ -248,164 +248,12 @@ public class TestAccessControl {
 		contentProfile.append("</ak:proposal>");
 		contentProfile.append("</ak:record>");
 		contentProfile.append("</Content>");
+
 		contentProfile
-				.append("<Attribute AttributeId=\"urn:oasis:names:tc:xacml:3.0:profile:multiple:content-selector\" IncludeInResult=\"false\">");
+				.append("<Attribute AttributeId=\"urn:oasis:names:tc:xacml:3.0:content-selector\" IncludeInResult=\"false\">");
 		contentProfile
 				.append("<AttributeValue XPathCategory=\"urn:oasis:names:tc:xacml:3.0:attribute-category:resource\" DataType=\"urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression\">//ak:record/ak:proposal</AttributeValue>");
 		contentProfile.append("</Attribute>");
-
-		// contentProfile.append("<Content>");
-		// contentProfile.append("<ak:record xmlns:ak=\"http://akpower.org\">");
-		// contentProfile.append("<ak:proposal>");
-		//
-		// contentProfile.append("<ak:proposalid>");
-		// contentProfile.append(proposalID);
-		// contentProfile.append("</ak:proposalid>");
-		//
-		// contentProfile.append("<ak:proposaltitle>");
-		// contentProfile.append(existingProposal.getProjectInfo()
-		// .getProjectTitle());
-		// contentProfile.append("</ak:proposaltitle>");
-		//
-		// contentProfile.append("<ak:submittedbypi>");
-		// contentProfile.append(existingProposal.getSubmittedByPI());
-		// contentProfile.append("</ak:submittedbypi>");
-		//
-		// contentProfile.append("<ak:readyforsubmissionbypi>");
-		// contentProfile.append(existingProposal.isReadyForSubmissionByPI());
-		// contentProfile.append("</ak:readyforsubmissionbypi>");
-		//
-		// contentProfile.append("<ak:deletedbypi>");
-		// contentProfile.append(existingProposal.getDeletedByPI());
-		// contentProfile.append("</ak:deletedbypi>");
-		//
-		// contentProfile.append("<ak:approvedbydepartmentchair>");
-		// contentProfile.append(existingProposal.getChairApproval());
-		// contentProfile.append("</ak:approvedbydepartmentchair>");
-		//
-		// contentProfile.append("<ak:approvedbybusinessmanager>");
-		// contentProfile.append(existingProposal.getBusinessManagerApproval());
-		// contentProfile.append("</ak:approvedbybusinessmanager>");
-		//
-		// contentProfile.append("<ak:approvedbyirb>");
-		// contentProfile.append(existingProposal.getIrbApproval());
-		// contentProfile.append("</ak:approvedbyirb>");
-		//
-		// contentProfile.append("<ak:approvedbydean>");
-		// contentProfile.append(existingProposal.getDeanApproval());
-		// contentProfile.append("</ak:approvedbydean>");
-		//
-		// contentProfile.append("<ak:approvedbyuniversityresearchadministrator>");
-		// contentProfile.append(existingProposal
-		// .getResearchAdministratorApproval());
-		// contentProfile
-		// .append("</ak:approvedbyuniversityresearchadministrator>");
-		//
-		// contentProfile.append("<ak:withdwarnbyuniversityresearchadmisntrator>");
-		// contentProfile.append(existingProposal
-		// .getResearchAdministratorWithdraw());
-		// contentProfile
-		// .append("</ak:withdwarnbyuniversityresearchadmisntrator>");
-		//
-		// contentProfile.append("<ak:submittedbyuniversityresearchadminstrator>");
-		// contentProfile.append(existingProposal
-		// .getResearchAdministratorSubmission());
-		// contentProfile
-		// .append("</ak:submittedbyuniversityresearchadminstrator>");
-		//
-		// contentProfile.append("<ak:approvedbyuniversityresearchdirector>");
-		// contentProfile.append(existingProposal.getResearchDirectorDeletion());
-		// contentProfile.append("</ak:approvedbyuniversityresearchdirector>");
-		//
-		// contentProfile.append("<ak:deletedbyuniversityresearchdirector>");
-		// contentProfile.append(existingProposal.getResearchDirectorDeletion());
-		// contentProfile.append("</ak:deletedbyuniversityresearchdirector>");
-		//
-		// contentProfile.append("<ak:archivedbyuniversityresearchdirector>");
-		// contentProfile.append(existingProposal.getResearchDirectorArchived());
-		// contentProfile.append("</ak:archivedbyuniversityresearchdirector>");
-		//
-		// contentProfile.append("<ak:authorprofile>");
-		// // contentProfile.append("<ak:firstname>");
-		// // contentProfile.append(authorProfile.getFirstName());
-		// // contentProfile.append("</ak:firstname>");
-		// // contentProfile.append("<ak:middlename>");
-		// // contentProfile
-		// // .append(authorProfile.getMiddleName());
-		// // contentProfile.append("</ak:middlename>");
-		// //
-		// // contentProfile.append("<ak:lastname>");
-		// // contentProfile.append(authorProfile.getLastName());
-		// // contentProfile.append("</ak:lastname>");
-		//
-		// contentProfile.append("<ak:fullname>");
-		// contentProfile.append(authorFullName);
-		// contentProfile.append("</ak:fullname>");
-		// contentProfile.append("</ak:authorprofile>");
-		//
-		// contentProfile.append("<ak:pi>");
-		// contentProfile.append("<ak:fullname>");
-		// contentProfile.append(existingProposal.getInvestigatorInfo().getPi()
-		// .getUserRef().getFullName());
-		// contentProfile.append("</ak:fullname>");
-		//
-		// contentProfile.append("<ak:workemail>");
-		// contentProfile.append(existingProposal.getInvestigatorInfo().getPi()
-		// .getUserRef().getWorkEmails().get(0));
-		// contentProfile.append("</ak:workemail>");
-		//
-		// contentProfile.append("<ak:userid>");
-		// contentProfile.append(existingProposal.getInvestigatorInfo().getPi()
-		// .getUserProfileId());
-		// contentProfile.append("</ak:userid>");
-		// contentProfile.append("</ak:pi>");
-		//
-		// contentProfile.append("<ak:copis>");
-		// for (InvestigatorRefAndPosition copis : existingProposal
-		// .getInvestigatorInfo().getCo_pi()) {
-		// contentProfile.append("<ak:copi>");
-		// contentProfile.append("<ak:fullname>");
-		// contentProfile.append(copis.getUserRef().getFullName());
-		// contentProfile.append("</ak:fullname>");
-		//
-		// contentProfile.append("<ak:workemail>");
-		// contentProfile.append(copis.getUserRef().getWorkEmails().get(0));
-		// contentProfile.append("</ak:workemail>");
-		//
-		// contentProfile.append("<ak:userid>");
-		// contentProfile.append(copis.getUserProfileId());
-		// contentProfile.append("</ak:userid>");
-		// contentProfile.append("</ak:copi>");
-		// }
-		// contentProfile.append("</ak:copis>");
-		//
-		// contentProfile.append("<ak:seniors>");
-		// for (InvestigatorRefAndPosition seniors : existingProposal
-		// .getInvestigatorInfo().getSeniorPersonnel()) {
-		// contentProfile.append("<ak:senior>");
-		// contentProfile.append("<ak:fullname>");
-		// contentProfile.append(seniors.getUserRef().getFullName());
-		// contentProfile.append("</ak:fullname>");
-		//
-		// contentProfile.append("<ak:workemail>");
-		// contentProfile.append(seniors.getUserRef().getWorkEmails().get(0));
-		// contentProfile.append("</ak:workemail>");
-		//
-		// contentProfile.append("<ak:userid>");
-		// contentProfile.append(seniors.getUserProfileId());
-		// contentProfile.append("</ak:userid>");
-		// contentProfile.append("</ak:senior>");
-		// }
-		// contentProfile.append("</ak:seniors>");
-		//
-		// contentProfile.append("</ak:proposal>");
-		// contentProfile.append("</ak:record>");
-		// contentProfile.append("</Content>");
-		// contentProfile
-		// .append("<Attribute AttributeId=\"urn:oasis:names:tc:xacml:3.0:profile:multiple:content-selector\" IncludeInResult=\"false\">");
-		// contentProfile
-		// .append("<AttributeValue XPathCategory=\"urn:oasis:names:tc:xacml:3.0:attribute-category:resource\" DataType=\"urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression\">//ak:record/ak:proposal</AttributeValue>");
-		// contentProfile.append("</Attribute>");
 
 		Set<AbstractResult> set = ac.getXACMLdecisionWithObligations(attrMap,
 				contentProfile);
@@ -459,5 +307,4 @@ public class TestAccessControl {
 		//
 		// assertEquals("Permit", decision);
 	}
-
 }

@@ -792,24 +792,25 @@ public class Accesscontrol {
 							.findAttributeRecord(key);
 					if (attrRecord != null) {
 						for (String value : values) {
-							// if (attrRecord.getValues().contains(value)) {
-							System.out.println(key + " :::::: " + value);
-							if (isFirstSubject) {
-								subjectAttr.append("<Attributes Category=\""
-										+ attrRecord.getCategory().toString()
-										+ "\">");
+							if (attrRecord.getValues().contains(value)) {
+								System.out.println(key + " :::::: " + value);
+								if (isFirstSubject) {
+									subjectAttr
+											.append("<Attributes Category=\""
+													+ attrRecord.getCategory()
+															.toString() + "\">");
+								}
+								subjectAttr.append("<Attribute AttributeId=\""
+										+ attrRecord.getFullAttributeName()
+												.toString()
+										+ "\" IncludeInResult=\"false\">"
+										+ "<AttributeValue DataType=\""
+										+ attrRecord.getDataType().toString()
+										+ "\">" + value
+										+ "</AttributeValue></Attribute>");
+								isFirstSubject = false;
 							}
-							subjectAttr.append("<Attribute AttributeId=\""
-									+ attrRecord.getFullAttributeName()
-											.toString()
-									+ "\" IncludeInResult=\"false\">"
-									+ "<AttributeValue DataType=\""
-									+ attrRecord.getDataType().toString()
-									+ "\">" + value
-									+ "</AttributeValue></Attribute>");
-							isFirstSubject = false;
 						}
-						// }
 					}
 				}
 				subjectAttr.append("</Attributes>");
@@ -830,7 +831,10 @@ public class Accesscontrol {
 											.append("<Attributes Category=\""
 													+ attrRecord.getCategory()
 															.toString() + "\">");
-									resourceAttr.append(contentProfile);
+
+									if (contentProfile.length() != 0) {
+										resourceAttr.append(contentProfile);
+									}
 								}
 
 								resourceAttr.append("<Attribute AttributeId=\""

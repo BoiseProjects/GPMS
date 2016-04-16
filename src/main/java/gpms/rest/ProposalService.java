@@ -43,6 +43,7 @@ import gpms.model.UniversityCommitments;
 import gpms.model.UserAccount;
 import gpms.model.UserProfile;
 import gpms.model.WithdrawType;
+import gpms.utils.EmailUtil;
 import gpms.utils.SerializationHelper;
 
 import java.io.File;
@@ -1839,83 +1840,106 @@ public class ProposalService {
 					contentProfile.append("</ak:proposal>");
 					contentProfile.append("</ak:record>");
 					contentProfile.append("</Content>");
+
 					contentProfile
-							.append("<Attribute AttributeId=\"urn:oasis:names:tc:xacml:3.0:profile:multiple:content-selector\" IncludeInResult=\"false\">");
+							.append("<Attribute AttributeId=\"urn:oasis:names:tc:xacml:3.0:content-selector\" IncludeInResult=\"false\">");
 					contentProfile
 							.append("<AttributeValue XPathCategory=\"urn:oasis:names:tc:xacml:3.0:attribute-category:resource\" DataType=\"urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression\">//ak:record/ak:proposal</AttributeValue>");
 					contentProfile.append("</Attribute>");
 
-				}
+					Set<AbstractResult> set = ac
+							.getXACMLdecisionWithObligations(attrMap,
+									contentProfile);
+					Iterator<AbstractResult> it = set.iterator();
+					int intDecision = 3;
+					while (it.hasNext()) {
+						ar = it.next();
+						intDecision = ar.getDecision();
 
-				Set<AbstractResult> set = ac.getXACMLdecisionWithObligations(
-						attrMap, contentProfile);
-				Iterator<AbstractResult> it = set.iterator();
-				int intDecision = 3;
-				while (it.hasNext()) {
-					ar = it.next();
-					intDecision = ar.getDecision();
+						if (intDecision >= 4 && intDecision <= 6) {
+							intDecision = 2;
+						}
+						System.out.println("Decision:" + intDecision
+								+ " that is: "
+								+ AbstractResult.DECISIONS[intDecision]);
 
-					if (intDecision >= 4 && intDecision <= 6) {
-						intDecision = 2;
+						if (AbstractResult.DECISIONS[intDecision]
+								.equals("Permit")) {
+							saveProposal(message, existingProposal,
+									oldProposal, authorProfile, proposalID);
+
+							System.out
+									.println("\n======================== Printing Obligations ====================");
+							List<ObligationResult> obligations = ar
+									.getObligations();
+							for (ObligationResult obligation : obligations) {
+								if (obligation instanceof org.wso2.balana.xacml3.Obligation) {
+									List<AttributeAssignment> assignments = ((org.wso2.balana.xacml3.Obligation) obligation)
+											.getAssignments();
+
+									// Send email to user
+									String messageBody = "Hello "
+											+ assignments.get(0)
+											+ ",<br/><br/> Your proposal has been updated. As soon as possible please review your proposal for any unwanted changes: <a href='http://seal.boisestate.edu:8080/GPMS/ContactUs.jsp' title='GPMS Contact Us' target='_blank'>Contact Us</a><br/><br/>Thank you, <br/> GPMS Team";
+									EmailUtil emailUtil = new EmailUtil();
+									emailUtil.sendMailWithoutAuth(
+											"milsonmun@gmail.com",
+											"Successfully proposal has been updated by: "
+													+ authorFullName,
+											messageBody);
+
+									for (AttributeAssignment assignment : assignments) {
+										System.out.println("Obligation :  "
+												+ assignment.getContent()
+												+ "\n");
+									}
+								}
+							}
+							System.out
+									.println("===========================================================");
+							System.out
+									.println("\n======================== Printing Advices ====================");
+							List<Advice> advices = ar.getAdvices();
+							for (Advice advice : advices) {
+								if (advice instanceof org.wso2.balana.xacml3.Advice) {
+									List<AttributeAssignment> assignments = ((org.wso2.balana.xacml3.Advice) advice)
+											.getAssignments();
+									for (AttributeAssignment assignment : assignments) {
+										System.out.println("Advice :  "
+												+ assignment.getContent()
+												+ "\n");
+									}
+								}
+							}
+
+							// TODO Obligation & Advice Goes HERE
+							return Response.status(200)
+									.type(MediaType.APPLICATION_JSON)
+									.entity("true").build();
+							// return Response.status(200).entity(true).build();
+						} else {
+							return Response
+									.status(403)
+									.type(MediaType.APPLICATION_JSON)
+									.entity("Your permission is: "
+											+ AbstractResult.DECISIONS[intDecision])
+									.build();
+						}
 					}
-					System.out.println("Decision:" + intDecision + " that is: "
-							+ AbstractResult.DECISIONS[intDecision]);
-
-					if (AbstractResult.DECISIONS[intDecision].equals("Permit")) {
-						saveProposal(message, existingProposal, oldProposal,
-								authorProfile, proposalID);
-
-						System.out
-								.println("\n======================== Printing Obligations ====================");
-						List<ObligationResult> obligations = ar
-								.getObligations();
-						for (ObligationResult obligation : obligations) {
-							if (obligation instanceof org.wso2.balana.xacml3.Obligation) {
-								List<AttributeAssignment> assignments = ((org.wso2.balana.xacml3.Obligation) obligation)
-										.getAssignments();
-								for (AttributeAssignment assignment : assignments) {
-									System.out.println("Obligation :  "
-											+ assignment.getContent() + "\n");
-								}
-							}
-						}
-						System.out
-								.println("===========================================================");
-						System.out
-								.println("\n======================== Printing Advices ====================");
-						List<Advice> advices = ar.getAdvices();
-						for (Advice advice : advices) {
-							if (advice instanceof org.wso2.balana.xacml3.Advice) {
-								List<AttributeAssignment> assignments = ((org.wso2.balana.xacml3.Advice) advice)
-										.getAssignments();
-								for (AttributeAssignment assignment : assignments) {
-									System.out.println("Advice :  "
-											+ assignment.getContent() + "\n");
-								}
-							}
-						}
-
-						// TODO Obligation & Advice Goes HERE
+				} else {
+					if (proposalID.equals("0")) {
+						saveProposal(message, newProposal, null, authorProfile,
+								proposalID);
 						return Response.status(200)
 								.type(MediaType.APPLICATION_JSON)
 								.entity("true").build();
 						// return Response.status(200).entity(true).build();
-					} else {
-						return Response
-								.status(403)
-								.type(MediaType.APPLICATION_JSON)
-								.entity("Your permission is: "
-										+ AbstractResult.DECISIONS[intDecision])
-								.build();
 					}
 				}
-			} else {
-				saveProposal(message, newProposal, null, authorProfile,
-						proposalID);
-				return Response.status(200).type(MediaType.APPLICATION_JSON)
-						.entity("true").build();
-				// return Response.status(200).entity(true).build();
 			}
+		} else {
+			return Response.status(403).type(MediaType.APPLICATION_JSON)
+					.entity("No User Permission Attributes are send!").build();
 		}
 		return Response.status(403).type(MediaType.APPLICATION_JSON)
 				.entity("No User Permission Attributes are send!").build();
