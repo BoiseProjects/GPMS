@@ -2466,7 +2466,7 @@
           </Apply>
         </AttributeAssignmentExpression>
         <AttributeAssignmentExpression AttributeId="urn:oasis:names:tc:xacml:3.0:example:attribute:text">
-          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">A proposal has been created by: </AttributeValue>
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Your proposal has been updated. As soon as possible please review your proposal for any unwanted changes</AttributeValue>
         </AttributeAssignmentExpression>
         <AttributeAssignmentExpression AttributeId="piFullName">
           <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">

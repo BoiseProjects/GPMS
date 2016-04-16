@@ -1879,8 +1879,10 @@ public class ProposalService {
 
 									// Send email to user
 									String messageBody = "Hello "
-											+ assignments.get(0)
-											+ ",<br/><br/> Your proposal has been updated. As soon as possible please review your proposal for any unwanted changes: <a href='http://seal.boisestate.edu:8080/GPMS/ContactUs.jsp' title='GPMS Contact Us' target='_blank'>Contact Us</a><br/><br/>Thank you, <br/> GPMS Team";
+											+ assignments.get(0).getContent()
+											+ ",<br/><br/>"
+											+ assignments.get(1).getContent()
+											+ "<br/><br/>Thank you, <br/> GPMS Team";
 									EmailUtil emailUtil = new EmailUtil();
 									emailUtil.sendMailWithoutAuth(
 											"milsonmun@gmail.com",

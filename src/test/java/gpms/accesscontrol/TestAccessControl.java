@@ -271,6 +271,7 @@ public class TestAccessControl {
 				if (obligation instanceof org.wso2.balana.xacml3.Obligation) {
 					List<AttributeAssignment> assignments = ((org.wso2.balana.xacml3.Obligation) obligation)
 							.getAssignments();
+
 					for (AttributeAssignment assignment : assignments) {
 						System.out.println("Obligation :  "
 								+ assignment.getContent() + "\n");
