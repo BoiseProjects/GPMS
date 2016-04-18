@@ -12,6 +12,23 @@ policy accessPages{
 }
 }
 
+namespace regexTest {
+	attribute resourceId{
+        category = resourceCat
+        id = "urn:oasis:names:tc:xacml:1.0:resource:resource-id"
+        type = string
+
+    }
+    
+	policy matchResources{
+    apply firstApplicable
+    rule allow{
+        target clause anyURIRegexpMatch("^https?://(?:[a-z\\-]+\\.)+[a-z]{2,6}(?:/[^/#?]+)+\\.(?:jpg|gif|png)$", resourceId)
+        permit
+    }
+}
+}
+
 namespace test { policy testpolicy { target clause Attributes.subjectId ==
 "alice" apply permitOverrides rule { permit } } }
 
