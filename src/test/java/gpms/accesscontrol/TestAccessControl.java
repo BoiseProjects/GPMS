@@ -138,15 +138,15 @@ public class TestAccessControl {
 		contentProfile
 				.append("</ak:approvedbyuniversityresearchadministrator>");
 
-		contentProfile.append("<ak:withdwarnbyuniversityresearchadmisntrator>");
+		contentProfile.append("<ak:withdrawnbyuniversityresearchadministrator>");
 		contentProfile.append("Not Withdrawn");
 		contentProfile
-				.append("</ak:withdwarnbyuniversityresearchadmisntrator>");
+				.append("</ak:withdrawnbyuniversityresearchadministrator>");
 
-		contentProfile.append("<ak:submittedbyuniversityresearchadminstrator>");
+		contentProfile.append("<ak:submittedbyuniversityresearchadministrator>");
 		contentProfile.append("Not Submitted");
 		contentProfile
-				.append("</ak:submittedbyuniversityresearchadminstrator>");
+				.append("</ak:submittedbyuniversityresearchadministrator>");
 
 		contentProfile.append("<ak:approvedbyuniversityresearchdirector>");
 		contentProfile.append("Not Deleted");
@@ -196,28 +196,27 @@ public class TestAccessControl {
 
 		contentProfile.append("<ak:copi>");
 		contentProfile.append("<ak:fullname>");
+		contentProfile.append("Tamanna");
+		contentProfile.append("</ak:fullname>");
+		contentProfile.append("<ak:workemail>");
+		contentProfile.append("tamanna@yahoo.comss");
+		contentProfile.append("</ak:workemail>");
+		contentProfile.append("<ak:userid>");
+		contentProfile.append("56fee3e965dbb35ce5c900fx");
+		contentProfile.append("</ak:userid>");
+		contentProfile.append("</ak:copi>");
+		
+		contentProfile.append("<ak:copi>");
+		contentProfile.append("<ak:fullname>");
 		contentProfile.append("PS Wang");
 		contentProfile.append("</ak:fullname>");
 		contentProfile.append("<ak:workemail>");
-		contentProfile.append("fdsafda@yahoo.comss");
+		contentProfile.append("wang@yahoo.comss");
 		contentProfile.append("</ak:workemail>");
 		contentProfile.append("<ak:userid>");
 		contentProfile.append("56fee3e965dbb35ce5c900fx");
 		contentProfile.append("</ak:userid>");
 		contentProfile.append("</ak:copi>");
-
-		contentProfile.append("<ak:copi>");
-		contentProfile.append("<ak:fullname>");
-		contentProfile.append("Thomas Voltz");
-		contentProfile.append("</ak:fullname>");
-		contentProfile.append("<ak:workemail>");
-		contentProfile.append("fdsafda@yahoo.comsss");
-		contentProfile.append("</ak:workemail>");
-		contentProfile.append("<ak:userid>");
-		contentProfile.append("56fee3e965dbb35ce5c900fx");
-		contentProfile.append("</ak:userid>");
-		contentProfile.append("</ak:copi>");
-
 		contentProfile.append("</ak:copis>");
 
 		contentProfile.append("<ak:seniors>");
@@ -227,7 +226,7 @@ public class TestAccessControl {
 		contentProfile.append("Nisha Shrestha");
 		contentProfile.append("</ak:fullname>");
 		contentProfile.append("<ak:workemail>");
-		contentProfile.append("fdsafda@yahoo.cdomss");
+		contentProfile.append("nisha@yahoo.cdomss");
 		contentProfile.append("</ak:workemail>");
 		contentProfile.append("<ak:userid>");
 		contentProfile.append("56fee3e965dbb35ce5c910dx");
@@ -239,7 +238,7 @@ public class TestAccessControl {
 		contentProfile.append("Arthur Shu");
 		contentProfile.append("</ak:fullname>");
 		contentProfile.append("<ak:workemail>");
-		contentProfile.append("fdsafda@yahoo.camss");
+		contentProfile.append("arthur@yahoo.camss");
 		contentProfile.append("</ak:workemail>");
 		contentProfile.append("<ak:userid>");
 		contentProfile.append("56fee3e965dbb35ce5c920dx");
@@ -252,7 +251,7 @@ public class TestAccessControl {
 		contentProfile.append("</Content>");
 
 		contentProfile
-				.append("<Attribute AttributeId=\"urn:oasis:names:tc:xacml:3.0:content-selector\" IncludeInResult=\"false\">");
+				.append("<Attribute AttributeId=\"urn:oasis:names:tc:xacml:3.0:multiple:content-selector\" IncludeInResult=\"false\">");
 		contentProfile
 				.append("<AttributeValue XPathCategory=\"urn:oasis:names:tc:xacml:3.0:attribute-category:resource\" DataType=\"urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression\">//ak:record/ak:proposal</AttributeValue>");
 		contentProfile.append("</Attribute>");

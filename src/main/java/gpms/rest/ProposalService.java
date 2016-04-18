@@ -1725,18 +1725,18 @@ public class ProposalService {
 							.append("</ak:approvedbyuniversityresearchadministrator>");
 
 					contentProfile
-							.append("<ak:withdwarnbyuniversityresearchadmisntrator>");
+							.append("<ak:withdrawnbyuniversityresearchadministrator>");
 					contentProfile.append(existingProposal
 							.getResearchAdministratorWithdraw());
 					contentProfile
-							.append("</ak:withdwarnbyuniversityresearchadmisntrator>");
+							.append("</ak:withdrawnbyuniversityresearchadministrator>");
 
 					contentProfile
-							.append("<ak:submittedbyuniversityresearchadminstrator>");
+							.append("<ak:submittedbyuniversityresearchadministrator>");
 					contentProfile.append(existingProposal
 							.getResearchAdministratorSubmission());
 					contentProfile
-							.append("</ak:submittedbyuniversityresearchadminstrator>");
+							.append("</ak:submittedbyuniversityresearchadministrator>");
 
 					contentProfile
 							.append("<ak:approvedbyuniversityresearchdirector>");
