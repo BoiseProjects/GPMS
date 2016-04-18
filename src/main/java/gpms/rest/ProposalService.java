@@ -1879,7 +1879,7 @@ public class ProposalService {
 
 									// Send email to user
 									String messageBody = "Hello "
-											+ assignments.get(0).getContent()
+											+ assignments.get(2).getContent()
 											+ ",<br/><br/>"
 											+ assignments.get(1).getContent()
 											+ "<br/><br/>Thank you, <br/> GPMS Team";
