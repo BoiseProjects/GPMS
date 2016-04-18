@@ -240,15 +240,15 @@ public class Accesscontrol {
 		contentProfile
 				.append("</ak:approvedbyuniversityresearchadministrator>");
 
-		contentProfile.append("<ak:withdwarnbyuniversityresearchadmisntrator>");
+		contentProfile.append("<ak:withdrawnbyuniversityresearchadministrator>");
 		contentProfile.append("Not Withdrawn");
 		contentProfile
-				.append("</ak:withdwarnbyuniversityresearchadmisntrator>");
+				.append("</ak:withdrawnbyuniversityresearchadministrator>");
 
-		contentProfile.append("<ak:submittedbyuniversityresearchadminstrator>");
+		contentProfile.append("<ak:submittedbyuniversityresearchadministrator>");
 		contentProfile.append("Not Submitted");
 		contentProfile
-				.append("</ak:submittedbyuniversityresearchadminstrator>");
+				.append("</ak:submittedbyuniversityresearchadministrator>");
 
 		contentProfile.append("<ak:approvedbyuniversityresearchdirector>");
 		contentProfile.append("Not Deleted");
@@ -298,10 +298,10 @@ public class Accesscontrol {
 
 		contentProfile.append("<ak:copi>");
 		contentProfile.append("<ak:fullname>");
-		contentProfile.append("PS Wang");
+		contentProfile.append("Tamanna");
 		contentProfile.append("</ak:fullname>");
 		contentProfile.append("<ak:workemail>");
-		contentProfile.append("fdsafda@yahoo.comss");
+		contentProfile.append("tamanna@yahoo.comss");
 		contentProfile.append("</ak:workemail>");
 		contentProfile.append("<ak:userid>");
 		contentProfile.append("56fee3e965dbb35ce5c900fx");
@@ -310,10 +310,10 @@ public class Accesscontrol {
 
 		contentProfile.append("<ak:copi>");
 		contentProfile.append("<ak:fullname>");
-		contentProfile.append("Thomas Voltz");
+		contentProfile.append("PS Wang");
 		contentProfile.append("</ak:fullname>");
 		contentProfile.append("<ak:workemail>");
-		contentProfile.append("fdsafda@yahoo.comsss");
+		contentProfile.append("wang@yahoo.comsss");
 		contentProfile.append("</ak:workemail>");
 		contentProfile.append("<ak:userid>");
 		contentProfile.append("56fee3e965dbb35ce5c900fx");
@@ -329,7 +329,7 @@ public class Accesscontrol {
 		contentProfile.append("Nisha Shrestha");
 		contentProfile.append("</ak:fullname>");
 		contentProfile.append("<ak:workemail>");
-		contentProfile.append("fdsafda@yahoo.cdomss");
+		contentProfile.append("nisha@yahoo.cdomss");
 		contentProfile.append("</ak:workemail>");
 		contentProfile.append("<ak:userid>");
 		contentProfile.append("56fee3e965dbb35ce5c910dx");
@@ -341,7 +341,7 @@ public class Accesscontrol {
 		contentProfile.append("Arthur Shu");
 		contentProfile.append("</ak:fullname>");
 		contentProfile.append("<ak:workemail>");
-		contentProfile.append("fdsafda@yahoo.camss");
+		contentProfile.append("arthur@yahoo.camss");
 		contentProfile.append("</ak:workemail>");
 		contentProfile.append("<ak:userid>");
 		contentProfile.append("56fee3e965dbb35ce5c920dx");
