@@ -1865,71 +1865,80 @@ public class ProposalService {
 
 						if (AbstractResult.DECISIONS[intDecision]
 								.equals("Permit")) {
-							saveProposal(message, existingProposal,
-									oldProposal, authorProfile, proposalID);
+							boolean proposalIsChanged = saveProposal(message,
+									existingProposal, oldProposal,
+									authorProfile, proposalID);
 
-							System.out
-									.println("\n======================== Printing Obligations ====================");
-							List<ObligationResult> obligations = ar
-									.getObligations();
-							for (ObligationResult obligation : obligations) {
-								if (obligation instanceof org.wso2.balana.xacml3.Obligation) {
-									List<AttributeAssignment> assignments = ((org.wso2.balana.xacml3.Obligation) obligation)
-											.getAssignments();
+							if (proposalIsChanged) {
+								System.out
+										.println("\n======================== Printing Obligations ====================");
+								List<ObligationResult> obligations = ar
+										.getObligations();
+								for (ObligationResult obligation : obligations) {
+									if (obligation instanceof org.wso2.balana.xacml3.Obligation) {
+										List<AttributeAssignment> assignments = ((org.wso2.balana.xacml3.Obligation) obligation)
+												.getAssignments();
 
-									EmailUtil emailUtil = new EmailUtil();
-									String emailBody = new String();
-									String authorName = new String();
-									String piEmail = new String();
-									List<String> emaillist = new ArrayList<String>();
+										EmailUtil emailUtil = new EmailUtil();
+										String emailBody = new String();
+										String authorName = new String();
+										String piEmail = new String();
+										List<String> emaillist = new ArrayList<String>();
 
-									for (AttributeAssignment assignment : assignments) {
-										switch (assignment.getAttributeId()
-												.toString()) {
-										case "authorName":
-											authorName = assignment
-													.getContent();
-											break;
-										case "emailBody":
-											emailBody = assignment.getContent();
-											break;
-										case "piEmail":
-											piEmail = assignment.getContent();
-											break;
-										case "copisEmail":
-										case "seniorsEmail":
-											emaillist.add(assignment
-													.getContent());
-											break;
+										for (AttributeAssignment assignment : assignments) {
+											switch (assignment.getAttributeId()
+													.toString()) {
+											case "authorName":
+												authorName = assignment
+														.getContent();
+												break;
+											case "emailBody":
+												emailBody = assignment
+														.getContent();
+												break;
+											case "piEmail":
+												piEmail = assignment
+														.getContent();
+												break;
+											case "copisEmail":
+											case "seniorsEmail":
+												emaillist.add(assignment
+														.getContent());
+												break;
 
+											}
 										}
+
+										// Send email to user
+										// String messageBody =
+										// "Hello User,<br/><br/>"
+										// + emailBody
+										// +
+										// "<br/><br/>Thank you, <br/> GPMS Team";
+
+										emailUtil
+												.sendMailMultipleUsersWithoutAuth(
+														piEmail, emaillist,
+														"Your proposal has been updated successfully by: "
+																+ authorName,
+														emailBody);
+
 									}
-
-									// Send email to user
-									String messageBody = "Hello User,<br/><br/>"
-											+ emailBody
-											+ "<br/><br/>Thank you, <br/> GPMS Team";
-
-									emailUtil.sendMailMultipleUsersWithoutAuth(
-											piEmail, emaillist,
-											"Your proposal has been updated successfully by: "
-													+ authorName, messageBody);
-
 								}
-							}
-							System.out
-									.println("===========================================================");
-							System.out
-									.println("\n======================== Printing Advices ====================");
-							List<Advice> advices = ar.getAdvices();
-							for (Advice advice : advices) {
-								if (advice instanceof org.wso2.balana.xacml3.Advice) {
-									List<AttributeAssignment> assignments = ((org.wso2.balana.xacml3.Advice) advice)
-											.getAssignments();
-									for (AttributeAssignment assignment : assignments) {
-										System.out.println("Advice :  "
-												+ assignment.getContent()
-												+ "\n");
+								System.out
+										.println("===========================================================");
+								System.out
+										.println("\n======================== Printing Advices ====================");
+								List<Advice> advices = ar.getAdvices();
+								for (Advice advice : advices) {
+									if (advice instanceof org.wso2.balana.xacml3.Advice) {
+										List<AttributeAssignment> assignments = ((org.wso2.balana.xacml3.Advice) advice)
+												.getAssignments();
+										for (AttributeAssignment assignment : assignments) {
+											System.out.println("Advice :  "
+													+ assignment.getContent()
+													+ "\n");
+										}
 									}
 								}
 							}
@@ -1967,7 +1976,7 @@ public class ProposalService {
 				.entity("No User Permission Attributes are send!").build();
 	}
 
-	private void saveProposal(String message, Proposal existingProposal,
+	private boolean saveProposal(String message, Proposal existingProposal,
 			Proposal oldProposal, UserProfile authorProfile, String proposalID)
 			throws UnknownHostException, Exception, ParseException,
 			IOException, JsonParseException, JsonMappingException {
@@ -1975,6 +1984,8 @@ public class ProposalService {
 		JsonNode root = mapper.readTree(message);
 
 		JsonNode proposalInfo = null;
+
+		boolean proposalIsChanged = false;
 
 		if (root != null && root.has("proposalInfo")) {
 			proposalInfo = root.get("proposalInfo");
@@ -4027,11 +4038,15 @@ public class ProposalService {
 			if (!proposalID.equals("0")) {
 				if (!existingProposal.equals(oldProposal)) {
 					proposalDAO.updateProposal(existingProposal, authorProfile);
+					proposalIsChanged = true;
 				}
-			} else {
-				proposalDAO.saveProposal(existingProposal, authorProfile);
 			}
+			// else {
+			// proposalDAO.saveProposal(existingProposal, authorProfile);
+			// proposalIsChanged = true;
+			// }
 		}
+		return proposalIsChanged;
 	}
 
 	private void NotifyAllExistingInvestigators(String proposalID,

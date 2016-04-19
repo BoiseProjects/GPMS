@@ -281,6 +281,10 @@ public class TestAccessControl {
 					List<String> emaillist = new ArrayList<String>();
 
 					for (AttributeAssignment assignment : assignments) {
+
+						System.out.println("Obligation :  "
+								+ assignment.getContent() + "\n");
+
 						switch (assignment.getAttributeId().toString()) {
 						case "authorName":
 							authorName = assignment.getContent();
@@ -299,14 +303,15 @@ public class TestAccessControl {
 						}
 					}
 
-					// Send email to user
-					String messageBody = "Hello User,<br/><br/>" + emailBody
-							+ "<br/><br/>Thank you, <br/> GPMS Team";
-
-					emailUtil.sendMailMultipleUsersWithoutAuth(piEmail,
-							emaillist,
-							"Your proposal has been updated successfully by: "
-									+ authorName, messageBody);
+					System.out.println(emailBody);
+					// // Send email to user
+					// String messageBody = "Hello User,<br/><br/>" + emailBody
+					// + "<br/><br/>Thank you, <br/> GPMS Team";
+					//
+					// emailUtil.sendMailMultipleUsersWithoutAuth(piEmail,
+					// emaillist,
+					// "Your proposal has been updated successfully by: "
+					// + authorName, messageBody);
 
 				}
 			}
