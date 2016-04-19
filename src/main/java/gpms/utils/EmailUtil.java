@@ -92,8 +92,8 @@ public class EmailUtil {
 			msg.setRecipients(Message.RecipientType.TO,
 					InternetAddress.parse(toEmail, false));
 			for (String email : emaillist) {
-				msg.addRecipient(Message.RecipientType.CC, new InternetAddress(
-						email));
+				msg.addRecipient(Message.RecipientType.BCC,
+						new InternetAddress(email));
 			}
 
 			Transport.send(msg);
