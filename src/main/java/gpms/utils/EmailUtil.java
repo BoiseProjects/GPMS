@@ -3,6 +3,7 @@ package gpms.utils;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
+import java.util.List;
 import java.util.Properties;
 
 import javax.activation.DataHandler;
@@ -55,7 +56,50 @@ public class EmailUtil {
 	public void sendMailWithoutAuth(String emailID, String subject, String body) {
 		Session session = Session.getInstance(properties, null);
 		sendEmail(session, emailID, subject, body);
+	}
 
+	public void sendMailMultipleUsersWithoutAuth(String piEmail,
+			List<String> emaillist, String subject, String body) {
+		Session session = Session.getInstance(properties, null);
+		sendEmailToMultipleUsers(session, piEmail, emaillist, subject, body);
+	}
+
+	private void sendEmailToMultipleUsers(Session session, String toEmail,
+			List<String> emaillist, String subject, String body) {
+		try {
+			// Create a default MimeMessage object.
+			MimeMessage msg = new MimeMessage(session);
+
+			// set message headers
+			msg.addHeader("Content-type", "text/HTML; charset=UTF-8");
+			msg.addHeader("format", "flowed");
+			msg.addHeader("Content-Transfer-Encoding", "8bit");
+
+			msg.setFrom(new InternetAddress("do-not-reply@seal.boisestate.edu",
+					"do-not-reply@seal.boisestate.edu"));
+
+			// msg.setReplyTo(InternetAddress.parse(
+			// "do-not-reply@seal.boisestate.edu", false));
+
+			msg.setSubject(subject, "UTF-8");
+
+			// msg.setText(body, "UTF-8");
+			// msg.setContent(body, "text/html; charset=utf-8");
+			msg.setText(body, "utf-8", "html");
+
+			msg.setSentDate(new Date());
+
+			msg.setRecipients(Message.RecipientType.TO,
+					InternetAddress.parse(toEmail, false));
+			for (String email : emaillist) {
+				msg.addRecipient(Message.RecipientType.CC, new InternetAddress(
+						email));
+			}
+
+			Transport.send(msg);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	// Java Program to Send Email with TLS Authentication
@@ -147,8 +191,8 @@ public class EmailUtil {
 			msg.setFrom(new InternetAddress("do-not-reply@seal.boisestate.edu",
 					"do-not-reply@seal.boisestate.edu"));
 
-			msg.setReplyTo(InternetAddress.parse(
-					"do-not-reply@seal.boisestate.edu", false));
+			// msg.setReplyTo(InternetAddress.parse(
+			// "do-not-reply@seal.boisestate.edu", false));
 
 			msg.setSubject(subject, "UTF-8");
 
@@ -307,5 +351,4 @@ public class EmailUtil {
 			e.printStackTrace();
 		}
 	}
-
 }

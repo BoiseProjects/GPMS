@@ -3,13 +3,13 @@ package gpms.accesscontrol;
 import static org.junit.Assert.assertEquals;
 import gpms.DAL.MongoDBConnector;
 import gpms.dao.ProposalDAO;
-import gpms.model.InvestigatorRefAndPosition;
 import gpms.model.Proposal;
 import gpms.model.UserAccount;
 import gpms.model.UserProfile;
+import gpms.utils.EmailUtil;
 
-import java.net.URI;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -20,7 +20,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mongodb.morphia.Morphia;
-import org.w3c.dom.NamedNodeMap;
 import org.wso2.balana.ObligationResult;
 import org.wso2.balana.ctx.AbstractResult;
 import org.wso2.balana.ctx.AttributeAssignment;
@@ -86,10 +85,10 @@ public class TestAccessControl {
 		String proposalID = "5702a60865dbb30b09a492cf";
 		String authorFullName = "Milson Munakami";
 
-		ObjectId proposalId = new ObjectId(proposalID);
+		// ObjectId proposalId = new ObjectId(proposalID);
 
-		Proposal existingProposal = proposalDAO
-				.findProposalByProposalID(proposalId);
+		// Proposal existingProposal = proposalDAO
+		// .findProposalByProposalID(proposalId);
 
 		StringBuffer contentProfile = new StringBuffer();
 
@@ -138,12 +137,14 @@ public class TestAccessControl {
 		contentProfile
 				.append("</ak:approvedbyuniversityresearchadministrator>");
 
-		contentProfile.append("<ak:withdrawnbyuniversityresearchadministrator>");
+		contentProfile
+				.append("<ak:withdrawnbyuniversityresearchadministrator>");
 		contentProfile.append("Not Withdrawn");
 		contentProfile
 				.append("</ak:withdrawnbyuniversityresearchadministrator>");
 
-		contentProfile.append("<ak:submittedbyuniversityresearchadministrator>");
+		contentProfile
+				.append("<ak:submittedbyuniversityresearchadministrator>");
 		contentProfile.append("Not Submitted");
 		contentProfile
 				.append("</ak:submittedbyuniversityresearchadministrator>");
@@ -205,7 +206,7 @@ public class TestAccessControl {
 		contentProfile.append("56fee3e965dbb35ce5c900fx");
 		contentProfile.append("</ak:userid>");
 		contentProfile.append("</ak:copi>");
-		
+
 		contentProfile.append("<ak:copi>");
 		contentProfile.append("<ak:fullname>");
 		contentProfile.append("PS Wang");
@@ -270,26 +271,43 @@ public class TestAccessControl {
 			List<ObligationResult> obligations = ar.getObligations();
 			for (ObligationResult obligation : obligations) {
 				if (obligation instanceof org.wso2.balana.xacml3.Obligation) {
-
-					// obligation.encode();
-
-					// Object root;
-					// NamedNodeMap nodeAttributes = root.getAttributes();
-					// attributeId = new URI(((Object)
-					// obligations).getNamedItem(
-					// "obligationId").getNodeValue());
-
-					System.out.println("Obligation Id: "
-							+ ((org.wso2.balana.xacml3.Obligation) obligation)
-									.getObligationId());
 					List<AttributeAssignment> assignments = ((org.wso2.balana.xacml3.Obligation) obligation)
 							.getAssignments();
 
+					EmailUtil emailUtil = new EmailUtil();
+					String emailBody = new String();
+					String authorName = new String();
+					String piEmail = new String();
+					List<String> emaillist = new ArrayList<String>();
+
 					for (AttributeAssignment assignment : assignments) {
-						System.out.println("Obligation :  "
-								+ assignment.getContent() + " ::::: "
-								+ assignment.getAttributeId() + "\n");
+						switch (assignment.getAttributeId().toString()) {
+						case "authorName":
+							authorName = assignment.getContent();
+							break;
+						case "emailBody":
+							emailBody = assignment.getContent();
+							break;
+						case "piEmail":
+							piEmail = assignment.getContent();
+							break;
+						case "copisEmail":
+						case "seniorsEmail":
+							emaillist.add(assignment.getContent());
+							break;
+
+						}
 					}
+
+					// Send email to user
+					String messageBody = "Hello User,<br/><br/>" + emailBody
+							+ "<br/><br/>Thank you, <br/> GPMS Team";
+
+					emailUtil.sendMailMultipleUsersWithoutAuth(piEmail,
+							emaillist,
+							"Your proposal has been updated successfully by: "
+									+ authorName, messageBody);
+
 				}
 			}
 			System.out

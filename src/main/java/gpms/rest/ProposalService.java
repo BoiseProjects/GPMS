@@ -1877,24 +1877,44 @@ public class ProposalService {
 									List<AttributeAssignment> assignments = ((org.wso2.balana.xacml3.Obligation) obligation)
 											.getAssignments();
 
-									// Send email to user
-									String messageBody = "Hello "
-											+ assignments.get(2).getContent()
-											+ ",<br/><br/>"
-											+ assignments.get(1).getContent()
-											+ "<br/><br/>Thank you, <br/> GPMS Team";
 									EmailUtil emailUtil = new EmailUtil();
-									emailUtil.sendMailWithoutAuth(
-											"milsonmun@gmail.com",
-											"Successfully proposal has been updated by: "
-													+ authorFullName,
-											messageBody);
+									String emailBody = new String();
+									String authorName = new String();
+									String piEmail = new String();
+									List<String> emaillist = new ArrayList<String>();
 
 									for (AttributeAssignment assignment : assignments) {
-										System.out.println("Obligation :  "
-												+ assignment.getContent()
-												+ "\n");
+										switch (assignment.getAttributeId()
+												.toString()) {
+										case "authorName":
+											authorName = assignment
+													.getContent();
+											break;
+										case "emailBody":
+											emailBody = assignment.getContent();
+											break;
+										case "piEmail":
+											piEmail = assignment.getContent();
+											break;
+										case "copisEmail":
+										case "seniorsEmail":
+											emaillist.add(assignment
+													.getContent());
+											break;
+
+										}
 									}
+
+									// Send email to user
+									String messageBody = "Hello User,<br/><br/>"
+											+ emailBody
+											+ "<br/><br/>Thank you, <br/> GPMS Team";
+
+									emailUtil.sendMailMultipleUsersWithoutAuth(
+											piEmail, emaillist,
+											"Your proposal has been updated successfully by: "
+													+ authorName, messageBody);
+
 								}
 							}
 							System.out
