@@ -4040,11 +4040,10 @@ public class ProposalService {
 					proposalDAO.updateProposal(existingProposal, authorProfile);
 					proposalIsChanged = true;
 				}
+			} else {
+				proposalDAO.saveProposal(existingProposal, authorProfile);
+				proposalIsChanged = true;
 			}
-			// else {
-			// proposalDAO.saveProposal(existingProposal, authorProfile);
-			// proposalIsChanged = true;
-			// }
 		}
 		return proposalIsChanged;
 	}
