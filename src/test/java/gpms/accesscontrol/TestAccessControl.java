@@ -104,6 +104,10 @@ public class TestAccessControl {
 		contentProfile.append("Proposal 11");
 		contentProfile.append("</ak:proposaltitle>");
 
+		contentProfile.append("<ak:signedByCurrentUser>");
+		contentProfile.append(true);
+		contentProfile.append("</ak:signedByCurrentUser>");
+
 		contentProfile.append("<ak:submittedbypi>");
 		contentProfile.append("Not Submitted");
 		contentProfile.append("</ak:submittedbypi>");
@@ -274,18 +278,25 @@ public class TestAccessControl {
 					List<AttributeAssignment> assignments = ((org.wso2.balana.xacml3.Obligation) obligation)
 							.getAssignments();
 
+					String obligationType = "POST";
+
 					EmailUtil emailUtil = new EmailUtil();
 					String emailBody = new String();
 					String authorName = new String();
 					String piEmail = new String();
 					List<String> emaillist = new ArrayList<String>();
 
+					Boolean signedByCurrentUser = false;
+					String preText = new String();
+
 					for (AttributeAssignment assignment : assignments) {
 
-						System.out.println("Obligation :  "
-								+ assignment.getContent() + "\n");
+						// System.out.println("Obligation :  "
+						// + assignment.getContent() + "\n");
 
 						switch (assignment.getAttributeId().toString()) {
+						case "obligationType":
+							obligationType = assignment.getContent();
 						case "authorName":
 							authorName = assignment.getContent();
 							break;
@@ -300,18 +311,33 @@ public class TestAccessControl {
 							emaillist.add(assignment.getContent());
 							break;
 
+						case "preText":
+							preText = assignment.getContent();
+							break;
+						case "signedByCurrentUser":
+							signedByCurrentUser = Boolean
+									.parseBoolean(assignment.getContent());
+							break;
+
 						}
 					}
 
-					System.out.println(emailBody);
-					// // Send email to user
-					// String messageBody = "Hello User,<br/><br/>" + emailBody
-					// + "<br/><br/>Thank you, <br/> GPMS Team";
-					//
-					// emailUtil.sendMailMultipleUsersWithoutAuth(piEmail,
-					// emaillist,
-					// "Your proposal has been updated successfully by: "
-					// + authorName, messageBody);
+					if (obligationType.equals("preobligation")) {
+						System.out.println(obligationType
+								+ " is RUNNING");
+						System.out.println(signedByCurrentUser);
+						if (!signedByCurrentUser) {
+							break;
+						}
+					} else {
+						System.out.println(obligationType
+								+ " is RUNNING");
+
+						// emailUtil.sendMailMultipleUsersWithoutAuth(piEmail,
+						// emaillist,
+						// "Your proposal has been updated successfully by: "
+						// + authorName, emailBody);
+					}
 
 				}
 			}

@@ -1410,6 +1410,8 @@ public class ProposalService {
 		Proposal existingProposal = new Proposal();
 		Proposal oldProposal = new Proposal();
 
+		boolean signedByCurrentUser = false;
+
 		StringBuffer contentProfile = new StringBuffer();
 		Accesscontrol ac = new Accesscontrol();
 		HashMap<String, Multimap<String, String>> attrMap = new HashMap<String, Multimap<String, String>>();
@@ -1529,7 +1531,7 @@ public class ProposalService {
 
 				// InvestigatorInfo
 				if (proposalID.equals("0")) {
-					newProposal.setInvestigatorInfo(newInvestigatorInfo);
+					existingProposal.setInvestigatorInfo(newInvestigatorInfo);
 					addedInvestigators = newInvestigatorInfo;
 				} else {
 
@@ -1605,6 +1607,82 @@ public class ProposalService {
 										.remove(sign);
 							}
 						}
+					}
+				}
+			}
+
+			// Signature
+			// To hold all new Investigators list to get notified
+			// List<SignatureInfo> addedSignatures = new
+			// ArrayList<SignatureInfo>();
+
+			if (proposalInfo != null && proposalInfo.has("SignatureInfo")) {
+				String[] rows = proposalInfo.get("SignatureInfo").textValue()
+						.split("#!#");
+
+				List<SignatureInfo> newSignatureInfo = new ArrayList<SignatureInfo>();
+				List<SignatureInfo> allSignatureInfo = new ArrayList<SignatureInfo>();
+				List<SignatureInfo> removeSignatureInfo = new ArrayList<SignatureInfo>();
+				// UserProfileID!#!Signature!#!SignedDate!#!Note!#!FullName!#!PositionTitle!#!Delegated#!#
+				DateFormat format = new SimpleDateFormat(
+						"yyyy/MM/dd hh:mm:ss a");
+
+				for (String col : rows) {
+					String[] cols = col.split("!#!");
+					SignatureInfo signatureInfo = new SignatureInfo();
+					signatureInfo.setUserProfileId(cols[0]);
+					signatureInfo.setSignature(cols[1]);
+					signatureInfo.setSignedDate(format.parse(cols[2]));
+					signatureInfo.setNote(cols[3]);
+					signatureInfo.setFullName(cols[4]);
+					signatureInfo.setPositionTitle(cols[5]);
+					signatureInfo.setDelegated(Boolean.parseBoolean(cols[6]));
+
+					allSignatureInfo.add(signatureInfo);
+
+					if (!proposalID.equals("0")) {
+						boolean alreadyExist = false;
+						for (SignatureInfo sign : existingProposal
+								.getSignatureInfo()) {
+							if (sign.equals(signatureInfo)) {
+								alreadyExist = true;
+								break;
+							} else {
+
+							}
+						}
+						if (!alreadyExist) {
+							// else {
+							// if (sign.getUserProfileId().equals(
+							// userProfileID)) {
+							// existingProposal.getSignatureInfo().remove(
+							// sign);
+							// }
+							// }
+							newSignatureInfo.add(signatureInfo);
+
+						}
+					}
+				}
+				// SignatureInfo
+				// addedSignatures = newSignatureInfo;
+				if (!proposalID.equals("0")) {
+					if (!existingProposal.getSignatureInfo().equals(
+							allSignatureInfo)) {
+						for (SignatureInfo signatureInfo : newSignatureInfo) {
+							existingProposal.getSignatureInfo().add(
+									signatureInfo);
+						}
+					}
+				} else {
+					existingProposal.setSignatureInfo(allSignatureInfo);
+				}
+
+				for (SignatureInfo sign : existingProposal.getSignatureInfo()) {
+					if (sign.getUserProfileId().equals(userProfileID)
+							&& !sign.getSignature().trim().equals("")) {
+						signedByCurrentUser = true;
+						break;
 					}
 				}
 			}
@@ -1686,6 +1764,10 @@ public class ProposalService {
 					contentProfile.append(existingProposal.getProjectInfo()
 							.getProjectTitle());
 					contentProfile.append("</ak:proposaltitle>");
+
+					contentProfile.append("<ak:signedByCurrentUser>");
+					contentProfile.append(signedByCurrentUser);
+					contentProfile.append("</ak:signedByCurrentUser>");
 
 					contentProfile.append("<ak:submittedbypi>");
 					contentProfile.append(existingProposal.getSubmittedByPI());
@@ -1865,80 +1947,110 @@ public class ProposalService {
 
 						if (AbstractResult.DECISIONS[intDecision]
 								.equals("Permit")) {
-							boolean proposalIsChanged = saveProposal(message,
-									existingProposal, oldProposal,
-									authorProfile, proposalID);
 
-							if (proposalIsChanged) {
-								System.out
-										.println("\n======================== Printing Obligations ====================");
-								List<ObligationResult> obligations = ar
-										.getObligations();
-								for (ObligationResult obligation : obligations) {
-									if (obligation instanceof org.wso2.balana.xacml3.Obligation) {
-										List<AttributeAssignment> assignments = ((org.wso2.balana.xacml3.Obligation) obligation)
-												.getAssignments();
+							System.out
+									.println("\n======================== Printing Obligations ====================");
+							List<ObligationResult> obligations = ar
+									.getObligations();
+							for (ObligationResult obligation : obligations) {
+								if (obligation instanceof org.wso2.balana.xacml3.Obligation) {
+									List<AttributeAssignment> assignments = ((org.wso2.balana.xacml3.Obligation) obligation)
+											.getAssignments();
 
-										EmailUtil emailUtil = new EmailUtil();
-										String emailBody = new String();
-										String authorName = new String();
-										String piEmail = new String();
-										List<String> emaillist = new ArrayList<String>();
+									String obligationType = "POST";
 
-										for (AttributeAssignment assignment : assignments) {
-											switch (assignment.getAttributeId()
-													.toString()) {
-											case "authorName":
-												authorName = assignment
-														.getContent();
-												break;
-											case "emailBody":
-												emailBody = assignment
-														.getContent();
-												break;
-											case "piEmail":
-												piEmail = assignment
-														.getContent();
-												break;
-											case "copisEmail":
-											case "seniorsEmail":
-												emaillist.add(assignment
-														.getContent());
-												break;
+									EmailUtil emailUtil = new EmailUtil();
+									String emailBody = new String();
+									String authorName = new String();
+									String piEmail = new String();
+									List<String> emaillist = new ArrayList<String>();
 
-											}
+									Boolean preCondition = false;
+									String preText = new String();
+
+									for (AttributeAssignment assignment : assignments) {
+
+										// System.out.println("Obligation :  "
+										// + assignment.getContent() +
+										// "\n");
+
+										switch (assignment.getAttributeId()
+												.toString()) {
+										case "obligationType":
+											obligationType = assignment
+													.getContent();
+										case "authorName":
+											authorName = assignment
+													.getContent();
+											break;
+										case "emailBody":
+											emailBody = assignment.getContent();
+											break;
+										case "piEmail":
+											piEmail = assignment.getContent();
+											break;
+										case "copisEmail":
+										case "seniorsEmail":
+											emaillist.add(assignment
+													.getContent());
+											break;
+
+										case "preText":
+											preText = assignment.getContent();
+											break;
+										case "signedByCurrentUser":
+											preCondition = Boolean
+													.parseBoolean(assignment
+															.getContent());
+											break;
+
 										}
-
-										// Send email to user
-										// String messageBody =
-										// "Hello User,<br/><br/>"
-										// + emailBody
-										// +
-										// "<br/><br/>Thank you, <br/> GPMS Team";
-
-										emailUtil
-												.sendMailMultipleUsersWithoutAuth(
-														piEmail, emaillist,
-														"Your proposal has been updated successfully by: "
-																+ authorName,
-														emailBody);
-
 									}
-								}
-								System.out
-										.println("===========================================================");
-								System.out
-										.println("\n======================== Printing Advices ====================");
-								List<Advice> advices = ar.getAdvices();
-								for (Advice advice : advices) {
-									if (advice instanceof org.wso2.balana.xacml3.Advice) {
-										List<AttributeAssignment> assignments = ((org.wso2.balana.xacml3.Advice) advice)
-												.getAssignments();
-										for (AttributeAssignment assignment : assignments) {
-											System.out.println("Advice :  "
-													+ assignment.getContent()
-													+ "\n");
+
+									if (obligationType.equals("preobligation")) {
+										System.out.println(obligationType
+												+ " is RUNNING");
+										if (!preCondition) {
+											return Response
+													.status(403)
+													.type(MediaType.APPLICATION_JSON)
+													.entity("You have not signed the proposal yet!")
+													.build();
 										}
+									} else {
+										System.out.println(obligationType
+												+ " is RUNNING");
+
+										boolean proposalIsChanged = saveProposal(
+												message, existingProposal,
+												oldProposal, authorProfile,
+												proposalID);
+										if (proposalIsChanged) {
+											// emailUtil
+											// .sendMailMultipleUsersWithoutAuth(
+											// piEmail,
+											// emaillist,
+											// "Your proposal has been updated successfully by: "
+											// + authorName,
+											// emailBody);
+										}
+									}
+
+								}
+							}
+							System.out
+									.println("===========================================================");
+							System.out
+									.println("\n======================== Printing Advices ====================");
+							List<Advice> advices = ar.getAdvices();
+							for (Advice advice : advices) {
+								if (advice instanceof org.wso2.balana.xacml3.Advice) {
+									List<AttributeAssignment> assignments = ((org.wso2.balana.xacml3.Advice) advice)
+											.getAssignments();
+									for (AttributeAssignment assignment : assignments) {
+										System.out.println("Advice :  "
+												+ assignment.getContent()
+												+ "\n");
 									}
 								}
 							}
@@ -1959,8 +2071,8 @@ public class ProposalService {
 					}
 				} else {
 					if (proposalID.equals("0")) {
-						saveProposal(message, newProposal, null, authorProfile,
-								proposalID);
+						saveProposal(message, existingProposal, null,
+								authorProfile, proposalID);
 						return Response.status(200)
 								.type(MediaType.APPLICATION_JSON)
 								.entity("true").build();
@@ -3255,63 +3367,6 @@ public class ProposalService {
 			}
 
 			// START
-
-			// Signature
-			// To hold all new Investigators list to get notified
-			// List<SignatureInfo> addedSignatures = new
-			// ArrayList<SignatureInfo>();
-
-			if (proposalInfo != null && proposalInfo.has("SignatureInfo")) {
-				String[] rows = proposalInfo.get("SignatureInfo").textValue()
-						.split("#!#");
-
-				List<SignatureInfo> newSignatureInfo = new ArrayList<SignatureInfo>();
-				List<SignatureInfo> allSignatureInfo = new ArrayList<SignatureInfo>();
-				// UserProfileID!#!Signature!#!SignedDate!#!Note!#!FullName!#!PositionTitle!#!Delegated#!#
-				DateFormat format = new SimpleDateFormat(
-						"yyyy/MM/dd hh:mm:ss a");
-
-				for (String col : rows) {
-					String[] cols = col.split("!#!");
-					SignatureInfo signatureInfo = new SignatureInfo();
-					signatureInfo.setUserProfileId(cols[0]);
-					signatureInfo.setSignature(cols[1]);
-					signatureInfo.setSignedDate(format.parse(cols[2]));
-					signatureInfo.setNote(cols[3]);
-					signatureInfo.setFullName(cols[4]);
-					signatureInfo.setPositionTitle(cols[5]);
-					signatureInfo.setDelegated(Boolean.parseBoolean(cols[6]));
-
-					allSignatureInfo.add(signatureInfo);
-
-					if (!proposalID.equals("0")) {
-						boolean alreadyExist = false;
-						for (SignatureInfo sign : existingProposal
-								.getSignatureInfo()) {
-							if (sign.equals(signatureInfo)) {
-								alreadyExist = true;
-								break;
-							}
-						}
-						if (!alreadyExist) {
-							newSignatureInfo.add(signatureInfo);
-						}
-					}
-				}
-				// SignatureInfo
-				// addedSignatures = newSignatureInfo;
-				if (!proposalID.equals("0")) {
-					if (!existingProposal.getSignatureInfo().equals(
-							allSignatureInfo)) {
-						for (SignatureInfo signatureInfo : newSignatureInfo) {
-							existingProposal.getSignatureInfo().add(
-									signatureInfo);
-						}
-					}
-				} else {
-					existingProposal.setSignatureInfo(allSignatureInfo);
-				}
-			}
 
 			// For Proposal User Title : for Dean, Chair and Manager
 			JsonNode proposalUserTitle = root.get("proposalUserTitle");
