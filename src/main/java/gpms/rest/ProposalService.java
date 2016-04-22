@@ -1648,6 +1648,9 @@ public class ProposalService {
 								alreadyExist = true;
 								break;
 							} else {
+								if (sign.getUserProfileId().equals(cols[0])) {
+									removeSignatureInfo.add(sign);
+								}
 
 							}
 						}
@@ -1660,8 +1663,11 @@ public class ProposalService {
 							// }
 							// }
 							newSignatureInfo.add(signatureInfo);
-
 						}
+					}
+
+					for (SignatureInfo removeSign : removeSignatureInfo) {
+						existingProposal.getSignatureInfo().remove(removeSign);
 					}
 				}
 				// SignatureInfo
