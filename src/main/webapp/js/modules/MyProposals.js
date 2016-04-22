@@ -2697,14 +2697,14 @@ $(function() {
 					+ fullName
 					+ '</span></td><td><input id="pi_signature" data-for="signature" data-value="'
 					+ $('select[name="ddlName"]').eq(0).val()
-					+ '" title="PI\'s Signature" class="sfInputbox" placeholder="PI\'s Signature" type="text" required="true" name="'
+					+ '" title="PI\'s Signature" class="sfInputbox" placeholder="PI\'s Signature" type="text" name="'
 					+ $('select[name="ddlName"]').eq(0).val()
 					+ 'PI">'
 					+ '</td><td><input id="pi_signaturedate" data-for="signaturedate" name="signaturedate'
 					+ $('select[name="ddlName"]').eq(0).val()
-					+ 'PI" title="Signed Date" class="sfInputbox" placeholder="Signed Date" type="text" required="true" readonly="true" onfocus="myProposal.BindCurrentDateTime(this);"></td><td><textarea rows="2" cols="26" name="proposalNotes'
+					+ 'PI" title="Signed Date" class="sfInputbox" placeholder="Signed Date" type="text" readonly="true" onfocus="myProposal.BindCurrentDateTime(this);"></td><td><textarea rows="2" cols="26" name="proposalNotes'
 					+ $('select[name="ddlName"]').eq(0).val()
-					+ 'PI" required="true" title="Proposal Notes" class="cssClassTextArea"></textarea></td></tr>';
+					+ 'PI" title="Proposal Notes" class="cssClassTextArea"></textarea></td></tr>';
 			$(cloneRow).appendTo("#trSignPICOPI tbody");
 
 			$('#trSignPICOPI tbody tr:last').data("allowchange", "true").data(
@@ -2804,23 +2804,17 @@ $(function() {
 					&& allowedChangeAttr == "true"
 					&& typeof allowedSignAttr !== typeof undefined
 					&& allowedSignAttr !== false && allowedSignAttr == "true") {
-				obj
-						.find("input")
-						.each(
-								function() {
-									var optionsText = $(this).val();
-									if (optionsText
-											&& $(this).attr("data-for") != "signaturedate") {
+				obj.find("input").each(function() {
+					var optionsText = $(this).val();
+					if ($(this).attr("data-for") != "signaturedate") {
 
-										signatureInfo += $(this).attr(
-												"data-value")
-												+ "!#!"; // UserProfileID
+						signatureInfo += $(this).attr("data-value") + "!#!"; // UserProfileID
 
-										signatureInfo += optionsText + "!#!"; // Signature
-									} else {
-										signatureInfo += optionsText + "!#!"; // SignedDate
-									}
-								});
+						signatureInfo += optionsText + "!#!"; // Signature
+					} else {
+						signatureInfo += optionsText + "!#!"; // SignedDate
+					}
+				});
 				obj.find("textarea").each(function() {
 					signatureInfo += $(this).val() + "!#!"; // Note
 				});
@@ -4028,10 +4022,10 @@ $(function() {
 																				"true");
 															} else { // Signature,
 																// Note
-																$(this)
-																		.attr(
-																				"required",
-																				"true");
+																// $(this)
+																// .attr(
+																// "required",
+																// "true");
 															}
 														});
 										// }
