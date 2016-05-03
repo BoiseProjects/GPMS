@@ -2114,6 +2114,11 @@ public class ProposalService {
 													.entity("true").build();
 											// return
 											// Response.status(200).entity(true).build();
+										} else {
+											return Response
+													.status(200)
+													.type(MediaType.APPLICATION_JSON)
+													.entity("true").build();
 										}
 									}
 								}

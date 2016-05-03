@@ -2498,6 +2498,17 @@
                              DataType="http://www.w3.org/2001/XMLSchema#string"/>
         </AttributeAssignmentExpression>
       </ObligationExpression>
+	  <ObligationExpression ObligationId="sendNotify" FulfillOn="Permit">
+       <AttributeAssignmentExpression AttributeId="obligationType">
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">preobligation</AttributeValue>
+        </AttributeAssignmentExpression>
+        <AttributeAssignmentExpression AttributeId="signedByCurrentUser">
+          <AttributeSelector MustBePresent="true" 
+                             Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" 
+                             Path="//ak:signedByCurrentUser/text()" 
+                             DataType="http://www.w3.org/2001/XMLSchema#string"/>
+        </AttributeAssignmentExpression>
+      </ObligationExpression>
     </ObligationExpressions>
     <AdviceExpressions>
       <AdviceExpression AdviceId="role" AppliesTo="Permit">
