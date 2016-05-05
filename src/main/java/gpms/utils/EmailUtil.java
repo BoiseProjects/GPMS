@@ -47,9 +47,8 @@ public class EmailUtil {
 	public EmailUtil(String attachmentFile) throws Exception {
 		// Setup mail server
 		properties.setProperty("mail.smtp.host", smtpHostServer);
-
-		this.setFilePath(this.getClass().getResource(attachmentFile).toURI()
-				.getPath());
+		this.setFilePath(this.getClass()
+				.getResource("/uploads" + attachmentFile).toURI().getPath());		
 	}
 
 	// Java Program to send Email using SMTP without authentication

@@ -2477,13 +2477,49 @@
         <AttributeAssignmentExpression AttributeId="copisEmail">
           <AttributeSelector MustBePresent="true" 
                              Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" 
-                             Path="//ak:copis/ak:copi/ak:workemail/text()" 
+                             Path="//ak:copi/ak:workemail/text()" 
                              DataType="http://www.w3.org/2001/XMLSchema#string"/>
         </AttributeAssignmentExpression>
         <AttributeAssignmentExpression AttributeId="seniorsEmail">
           <AttributeSelector MustBePresent="true" 
                              Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" 
-                             Path="//ak:seniors/ak:senior/ak:workemail/text()" 
+                             Path="//ak:senior/ak:workemail/text()" 
+                             DataType="http://www.w3.org/2001/XMLSchema#string"/>
+        </AttributeAssignmentExpression>
+        <AttributeAssignmentExpression AttributeId="chairsEmail">
+          <AttributeSelector MustBePresent="true" 
+                             Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" 
+                             Path="//ak:chair/ak:workemail/text()" 
+                             DataType="http://www.w3.org/2001/XMLSchema#string"/>
+        </AttributeAssignmentExpression>
+        <AttributeAssignmentExpression AttributeId="managersEmail">
+          <AttributeSelector MustBePresent="true" 
+                             Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" 
+                             Path="//ak:manager/ak:workemail/text()" 
+                             DataType="http://www.w3.org/2001/XMLSchema#string"/>
+        </AttributeAssignmentExpression>
+        <AttributeAssignmentExpression AttributeId="deansEmail">
+          <AttributeSelector MustBePresent="true" 
+                             Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" 
+                             Path="//ak:dean/ak:workemail/text()" 
+                             DataType="http://www.w3.org/2001/XMLSchema#string"/>
+        </AttributeAssignmentExpression>
+        <AttributeAssignmentExpression AttributeId="irbsEmail">
+          <AttributeSelector MustBePresent="true" 
+                             Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" 
+                             Path="//ak:irb/ak:workemail/text()" 
+                             DataType="http://www.w3.org/2001/XMLSchema#string"/>
+        </AttributeAssignmentExpression>
+        <AttributeAssignmentExpression AttributeId="administratorsEmail">
+          <AttributeSelector MustBePresent="true" 
+                             Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" 
+                             Path="//ak:administrator/ak:workemail/text()" 
+                             DataType="http://www.w3.org/2001/XMLSchema#string"/>
+        </AttributeAssignmentExpression>
+        <AttributeAssignmentExpression AttributeId="directorsEmail">
+          <AttributeSelector MustBePresent="true" 
+                             Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" 
+                             Path="//ak:director/ak:workemail/text()" 
                              DataType="http://www.w3.org/2001/XMLSchema#string"/>
         </AttributeAssignmentExpression>
       </ObligationExpression>

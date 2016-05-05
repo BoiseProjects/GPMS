@@ -1693,6 +1693,150 @@ public class ProposalService {
 				}
 			}
 
+			ComplianceInfo newComplianceInfo = new ComplianceInfo();
+			Boolean irbApprovalRequired = false;
+			if (proposalInfo != null && proposalInfo.has("ComplianceInfo")) {
+				JsonNode complianceInfo = proposalInfo.get("ComplianceInfo");
+				if (complianceInfo != null
+						&& complianceInfo.has("InvolveUseOfHumanSubjects")) {
+					switch (complianceInfo.get("InvolveUseOfHumanSubjects")
+							.textValue()) {
+					case "1":
+						newComplianceInfo.setInvolveUseOfHumanSubjects(true);
+						irbApprovalRequired = true;
+						if (complianceInfo != null
+								&& complianceInfo.has("IRBPending")) {
+							switch (complianceInfo.get("IRBPending")
+									.textValue()) {
+							case "1":
+								newComplianceInfo.setIrbPending(false);
+								if (complianceInfo != null
+										&& complianceInfo.has("IRB")) {
+									newComplianceInfo.setIrb(complianceInfo
+											.get("IRB").textValue());
+								}
+								break;
+							case "2":
+								newComplianceInfo.setIrbPending(true);
+								break;
+							default:
+								break;
+							}
+						}
+						break;
+					case "2":
+						newComplianceInfo.setInvolveUseOfHumanSubjects(false);
+						break;
+					default:
+						break;
+					}
+				}
+
+				if (complianceInfo != null
+						&& complianceInfo.has("InvolveUseOfVertebrateAnimals")) {
+					switch (complianceInfo.get("InvolveUseOfVertebrateAnimals")
+							.textValue()) {
+					case "1":
+						newComplianceInfo
+								.setInvolveUseOfVertebrateAnimals(true);
+						irbApprovalRequired = true;
+						if (complianceInfo != null
+								&& complianceInfo.has("IACUCPending")) {
+							switch (complianceInfo.get("IACUCPending")
+									.textValue()) {
+							case "1":
+								newComplianceInfo.setIacucPending(false);
+								if (complianceInfo != null
+										&& complianceInfo.has("IACUC")) {
+									newComplianceInfo.setIacuc(complianceInfo
+											.get("IACUC").textValue());
+								}
+								break;
+							case "2":
+								newComplianceInfo.setIacucPending(true);
+								break;
+							default:
+								break;
+							}
+						}
+						break;
+					case "2":
+						newComplianceInfo
+								.setInvolveUseOfVertebrateAnimals(false);
+						break;
+					default:
+						break;
+					}
+				}
+
+				if (complianceInfo != null
+						&& complianceInfo.has("InvolveBiosafetyConcerns")) {
+					switch (complianceInfo.get("InvolveBiosafetyConcerns")
+							.textValue()) {
+					case "1":
+						newComplianceInfo.setInvolveBiosafetyConcerns(true);
+						irbApprovalRequired = true;
+						if (complianceInfo != null
+								&& complianceInfo.has("IBCPending")) {
+							switch (complianceInfo.get("IBCPending")
+									.textValue()) {
+							case "1":
+								newComplianceInfo.setIbcPending(false);
+								if (complianceInfo != null
+										&& complianceInfo.has("IBC")) {
+									newComplianceInfo.setIbc(complianceInfo
+											.get("IBC").textValue());
+								}
+								break;
+							case "2":
+								newComplianceInfo.setIbcPending(true);
+								break;
+							default:
+								break;
+							}
+						}
+						break;
+					case "2":
+						newComplianceInfo.setInvolveBiosafetyConcerns(false);
+						break;
+					default:
+						break;
+					}
+				}
+
+				if (complianceInfo != null
+						&& complianceInfo
+								.has("InvolveEnvironmentalHealthAndSafetyConcerns")) {
+					switch (complianceInfo.get(
+							"InvolveEnvironmentalHealthAndSafetyConcerns")
+							.textValue()) {
+					case "1":
+						newComplianceInfo
+								.setInvolveEnvironmentalHealthAndSafetyConcerns(true);
+						irbApprovalRequired = true;
+						break;
+					case "2":
+						newComplianceInfo
+								.setInvolveEnvironmentalHealthAndSafetyConcerns(false);
+						break;
+					default:
+						break;
+					}
+				}
+			}
+			// ComplianceInfo
+			if (!proposalID.equals("0")) {
+				if (!existingProposal.getComplianceInfo().equals(
+						newComplianceInfo)) {
+					existingProposal.setComplianceInfo(newComplianceInfo);
+					existingProposal
+							.setIrbApprovalRequired(irbApprovalRequired);
+				}
+			} else {
+				existingProposal.setComplianceInfo(newComplianceInfo);
+				existingProposal.setIrbApprovalRequired(irbApprovalRequired);
+			}
+
 			if (root != null && root.has("policyInfo")) {
 				JsonNode policyInfo = root.get("policyInfo");
 				if (policyInfo != null && policyInfo.isArray()
@@ -1756,6 +1900,11 @@ public class ProposalService {
 
 					// Device type
 					// device.type
+
+					ObjectId id = new ObjectId(proposalID);
+
+					List<SignatureInfo> signatures = proposalDAO
+							.findSignaturesExceptInvestigator(id, irbApprovalRequired);
 
 					contentProfile.append("<Content>");
 					contentProfile
@@ -1925,6 +2074,155 @@ public class ProposalService {
 					}
 					contentProfile.append("</ak:seniors>");
 
+					for (SignatureInfo signatureInfo : signatures) {
+						switch (signatureInfo.getPositionTitle()) {
+						// case "PI":
+						// contentProfile.append("<ak:pi>");
+						// contentProfile.append("<ak:fullname>");
+						// contentProfile.append(signatureInfo.getFullName());
+						// contentProfile.append("</ak:fullname>");
+						//
+						// contentProfile.append("<ak:workemail>");
+						// contentProfile.append(signatureInfo.getEmail());
+						// contentProfile.append("</ak:workemail>");
+						//
+						// contentProfile.append("<ak:userid>");
+						// contentProfile.append(signatureInfo
+						// .getUserProfileId());
+						// contentProfile.append("</ak:userid>");
+						// contentProfile.append("</ak:pi>");
+						// break;
+						// case "Co-PI":
+						// contentProfile.append("<ak:copi>");
+						// contentProfile.append("<ak:fullname>");
+						// contentProfile.append(signatureInfo.getFullName());
+						// contentProfile.append("</ak:fullname>");
+						//
+						// contentProfile.append("<ak:workemail>");
+						// contentProfile.append(signatureInfo.getEmail());
+						// contentProfile.append("</ak:workemail>");
+						//
+						// contentProfile.append("<ak:userid>");
+						// contentProfile.append(signatureInfo
+						// .getUserProfileId());
+						// contentProfile.append("</ak:userid>");
+						// contentProfile.append("</ak:copi>");
+						// break;
+						// case "Senior Personnel":
+						// contentProfile.append("<ak:senior>");
+						// contentProfile.append("<ak:fullname>");
+						// contentProfile.append(signatureInfo.getFullName());
+						// contentProfile.append("</ak:fullname>");
+						//
+						// contentProfile.append("<ak:workemail>");
+						// contentProfile.append(signatureInfo.getEmail());
+						// contentProfile.append("</ak:workemail>");
+						//
+						// contentProfile.append("<ak:userid>");
+						// contentProfile.append(signatureInfo
+						// .getUserProfileId());
+						// contentProfile.append("</ak:userid>");
+						// contentProfile.append("</ak:senior>");
+						// break;
+						case "Department Chair":
+							contentProfile.append("<ak:chair>");
+							contentProfile.append("<ak:fullname>");
+							contentProfile.append(signatureInfo.getFullName());
+							contentProfile.append("</ak:fullname>");
+
+							contentProfile.append("<ak:workemail>");
+							contentProfile.append(signatureInfo.getEmail());
+							contentProfile.append("</ak:workemail>");
+
+							contentProfile.append("<ak:userid>");
+							contentProfile.append(signatureInfo
+									.getUserProfileId());
+							contentProfile.append("</ak:userid>");
+							contentProfile.append("</ak:chair>");
+							break;
+						case "Business Manager":
+							contentProfile.append("<ak:manager>");
+							contentProfile.append("<ak:fullname>");
+							contentProfile.append(signatureInfo.getFullName());
+							contentProfile.append("</ak:fullname>");
+
+							contentProfile.append("<ak:workemail>");
+							contentProfile.append(signatureInfo.getEmail());
+							contentProfile.append("</ak:workemail>");
+
+							contentProfile.append("<ak:userid>");
+							contentProfile.append(signatureInfo
+									.getUserProfileId());
+							contentProfile.append("</ak:userid>");
+							contentProfile.append("</ak:manager>");
+							break;
+						case "Dean":
+							contentProfile.append("<ak:dean>");
+							contentProfile.append("<ak:fullname>");
+							contentProfile.append(signatureInfo.getFullName());
+							contentProfile.append("</ak:fullname>");
+
+							contentProfile.append("<ak:workemail>");
+							contentProfile.append(signatureInfo.getEmail());
+							contentProfile.append("</ak:workemail>");
+
+							contentProfile.append("<ak:userid>");
+							contentProfile.append(signatureInfo
+									.getUserProfileId());
+							contentProfile.append("</ak:userid>");
+							contentProfile.append("</ak:dean>");
+							break;
+						case "IRB":
+							contentProfile.append("<ak:irb>");
+							contentProfile.append("<ak:fullname>");
+							contentProfile.append(signatureInfo.getFullName());
+							contentProfile.append("</ak:fullname>");
+
+							contentProfile.append("<ak:workemail>");
+							contentProfile.append(signatureInfo.getEmail());
+							contentProfile.append("</ak:workemail>");
+
+							contentProfile.append("<ak:userid>");
+							contentProfile.append(signatureInfo
+									.getUserProfileId());
+							contentProfile.append("</ak:userid>");
+							contentProfile.append("</ak:irb>");
+							break;
+						case "University Research Administrator":
+							contentProfile.append("<ak:administrator>");
+							contentProfile.append("<ak:fullname>");
+							contentProfile.append(signatureInfo.getFullName());
+							contentProfile.append("</ak:fullname>");
+
+							contentProfile.append("<ak:workemail>");
+							contentProfile.append(signatureInfo.getEmail());
+							contentProfile.append("</ak:workemail>");
+
+							contentProfile.append("<ak:userid>");
+							contentProfile.append(signatureInfo
+									.getUserProfileId());
+							contentProfile.append("</ak:userid>");
+							contentProfile.append("</ak:administrator>");
+							break;
+						case "University Research Director":
+							contentProfile.append("<ak:director>");
+							contentProfile.append("<ak:fullname>");
+							contentProfile.append(signatureInfo.getFullName());
+							contentProfile.append("</ak:fullname>");
+
+							contentProfile.append("<ak:workemail>");
+							contentProfile.append(signatureInfo.getEmail());
+							contentProfile.append("</ak:workemail>");
+
+							contentProfile.append("<ak:userid>");
+							contentProfile.append(signatureInfo
+									.getUserProfileId());
+							contentProfile.append("</ak:userid>");
+							contentProfile.append("</ak:director>");
+							break;
+						}
+					}
+
 					contentProfile.append("</ak:proposal>");
 					contentProfile.append("</ak:record>");
 					contentProfile.append("</Content>");
@@ -2087,6 +2385,12 @@ public class ProposalService {
 												break;
 											case "copisEmail":
 											case "seniorsEmail":
+											case "chairsEmail":
+											case "managersEmail":
+											case "deansEmail":
+											case "irbsEmail":
+											case "administratorsEmail":
+											case "directorsEmail":
 												emaillist.add(assignment
 														.getContent());
 												break;
@@ -2098,7 +2402,8 @@ public class ProposalService {
 										boolean proposalIsChanged = saveProposal(
 												message, existingProposal,
 												oldProposal, authorProfile,
-												proposalID);
+												proposalID, signatures,
+												irbApprovalRequired);
 										if (proposalIsChanged) {
 											emailUtil
 													.sendMailMultipleUsersWithoutAuth(
@@ -2157,7 +2462,8 @@ public class ProposalService {
 				} else {
 					if (proposalID.equals("0")) {
 						saveProposal(message, existingProposal, null,
-								authorProfile, proposalID);
+								authorProfile, proposalID, null,
+								irbApprovalRequired);
 						return Response.status(200)
 								.type(MediaType.APPLICATION_JSON)
 								.entity("true").build();
@@ -2174,7 +2480,8 @@ public class ProposalService {
 	}
 
 	private boolean saveProposal(String message, Proposal existingProposal,
-			Proposal oldProposal, UserProfile authorProfile, String proposalID)
+			Proposal oldProposal, UserProfile authorProfile, String proposalID,
+			List<SignatureInfo> signatures, boolean irbApprovalRequired)
 			throws UnknownHostException, Exception, ParseException,
 			IOException, JsonParseException, JsonMappingException {
 		ObjectMapper mapper = new ObjectMapper();
@@ -2559,150 +2866,6 @@ public class ProposalService {
 				}
 			} else {
 				existingProposal.setConflicOfInterest(newConflictOfInterest);
-			}
-
-			ComplianceInfo newComplianceInfo = new ComplianceInfo();
-			Boolean irbApprovalRequired = false;
-			if (proposalInfo != null && proposalInfo.has("ComplianceInfo")) {
-				JsonNode complianceInfo = proposalInfo.get("ComplianceInfo");
-				if (complianceInfo != null
-						&& complianceInfo.has("InvolveUseOfHumanSubjects")) {
-					switch (complianceInfo.get("InvolveUseOfHumanSubjects")
-							.textValue()) {
-					case "1":
-						newComplianceInfo.setInvolveUseOfHumanSubjects(true);
-						irbApprovalRequired = true;
-						if (complianceInfo != null
-								&& complianceInfo.has("IRBPending")) {
-							switch (complianceInfo.get("IRBPending")
-									.textValue()) {
-							case "1":
-								newComplianceInfo.setIrbPending(false);
-								if (complianceInfo != null
-										&& complianceInfo.has("IRB")) {
-									newComplianceInfo.setIrb(complianceInfo
-											.get("IRB").textValue());
-								}
-								break;
-							case "2":
-								newComplianceInfo.setIrbPending(true);
-								break;
-							default:
-								break;
-							}
-						}
-						break;
-					case "2":
-						newComplianceInfo.setInvolveUseOfHumanSubjects(false);
-						break;
-					default:
-						break;
-					}
-				}
-
-				if (complianceInfo != null
-						&& complianceInfo.has("InvolveUseOfVertebrateAnimals")) {
-					switch (complianceInfo.get("InvolveUseOfVertebrateAnimals")
-							.textValue()) {
-					case "1":
-						newComplianceInfo
-								.setInvolveUseOfVertebrateAnimals(true);
-						irbApprovalRequired = true;
-						if (complianceInfo != null
-								&& complianceInfo.has("IACUCPending")) {
-							switch (complianceInfo.get("IACUCPending")
-									.textValue()) {
-							case "1":
-								newComplianceInfo.setIacucPending(false);
-								if (complianceInfo != null
-										&& complianceInfo.has("IACUC")) {
-									newComplianceInfo.setIacuc(complianceInfo
-											.get("IACUC").textValue());
-								}
-								break;
-							case "2":
-								newComplianceInfo.setIacucPending(true);
-								break;
-							default:
-								break;
-							}
-						}
-						break;
-					case "2":
-						newComplianceInfo
-								.setInvolveUseOfVertebrateAnimals(false);
-						break;
-					default:
-						break;
-					}
-				}
-
-				if (complianceInfo != null
-						&& complianceInfo.has("InvolveBiosafetyConcerns")) {
-					switch (complianceInfo.get("InvolveBiosafetyConcerns")
-							.textValue()) {
-					case "1":
-						newComplianceInfo.setInvolveBiosafetyConcerns(true);
-						irbApprovalRequired = true;
-						if (complianceInfo != null
-								&& complianceInfo.has("IBCPending")) {
-							switch (complianceInfo.get("IBCPending")
-									.textValue()) {
-							case "1":
-								newComplianceInfo.setIbcPending(false);
-								if (complianceInfo != null
-										&& complianceInfo.has("IBC")) {
-									newComplianceInfo.setIbc(complianceInfo
-											.get("IBC").textValue());
-								}
-								break;
-							case "2":
-								newComplianceInfo.setIbcPending(true);
-								break;
-							default:
-								break;
-							}
-						}
-						break;
-					case "2":
-						newComplianceInfo.setInvolveBiosafetyConcerns(false);
-						break;
-					default:
-						break;
-					}
-				}
-
-				if (complianceInfo != null
-						&& complianceInfo
-								.has("InvolveEnvironmentalHealthAndSafetyConcerns")) {
-					switch (complianceInfo.get(
-							"InvolveEnvironmentalHealthAndSafetyConcerns")
-							.textValue()) {
-					case "1":
-						newComplianceInfo
-								.setInvolveEnvironmentalHealthAndSafetyConcerns(true);
-						irbApprovalRequired = true;
-						break;
-					case "2":
-						newComplianceInfo
-								.setInvolveEnvironmentalHealthAndSafetyConcerns(false);
-						break;
-					default:
-						break;
-					}
-				}
-			}
-			// ComplianceInfo
-			if (!proposalID.equals("0")) {
-				if (!existingProposal.getComplianceInfo().equals(
-						newComplianceInfo)) {
-					existingProposal.setComplianceInfo(newComplianceInfo);
-					existingProposal
-							.setIrbApprovalRequired(irbApprovalRequired);
-				}
-			} else {
-				existingProposal.setComplianceInfo(newComplianceInfo);
-				existingProposal.setIrbApprovalRequired(irbApprovalRequired);
 			}
 
 			AdditionalInfo newAdditionalInfo = new AdditionalInfo();
@@ -3692,12 +3855,6 @@ public class ProposalService {
 							boolean signedByAllIRBs = false;
 							boolean signedByAllResearchAdmins = false;
 							boolean signedByAllResearchDirectors = false;
-
-							ObjectId id = new ObjectId(proposalID);
-
-							List<SignatureInfo> signatures = proposalDAO
-									.findSignaturesExceptInvestigator(id,
-											irbApprovalRequired);
 
 							if (existingProposal.getChairApproval() == ApprovalType.READYFORAPPROVAL
 									&& proposalUserTitle.textValue().equals(

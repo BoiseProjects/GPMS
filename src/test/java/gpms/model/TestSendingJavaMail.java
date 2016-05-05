@@ -17,7 +17,7 @@ public class TestSendingJavaMail {
 				"SimpleEmail Testing Body");
 
 		// Java Program to send Email with Attachment
-		emailUtil = new EmailUtil("/XACMLDatasheet.xls");
+		emailUtil = new EmailUtil("/teapot.jpg");
 		emailUtil.sendAttachmentEmail(toEmail,
 				"SSLEmail Testing Subject with Attachment",
 				"<h1>SSLEmail Testing Body with Attachment</h1>",
