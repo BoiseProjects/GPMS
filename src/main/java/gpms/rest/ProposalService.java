@@ -2754,13 +2754,6 @@ public class ProposalService {
 					}
 					contentProfile.append("</ak:seniors>");
 
-					List<NotificationLog> notificationChairs = new ArrayList<NotificationLog>();
-					List<NotificationLog> notificationManagers = new ArrayList<NotificationLog>();
-					List<NotificationLog> notificationDeans = new ArrayList<NotificationLog>();
-					List<NotificationLog> notificationIRBs = new ArrayList<NotificationLog>();
-					List<NotificationLog> notificationAdministrators = new ArrayList<NotificationLog>();
-					List<NotificationLog> notificationDirectors = new ArrayList<NotificationLog>();
-
 					for (SignatureUserInfo signatureInfo : signatures) {
 						switch (signatureInfo.getPositionTitle()) {
 						// case "PI":
@@ -2827,28 +2820,6 @@ public class ProposalService {
 							contentProfile.append("</ak:userid>");
 							contentProfile.append("</ak:chair>");
 
-							NotificationLog notificationChair = new NotificationLog();
-							notificationChair.setCritical(true);
-							notificationChair.setType("Proposal");
-							// notificationChair.setAction("Ready for Approval");
-							notificationChair.setProposalId(proposalID);
-							notificationChair.setProposalTitle(existingProposal
-									.getProjectInfo().getProjectTitle());
-							notificationChair.setUserProfileId(signatureInfo
-									.getUserProfileId());
-							notificationChair.setUsername(signatureInfo
-									.getUserName());
-							notificationChair.setCollege(signatureInfo
-									.getCollege());
-							notificationChair.setDepartment(signatureInfo
-									.getDepartment());
-							notificationChair.setPositionType(signatureInfo
-									.getPositionType());
-							notificationChair.setPositionTitle(signatureInfo
-									.getPositionTitle());
-
-							notificationChairs.add(notificationChair);
-
 							break;
 						case "Business Manager":
 							contentProfile.append("<ak:manager>");
@@ -2865,29 +2836,6 @@ public class ProposalService {
 									.getUserProfileId());
 							contentProfile.append("</ak:userid>");
 							contentProfile.append("</ak:manager>");
-
-							NotificationLog notificationManager = new NotificationLog();
-							notificationManager.setCritical(true);
-							notificationManager.setType("Proposal");
-							// notificationManager.setAction("Ready for Approval");
-							notificationManager.setProposalId(proposalID);
-							notificationManager
-									.setProposalTitle(existingProposal
-											.getProjectInfo().getProjectTitle());
-							notificationManager.setUserProfileId(signatureInfo
-									.getUserProfileId());
-							notificationManager.setUsername(signatureInfo
-									.getUserName());
-							notificationManager.setCollege(signatureInfo
-									.getCollege());
-							notificationManager.setDepartment(signatureInfo
-									.getDepartment());
-							notificationManager.setPositionType(signatureInfo
-									.getPositionType());
-							notificationManager.setPositionTitle(signatureInfo
-									.getPositionTitle());
-
-							notificationManagers.add(notificationManager);
 							break;
 						case "Dean":
 							contentProfile.append("<ak:dean>");
@@ -2904,28 +2852,6 @@ public class ProposalService {
 									.getUserProfileId());
 							contentProfile.append("</ak:userid>");
 							contentProfile.append("</ak:dean>");
-
-							NotificationLog notificationDean = new NotificationLog();
-							notificationDean.setCritical(true);
-							notificationDean.setType("Proposal");
-							// notificationDean.setAction("Ready for Approval");
-							notificationDean.setProposalId(proposalID);
-							notificationDean.setProposalTitle(existingProposal
-									.getProjectInfo().getProjectTitle());
-							notificationDean.setUserProfileId(signatureInfo
-									.getUserProfileId());
-							notificationDean.setUsername(signatureInfo
-									.getUserName());
-							notificationDean.setCollege(signatureInfo
-									.getCollege());
-							notificationDean.setDepartment(signatureInfo
-									.getDepartment());
-							notificationDean.setPositionType(signatureInfo
-									.getPositionType());
-							notificationDean.setPositionTitle(signatureInfo
-									.getPositionTitle());
-
-							notificationDeans.add(notificationDean);
 							break;
 						case "IRB":
 							contentProfile.append("<ak:irb>");
@@ -2942,28 +2868,6 @@ public class ProposalService {
 									.getUserProfileId());
 							contentProfile.append("</ak:userid>");
 							contentProfile.append("</ak:irb>");
-
-							NotificationLog notificationIRB = new NotificationLog();
-							notificationIRB.setCritical(true);
-							notificationIRB.setType("Proposal");
-							// notificationIRB.setAction("Ready for Approval");
-							notificationIRB.setProposalId(proposalID);
-							notificationIRB.setProposalTitle(existingProposal
-									.getProjectInfo().getProjectTitle());
-							notificationIRB.setUserProfileId(signatureInfo
-									.getUserProfileId());
-							notificationIRB.setUsername(signatureInfo
-									.getUserName());
-							notificationIRB.setCollege(signatureInfo
-									.getCollege());
-							notificationIRB.setDepartment(signatureInfo
-									.getDepartment());
-							notificationIRB.setPositionType(signatureInfo
-									.getPositionType());
-							notificationIRB.setPositionTitle(signatureInfo
-									.getPositionTitle());
-
-							notificationIRBs.add(notificationIRB);
 							break;
 						case "University Research Administrator":
 							contentProfile.append("<ak:administrator>");
@@ -2980,35 +2884,6 @@ public class ProposalService {
 									.getUserProfileId());
 							contentProfile.append("</ak:userid>");
 							contentProfile.append("</ak:administrator>");
-
-							NotificationLog notificationAdministrator = new NotificationLog();
-							notificationAdministrator.setCritical(true);
-							notificationAdministrator.setType("Proposal");
-							// notificationAdministrator
-							// .setAction("Ready for Approval");
-							notificationAdministrator.setProposalId(proposalID);
-							notificationAdministrator
-									.setProposalTitle(existingProposal
-											.getProjectInfo().getProjectTitle());
-							notificationAdministrator
-									.setUserProfileId(signatureInfo
-											.getUserProfileId());
-							notificationAdministrator.setUsername(signatureInfo
-									.getUserName());
-							notificationAdministrator.setCollege(signatureInfo
-									.getCollege());
-							notificationAdministrator
-									.setDepartment(signatureInfo
-											.getDepartment());
-							notificationAdministrator
-									.setPositionType(signatureInfo
-											.getPositionType());
-							notificationAdministrator
-									.setPositionTitle(signatureInfo
-											.getPositionTitle());
-
-							notificationAdministrators
-									.add(notificationAdministrator);
 							break;
 						case "University Research Director":
 							contentProfile.append("<ak:director>");
@@ -3025,30 +2900,6 @@ public class ProposalService {
 									.getUserProfileId());
 							contentProfile.append("</ak:userid>");
 							contentProfile.append("</ak:director>");
-
-							NotificationLog notificationDirector = new NotificationLog();
-							notificationDirector.setCritical(true);
-							notificationDirector.setType("Proposal");
-							// notificationDirector
-							// .setAction("Ready for Approval");
-							notificationDirector.setProposalId(proposalID);
-							notificationDirector
-									.setProposalTitle(existingProposal
-											.getProjectInfo().getProjectTitle());
-							notificationDirector.setUserProfileId(signatureInfo
-									.getUserProfileId());
-							notificationDirector.setUsername(signatureInfo
-									.getUserName());
-							notificationDirector.setCollege(signatureInfo
-									.getCollege());
-							notificationDirector.setDepartment(signatureInfo
-									.getDepartment());
-							notificationDirector.setPositionType(signatureInfo
-									.getPositionType());
-							notificationDirector.setPositionTitle(signatureInfo
-									.getPositionTitle());
-
-							notificationDirectors.add(notificationDirector);
 							break;
 						}
 					}
@@ -4642,6 +4493,44 @@ public class ProposalService {
 											.clear();
 									existingProposal.getProposalStatus().add(
 											Status.WAITINGFORCHAIRAPPROVAL);
+
+									for (SignatureUserInfo chair : signatures) {
+										if (chair.getPositionTitle().equals(
+												"Department Chair")) {
+											NotificationLog notificationChair = new NotificationLog();
+											notificationChair.setCritical(true);
+											notificationChair
+													.setType("Proposal");
+											notificationChair
+													.setAction("Ready for Approval");
+											notificationChair
+													.setProposalId(proposalID);
+											notificationChair
+													.setProposalTitle(existingProposal
+															.getProjectInfo()
+															.getProjectTitle());
+											notificationChair
+													.setUserProfileId(chair
+															.getUserProfileId());
+											notificationChair.setUsername(chair
+													.getUserName());
+											notificationChair.setCollege(chair
+													.getCollege());
+											notificationChair
+													.setDepartment(chair
+															.getDepartment());
+											notificationChair
+													.setPositionType(chair
+															.getPositionType());
+											notificationChair
+													.setPositionTitle(chair
+															.getPositionTitle());
+
+											notificationDAO
+													.save(notificationChair);
+										}
+									}
+
 								} else {
 									existingProposal
 											.setReadyForSubmissionByPI(false);
@@ -4667,6 +4556,36 @@ public class ProposalService {
 								existingProposal.getProposalStatus().clear();
 								existingProposal.getProposalStatus().add(
 										Status.SUBMITTEDBYRESEARCHADMIN);
+
+								for (SignatureUserInfo adminUsers : signatures) {
+									NotificationLog notificationChair = new NotificationLog();
+									notificationChair.setCritical(true);
+									notificationChair.setType("Proposal");
+									notificationChair
+											.setAction("The Proposal is Submitted");
+									notificationChair.setProposalId(proposalID);
+									notificationChair
+											.setProposalTitle(existingProposal
+													.getProjectInfo()
+													.getProjectTitle());
+									notificationChair
+											.setUserProfileId(adminUsers
+													.getUserProfileId());
+									notificationChair.setUsername(adminUsers
+											.getUserName());
+									notificationChair.setCollege(adminUsers
+											.getCollege());
+									notificationChair.setDepartment(adminUsers
+											.getDepartment());
+									notificationChair
+											.setPositionType(adminUsers
+													.getPositionType());
+									notificationChair
+											.setPositionTitle(adminUsers
+													.getPositionTitle());
+
+									notificationDAO.save(notificationChair);
+								}
 
 							} else {
 								// This user is both PI and Research
@@ -4750,6 +4669,43 @@ public class ProposalService {
 											.getProposalStatus()
 											.add(Status.READYFORREVIEWBYBUSINESSMANAGER);
 
+									for (SignatureUserInfo businessManager : signatures) {
+										if (businessManager.getPositionTitle()
+												.equals("Business Manager")) {
+											NotificationLog notification = new NotificationLog();
+											notification.setCritical(true);
+											notification.setType("Proposal");
+											notification
+													.setAction("Ready for Reviewal");
+											notification
+													.setProposalId(proposalID);
+											notification
+													.setProposalTitle(existingProposal
+															.getProjectInfo()
+															.getProjectTitle());
+											notification
+													.setUserProfileId(businessManager
+															.getUserProfileId());
+											notification
+													.setUsername(businessManager
+															.getUserName());
+											notification
+													.setCollege(businessManager
+															.getCollege());
+											notification
+													.setDepartment(businessManager
+															.getDepartment());
+											notification
+													.setPositionType(businessManager
+															.getPositionType());
+											notification
+													.setPositionTitle(businessManager
+															.getPositionTitle());
+
+											notificationDAO.save(notification);
+										}
+									}
+
 									// TODO check the compliance and
 									// IRB
 									// approvable needed or not?
@@ -4761,6 +4717,42 @@ public class ProposalService {
 										existingProposal
 												.getProposalStatus()
 												.add(Status.READYFORREVIEWBYIRB);
+
+										for (SignatureUserInfo irb : signatures) {
+											if (irb.getPositionTitle().equals(
+													"IRB")) {
+												NotificationLog notification = new NotificationLog();
+												notification.setCritical(true);
+												notification
+														.setType("Proposal");
+												notification
+														.setAction("Ready for Reviewal");
+												notification
+														.setProposalId(proposalID);
+												notification
+														.setProposalTitle(existingProposal
+																.getProjectInfo()
+																.getProjectTitle());
+												notification
+														.setUserProfileId(irb
+																.getUserProfileId());
+												notification.setUsername(irb
+														.getUserName());
+												notification.setCollege(irb
+														.getCollege());
+												notification.setDepartment(irb
+														.getDepartment());
+												notification
+														.setPositionType(irb
+																.getPositionType());
+												notification
+														.setPositionTitle(irb
+																.getPositionTitle());
+
+												notificationDAO
+														.save(notification);
+											}
+										}
 									}
 								}
 							} else if (existingProposal
@@ -4804,6 +4796,37 @@ public class ProposalService {
 											.remove(Status.READYFORREVIEWBYBUSINESSMANAGER);
 									existingProposal.getProposalStatus().add(
 											Status.WAITINGFORDEANAPPROVAL);
+
+									for (SignatureUserInfo dean : signatures) {
+										if (dean.getPositionTitle().equals(
+												"Dean")) {
+											NotificationLog notification = new NotificationLog();
+											notification.setCritical(true);
+											notification.setType("Proposal");
+											notification
+													.setAction("Ready for Approval");
+											notification
+													.setProposalId(proposalID);
+											notification
+													.setProposalTitle(existingProposal
+															.getProjectInfo()
+															.getProjectTitle());
+											notification.setUserProfileId(dean
+													.getUserProfileId());
+											notification.setUsername(dean
+													.getUserName());
+											notification.setCollege(dean
+													.getCollege());
+											notification.setDepartment(dean
+													.getDepartment());
+											notification.setPositionType(dean
+													.getPositionType());
+											notification.setPositionTitle(dean
+													.getPositionTitle());
+
+											notificationDAO.save(notification);
+										}
+									}
 								}
 							} else if (existingProposal.getIrbApproval() == ApprovalType.READYFORAPPROVAL
 									&& proposalUserTitle.textValue().equals(
@@ -4855,6 +4878,46 @@ public class ProposalService {
 										existingProposal
 												.getProposalStatus()
 												.add(Status.WAITINGFORRESEARCHADMINAPPROVAL);
+
+										for (SignatureUserInfo researchadmin : signatures) {
+											if (researchadmin
+													.getPositionTitle()
+													.equals("University Research Administrator")) {
+												NotificationLog notification = new NotificationLog();
+												notification.setCritical(true);
+												notification
+														.setType("Proposal");
+												notification
+														.setAction("Ready for Approval");
+												notification
+														.setProposalId(proposalID);
+												notification
+														.setProposalTitle(existingProposal
+																.getProjectInfo()
+																.getProjectTitle());
+												notification
+														.setUserProfileId(researchadmin
+																.getUserProfileId());
+												notification
+														.setUsername(researchadmin
+																.getUserName());
+												notification
+														.setCollege(researchadmin
+																.getCollege());
+												notification
+														.setDepartment(researchadmin
+																.getDepartment());
+												notification
+														.setPositionType(researchadmin
+																.getPositionType());
+												notification
+														.setPositionTitle(researchadmin
+																.getPositionTitle());
+
+												notificationDAO
+														.save(notification);
+											}
+										}
 									}
 								}
 							} else if (existingProposal.getDeanApproval() == ApprovalType.READYFORAPPROVAL
@@ -4918,6 +4981,47 @@ public class ProposalService {
 											existingProposal
 													.getProposalStatus()
 													.add(Status.WAITINGFORRESEARCHADMINAPPROVAL);
+
+											for (SignatureUserInfo researchadmin : signatures) {
+												if (researchadmin
+														.getPositionTitle()
+														.equals("University Research Administrator")) {
+													NotificationLog notification = new NotificationLog();
+													notification
+															.setCritical(true);
+													notification
+															.setType("Proposal");
+													notification
+															.setAction("Ready for Approval");
+													notification
+															.setProposalId(proposalID);
+													notification
+															.setProposalTitle(existingProposal
+																	.getProjectInfo()
+																	.getProjectTitle());
+													notification
+															.setUserProfileId(researchadmin
+																	.getUserProfileId());
+													notification
+															.setUsername(researchadmin
+																	.getUserName());
+													notification
+															.setCollege(researchadmin
+																	.getCollege());
+													notification
+															.setDepartment(researchadmin
+																	.getDepartment());
+													notification
+															.setPositionType(researchadmin
+																	.getPositionType());
+													notification
+															.setPositionTitle(researchadmin
+																	.getPositionTitle());
+
+													notificationDAO
+															.save(notification);
+												}
+											}
 										}
 									}
 								}
@@ -4965,6 +5069,44 @@ public class ProposalService {
 									existingProposal
 											.getProposalStatus()
 											.add(Status.WAITINGFORRESEARCHDIRECTORAPPROVAL);
+
+									for (SignatureUserInfo researchdirector : signatures) {
+										if (researchdirector
+												.getPositionTitle()
+												.equals("University Research Director")) {
+											NotificationLog notification = new NotificationLog();
+											notification.setCritical(true);
+											notification.setType("Proposal");
+											notification
+													.setAction("Ready for Approval");
+											notification
+													.setProposalId(proposalID);
+											notification
+													.setProposalTitle(existingProposal
+															.getProjectInfo()
+															.getProjectTitle());
+											notification
+													.setUserProfileId(researchdirector
+															.getUserProfileId());
+											notification
+													.setUsername(researchdirector
+															.getUserName());
+											notification
+													.setCollege(researchdirector
+															.getCollege());
+											notification
+													.setDepartment(researchdirector
+															.getDepartment());
+											notification
+													.setPositionType(researchdirector
+															.getPositionType());
+											notification
+													.setPositionTitle(researchdirector
+															.getPositionTitle());
+
+											notificationDAO.save(notification);
+										}
+									}
 								}
 							} else if (existingProposal
 									.getResearchDirectorApproval() == ApprovalType.READYFORAPPROVAL
@@ -5005,6 +5147,44 @@ public class ProposalService {
 											.clear();
 									existingProposal.getProposalStatus().add(
 											Status.READYFORSUBMISSION);
+
+									for (SignatureUserInfo researchadmin : signatures) {
+										if (researchadmin
+												.getPositionTitle()
+												.equals("University Research Administrator")) {
+											NotificationLog notification = new NotificationLog();
+											notification.setCritical(true);
+											notification.setType("Proposal");
+											notification
+													.setAction("Ready for Approval");
+											notification
+													.setProposalId(proposalID);
+											notification
+													.setProposalTitle(existingProposal
+															.getProjectInfo()
+															.getProjectTitle());
+											notification
+													.setUserProfileId(researchadmin
+															.getUserProfileId());
+											notification
+													.setUsername(researchadmin
+															.getUserName());
+											notification
+													.setCollege(researchadmin
+															.getCollege());
+											notification
+													.setDepartment(researchadmin
+															.getDepartment());
+											notification
+													.setPositionType(researchadmin
+															.getPositionType());
+											notification
+													.setPositionTitle(researchadmin
+															.getPositionTitle());
+
+											notificationDAO.save(notification);
+										}
+									}
 								}
 							} else {
 								// You are not allowed to APPROVE
