@@ -19,9 +19,6 @@ public class SignatureInfo implements Serializable {
 	@Property("full name")
 	private String fullName = new String();
 
-	@Property("email")
-	private String email = new String();
-
 	@Property("signature")
 	private String signature = new String();
 
@@ -58,14 +55,6 @@ public class SignatureInfo implements Serializable {
 
 	public void setFullName(String fullName) {
 		this.fullName = fullName;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
 	}
 
 	public String getSignature() {
@@ -119,10 +108,10 @@ public class SignatureInfo implements Serializable {
 	@Override
 	public String toString() {
 		return "SignatureInfo [userProfileId=" + userProfileId + ", fullName="
-				+ fullName + ", email=" + email + ", signature=" + signature
-				+ ", positionTitle=" + positionTitle + ", signedDate="
-				+ signedDate + ", note=" + note + ", delegated=" + delegated
-				+ ", delegatedAs=" + delegatedAs + "]";
+				+ fullName + ", signature=" + signature + ", positionTitle="
+				+ positionTitle + ", signedDate=" + signedDate + ", note="
+				+ note + ", delegated=" + delegated + ", delegatedAs="
+				+ delegatedAs + "]";
 	}
 
 	@Override
@@ -132,7 +121,6 @@ public class SignatureInfo implements Serializable {
 		result = prime * result + (delegated ? 1231 : 1237);
 		result = prime * result
 				+ ((delegatedAs == null) ? 0 : delegatedAs.hashCode());
-		result = prime * result + ((email == null) ? 0 : email.hashCode());
 		result = prime * result
 				+ ((fullName == null) ? 0 : fullName.hashCode());
 		result = prime * result + ((note == null) ? 0 : note.hashCode());
@@ -162,11 +150,6 @@ public class SignatureInfo implements Serializable {
 			if (other.delegatedAs != null)
 				return false;
 		} else if (!delegatedAs.equals(other.delegatedAs))
-			return false;
-		if (email == null) {
-			if (other.email != null)
-				return false;
-		} else if (!email.equals(other.email))
 			return false;
 		if (fullName == null) {
 			if (other.fullName != null)

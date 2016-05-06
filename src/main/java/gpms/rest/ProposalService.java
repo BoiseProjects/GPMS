@@ -35,6 +35,7 @@ import gpms.model.ProposalInfo;
 import gpms.model.ProposalStatusInfo;
 import gpms.model.Recovery;
 import gpms.model.SignatureInfo;
+import gpms.model.SignatureUserInfo;
 import gpms.model.SponsorAndBudgetInfo;
 import gpms.model.Status;
 import gpms.model.SubmitType;
@@ -556,13 +557,15 @@ public class ProposalService {
 				}
 
 				ObjectId id = new ObjectId(proposalId);
+				Proposal existingProposal = proposalDAO
+						.findProposalByProposalID(id);
 
 				ObjectId authorId = new ObjectId(userProfileID);
 				UserProfile authorProfile = userProfileDAO
 						.findUserDetailsByProfileID(authorId);
 				String authorFullName = authorProfile.getFullName();
-
-				Proposal proposal = proposalDAO.findProposalByProposalID(id);
+				String authorUserName = authorProfile.getUserAccount()
+						.getUserName();
 
 				contentProfile.append("<Content>");
 				contentProfile
@@ -574,74 +577,79 @@ public class ProposalService {
 				contentProfile.append("</ak:proposalid>");
 
 				contentProfile.append("<ak:proposaltitle>");
-				contentProfile.append(proposal.getProjectInfo()
+				contentProfile.append(existingProposal.getProjectInfo()
 						.getProjectTitle());
 				contentProfile.append("</ak:proposaltitle>");
 
 				contentProfile.append("<ak:submittedbypi>");
-				contentProfile.append(proposal.getSubmittedByPI());
+				contentProfile.append(existingProposal.getSubmittedByPI());
 				contentProfile.append("</ak:submittedbypi>");
 
 				contentProfile.append("<ak:readyforsubmissionbypi>");
-				contentProfile.append(proposal.isReadyForSubmissionByPI());
+				contentProfile.append(existingProposal
+						.isReadyForSubmissionByPI());
 				contentProfile.append("</ak:readyforsubmissionbypi>");
 
 				contentProfile.append("<ak:deletedbypi>");
-				contentProfile.append(proposal.getDeletedByPI());
+				contentProfile.append(existingProposal.getDeletedByPI());
 				contentProfile.append("</ak:deletedbypi>");
 
 				contentProfile.append("<ak:approvedbydepartmentchair>");
-				contentProfile.append(proposal.getChairApproval());
+				contentProfile.append(existingProposal.getChairApproval());
 				contentProfile.append("</ak:approvedbydepartmentchair>");
 
 				contentProfile.append("<ak:approvedbybusinessmanager>");
-				contentProfile.append(proposal.getBusinessManagerApproval());
+				contentProfile.append(existingProposal
+						.getBusinessManagerApproval());
 				contentProfile.append("</ak:approvedbybusinessmanager>");
 
 				contentProfile.append("<ak:approvedbyirb>");
-				contentProfile.append(proposal.getIrbApproval());
+				contentProfile.append(existingProposal.getIrbApproval());
 				contentProfile.append("</ak:approvedbyirb>");
 
 				contentProfile.append("<ak:approvedbydean>");
-				contentProfile.append(proposal.getDeanApproval());
+				contentProfile.append(existingProposal.getDeanApproval());
 				contentProfile.append("</ak:approvedbydean>");
 
 				contentProfile
 						.append("<ak:approvedbyuniversityresearchadministrator>");
-				contentProfile.append(proposal
+				contentProfile.append(existingProposal
 						.getResearchAdministratorApproval());
 				contentProfile
 						.append("</ak:approvedbyuniversityresearchadministrator>");
 
 				contentProfile
 						.append("<ak:withdrawnbyuniversityresearchadministrator>");
-				contentProfile.append(proposal
+				contentProfile.append(existingProposal
 						.getResearchAdministratorWithdraw());
 				contentProfile
 						.append("</ak:withdrawnbyuniversityresearchadministrator>");
 
 				contentProfile
 						.append("<ak:submittedbyuniversityresearchadministrator>");
-				contentProfile.append(proposal
+				contentProfile.append(existingProposal
 						.getResearchAdministratorSubmission());
 				contentProfile
 						.append("</ak:submittedbyuniversityresearchadministrator>");
 
 				contentProfile
 						.append("<ak:approvedbyuniversityresearchdirector>");
-				contentProfile.append(proposal.getResearchDirectorDeletion());
+				contentProfile.append(existingProposal
+						.getResearchDirectorDeletion());
 				contentProfile
 						.append("</ak:approvedbyuniversityresearchdirector>");
 
 				contentProfile
 						.append("<ak:deletedbyuniversityresearchdirector>");
-				contentProfile.append(proposal.getResearchDirectorDeletion());
+				contentProfile.append(existingProposal
+						.getResearchDirectorDeletion());
 				contentProfile
 						.append("</ak:deletedbyuniversityresearchdirector>");
 
 				contentProfile
 						.append("<ak:archivedbyuniversityresearchdirector>");
-				contentProfile.append(proposal.getResearchDirectorArchived());
+				contentProfile.append(existingProposal
+						.getResearchDirectorArchived());
 				contentProfile
 						.append("</ak:archivedbyuniversityresearchdirector>");
 
@@ -665,23 +673,23 @@ public class ProposalService {
 
 				contentProfile.append("<ak:pi>");
 				contentProfile.append("<ak:fullname>");
-				contentProfile.append(proposal.getInvestigatorInfo().getPi()
-						.getUserRef().getFullName());
+				contentProfile.append(existingProposal.getInvestigatorInfo()
+						.getPi().getUserRef().getFullName());
 				contentProfile.append("</ak:fullname>");
 
 				contentProfile.append("<ak:workemail>");
-				contentProfile.append(proposal.getInvestigatorInfo().getPi()
-						.getUserRef().getWorkEmails().get(0));
+				contentProfile.append(existingProposal.getInvestigatorInfo()
+						.getPi().getUserRef().getWorkEmails().get(0));
 				contentProfile.append("</ak:workemail>");
 
 				contentProfile.append("<ak:userid>");
-				contentProfile.append(proposal.getInvestigatorInfo().getPi()
-						.getUserProfileId());
+				contentProfile.append(existingProposal.getInvestigatorInfo()
+						.getPi().getUserProfileId());
 				contentProfile.append("</ak:userid>");
 				contentProfile.append("</ak:pi>");
 
 				contentProfile.append("<ak:copis>");
-				for (InvestigatorRefAndPosition copis : proposal
+				for (InvestigatorRefAndPosition copis : existingProposal
 						.getInvestigatorInfo().getCo_pi()) {
 					contentProfile.append("<ak:copi>");
 					contentProfile.append("<ak:fullname>");
@@ -701,7 +709,7 @@ public class ProposalService {
 				contentProfile.append("</ak:copis>");
 
 				contentProfile.append("<ak:seniors>");
-				for (InvestigatorRefAndPosition seniors : proposal
+				for (InvestigatorRefAndPosition seniors : existingProposal
 						.getInvestigatorInfo().getSeniorPersonnel()) {
 					contentProfile.append("<ak:senior>");
 					contentProfile.append("<ak:fullname>");
@@ -953,7 +961,7 @@ public class ProposalService {
 									System.out.println(obligationType
 											+ " is RUNNING");
 									boolean isDeleted = proposalDAO
-											.deleteProposal(proposal,
+											.deleteProposal(existingProposal,
 													proposalRoles,
 													proposalUserTitle,
 													authorProfile);
@@ -964,6 +972,19 @@ public class ProposalService {
 														emailSubject
 																+ authorName,
 														emailBody);
+
+										String notificationMessage = "Deleted by "
+												+ authorUserName + ".";
+
+										NotifyAllExistingInvestigators(
+												existingProposal.getId()
+														.toString(),
+												existingProposal
+														.getProjectInfo()
+														.getProjectTitle(),
+												existingProposal,
+												notificationMessage,
+												"Proposal", false);
 
 										return Response
 												.status(200)
@@ -1406,10 +1427,251 @@ public class ProposalService {
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode root = mapper.readTree(message);
 
+		StringBuffer contentProfile = new StringBuffer();
+
 		if (root != null && root.has("policyInfo")) {
 			JsonNode policyInfo = root.get("policyInfo");
 			if (policyInfo != null && policyInfo.isArray()
 					&& policyInfo.size() > 0) {
+
+				String proposalId = new String();
+				String proposalRoles = new String();
+				String proposalUserTitle = new String();
+
+				if (root != null && root.has("proposalId")) {
+					proposalId = root.get("proposalId").textValue();
+				}
+
+				if (root != null && root.has("proposalUserTitle")) {
+					proposalUserTitle = root.get("proposalUserTitle")
+							.textValue();
+				}
+
+				String userProfileID = new String();
+				@SuppressWarnings("unused")
+				String userName = new String();
+				@SuppressWarnings("unused")
+				Boolean userIsAdmin = false;
+				@SuppressWarnings("unused")
+				String userCollege = new String();
+				@SuppressWarnings("unused")
+				String userDepartment = new String();
+				@SuppressWarnings("unused")
+				String userPositionType = new String();
+				@SuppressWarnings("unused")
+				String userPositionTitle = new String();
+
+				if (root != null && root.has("gpmsCommonObj")) {
+					JsonNode commonObj = root.get("gpmsCommonObj");
+					if (commonObj != null && commonObj.has("UserProfileID")) {
+						userProfileID = commonObj.get("UserProfileID")
+								.textValue();
+					}
+					if (commonObj != null && commonObj.has("UserName")) {
+						userName = commonObj.get("UserName").textValue();
+					}
+					if (commonObj != null && commonObj.has("UserIsAdmin")) {
+						userIsAdmin = Boolean.parseBoolean(commonObj.get(
+								"UserIsAdmin").textValue());
+					}
+					if (commonObj != null && commonObj.has("UserCollege")) {
+						userCollege = commonObj.get("UserCollege").textValue();
+					}
+					if (commonObj != null && commonObj.has("UserDepartment")) {
+						userDepartment = commonObj.get("UserDepartment")
+								.textValue();
+					}
+					if (commonObj != null && commonObj.has("UserPositionType")) {
+						userPositionType = commonObj.get("UserPositionType")
+								.textValue();
+					}
+					if (commonObj != null && commonObj.has("UserPositionTitle")) {
+						userPositionTitle = commonObj.get("UserPositionTitle")
+								.textValue();
+					}
+				}
+
+				ObjectId id = new ObjectId(proposalId);
+				Proposal existingProposal = proposalDAO
+						.findProposalByProposalID(id);
+
+				ObjectId authorId = new ObjectId(userProfileID);
+				UserProfile authorProfile = userProfileDAO
+						.findUserDetailsByProfileID(authorId);
+				String authorFullName = authorProfile.getFullName();
+				String authorUserName = authorProfile.getUserAccount()
+						.getUserName();
+
+				contentProfile.append("<Content>");
+				contentProfile
+						.append("<ak:record xmlns:ak=\"http://akpower.org\">");
+				contentProfile.append("<ak:proposal>");
+
+				contentProfile.append("<ak:proposalid>");
+				contentProfile.append(proposalId);
+				contentProfile.append("</ak:proposalid>");
+
+				contentProfile.append("<ak:proposaltitle>");
+				contentProfile.append(existingProposal.getProjectInfo()
+						.getProjectTitle());
+				contentProfile.append("</ak:proposaltitle>");
+
+				contentProfile.append("<ak:submittedbypi>");
+				contentProfile.append(existingProposal.getSubmittedByPI());
+				contentProfile.append("</ak:submittedbypi>");
+
+				contentProfile.append("<ak:readyforsubmissionbypi>");
+				contentProfile.append(existingProposal
+						.isReadyForSubmissionByPI());
+				contentProfile.append("</ak:readyforsubmissionbypi>");
+
+				contentProfile.append("<ak:deletedbypi>");
+				contentProfile.append(existingProposal.getDeletedByPI());
+				contentProfile.append("</ak:deletedbypi>");
+
+				contentProfile.append("<ak:approvedbydepartmentchair>");
+				contentProfile.append(existingProposal.getChairApproval());
+				contentProfile.append("</ak:approvedbydepartmentchair>");
+
+				contentProfile.append("<ak:approvedbybusinessmanager>");
+				contentProfile.append(existingProposal
+						.getBusinessManagerApproval());
+				contentProfile.append("</ak:approvedbybusinessmanager>");
+
+				contentProfile.append("<ak:approvedbyirb>");
+				contentProfile.append(existingProposal.getIrbApproval());
+				contentProfile.append("</ak:approvedbyirb>");
+
+				contentProfile.append("<ak:approvedbydean>");
+				contentProfile.append(existingProposal.getDeanApproval());
+				contentProfile.append("</ak:approvedbydean>");
+
+				contentProfile
+						.append("<ak:approvedbyuniversityresearchadministrator>");
+				contentProfile.append(existingProposal
+						.getResearchAdministratorApproval());
+				contentProfile
+						.append("</ak:approvedbyuniversityresearchadministrator>");
+
+				contentProfile
+						.append("<ak:withdrawnbyuniversityresearchadministrator>");
+				contentProfile.append(existingProposal
+						.getResearchAdministratorWithdraw());
+				contentProfile
+						.append("</ak:withdrawnbyuniversityresearchadministrator>");
+
+				contentProfile
+						.append("<ak:submittedbyuniversityresearchadministrator>");
+				contentProfile.append(existingProposal
+						.getResearchAdministratorSubmission());
+				contentProfile
+						.append("</ak:submittedbyuniversityresearchadministrator>");
+
+				contentProfile
+						.append("<ak:approvedbyuniversityresearchdirector>");
+				contentProfile.append(existingProposal
+						.getResearchDirectorDeletion());
+				contentProfile
+						.append("</ak:approvedbyuniversityresearchdirector>");
+
+				contentProfile
+						.append("<ak:deletedbyuniversityresearchdirector>");
+				contentProfile.append(existingProposal
+						.getResearchDirectorDeletion());
+				contentProfile
+						.append("</ak:deletedbyuniversityresearchdirector>");
+
+				contentProfile
+						.append("<ak:archivedbyuniversityresearchdirector>");
+				contentProfile.append(existingProposal
+						.getResearchDirectorArchived());
+				contentProfile
+						.append("</ak:archivedbyuniversityresearchdirector>");
+
+				contentProfile.append("<ak:authorprofile>");
+				// contentProfile.append("<ak:firstname>");
+				// contentProfile.append(authorProfile.getFirstName());
+				// contentProfile.append("</ak:firstname>");
+				// contentProfile.append("<ak:middlename>");
+				// contentProfile
+				// .append(authorProfile.getMiddleName());
+				// contentProfile.append("</ak:middlename>");
+				//
+				// contentProfile.append("<ak:lastname>");
+				// contentProfile.append(authorProfile.getLastName());
+				// contentProfile.append("</ak:lastname>");
+
+				contentProfile.append("<ak:fullname>");
+				contentProfile.append(authorFullName);
+				contentProfile.append("</ak:fullname>");
+				contentProfile.append("</ak:authorprofile>");
+
+				contentProfile.append("<ak:pi>");
+				contentProfile.append("<ak:fullname>");
+				contentProfile.append(existingProposal.getInvestigatorInfo()
+						.getPi().getUserRef().getFullName());
+				contentProfile.append("</ak:fullname>");
+
+				contentProfile.append("<ak:workemail>");
+				contentProfile.append(existingProposal.getInvestigatorInfo()
+						.getPi().getUserRef().getWorkEmails().get(0));
+				contentProfile.append("</ak:workemail>");
+
+				contentProfile.append("<ak:userid>");
+				contentProfile.append(existingProposal.getInvestigatorInfo()
+						.getPi().getUserProfileId());
+				contentProfile.append("</ak:userid>");
+				contentProfile.append("</ak:pi>");
+
+				contentProfile.append("<ak:copis>");
+				for (InvestigatorRefAndPosition copis : existingProposal
+						.getInvestigatorInfo().getCo_pi()) {
+					contentProfile.append("<ak:copi>");
+					contentProfile.append("<ak:fullname>");
+					contentProfile.append(copis.getUserRef().getFullName());
+					contentProfile.append("</ak:fullname>");
+
+					contentProfile.append("<ak:workemail>");
+					contentProfile.append(copis.getUserRef().getWorkEmails()
+							.get(0));
+					contentProfile.append("</ak:workemail>");
+
+					contentProfile.append("<ak:userid>");
+					contentProfile.append(copis.getUserProfileId());
+					contentProfile.append("</ak:userid>");
+					contentProfile.append("</ak:copi>");
+				}
+				contentProfile.append("</ak:copis>");
+
+				contentProfile.append("<ak:seniors>");
+				for (InvestigatorRefAndPosition seniors : existingProposal
+						.getInvestigatorInfo().getSeniorPersonnel()) {
+					contentProfile.append("<ak:senior>");
+					contentProfile.append("<ak:fullname>");
+					contentProfile.append(seniors.getUserRef().getFullName());
+					contentProfile.append("</ak:fullname>");
+
+					contentProfile.append("<ak:workemail>");
+					contentProfile.append(seniors.getUserRef().getWorkEmails()
+							.get(0));
+					contentProfile.append("</ak:workemail>");
+
+					contentProfile.append("<ak:userid>");
+					contentProfile.append(seniors.getUserProfileId());
+					contentProfile.append("</ak:userid>");
+					contentProfile.append("</ak:senior>");
+				}
+				contentProfile.append("</ak:seniors>");
+
+				contentProfile.append("</ak:proposal>");
+				contentProfile.append("</ak:record>");
+				contentProfile.append("</Content>");
+
+				contentProfile
+						.append("<Attribute AttributeId=\"urn:oasis:names:tc:xacml:3.0:content-selector\" IncludeInResult=\"false\">");
+				contentProfile
+						.append("<AttributeValue XPathCategory=\"urn:oasis:names:tc:xacml:3.0:attribute-category:resource\" DataType=\"urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression\">//ak:record/ak:proposal</AttributeValue>");
+				contentProfile.append("</Attribute>");
 
 				Accesscontrol ac = new Accesscontrol();
 				HashMap<String, Multimap<String, String>> attrMap = new HashMap<String, Multimap<String, String>>();
@@ -1470,185 +1732,248 @@ public class ProposalService {
 				// Device type
 				// device.type
 
-				String decision = ac.getXACMLdecision(attrMap);
-				if (decision.equals("Permit")) {
-					String proposalID = new String();
-					Proposal existingProposal = new Proposal();
+				Set<AbstractResult> set = ac.getXACMLdecisionWithObligations(
+						attrMap, contentProfile);
+				Iterator<AbstractResult> it = set.iterator();
+				int intDecision = 3;
+				while (it.hasNext()) {
+					AbstractResult ar = it.next();
+					intDecision = ar.getDecision();
 
-					ObjectId id = new ObjectId();
+					if (intDecision >= 4 && intDecision <= 6) {
+						intDecision = 2;
+					}
+					System.out.println("Decision:" + intDecision + " that is: "
+							+ AbstractResult.DECISIONS[intDecision]);
 
-					if (root != null && root.has("proposalId")) {
-						JsonNode proposalId = root.get("proposalId");
+					if (AbstractResult.DECISIONS[intDecision].equals("Permit")) {
+						List<ObligationResult> obligations = ar
+								.getObligations();
 
-						if (proposalId != null) {
-							proposalID = proposalId.textValue();
-							if (!proposalID.equals("0")
-									&& !proposalID.equals("")) {
-								id = new ObjectId(proposalID);
-								existingProposal = proposalDAO
-										.findProposalByProposalID(id);
+						List<ObligationResult> preObligations = new ArrayList<ObligationResult>();
+						List<ObligationResult> postObligations = new ArrayList<ObligationResult>();
+						List<ObligationResult> ongoingObligations = new ArrayList<ObligationResult>();
 
-								// For Proposal User Title : for Research
-								// Administrator and
-								// University Research Director
-								if (root != null
-										&& root.has("proposalUserTitle")) {
-									JsonNode proposalUserTitle = root
-											.get("proposalUserTitle");
-									if (proposalUserTitle != null) {
-										// For Proposal Status
-										if (root != null
-												&& root.has("buttonType")) {
-											JsonNode buttonType = root
-													.get("buttonType");
+						for (ObligationResult obligation : obligations) {
+							if (obligation instanceof org.wso2.balana.xacml3.Obligation) {
+								List<AttributeAssignment> assignments = ((org.wso2.balana.xacml3.Obligation) obligation)
+										.getAssignments();
 
-											if (buttonType != null) {
-												String changeDone = new String();
+								String obligationType = "postobligation";
 
-												switch (buttonType.textValue()) {
-												case "Withdraw":
-													if (!proposalID.equals("0")) {
-														if (existingProposal
-																.getResearchAdministratorWithdraw() == WithdrawType.NOTWITHDRAWN
-																&& existingProposal
-																		.getResearchAdministratorApproval() == ApprovalType.READYFORAPPROVAL
-																&& proposalUserTitle
-																		.textValue()
-																		.equals("University Research Administrator")) {
-															existingProposal
-																	.setResearchAdministratorWithdraw(WithdrawType.WITHDRAWN);
-															existingProposal
-																	.setResearchAdministratorApproval(ApprovalType.NOTREADYFORAPPROVAL);
+								for (AttributeAssignment assignment : assignments) {
+									if (assignment.getAttributeId().toString()
+											.equalsIgnoreCase("obligationType")) {
+										obligationType = assignment
+												.getContent();
+										break;
+									}
+								}
 
-															// Proposal Status
-															existingProposal
-																	.getProposalStatus()
-																	.clear();
-															existingProposal
-																	.getProposalStatus()
-																	.add(Status.WITHDRAWBYRESEARCHADMIN);
+								if (obligationType.equals("preobligation")) {
+									preObligations.add(obligation);
+									System.out.println(obligationType
+											+ " is FOUND");
+								} else if (obligationType
+										.equals("postobligation")) {
+									postObligations.add(obligation);
+									System.out.println(obligationType
+											+ " is FOUND");
+								} else {
+									ongoingObligations.add(obligation);
+									System.out.println(obligationType
+											+ " is FOUND");
+								}
 
-															changeDone = "Withdrawn";
-														}
+							}
+						}
+
+						Boolean preCondition = true;
+						String alertMessage = new String();
+
+						if (preObligations.size() != 0) {
+							preCondition = false;
+
+							System.out
+									.println("\n======================== Printing Obligations ====================");
+
+							for (ObligationResult obligation : preObligations) {
+								if (obligation instanceof org.wso2.balana.xacml3.Obligation) {
+									List<AttributeAssignment> assignments = ((org.wso2.balana.xacml3.Obligation) obligation)
+											.getAssignments();
+
+									String obligationType = "preobligation";
+
+									for (AttributeAssignment assignment : assignments) {
+
+										// System.out.println("Obligation :  "
+										// + assignment.getContent() +
+										// "\n");
+
+										switch (assignment.getAttributeId()
+												.toString()) {
+										// case "obligationType":
+										// obligationType =
+										// assignment.getContent();
+										// break;
+
+										case "signedByCurrentUser":
+											preCondition = Boolean
+													.parseBoolean(assignment
+															.getContent());
+											break;
+										case "alertMessage":
+											alertMessage = assignment
+													.getContent();
+											break;
+
+										}
+									}
+									System.out.println(obligationType
+											+ " is RUNNING");
+									if (!preCondition) {
+										break;
+									}
+								}
+							}
+						}
+
+						if (preCondition) {
+							for (ObligationResult obligation : postObligations) {
+								if (obligation instanceof org.wso2.balana.xacml3.Obligation) {
+									List<AttributeAssignment> assignments = ((org.wso2.balana.xacml3.Obligation) obligation)
+											.getAssignments();
+
+									String obligationType = "postobligation";
+
+									EmailUtil emailUtil = new EmailUtil();
+									String emailSubject = new String();
+									String emailBody = new String();
+									String authorName = new String();
+									String piEmail = new String();
+									List<String> emaillist = new ArrayList<String>();
+
+									for (AttributeAssignment assignment : assignments) {
+
+										// System.out.println("Obligation :  "
+										// + assignment.getContent() +
+										// "\n");
+
+										switch (assignment.getAttributeId()
+												.toString()) {
+										// case "obligationType":
+										// obligationType =
+										// assignment.getContent();
+										// break;
+										case "authorName":
+											authorName = assignment
+													.getContent();
+											break;
+										case "emailSubject":
+											emailSubject = assignment
+													.getContent();
+											break;
+										case "emailBody":
+											emailBody = assignment.getContent();
+											break;
+										case "piEmail":
+											piEmail = assignment.getContent();
+											break;
+										case "copisEmail":
+										case "seniorsEmail":
+										case "chairsEmail":
+										case "managersEmail":
+										case "deansEmail":
+										case "irbsEmail":
+										case "administratorsEmail":
+										case "directorsEmail":
+											emaillist.add(assignment
+													.getContent());
+											break;
+										}
+									}
+
+									System.out.println(obligationType
+											+ " is RUNNING");
+
+									if (root != null && root.has("buttonType")) {
+										JsonNode buttonType = root
+												.get("buttonType");
+
+										if (buttonType != null) {
+											String changeDone = new String();
+
+											switch (buttonType.textValue()) {
+											case "Withdraw":
+												if (!proposalId.equals("0")) {
+													if (existingProposal
+															.getResearchAdministratorWithdraw() == WithdrawType.NOTWITHDRAWN
+															&& existingProposal
+																	.getResearchAdministratorApproval() == ApprovalType.READYFORAPPROVAL
+															&& proposalUserTitle
+																	.equals("University Research Administrator")) {
+														existingProposal
+																.setResearchAdministratorWithdraw(WithdrawType.WITHDRAWN);
+														existingProposal
+																.setResearchAdministratorApproval(ApprovalType.NOTREADYFORAPPROVAL);
+
+														// Proposal Status
+														existingProposal
+																.getProposalStatus()
+																.clear();
+														existingProposal
+																.getProposalStatus()
+																.add(Status.WITHDRAWBYRESEARCHADMIN);
+
+														changeDone = "Withdrawn";
 													}
-													break;
-
-												case "Archive":
-													if (!proposalID.equals("0")) {
-														if (existingProposal
-																.getResearchDirectorArchived() == ArchiveType.NOTARCHIVED
-																&& existingProposal
-																		.getResearchAdministratorSubmission() == SubmitType.SUBMITTED
-																&& proposalUserTitle
-																		.textValue()
-																		.equals("University Research Director")) {
-															existingProposal
-																	.setResearchDirectorArchived(ArchiveType.ARCHIVED);
-															existingProposal
-																	.setResearchDirectorApproval(ApprovalType.NOTREADYFORAPPROVAL);
-
-															// Proposal Status
-															existingProposal
-																	.getProposalStatus()
-																	.clear();
-															existingProposal
-																	.getProposalStatus()
-																	.add(Status.ARCHIVEDBYRESEARCHDIRECTOR);
-
-															changeDone = "Archived";
-														}
-													}
-													break;
-
-												default:
-
-													break;
 												}
+												break;
 
-												String userProfileID = new String();
-												@SuppressWarnings("unused")
-												String userName = new String();
-												@SuppressWarnings("unused")
-												Boolean userIsAdmin = false;
-												@SuppressWarnings("unused")
-												String userCollege = new String();
-												@SuppressWarnings("unused")
-												String userDepartment = new String();
-												@SuppressWarnings("unused")
-												String userPositionType = new String();
-												@SuppressWarnings("unused")
-												String userPositionTitle = new String();
+											case "Archive":
+												if (!proposalId.equals("0")) {
+													if (existingProposal
+															.getResearchDirectorArchived() == ArchiveType.NOTARCHIVED
+															&& existingProposal
+																	.getResearchAdministratorSubmission() == SubmitType.SUBMITTED
+															&& proposalUserTitle
+																	.equals("University Research Director")) {
+														existingProposal
+																.setResearchDirectorArchived(ArchiveType.ARCHIVED);
+														existingProposal
+																.setResearchDirectorApproval(ApprovalType.NOTREADYFORAPPROVAL);
 
-												if (root != null
-														&& root.has("gpmsCommonObj")) {
-													JsonNode commonObj = root
-															.get("gpmsCommonObj");
-													if (commonObj != null
-															&& commonObj
-																	.has("UserProfileID")) {
-														userProfileID = commonObj
-																.get("UserProfileID")
-																.textValue();
-													}
-													if (commonObj != null
-															&& commonObj
-																	.has("UserName")) {
-														userName = commonObj
-																.get("UserName")
-																.textValue();
-													}
-													if (commonObj != null
-															&& commonObj
-																	.has("UserIsAdmin")) {
-														userIsAdmin = Boolean
-																.parseBoolean(commonObj
-																		.get("UserIsAdmin")
-																		.textValue());
-													}
-													if (commonObj != null
-															&& commonObj
-																	.has("UserCollege")) {
-														userCollege = commonObj
-																.get("UserCollege")
-																.textValue();
-													}
-													if (commonObj != null
-															&& commonObj
-																	.has("UserDepartment")) {
-														userDepartment = commonObj
-																.get("UserDepartment")
-																.textValue();
-													}
-													if (commonObj != null
-															&& commonObj
-																	.has("UserPositionType")) {
-														userPositionType = commonObj
-																.get("UserPositionType")
-																.textValue();
-													}
-													if (commonObj != null
-															&& commonObj
-																	.has("UserPositionTitle")) {
-														userPositionTitle = commonObj
-																.get("UserPositionTitle")
-																.textValue();
+														// Proposal Status
+														existingProposal
+																.getProposalStatus()
+																.clear();
+														existingProposal
+																.getProposalStatus()
+																.add(Status.ARCHIVEDBYRESEARCHDIRECTOR);
+
+														changeDone = "Archived";
 													}
 												}
+												break;
 
-												ObjectId authorId = new ObjectId(
-														userProfileID);
-												UserProfile authorProfile = userProfileDAO
-														.findUserDetailsByProfileID(authorId);
+											default:
 
-												// Save the Proposal
-												String authorUserName = authorProfile
-														.getUserAccount()
-														.getUserName();
+												break;
+											}
 
-												proposalDAO
-														.updateProposalStatus(
-																existingProposal,
-																authorProfile);
+											boolean isStatusUpdated = proposalDAO
+													.updateProposalStatus(
+															existingProposal,
+															authorProfile);
+
+											if (isStatusUpdated) {
+												emailUtil
+														.sendMailMultipleUsersWithoutAuth(
+																piEmail,
+																emaillist,
+																emailSubject
+																		+ authorName,
+																emailBody);
 
 												String notificationMessage = changeDone
 														+ " by "
@@ -1669,17 +1994,32 @@ public class ProposalService {
 														.status(200)
 														.type(MediaType.APPLICATION_JSON)
 														.entity("true").build();
+												// return
+												// Response.status(200).entity(true).build();
+											} else {
+												return Response
+														.status(200)
+														.type(MediaType.APPLICATION_JSON)
+														.entity("true").build();
 											}
+
 										}
 									}
 								}
 							}
+						} else {
+							return Response.status(403)
+									.type(MediaType.APPLICATION_JSON)
+									.entity(alertMessage).build();
 						}
+					} else {
+						return Response
+								.status(403)
+								.type(MediaType.APPLICATION_JSON)
+								.entity("Your permission is: "
+										+ AbstractResult.DECISIONS[intDecision])
+								.build();
 					}
-				} else {
-					return Response.status(403)
-							.type(MediaType.APPLICATION_JSON)
-							.entity("Your permission is: " + decision).build();
 				}
 			} else {
 				return Response.status(403).type(MediaType.APPLICATION_JSON)
@@ -2242,7 +2582,7 @@ public class ProposalService {
 
 					ObjectId id = new ObjectId(proposalID);
 
-					List<SignatureInfo> signatures = proposalDAO
+					List<SignatureUserInfo> signatures = proposalDAO
 							.findSignaturesExceptInvestigator(id,
 									irbApprovalRequired);
 
@@ -2414,7 +2754,14 @@ public class ProposalService {
 					}
 					contentProfile.append("</ak:seniors>");
 
-					for (SignatureInfo signatureInfo : signatures) {
+					List<NotificationLog> notificationChairs = new ArrayList<NotificationLog>();
+					List<NotificationLog> notificationManagers = new ArrayList<NotificationLog>();
+					List<NotificationLog> notificationDeans = new ArrayList<NotificationLog>();
+					List<NotificationLog> notificationIRBs = new ArrayList<NotificationLog>();
+					List<NotificationLog> notificationAdministrators = new ArrayList<NotificationLog>();
+					List<NotificationLog> notificationDirectors = new ArrayList<NotificationLog>();
+
+					for (SignatureUserInfo signatureInfo : signatures) {
 						switch (signatureInfo.getPositionTitle()) {
 						// case "PI":
 						// contentProfile.append("<ak:pi>");
@@ -2479,6 +2826,29 @@ public class ProposalService {
 									.getUserProfileId());
 							contentProfile.append("</ak:userid>");
 							contentProfile.append("</ak:chair>");
+
+							NotificationLog notificationChair = new NotificationLog();
+							notificationChair.setCritical(true);
+							notificationChair.setType("Proposal");
+							// notificationChair.setAction("Ready for Approval");
+							notificationChair.setProposalId(proposalID);
+							notificationChair.setProposalTitle(existingProposal
+									.getProjectInfo().getProjectTitle());
+							notificationChair.setUserProfileId(signatureInfo
+									.getUserProfileId());
+							notificationChair.setUsername(signatureInfo
+									.getUserName());
+							notificationChair.setCollege(signatureInfo
+									.getCollege());
+							notificationChair.setDepartment(signatureInfo
+									.getDepartment());
+							notificationChair.setPositionType(signatureInfo
+									.getPositionType());
+							notificationChair.setPositionTitle(signatureInfo
+									.getPositionTitle());
+
+							notificationChairs.add(notificationChair);
+
 							break;
 						case "Business Manager":
 							contentProfile.append("<ak:manager>");
@@ -2495,6 +2865,29 @@ public class ProposalService {
 									.getUserProfileId());
 							contentProfile.append("</ak:userid>");
 							contentProfile.append("</ak:manager>");
+
+							NotificationLog notificationManager = new NotificationLog();
+							notificationManager.setCritical(true);
+							notificationManager.setType("Proposal");
+							// notificationManager.setAction("Ready for Approval");
+							notificationManager.setProposalId(proposalID);
+							notificationManager
+									.setProposalTitle(existingProposal
+											.getProjectInfo().getProjectTitle());
+							notificationManager.setUserProfileId(signatureInfo
+									.getUserProfileId());
+							notificationManager.setUsername(signatureInfo
+									.getUserName());
+							notificationManager.setCollege(signatureInfo
+									.getCollege());
+							notificationManager.setDepartment(signatureInfo
+									.getDepartment());
+							notificationManager.setPositionType(signatureInfo
+									.getPositionType());
+							notificationManager.setPositionTitle(signatureInfo
+									.getPositionTitle());
+
+							notificationManagers.add(notificationManager);
 							break;
 						case "Dean":
 							contentProfile.append("<ak:dean>");
@@ -2511,6 +2904,28 @@ public class ProposalService {
 									.getUserProfileId());
 							contentProfile.append("</ak:userid>");
 							contentProfile.append("</ak:dean>");
+
+							NotificationLog notificationDean = new NotificationLog();
+							notificationDean.setCritical(true);
+							notificationDean.setType("Proposal");
+							// notificationDean.setAction("Ready for Approval");
+							notificationDean.setProposalId(proposalID);
+							notificationDean.setProposalTitle(existingProposal
+									.getProjectInfo().getProjectTitle());
+							notificationDean.setUserProfileId(signatureInfo
+									.getUserProfileId());
+							notificationDean.setUsername(signatureInfo
+									.getUserName());
+							notificationDean.setCollege(signatureInfo
+									.getCollege());
+							notificationDean.setDepartment(signatureInfo
+									.getDepartment());
+							notificationDean.setPositionType(signatureInfo
+									.getPositionType());
+							notificationDean.setPositionTitle(signatureInfo
+									.getPositionTitle());
+
+							notificationDeans.add(notificationDean);
 							break;
 						case "IRB":
 							contentProfile.append("<ak:irb>");
@@ -2527,6 +2942,28 @@ public class ProposalService {
 									.getUserProfileId());
 							contentProfile.append("</ak:userid>");
 							contentProfile.append("</ak:irb>");
+
+							NotificationLog notificationIRB = new NotificationLog();
+							notificationIRB.setCritical(true);
+							notificationIRB.setType("Proposal");
+							// notificationIRB.setAction("Ready for Approval");
+							notificationIRB.setProposalId(proposalID);
+							notificationIRB.setProposalTitle(existingProposal
+									.getProjectInfo().getProjectTitle());
+							notificationIRB.setUserProfileId(signatureInfo
+									.getUserProfileId());
+							notificationIRB.setUsername(signatureInfo
+									.getUserName());
+							notificationIRB.setCollege(signatureInfo
+									.getCollege());
+							notificationIRB.setDepartment(signatureInfo
+									.getDepartment());
+							notificationIRB.setPositionType(signatureInfo
+									.getPositionType());
+							notificationIRB.setPositionTitle(signatureInfo
+									.getPositionTitle());
+
+							notificationIRBs.add(notificationIRB);
 							break;
 						case "University Research Administrator":
 							contentProfile.append("<ak:administrator>");
@@ -2543,6 +2980,35 @@ public class ProposalService {
 									.getUserProfileId());
 							contentProfile.append("</ak:userid>");
 							contentProfile.append("</ak:administrator>");
+
+							NotificationLog notificationAdministrator = new NotificationLog();
+							notificationAdministrator.setCritical(true);
+							notificationAdministrator.setType("Proposal");
+							// notificationAdministrator
+							// .setAction("Ready for Approval");
+							notificationAdministrator.setProposalId(proposalID);
+							notificationAdministrator
+									.setProposalTitle(existingProposal
+											.getProjectInfo().getProjectTitle());
+							notificationAdministrator
+									.setUserProfileId(signatureInfo
+											.getUserProfileId());
+							notificationAdministrator.setUsername(signatureInfo
+									.getUserName());
+							notificationAdministrator.setCollege(signatureInfo
+									.getCollege());
+							notificationAdministrator
+									.setDepartment(signatureInfo
+											.getDepartment());
+							notificationAdministrator
+									.setPositionType(signatureInfo
+											.getPositionType());
+							notificationAdministrator
+									.setPositionTitle(signatureInfo
+											.getPositionTitle());
+
+							notificationAdministrators
+									.add(notificationAdministrator);
 							break;
 						case "University Research Director":
 							contentProfile.append("<ak:director>");
@@ -2559,6 +3025,30 @@ public class ProposalService {
 									.getUserProfileId());
 							contentProfile.append("</ak:userid>");
 							contentProfile.append("</ak:director>");
+
+							NotificationLog notificationDirector = new NotificationLog();
+							notificationDirector.setCritical(true);
+							notificationDirector.setType("Proposal");
+							// notificationDirector
+							// .setAction("Ready for Approval");
+							notificationDirector.setProposalId(proposalID);
+							notificationDirector
+									.setProposalTitle(existingProposal
+											.getProjectInfo().getProjectTitle());
+							notificationDirector.setUserProfileId(signatureInfo
+									.getUserProfileId());
+							notificationDirector.setUsername(signatureInfo
+									.getUserName());
+							notificationDirector.setCollege(signatureInfo
+									.getCollege());
+							notificationDirector.setDepartment(signatureInfo
+									.getDepartment());
+							notificationDirector.setPositionType(signatureInfo
+									.getPositionType());
+							notificationDirector.setPositionTitle(signatureInfo
+									.getPositionTitle());
+
+							notificationDirectors.add(notificationDirector);
 							break;
 						}
 					}
@@ -2820,7 +3310,7 @@ public class ProposalService {
 
 	private boolean saveProposal(String message, Proposal existingProposal,
 			Proposal oldProposal, UserProfile authorProfile, String proposalID,
-			List<SignatureInfo> signatures, boolean irbApprovalRequired)
+			List<SignatureUserInfo> signatures, boolean irbApprovalRequired)
 			throws UnknownHostException, Exception, ParseException,
 			IOException, JsonParseException, JsonMappingException {
 
@@ -4220,7 +4710,7 @@ public class ProposalService {
 							if (existingProposal.getChairApproval() == ApprovalType.READYFORAPPROVAL
 									&& proposalUserTitle.textValue().equals(
 											"Department Chair")) {
-								for (SignatureInfo chairSign : signatures) {
+								for (SignatureUserInfo chairSign : signatures) {
 									if (chairSign.getPositionTitle().equals(
 											"Department Chair")) {
 										for (SignatureInfo sign : existingProposal
@@ -4277,7 +4767,7 @@ public class ProposalService {
 									.getBusinessManagerApproval() == ApprovalType.READYFORAPPROVAL
 									&& proposalUserTitle.textValue().equals(
 											"Business Manager")) {
-								for (SignatureInfo businessManagerSign : signatures) {
+								for (SignatureUserInfo businessManagerSign : signatures) {
 									if (businessManagerSign.getPositionTitle()
 											.equals("Business Manager")) {
 										for (SignatureInfo sign : existingProposal
@@ -4318,7 +4808,7 @@ public class ProposalService {
 							} else if (existingProposal.getIrbApproval() == ApprovalType.READYFORAPPROVAL
 									&& proposalUserTitle.textValue().equals(
 											"IRB") && irbApprovalRequired) {
-								for (SignatureInfo irbSign : signatures) {
+								for (SignatureUserInfo irbSign : signatures) {
 									if (irbSign.getPositionTitle()
 											.equals("IRB")) {
 										for (SignatureInfo sign : existingProposal
@@ -4370,7 +4860,7 @@ public class ProposalService {
 							} else if (existingProposal.getDeanApproval() == ApprovalType.READYFORAPPROVAL
 									&& proposalUserTitle.textValue().equals(
 											"Dean")) {
-								for (SignatureInfo deanSign : signatures) {
+								for (SignatureUserInfo deanSign : signatures) {
 									if (deanSign.getPositionTitle().equals(
 											"Dean")) {
 										for (SignatureInfo sign : existingProposal
@@ -4436,7 +4926,7 @@ public class ProposalService {
 									&& proposalUserTitle
 											.textValue()
 											.equals("University Research Administrator")) {
-								for (SignatureInfo researchAdminSign : signatures) {
+								for (SignatureUserInfo researchAdminSign : signatures) {
 									if (researchAdminSign
 											.getPositionTitle()
 											.equals("University Research Administrator")) {
@@ -4480,7 +4970,7 @@ public class ProposalService {
 									.getResearchDirectorApproval() == ApprovalType.READYFORAPPROVAL
 									&& proposalUserTitle.textValue().equals(
 											"University Research Director")) {
-								for (SignatureInfo researchDirectorSign : signatures) {
+								for (SignatureUserInfo researchDirectorSign : signatures) {
 									if (researchDirectorSign
 											.getPositionTitle()
 											.equals("University Research Director")) {

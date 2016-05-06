@@ -2452,6 +2452,20 @@
       </AnyOf>
     </Target>
     <ObligationExpressions>
+      <ObligationExpression ObligationId="sendAlert" FulfillOn="Permit">
+       <AttributeAssignmentExpression AttributeId="obligationType">
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">preobligation</AttributeValue>
+        </AttributeAssignmentExpression>
+        <AttributeAssignmentExpression AttributeId="signedByCurrentUser">
+          <AttributeSelector MustBePresent="true" 
+                             Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" 
+                             Path="//ak:signedByCurrentUser/text()" 
+                             DataType="http://www.w3.org/2001/XMLSchema#string"/>
+        </AttributeAssignmentExpression>
+         <AttributeAssignmentExpression AttributeId="alertMessage">
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">You need to sign the proposal first!</AttributeValue>
+        </AttributeAssignmentExpression>       
+      </ObligationExpression>
       <ObligationExpression ObligationId="sendEmail" FulfillOn="Permit">
        <AttributeAssignmentExpression AttributeId="obligationType">
           <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">postobligation</AttributeValue>
@@ -2485,66 +2499,8 @@
                              Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" 
                              Path="//ak:senior/ak:workemail/text()" 
                              DataType="http://www.w3.org/2001/XMLSchema#string"/>
-        </AttributeAssignmentExpression>
-        <AttributeAssignmentExpression AttributeId="chairsEmail">
-          <AttributeSelector MustBePresent="true" 
-                             Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" 
-                             Path="//ak:chair/ak:workemail/text()" 
-                             DataType="http://www.w3.org/2001/XMLSchema#string"/>
-        </AttributeAssignmentExpression>
-        <AttributeAssignmentExpression AttributeId="managersEmail">
-          <AttributeSelector MustBePresent="true" 
-                             Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" 
-                             Path="//ak:manager/ak:workemail/text()" 
-                             DataType="http://www.w3.org/2001/XMLSchema#string"/>
-        </AttributeAssignmentExpression>
-        <AttributeAssignmentExpression AttributeId="deansEmail">
-          <AttributeSelector MustBePresent="true" 
-                             Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" 
-                             Path="//ak:dean/ak:workemail/text()" 
-                             DataType="http://www.w3.org/2001/XMLSchema#string"/>
-        </AttributeAssignmentExpression>
-        <AttributeAssignmentExpression AttributeId="irbsEmail">
-          <AttributeSelector MustBePresent="true" 
-                             Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" 
-                             Path="//ak:irb/ak:workemail/text()" 
-                             DataType="http://www.w3.org/2001/XMLSchema#string"/>
-        </AttributeAssignmentExpression>
-        <AttributeAssignmentExpression AttributeId="administratorsEmail">
-          <AttributeSelector MustBePresent="true" 
-                             Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" 
-                             Path="//ak:administrator/ak:workemail/text()" 
-                             DataType="http://www.w3.org/2001/XMLSchema#string"/>
-        </AttributeAssignmentExpression>
-        <AttributeAssignmentExpression AttributeId="directorsEmail">
-          <AttributeSelector MustBePresent="true" 
-                             Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" 
-                             Path="//ak:director/ak:workemail/text()" 
-                             DataType="http://www.w3.org/2001/XMLSchema#string"/>
-        </AttributeAssignmentExpression>
-      </ObligationExpression>
-      <ObligationExpression ObligationId="sendNotify" FulfillOn="Permit">
-       <AttributeAssignmentExpression AttributeId="obligationType">
-          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">preobligation</AttributeValue>
-        </AttributeAssignmentExpression>
-        <AttributeAssignmentExpression AttributeId="signedByCurrentUser">
-          <AttributeSelector MustBePresent="true" 
-                             Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" 
-                             Path="//ak:signedByCurrentUser/text()" 
-                             DataType="http://www.w3.org/2001/XMLSchema#string"/>
-        </AttributeAssignmentExpression>
-      </ObligationExpression>
-	  <ObligationExpression ObligationId="sendNotify" FulfillOn="Permit">
-       <AttributeAssignmentExpression AttributeId="obligationType">
-          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">preobligation</AttributeValue>
-        </AttributeAssignmentExpression>
-        <AttributeAssignmentExpression AttributeId="signedByCurrentUser">
-          <AttributeSelector MustBePresent="true" 
-                             Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" 
-                             Path="//ak:signedByCurrentUser/text()" 
-                             DataType="http://www.w3.org/2001/XMLSchema#string"/>
-        </AttributeAssignmentExpression>
-      </ObligationExpression>
+        </AttributeAssignmentExpression>        
+      </ObligationExpression>      
     </ObligationExpressions>
     <AdviceExpressions>
       <AdviceExpression AdviceId="role" AppliesTo="Permit">
@@ -2620,6 +2576,63 @@
         </AllOf>
       </AnyOf>
     </Target>
+    <ObligationExpressions>
+      <ObligationExpression ObligationId="sendAlert" FulfillOn="Permit">
+       <AttributeAssignmentExpression AttributeId="obligationType">
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">preobligation</AttributeValue>
+        </AttributeAssignmentExpression>
+        <AttributeAssignmentExpression AttributeId="signedByCurrentUser">
+          <AttributeSelector MustBePresent="true" 
+                             Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" 
+                             Path="//ak:signedByCurrentUser/text()" 
+                             DataType="http://www.w3.org/2001/XMLSchema#string"/>
+        </AttributeAssignmentExpression>
+         <AttributeAssignmentExpression AttributeId="alertMessage">
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">You need to sign the proposal first!</AttributeValue>
+        </AttributeAssignmentExpression>       
+      </ObligationExpression>
+      <ObligationExpression ObligationId="sendEmail" FulfillOn="Permit">
+       <AttributeAssignmentExpression AttributeId="obligationType">
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">postobligation</AttributeValue>
+        </AttributeAssignmentExpression>
+        <AttributeAssignmentExpression AttributeId="emailBody">
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Hello User,&lt;br/&gt;&lt;br/&gt;Your proposal has been updated. As soon as possible please review your proposal for any unwanted changes.&lt;br/&gt;&lt;br/&gt;Thank you, &lt;br/&gt; GPMS Team</AttributeValue>
+        </AttributeAssignmentExpression>
+        <AttributeAssignmentExpression AttributeId="emailSubject">
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Your proposal has been submitted by: </AttributeValue>
+        </AttributeAssignmentExpression>
+         <AttributeAssignmentExpression AttributeId="authorName">
+          <AttributeSelector MustBePresent="true" 
+                             Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" 
+                             Path="//ak:authorprofile/ak:fullname/text()"
+                             DataType="http://www.w3.org/2001/XMLSchema#string"/>
+        </AttributeAssignmentExpression>       
+        <AttributeAssignmentExpression AttributeId="piEmail">
+          <AttributeSelector MustBePresent="true" 
+                             Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" 
+                             Path="//ak:pi/ak:workemail/text()" 
+                             DataType="http://www.w3.org/2001/XMLSchema#string"/>
+        </AttributeAssignmentExpression>
+        <AttributeAssignmentExpression AttributeId="copisEmail">
+          <AttributeSelector MustBePresent="true" 
+                             Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" 
+                             Path="//ak:copi/ak:workemail/text()" 
+                             DataType="http://www.w3.org/2001/XMLSchema#string"/>
+        </AttributeAssignmentExpression>
+        <AttributeAssignmentExpression AttributeId="seniorsEmail">
+          <AttributeSelector MustBePresent="true" 
+                             Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" 
+                             Path="//ak:senior/ak:workemail/text()" 
+                             DataType="http://www.w3.org/2001/XMLSchema#string"/>
+        </AttributeAssignmentExpression>
+        <AttributeAssignmentExpression AttributeId="chairsEmail">
+          <AttributeSelector MustBePresent="true" 
+                             Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" 
+                             Path="//ak:chair/ak:workemail/text()" 
+                             DataType="http://www.w3.org/2001/XMLSchema#string"/>
+        </AttributeAssignmentExpression>        
+      </ObligationExpression>      
+    </ObligationExpressions>
   </Rule>
 
   <Rule Effect="Permit" RuleId="DeleteProposalByPI-Rule17">
@@ -2668,6 +2681,43 @@
         </AllOf>
       </AnyOf>
     </Target>
+    <ObligationExpressions>      
+      <ObligationExpression ObligationId="sendEmail" FulfillOn="Permit">
+       <AttributeAssignmentExpression AttributeId="obligationType">
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">postobligation</AttributeValue>
+        </AttributeAssignmentExpression>
+        <AttributeAssignmentExpression AttributeId="emailBody">
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Hello User,&lt;br/&gt;&lt;br/&gt;Your proposal has been updated. As soon as possible please review your proposal for any unwanted changes.&lt;br/&gt;&lt;br/&gt;Thank you, &lt;br/&gt; GPMS Team</AttributeValue>
+        </AttributeAssignmentExpression>
+        <AttributeAssignmentExpression AttributeId="emailSubject">
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Your proposal has been deleted successfully by: </AttributeValue>
+        </AttributeAssignmentExpression>
+         <AttributeAssignmentExpression AttributeId="authorName">
+          <AttributeSelector MustBePresent="true" 
+                             Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" 
+                             Path="//ak:authorprofile/ak:fullname/text()"
+                             DataType="http://www.w3.org/2001/XMLSchema#string"/>
+        </AttributeAssignmentExpression>       
+        <AttributeAssignmentExpression AttributeId="piEmail">
+          <AttributeSelector MustBePresent="true" 
+                             Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" 
+                             Path="//ak:pi/ak:workemail/text()" 
+                             DataType="http://www.w3.org/2001/XMLSchema#string"/>
+        </AttributeAssignmentExpression>
+        <AttributeAssignmentExpression AttributeId="copisEmail">
+          <AttributeSelector MustBePresent="true" 
+                             Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" 
+                             Path="//ak:copi/ak:workemail/text()" 
+                             DataType="http://www.w3.org/2001/XMLSchema#string"/>
+        </AttributeAssignmentExpression>
+        <AttributeAssignmentExpression AttributeId="seniorsEmail">
+          <AttributeSelector MustBePresent="true" 
+                             Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" 
+                             Path="//ak:senior/ak:workemail/text()" 
+                             DataType="http://www.w3.org/2001/XMLSchema#string"/>
+        </AttributeAssignmentExpression>        
+      </ObligationExpression>      
+    </ObligationExpressions>
   </Rule>
 
   <Rule Effect="Permit" RuleId="ProposalSectionEditByDepartmentChair-Rule18">
