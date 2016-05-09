@@ -1,0 +1,150 @@
+{ 
+    "_id" : ObjectId("56e459c1af68c71ea4248ed7"), 
+    "username" : "admin", 
+    "password" : "1000:3396243a270ca9b89d12c1c884f79536d3114bb8eaafcf6e:2193ad06142493e9d23d3fcabf89119467ae40a40680d8fb", 
+    "deleted" : false, 
+    "active" : true, 
+    "admin" : true, 
+    "added on" : ISODate("2016-03-12T18:02:41.449+0000"), 
+    "version" : NumberLong(1)
+}
+{ 
+    "_id" : ObjectId("56e45a50af68c71ea4248ede"), 
+    "username" : "milson", 
+    "password" : "1000:54e3e18185928592d8bbb215173f8ffdde72fd6c508f63dd:d4d5991274f45b38cdb0c576ceae32f687e8ef5697366457", 
+    "deleted" : false, 
+    "active" : true, 
+    "admin" : false, 
+    "added on" : ISODate("2016-03-12T18:05:04.144+0000"), 
+    "version" : NumberLong(7)
+}
+{ 
+    "_id" : ObjectId("56e45ae8af68c71ea4248eea"), 
+    "username" : "chair", 
+    "password" : "1000:62db66c92b6cfbb16509bd1c837e16e152e9cbedbf050dc8:af68539342c759243a8c9a2da2cd2db80d874950ac1e7a07", 
+    "deleted" : false, 
+    "active" : true, 
+    "admin" : false, 
+    "added on" : ISODate("2016-03-12T18:07:36.310+0000"), 
+    "version" : NumberLong(2)
+}
+{ 
+    "_id" : ObjectId("56e45b25af68c71ea4248ef2"), 
+    "username" : "thomas", 
+    "password" : "1000:250ffa4be424fce099a189876a93777b43c6ff682759423d:1ecf2404b1eadc1350537189ca6fab6293ad0574950eb7f1", 
+    "deleted" : false, 
+    "active" : true, 
+    "admin" : false, 
+    "added on" : ISODate("2016-03-12T18:08:37.638+0000"), 
+    "version" : NumberLong(3)
+}
+{ 
+    "_id" : ObjectId("56e45b61af68c71ea4248efa"), 
+    "username" : "tamanna", 
+    "password" : "1000:5e6b57ab5a20d7e7aae2a9bebae176983516bd887c6b8d7e:bcfcd862f4b06673b5f77f972b5feaffafcbf42abd54e9dc", 
+    "deleted" : false, 
+    "active" : true, 
+    "admin" : false, 
+    "added on" : ISODate("2016-03-12T18:09:37.111+0000"), 
+    "version" : NumberLong(1)
+}
+{ 
+    "_id" : ObjectId("56e45badaf68c71ea4248f02"), 
+    "username" : "dean", 
+    "password" : "1000:cbfbf3d0fc934140dcc5ed7fcbc69204f410c0515e5f11b2:3c96aacfd86eefe8d236a014d656860bba6d55dc5a3f3e20", 
+    "deleted" : false, 
+    "active" : true, 
+    "admin" : false, 
+    "added on" : ISODate("2016-03-12T18:10:53.703+0000"), 
+    "version" : NumberLong(2)
+}
+{ 
+    "_id" : ObjectId("56e45bedaf68c71ea4248f0a"), 
+    "username" : "researchadmin", 
+    "password" : "1000:2f403fb93155cc302f366bfcab2a39ebe093cd6bb02aab62:0daae7f4886bccf72a403485f4823bca6962d3c80e7cc450", 
+    "deleted" : false, 
+    "active" : true, 
+    "admin" : false, 
+    "added on" : ISODate("2016-03-12T18:11:57.551+0000"), 
+    "version" : NumberLong(1)
+}
+{ 
+    "_id" : ObjectId("56e45c28af68c71ea4248f12"), 
+    "username" : "director", 
+    "password" : "1000:525e676a2ffc3b21d983b2fcb1b65b7f7e79395d540c8d1e:f5738e966fda734f6c044e0f96b029bb6f58feb4eedf5b1e", 
+    "deleted" : false, 
+    "active" : true, 
+    "admin" : false, 
+    "added on" : ISODate("2016-03-12T18:12:56.625+0000"), 
+    "version" : NumberLong(1)
+}
+{ 
+    "_id" : ObjectId("56e45c5eaf68c71ea4248f1a"), 
+    "username" : "manager", 
+    "password" : "1000:8986153079b9b8289d2ba747a841d753bb635abb91f0b63c:1795731319cd8f6bf62888e4800961eddb862594360e725b", 
+    "deleted" : false, 
+    "active" : true, 
+    "admin" : false, 
+    "added on" : ISODate("2016-03-12T18:13:50.216+0000"), 
+    "version" : NumberLong(1)
+}
+{ 
+    "_id" : ObjectId("56e45c87af68c71ea4248f22"), 
+    "username" : "irb", 
+    "password" : "1000:f5d2c16a6e7fb59ead0e7727965f21c54d296d04326d3faf:e91ca15167e4799ea81a72372ceb9de2c09fd1b66bbbd3b0", 
+    "deleted" : false, 
+    "active" : true, 
+    "admin" : false, 
+    "added on" : ISODate("2016-03-12T18:14:31.044+0000"), 
+    "version" : NumberLong(1)
+}
+{ 
+    "_id" : ObjectId("56e45ce6af68c71ea4248f32"), 
+    "username" : "arthur", 
+    "password" : "1000:3909f228ccfd56ae5c03bb68c2d1c29786427da5c92bab4f:dad371627c17c7d61063f347ab392bc6ad78a27974d903cd", 
+    "deleted" : false, 
+    "active" : true, 
+    "admin" : false, 
+    "added on" : ISODate("2016-03-12T18:16:06.904+0000"), 
+    "version" : NumberLong(1)
+}
+{ 
+    "_id" : ObjectId("56e7398465dbb36ec3824378"), 
+    "username" : "chair2", 
+    "password" : "1000:699a06a20d9b4a7ae5158f74ed434f4666acfc9149e90963:5896ec3b7305cbe3e4b6b61b1030dfb6cb618871112c8537", 
+    "deleted" : false, 
+    "active" : true, 
+    "admin" : false, 
+    "added on" : ISODate("2016-03-14T22:21:56.706+0000"), 
+    "version" : NumberLong(1)
+}
+{ 
+    "_id" : ObjectId("56ecbac265dbb3d5975ded81"), 
+    "username" : "milstein", 
+    "password" : "1000:1e0921d0feb4773b8aa811d8e7fbec6928c09089308aab57:60728d209301549eab8a5e3a1eedc3b56a780692f715c82c", 
+    "deleted" : false, 
+    "active" : true, 
+    "admin" : false, 
+    "added on" : ISODate("2016-03-19T02:34:42.822+0000"), 
+    "version" : NumberLong(2)
+}
+{ 
+    "_id" : ObjectId("56fee3e965dbb35ce5c900fe"), 
+    "username" : "pswang", 
+    "password" : "1000:caa5cdc1ff192647fc2b7b5fc85dad24fe891c300a77dd7c:e6891128f5eb422f0accfcdcacf1280c9a0f5a1852fe6df6", 
+    "deleted" : false, 
+    "active" : true, 
+    "admin" : false, 
+    "added on" : ISODate("2016-04-01T21:11:05.379+0000"), 
+    "version" : NumberLong(1)
+}
+{ 
+    "_id" : ObjectId("570017ce65dbb3c4058144c6"), 
+    "username" : "samir", 
+    "password" : "1000:7e1c4750ce550ed1ad2377e3f0d9cbd10edcaa2117756d9c:ebfb3ca0f8c1cd809ba6c062a15812030233854989bd6b3d", 
+    "deleted" : false, 
+    "active" : true, 
+    "admin" : false, 
+    "added on" : ISODate("2016-04-02T19:04:46.592+0000"), 
+    "version" : NumberLong(1)
+}

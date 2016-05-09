@@ -1,0 +1,147 @@
+for (SignatureUserInfo userToNotify : signatures) {
+									NotificationLog notification = new NotificationLog();
+									if (userToNotify
+											.getPositionTitle()
+											.equals("University Research Administrator")) {
+										notification.setCritical(true);
+										notification.setType("Proposal");
+										notification
+												.setAction("Disapproved by "
+														+ authorUserName);
+										notification.setProposalId(proposalID);
+										notification
+												.setProposalTitle(existingProposal
+														.getProjectInfo()
+														.getProjectTitle());
+										notification
+												.setUserProfileId(userToNotify
+														.getUserProfileId());
+										notification.setUsername(userToNotify
+												.getUserName());
+										notification.setCollege(userToNotify
+												.getCollege());
+										notification.setDepartment(userToNotify
+												.getDepartment());
+										notification
+												.setPositionType(userToNotify
+														.getPositionType());
+										notification
+												.setPositionTitle(userToNotify
+														.getPositionTitle());
+									} else if (userToNotify.getPositionTitle()
+											.equals("Dean")) {
+										notification.setCritical(true);
+										notification.setType("Proposal");
+										notification
+												.setAction("Disapproved by "
+														+ authorUserName);
+										notification.setProposalId(proposalID);
+										notification
+												.setProposalTitle(existingProposal
+														.getProjectInfo()
+														.getProjectTitle());
+										notification
+												.setUserProfileId(userToNotify
+														.getUserProfileId());
+										notification.setUsername(userToNotify
+												.getUserName());
+										notification.setCollege(userToNotify
+												.getCollege());
+										notification.setDepartment(userToNotify
+												.getDepartment());
+										notification
+												.setPositionType(userToNotify
+														.getPositionType());
+										notification
+												.setPositionTitle(userToNotify
+														.getPositionTitle());
+									} else if (userToNotify.getPositionTitle()
+											.equals("Business Manager")) {
+										notification.setCritical(true);
+										notification.setType("Proposal");
+										notification
+												.setAction("Disapproved by "
+														+ authorUserName);
+										notification.setProposalId(proposalID);
+										notification
+												.setProposalTitle(existingProposal
+														.getProjectInfo()
+														.getProjectTitle());
+										notification
+												.setUserProfileId(userToNotify
+														.getUserProfileId());
+										notification.setUsername(userToNotify
+												.getUserName());
+										notification.setCollege(userToNotify
+												.getCollege());
+										notification.setDepartment(userToNotify
+												.getDepartment());
+										notification
+												.setPositionType(userToNotify
+														.getPositionType());
+										notification
+												.setPositionTitle(userToNotify
+														.getPositionTitle());
+									} else if (userToNotify.getPositionTitle()
+											.equals("Department Chair")) {
+										notification.setCritical(true);
+										notification.setType("Proposal");
+										notification
+												.setAction("Disapproved by "
+														+ authorUserName);
+										notification.setProposalId(proposalID);
+										notification
+												.setProposalTitle(existingProposal
+														.getProjectInfo()
+														.getProjectTitle());
+										notification
+												.setUserProfileId(userToNotify
+														.getUserProfileId());
+										notification.setUsername(userToNotify
+												.getUserName());
+										notification.setCollege(userToNotify
+												.getCollege());
+										notification.setDepartment(userToNotify
+												.getDepartment());
+										notification
+												.setPositionType(userToNotify
+														.getPositionType());
+										notification
+												.setPositionTitle(userToNotify
+														.getPositionTitle());
+									} else if (userToNotify.getPositionTitle()
+											.equals("IRB")) {
+										if (existingProposal.getIrbApproval() == ApprovalType.APPROVED) {
+											notification.setCritical(true);
+											notification.setType("Proposal");
+											notification
+													.setAction("Disapproved by "
+															+ authorUserName);
+											notification
+													.setProposalId(proposalID);
+											notification
+													.setProposalTitle(existingProposal
+															.getProjectInfo()
+															.getProjectTitle());
+											notification
+													.setUserProfileId(userToNotify
+															.getUserProfileId());
+											notification
+													.setUsername(userToNotify
+															.getUserName());
+											notification
+													.setCollege(userToNotify
+															.getCollege());
+											notification
+													.setDepartment(userToNotify
+															.getDepartment());
+											notification
+													.setPositionType(userToNotify
+															.getPositionType());
+											notification
+													.setPositionTitle(userToNotify
+															.getPositionTitle());
+										}
+									}
+									notificationDAO.save(notification);
+								}
