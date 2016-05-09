@@ -2596,7 +2596,7 @@
           <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">postobligation</AttributeValue>
         </AttributeAssignmentExpression>
         <AttributeAssignmentExpression AttributeId="emailBody">
-          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Hello User,&lt;br/&gt;&lt;br/&gt;Your proposal has been updated. As soon as possible please review your proposal for any unwanted changes.&lt;br/&gt;&lt;br/&gt;Thank you, &lt;br/&gt; GPMS Team</AttributeValue>
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Hello User,&lt;br/&gt;&lt;br/&gt;The proposal has been submitted. As soon as possible please review the proposal.&lt;br/&gt;&lt;br/&gt;Thank you, &lt;br/&gt; GPMS Team</AttributeValue>
         </AttributeAssignmentExpression>
         <AttributeAssignmentExpression AttributeId="emailSubject">
           <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Your proposal has been submitted by: </AttributeValue>

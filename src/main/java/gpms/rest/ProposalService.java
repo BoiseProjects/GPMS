@@ -481,6 +481,7 @@ public class ProposalService {
 		}
 	}
 
+	// Delete
 	@POST
 	@Path("/DeleteProposalByProposalID")
 	public Response deleteProposalByProposalID(String message) throws Exception {
@@ -1421,6 +1422,7 @@ public class ProposalService {
 		return signatures;
 	}
 
+	// Withdraw and Archive
 	@POST
 	@Path("/UpdateProposalStatus")
 	public Response updateProposalStatus(String message) throws Exception {
@@ -2031,6 +2033,7 @@ public class ProposalService {
 				.entity("No User Permission Attributes are send!").build();
 	}
 
+	// Save Submit Approve Disapprove
 	@POST
 	@Path("/SaveUpdateProposal")
 	public Response saveUpdateProposal(String message) throws Exception {
@@ -2935,107 +2938,73 @@ public class ProposalService {
 							List<ObligationResult> obligations = ar
 									.getObligations();
 
-							List<ObligationResult> preObligations = new ArrayList<ObligationResult>();
-							List<ObligationResult> postObligations = new ArrayList<ObligationResult>();
-							List<ObligationResult> ongoingObligations = new ArrayList<ObligationResult>();
+							EmailUtil emailUtil = new EmailUtil();
+							String emailSubject = new String();
+							String emailBody = new String();
+							String authorName = new String();
+							String piEmail = new String();
+							List<String> emaillist = new ArrayList<String>();
 
-							for (ObligationResult obligation : obligations) {
-								if (obligation instanceof org.wso2.balana.xacml3.Obligation) {
-									List<AttributeAssignment> assignments = ((org.wso2.balana.xacml3.Obligation) obligation)
-											.getAssignments();
+							// List<String> emailslist = new
+							// ArrayList<String>();
+							// List<String> userslist = new ArrayList<String>();
 
-									String obligationType = "postobligation";
+							String postObligationId = new String();
+							if (obligations.size() > 0) {
+								List<ObligationResult> preObligations = new ArrayList<ObligationResult>();
+								List<ObligationResult> postObligations = new ArrayList<ObligationResult>();
+								List<ObligationResult> ongoingObligations = new ArrayList<ObligationResult>();
 
-									for (AttributeAssignment assignment : assignments) {
-										if (assignment
-												.getAttributeId()
-												.toString()
-												.equalsIgnoreCase(
-														"obligationType")) {
-											obligationType = assignment
-													.getContent();
-											break;
-										}
-									}
-
-									if (obligationType.equals("preobligation")) {
-										preObligations.add(obligation);
-										System.out.println(obligationType
-												+ " is FOUND");
-									} else if (obligationType
-											.equals("postobligation")) {
-										postObligations.add(obligation);
-										System.out.println(obligationType
-												+ " is FOUND");
-									} else {
-										ongoingObligations.add(obligation);
-										System.out.println(obligationType
-												+ " is FOUND");
-									}
-
-								}
-							}
-
-							Boolean preCondition = false;
-
-							System.out
-									.println("\n======================== Printing Obligations ====================");
-
-							String alertMessage = new String();
-							for (ObligationResult obligation : preObligations) {
-								if (obligation instanceof org.wso2.balana.xacml3.Obligation) {
-									List<AttributeAssignment> assignments = ((org.wso2.balana.xacml3.Obligation) obligation)
-											.getAssignments();
-
-									String obligationType = "preobligation";
-
-									for (AttributeAssignment assignment : assignments) {
-
-										// System.out.println("Obligation :  "
-										// + assignment.getContent() +
-										// "\n");
-
-										switch (assignment.getAttributeId()
-												.toString()) {
-										// case "obligationType":
-										// obligationType =
-										// assignment.getContent();
-										// break;
-
-										case "signedByCurrentUser":
-											preCondition = Boolean
-													.parseBoolean(assignment
-															.getContent());
-											break;
-										case "alertMessage":
-											alertMessage = assignment
-													.getContent();
-											break;
-
-										}
-									}
-									System.out.println(obligationType
-											+ " is RUNNING");
-									if (!preCondition) {
-										break;
-									}
-								}
-							}
-
-							if (preCondition) {
-								for (ObligationResult obligation : postObligations) {
+								for (ObligationResult obligation : obligations) {
 									if (obligation instanceof org.wso2.balana.xacml3.Obligation) {
 										List<AttributeAssignment> assignments = ((org.wso2.balana.xacml3.Obligation) obligation)
 												.getAssignments();
 
 										String obligationType = "postobligation";
 
-										EmailUtil emailUtil = new EmailUtil();
-										String emailSubject = new String();
-										String emailBody = new String();
-										String authorName = new String();
-										String piEmail = new String();
-										List<String> emaillist = new ArrayList<String>();
+										for (AttributeAssignment assignment : assignments) {
+											if (assignment
+													.getAttributeId()
+													.toString()
+													.equalsIgnoreCase(
+															"obligationType")) {
+												obligationType = assignment
+														.getContent();
+												break;
+											}
+										}
+
+										if (obligationType
+												.equals("preobligation")) {
+											preObligations.add(obligation);
+											System.out.println(obligationType
+													+ " is FOUND");
+										} else if (obligationType
+												.equals("postobligation")) {
+											postObligations.add(obligation);
+											System.out.println(obligationType
+													+ " is FOUND");
+										} else {
+											ongoingObligations.add(obligation);
+											System.out.println(obligationType
+													+ " is FOUND");
+										}
+
+									}
+								}
+
+								Boolean preCondition = false;
+
+								System.out
+										.println("\n======================== Printing Obligations ====================");
+
+								String alertMessage = new String();
+								for (ObligationResult obligation : preObligations) {
+									if (obligation instanceof org.wso2.balana.xacml3.Obligation) {
+										List<AttributeAssignment> assignments = ((org.wso2.balana.xacml3.Obligation) obligation)
+												.getAssignments();
+
+										String obligationType = "preobligation";
 
 										for (AttributeAssignment assignment : assignments) {
 
@@ -3049,86 +3018,132 @@ public class ProposalService {
 											// obligationType =
 											// assignment.getContent();
 											// break;
-											case "authorName":
-												authorName = assignment
+
+											case "signedByCurrentUser":
+												preCondition = Boolean
+														.parseBoolean(assignment
+																.getContent());
+												break;
+											case "alertMessage":
+												alertMessage = assignment
 														.getContent();
 												break;
-											case "emailSubject":
-												emailSubject = assignment
-														.getContent();
-												break;
-											case "emailBody":
-												emailBody = assignment
-														.getContent();
-												break;
-											case "piEmail":
-												piEmail = assignment
-														.getContent();
-												break;
-											case "copisEmail":
-											case "seniorsEmail":
-											case "chairsEmail":
-											case "managersEmail":
-											case "deansEmail":
-											case "irbsEmail":
-											case "administratorsEmail":
-											case "directorsEmail":
-												emaillist.add(assignment
-														.getContent());
-												break;
+
 											}
 										}
-
 										System.out.println(obligationType
 												+ " is RUNNING");
-										boolean proposalIsChanged = saveProposal(
-												message, existingProposal,
-												oldProposal, authorProfile,
-												proposalID, signatures,
-												irbApprovalRequired);
-										if (proposalIsChanged) {
-											emailUtil
-													.sendMailMultipleUsersWithoutAuth(
-															piEmail,
-															emaillist,
-															emailSubject
-																	+ authorName,
-															emailBody);
+										if (!preCondition) {
+											break;
+										}
+									}
+								}
 
-											return Response
-													.status(200)
-													.type(MediaType.APPLICATION_JSON)
-													.entity("true").build();
-											// return
-											// Response.status(200).entity(true).build();
-										} else {
-											return Response
-													.status(200)
-													.type(MediaType.APPLICATION_JSON)
-													.entity("true").build();
+								if (preCondition) {
+									for (ObligationResult obligation : postObligations) {
+										if (obligation instanceof org.wso2.balana.xacml3.Obligation) {
+											postObligationId = ((org.wso2.balana.xacml3.Obligation) obligation)
+													.getObligationId()
+													.toString();
+											List<AttributeAssignment> assignments = ((org.wso2.balana.xacml3.Obligation) obligation)
+													.getAssignments();
+
+											String obligationType = "postobligation";
+
+											for (AttributeAssignment assignment : assignments) {
+
+												// System.out.println("Obligation :  "
+												// + assignment.getContent() +
+												// "\n");
+
+												switch (assignment
+														.getAttributeId()
+														.toString()) {
+												// case "obligationType":
+												// obligationType =
+												// assignment.getContent();
+												// break;
+												case "authorName":
+													authorName = assignment
+															.getContent();
+													break;
+												case "emailSubject":
+													emailSubject = assignment
+															.getContent();
+													break;
+												case "emailBody":
+													emailBody = assignment
+															.getContent();
+													break;
+												case "piEmail":
+													piEmail = assignment
+															.getContent();
+													break;
+												case "copisEmail":
+												case "seniorsEmail":
+												case "chairsEmail":
+												case "managersEmail":
+												case "deansEmail":
+												case "irbsEmail":
+												case "administratorsEmail":
+												case "directorsEmail":
+													emaillist.add(assignment
+															.getContent());
+													break;
+												}
+											}
+
+											System.out.println(obligationType
+													+ " is RUNNING");
+
 										}
 									}
-								}
-								System.out
-										.println("===========================================================");
-								System.out
-										.println("\n======================== Printing Advices ====================");
-								List<Advice> advices = ar.getAdvices();
-								for (Advice advice : advices) {
-									if (advice instanceof org.wso2.balana.xacml3.Advice) {
-										List<AttributeAssignment> assignments = ((org.wso2.balana.xacml3.Advice) advice)
-												.getAssignments();
-										for (AttributeAssignment assignment : assignments) {
-											System.out.println("Advice :  "
-													+ assignment.getContent()
-													+ "\n");
+									System.out
+											.println("===========================================================");
+									System.out
+											.println("\n======================== Printing Advices ====================");
+									List<Advice> advices = ar.getAdvices();
+									for (Advice advice : advices) {
+										if (advice instanceof org.wso2.balana.xacml3.Advice) {
+											List<AttributeAssignment> assignments = ((org.wso2.balana.xacml3.Advice) advice)
+													.getAssignments();
+											for (AttributeAssignment assignment : assignments) {
+												System.out.println("Advice :  "
+														+ assignment
+																.getContent()
+														+ "\n");
+											}
 										}
 									}
+
+								} else {
+									return Response.status(403)
+											.type(MediaType.APPLICATION_JSON)
+											.entity(alertMessage).build();
 								}
-							} else {
-								return Response.status(403)
+							}
+
+							boolean proposalIsChanged = saveProposal(message,
+									existingProposal, oldProposal,
+									authorProfile, proposalID, signatures,
+									irbApprovalRequired);
+							if (proposalIsChanged) {
+								if (!emailSubject.equals("")
+										&& postObligationId == "sendEmail") {
+									emailUtil.sendMailMultipleUsersWithoutAuth(
+											piEmail, emaillist, emailSubject
+													+ authorName, emailBody);
+								}
+
+								return Response.status(200)
 										.type(MediaType.APPLICATION_JSON)
-										.entity(alertMessage).build();
+										.entity("true").build();
+								// return
+								// Response.status(200).entity(true).build();
+							} else {
+								return Response.status(200)
+										.type(MediaType.APPLICATION_JSON)
+										.entity("true").build();
 							}
 						} else {
 							return Response
@@ -4301,6 +4316,7 @@ public class ProposalService {
 
 			// For Proposal User Title : for Dean, Chair and Manager
 			JsonNode proposalUserTitle = root.get("proposalUserTitle");
+			String notificationMessage = new String();
 			if (proposalUserTitle != null) {
 				// For Proposal Roles : PI, Co-PI, Senior
 				JsonNode proposalRoles = root.get("proposalRoles");
@@ -4316,7 +4332,6 @@ public class ProposalService {
 
 				// For Proposal Status
 				if (buttonType != null) {
-					String notificationMessage = new String();
 					switch (buttonType.textValue()) {
 					case "Save":
 						// This is Hack
@@ -4412,10 +4427,6 @@ public class ProposalService {
 							}
 						}
 
-						NotifyAllExistingInvestigators(existingProposal.getId()
-								.toString(), existingProposal.getProjectInfo()
-								.getProjectTitle(), existingProposal,
-								notificationMessage, "Proposal", false);
 						break;
 
 					case "Submit":
@@ -4593,13 +4604,9 @@ public class ProposalService {
 							}
 						}
 
-						notificationMessage = "Submited" + " by "
+						notificationMessage = "Submitted" + " by "
 								+ authorUserName + ".";
 
-						NotifyAllExistingInvestigators(existingProposal.getId()
-								.toString(), existingProposal.getProjectInfo()
-								.getProjectTitle(), existingProposal,
-								notificationMessage, "Proposal", false);
 						break;
 
 					case "Approve":
@@ -4969,6 +4976,46 @@ public class ProposalService {
 										existingProposal
 												.getProposalStatus()
 												.add(Status.WAITINGFORRESEARCHADMINAPPROVAL);
+
+										for (SignatureUserInfo researchadmin : signatures) {
+											if (researchadmin
+													.getPositionTitle()
+													.equals("University Research Administrator")) {
+												NotificationLog notification = new NotificationLog();
+												notification.setCritical(true);
+												notification
+														.setType("Proposal");
+												notification
+														.setAction("Ready for Approval");
+												notification
+														.setProposalId(proposalID);
+												notification
+														.setProposalTitle(existingProposal
+																.getProjectInfo()
+																.getProjectTitle());
+												notification
+														.setUserProfileId(researchadmin
+																.getUserProfileId());
+												notification
+														.setUsername(researchadmin
+																.getUserName());
+												notification
+														.setCollege(researchadmin
+																.getCollege());
+												notification
+														.setDepartment(researchadmin
+																.getDepartment());
+												notification
+														.setPositionType(researchadmin
+																.getPositionType());
+												notification
+														.setPositionTitle(researchadmin
+																.getPositionTitle());
+
+												notificationDAO
+														.save(notification);
+											}
+										}
 									} else {
 										if (existingProposal.getIrbApproval() == ApprovalType.APPROVED) {
 											existingProposal
@@ -5156,7 +5203,7 @@ public class ProposalService {
 											notification.setCritical(true);
 											notification.setType("Proposal");
 											notification
-													.setAction("Ready for Approval");
+													.setAction("Ready for Submission");
 											notification
 													.setProposalId(proposalID);
 											notification
@@ -5195,11 +5242,6 @@ public class ProposalService {
 
 						notificationMessage = "Approved" + " by "
 								+ authorUserName + ".";
-
-						NotifyAllExistingInvestigators(existingProposal.getId()
-								.toString(), existingProposal.getProjectInfo()
-								.getProjectTitle(), existingProposal,
-								notificationMessage, "Proposal", false);
 
 						break;
 
@@ -5365,10 +5407,6 @@ public class ProposalService {
 						notificationMessage = "Disapproved" + " by "
 								+ authorUserName + ".";
 
-						NotifyAllExistingInvestigators(existingProposal.getId()
-								.toString(), existingProposal.getProjectInfo()
-								.getProjectTitle(), existingProposal,
-								notificationMessage, "Proposal", false);
 						break;
 
 					default:
@@ -5387,6 +5425,13 @@ public class ProposalService {
 			} else {
 				proposalDAO.saveProposal(existingProposal, authorProfile);
 				proposalIsChanged = true;
+			}
+
+			if (proposalIsChanged) {
+				NotifyAllExistingInvestigators(existingProposal.getId()
+						.toString(), existingProposal.getProjectInfo()
+						.getProjectTitle(), existingProposal,
+						notificationMessage, "Proposal", false);
 			}
 		}
 		return proposalIsChanged;
