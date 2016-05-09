@@ -236,41 +236,41 @@ public class TestAccessControl {
 		contentProfile.append("</ak:userid>");
 		contentProfile.append("</ak:senior>");
 
-		contentProfile.append("<ak:dean>");
-		contentProfile.append("<ak:fullname>");
-		contentProfile.append("Robert Hall");
-		contentProfile.append("</ak:fullname>");
-		contentProfile.append("<ak:workemail>");
-		contentProfile.append("robert@yahoo.com");
-		contentProfile.append("</ak:workemail>");
-		contentProfile.append("<ak:userid>");
-		contentProfile.append("56fee3e965dbb35ce1c920ex");
-		contentProfile.append("</ak:userid>");
-		contentProfile.append("</ak:dean>");
-
-		contentProfile.append("<ak:manager>");
-		contentProfile.append("<ak:fullname>");
-		contentProfile.append("Tim Schimit");
-		contentProfile.append("</ak:fullname>");
-		contentProfile.append("<ak:workemail>");
-		contentProfile.append("tim@yahoo.camss");
-		contentProfile.append("</ak:workemail>");
-		contentProfile.append("<ak:userid>");
-		contentProfile.append("56fee3e965dbb35ce1c920dx");
-		contentProfile.append("</ak:userid>");
-		contentProfile.append("</ak:manager>");
-
-		contentProfile.append("<ak:dean>");
-		contentProfile.append("<ak:fullname>");
-		contentProfile.append("Austin Smith");
-		contentProfile.append("</ak:fullname>");
-		contentProfile.append("<ak:workemail>");
-		contentProfile.append("austin@yahoo.com");
-		contentProfile.append("</ak:workemail>");
-		contentProfile.append("<ak:userid>");
-		contentProfile.append("56fee3e965dbb35ce1c120ex");
-		contentProfile.append("</ak:userid>");
-		contentProfile.append("</ak:dean>");
+		// contentProfile.append("<ak:dean>");
+		// contentProfile.append("<ak:fullname>");
+		// contentProfile.append("Robert Hall");
+		// contentProfile.append("</ak:fullname>");
+		// contentProfile.append("<ak:workemail>");
+		// contentProfile.append("robert@yahoo.com");
+		// contentProfile.append("</ak:workemail>");
+		// contentProfile.append("<ak:userid>");
+		// contentProfile.append("56fee3e965dbb35ce1c920ex");
+		// contentProfile.append("</ak:userid>");
+		// contentProfile.append("</ak:dean>");
+		//
+		// contentProfile.append("<ak:manager>");
+		// contentProfile.append("<ak:fullname>");
+		// contentProfile.append("Tim Schimit");
+		// contentProfile.append("</ak:fullname>");
+		// contentProfile.append("<ak:workemail>");
+		// contentProfile.append("tim@yahoo.camss");
+		// contentProfile.append("</ak:workemail>");
+		// contentProfile.append("<ak:userid>");
+		// contentProfile.append("56fee3e965dbb35ce1c920dx");
+		// contentProfile.append("</ak:userid>");
+		// contentProfile.append("</ak:manager>");
+		//
+		// contentProfile.append("<ak:dean>");
+		// contentProfile.append("<ak:fullname>");
+		// contentProfile.append("Austin Smith");
+		// contentProfile.append("</ak:fullname>");
+		// contentProfile.append("<ak:workemail>");
+		// contentProfile.append("austin@yahoo.com");
+		// contentProfile.append("</ak:workemail>");
+		// contentProfile.append("<ak:userid>");
+		// contentProfile.append("56fee3e965dbb35ce1c120ex");
+		// contentProfile.append("</ak:userid>");
+		// contentProfile.append("</ak:dean>");
 
 		contentProfile.append("<ak:senior>");
 		contentProfile.append("<ak:fullname>");
@@ -286,65 +286,65 @@ public class TestAccessControl {
 
 		// Order of the XML Content element does not matter
 
-		contentProfile.append("<ak:chair>");
-		contentProfile.append("<ak:fullname>");
-		contentProfile.append("Tim Schimit");
-		contentProfile.append("</ak:fullname>");
-		contentProfile.append("<ak:workemail>");
-		contentProfile.append("tim@yahoo.camss");
-		contentProfile.append("</ak:workemail>");
-		contentProfile.append("<ak:userid>");
-		contentProfile.append("56fee3e965dbb35ce1c920dx");
-		contentProfile.append("</ak:userid>");
-		contentProfile.append("</ak:chair>");
-
-		contentProfile.append("<ak:administrator>");
-		contentProfile.append("<ak:fullname>");
-		contentProfile.append("Jack Rose");
-		contentProfile.append("</ak:fullname>");
-		contentProfile.append("<ak:workemail>");
-		contentProfile.append("jack@yahoo.camss");
-		contentProfile.append("</ak:workemail>");
-		contentProfile.append("<ak:userid>");
-		contentProfile.append("56fee3e965dbb32ce1c920dx");
-		contentProfile.append("</ak:userid>");
-		contentProfile.append("</ak:administrator>");
-
-		contentProfile.append("<ak:administrator>");
-		contentProfile.append("<ak:fullname>");
-		contentProfile.append("Apple Rose");
-		contentProfile.append("</ak:fullname>");
-		contentProfile.append("<ak:workemail>");
-		contentProfile.append("apple@yahoo.camss");
-		contentProfile.append("</ak:workemail>");
-		contentProfile.append("<ak:userid>");
-		contentProfile.append("56fee3e965dbb32ce1c920dx");
-		contentProfile.append("</ak:userid>");
-		contentProfile.append("</ak:administrator>");
-
-		contentProfile.append("<ak:irb>");
-		contentProfile.append("<ak:fullname>");
-		contentProfile.append("Micheal Roy");
-		contentProfile.append("</ak:fullname>");
-		contentProfile.append("<ak:workemail>");
-		contentProfile.append("micheal@yahoo.com");
-		contentProfile.append("</ak:workemail>");
-		contentProfile.append("<ak:userid>");
-		contentProfile.append("56fee3e965dbb35ce1c910dx");
-		contentProfile.append("</ak:userid>");
-		contentProfile.append("</ak:irb>");
-
-		contentProfile.append("<ak:director>");
-		contentProfile.append("<ak:fullname>");
-		contentProfile.append("Steve Jobs");
-		contentProfile.append("</ak:fullname>");
-		contentProfile.append("<ak:workemail>");
-		contentProfile.append("steve@yahoo.com");
-		contentProfile.append("</ak:workemail>");
-		contentProfile.append("<ak:userid>");
-		contentProfile.append("56fef3e965dbb32ce1c920dx");
-		contentProfile.append("</ak:userid>");
-		contentProfile.append("</ak:director>");
+		// contentProfile.append("<ak:chair>");
+		// contentProfile.append("<ak:fullname>");
+		// contentProfile.append("Tim Schimit");
+		// contentProfile.append("</ak:fullname>");
+		// contentProfile.append("<ak:workemail>");
+		// contentProfile.append("tim@yahoo.camss");
+		// contentProfile.append("</ak:workemail>");
+		// contentProfile.append("<ak:userid>");
+		// contentProfile.append("56fee3e965dbb35ce1c920dx");
+		// contentProfile.append("</ak:userid>");
+		// contentProfile.append("</ak:chair>");
+		//
+		// contentProfile.append("<ak:administrator>");
+		// contentProfile.append("<ak:fullname>");
+		// contentProfile.append("Jack Rose");
+		// contentProfile.append("</ak:fullname>");
+		// contentProfile.append("<ak:workemail>");
+		// contentProfile.append("jack@yahoo.camss");
+		// contentProfile.append("</ak:workemail>");
+		// contentProfile.append("<ak:userid>");
+		// contentProfile.append("56fee3e965dbb32ce1c920dx");
+		// contentProfile.append("</ak:userid>");
+		// contentProfile.append("</ak:administrator>");
+		//
+		// contentProfile.append("<ak:administrator>");
+		// contentProfile.append("<ak:fullname>");
+		// contentProfile.append("Apple Rose");
+		// contentProfile.append("</ak:fullname>");
+		// contentProfile.append("<ak:workemail>");
+		// contentProfile.append("apple@yahoo.camss");
+		// contentProfile.append("</ak:workemail>");
+		// contentProfile.append("<ak:userid>");
+		// contentProfile.append("56fee3e965dbb32ce1c920dx");
+		// contentProfile.append("</ak:userid>");
+		// contentProfile.append("</ak:administrator>");
+		//
+		// contentProfile.append("<ak:irb>");
+		// contentProfile.append("<ak:fullname>");
+		// contentProfile.append("Micheal Roy");
+		// contentProfile.append("</ak:fullname>");
+		// contentProfile.append("<ak:workemail>");
+		// contentProfile.append("micheal@yahoo.com");
+		// contentProfile.append("</ak:workemail>");
+		// contentProfile.append("<ak:userid>");
+		// contentProfile.append("56fee3e965dbb35ce1c910dx");
+		// contentProfile.append("</ak:userid>");
+		// contentProfile.append("</ak:irb>");
+		//
+		// contentProfile.append("<ak:director>");
+		// contentProfile.append("<ak:fullname>");
+		// contentProfile.append("Steve Jobs");
+		// contentProfile.append("</ak:fullname>");
+		// contentProfile.append("<ak:workemail>");
+		// contentProfile.append("steve@yahoo.com");
+		// contentProfile.append("</ak:workemail>");
+		// contentProfile.append("<ak:userid>");
+		// contentProfile.append("56fef3e965dbb32ce1c920dx");
+		// contentProfile.append("</ak:userid>");
+		// contentProfile.append("</ak:director>");
 
 		contentProfile.append("</ak:proposal>");
 		contentProfile.append("</ak:record>");
@@ -452,6 +452,10 @@ public class TestAccessControl {
 			if (preCondition) {
 				for (ObligationResult obligation : postObligations) {
 					if (obligation instanceof org.wso2.balana.xacml3.Obligation) {
+						System.out
+								.println(((org.wso2.balana.xacml3.Obligation) obligation)
+										.getObligationId());
+
 						List<AttributeAssignment> assignments = ((org.wso2.balana.xacml3.Obligation) obligation)
 								.getAssignments();
 
@@ -463,6 +467,7 @@ public class TestAccessControl {
 						String authorName = new String();
 						String piEmail = new String();
 						List<String> emaillist = new ArrayList<String>();
+						List<String> userlist = new ArrayList<String>();
 
 						for (AttributeAssignment assignment : assignments) {
 
@@ -474,14 +479,14 @@ public class TestAccessControl {
 							// case "obligationType":
 							// obligationType = assignment.getContent();
 							// break;
-							case "authorName":
-								authorName = assignment.getContent();
+							case "emailBody":
+								emailBody = assignment.getContent();
 								break;
 							case "emailSubject":
 								emailSubject = assignment.getContent();
 								break;
-							case "emailBody":
-								emailBody = assignment.getContent();
+							case "authorName":
+								authorName = assignment.getContent();
 								break;
 							case "piEmail":
 								piEmail = assignment.getContent();
@@ -496,6 +501,19 @@ public class TestAccessControl {
 							case "directorsEmail":
 								emaillist.add(assignment.getContent());
 								break;
+
+							case "piFullName":
+							case "copisFullName":
+							case "seniorsFullName":
+							case "chairsFullName":
+							case "managersFullName":
+							case "deansFullName":
+							case "irbsFullName":
+							case "administratorsFullName":
+							case "directorsFullName":
+								userlist.add(assignment.getContent());
+								break;
+
 							}
 						}
 
@@ -508,8 +526,8 @@ public class TestAccessControl {
 						// proposalID);
 						if (proposalIsChanged) {
 							System.out.println(piEmail + ":::" + emaillist
-									+ ":::" + emailSubject + authorName + ":::"
-									+ emailBody);
+									+ ":::" + userlist + ":::" + emailSubject
+									+ authorName + ":::" + emailBody);
 
 							// emailUtil
 							// .sendMailMultipleUsersWithoutAuth(
