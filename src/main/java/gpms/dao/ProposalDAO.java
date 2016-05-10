@@ -2300,6 +2300,308 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 		return signatures;
 	}
 
+	public List<SignatureUserInfo> findUsersExceptInvestigatorForAproposal(
+			ObjectId id, Boolean needPI, Boolean needCoPI, Boolean needSenior,
+			Boolean needChair, Boolean needManager, Boolean needDean,
+			Boolean needIrb, Boolean needResearchadmin, Boolean needDirector) {
+		Datastore ds = getDatastore();
+		List<SignatureUserInfo> signatures = new ArrayList<SignatureUserInfo>();
+		List<CollegeDepartmentInfo> investigators = new ArrayList<CollegeDepartmentInfo>();
+
+		Query<Proposal> q1 = ds
+				.createQuery(Proposal.class)
+				.field("_id")
+				.equal(id)
+				.retrievedFields(true, "_id", "irb approval required",
+						"investigator info", "signature info");
+		Proposal proposal = q1.get();
+
+		Boolean irbApprovalRequired = proposal.isIrbApprovalRequired();
+
+		SignatureUserInfo signUser = new SignatureUserInfo();
+
+		// Adding PI
+		InvestigatorRefAndPosition PI = proposal.getInvestigatorInfo().getPi();
+
+		CollegeDepartmentInfo investRef = new CollegeDepartmentInfo();
+		investRef.setCollege(PI.getCollege());
+		investRef.setDepartment(PI.getDepartment());
+		investigators.add(investRef);
+
+		if (needPI) {
+			signUser = new SignatureUserInfo();
+			UserProfile user = PI.getUserRef();
+			signUser.setUserProfileId(user.getId().toString());
+			signUser.setFullName(user.getFullName());
+			signUser.setUserName(user.getUserAccount().getUserName());
+			signUser.setEmail(user.getWorkEmails().get(0));
+			signUser.setCollege(PI.getCollege());
+			signUser.setDepartment(PI.getDepartment());
+			signUser.setPositionType(PI.getPositionType());
+			signUser.setPositionTitle(PI.getPositionTitle());
+			signUser.setSignature("");
+			signUser.setNote("");
+			signUser.setPositionTitle("PI");
+			signUser.setDelegated(false);
+			if (!signatures.contains(signUser)) {
+				signatures.add(signUser);
+			}
+		}
+
+		for (InvestigatorRefAndPosition coPIs : proposal.getInvestigatorInfo()
+				.getCo_pi()) {
+			// Adding Co-PIs
+			investRef = new CollegeDepartmentInfo();
+			investRef.setCollege(coPIs.getCollege());
+			investRef.setDepartment(coPIs.getDepartment());
+			if (!investigators.contains(investRef)) {
+				investigators.add(investRef);
+			}
+
+			if (needCoPI) {
+				signUser = new SignatureUserInfo();
+				UserProfile user = coPIs.getUserRef();
+				signUser.setUserProfileId(user.getId().toString());
+				signUser.setFullName(user.getFullName());
+				signUser.setUserName(user.getUserAccount().getUserName());
+				signUser.setEmail(user.getWorkEmails().get(0));
+				signUser.setCollege(coPIs.getCollege());
+				signUser.setDepartment(coPIs.getDepartment());
+				signUser.setPositionType(coPIs.getPositionType());
+				signUser.setPositionTitle(coPIs.getPositionTitle());
+				signUser.setSignature("");
+				signUser.setNote("");
+				signUser.setPositionTitle("Co-PI");
+				signUser.setDelegated(false);
+				if (!signatures.contains(signUser)) {
+					signatures.add(signUser);
+				}
+			}
+		}
+
+		for (InvestigatorRefAndPosition seniors : proposal
+				.getInvestigatorInfo().getSeniorPersonnel()) {
+			// Adding Seniors
+			investRef = new CollegeDepartmentInfo();
+			investRef.setCollege(seniors.getCollege());
+			investRef.setDepartment(seniors.getDepartment());
+			if (!investigators.contains(investRef)) {
+				investigators.add(investRef);
+			}
+
+			if (needSenior) {
+				signUser = new SignatureUserInfo();
+				UserProfile user = seniors.getUserRef();
+				signUser.setUserProfileId(user.getId().toString());
+				signUser.setFullName(user.getFullName());
+				signUser.setUserName(user.getUserAccount().getUserName());
+				signUser.setEmail(user.getWorkEmails().get(0));
+				signUser.setCollege(seniors.getCollege());
+				signUser.setDepartment(seniors.getDepartment());
+				signUser.setPositionType(seniors.getPositionType());
+				signUser.setPositionTitle(seniors.getPositionTitle());
+				signUser.setSignature("");
+				signUser.setNote("");
+				signUser.setPositionTitle("Senior Personnel");
+				signUser.setDelegated(false);
+				if (!signatures.contains(signUser)) {
+					signatures.add(signUser);
+				}
+			}
+		}
+		// }
+		// 2. Get all Users filter using College in<> and Department in <> and
+		// Position Title equal <>
+		// Department Chair
+		// Business Manager
+		// Dean
+		// IRB
+		// University Research Director
+		// Research Administrator
+
+		List<String> positions = new ArrayList<String>();
+		positions.add("Department Chair");
+		positions.add("Business Manager");
+		positions.add("Dean");
+		positions.add("University Research Administrator");
+		positions.add("University Research Director");
+
+		if (irbApprovalRequired) {
+			positions.add("IRB");
+		}
+
+		Query<UserProfile> profileQuery = ds.createQuery(UserProfile.class)
+				.retrievedFields(true, "_id", "first name", "middle name",
+						"last name", "details", "work email");
+		profileQuery.criteria("details.position title").in(positions);
+		List<UserProfile> userProfile = profileQuery.asList();
+
+		for (UserProfile user : userProfile) {
+			for (PositionDetails posDetails : user.getDetails()) {
+				for (CollegeDepartmentInfo colDeptInfo : investigators) {
+					if (posDetails.getCollege().equalsIgnoreCase(
+							colDeptInfo.getCollege())
+							&& posDetails.getDepartment().equalsIgnoreCase(
+									colDeptInfo.getDepartment())
+							&& posDetails.getPositionTitle().equalsIgnoreCase(
+									"Department Chair") && needChair) {
+						SignatureUserInfo signDeptChair = new SignatureUserInfo();
+
+						signDeptChair.setUserProfileId(user.getId().toString());
+						signDeptChair.setFullName(user.getFullName());
+						signDeptChair.setUserName(user.getUserAccount()
+								.getUserName());
+						signDeptChair.setEmail(user.getWorkEmails().get(0));
+						signDeptChair.setCollege(posDetails.getCollege());
+						signDeptChair.setDepartment(posDetails.getDepartment());
+						signDeptChair.setPositionType(posDetails
+								.getPositionType());
+						signDeptChair.setPositionTitle(posDetails
+								.getPositionTitle());
+						signDeptChair.setSignature("");
+						signDeptChair.setNote("");
+						signDeptChair.setPositionTitle("Department Chair");
+						signDeptChair.setDelegated(false);
+						if (!signatures.contains(signDeptChair)) {
+							signatures.add(signDeptChair);
+						}
+					} else if (posDetails.getCollege().equalsIgnoreCase(
+							colDeptInfo.getCollege())
+							&& posDetails.getDepartment().equalsIgnoreCase(
+									colDeptInfo.getDepartment())
+							&& posDetails.getPositionTitle().equalsIgnoreCase(
+									"Business Manager") && needManager) {
+						SignatureUserInfo signBusinessMgr = new SignatureUserInfo();
+						signBusinessMgr.setUserProfileId(user.getId()
+								.toString());
+						signBusinessMgr.setFullName(user.getFullName());
+						signBusinessMgr.setUserName(user.getUserAccount()
+								.getUserName());
+						signBusinessMgr.setEmail(user.getWorkEmails().get(0));
+						signBusinessMgr.setCollege(posDetails.getCollege());
+						signBusinessMgr.setDepartment(posDetails
+								.getDepartment());
+						signBusinessMgr.setPositionType(posDetails
+								.getPositionType());
+						signBusinessMgr.setPositionTitle(posDetails
+								.getPositionTitle());
+						signBusinessMgr.setSignature("");
+						signBusinessMgr.setNote("");
+						signBusinessMgr.setPositionTitle("Business Manager");
+						signBusinessMgr.setDelegated(false);
+						if (!signatures.contains(signBusinessMgr)) {
+							signatures.add(signBusinessMgr);
+						}
+					} else if (posDetails.getCollege().equalsIgnoreCase(
+							colDeptInfo.getCollege())
+							&& posDetails.getDepartment().equalsIgnoreCase(
+									colDeptInfo.getDepartment())
+							&& posDetails.getPositionTitle().equalsIgnoreCase(
+									"Dean") && needDean) {
+						SignatureUserInfo signDean = new SignatureUserInfo();
+						signDean.setUserProfileId(user.getId().toString());
+						signDean.setFullName(user.getFullName());
+						signDean.setUserName(user.getUserAccount()
+								.getUserName());
+						signDean.setEmail(user.getWorkEmails().get(0));
+						signDean.setCollege(posDetails.getCollege());
+						signDean.setDepartment(posDetails.getDepartment());
+						signDean.setPositionType(posDetails.getPositionType());
+						signDean.setPositionTitle(posDetails.getPositionTitle());
+						signDean.setSignature("");
+						signDean.setNote("");
+						signDean.setPositionTitle("Dean");
+						signDean.setDelegated(false);
+						if (!signatures.contains(signDean)) {
+							signatures.add(signDean);
+						}
+					} else if (posDetails.getCollege().equalsIgnoreCase(
+							colDeptInfo.getCollege())
+							&& posDetails.getDepartment().equalsIgnoreCase(
+									colDeptInfo.getDepartment())
+							&& posDetails.getPositionTitle().equalsIgnoreCase(
+									"IRB") && irbApprovalRequired && needIrb) {
+						SignatureUserInfo signBusinessMgr = new SignatureUserInfo();
+						signBusinessMgr.setUserProfileId(user.getId()
+								.toString());
+						signBusinessMgr.setFullName(user.getFullName());
+						signBusinessMgr.setUserName(user.getUserAccount()
+								.getUserName());
+						signBusinessMgr.setEmail(user.getWorkEmails().get(0));
+						signBusinessMgr.setCollege(posDetails.getCollege());
+						signBusinessMgr.setDepartment(posDetails
+								.getDepartment());
+						signBusinessMgr.setPositionType(posDetails
+								.getPositionType());
+						signBusinessMgr.setPositionTitle(posDetails
+								.getPositionTitle());
+						signBusinessMgr.setSignature("");
+						signBusinessMgr.setNote("");
+						signBusinessMgr.setPositionTitle("IRB");
+						signBusinessMgr.setDelegated(false);
+						if (!signatures.contains(signBusinessMgr)) {
+							signatures.add(signBusinessMgr);
+						}
+					} else if (posDetails.getCollege().equalsIgnoreCase(
+							colDeptInfo.getCollege())
+							&& posDetails.getDepartment().equalsIgnoreCase(
+									colDeptInfo.getDepartment())
+							&& posDetails.getPositionTitle().equalsIgnoreCase(
+									"University Research Administrator")
+							&& needResearchadmin) {
+						SignatureUserInfo signAdmin = new SignatureUserInfo();
+						signAdmin.setUserProfileId(user.getId().toString());
+						signAdmin.setFullName(user.getFullName());
+						signAdmin.setUserName(user.getUserAccount()
+								.getUserName());
+						signAdmin.setEmail(user.getWorkEmails().get(0));
+						signAdmin.setCollege(posDetails.getCollege());
+						signAdmin.setDepartment(posDetails.getDepartment());
+						signAdmin.setPositionType(posDetails.getPositionType());
+						signAdmin.setPositionTitle(posDetails
+								.getPositionTitle());
+						signAdmin.setSignature("");
+						signAdmin.setNote("");
+						signAdmin
+								.setPositionTitle("University Research Administrator");
+						signAdmin.setDelegated(false);
+						if (!signatures.contains(signAdmin)) {
+							signatures.add(signAdmin);
+						}
+					} else if (posDetails.getCollege().equalsIgnoreCase(
+							colDeptInfo.getCollege())
+							&& posDetails.getDepartment().equalsIgnoreCase(
+									colDeptInfo.getDepartment())
+							&& posDetails.getPositionTitle().equalsIgnoreCase(
+									"University Research Director")
+							&& needDirector) {
+						SignatureUserInfo signDirector = new SignatureUserInfo();
+						signDirector.setUserProfileId(user.getId().toString());
+						signDirector.setFullName(user.getFullName());
+						signDirector.setUserName(user.getUserAccount()
+								.getUserName());
+						signDirector.setEmail(user.getWorkEmails().get(0));
+						signDirector.setCollege(posDetails.getCollege());
+						signDirector.setDepartment(posDetails.getDepartment());
+						signDirector.setPositionType(posDetails
+								.getPositionType());
+						signDirector.setPositionTitle(posDetails
+								.getPositionTitle());
+						signDirector.setSignature("");
+						signDirector.setNote("");
+						signDirector
+								.setPositionTitle("University Research Director");
+						signDirector.setDelegated(false);
+						if (!signatures.contains(signDirector)) {
+							signatures.add(signDirector);
+						}
+					}
+				}
+			}
+		}
+		return signatures;
+	}
+
 	public List<SignatureInfo> findUsersInProposal(ObjectId id,
 			boolean irbApprovalRequired) {
 

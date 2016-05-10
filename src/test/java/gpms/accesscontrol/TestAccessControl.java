@@ -190,11 +190,9 @@ public class TestAccessControl {
 		contentProfile.append("<ak:fullname>");
 		contentProfile.append("Milson Munakami");
 		contentProfile.append("</ak:fullname>");
-
 		contentProfile.append("<ak:workemail>");
 		contentProfile.append("milsonmun@yahoo.com");
 		contentProfile.append("</ak:workemail>");
-
 		contentProfile.append("<ak:userid>");
 		contentProfile.append("56fee3e965dbb35ce5c900fa");
 		contentProfile.append("</ak:userid>");
