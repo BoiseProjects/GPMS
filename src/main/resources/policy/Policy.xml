@@ -2368,7 +2368,7 @@
     </ObligationExpressions>
   </Rule>
   
-  <Rule Effect="Permit" RuleId="DeleteSeniorPersonnelByCoPI-Rule26">
+  <Rule Effect="Permit" RuleId="DeleteCo-PIandSeniorPersonnelByPI-Rule26">
     <Description>
       "PI" can "Delete"
       "InvestigatorInformation.Co-PI" and
