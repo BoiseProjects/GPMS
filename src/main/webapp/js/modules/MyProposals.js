@@ -2697,14 +2697,14 @@ $(function() {
 					+ fullName
 					+ '</span></td><td><input id="pi_signature" data-for="signature" data-value="'
 					+ $('select[name="ddlName"]').eq(0).val()
-					+ '" title="PI\'s Signature" class="sfInputbox" placeholder="PI\'s Signature" type="text" name="'
+					+ '" title="PI\'s Signature" class="sfInputbox" placeholder="PI\'s Signature" type="text" required="true" name="'
 					+ $('select[name="ddlName"]').eq(0).val()
 					+ 'PI">'
 					+ '</td><td><input id="pi_signaturedate" data-for="signaturedate" name="signaturedate'
 					+ $('select[name="ddlName"]').eq(0).val()
-					+ 'PI" title="Signed Date" class="sfInputbox" placeholder="Signed Date" type="text" readonly="true" onfocus="myProposal.BindCurrentDateTime(this);"></td><td><textarea rows="2" cols="26" name="proposalNotes'
+					+ 'PI" title="Signed Date" class="sfInputbox" placeholder="Signed Date" type="text" required="true" readonly="true" onfocus="myProposal.BindCurrentDateTime(this);"></td><td><textarea rows="2" cols="26" name="proposalNotes'
 					+ $('select[name="ddlName"]').eq(0).val()
-					+ 'PI" title="Proposal Notes" class="cssClassTextArea"></textarea></td></tr>';
+					+ 'PI" required="true" title="Proposal Notes" class="cssClassTextArea"></textarea></td></tr>';
 			$(cloneRow).appendTo("#trSignPICOPI tbody");
 
 			$('#trSignPICOPI tbody tr:last').data("allowchange", "true").data(
@@ -4022,10 +4022,10 @@ $(function() {
 																				"true");
 															} else { // Signature,
 																// Note
-																// $(this)
-																// .attr(
-																// "required",
-																// "true");
+																$(this)
+																		.attr(
+																				"required",
+																				"true");
 															}
 														});
 										// }

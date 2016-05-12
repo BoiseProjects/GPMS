@@ -49,6 +49,7 @@ import gpms.utils.SerializationHelper;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.UnknownHostException;
 import java.text.DateFormat;
@@ -966,11 +967,6 @@ public class ProposalService {
 						String piEmail = new String();
 						List<String> emaillist = new ArrayList<String>();
 
-						// List<String> emailslist = new
-						// ArrayList<String>();
-						// List<String> userslist = new ArrayList<String>();
-
-						String postObligationId = new String();
 						if (obligations.size() > 0) {
 							List<ObligationResult> preObligations = new ArrayList<ObligationResult>();
 							List<ObligationResult> postObligations = new ArrayList<ObligationResult>();
@@ -1065,8 +1061,6 @@ public class ProposalService {
 							if (preCondition) {
 								for (ObligationResult obligation : postObligations) {
 									if (obligation instanceof org.wso2.balana.xacml3.Obligation) {
-										postObligationId = ((org.wso2.balana.xacml3.Obligation) obligation)
-												.getObligationId().toString();
 										List<AttributeAssignment> assignments = ((org.wso2.balana.xacml3.Obligation) obligation)
 												.getAssignments();
 
@@ -1108,7 +1102,7 @@ public class ProposalService {
 											case "irbsEmail":
 											case "administratorsEmail":
 											case "directorsEmail":
-												if (assignment.getContent()
+												if (!assignment.getContent()
 														.equals("")) {
 													emaillist.add(assignment
 															.getContent());
@@ -1132,8 +1126,7 @@ public class ProposalService {
 								existingProposal, proposalRoles,
 								proposalUserTitle, authorProfile);
 						if (isDeleted) {
-							if (!emailSubject.equals("")
-									&& postObligationId == "sendEmail") {
+							if (!emailSubject.equals("")) {
 								emailUtil.sendMailMultipleUsersWithoutAuth(
 										piEmail, emaillist, emailSubject
 												+ authorName, emailBody);
@@ -2072,11 +2065,6 @@ public class ProposalService {
 						String piEmail = new String();
 						List<String> emaillist = new ArrayList<String>();
 
-						// List<String> emailslist = new
-						// ArrayList<String>();
-						// List<String> userslist = new ArrayList<String>();
-
-						String postObligationId = new String();
 						if (obligations.size() > 0) {
 							List<ObligationResult> preObligations = new ArrayList<ObligationResult>();
 							List<ObligationResult> postObligations = new ArrayList<ObligationResult>();
@@ -2171,8 +2159,6 @@ public class ProposalService {
 							if (preCondition) {
 								for (ObligationResult obligation : postObligations) {
 									if (obligation instanceof org.wso2.balana.xacml3.Obligation) {
-										postObligationId = ((org.wso2.balana.xacml3.Obligation) obligation)
-												.getObligationId().toString();
 										List<AttributeAssignment> assignments = ((org.wso2.balana.xacml3.Obligation) obligation)
 												.getAssignments();
 
@@ -2214,7 +2200,7 @@ public class ProposalService {
 											case "irbsEmail":
 											case "administratorsEmail":
 											case "directorsEmail":
-												if (assignment.getContent()
+												if (!assignment.getContent()
 														.equals("")) {
 													emaillist.add(assignment
 															.getContent());
@@ -2266,9 +2252,7 @@ public class ProposalService {
 													authorUserName, emailUtil,
 													emailSubject, emailBody,
 													authorName, piEmail,
-													emaillist,
-													postObligationId,
-													"Withdrawn");
+													emaillist, "Withdrawn");
 										}
 									}
 									break;
@@ -2300,9 +2284,7 @@ public class ProposalService {
 													authorUserName, emailUtil,
 													emailSubject, emailBody,
 													authorName, piEmail,
-													emaillist,
-													postObligationId,
-													"Archived");
+													emaillist, "Archived");
 										}
 									}
 									break;
@@ -2336,12 +2318,12 @@ public class ProposalService {
 			UserProfile authorProfile, String authorUserName,
 			EmailUtil emailUtil, String emailSubject, String emailBody,
 			String authorName, String piEmail, List<String> emaillist,
-			String postObligationId, String changeDone) {
+			String changeDone) {
 		boolean isStatusUpdated = proposalDAO.updateProposalStatus(
 				existingProposal, authorProfile);
 
 		if (isStatusUpdated) {
-			if (!emailSubject.equals("") && postObligationId == "sendEmail") {
+			if (!emailSubject.equals("")) {
 				emailUtil.sendMailMultipleUsersWithoutAuth(piEmail, emaillist,
 						emailSubject + authorName, emailBody);
 			}
@@ -3278,11 +3260,6 @@ public class ProposalService {
 							String piEmail = new String();
 							List<String> emaillist = new ArrayList<String>();
 
-							// List<String> emailslist = new
-							// ArrayList<String>();
-							// List<String> userslist = new ArrayList<String>();
-
-							String postObligationId = new String();
 							if (obligations.size() > 0) {
 								List<ObligationResult> preObligations = new ArrayList<ObligationResult>();
 								List<ObligationResult> postObligations = new ArrayList<ObligationResult>();
@@ -3379,9 +3356,6 @@ public class ProposalService {
 								if (preCondition) {
 									for (ObligationResult obligation : postObligations) {
 										if (obligation instanceof org.wso2.balana.xacml3.Obligation) {
-											postObligationId = ((org.wso2.balana.xacml3.Obligation) obligation)
-													.getObligationId()
-													.toString();
 											List<AttributeAssignment> assignments = ((org.wso2.balana.xacml3.Obligation) obligation)
 													.getAssignments();
 
@@ -3424,7 +3398,7 @@ public class ProposalService {
 												case "irbsEmail":
 												case "administratorsEmail":
 												case "directorsEmail":
-													if (assignment.getContent()
+													if (!assignment.getContent()
 															.equals("")) {
 														emaillist
 																.add(assignment
@@ -3469,8 +3443,7 @@ public class ProposalService {
 									authorProfile, proposalID, signatures,
 									irbApprovalRequired);
 							if (proposalIsChanged) {
-								if (!emailSubject.equals("")
-										&& postObligationId == "sendEmail") {
+								if (!emailSubject.equals("")) {
 									emailUtil.sendMailMultipleUsersWithoutAuth(
 											piEmail, emaillist, emailSubject
 													+ authorName, emailBody);

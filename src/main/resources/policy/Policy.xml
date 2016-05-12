@@ -929,7 +929,7 @@
           <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">postobligation</AttributeValue>
         </AttributeAssignmentExpression>
         <AttributeAssignmentExpression AttributeId="emailBody">
-          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Hello User,&lt;br/&gt;&lt;br/&gt;The proposal has been approved by Department Chair.Now it is waiting for Business manager Approval. &lt;br/&gt;&lt;br/&gt;Thank you, &lt;br/&gt; GPMS Team</AttributeValue>
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Hello User,&lt;br/&gt;&lt;br/&gt;The proposal has been approved by Department Chair. &lt;br/&gt;&lt;br/&gt;Thank you, &lt;br/&gt; GPMS Team</AttributeValue>
         </AttributeAssignmentExpression>
         <AttributeAssignmentExpression AttributeId="emailSubject">
           <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Your proposal has been approved by: </AttributeValue>
@@ -968,6 +968,12 @@
           <AttributeSelector MustBePresent="true" 
                              Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" 
                              Path="//ak:manager/ak:workemail/text()" 
+                             DataType="http://www.w3.org/2001/XMLSchema#string"/>
+        </AttributeAssignmentExpression>
+        <AttributeAssignmentExpression AttributeId="irbsEmail">
+          <AttributeSelector MustBePresent="true" 
+                             Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" 
+                             Path="//ak:irb/ak:workemail/text()" 
                              DataType="http://www.w3.org/2001/XMLSchema#string"/>
         </AttributeAssignmentExpression>
       </ObligationExpression>      
@@ -1033,7 +1039,7 @@
           <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">postobligation</AttributeValue>
         </AttributeAssignmentExpression>
         <AttributeAssignmentExpression AttributeId="emailBody">
-          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Hello User,&lt;br/&gt;&lt;br/&gt;The proposal has been approved by Business Manager.Now it is waiting for IRB or Dean approval. &lt;br/&gt;&lt;br/&gt;Thank you, &lt;br/&gt; GPMS Team</AttributeValue>
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Hello User,&lt;br/&gt;&lt;br/&gt;The proposal has been approved by Business Manager. Now it is waiting for IRB or Dean approval. &lt;br/&gt;&lt;br/&gt;Thank you, &lt;br/&gt; GPMS Team</AttributeValue>
         </AttributeAssignmentExpression>
         <AttributeAssignmentExpression AttributeId="emailSubject">
           <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Your proposal has been approved by: </AttributeValue>
@@ -1143,7 +1149,7 @@
           <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">postobligation</AttributeValue>
         </AttributeAssignmentExpression>
         <AttributeAssignmentExpression AttributeId="emailBody">
-          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Hello User,&lt;br/&gt;&lt;br/&gt;The proposal has been approved by Dean.Now it is waiting for University Research Adminstrator approval. &lt;br/&gt;&lt;br/&gt;Thank you, &lt;br/&gt; GPMS Team</AttributeValue>
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Hello User,&lt;br/&gt;&lt;br/&gt;The proposal has been approved by Dean. Now it is waiting for University Research Administrator approval. &lt;br/&gt;&lt;br/&gt;Thank you, &lt;br/&gt; GPMS Team</AttributeValue>
         </AttributeAssignmentExpression>
         <AttributeAssignmentExpression AttributeId="emailSubject">
           <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Your proposal has been Approved by: </AttributeValue>
@@ -1247,7 +1253,7 @@
           <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">postobligation</AttributeValue>
         </AttributeAssignmentExpression>
         <AttributeAssignmentExpression AttributeId="emailBody">
-          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Hello User,&lt;br/&gt;&lt;br/&gt;The proposal has been approved by IRB.Now it is waiting for University Research Adminstrator approval. &lt;br/&gt;&lt;br/&gt;Thank you, &lt;br/&gt; GPMS Team</AttributeValue>
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Hello User,&lt;br/&gt;&lt;br/&gt;The proposal has been approved by IRB. Now it is waiting for University Research Administrator approval. &lt;br/&gt;&lt;br/&gt;Thank you, &lt;br/&gt; GPMS Team</AttributeValue>
         </AttributeAssignmentExpression>
         <AttributeAssignmentExpression AttributeId="emailSubject">
           <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Your proposal has been Approved by: </AttributeValue>
@@ -1352,7 +1358,7 @@
           <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">postobligation</AttributeValue>
         </AttributeAssignmentExpression>
         <AttributeAssignmentExpression AttributeId="emailBody">
-          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Hello User,&lt;br/&gt;&lt;br/&gt;The proposal has been approved by University Research Adminstrator.Now it is waiting for University Research Director approval. &lt;br/&gt;&lt;br/&gt;Thank you, &lt;br/&gt; GPMS Team</AttributeValue>
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Hello User,&lt;br/&gt;&lt;br/&gt;The proposal has been approved by University Research Administrator. Now it is waiting for University Research Director approval. &lt;br/&gt;&lt;br/&gt;Thank you, &lt;br/&gt; GPMS Team</AttributeValue>
         </AttributeAssignmentExpression>
         <AttributeAssignmentExpression AttributeId="emailSubject">
           <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Your proposal has been Approved by: </AttributeValue>
@@ -2368,20 +2374,6 @@
       </AnyOf>
     </Target>
 	<ObligationExpressions>
-      <ObligationExpression ObligationId="sendAlert" FulfillOn="Permit">
-       <AttributeAssignmentExpression AttributeId="obligationType">
-          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">preobligation</AttributeValue>
-        </AttributeAssignmentExpression>
-        <AttributeAssignmentExpression AttributeId="signedByCurrentUser">
-          <AttributeSelector MustBePresent="true" 
-                             Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" 
-                             Path="//ak:signedByCurrentUser/text()" 
-                             DataType="http://www.w3.org/2001/XMLSchema#string"/>
-        </AttributeAssignmentExpression>
-         <AttributeAssignmentExpression AttributeId="alertMessage">
-          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">You need to sign the proposal first!</AttributeValue>
-        </AttributeAssignmentExpression>       
-      </ObligationExpression>
       <ObligationExpression ObligationId="sendEmail" FulfillOn="Permit">
        <AttributeAssignmentExpression AttributeId="obligationType">
           <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">postobligation</AttributeValue>
