@@ -462,7 +462,7 @@
                              Path="//ak:copi/ak:workemail/text()" 
                              DataType="http://www.w3.org/2001/XMLSchema#string"/>
         </AttributeAssignmentExpression>
-        <AttributeAssignmentExpression AttributeId="seniorsEmail">
+		<AttributeAssignmentExpression AttributeId="seniorsEmail">
           <AttributeSelector MustBePresent="true" 
                              Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" 
                              Path="//ak:senior/ak:workemail/text()" 
@@ -531,7 +531,7 @@
           <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">postobligation</AttributeValue>
         </AttributeAssignmentExpression>
         <AttributeAssignmentExpression AttributeId="emailBody">
-          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Hello User,&lt;br/&gt;&lt;br/&gt;Your proposal has been updated Co-PI. As soon as possible please review your proposal for any unwanted changes.&lt;br/&gt;&lt;br/&gt;Thank you, &lt;br/&gt; GPMS Team</AttributeValue>
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Hello User,&lt;br/&gt;&lt;br/&gt;Your proposal has been updated by Co-PI. As soon as possible please review your proposal for any unwanted changes.&lt;br/&gt;&lt;br/&gt;Thank you, &lt;br/&gt; GPMS Team</AttributeValue>
         </AttributeAssignmentExpression>
         <AttributeAssignmentExpression AttributeId="emailSubject">
           <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Your proposal has been updated successfully by: </AttributeValue>
@@ -958,12 +958,6 @@
                              Path="//ak:senior/ak:workemail/text()" 
                              DataType="http://www.w3.org/2001/XMLSchema#string"/>
         </AttributeAssignmentExpression> 
-		<AttributeAssignmentExpression AttributeId="chairsEmail">
-          <AttributeSelector MustBePresent="true" 
-                             Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" 
-                             Path="//ak:chair/ak:workemail/text()" 
-                             DataType="http://www.w3.org/2001/XMLSchema#string"/>
-        </AttributeAssignmentExpression> 
 		<AttributeAssignmentExpression AttributeId="managersEmail">
           <AttributeSelector MustBePresent="true" 
                              Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" 
@@ -1039,7 +1033,7 @@
           <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">postobligation</AttributeValue>
         </AttributeAssignmentExpression>
         <AttributeAssignmentExpression AttributeId="emailBody">
-          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Hello User,&lt;br/&gt;&lt;br/&gt;The proposal has been approved by Business Manager. Now it is waiting for IRB or Dean approval. &lt;br/&gt;&lt;br/&gt;Thank you, &lt;br/&gt; GPMS Team</AttributeValue>
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Hello User,&lt;br/&gt;&lt;br/&gt;The proposal has been approved by Business Manager. &lt;br/&gt;&lt;br/&gt;Thank you, &lt;br/&gt; GPMS Team</AttributeValue>
         </AttributeAssignmentExpression>
         <AttributeAssignmentExpression AttributeId="emailSubject">
           <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Your proposal has been approved by: </AttributeValue>
@@ -1066,18 +1060,6 @@
           <AttributeSelector MustBePresent="true" 
                              Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" 
                              Path="//ak:senior/ak:workemail/text()" 
-                             DataType="http://www.w3.org/2001/XMLSchema#string"/>
-        </AttributeAssignmentExpression> 
-		<AttributeAssignmentExpression AttributeId="managersEmail">
-          <AttributeSelector MustBePresent="true" 
-                             Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" 
-                             Path="//ak:manager/ak:workemail/text()" 
-                             DataType="http://www.w3.org/2001/XMLSchema#string"/>
-        </AttributeAssignmentExpression>
-		<AttributeAssignmentExpression AttributeId="irbsEmail">
-          <AttributeSelector MustBePresent="true" 
-                             Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" 
-                             Path="//ak:irb/ak:workemail/text()" 
                              DataType="http://www.w3.org/2001/XMLSchema#string"/>
         </AttributeAssignmentExpression> 
 		<AttributeAssignmentExpression AttributeId="deansEmail">
@@ -1149,10 +1131,10 @@
           <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">postobligation</AttributeValue>
         </AttributeAssignmentExpression>
         <AttributeAssignmentExpression AttributeId="emailBody">
-          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Hello User,&lt;br/&gt;&lt;br/&gt;The proposal has been approved by Dean. Now it is waiting for University Research Administrator approval. &lt;br/&gt;&lt;br/&gt;Thank you, &lt;br/&gt; GPMS Team</AttributeValue>
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Hello User,&lt;br/&gt;&lt;br/&gt;The proposal has been approved by Dean. &lt;br/&gt;&lt;br/&gt;Thank you, &lt;br/&gt; GPMS Team</AttributeValue>
         </AttributeAssignmentExpression>
         <AttributeAssignmentExpression AttributeId="emailSubject">
-          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Your proposal has been Approved by: </AttributeValue>
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Your proposal has been approved by: </AttributeValue>
         </AttributeAssignmentExpression>
          <AttributeAssignmentExpression AttributeId="authorName">
           <AttributeSelector MustBePresent="true" 
@@ -1178,13 +1160,7 @@
                              Path="//ak:senior/ak:workemail/text()" 
                              DataType="http://www.w3.org/2001/XMLSchema#string"/>
         </AttributeAssignmentExpression> 
-		<AttributeAssignmentExpression AttributeId="deansEmail">
-          <AttributeSelector MustBePresent="true" 
-                             Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" 
-                             Path="//ak:dean/ak:workemail/text()" 
-                             DataType="http://www.w3.org/2001/XMLSchema#string"/>
-        </AttributeAssignmentExpression> 
-				<AttributeAssignmentExpression AttributeId="administratorsEmail">
+		<AttributeAssignmentExpression AttributeId="administratorsEmail">
           <AttributeSelector MustBePresent="true" 
                              Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" 
                              Path="//ak:administrator/ak:workemail/text()" 
@@ -1253,10 +1229,10 @@
           <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">postobligation</AttributeValue>
         </AttributeAssignmentExpression>
         <AttributeAssignmentExpression AttributeId="emailBody">
-          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Hello User,&lt;br/&gt;&lt;br/&gt;The proposal has been approved by IRB. Now it is waiting for University Research Administrator approval. &lt;br/&gt;&lt;br/&gt;Thank you, &lt;br/&gt; GPMS Team</AttributeValue>
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Hello User,&lt;br/&gt;&lt;br/&gt;The proposal has been approved by IRB. &lt;br/&gt;&lt;br/&gt;Thank you, &lt;br/&gt; GPMS Team</AttributeValue>
         </AttributeAssignmentExpression>
         <AttributeAssignmentExpression AttributeId="emailSubject">
-          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Your proposal has been Approved by: </AttributeValue>
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Your proposal has been approved by: </AttributeValue>
         </AttributeAssignmentExpression>
          <AttributeAssignmentExpression AttributeId="authorName">
           <AttributeSelector MustBePresent="true" 
@@ -1282,13 +1258,7 @@
                              Path="//ak:senior/ak:workemail/text()" 
                              DataType="http://www.w3.org/2001/XMLSchema#string"/>
         </AttributeAssignmentExpression> 
-		<AttributeAssignmentExpression AttributeId="irbsEmail">
-          <AttributeSelector MustBePresent="true" 
-                             Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" 
-                             Path="//ak:irb/ak:workemail/text()" 
-                             DataType="http://www.w3.org/2001/XMLSchema#string"/>
-        </AttributeAssignmentExpression> 
-				<AttributeAssignmentExpression AttributeId="administratorsEmail">
+		<AttributeAssignmentExpression AttributeId="administratorsEmail">
           <AttributeSelector MustBePresent="true" 
                              Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" 
                              Path="//ak:administrator/ak:workemail/text()" 
@@ -1358,10 +1328,10 @@
           <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">postobligation</AttributeValue>
         </AttributeAssignmentExpression>
         <AttributeAssignmentExpression AttributeId="emailBody">
-          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Hello User,&lt;br/&gt;&lt;br/&gt;The proposal has been approved by University Research Administrator. Now it is waiting for University Research Director approval. &lt;br/&gt;&lt;br/&gt;Thank you, &lt;br/&gt; GPMS Team</AttributeValue>
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Hello User,&lt;br/&gt;&lt;br/&gt;The proposal has been approved by University Research Administrator. &lt;br/&gt;&lt;br/&gt;Thank you, &lt;br/&gt; GPMS Team</AttributeValue>
         </AttributeAssignmentExpression>
         <AttributeAssignmentExpression AttributeId="emailSubject">
-          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Your proposal has been Approved by: </AttributeValue>
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Your proposal has been approved by: </AttributeValue>
         </AttributeAssignmentExpression>
          <AttributeAssignmentExpression AttributeId="authorName">
           <AttributeSelector MustBePresent="true" 
@@ -1386,14 +1356,8 @@
                              Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" 
                              Path="//ak:senior/ak:workemail/text()" 
                              DataType="http://www.w3.org/2001/XMLSchema#string"/>
-        </AttributeAssignmentExpression> 
-		<AttributeAssignmentExpression AttributeId="administratorsEmail">
-          <AttributeSelector MustBePresent="true" 
-                             Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" 
-                             Path="//ak:administrator/ak:workemail/text()" 
-                             DataType="http://www.w3.org/2001/XMLSchema#string"/>
-        </AttributeAssignmentExpression> 
-				<AttributeAssignmentExpression AttributeId="directorsEmail">
+        </AttributeAssignmentExpression>  
+		<AttributeAssignmentExpression AttributeId="directorsEmail">
           <AttributeSelector MustBePresent="true" 
                              Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" 
                              Path="//ak:director/ak:workemail/text()" 
@@ -1496,12 +1460,6 @@
           <AttributeSelector MustBePresent="true" 
                              Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" 
                              Path="//ak:administrator/ak:workemail/text()" 
-                             DataType="http://www.w3.org/2001/XMLSchema#string"/>
-        </AttributeAssignmentExpression> 
-				<AttributeAssignmentExpression AttributeId="directorsEmail">
-          <AttributeSelector MustBePresent="true" 
-                             Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" 
-                             Path="//ak:director/ak:workemail/text()" 
                              DataType="http://www.w3.org/2001/XMLSchema#string"/>
         </AttributeAssignmentExpression> 
       </ObligationExpression>      
@@ -1700,10 +1658,16 @@
                              Path="//ak:chair/ak:workemail/text()" 
                              DataType="http://www.w3.org/2001/XMLSchema#string"/>
         </AttributeAssignmentExpression> 
-				<AttributeAssignmentExpression AttributeId="managersEmail">
+		<AttributeAssignmentExpression AttributeId="managersEmail">
           <AttributeSelector MustBePresent="true" 
                              Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" 
                              Path="//ak:manager/ak:workemail/text()" 
+                             DataType="http://www.w3.org/2001/XMLSchema#string"/>
+        </AttributeAssignmentExpression>
+		<AttributeAssignmentExpression AttributeId="irbsEmail">
+          <AttributeSelector MustBePresent="true" 
+                             Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" 
+                             Path="//ak:irb/ak:workemail/text()" 
                              DataType="http://www.w3.org/2001/XMLSchema#string"/>
         </AttributeAssignmentExpression> 
       </ObligationExpression>      
@@ -1930,6 +1894,12 @@
           <AttributeSelector MustBePresent="true" 
                              Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" 
                              Path="//ak:irb/ak:workemail/text()" 
+                             DataType="http://www.w3.org/2001/XMLSchema#string"/>
+        </AttributeAssignmentExpression> 
+		<AttributeAssignmentExpression AttributeId="deansEmail">
+          <AttributeSelector MustBePresent="true" 
+                             Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" 
+                             Path="//ak:dean/ak:workemail/text()" 
                              DataType="http://www.w3.org/2001/XMLSchema#string"/>
         </AttributeAssignmentExpression> 
       </ObligationExpression>      
@@ -2237,20 +2207,6 @@
       </AnyOf>
     </Target>
 	<ObligationExpressions>
-      <ObligationExpression ObligationId="sendAlert" FulfillOn="Permit">
-       <AttributeAssignmentExpression AttributeId="obligationType">
-          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">preobligation</AttributeValue>
-        </AttributeAssignmentExpression>
-        <AttributeAssignmentExpression AttributeId="signedByCurrentUser">
-          <AttributeSelector MustBePresent="true" 
-                             Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" 
-                             Path="//ak:signedByCurrentUser/text()" 
-                             DataType="http://www.w3.org/2001/XMLSchema#string"/>
-        </AttributeAssignmentExpression>
-         <AttributeAssignmentExpression AttributeId="alertMessage">
-          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">You need to sign the proposal first!</AttributeValue>
-        </AttributeAssignmentExpression>       
-      </ObligationExpression>
       <ObligationExpression ObligationId="sendEmail" FulfillOn="Permit">
        <AttributeAssignmentExpression AttributeId="obligationType">
           <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">postobligation</AttributeValue>
@@ -2414,6 +2370,108 @@
   
   <Rule Effect="Permit" RuleId="DeleteSeniorPersonnelByCoPI-Rule26">
     <Description>
+      "PI" can "Delete"
+      "InvestigatorInformation.Co-PI" and
+	  "InvestigatorInformation.Senior-Personnel" Only
+      when
+      SubmittedByPI is NOTSUBMITTED and DeletedByPI is NOTDELETED and ReadyForSubmissionByPI is False
+    </Description>
+    <Target>
+      <AnyOf>
+        <AllOf>
+          <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">PI</AttributeValue>
+            <AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+          </Match>
+          <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">InvestigatorInformation.Co-PI</AttributeValue>
+            <AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:proposal.section"
+							Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+          </Match>
+          <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">NOTSUBMITTED</AttributeValue>
+            <AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:SubmittedByPI"
+							Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+          </Match>
+          <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">NOTDELETED</AttributeValue>
+            <AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:DeletedByPI"
+							Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+          </Match>
+          <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">False</AttributeValue>
+            <AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ReadyForSubmissionByPI"
+							Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+          </Match>
+          <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Delete</AttributeValue>
+            <AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action"
+							Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+          </Match>
+        </AllOf>
+		<AllOf>
+          <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">PI</AttributeValue>
+            <AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+          </Match>
+          <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">InvestigatorInformation.Senior-Personnel</AttributeValue>
+            <AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:proposal.section"
+							Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+          </Match>
+          <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">NOTSUBMITTED</AttributeValue>
+            <AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:SubmittedByPI"
+							Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+          </Match>
+          <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">NOTDELETED</AttributeValue>
+            <AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:DeletedByPI"
+							Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+          </Match>
+          <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">False</AttributeValue>
+            <AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ReadyForSubmissionByPI"
+							Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+          </Match>
+          <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Delete</AttributeValue>
+            <AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action"
+							Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+          </Match>
+        </AllOf>
+      </AnyOf>
+    </Target>
+  </Rule>
+  
+  <Rule Effect="Permit" RuleId="DeleteSeniorPersonnelByCoPI-Rule27">
+    <Description>
       "Co-PI" can "Delete"
       "InvestigatorInformation.Senior-Personnel" Only
       when
@@ -2469,7 +2527,7 @@
     </Target>
   </Rule>
   
-  <Rule Effect="Deny" RuleId="CannotDeleteCoPIByCoPI-Rule27">
+  <Rule Effect="Deny" RuleId="CannotDeleteCoPIByCoPI-Rule28">
     <Description>
       "Co-PI" cannot "Delete" "InvestigatorInformation.Co-PI"
       when
@@ -2525,7 +2583,7 @@
     </Target>
   </Rule>
   
-  <Rule Effect="Permit" RuleId="DeleteProposalByPI-Rule28">
+  <Rule Effect="Permit" RuleId="DeleteProposalByPI-Rule29">
     <Description>
       "PI" can "Delete" a "Whole Proposal"
       when SubmittedByPI = NOTSUBMITTED and DeletedByPI = NOTDELETED
@@ -2610,9 +2668,9 @@
     </ObligationExpressions>
   </Rule>
   
-  <Rule Effect="Deny" RuleId="CannotDeleteProposalByCo-PI-Rule29">
+  <Rule Effect="Deny" RuleId="CannotDeleteProposalByCo-PI-Rule30">
     <Description>
-      "Co-PI" can "Delete" a "Whole Proposal"
+      "Co-PI" cannot "Delete" a "Whole Proposal"
       when SubmittedByPI = NOTSUBMITTED and DeletedByPI = NOTDELETED
     </Description>
     <Target>
@@ -2658,7 +2716,7 @@
     </Target>
    </Rule>
    
-  <Rule Effect="Permit" RuleId="DeleteProposalByUniversityResearchDirector-Rule30">
+  <Rule Effect="Permit" RuleId="DeleteProposalByUniversityResearchDirector-Rule31">
     <Description>
       "University Research Director" can "Delete" a "Whole
       Proposal"
@@ -2712,7 +2770,7 @@
           <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">postobligation</AttributeValue>
         </AttributeAssignmentExpression>
         <AttributeAssignmentExpression AttributeId="emailBody">
-          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Hello User,&lt;br/&gt;&lt;br/&gt;The proposal has been Deleted by University Research Director. &lt;br/&gt;&lt;br/&gt;Thank you, &lt;br/&gt; GPMS Team</AttributeValue>
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Hello User,&lt;br/&gt;&lt;br/&gt;The proposal has been deleted by University Research Director. &lt;br/&gt;&lt;br/&gt;Thank you, &lt;br/&gt; GPMS Team</AttributeValue>
         </AttributeAssignmentExpression>
         <AttributeAssignmentExpression AttributeId="emailSubject">
           <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Your proposal has been deleted by: </AttributeValue>
@@ -2781,7 +2839,7 @@
     </ObligationExpressions>
   </Rule>
   
-  <Rule Effect="Permit" RuleId="ViewAuditLogByPI-Rule31">
+  <Rule Effect="Permit" RuleId="ViewAuditLogByPI-Rule32">
     <Description> "PI" can "View" proposal "Audit Log"</Description>
     <Target>
       <AnyOf>
@@ -2812,7 +2870,7 @@
     </Target>
    </Rule>
    
-  <Rule Effect="Deny" RuleId="CannotViewAuditLogByOtherUser-Rule32">
+  <Rule Effect="Deny" RuleId="CannotViewAuditLogByOtherUser-Rule33">
     <Description> "Co-PI", "Senior Personnel", "Department Chair", "Business Manager", "Dean", "IRB", "University Research Administrator", "University Research Director"
 	cannot "View" proposal "Audit Log"</Description>
     <Target>
@@ -3005,7 +3063,7 @@
     </Target>
    </Rule>
    
-  <Rule Effect="Permit" RuleId="EditProposalSectionByPI-Rule33">
+  <Rule Effect="Permit" RuleId="EditProposalSectionByPI-Rule34">
     <Description>
       "PI" can "Edit" "Investigator Information",
       "InvestigatorInformation.PI", "InvestigatorInformation.Co-PI",
@@ -3468,7 +3526,7 @@
     </Target>
   </Rule>
   
-  <Rule Effect="Deny" RuleId="CannotEditOSPSectionByPI-Rule34">
+  <Rule Effect="Deny" RuleId="CannotEditOSPSectionByPI-Rule35">
     <Description>"PI" can not "Edit" "OSP Section"</Description>
     <Target>
       <AnyOf>
@@ -3513,7 +3571,7 @@
     </Target>
   </Rule>
   
-  <Rule Effect="Permit" RuleId="EditProposalSectionByCoPI-Rule35">
+  <Rule Effect="Permit" RuleId="EditProposalSectionByCoPI-Rule36">
     <Description>
       "Co-PI" can "Edit" "Investigator Information",
       "Appendices" and "Certification/Signatures" Only
@@ -3660,7 +3718,7 @@
     </Target>
   </Rule>
 
-  <Rule Effect="Deny" RuleId="CannotEditSomeProposalSectionByCoPI-Rule36">
+  <Rule Effect="Deny" RuleId="CannotEditSomeProposalSectionByCoPI-Rule37">
     <Description>
       "Co-PI" can not "Edit" "Project Information","Sponsor and
       Budget Information", "Cost Share Information", "University
@@ -4125,7 +4183,7 @@
     </Target>
   </Rule>
   
-  <Rule Effect="Deny" RuleId="CannotEditProposalSectionBySeniorPersonnel-Rule37">
+  <Rule Effect="Deny" RuleId="CannotEditProposalSectionBySeniorPersonnel-Rule38">
     <Description>
       "Senior Personnel" cannot "Edit" "Investigator
       Information", "Project Information", "Sponsor and Budget
@@ -4715,7 +4773,7 @@
     </Target>
   </Rule>
   
-  <Rule Effect="Permit" RuleId="EditProposalSectionByDepartmentChair-Rule38">
+  <Rule Effect="Permit" RuleId="EditProposalSectionByDepartmentChair-Rule39">
     <Description>
       "Department Chair" can "Edit" "Certification/Signatures"
       when ApprovedByDepartmentChair = READYFORAPPROVAL
@@ -4756,7 +4814,7 @@
     </Target>
   </Rule>
   
-  <Rule Effect="Deny" RuleId="CannotEditProposalSectionByDepartmentChair-Rule39">
+  <Rule Effect="Deny" RuleId="CannotEditProposalSectionByDepartmentChair-Rule40">
     <Description>
       "Department Chair" cannot "Edit" "Investigator
       Information", "Project Information", "Sponsor and Budget
@@ -5134,7 +5192,7 @@
     </Target>
   </Rule>
   
-  <Rule Effect="Permit" RuleId="EditProposalSectionByBusinessManager-Rule40">
+  <Rule Effect="Permit" RuleId="EditProposalSectionByBusinessManager-Rule41">
     <Description>
       "Business Manager" can "Edit" "Sponsor and Budget
       Information" and "Certification/Signatures"
@@ -5207,7 +5265,7 @@
     </Target>
   </Rule>
 
-  <Rule Effect="Deny" RuleId="CannotEditProposalSectionByBusinessManager-Rule41">
+  <Rule Effect="Deny" RuleId="CannotEditProposalSectionByBusinessManager-Rule42">
     <Description>
       "Business Manager" cannot "Edit" "Investigator
       Information", "Project Information", "Cost Share Information",
@@ -5553,7 +5611,7 @@
     </Target>
   </Rule>
   
-  <Rule Effect="Permit" RuleId="EditProposalSectionByDean-Rule42">
+  <Rule Effect="Permit" RuleId="EditProposalSectionByDean-Rule43">
     <Description>
       "Dean" can "Edit" and "Certification/Signatures"
       when
@@ -5595,7 +5653,7 @@
     </Target>
   </Rule>
 
-  <Rule Effect="Deny" RuleId="CannotEditProposalSectionByDean-Rule43">
+  <Rule Effect="Deny" RuleId="CannotEditProposalSectionByDean-Rule44">
     <Description>
       "Dean" cannot "Edit" "Investigator Information", "Project
       Information", "Sponsor and Budget Information", "Cost Share
@@ -5971,7 +6029,7 @@
     </Target>
   </Rule>
   
-  <Rule Effect="Permit" RuleId="EditProposalSectionByIRB-Rule44">
+  <Rule Effect="Permit" RuleId="EditProposalSectionByIRB-Rule45">
     <Description>
       "IRB" can "Edit" and "Certification/Signatures"
       when ApprovedByIRB = READYFORAPPROVAL
@@ -6012,7 +6070,7 @@
     </Target>
   </Rule>
 
-  <Rule Effect="Deny" RuleId="CannotEditProposalSectionByIRB-Rule45">
+  <Rule Effect="Deny" RuleId="CannotEditProposalSectionByIRB-Rule46">
     <Description>
       "IRB" cannot "Edit" "Investigator Information", "Project
       Information", "Sponsor and Budget Information", "Cost Share
@@ -6388,7 +6446,7 @@
     </Target>
   </Rule>
  
-  <Rule Effect="Permit" RuleId="EditProposalSectionByUniversityResearchAdministrator-Rule46">
+  <Rule Effect="Permit" RuleId="EditProposalSectionByUniversityResearchAdministrator-Rule47">
     <Description>
       "University Research Administrator" can "Edit"
       "Investigator Information", "Project Information", "Sponsor and
@@ -6766,7 +6824,7 @@
     </Target>
   </Rule>
 
-  <Rule Effect="Deny" RuleId="CannotEditProposalSectionByUniversityResearchAdministrator-Rule47">
+  <Rule Effect="Deny" RuleId="CannotEditProposalSectionByUniversityResearchAdministrator-Rule48">
     <Description>
       "University Research Administrator" cannot edit
       Appendices
@@ -6808,7 +6866,7 @@
     </Target>
   </Rule>
   
-  <Rule Effect="Permit" RuleId="EditProposalSectionByUniversityResearchDirector-Rule48">
+  <Rule Effect="Permit" RuleId="EditProposalSectionByUniversityResearchDirector-Rule49">
     <Description>
       "University Research Director" can edit
       "Certification/Signatures" and "OSP Section"
@@ -6881,7 +6939,7 @@
     </Target>
   </Rule>
 
-  <Rule Effect="Deny" RuleId="CannotEditProposalSectionByUniversityResearchDirector-Rule49">
+  <Rule Effect="Deny" RuleId="CannotEditProposalSectionByUniversityResearchDirector-Rule50">
     <Description>
       "University Research Administrator" cannot "Edit"
       "Investigator Information", "Project Information", "Sponsor and
