@@ -387,7 +387,101 @@
     </Target>
   </Rule>
   
-  <Rule Effect="Permit" RuleId="SaveProposalByPI-Rule7">
+  <Rule Effect="Permit" RuleId="SaveProposalByFaculty-Rule7">
+    <Description>
+      "Tenured/tenure-track faculty" or "Non-tenure-track
+      research faculty" can "Save" a "Whole Proposal"
+    </Description>
+    <Target>
+      <AnyOf>
+        <AllOf>
+          <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Tenured/tenure-track faculty</AttributeValue>
+            <AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.type"
+							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+          </Match>
+          <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Whole Proposal</AttributeValue>
+            <AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:proposal.section"
+							Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+          </Match>
+          <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Save</AttributeValue>
+            <AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action"
+							Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+          </Match>
+        </AllOf>
+        <AllOf>
+          <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Non-tenure-track research faculty</AttributeValue>
+            <AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.type"
+							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+          </Match>
+          <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Whole Proposal</AttributeValue>
+            <AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:proposal.section"
+							Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+          </Match>
+          <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Save</AttributeValue>
+            <AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action"
+							Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+          </Match>
+        </AllOf>
+      </AnyOf>
+    </Target>
+	<ObligationExpressions>
+      <ObligationExpression ObligationId="sendEmail" FulfillOn="Permit">
+       <AttributeAssignmentExpression AttributeId="obligationType">
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">postobligation</AttributeValue>
+        </AttributeAssignmentExpression>
+        <AttributeAssignmentExpression AttributeId="emailBody">
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Hello User,&lt;br/&gt;&lt;br/&gt;The proposal has been created by by Tenured/tenure-track or Non-tenure-track faculty. &lt;br/&gt;&lt;br/&gt;Thank you, &lt;br/&gt; GPMS Team</AttributeValue>
+        </AttributeAssignmentExpression>
+        <AttributeAssignmentExpression AttributeId="emailSubject">
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Your proposal has been created by: </AttributeValue>
+        </AttributeAssignmentExpression>
+         <AttributeAssignmentExpression AttributeId="authorName">
+          <AttributeSelector MustBePresent="true" 
+                             Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" 
+                             Path="//ak:authorprofile/ak:fullname/text()"
+                             DataType="http://www.w3.org/2001/XMLSchema#string"/>
+        </AttributeAssignmentExpression>       
+        <AttributeAssignmentExpression AttributeId="piEmail">
+          <AttributeSelector MustBePresent="true" 
+                             Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" 
+                             Path="//ak:pi/ak:workemail/text()" 
+                             DataType="http://www.w3.org/2001/XMLSchema#string"/>
+        </AttributeAssignmentExpression>
+        <AttributeAssignmentExpression AttributeId="copisEmail">
+          <AttributeSelector MustBePresent="true" 
+                             Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" 
+                             Path="//ak:copi/ak:workemail/text()" 
+                             DataType="http://www.w3.org/2001/XMLSchema#string"/>
+        </AttributeAssignmentExpression>  
+		<AttributeAssignmentExpression AttributeId="seniorsEmail">
+          <AttributeSelector MustBePresent="true" 
+                             Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" 
+                             Path="//ak:senior/ak:workemail/text()" 
+                             DataType="http://www.w3.org/2001/XMLSchema#string"/>
+        </AttributeAssignmentExpression> 
+      </ObligationExpression>      
+    </ObligationExpressions>
+  </Rule>
+  
+  <Rule Effect="Permit" RuleId="SaveProposalByPI-Rule8">
     <Description>
       "PI" can "Save" an Existing "Whole Proposal"
       when SubmittedByPI = NOTSUBMITTED and DeletedByPI = NOTDELETED
@@ -472,7 +566,7 @@
     </ObligationExpressions>
   </Rule>
   
-  <Rule Effect="Permit" RuleId="SaveProposalByCo-PI-Rule8">
+  <Rule Effect="Permit" RuleId="SaveProposalByCo-PI-Rule9">
     <Description>
 	  "Co-PI" can "Save" an Existing "Whole Proposal"
       when SubmittedByPI = NOTSUBMITTED and DeletedByPI = NOTDELETED and ReadyForSubmissionByPI = False 
@@ -564,7 +658,7 @@
     </ObligationExpressions>
   </Rule>
   
-  <Rule Effect="Permit" RuleId="SubmitProposalByPI-Rule9">
+  <Rule Effect="Permit" RuleId="SubmitProposalByPI-Rule10">
     <Description>
       "PI" can "Submit" a "Whole Proposal"
       when SubmittedByPI = NOTSUBMITTED and ReadyForSubmissionByPI = True and
@@ -677,7 +771,7 @@
     </ObligationExpressions>
   </Rule>
   
-  <Rule Effect="Deny" RuleId="NotSubmitProposalByCoPI-Rule10">
+  <Rule Effect="Deny" RuleId="NotSubmitProposalByCoPI-Rule11">
     <Description>
       "Co-PI" cannpt "Submit" a "Whole Proposal"
       when SubmittedByPI = NOTSUBMITTED and ReadyForSubmissionByPI = False and
@@ -733,7 +827,7 @@
     </Target>
   </Rule>
   
-  <Rule Effect="Permit" RuleId="SubmitProposalByUniversityResearchAdministrator-Rule11">
+  <Rule Effect="Permit" RuleId="SubmitProposalByUniversityResearchAdministrator-Rule12">
     <Description>
       "University Research Administrator" can "Submit" a "Whole
       Proposal"
@@ -870,7 +964,7 @@
     </ObligationExpressions>
   </Rule>
   
-  <Rule Effect="Permit" RuleId="ApproveProposalByDepartmentChair-Rule12">
+  <Rule Effect="Permit" RuleId="ApproveProposalByDepartmentChair-Rule13">
     <Description>
       "Department Chair" can "Approve" a "Whole Proposal"
       when ApprovedByDepartmentChair = READYFORAPPROVAL
@@ -974,7 +1068,7 @@
     </ObligationExpressions>
   </Rule>
   
-  <Rule Effect="Permit" RuleId="ApproveProposalByBusinessManager-Rule13">
+  <Rule Effect="Permit" RuleId="ApproveProposalByBusinessManager-Rule14">
     <Description>
       "Business Manager" can "Approve" a "Whole Proposal"
       when ApprovedByBusinessManager = READYFORAPPROVAL
@@ -1072,7 +1166,7 @@
     </ObligationExpressions>
   </Rule>
   
-  <Rule Effect="Permit" RuleId="ApproveProposalByDean-Rule14">
+  <Rule Effect="Permit" RuleId="ApproveProposalByDean-Rule15">
     <Description>
       "Dean" can "Approve" a "Whole Proposal"
       when ApprovedByDean = READYFORAPPROVAL
@@ -1170,7 +1264,7 @@
     </ObligationExpressions>
   </Rule>
   
-  <Rule Effect="Permit" RuleId="ApproveProposalByIRB-Rule15">
+  <Rule Effect="Permit" RuleId="ApproveProposalByIRB-Rule16">
     <Description>
       "IRB" can "Approve" a "Whole Proposal"
       when ApprovedByIRB = READYFORAPPROVAL
@@ -1268,7 +1362,7 @@
     </ObligationExpressions>
   </Rule>
   
-  <Rule Effect="Permit" RuleId="ApproveProposalByUniversityResearchAdministrator-Rule16">
+  <Rule Effect="Permit" RuleId="ApproveProposalByUniversityResearchAdministrator-Rule17">
     <Description>
       "University Research Administrator" can "Approve" a
       "Whole Proposal"
@@ -1367,7 +1461,7 @@
     </ObligationExpressions>
   </Rule>
   
-  <Rule Effect="Permit" RuleId="ApproveProposalByUniversityResearchDirector-Rule17">
+  <Rule Effect="Permit" RuleId="ApproveProposalByUniversityResearchDirector-Rule18">
     <Description>
       "University Research Director" can "Approve" a "Whole
       Proposal"
@@ -1466,7 +1560,7 @@
     </ObligationExpressions>
   </Rule>
   
-  <Rule Effect="Permit" RuleId="DisapproveProposalByDepartmentChair-Rule18">
+  <Rule Effect="Permit" RuleId="DisapproveProposalByDepartmentChair-Rule19">
     <Description>
       "Department Chair" can "Disapprove" a "Whole Proposal"
       when ApprovedByDepartmentChair = READYFORAPPROVAL
@@ -1564,7 +1658,7 @@
     </ObligationExpressions>
   </Rule>
   
-  <Rule Effect="Permit" RuleId="DisapproveProposalByBusinessManager-Rule19">
+  <Rule Effect="Permit" RuleId="DisapproveProposalByBusinessManager-Rule20">
     <Description>
       "Business Manager" can "Disapprove" a "Whole Proposal"
       when ApprovedByBusinessManager = READYFORAPPROVAL
@@ -1674,7 +1768,7 @@
     </ObligationExpressions>
   </Rule>
   
-  <Rule Effect="Permit" RuleId="DisapproveProposalByDean-Rule20">
+  <Rule Effect="Permit" RuleId="DisapproveProposalByDean-Rule21">
     <Description>
       "Dean" can "Disapprove" a "Whole Proposal"
       when ApprovedByDean = READYFORAPPROVAL
@@ -1790,7 +1884,7 @@
     </ObligationExpressions>
   </Rule>
   
-  <Rule Effect="Permit" RuleId="DisapproveProposalByIRB-Rule21">
+  <Rule Effect="Permit" RuleId="DisapproveProposalByIRB-Rule22">
     <Description>
       "IRB" can "Disapprove" a "Whole Proposal"
       when ApprovedByIRB = READYFORAPPROVAL
@@ -1906,7 +2000,7 @@
     </ObligationExpressions>
   </Rule>
   
-  <Rule Effect="Permit" RuleId="DisapproveProposalByUniversityResearchAdministrator-Rule22">
+  <Rule Effect="Permit" RuleId="DisapproveProposalByUniversityResearchAdministrator-Rule23">
     <Description>
       "University Research Administrator" can "Disapprove" a
       "Whole Proposal"
@@ -2029,7 +2123,7 @@
     </ObligationExpressions>
   </Rule>
   
-  <Rule Effect="Permit" RuleId="DisapproveProposalByUniversityResearchDirector-Rule23">
+  <Rule Effect="Permit" RuleId="DisapproveProposalByUniversityResearchDirector-Rule24">
     <Description>
       "University Research Director" can "Disapprove" a "Whole
       Proposal"
@@ -2158,7 +2252,7 @@
     </ObligationExpressions>
   </Rule>
   
-  <Rule Effect="Permit" RuleId="WithdrawProposalByUniversityResearchAdministrator-Rule24">
+  <Rule Effect="Permit" RuleId="WithdrawProposalByUniversityResearchAdministrator-Rule25">
     <Description>
       "University Research Administrator" can "Withdraw" a
       "Whole Proposal"
@@ -2281,7 +2375,7 @@
     </ObligationExpressions>
   </Rule>
   
-  <Rule Effect="Permit" RuleId="ArchiveProposalByUniversityResearchDirector-Rule25">
+  <Rule Effect="Permit" RuleId="ArchiveProposalByUniversityResearchDirector-Rule26">
     <Description>
       "University Research Director" can "Archive" a "Whole
       Proposal"
@@ -2368,7 +2462,7 @@
     </ObligationExpressions>
   </Rule>
   
-  <Rule Effect="Permit" RuleId="DeleteCo-PIandSeniorPersonnelByPI-Rule26">
+  <Rule Effect="Permit" RuleId="DeleteCoPIandSeniorPersonnelByPI-Rule27">
     <Description>
       "PI" can "Delete"
       "InvestigatorInformation.Co-PI" and
@@ -2470,7 +2564,7 @@
     </Target>
   </Rule>
   
-  <Rule Effect="Permit" RuleId="DeleteSeniorPersonnelByCoPI-Rule27">
+  <Rule Effect="Permit" RuleId="DeleteSeniorPersonnelByCoPI-Rule28">
     <Description>
       "Co-PI" can "Delete"
       "InvestigatorInformation.Senior-Personnel" Only
@@ -2527,7 +2621,7 @@
     </Target>
   </Rule>
   
-  <Rule Effect="Deny" RuleId="CannotDeleteCoPIByCoPI-Rule28">
+  <Rule Effect="Deny" RuleId="CannotDeleteCoPIByCoPI-Rule29">
     <Description>
       "Co-PI" cannot "Delete" "InvestigatorInformation.Co-PI"
       when
@@ -2583,7 +2677,7 @@
     </Target>
   </Rule>
   
-  <Rule Effect="Permit" RuleId="DeleteProposalByPI-Rule29">
+  <Rule Effect="Permit" RuleId="DeleteProposalByPI-Rule30">
     <Description>
       "PI" can "Delete" a "Whole Proposal"
       when SubmittedByPI = NOTSUBMITTED and DeletedByPI = NOTDELETED
@@ -2668,7 +2762,7 @@
     </ObligationExpressions>
   </Rule>
   
-  <Rule Effect="Deny" RuleId="CannotDeleteProposalByCo-PI-Rule30">
+  <Rule Effect="Deny" RuleId="CannotDeleteProposalByCo-PI-Rule31">
     <Description>
       "Co-PI" cannot "Delete" a "Whole Proposal"
       when SubmittedByPI = NOTSUBMITTED and DeletedByPI = NOTDELETED
@@ -2716,7 +2810,7 @@
     </Target>
    </Rule>
    
-  <Rule Effect="Permit" RuleId="DeleteProposalByUniversityResearchDirector-Rule31">
+  <Rule Effect="Permit" RuleId="DeleteProposalByUniversityResearchDirector-Rule32">
     <Description>
       "University Research Director" can "Delete" a "Whole
       Proposal"
@@ -2839,7 +2933,7 @@
     </ObligationExpressions>
   </Rule>
   
-  <Rule Effect="Permit" RuleId="ViewAuditLogByPI-Rule32">
+  <Rule Effect="Permit" RuleId="ViewAuditLogByPI-Rule33">
     <Description> "PI" can "View" proposal "Audit Log"</Description>
     <Target>
       <AnyOf>
@@ -2870,7 +2964,7 @@
     </Target>
    </Rule>
    
-  <Rule Effect="Deny" RuleId="CannotViewAuditLogByOtherUser-Rule33">
+  <Rule Effect="Deny" RuleId="CannotViewAuditLogByOtherUser-Rule34">
     <Description> "Co-PI", "Senior Personnel", "Department Chair", "Business Manager", "Dean", "IRB", "University Research Administrator", "University Research Director"
 	cannot "View" proposal "Audit Log"</Description>
     <Target>
@@ -3063,7 +3157,7 @@
     </Target>
    </Rule>
    
-  <Rule Effect="Permit" RuleId="EditProposalSectionByPI-Rule34">
+  <Rule Effect="Permit" RuleId="EditProposalSectionByPI-Rule35">
     <Description>
       "PI" can "Edit" "Investigator Information",
       "InvestigatorInformation.PI", "InvestigatorInformation.Co-PI",
@@ -3526,7 +3620,7 @@
     </Target>
   </Rule>
   
-  <Rule Effect="Deny" RuleId="CannotEditOSPSectionByPI-Rule35">
+  <Rule Effect="Deny" RuleId="CannotEditOSPSectionByPI-Rule36">
     <Description>"PI" can not "Edit" "OSP Section"</Description>
     <Target>
       <AnyOf>
@@ -3571,7 +3665,7 @@
     </Target>
   </Rule>
   
-  <Rule Effect="Permit" RuleId="EditProposalSectionByCoPI-Rule36">
+  <Rule Effect="Permit" RuleId="EditProposalSectionByCoPI-Rule37">
     <Description>
       "Co-PI" can "Edit" "Investigator Information",
       "Appendices" and "Certification/Signatures" Only
@@ -3718,7 +3812,7 @@
     </Target>
   </Rule>
 
-  <Rule Effect="Deny" RuleId="CannotEditSomeProposalSectionByCoPI-Rule37">
+  <Rule Effect="Deny" RuleId="CannotEditSomeProposalSectionByCoPI-Rule38">
     <Description>
       "Co-PI" can not "Edit" "Project Information","Sponsor and
       Budget Information", "Cost Share Information", "University
@@ -4183,7 +4277,7 @@
     </Target>
   </Rule>
   
-  <Rule Effect="Deny" RuleId="CannotEditProposalSectionBySeniorPersonnel-Rule38">
+  <Rule Effect="Deny" RuleId="CannotEditProposalSectionBySeniorPersonnel-Rule39">
     <Description>
       "Senior Personnel" cannot "Edit" "Investigator
       Information", "Project Information", "Sponsor and Budget
@@ -4773,7 +4867,7 @@
     </Target>
   </Rule>
   
-  <Rule Effect="Permit" RuleId="EditProposalSectionByDepartmentChair-Rule39">
+  <Rule Effect="Permit" RuleId="EditProposalSectionByDepartmentChair-Rule40">
     <Description>
       "Department Chair" can "Edit" "Certification/Signatures"
       when ApprovedByDepartmentChair = READYFORAPPROVAL
@@ -4814,7 +4908,7 @@
     </Target>
   </Rule>
   
-  <Rule Effect="Deny" RuleId="CannotEditProposalSectionByDepartmentChair-Rule40">
+  <Rule Effect="Deny" RuleId="CannotEditProposalSectionByDepartmentChair-Rule41">
     <Description>
       "Department Chair" cannot "Edit" "Investigator
       Information", "Project Information", "Sponsor and Budget
@@ -5192,7 +5286,7 @@
     </Target>
   </Rule>
   
-  <Rule Effect="Permit" RuleId="EditProposalSectionByBusinessManager-Rule41">
+  <Rule Effect="Permit" RuleId="EditProposalSectionByBusinessManager-Rule42">
     <Description>
       "Business Manager" can "Edit" "Sponsor and Budget
       Information" and "Certification/Signatures"
@@ -5265,7 +5359,7 @@
     </Target>
   </Rule>
 
-  <Rule Effect="Deny" RuleId="CannotEditProposalSectionByBusinessManager-Rule42">
+  <Rule Effect="Deny" RuleId="CannotEditProposalSectionByBusinessManager-Rule43">
     <Description>
       "Business Manager" cannot "Edit" "Investigator
       Information", "Project Information", "Cost Share Information",
@@ -5611,7 +5705,7 @@
     </Target>
   </Rule>
   
-  <Rule Effect="Permit" RuleId="EditProposalSectionByDean-Rule43">
+  <Rule Effect="Permit" RuleId="EditProposalSectionByDean-Rule44">
     <Description>
       "Dean" can "Edit" and "Certification/Signatures"
       when
@@ -5653,7 +5747,7 @@
     </Target>
   </Rule>
 
-  <Rule Effect="Deny" RuleId="CannotEditProposalSectionByDean-Rule44">
+  <Rule Effect="Deny" RuleId="CannotEditProposalSectionByDean-Rule45">
     <Description>
       "Dean" cannot "Edit" "Investigator Information", "Project
       Information", "Sponsor and Budget Information", "Cost Share
@@ -6029,7 +6123,7 @@
     </Target>
   </Rule>
   
-  <Rule Effect="Permit" RuleId="EditProposalSectionByIRB-Rule45">
+  <Rule Effect="Permit" RuleId="EditProposalSectionByIRB-Rule46">
     <Description>
       "IRB" can "Edit" and "Certification/Signatures"
       when ApprovedByIRB = READYFORAPPROVAL
@@ -6070,7 +6164,7 @@
     </Target>
   </Rule>
 
-  <Rule Effect="Deny" RuleId="CannotEditProposalSectionByIRB-Rule46">
+  <Rule Effect="Deny" RuleId="CannotEditProposalSectionByIRB-Rule47">
     <Description>
       "IRB" cannot "Edit" "Investigator Information", "Project
       Information", "Sponsor and Budget Information", "Cost Share
@@ -6446,7 +6540,7 @@
     </Target>
   </Rule>
  
-  <Rule Effect="Permit" RuleId="EditProposalSectionByUniversityResearchAdministrator-Rule47">
+  <Rule Effect="Permit" RuleId="EditProposalSectionByUniversityResearchAdministrator-Rule48">
     <Description>
       "University Research Administrator" can "Edit"
       "Investigator Information", "Project Information", "Sponsor and
@@ -6824,7 +6918,7 @@
     </Target>
   </Rule>
 
-  <Rule Effect="Deny" RuleId="CannotEditProposalSectionByUniversityResearchAdministrator-Rule48">
+  <Rule Effect="Deny" RuleId="CannotEditProposalSectionByUniversityResearchAdministrator-Rule49">
     <Description>
       "University Research Administrator" cannot edit
       Appendices
@@ -6866,7 +6960,7 @@
     </Target>
   </Rule>
   
-  <Rule Effect="Permit" RuleId="EditProposalSectionByUniversityResearchDirector-Rule49">
+  <Rule Effect="Permit" RuleId="EditProposalSectionByUniversityResearchDirector-Rule50">
     <Description>
       "University Research Director" can edit
       "Certification/Signatures" and "OSP Section"
@@ -6939,7 +7033,7 @@
     </Target>
   </Rule>
 
-  <Rule Effect="Deny" RuleId="CannotEditProposalSectionByUniversityResearchDirector-Rule50">
+  <Rule Effect="Deny" RuleId="CannotEditProposalSectionByUniversityResearchDirector-Rule51">
     <Description>
       "University Research Administrator" cannot "Edit"
       "Investigator Information", "Project Information", "Sponsor and
