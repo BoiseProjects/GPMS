@@ -2468,7 +2468,7 @@
       "InvestigatorInformation.Co-PI" and
 	  "InvestigatorInformation.Senior-Personnel" Only
       when
-      SubmittedByPI is NOTSUBMITTED and DeletedByPI is NOTDELETED and ReadyForSubmissionByPI is False
+      SubmittedByPI is NOTSUBMITTED and DeletedByPI is NOTDELETED
     </Description>
     <Target>
       <AnyOf>
@@ -2498,13 +2498,6 @@
             <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">NOTDELETED</AttributeValue>
             <AttributeDesignator
 							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:DeletedByPI"
-							Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
-							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
-          </Match>
-          <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">False</AttributeValue>
-            <AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ReadyForSubmissionByPI"
 							Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
           </Match>
@@ -2542,13 +2535,6 @@
             <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">NOTDELETED</AttributeValue>
             <AttributeDesignator
 							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:DeletedByPI"
-							Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
-							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
-          </Match>
-          <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">False</AttributeValue>
-            <AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ReadyForSubmissionByPI"
 							Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
           </Match>

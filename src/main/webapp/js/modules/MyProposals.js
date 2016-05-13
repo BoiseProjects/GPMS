@@ -3341,6 +3341,31 @@ $(function() {
 					attributeName : "proposal.action",
 					attributeValue : buttonType
 				});
+			} else {
+				switch (buttonType) {
+				case "Save":
+					attributeArray.push({
+						attributeType : "Subject",
+						attributeName : "position.type",
+						attributeValue : GPMS.utils.GetUserPositionType()
+					});
+
+					attributeArray.push({
+						attributeType : "Resource",
+						attributeName : "proposal.section",
+						attributeValue : proposalSection
+					});
+
+					attributeArray.push({
+						attributeType : "Action",
+						attributeName : "proposal.action",
+						attributeValue : buttonType
+					});
+
+					break;
+				default:
+					break;
+				}
 			}
 
 			this.config.url = this.config.baseURL + "SaveUpdateProposal";

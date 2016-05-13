@@ -2902,329 +2902,446 @@ public class ProposalService {
 					// Device type
 					// device.type
 
-					ObjectId id = new ObjectId(proposalID);
+					List<SignatureUserInfo> signatures = new ArrayList<SignatureUserInfo>();
+					if (!proposalID.equals("0")) {
+						ObjectId id = new ObjectId(proposalID);
 
-					List<SignatureUserInfo> signatures = proposalDAO
-							.findSignaturesExceptInvestigator(id,
-									irbApprovalRequired);
+						signatures = proposalDAO
+								.findSignaturesExceptInvestigator(id,
+										irbApprovalRequired);
 
-					contentProfile.append("<Content>");
-					contentProfile
-							.append("<ak:record xmlns:ak=\"http://akpower.org\">");
-					contentProfile.append("<ak:proposal>");
+						contentProfile.append("<Content>");
+						contentProfile
+								.append("<ak:record xmlns:ak=\"http://akpower.org\">");
+						contentProfile.append("<ak:proposal>");
 
-					contentProfile.append("<ak:proposalid>");
-					contentProfile.append(proposalID);
-					contentProfile.append("</ak:proposalid>");
+						contentProfile.append("<ak:proposalid>");
+						contentProfile.append(proposalID);
+						contentProfile.append("</ak:proposalid>");
 
-					contentProfile.append("<ak:proposaltitle>");
-					contentProfile.append(existingProposal.getProjectInfo()
-							.getProjectTitle());
-					contentProfile.append("</ak:proposaltitle>");
+						contentProfile.append("<ak:proposaltitle>");
+						contentProfile.append(existingProposal.getProjectInfo()
+								.getProjectTitle());
+						contentProfile.append("</ak:proposaltitle>");
 
-					contentProfile.append("<ak:signedByCurrentUser>");
-					contentProfile.append(signedByCurrentUser);
-					contentProfile.append("</ak:signedByCurrentUser>");
+						contentProfile.append("<ak:signedByCurrentUser>");
+						contentProfile.append(signedByCurrentUser);
+						contentProfile.append("</ak:signedByCurrentUser>");
 
-					contentProfile.append("<ak:submittedbypi>");
-					contentProfile.append(existingProposal.getSubmittedByPI());
-					contentProfile.append("</ak:submittedbypi>");
+						contentProfile.append("<ak:submittedbypi>");
+						contentProfile.append(existingProposal
+								.getSubmittedByPI());
+						contentProfile.append("</ak:submittedbypi>");
 
-					contentProfile.append("<ak:readyforsubmissionbypi>");
-					contentProfile.append(existingProposal
-							.isReadyForSubmissionByPI());
-					contentProfile.append("</ak:readyforsubmissionbypi>");
+						contentProfile.append("<ak:readyforsubmissionbypi>");
+						contentProfile.append(existingProposal
+								.isReadyForSubmissionByPI());
+						contentProfile.append("</ak:readyforsubmissionbypi>");
 
-					contentProfile.append("<ak:deletedbypi>");
-					contentProfile.append(existingProposal.getDeletedByPI());
-					contentProfile.append("</ak:deletedbypi>");
+						contentProfile.append("<ak:deletedbypi>");
+						contentProfile
+								.append(existingProposal.getDeletedByPI());
+						contentProfile.append("</ak:deletedbypi>");
 
-					contentProfile.append("<ak:approvedbydepartmentchair>");
-					contentProfile.append(existingProposal.getChairApproval());
-					contentProfile.append("</ak:approvedbydepartmentchair>");
+						contentProfile.append("<ak:approvedbydepartmentchair>");
+						contentProfile.append(existingProposal
+								.getChairApproval());
+						contentProfile
+								.append("</ak:approvedbydepartmentchair>");
 
-					contentProfile.append("<ak:approvedbybusinessmanager>");
-					contentProfile.append(existingProposal
-							.getBusinessManagerApproval());
-					contentProfile.append("</ak:approvedbybusinessmanager>");
+						contentProfile.append("<ak:approvedbybusinessmanager>");
+						contentProfile.append(existingProposal
+								.getBusinessManagerApproval());
+						contentProfile
+								.append("</ak:approvedbybusinessmanager>");
 
-					contentProfile.append("<ak:approvedbyirb>");
-					contentProfile.append(existingProposal.getIrbApproval());
-					contentProfile.append("</ak:approvedbyirb>");
+						contentProfile.append("<ak:approvedbyirb>");
+						contentProfile
+								.append(existingProposal.getIrbApproval());
+						contentProfile.append("</ak:approvedbyirb>");
 
-					contentProfile.append("<ak:approvedbydean>");
-					contentProfile.append(existingProposal.getDeanApproval());
-					contentProfile.append("</ak:approvedbydean>");
+						contentProfile.append("<ak:approvedbydean>");
+						contentProfile.append(existingProposal
+								.getDeanApproval());
+						contentProfile.append("</ak:approvedbydean>");
 
-					contentProfile
-							.append("<ak:approvedbyuniversityresearchadministrator>");
-					contentProfile.append(existingProposal
-							.getResearchAdministratorApproval());
-					contentProfile
-							.append("</ak:approvedbyuniversityresearchadministrator>");
+						contentProfile
+								.append("<ak:approvedbyuniversityresearchadministrator>");
+						contentProfile.append(existingProposal
+								.getResearchAdministratorApproval());
+						contentProfile
+								.append("</ak:approvedbyuniversityresearchadministrator>");
 
-					contentProfile
-							.append("<ak:withdrawnbyuniversityresearchadministrator>");
-					contentProfile.append(existingProposal
-							.getResearchAdministratorWithdraw());
-					contentProfile
-							.append("</ak:withdrawnbyuniversityresearchadministrator>");
+						contentProfile
+								.append("<ak:withdrawnbyuniversityresearchadministrator>");
+						contentProfile.append(existingProposal
+								.getResearchAdministratorWithdraw());
+						contentProfile
+								.append("</ak:withdrawnbyuniversityresearchadministrator>");
 
-					contentProfile
-							.append("<ak:submittedbyuniversityresearchadministrator>");
-					contentProfile.append(existingProposal
-							.getResearchAdministratorSubmission());
-					contentProfile
-							.append("</ak:submittedbyuniversityresearchadministrator>");
+						contentProfile
+								.append("<ak:submittedbyuniversityresearchadministrator>");
+						contentProfile.append(existingProposal
+								.getResearchAdministratorSubmission());
+						contentProfile
+								.append("</ak:submittedbyuniversityresearchadministrator>");
 
-					contentProfile
-							.append("<ak:approvedbyuniversityresearchdirector>");
-					contentProfile.append(existingProposal
-							.getResearchDirectorDeletion());
-					contentProfile
-							.append("</ak:approvedbyuniversityresearchdirector>");
+						contentProfile
+								.append("<ak:approvedbyuniversityresearchdirector>");
+						contentProfile.append(existingProposal
+								.getResearchDirectorDeletion());
+						contentProfile
+								.append("</ak:approvedbyuniversityresearchdirector>");
 
-					contentProfile
-							.append("<ak:deletedbyuniversityresearchdirector>");
-					contentProfile.append(existingProposal
-							.getResearchDirectorDeletion());
-					contentProfile
-							.append("</ak:deletedbyuniversityresearchdirector>");
+						contentProfile
+								.append("<ak:deletedbyuniversityresearchdirector>");
+						contentProfile.append(existingProposal
+								.getResearchDirectorDeletion());
+						contentProfile
+								.append("</ak:deletedbyuniversityresearchdirector>");
 
-					contentProfile
-							.append("<ak:archivedbyuniversityresearchdirector>");
-					contentProfile.append(existingProposal
-							.getResearchDirectorArchived());
-					contentProfile
-							.append("</ak:archivedbyuniversityresearchdirector>");
+						contentProfile
+								.append("<ak:archivedbyuniversityresearchdirector>");
+						contentProfile.append(existingProposal
+								.getResearchDirectorArchived());
+						contentProfile
+								.append("</ak:archivedbyuniversityresearchdirector>");
 
-					contentProfile.append("<ak:authorprofile>");
-					// contentProfile.append("<ak:firstname>");
-					// contentProfile.append(authorProfile.getFirstName());
-					// contentProfile.append("</ak:firstname>");
-					// contentProfile.append("<ak:middlename>");
-					// contentProfile
-					// .append(authorProfile.getMiddleName());
-					// contentProfile.append("</ak:middlename>");
-					//
-					// contentProfile.append("<ak:lastname>");
-					// contentProfile.append(authorProfile.getLastName());
-					// contentProfile.append("</ak:lastname>");
+						contentProfile.append("<ak:authorprofile>");
+						// contentProfile.append("<ak:firstname>");
+						// contentProfile.append(authorProfile.getFirstName());
+						// contentProfile.append("</ak:firstname>");
+						// contentProfile.append("<ak:middlename>");
+						// contentProfile
+						// .append(authorProfile.getMiddleName());
+						// contentProfile.append("</ak:middlename>");
+						//
+						// contentProfile.append("<ak:lastname>");
+						// contentProfile.append(authorProfile.getLastName());
+						// contentProfile.append("</ak:lastname>");
 
-					contentProfile.append("<ak:fullname>");
-					contentProfile.append(authorFullName);
-					contentProfile.append("</ak:fullname>");
-					contentProfile.append("</ak:authorprofile>");
-
-					contentProfile.append("<ak:pi>");
-					contentProfile.append("<ak:fullname>");
-					contentProfile.append(existingProposal
-							.getInvestigatorInfo().getPi().getUserRef()
-							.getFullName());
-					contentProfile.append("</ak:fullname>");
-
-					contentProfile.append("<ak:workemail>");
-					contentProfile.append(existingProposal
-							.getInvestigatorInfo().getPi().getUserRef()
-							.getWorkEmails().get(0));
-					contentProfile.append("</ak:workemail>");
-
-					contentProfile.append("<ak:userid>");
-					contentProfile.append(existingProposal
-							.getInvestigatorInfo().getPi().getUserProfileId());
-					contentProfile.append("</ak:userid>");
-					contentProfile.append("</ak:pi>");
-
-					for (InvestigatorRefAndPosition copis : existingProposal
-							.getInvestigatorInfo().getCo_pi()) {
-						contentProfile.append("<ak:copi>");
 						contentProfile.append("<ak:fullname>");
-						contentProfile.append(copis.getUserRef().getFullName());
+						contentProfile.append(authorFullName);
 						contentProfile.append("</ak:fullname>");
+						contentProfile.append("</ak:authorprofile>");
 
-						contentProfile.append("<ak:workemail>");
-						contentProfile.append(copis.getUserRef()
-								.getWorkEmails().get(0));
-						contentProfile.append("</ak:workemail>");
-
-						contentProfile.append("<ak:userid>");
-						contentProfile.append(copis.getUserProfileId());
-						contentProfile.append("</ak:userid>");
-						contentProfile.append("</ak:copi>");
-					}
-
-					for (InvestigatorRefAndPosition seniors : existingProposal
-							.getInvestigatorInfo().getSeniorPersonnel()) {
-						contentProfile.append("<ak:senior>");
+						contentProfile.append("<ak:pi>");
 						contentProfile.append("<ak:fullname>");
-						contentProfile.append(seniors.getUserRef()
+						contentProfile.append(existingProposal
+								.getInvestigatorInfo().getPi().getUserRef()
 								.getFullName());
 						contentProfile.append("</ak:fullname>");
 
 						contentProfile.append("<ak:workemail>");
-						contentProfile.append(seniors.getUserRef()
+						contentProfile.append(existingProposal
+								.getInvestigatorInfo().getPi().getUserRef()
 								.getWorkEmails().get(0));
 						contentProfile.append("</ak:workemail>");
 
 						contentProfile.append("<ak:userid>");
-						contentProfile.append(seniors.getUserProfileId());
+						contentProfile.append(existingProposal
+								.getInvestigatorInfo().getPi()
+								.getUserProfileId());
 						contentProfile.append("</ak:userid>");
-						contentProfile.append("</ak:senior>");
-					}
+						contentProfile.append("</ak:pi>");
 
-					for (SignatureUserInfo signatureInfo : signatures) {
-						switch (signatureInfo.getPositionTitle()) {
-						// case "PI":
-						// contentProfile.append("<ak:pi>");
-						// contentProfile.append("<ak:fullname>");
-						// contentProfile.append(signatureInfo.getFullName());
-						// contentProfile.append("</ak:fullname>");
-						//
-						// contentProfile.append("<ak:workemail>");
-						// contentProfile.append(signatureInfo.getEmail());
-						// contentProfile.append("</ak:workemail>");
-						//
-						// contentProfile.append("<ak:userid>");
-						// contentProfile.append(signatureInfo
-						// .getUserProfileId());
-						// contentProfile.append("</ak:userid>");
-						// contentProfile.append("</ak:pi>");
-						// break;
-						// case "Co-PI":
-						// contentProfile.append("<ak:copi>");
-						// contentProfile.append("<ak:fullname>");
-						// contentProfile.append(signatureInfo.getFullName());
-						// contentProfile.append("</ak:fullname>");
-						//
-						// contentProfile.append("<ak:workemail>");
-						// contentProfile.append(signatureInfo.getEmail());
-						// contentProfile.append("</ak:workemail>");
-						//
-						// contentProfile.append("<ak:userid>");
-						// contentProfile.append(signatureInfo
-						// .getUserProfileId());
-						// contentProfile.append("</ak:userid>");
-						// contentProfile.append("</ak:copi>");
-						// break;
-						// case "Senior Personnel":
-						// contentProfile.append("<ak:senior>");
-						// contentProfile.append("<ak:fullname>");
-						// contentProfile.append(signatureInfo.getFullName());
-						// contentProfile.append("</ak:fullname>");
-						//
-						// contentProfile.append("<ak:workemail>");
-						// contentProfile.append(signatureInfo.getEmail());
-						// contentProfile.append("</ak:workemail>");
-						//
-						// contentProfile.append("<ak:userid>");
-						// contentProfile.append(signatureInfo
-						// .getUserProfileId());
-						// contentProfile.append("</ak:userid>");
-						// contentProfile.append("</ak:senior>");
-						// break;
-						case "Department Chair":
-							contentProfile.append("<ak:chair>");
+						for (InvestigatorRefAndPosition copis : existingProposal
+								.getInvestigatorInfo().getCo_pi()) {
+							contentProfile.append("<ak:copi>");
 							contentProfile.append("<ak:fullname>");
-							contentProfile.append(signatureInfo.getFullName());
+							contentProfile.append(copis.getUserRef()
+									.getFullName());
 							contentProfile.append("</ak:fullname>");
 
 							contentProfile.append("<ak:workemail>");
-							contentProfile.append(signatureInfo.getEmail());
+							contentProfile.append(copis.getUserRef()
+									.getWorkEmails().get(0));
 							contentProfile.append("</ak:workemail>");
 
 							contentProfile.append("<ak:userid>");
-							contentProfile.append(signatureInfo
-									.getUserProfileId());
+							contentProfile.append(copis.getUserProfileId());
 							contentProfile.append("</ak:userid>");
-							contentProfile.append("</ak:chair>");
-
-							break;
-						case "Business Manager":
-							contentProfile.append("<ak:manager>");
-							contentProfile.append("<ak:fullname>");
-							contentProfile.append(signatureInfo.getFullName());
-							contentProfile.append("</ak:fullname>");
-
-							contentProfile.append("<ak:workemail>");
-							contentProfile.append(signatureInfo.getEmail());
-							contentProfile.append("</ak:workemail>");
-
-							contentProfile.append("<ak:userid>");
-							contentProfile.append(signatureInfo
-									.getUserProfileId());
-							contentProfile.append("</ak:userid>");
-							contentProfile.append("</ak:manager>");
-							break;
-						case "Dean":
-							contentProfile.append("<ak:dean>");
-							contentProfile.append("<ak:fullname>");
-							contentProfile.append(signatureInfo.getFullName());
-							contentProfile.append("</ak:fullname>");
-
-							contentProfile.append("<ak:workemail>");
-							contentProfile.append(signatureInfo.getEmail());
-							contentProfile.append("</ak:workemail>");
-
-							contentProfile.append("<ak:userid>");
-							contentProfile.append(signatureInfo
-									.getUserProfileId());
-							contentProfile.append("</ak:userid>");
-							contentProfile.append("</ak:dean>");
-							break;
-						case "IRB":
-							contentProfile.append("<ak:irb>");
-							contentProfile.append("<ak:fullname>");
-							contentProfile.append(signatureInfo.getFullName());
-							contentProfile.append("</ak:fullname>");
-
-							contentProfile.append("<ak:workemail>");
-							contentProfile.append(signatureInfo.getEmail());
-							contentProfile.append("</ak:workemail>");
-
-							contentProfile.append("<ak:userid>");
-							contentProfile.append(signatureInfo
-									.getUserProfileId());
-							contentProfile.append("</ak:userid>");
-							contentProfile.append("</ak:irb>");
-							break;
-						case "University Research Administrator":
-							contentProfile.append("<ak:administrator>");
-							contentProfile.append("<ak:fullname>");
-							contentProfile.append(signatureInfo.getFullName());
-							contentProfile.append("</ak:fullname>");
-
-							contentProfile.append("<ak:workemail>");
-							contentProfile.append(signatureInfo.getEmail());
-							contentProfile.append("</ak:workemail>");
-
-							contentProfile.append("<ak:userid>");
-							contentProfile.append(signatureInfo
-									.getUserProfileId());
-							contentProfile.append("</ak:userid>");
-							contentProfile.append("</ak:administrator>");
-							break;
-						case "University Research Director":
-							contentProfile.append("<ak:director>");
-							contentProfile.append("<ak:fullname>");
-							contentProfile.append(signatureInfo.getFullName());
-							contentProfile.append("</ak:fullname>");
-
-							contentProfile.append("<ak:workemail>");
-							contentProfile.append(signatureInfo.getEmail());
-							contentProfile.append("</ak:workemail>");
-
-							contentProfile.append("<ak:userid>");
-							contentProfile.append(signatureInfo
-									.getUserProfileId());
-							contentProfile.append("</ak:userid>");
-							contentProfile.append("</ak:director>");
-							break;
+							contentProfile.append("</ak:copi>");
 						}
-					}
 
-					contentProfile.append("</ak:proposal>");
-					contentProfile.append("</ak:record>");
-					contentProfile.append("</Content>");
+						for (InvestigatorRefAndPosition seniors : existingProposal
+								.getInvestigatorInfo().getSeniorPersonnel()) {
+							contentProfile.append("<ak:senior>");
+							contentProfile.append("<ak:fullname>");
+							contentProfile.append(seniors.getUserRef()
+									.getFullName());
+							contentProfile.append("</ak:fullname>");
+
+							contentProfile.append("<ak:workemail>");
+							contentProfile.append(seniors.getUserRef()
+									.getWorkEmails().get(0));
+							contentProfile.append("</ak:workemail>");
+
+							contentProfile.append("<ak:userid>");
+							contentProfile.append(seniors.getUserProfileId());
+							contentProfile.append("</ak:userid>");
+							contentProfile.append("</ak:senior>");
+						}
+
+						for (SignatureUserInfo signatureInfo : signatures) {
+							switch (signatureInfo.getPositionTitle()) {
+							// case "PI":
+							// contentProfile.append("<ak:pi>");
+							// contentProfile.append("<ak:fullname>");
+							// contentProfile.append(signatureInfo.getFullName());
+							// contentProfile.append("</ak:fullname>");
+							//
+							// contentProfile.append("<ak:workemail>");
+							// contentProfile.append(signatureInfo.getEmail());
+							// contentProfile.append("</ak:workemail>");
+							//
+							// contentProfile.append("<ak:userid>");
+							// contentProfile.append(signatureInfo
+							// .getUserProfileId());
+							// contentProfile.append("</ak:userid>");
+							// contentProfile.append("</ak:pi>");
+							// break;
+							// case "Co-PI":
+							// contentProfile.append("<ak:copi>");
+							// contentProfile.append("<ak:fullname>");
+							// contentProfile.append(signatureInfo.getFullName());
+							// contentProfile.append("</ak:fullname>");
+							//
+							// contentProfile.append("<ak:workemail>");
+							// contentProfile.append(signatureInfo.getEmail());
+							// contentProfile.append("</ak:workemail>");
+							//
+							// contentProfile.append("<ak:userid>");
+							// contentProfile.append(signatureInfo
+							// .getUserProfileId());
+							// contentProfile.append("</ak:userid>");
+							// contentProfile.append("</ak:copi>");
+							// break;
+							// case "Senior Personnel":
+							// contentProfile.append("<ak:senior>");
+							// contentProfile.append("<ak:fullname>");
+							// contentProfile.append(signatureInfo.getFullName());
+							// contentProfile.append("</ak:fullname>");
+							//
+							// contentProfile.append("<ak:workemail>");
+							// contentProfile.append(signatureInfo.getEmail());
+							// contentProfile.append("</ak:workemail>");
+							//
+							// contentProfile.append("<ak:userid>");
+							// contentProfile.append(signatureInfo
+							// .getUserProfileId());
+							// contentProfile.append("</ak:userid>");
+							// contentProfile.append("</ak:senior>");
+							// break;
+							case "Department Chair":
+								contentProfile.append("<ak:chair>");
+								contentProfile.append("<ak:fullname>");
+								contentProfile.append(signatureInfo
+										.getFullName());
+								contentProfile.append("</ak:fullname>");
+
+								contentProfile.append("<ak:workemail>");
+								contentProfile.append(signatureInfo.getEmail());
+								contentProfile.append("</ak:workemail>");
+
+								contentProfile.append("<ak:userid>");
+								contentProfile.append(signatureInfo
+										.getUserProfileId());
+								contentProfile.append("</ak:userid>");
+								contentProfile.append("</ak:chair>");
+
+								break;
+							case "Business Manager":
+								contentProfile.append("<ak:manager>");
+								contentProfile.append("<ak:fullname>");
+								contentProfile.append(signatureInfo
+										.getFullName());
+								contentProfile.append("</ak:fullname>");
+
+								contentProfile.append("<ak:workemail>");
+								contentProfile.append(signatureInfo.getEmail());
+								contentProfile.append("</ak:workemail>");
+
+								contentProfile.append("<ak:userid>");
+								contentProfile.append(signatureInfo
+										.getUserProfileId());
+								contentProfile.append("</ak:userid>");
+								contentProfile.append("</ak:manager>");
+								break;
+							case "Dean":
+								contentProfile.append("<ak:dean>");
+								contentProfile.append("<ak:fullname>");
+								contentProfile.append(signatureInfo
+										.getFullName());
+								contentProfile.append("</ak:fullname>");
+
+								contentProfile.append("<ak:workemail>");
+								contentProfile.append(signatureInfo.getEmail());
+								contentProfile.append("</ak:workemail>");
+
+								contentProfile.append("<ak:userid>");
+								contentProfile.append(signatureInfo
+										.getUserProfileId());
+								contentProfile.append("</ak:userid>");
+								contentProfile.append("</ak:dean>");
+								break;
+							case "IRB":
+								contentProfile.append("<ak:irb>");
+								contentProfile.append("<ak:fullname>");
+								contentProfile.append(signatureInfo
+										.getFullName());
+								contentProfile.append("</ak:fullname>");
+
+								contentProfile.append("<ak:workemail>");
+								contentProfile.append(signatureInfo.getEmail());
+								contentProfile.append("</ak:workemail>");
+
+								contentProfile.append("<ak:userid>");
+								contentProfile.append(signatureInfo
+										.getUserProfileId());
+								contentProfile.append("</ak:userid>");
+								contentProfile.append("</ak:irb>");
+								break;
+							case "University Research Administrator":
+								contentProfile.append("<ak:administrator>");
+								contentProfile.append("<ak:fullname>");
+								contentProfile.append(signatureInfo
+										.getFullName());
+								contentProfile.append("</ak:fullname>");
+
+								contentProfile.append("<ak:workemail>");
+								contentProfile.append(signatureInfo.getEmail());
+								contentProfile.append("</ak:workemail>");
+
+								contentProfile.append("<ak:userid>");
+								contentProfile.append(signatureInfo
+										.getUserProfileId());
+								contentProfile.append("</ak:userid>");
+								contentProfile.append("</ak:administrator>");
+								break;
+							case "University Research Director":
+								contentProfile.append("<ak:director>");
+								contentProfile.append("<ak:fullname>");
+								contentProfile.append(signatureInfo
+										.getFullName());
+								contentProfile.append("</ak:fullname>");
+
+								contentProfile.append("<ak:workemail>");
+								contentProfile.append(signatureInfo.getEmail());
+								contentProfile.append("</ak:workemail>");
+
+								contentProfile.append("<ak:userid>");
+								contentProfile.append(signatureInfo
+										.getUserProfileId());
+								contentProfile.append("</ak:userid>");
+								contentProfile.append("</ak:director>");
+								break;
+							}
+						}
+
+						contentProfile.append("</ak:proposal>");
+						contentProfile.append("</ak:record>");
+						contentProfile.append("</Content>");
+					} else {
+						contentProfile.append("<Content>");
+						contentProfile
+								.append("<ak:record xmlns:ak=\"http://akpower.org\">");
+						contentProfile.append("<ak:proposal>");
+
+						contentProfile.append("<ak:proposalid>");
+						contentProfile.append(proposalID);
+						contentProfile.append("</ak:proposalid>");
+
+						contentProfile.append("<ak:proposaltitle>");
+						contentProfile.append(existingProposal.getProjectInfo()
+								.getProjectTitle());
+						contentProfile.append("</ak:proposaltitle>");
+
+						contentProfile.append("<ak:signedByCurrentUser>");
+						contentProfile.append(signedByCurrentUser);
+						contentProfile.append("</ak:signedByCurrentUser>");
+
+						contentProfile.append("<ak:authorprofile>");
+						// contentProfile.append("<ak:firstname>");
+						// contentProfile.append(authorProfile.getFirstName());
+						// contentProfile.append("</ak:firstname>");
+						// contentProfile.append("<ak:middlename>");
+						// contentProfile
+						// .append(authorProfile.getMiddleName());
+						// contentProfile.append("</ak:middlename>");
+						//
+						// contentProfile.append("<ak:lastname>");
+						// contentProfile.append(authorProfile.getLastName());
+						// contentProfile.append("</ak:lastname>");
+
+						contentProfile.append("<ak:fullname>");
+						contentProfile.append(authorFullName);
+						contentProfile.append("</ak:fullname>");
+						contentProfile.append("</ak:authorprofile>");
+
+						contentProfile.append("<ak:pi>");
+						contentProfile.append("<ak:fullname>");
+						contentProfile.append(existingProposal
+								.getInvestigatorInfo().getPi().getUserRef()
+								.getFullName());
+						contentProfile.append("</ak:fullname>");
+
+						contentProfile.append("<ak:workemail>");
+						contentProfile.append(existingProposal
+								.getInvestigatorInfo().getPi().getUserRef()
+								.getWorkEmails().get(0));
+						contentProfile.append("</ak:workemail>");
+
+						contentProfile.append("<ak:userid>");
+						contentProfile.append(existingProposal
+								.getInvestigatorInfo().getPi()
+								.getUserProfileId());
+						contentProfile.append("</ak:userid>");
+						contentProfile.append("</ak:pi>");
+
+						for (InvestigatorRefAndPosition copis : existingProposal
+								.getInvestigatorInfo().getCo_pi()) {
+							contentProfile.append("<ak:copi>");
+							contentProfile.append("<ak:fullname>");
+							contentProfile.append(copis.getUserRef()
+									.getFullName());
+							contentProfile.append("</ak:fullname>");
+
+							contentProfile.append("<ak:workemail>");
+							contentProfile.append(copis.getUserRef()
+									.getWorkEmails().get(0));
+							contentProfile.append("</ak:workemail>");
+
+							contentProfile.append("<ak:userid>");
+							contentProfile.append(copis.getUserProfileId());
+							contentProfile.append("</ak:userid>");
+							contentProfile.append("</ak:copi>");
+						}
+
+						for (InvestigatorRefAndPosition seniors : existingProposal
+								.getInvestigatorInfo().getSeniorPersonnel()) {
+							contentProfile.append("<ak:senior>");
+							contentProfile.append("<ak:fullname>");
+							contentProfile.append(seniors.getUserRef()
+									.getFullName());
+							contentProfile.append("</ak:fullname>");
+
+							contentProfile.append("<ak:workemail>");
+							contentProfile.append(seniors.getUserRef()
+									.getWorkEmails().get(0));
+							contentProfile.append("</ak:workemail>");
+
+							contentProfile.append("<ak:userid>");
+							contentProfile.append(seniors.getUserProfileId());
+							contentProfile.append("</ak:userid>");
+							contentProfile.append("</ak:senior>");
+						}
+
+						contentProfile.append("</ak:proposal>");
+						contentProfile.append("</ak:record>");
+						contentProfile.append("</Content>");
+
+					}
 
 					contentProfile
 							.append("<Attribute AttributeId=\"urn:oasis:names:tc:xacml:3.0:content-selector\" IncludeInResult=\"false\">");
@@ -3398,7 +3515,8 @@ public class ProposalService {
 												case "irbsEmail":
 												case "administratorsEmail":
 												case "directorsEmail":
-													if (!assignment.getContent()
+													if (!assignment
+															.getContent()
 															.equals("")) {
 														emaillist
 																.add(assignment
@@ -3438,10 +3556,18 @@ public class ProposalService {
 								}
 							}
 
-							boolean proposalIsChanged = saveProposal(message,
-									existingProposal, oldProposal,
-									authorProfile, proposalID, signatures,
-									irbApprovalRequired);
+							boolean proposalIsChanged = false;
+							if (proposalID.equals("0")) {
+								proposalIsChanged = saveProposal(message,
+										existingProposal, null, authorProfile,
+										proposalID, null, irbApprovalRequired);
+							} else {
+								proposalIsChanged = saveProposal(message,
+										existingProposal, oldProposal,
+										authorProfile, proposalID, signatures,
+										irbApprovalRequired);
+							}
+
 							if (proposalIsChanged) {
 								if (!emailSubject.equals("")) {
 									emailUtil.sendMailMultipleUsersWithoutAuth(
@@ -3468,17 +3594,18 @@ public class ProposalService {
 									.build();
 						}
 					}
-				} else {
-					if (proposalID.equals("0")) {
-						saveProposal(message, existingProposal, null,
-								authorProfile, proposalID, null,
-								irbApprovalRequired);
-						return Response.status(200)
-								.type(MediaType.APPLICATION_JSON)
-								.entity("true").build();
-						// return Response.status(200).entity(true).build();
-					}
 				}
+				// else {
+				// if (proposalID.equals("0")) {
+				// saveProposal(message, existingProposal, null,
+				// authorProfile, proposalID, null,
+				// irbApprovalRequired);
+				// return Response.status(200)
+				// .type(MediaType.APPLICATION_JSON).entity("true")
+				// .build();
+				// // return Response.status(200).entity(true).build();
+				// }
+				// }
 			}
 		} else {
 			return Response.status(403).type(MediaType.APPLICATION_JSON)
@@ -4657,6 +4784,8 @@ public class ProposalService {
 						// case
 						// Change status to ready to submitted by PI
 						if (proposalID.equals("0")) {
+							notificationMessage = "Saved by " + authorUserName
+									+ ".";
 							if (existingProposal.getInvestigatorInfo()
 									.getCo_pi().size() == 0) {
 								existingProposal
@@ -4665,9 +4794,6 @@ public class ProposalService {
 								existingProposal.getProposalStatus().clear();
 								existingProposal.getProposalStatus().add(
 										Status.READYFORSUBMITBYPI);
-
-								notificationMessage = "Saved by "
-										+ authorUserName + ".";
 							}
 						} else if (!proposalID.equals("0")
 								&& currentProposalRoles != null) {
