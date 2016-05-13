@@ -2045,6 +2045,12 @@ $(function() {
 						.BindUserToPositionDetails(senior, "Senior Personnel");
 			});
 
+			$("#dataTable>tbody select[name='ddlName']").each(function(index) {
+				if ($(this).find('option').length == 0) {
+					$(this).parents('tr').remove();
+				}
+			});
+
 			$('#dataTable>tbody tr:first').remove();
 		},
 

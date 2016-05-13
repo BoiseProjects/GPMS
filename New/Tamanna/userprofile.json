@@ -1,0 +1,1088 @@
+{ 
+    "_id" : ObjectId("56e459c1af68c71ea4248ed8"), 
+    "first name" : "Admin", 
+    "middle name" : "", 
+    "last name" : "Admin", 
+    "date of birth" : ISODate("2016-03-12T07:00:00.000+0000"), 
+    "gender" : "Male", 
+    "mobile number" : [
+        "2222222222"
+    ], 
+    "addresses" : [
+        {
+            "street" : "fdasfda", 
+            "apt" : "fdas", 
+            "city" : "ffdsafdas", 
+            "state" : "Kansas", 
+            "zipcode" : "23232", 
+            "country" : "United States"
+        }
+    ], 
+    "work email" : [
+        "admin@yahoo.com"
+    ], 
+    "user id" : DBRef("useraccount", ObjectId("56e459c1af68c71ea4248ed7")), 
+    "deleted" : false, 
+    "version" : NumberLong(2), 
+    "audit log" : [
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e459c1af68c71ea4248ed8")), 
+            "action" : "Signed up new user account and profile of admin", 
+            "activity on" : ISODate("2016-03-12T18:02:41.874+0000")
+        }
+    ]
+}
+{ 
+    "_id" : ObjectId("56e45a50af68c71ea4248edf"), 
+    "first name" : "Milson", 
+    "middle name" : "", 
+    "last name" : "Munakami", 
+    "date of birth" : ISODate("2016-03-12T07:00:00.000+0000"), 
+    "gender" : "Male", 
+    "details" : [
+        {
+            "position title" : "Assistant Research Professor", 
+            "position type" : "Non-tenure-track research faculty", 
+            "department" : "Computer Science", 
+            "college" : "Engineering", 
+            "as default" : true
+        }, 
+        {
+            "position title" : "Associate Professor", 
+            "position type" : "Tenured/tenure-track faculty", 
+            "department" : "Computer Science", 
+            "college" : "Engineering", 
+            "as default" : false
+        }
+    ], 
+    "office number" : [
+        ""
+    ], 
+    "mobile number" : [
+        "1111111111"
+    ], 
+    "home number" : [
+        ""
+    ], 
+    "other number" : [
+        ""
+    ], 
+    "addresses" : [
+        {
+            "street" : "W Boise Ave TRLR", 
+            "apt" : "B", 
+            "city" : "Boise", 
+            "state" : "Idaho", 
+            "zipcode" : "83706", 
+            "country" : "United States"
+        }
+    ], 
+    "work email" : [
+        "milsonmunakami@u.boisestate.edu"
+    ], 
+    "personal email" : [
+        ""
+    ], 
+    "user id" : DBRef("useraccount", ObjectId("56e45a50af68c71ea4248ede")), 
+    "deleted" : false, 
+    "version" : NumberLong(11), 
+    "audit log" : [
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e459c1af68c71ea4248ed8")), 
+            "action" : "Created user account and profile of milson", 
+            "activity on" : ISODate("2016-03-12T18:05:04.171+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e45a50af68c71ea4248edf")), 
+            "action" : "Updated user account and profile of milson", 
+            "activity on" : ISODate("2016-03-12T18:06:04.748+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e459c1af68c71ea4248ed8")), 
+            "action" : "Updated user account and profile of milson", 
+            "activity on" : ISODate("2016-03-12T20:37:42.478+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e45a50af68c71ea4248edf")), 
+            "action" : "Updated user account and profile of milson", 
+            "activity on" : ISODate("2016-03-15T02:31:35.447+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e45a50af68c71ea4248edf")), 
+            "action" : "Updated user account and profile of milson", 
+            "activity on" : ISODate("2016-03-15T02:32:21.239+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e459c1af68c71ea4248ed8")), 
+            "action" : "Updated user account and profile of milson", 
+            "activity on" : ISODate("2016-03-15T02:56:03.774+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e45a50af68c71ea4248edf")), 
+            "action" : "Updated user account and profile of milson", 
+            "activity on" : ISODate("2016-03-15T02:56:24.807+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e45a50af68c71ea4248edf")), 
+            "action" : "Updated user account and profile of milson", 
+            "activity on" : ISODate("2016-03-19T04:15:49.510+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e45a50af68c71ea4248edf")), 
+            "action" : "Updated user account and profile of milson", 
+            "activity on" : ISODate("2016-04-19T02:22:46.667+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e459c1af68c71ea4248ed8")), 
+            "action" : "Updated user account and profile of milson", 
+            "activity on" : ISODate("2016-05-05T20:19:45.264+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e459c1af68c71ea4248ed8")), 
+            "action" : "Updated user account and profile of milson", 
+            "activity on" : ISODate("2016-05-09T18:26:08.149+0000")
+        }
+    ]
+}
+{ 
+    "_id" : ObjectId("56e45ae8af68c71ea4248eeb"), 
+    "first name" : "Department", 
+    "middle name" : "", 
+    "last name" : "Chair", 
+    "date of birth" : ISODate("2016-03-12T07:00:00.000+0000"), 
+    "gender" : "Male", 
+    "details" : [
+        {
+            "position title" : "Department Chair", 
+            "position type" : "Administrator", 
+            "department" : "Computer Science", 
+            "college" : "Engineering", 
+            "as default" : true
+        }
+    ], 
+    "office number" : [
+        ""
+    ], 
+    "mobile number" : [
+        "1111111111"
+    ], 
+    "home number" : [
+        ""
+    ], 
+    "other number" : [
+        ""
+    ], 
+    "addresses" : [
+        {
+            "street" : "fdsafda", 
+            "apt" : "", 
+            "city" : "fdsafdsa", 
+            "state" : "Kansas", 
+            "zipcode" : "22222", 
+            "country" : "United States"
+        }
+    ], 
+    "work email" : [
+        "milsonmunakami@boisestate.edu"
+    ], 
+    "personal email" : [
+        ""
+    ], 
+    "user id" : DBRef("useraccount", ObjectId("56e45ae8af68c71ea4248eea")), 
+    "deleted" : false, 
+    "version" : NumberLong(5), 
+    "audit log" : [
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e459c1af68c71ea4248ed8")), 
+            "action" : "Created user account and profile of chair", 
+            "activity on" : ISODate("2016-03-12T18:07:36.324+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e459c1af68c71ea4248ed8")), 
+            "action" : "Updated user account and profile of chair", 
+            "activity on" : ISODate("2016-03-12T18:15:19.531+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e459c1af68c71ea4248ed8")), 
+            "action" : "Updated user account and profile of chair", 
+            "activity on" : ISODate("2016-05-05T20:12:21.221+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e459c1af68c71ea4248ed8")), 
+            "action" : "Updated user account and profile of chair", 
+            "activity on" : ISODate("2016-05-05T20:20:04.443+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e459c1af68c71ea4248ed8")), 
+            "action" : "Updated user account and profile of chair", 
+            "activity on" : ISODate("2016-05-09T18:21:48.234+0000")
+        }
+    ]
+}
+{ 
+    "_id" : ObjectId("56e45b25af68c71ea4248ef3"), 
+    "first name" : "Thomas", 
+    "middle name" : "", 
+    "last name" : "Volz", 
+    "date of birth" : ISODate("2016-03-12T07:00:00.000+0000"), 
+    "gender" : "Male", 
+    "details" : [
+        {
+            "position title" : "Professor", 
+            "position type" : "Tenured/tenure-track faculty", 
+            "department" : "Computer Science", 
+            "college" : "Engineering", 
+            "as default" : false
+        }, 
+        {
+            "position title" : "Lecturer", 
+            "position type" : "Teaching faculty", 
+            "department" : "Computer Engineering", 
+            "college" : "Engineering", 
+            "as default" : true
+        }
+    ], 
+    "office number" : [
+        ""
+    ], 
+    "mobile number" : [
+        "2222222222"
+    ], 
+    "home number" : [
+        ""
+    ], 
+    "other number" : [
+        ""
+    ], 
+    "addresses" : [
+        {
+            "street" : "fdsaf", 
+            "apt" : "", 
+            "city" : "fdasf", 
+            "state" : "Kentucky", 
+            "zipcode" : "23232", 
+            "country" : "United States"
+        }
+    ], 
+    "work email" : [
+        "milsonmun@gmail.com"
+    ], 
+    "personal email" : [
+        ""
+    ], 
+    "user id" : DBRef("useraccount", ObjectId("56e45b25af68c71ea4248ef2")), 
+    "deleted" : false, 
+    "version" : NumberLong(10), 
+    "audit log" : [
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e459c1af68c71ea4248ed8")), 
+            "action" : "Created user account and profile of thomas", 
+            "activity on" : ISODate("2016-03-12T18:08:37.655+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e459c1af68c71ea4248ed8")), 
+            "action" : "Updated user account and profile of thomas", 
+            "activity on" : ISODate("2016-03-14T22:21:03.156+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e459c1af68c71ea4248ed8")), 
+            "action" : "Updated user account and profile of thomas", 
+            "activity on" : ISODate("2016-03-14T23:47:44.765+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e45b25af68c71ea4248ef3")), 
+            "action" : "Updated user account and profile of thomas", 
+            "activity on" : ISODate("2016-04-02T18:12:47.972+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e45b25af68c71ea4248ef3")), 
+            "action" : "Updated user account and profile of thomas", 
+            "activity on" : ISODate("2016-04-02T18:56:15.909+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e459c1af68c71ea4248ed8")), 
+            "action" : "Updated user account and profile of thomas", 
+            "activity on" : ISODate("2016-04-19T01:44:41.827+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e459c1af68c71ea4248ed8")), 
+            "action" : "Updated user account and profile of thomas", 
+            "activity on" : ISODate("2016-04-19T02:23:22.093+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e459c1af68c71ea4248ed8")), 
+            "action" : "Updated user account and profile of thomas", 
+            "activity on" : ISODate("2016-04-19T02:23:37.495+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e459c1af68c71ea4248ed8")), 
+            "action" : "Updated user account and profile of thomas", 
+            "activity on" : ISODate("2016-05-05T20:20:24.027+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e459c1af68c71ea4248ed8")), 
+            "action" : "Updated user account and profile of thomas", 
+            "activity on" : ISODate("2016-05-09T18:35:56.694+0000")
+        }
+    ]
+}
+{ 
+    "_id" : ObjectId("56e45b61af68c71ea4248efb"), 
+    "first name" : "Tamanna", 
+    "middle name" : "", 
+    "last name" : "Sherman", 
+    "date of birth" : ISODate("2016-03-12T07:00:00.000+0000"), 
+    "gender" : "Female", 
+    "details" : [
+        {
+            "position title" : "Senior Lecturer", 
+            "position type" : "Teaching faculty", 
+            "department" : "Computer Science", 
+            "college" : "Engineering", 
+            "as default" : true
+        }
+    ], 
+    "office number" : [
+        ""
+    ], 
+    "mobile number" : [
+        "2222222222"
+    ], 
+    "home number" : [
+        ""
+    ], 
+    "other number" : [
+        ""
+    ], 
+    "addresses" : [
+        {
+            "street" : "fasdf", 
+            "apt" : "ff", 
+            "city" : "dsafdsaf", 
+            "state" : "Kansas", 
+            "zipcode" : "22222", 
+            "country" : "United States"
+        }
+    ], 
+    "work email" : [
+        "tamannashamrin@u.boisestate.edu"
+    ], 
+    "personal email" : [
+        ""
+    ], 
+    "user id" : DBRef("useraccount", ObjectId("56e45b61af68c71ea4248efa")), 
+    "deleted" : false, 
+    "version" : NumberLong(4), 
+    "audit log" : [
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e459c1af68c71ea4248ed8")), 
+            "action" : "Created user account and profile of tamanna", 
+            "activity on" : ISODate("2016-03-12T18:09:37.128+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e459c1af68c71ea4248ed8")), 
+            "action" : "Updated user account and profile of tamanna", 
+            "activity on" : ISODate("2016-04-19T18:39:43.997+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e459c1af68c71ea4248ed8")), 
+            "action" : "Updated user account and profile of tamanna", 
+            "activity on" : ISODate("2016-05-05T20:20:14.346+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e459c1af68c71ea4248ed8")), 
+            "action" : "Updated user account and profile of tamanna", 
+            "activity on" : ISODate("2016-05-12T22:06:54.394+0000")
+        }
+    ]
+}
+{ 
+    "_id" : ObjectId("56e45badaf68c71ea4248f03"), 
+    "first name" : "University", 
+    "middle name" : "College", 
+    "last name" : "Dean", 
+    "date of birth" : ISODate("2016-03-12T07:00:00.000+0000"), 
+    "gender" : "Male", 
+    "details" : [
+        {
+            "position title" : "Dean", 
+            "position type" : "Administrator", 
+            "department" : "Computer Science", 
+            "college" : "Engineering", 
+            "as default" : true
+        }
+    ], 
+    "office number" : [
+        ""
+    ], 
+    "mobile number" : [
+        "1111111111"
+    ], 
+    "home number" : [
+        ""
+    ], 
+    "other number" : [
+        ""
+    ], 
+    "addresses" : [
+        {
+            "street" : "fdsaf", 
+            "apt" : "dafdas", 
+            "city" : "dafdsaf", 
+            "state" : "Kansas", 
+            "zipcode" : "32222", 
+            "country" : "United States"
+        }
+    ], 
+    "work email" : [
+        "noreplygpms@gmail.com"
+    ], 
+    "personal email" : [
+        ""
+    ], 
+    "user id" : DBRef("useraccount", ObjectId("56e45badaf68c71ea4248f02")), 
+    "deleted" : false, 
+    "version" : NumberLong(5), 
+    "audit log" : [
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e459c1af68c71ea4248ed8")), 
+            "action" : "Created user account and profile of dean", 
+            "activity on" : ISODate("2016-03-12T18:10:53.719+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e459c1af68c71ea4248ed8")), 
+            "action" : "Updated user account and profile of dean", 
+            "activity on" : ISODate("2016-03-12T18:14:58.793+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e459c1af68c71ea4248ed8")), 
+            "action" : "Updated user account and profile of dean", 
+            "activity on" : ISODate("2016-05-05T20:13:17.998+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e459c1af68c71ea4248ed8")), 
+            "action" : "Updated user account and profile of dean", 
+            "activity on" : ISODate("2016-05-05T20:19:52.661+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e459c1af68c71ea4248ed8")), 
+            "action" : "Updated user account and profile of dean", 
+            "activity on" : ISODate("2016-05-12T20:22:03.222+0000")
+        }
+    ]
+}
+{ 
+    "_id" : ObjectId("56e45bedaf68c71ea4248f0b"), 
+    "first name" : "Research", 
+    "middle name" : "", 
+    "last name" : "Admin", 
+    "date of birth" : ISODate("2016-03-11T07:00:00.000+0000"), 
+    "gender" : "Female", 
+    "details" : [
+        {
+            "position title" : "University Research Administrator", 
+            "position type" : "Administrator", 
+            "department" : "Computer Science", 
+            "college" : "Engineering", 
+            "as default" : true
+        }
+    ], 
+    "office number" : [
+        ""
+    ], 
+    "mobile number" : [
+        "2222222222"
+    ], 
+    "home number" : [
+        ""
+    ], 
+    "other number" : [
+        ""
+    ], 
+    "addresses" : [
+        {
+            "street" : "fasdfdsaf", 
+            "apt" : "222", 
+            "city" : "dasfdsa", 
+            "state" : "Kansas", 
+            "zipcode" : "22222", 
+            "country" : "United States"
+        }
+    ], 
+    "work email" : [
+        "nishashrestha45@gmail.com"
+    ], 
+    "personal email" : [
+        ""
+    ], 
+    "user id" : DBRef("useraccount", ObjectId("56e45bedaf68c71ea4248f0a")), 
+    "deleted" : false, 
+    "version" : NumberLong(2), 
+    "audit log" : [
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e459c1af68c71ea4248ed8")), 
+            "action" : "Created user account and profile of researchadmin", 
+            "activity on" : ISODate("2016-03-12T18:11:57.563+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e459c1af68c71ea4248ed8")), 
+            "action" : "Updated user account and profile of researchadmin", 
+            "activity on" : ISODate("2016-05-12T20:25:27.427+0000")
+        }
+    ]
+}
+{ 
+    "_id" : ObjectId("56e45c28af68c71ea4248f13"), 
+    "first name" : "University", 
+    "middle name" : "", 
+    "last name" : "Director", 
+    "date of birth" : ISODate("2016-03-11T07:00:00.000+0000"), 
+    "gender" : "Male", 
+    "details" : [
+        {
+            "position title" : "University Research Director", 
+            "position type" : "Administrator", 
+            "department" : "Computer Science", 
+            "college" : "Engineering", 
+            "as default" : true
+        }
+    ], 
+    "office number" : [
+        ""
+    ], 
+    "mobile number" : [
+        "2222222222"
+    ], 
+    "home number" : [
+        ""
+    ], 
+    "other number" : [
+        ""
+    ], 
+    "addresses" : [
+        {
+            "street" : "fdsafdsaf", 
+            "apt" : "fdsa", 
+            "city" : "fdsa", 
+            "state" : "Kentucky", 
+            "zipcode" : "23232", 
+            "country" : "United States"
+        }
+    ], 
+    "work email" : [
+        "milsonmun@outlook.com"
+    ], 
+    "personal email" : [
+        ""
+    ], 
+    "user id" : DBRef("useraccount", ObjectId("56e45c28af68c71ea4248f12")), 
+    "deleted" : false, 
+    "version" : NumberLong(2), 
+    "audit log" : [
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e459c1af68c71ea4248ed8")), 
+            "action" : "Created user account and profile of director", 
+            "activity on" : ISODate("2016-03-12T18:12:56.639+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e459c1af68c71ea4248ed8")), 
+            "action" : "Updated user account and profile of director", 
+            "activity on" : ISODate("2016-05-12T20:25:00.360+0000")
+        }
+    ]
+}
+{ 
+    "_id" : ObjectId("56e45c5eaf68c71ea4248f1b"), 
+    "first name" : "Department", 
+    "middle name" : "", 
+    "last name" : "Manager", 
+    "date of birth" : ISODate("2016-03-11T07:00:00.000+0000"), 
+    "gender" : "Female", 
+    "details" : [
+        {
+            "position title" : "Business Manager", 
+            "position type" : "Professional staff", 
+            "department" : "Computer Science", 
+            "college" : "Engineering", 
+            "as default" : true
+        }
+    ], 
+    "office number" : [
+        ""
+    ], 
+    "mobile number" : [
+        "3333333333"
+    ], 
+    "home number" : [
+        ""
+    ], 
+    "other number" : [
+        ""
+    ], 
+    "addresses" : [
+        {
+            "street" : "fdasfdas", 
+            "apt" : "2", 
+            "city" : "fas", 
+            "state" : "Arizona", 
+            "zipcode" : "22222", 
+            "country" : "United States"
+        }
+    ], 
+    "work email" : [
+        "milsonmun@hotmail.com"
+    ], 
+    "personal email" : [
+        ""
+    ], 
+    "user id" : DBRef("useraccount", ObjectId("56e45c5eaf68c71ea4248f1a")), 
+    "deleted" : false, 
+    "version" : NumberLong(2), 
+    "audit log" : [
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e459c1af68c71ea4248ed8")), 
+            "action" : "Created user account and profile of manager", 
+            "activity on" : ISODate("2016-03-12T18:13:50.230+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e459c1af68c71ea4248ed8")), 
+            "action" : "Updated user account and profile of manager", 
+            "activity on" : ISODate("2016-05-11T23:45:42.126+0000")
+        }
+    ]
+}
+{ 
+    "_id" : ObjectId("56e45c87af68c71ea4248f23"), 
+    "first name" : "University", 
+    "middle name" : "", 
+    "last name" : "IRB", 
+    "date of birth" : ISODate("2016-03-11T07:00:00.000+0000"), 
+    "gender" : "Female", 
+    "details" : [
+        {
+            "position title" : "IRB", 
+            "position type" : "Professional staff", 
+            "department" : "Computer Science", 
+            "college" : "Engineering", 
+            "as default" : true
+        }
+    ], 
+    "office number" : [
+        ""
+    ], 
+    "mobile number" : [
+        "2222222222"
+    ], 
+    "home number" : [
+        ""
+    ], 
+    "other number" : [
+        ""
+    ], 
+    "addresses" : [
+        {
+            "street" : "fdsafdsa", 
+            "apt" : "fdsaf", 
+            "city" : "fdsaf", 
+            "state" : "Iowa", 
+            "zipcode" : "22222", 
+            "country" : "United States"
+        }
+    ], 
+    "work email" : [
+        "milsonmunakami@yahoo.com"
+    ], 
+    "personal email" : [
+        ""
+    ], 
+    "user id" : DBRef("useraccount", ObjectId("56e45c87af68c71ea4248f22")), 
+    "deleted" : false, 
+    "version" : NumberLong(2), 
+    "audit log" : [
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e459c1af68c71ea4248ed8")), 
+            "action" : "Created user account and profile of irb", 
+            "activity on" : ISODate("2016-03-12T18:14:31.057+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e459c1af68c71ea4248ed8")), 
+            "action" : "Updated user account and profile of irb", 
+            "activity on" : ISODate("2016-05-11T23:46:07.149+0000")
+        }
+    ]
+}
+{ 
+    "_id" : ObjectId("56e45ce6af68c71ea4248f33"), 
+    "first name" : "Arthur", 
+    "middle name" : "", 
+    "last name" : "Fan", 
+    "date of birth" : ISODate("2016-03-10T07:00:00.000+0000"), 
+    "gender" : "Male", 
+    "details" : [
+        {
+            "position title" : "Assistant Research Professor", 
+            "position type" : "Non-tenure-track research faculty", 
+            "department" : "Computer Science", 
+            "college" : "Engineering", 
+            "as default" : true
+        }
+    ], 
+    "office number" : [
+        ""
+    ], 
+    "mobile number" : [
+        "2222222222"
+    ], 
+    "home number" : [
+        ""
+    ], 
+    "other number" : [
+        ""
+    ], 
+    "addresses" : [
+        {
+            "street" : "fdsafdsa", 
+            "apt" : "2", 
+            "city" : "ffasdf", 
+            "state" : "Arizona", 
+            "zipcode" : "22222", 
+            "country" : "United States"
+        }
+    ], 
+    "work email" : [
+        "arthurfcfcs@gmail.com"
+    ], 
+    "personal email" : [
+        ""
+    ], 
+    "user id" : DBRef("useraccount", ObjectId("56e45ce6af68c71ea4248f32")), 
+    "deleted" : false, 
+    "version" : NumberLong(4), 
+    "audit log" : [
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e459c1af68c71ea4248ed8")), 
+            "action" : "Created user account and profile of arthur", 
+            "activity on" : ISODate("2016-03-12T18:16:06.917+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e459c1af68c71ea4248ed8")), 
+            "action" : "Updated user account and profile of arthur", 
+            "activity on" : ISODate("2016-04-19T18:25:24.585+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e459c1af68c71ea4248ed8")), 
+            "action" : "Updated user account and profile of arthur", 
+            "activity on" : ISODate("2016-04-22T22:32:19.791+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e459c1af68c71ea4248ed8")), 
+            "action" : "Updated user account and profile of arthur", 
+            "activity on" : ISODate("2016-04-22T22:45:55.786+0000")
+        }
+    ]
+}
+{ 
+    "_id" : ObjectId("56e7398465dbb36ec3824379"), 
+    "first name" : "Chair2", 
+    "middle name" : "", 
+    "last name" : "Chair2", 
+    "date of birth" : ISODate("2016-03-10T07:00:00.000+0000"), 
+    "gender" : "Male", 
+    "details" : [
+        {
+            "position title" : "Department Chair", 
+            "position type" : "Administrator", 
+            "department" : "Computer Engineering", 
+            "college" : "Engineering", 
+            "as default" : true
+        }
+    ], 
+    "office number" : [
+        ""
+    ], 
+    "mobile number" : [
+        "1111111111"
+    ], 
+    "home number" : [
+        ""
+    ], 
+    "other number" : [
+        ""
+    ], 
+    "addresses" : [
+        {
+            "street" : "dfasf", 
+            "apt" : "fdsaf", 
+            "city" : "2fasfasdf", 
+            "state" : "Alaska", 
+            "zipcode" : "12312", 
+            "country" : "United States"
+        }
+    ], 
+    "work email" : [
+        "milsonmunakami@gmail.com"
+    ], 
+    "personal email" : [
+        ""
+    ], 
+    "user id" : DBRef("useraccount", ObjectId("56e7398465dbb36ec3824378")), 
+    "deleted" : false, 
+    "version" : NumberLong(4), 
+    "audit log" : [
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e459c1af68c71ea4248ed8")), 
+            "action" : "Created user account and profile of chair2", 
+            "activity on" : ISODate("2016-03-14T22:21:56.741+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e459c1af68c71ea4248ed8")), 
+            "action" : "Updated user account and profile of chair2", 
+            "activity on" : ISODate("2016-05-05T20:12:35.995+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e459c1af68c71ea4248ed8")), 
+            "action" : "Updated user account and profile of chair2", 
+            "activity on" : ISODate("2016-05-05T20:19:58.240+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e459c1af68c71ea4248ed8")), 
+            "action" : "Updated user account and profile of chair2", 
+            "activity on" : ISODate("2016-05-11T23:40:29.649+0000")
+        }
+    ]
+}
+{ 
+    "_id" : ObjectId("56ecbac265dbb3d5975ded82"), 
+    "first name" : "Milson", 
+    "middle name" : "K", 
+    "last name" : "Munakami", 
+    "date of birth" : ISODate("2016-03-18T06:00:00.000+0000"), 
+    "gender" : "Male", 
+    "details" : [
+        {
+            "position title" : "IRB", 
+            "position type" : "Professional staff", 
+            "department" : "Computer Engineering", 
+            "college" : "Engineering", 
+            "as default" : true
+        }
+    ], 
+    "office number" : [
+        ""
+    ], 
+    "mobile number" : [
+        "1208220294"
+    ], 
+    "home number" : [
+        ""
+    ], 
+    "other number" : [
+        ""
+    ], 
+    "addresses" : [
+        {
+            "street" : "2601 W Boise Ave TRLR B", 
+            "apt" : "", 
+            "city" : "Boise", 
+            "state" : "Idaho", 
+            "zipcode" : "83706", 
+            "country" : "United States"
+        }
+    ], 
+    "work email" : [
+        "milsonmun@yahoo.com"
+    ], 
+    "personal email" : [
+        ""
+    ], 
+    "user id" : DBRef("useraccount", ObjectId("56ecbac265dbb3d5975ded81")), 
+    "deleted" : false, 
+    "version" : NumberLong(7), 
+    "audit log" : [
+        {
+            "author info" : DBRef("userprofile", ObjectId("56ecbac265dbb3d5975ded82")), 
+            "action" : "Signed up new user account and profile of milstein", 
+            "activity on" : ISODate("2016-03-19T02:34:42.856+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e459c1af68c71ea4248ed8")), 
+            "action" : "Updated user account and profile of milstein", 
+            "activity on" : ISODate("2016-03-19T02:35:58.385+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("56ecbac265dbb3d5975ded82")), 
+            "action" : "Updated user account and profile of milstein", 
+            "activity on" : ISODate("2016-03-19T02:37:18.901+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e459c1af68c71ea4248ed8")), 
+            "action" : "Updated user account and profile of milstein", 
+            "activity on" : ISODate("2016-04-19T02:23:30.686+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e459c1af68c71ea4248ed8")), 
+            "action" : "Updated user account and profile of milstein", 
+            "activity on" : ISODate("2016-05-12T20:55:14.629+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e459c1af68c71ea4248ed8")), 
+            "action" : "Updated user account and profile of milstein", 
+            "activity on" : ISODate("2016-05-12T20:55:35.495+0000")
+        }
+    ]
+}
+{ 
+    "_id" : ObjectId("56fee3e965dbb35ce5c900ff"), 
+    "first name" : "PS", 
+    "middle name" : "", 
+    "last name" : "Wang", 
+    "date of birth" : ISODate("2016-04-01T06:00:00.000+0000"), 
+    "gender" : "Male", 
+    "details" : [
+        {
+            "position title" : "Clinical Professor", 
+            "position type" : "Non-tenure-track research faculty", 
+            "department" : "Computer Science", 
+            "college" : "Engineering", 
+            "as default" : true
+        }
+    ], 
+    "office number" : [
+        ""
+    ], 
+    "mobile number" : [
+        "2222222222"
+    ], 
+    "home number" : [
+        ""
+    ], 
+    "other number" : [
+        ""
+    ], 
+    "addresses" : [
+        {
+            "street" : "fdsaf", 
+            "apt" : "", 
+            "city" : "fdsaf", 
+            "state" : "Alabama", 
+            "zipcode" : "23232", 
+            "country" : "United States"
+        }
+    ], 
+    "work email" : [
+        "milsonmusn@yahoo.com"
+    ], 
+    "personal email" : [
+        ""
+    ], 
+    "user id" : DBRef("useraccount", ObjectId("56fee3e965dbb35ce5c900fe")), 
+    "deleted" : false, 
+    "version" : NumberLong(8), 
+    "audit log" : [
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e459c1af68c71ea4248ed8")), 
+            "action" : "Created user account and profile of pswang", 
+            "activity on" : ISODate("2016-04-01T21:11:05.422+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e459c1af68c71ea4248ed8")), 
+            "action" : "Updated user account and profile of pswang", 
+            "activity on" : ISODate("2016-04-19T01:45:09.477+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e459c1af68c71ea4248ed8")), 
+            "action" : "Updated user account and profile of pswang", 
+            "activity on" : ISODate("2016-04-19T02:02:10.010+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e459c1af68c71ea4248ed8")), 
+            "action" : "Updated user account and profile of pswang", 
+            "activity on" : ISODate("2016-04-19T02:07:34.911+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e459c1af68c71ea4248ed8")), 
+            "action" : "Updated user account and profile of pswang", 
+            "activity on" : ISODate("2016-04-19T02:22:42.801+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e459c1af68c71ea4248ed8")), 
+            "action" : "Updated user account and profile of pswang", 
+            "activity on" : ISODate("2016-04-19T02:23:06.570+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e459c1af68c71ea4248ed8")), 
+            "action" : "Updated user account and profile of pswang", 
+            "activity on" : ISODate("2016-04-19T02:23:47.385+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e459c1af68c71ea4248ed8")), 
+            "action" : "Updated user account and profile of pswang", 
+            "activity on" : ISODate("2016-05-12T20:55:29.778+0000")
+        }
+    ]
+}
+{ 
+    "_id" : ObjectId("570017ce65dbb3c4058144c7"), 
+    "first name" : "Samir", 
+    "middle name" : "", 
+    "last name" : "Khasem", 
+    "date of birth" : ISODate("2016-04-02T06:00:00.000+0000"), 
+    "gender" : "Male", 
+    "details" : [
+        {
+            "position title" : "Dean", 
+            "position type" : "Administrator", 
+            "department" : "Computer Engineering", 
+            "college" : "Engineering", 
+            "as default" : true
+        }
+    ], 
+    "office number" : [
+        ""
+    ], 
+    "mobile number" : [
+        "2323232323"
+    ], 
+    "home number" : [
+        ""
+    ], 
+    "other number" : [
+        ""
+    ], 
+    "addresses" : [
+        {
+            "street" : "fdsaf", 
+            "apt" : "", 
+            "city" : "fsdaf", 
+            "state" : "Alaska", 
+            "zipcode" : "23232", 
+            "country" : "United States"
+        }
+    ], 
+    "work email" : [
+        "sss@yahoo.com"
+    ], 
+    "personal email" : [
+        ""
+    ], 
+    "user id" : DBRef("useraccount", ObjectId("570017ce65dbb3c4058144c6")), 
+    "deleted" : false, 
+    "version" : NumberLong(3), 
+    "audit log" : [
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e459c1af68c71ea4248ed8")), 
+            "action" : "Created user account and profile of samir", 
+            "activity on" : ISODate("2016-04-02T19:04:46.614+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e459c1af68c71ea4248ed8")), 
+            "action" : "Deleted user profile and account of Samir Khasem", 
+            "activity on" : ISODate("2016-05-12T21:01:02.301+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e459c1af68c71ea4248ed8")), 
+            "action" : "Updated user account and profile of samir", 
+            "activity on" : ISODate("2016-05-12T21:01:53.844+0000")
+        }
+    ]
+}

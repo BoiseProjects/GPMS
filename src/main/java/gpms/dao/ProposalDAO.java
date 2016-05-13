@@ -1782,8 +1782,9 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 		Query<UserProfile> profileQuery = ds.createQuery(UserProfile.class)
 				.retrievedFields(true, "_id", "first name", "middle name",
 						"last name", "details");
-		profileQuery.criteria("deleted").equals(false);
-		profileQuery.criteria("details.position title").in(positions);
+
+		profileQuery.and(profileQuery.criteria("deleted").equal(false),
+				profileQuery.criteria("details.position title").in(positions));
 		List<UserProfile> userProfile = profileQuery.asList();
 
 		for (UserProfile user : userProfile) {
@@ -2149,8 +2150,9 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 		Query<UserProfile> profileQuery = ds.createQuery(UserProfile.class)
 				.retrievedFields(true, "_id", "first name", "middle name",
 						"last name", "details", "work email");
-		profileQuery.criteria("deleted").equals(false);
-		profileQuery.criteria("details.position title").in(positions);
+
+		profileQuery.and(profileQuery.criteria("deleted").equal(false),
+				profileQuery.criteria("details.position title").in(positions));
 		List<UserProfile> userProfile = profileQuery.asList();
 
 		for (UserProfile user : userProfile) {
@@ -2456,8 +2458,9 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 		Query<UserProfile> profileQuery = ds.createQuery(UserProfile.class)
 				.retrievedFields(true, "_id", "first name", "middle name",
 						"last name", "details", "work email");
-		profileQuery.criteria("deleted").equals(false);
-		profileQuery.criteria("details.position title").in(positions);
+
+		profileQuery.and(profileQuery.criteria("deleted").equal(false),
+				profileQuery.criteria("details.position title").in(positions));
 		List<UserProfile> userProfile = profileQuery.asList();
 
 		for (UserProfile user : userProfile) {
@@ -2860,8 +2863,9 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 		Query<UserProfile> profileQuery = ds.createQuery(UserProfile.class)
 				.retrievedFields(true, "_id", "first name", "middle name",
 						"last name", "details", "work email");
-		profileQuery.criteria("deleted").equals(false);
-		profileQuery.criteria("details.position title").in(positions);
+
+		profileQuery.and(profileQuery.criteria("deleted").equal(false),
+				profileQuery.criteria("details.position title").in(positions));
 		List<UserProfile> userProfile = profileQuery.asList();
 
 		for (UserProfile user : userProfile) {

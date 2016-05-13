@@ -3025,62 +3025,70 @@ public class ProposalService {
 						contentProfile.append("</ak:fullname>");
 						contentProfile.append("</ak:authorprofile>");
 
-						contentProfile.append("<ak:pi>");
-						contentProfile.append("<ak:fullname>");
-						contentProfile.append(existingProposal
-								.getInvestigatorInfo().getPi().getUserRef()
-								.getFullName());
-						contentProfile.append("</ak:fullname>");
-
-						contentProfile.append("<ak:workemail>");
-						contentProfile.append(existingProposal
-								.getInvestigatorInfo().getPi().getUserRef()
-								.getWorkEmails().get(0));
-						contentProfile.append("</ak:workemail>");
-
-						contentProfile.append("<ak:userid>");
-						contentProfile.append(existingProposal
-								.getInvestigatorInfo().getPi()
-								.getUserProfileId());
-						contentProfile.append("</ak:userid>");
-						contentProfile.append("</ak:pi>");
-
-						for (InvestigatorRefAndPosition copis : existingProposal
-								.getInvestigatorInfo().getCo_pi()) {
-							contentProfile.append("<ak:copi>");
+						if (!existingProposal.getInvestigatorInfo().getPi()
+								.getUserRef().isDeleted()) {
+							contentProfile.append("<ak:pi>");
 							contentProfile.append("<ak:fullname>");
-							contentProfile.append(copis.getUserRef()
+							contentProfile.append(existingProposal
+									.getInvestigatorInfo().getPi().getUserRef()
 									.getFullName());
 							contentProfile.append("</ak:fullname>");
 
 							contentProfile.append("<ak:workemail>");
-							contentProfile.append(copis.getUserRef()
+							contentProfile.append(existingProposal
+									.getInvestigatorInfo().getPi().getUserRef()
 									.getWorkEmails().get(0));
 							contentProfile.append("</ak:workemail>");
 
 							contentProfile.append("<ak:userid>");
-							contentProfile.append(copis.getUserProfileId());
+							contentProfile.append(existingProposal
+									.getInvestigatorInfo().getPi()
+									.getUserProfileId());
 							contentProfile.append("</ak:userid>");
-							contentProfile.append("</ak:copi>");
+							contentProfile.append("</ak:pi>");
+						}
+
+						for (InvestigatorRefAndPosition copis : existingProposal
+								.getInvestigatorInfo().getCo_pi()) {
+							if (!copis.getUserRef().isDeleted()) {
+								contentProfile.append("<ak:copi>");
+								contentProfile.append("<ak:fullname>");
+								contentProfile.append(copis.getUserRef()
+										.getFullName());
+								contentProfile.append("</ak:fullname>");
+
+								contentProfile.append("<ak:workemail>");
+								contentProfile.append(copis.getUserRef()
+										.getWorkEmails().get(0));
+								contentProfile.append("</ak:workemail>");
+
+								contentProfile.append("<ak:userid>");
+								contentProfile.append(copis.getUserProfileId());
+								contentProfile.append("</ak:userid>");
+								contentProfile.append("</ak:copi>");
+							}
 						}
 
 						for (InvestigatorRefAndPosition seniors : existingProposal
 								.getInvestigatorInfo().getSeniorPersonnel()) {
-							contentProfile.append("<ak:senior>");
-							contentProfile.append("<ak:fullname>");
-							contentProfile.append(seniors.getUserRef()
-									.getFullName());
-							contentProfile.append("</ak:fullname>");
+							if (!seniors.getUserRef().isDeleted()) {
+								contentProfile.append("<ak:senior>");
+								contentProfile.append("<ak:fullname>");
+								contentProfile.append(seniors.getUserRef()
+										.getFullName());
+								contentProfile.append("</ak:fullname>");
 
-							contentProfile.append("<ak:workemail>");
-							contentProfile.append(seniors.getUserRef()
-									.getWorkEmails().get(0));
-							contentProfile.append("</ak:workemail>");
+								contentProfile.append("<ak:workemail>");
+								contentProfile.append(seniors.getUserRef()
+										.getWorkEmails().get(0));
+								contentProfile.append("</ak:workemail>");
 
-							contentProfile.append("<ak:userid>");
-							contentProfile.append(seniors.getUserProfileId());
-							contentProfile.append("</ak:userid>");
-							contentProfile.append("</ak:senior>");
+								contentProfile.append("<ak:userid>");
+								contentProfile.append(seniors
+										.getUserProfileId());
+								contentProfile.append("</ak:userid>");
+								contentProfile.append("</ak:senior>");
+							}
 						}
 
 						for (SignatureUserInfo signatureInfo : signatures) {
@@ -4811,6 +4819,10 @@ public class ProposalService {
 									if (existingProposal.getInvestigatorInfo()
 											.getPi().getUserProfileId()
 											.equals(sign.getUserProfileId())
+											&& !existingProposal
+													.getInvestigatorInfo()
+													.getPi().getUserRef()
+													.isDeleted()
 											&& sign.getPositionTitle().equals(
 													"PI")) {
 										signedByPI = true;
@@ -4828,6 +4840,8 @@ public class ProposalService {
 												.getSignatureInfo()) {
 											if (copi.getUserProfileId().equals(
 													sign.getUserProfileId())
+													&& !copi.getUserRef()
+															.isDeleted()
 													&& sign.getPositionTitle()
 															.equals("Co-PI")) {
 												foundCoPI = true;
@@ -4897,6 +4911,10 @@ public class ProposalService {
 									if (existingProposal.getInvestigatorInfo()
 											.getPi().getUserProfileId()
 											.equals(sign.getUserProfileId())
+											&& !existingProposal
+													.getInvestigatorInfo()
+													.getPi().getUserRef()
+													.isDeleted()
 											&& sign.getPositionTitle().equals(
 													"PI")) {
 										signedByPI = true;
@@ -4914,6 +4932,8 @@ public class ProposalService {
 												.getSignatureInfo()) {
 											if (copi.getUserProfileId().equals(
 													sign.getUserProfileId())
+													&& !copi.getUserRef()
+															.isDeleted()
 													&& sign.getPositionTitle()
 															.equals("Co-PI")) {
 												foundCoPI = true;

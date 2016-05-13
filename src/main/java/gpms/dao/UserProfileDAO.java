@@ -112,7 +112,8 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 		Datastore ds = getDatastore();
 		Query<UserProfile> profileQuery = ds.createQuery(UserProfile.class);
 		profileQuery
-				.and(profileQuery.criteria("details").notEqual(null),
+				.and(profileQuery.criteria("deleted").equal(false),
+						profileQuery.criteria("details").notEqual(null),
 						profileQuery
 								.or(profileQuery.criteria(
 										"details.position type")
