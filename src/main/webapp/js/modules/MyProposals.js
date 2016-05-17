@@ -4996,6 +4996,7 @@ $(function() {
 											function() {
 												// $(this).addClass("ignore");
 												$(this).prop('disabled', true);
+												$(this).removeClass("error");
 											});
 								}
 								if (validator.form()) {
@@ -5061,6 +5062,7 @@ $(function() {
 											function() {
 												// $(this).addClass("ignore");
 												$(this).prop('disabled', true);
+												$(this).removeClass("error");
 											});
 								}
 
@@ -5113,6 +5115,7 @@ $(function() {
 										.each(function() {
 											// $(this).addClass("ignore");
 											$(this).prop('disabled', true);
+											$(this).removeClass("error");
 										});
 
 								if (validator.form()) {
@@ -5165,6 +5168,7 @@ $(function() {
 										.each(function() {
 											// $(this).addClass("ignore");
 											$(this).prop('disabled', true);
+											$(this).removeClass("error");
 										});
 
 								// if (validator.form()) {
@@ -5214,65 +5218,50 @@ $(function() {
 								var currentPositionTitle = GPMS.utils
 										.GetUserPositionTitle();
 
-								if (currentPositionTitle == "University Research Administrator"
-										|| currentPositionTitle == "University Research Director") {
-									$('#ui-id-24').find(
-											'input, select, textarea')
-											.each(
-													function() {
-														// $(this).addClass("ignore");
-														$(this).prop(
-																'disabled',
-																false);
-													});
-								} else {
-									$('#ui-id-24').find(
-											'input, select, textarea').each(
-											function() {
-												// $(this).addClass("ignore");
-												$(this).prop('disabled', true);
-											});
-								}
+								$('#ui-id-24').find('input, select, textarea')
+										.each(function() {
+											// $(this).addClass("ignore");
+											$(this).prop('disabled', true);
+											$(this).removeClass("error");
+										});
 
-								if (validator.form()) {
-									var properties = {
-										onComplete : function(e) {
-											if (e) {
-												var $buttonType = $.trim($(
-														'#btnArchiveProposal')
-														.text());
-												$('#btnArchiveProposal')
-														.disableWith(
-																'Archiving...');
+								// if (validator.form()) {
+								var properties = {
+									onComplete : function(e) {
+										if (e) {
+											var $buttonType = $.trim($(
+													'#btnArchiveProposal')
+													.text());
+											$('#btnArchiveProposal')
+													.disableWith('Archiving...');
 
-												if (myProposal.config.proposalRoles == ""
-														&& myProposal.config.proposalId != "0"
-														&& myProposal.config.proposalStatus != "") {
-													myProposal
-															.UpdateProposalStatus(
-																	$buttonType,
-																	"Whole Proposal",
-																	myProposal.config);
-												}
-
-												$('#btnArchiveProposal')
-														.enableAgain();
-												event.preventDefault();
-												return false;
+											if (myProposal.config.proposalRoles == ""
+													&& myProposal.config.proposalId != "0"
+													&& myProposal.config.proposalStatus != "") {
+												myProposal
+														.UpdateProposalStatus(
+																$buttonType,
+																"Whole Proposal",
+																myProposal.config);
 											}
+
+											$('#btnArchiveProposal')
+													.enableAgain();
+											event.preventDefault();
+											return false;
 										}
-									};
-									csscody
-											.confirm(
-													"<h2>"
-															+ 'Archive Confirmation'
-															+ "</h2><p>"
-															+ 'Are you certain you want to archive this proposal?'
-															+ "</p>",
-													properties);
-								} else {
-									myProposal.focusTabWithErrors("#accordion");
-								}
+									}
+								};
+								csscody
+										.confirm(
+												"<h2>"
+														+ 'Archive Confirmation'
+														+ "</h2><p>"
+														+ 'Are you certain you want to archive this proposal?'
+														+ "</p>", properties);
+								// } else {
+								// myProposal.focusTabWithErrors("#accordion");
+								// }
 							});
 
 			$('#txtProjectTitle').on("focus", function() {

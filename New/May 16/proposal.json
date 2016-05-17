@@ -232,7 +232,7 @@
     "business manager approval" : "APPROVED", 
     "irb approval" : "NOTREADYFORAPPROVAL", 
     "dean approval" : "APPROVED", 
-    "research administrator approval" : "APPROVED", 
+    "research administrator approval" : "READYFORAPPROVAL", 
     "research administrator withdraw" : "NOTWITHDRAWN", 
     "research director approval" : "NOTREADYFORAPPROVAL", 
     "research director deletion" : "NOTDELETED", 
@@ -326,9 +326,9 @@
         "involve intellectual property" : false
     }, 
     "osp section info" : {
-        "list agency" : "NSF", 
+        "list agency" : "", 
         "funding source" : {
-            "federal" : true, 
+            "federal" : false, 
             "federal flow-through" : false, 
             "Sate of Idaho entity" : false, 
             "private for profit" : false, 
@@ -337,14 +337,14 @@
             "college or university" : false, 
             "local entity" : false, 
             "non-Idaho local entity" : false, 
-            "tirbal government" : true, 
+            "tirbal government" : false, 
             "foreign" : false
         }, 
-        "cfda no" : "1", 
-        "program no" : "1", 
-        "program title" : "fsadf", 
+        "cfda no" : "", 
+        "program no" : "", 
+        "program title" : "", 
         "recovery" : {
-            "full recovery" : true, 
+            "full recovery" : false, 
             "no recovery normal sponsor policy" : false, 
             "no recovery institutional waiver" : false, 
             "limited recovery normal sponsor policy" : false, 
@@ -352,23 +352,23 @@
         }, 
         "base" : {
             "mtdc" : false, 
-            "tdc" : true, 
+            "tdc" : false, 
             "tc" : false, 
             "other" : false, 
             "not applicable" : false
         }, 
         "pi salary included" : false, 
-        "pi salary" : 10.0, 
-        "pi fringe" : 10.0, 
-        "department id" : "1", 
+        "pi salary" : 0.0, 
+        "pi fringe" : 0.0, 
+        "department id" : "", 
         "institutional cost share documented" : {
             "yes" : false, 
             "no" : false, 
-            "not applicable" : true
+            "not applicable" : false
         }, 
         "third party cost share documented" : {
             "yes" : false, 
-            "no" : true, 
+            "no" : false, 
             "not applicable" : false
         }, 
         "anticipated subrecipients" : false, 
@@ -376,16 +376,16 @@
             "yes" : false, 
             "no" : false, 
             "not applicable" : false, 
-            "this proposal only" : true, 
+            "this proposal only" : false, 
             "blanket" : false
         }, 
         "conflict of interest forms on file" : {
             "yes" : false, 
             "no" : false, 
-            "not applicable" : true
+            "not applicable" : false
         }, 
         "excluded party list checked" : {
-            "yes" : true, 
+            "yes" : false, 
             "no" : false, 
             "not applicable" : false
         }

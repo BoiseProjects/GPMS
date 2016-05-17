@@ -2038,18 +2038,6 @@
         </AllOf>
       </AnyOf>
     </Target>
-    <!-- <Condition>
-	  <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:boolean-equal">
-	    <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:boolean-one-and-only">
-	      <AttributeSelector MustBePresent="true" 
-                             Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" 
-                             Path="//ak:signedByCurrentUser/text()" 
-                             DataType="http://www.w3.org/2001/XMLSchema#boolean"/>
-	    </Apply>
-	    <AttributeValue
-	          DataType="http://www.w3.org/2001/XMLSchema#boolean">true</AttributeValue>	
-	  </Apply>
-	</Condition> -->
 	<ObligationExpressions>
       <ObligationExpression ObligationId="sendAlert" FulfillOn="Permit">
        <AttributeAssignmentExpression AttributeId="obligationType">
