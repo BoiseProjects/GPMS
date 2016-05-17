@@ -1397,6 +1397,23 @@ $(function() {
 				// OSP Section
 				$('#ui-id-23').show();
 
+				var currentPositionTitle = GPMS.utils.GetUserPositionTitle();
+
+				if (currentPositionTitle == "University Research Administrator"
+						|| currentPositionTitle == "University Research Director") {
+					$('#ui-id-24').find('input, select, textarea').each(
+							function() {
+								// $(this).addClass("ignore");
+								$(this).prop('disabled', false);
+							});
+				} else {
+					$('#ui-id-24').find('input, select, textarea').each(
+							function() {
+								// $(this).addClass("ignore");
+								$(this).prop('disabled', true);
+							});
+				}
+
 				$('#ddlProposalStatus option').length = 0;
 				$('#ddlProposalStatus').append(new Option(argus[6], argus[6]))
 						.prop('disabled', true);
@@ -4850,6 +4867,12 @@ $(function() {
 			$('#btnDeleteProposal')
 					.click(
 							function(event) {
+								$('#ui-id-24').find('input, select, textarea')
+										.each(function() {
+											// $(this).addClass("ignore");
+											$(this).prop('disabled', true);
+										});
+
 								var properties = {
 									onComplete : function(e) {
 										if (e) {
@@ -4956,7 +4979,8 @@ $(function() {
 								var currentPositionTitle = GPMS.utils
 										.GetUserPositionTitle();
 
-								if (currentPositionTitle == "University Research Administrator") {
+								if (currentPositionTitle == "University Research Administrator"
+										|| currentPositionTitle == "University Research Director") {
 									$('#ui-id-24').find(
 											'input, select, textarea')
 											.each(
@@ -4966,8 +4990,14 @@ $(function() {
 																'disabled',
 																false);
 													});
+								} else {
+									$('#ui-id-24').find(
+											'input, select, textarea').each(
+											function() {
+												// $(this).addClass("ignore");
+												$(this).prop('disabled', true);
+											});
 								}
-
 								if (validator.form()) {
 									var properties = {
 										onComplete : function(e) {
@@ -5025,6 +5055,13 @@ $(function() {
 																'disabled',
 																false);
 													});
+								} else {
+									$('#ui-id-24').find(
+											'input, select, textarea').each(
+											function() {
+												// $(this).addClass("ignore");
+												$(this).prop('disabled', true);
+											});
 								}
 
 								if (validator.form()) {
@@ -5124,6 +5161,12 @@ $(function() {
 			$('#btnWithdrawProposal')
 					.click(
 							function(event) {
+								$('#ui-id-24').find('input, select, textarea')
+										.each(function() {
+											// $(this).addClass("ignore");
+											$(this).prop('disabled', true);
+										});
+
 								// if (validator.form()) {
 								var properties = {
 									onComplete : function(e) {
@@ -5168,43 +5211,68 @@ $(function() {
 			$('#btnArchiveProposal')
 					.click(
 							function(event) {
-								// if (validator.form()) {
-								var properties = {
-									onComplete : function(e) {
-										if (e) {
-											var $buttonType = $.trim($(
-													'#btnArchiveProposal')
-													.text());
-											$('#btnArchiveProposal')
-													.disableWith('Archiving...');
+								var currentPositionTitle = GPMS.utils
+										.GetUserPositionTitle();
 
-											if (myProposal.config.proposalRoles == ""
-													&& myProposal.config.proposalId != "0"
-													&& myProposal.config.proposalStatus != "") {
-												myProposal
-														.UpdateProposalStatus(
-																$buttonType,
-																"Whole Proposal",
-																myProposal.config);
+								if (currentPositionTitle == "University Research Administrator"
+										|| currentPositionTitle == "University Research Director") {
+									$('#ui-id-24').find(
+											'input, select, textarea')
+											.each(
+													function() {
+														// $(this).addClass("ignore");
+														$(this).prop(
+																'disabled',
+																false);
+													});
+								} else {
+									$('#ui-id-24').find(
+											'input, select, textarea').each(
+											function() {
+												// $(this).addClass("ignore");
+												$(this).prop('disabled', true);
+											});
+								}
+
+								if (validator.form()) {
+									var properties = {
+										onComplete : function(e) {
+											if (e) {
+												var $buttonType = $.trim($(
+														'#btnArchiveProposal')
+														.text());
+												$('#btnArchiveProposal')
+														.disableWith(
+																'Archiving...');
+
+												if (myProposal.config.proposalRoles == ""
+														&& myProposal.config.proposalId != "0"
+														&& myProposal.config.proposalStatus != "") {
+													myProposal
+															.UpdateProposalStatus(
+																	$buttonType,
+																	"Whole Proposal",
+																	myProposal.config);
+												}
+
+												$('#btnArchiveProposal')
+														.enableAgain();
+												event.preventDefault();
+												return false;
 											}
-
-											$('#btnArchiveProposal')
-													.enableAgain();
-											event.preventDefault();
-											return false;
 										}
-									}
-								};
-								csscody
-										.confirm(
-												"<h2>"
-														+ 'Archive Confirmation'
-														+ "</h2><p>"
-														+ 'Are you certain you want to archive this proposal?'
-														+ "</p>", properties);
-								// } else {
-								// myProposal.focusTabWithErrors("#accordion");
-								// }
+									};
+									csscody
+											.confirm(
+													"<h2>"
+															+ 'Archive Confirmation'
+															+ "</h2><p>"
+															+ 'Are you certain you want to archive this proposal?'
+															+ "</p>",
+													properties);
+								} else {
+									myProposal.focusTabWithErrors("#accordion");
+								}
 							});
 
 			$('#txtProjectTitle').on("focus", function() {
