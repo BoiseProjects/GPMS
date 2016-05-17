@@ -1,0 +1,503 @@
+{ 
+    "_id" : ObjectId("573a631e65dbb3298d4e8f36"), 
+    "date created" : ISODate("2016-05-17T00:17:34.241+0000"), 
+    "proposal status" : [
+        "NOTSUBMITTEDBYPI"
+    ], 
+    "submitted by PI" : "NOTSUBMITTED", 
+    "ready for submission by PI" : false, 
+    "deleted by PI" : "NOTDELETED", 
+    "chair approval" : "NOTREADYFORAPPROVAL", 
+    "business manager approval" : "NOTREADYFORAPPROVAL", 
+    "irb approval" : "NOTREADYFORAPPROVAL", 
+    "dean approval" : "NOTREADYFORAPPROVAL", 
+    "research administrator approval" : "NOTREADYFORAPPROVAL", 
+    "research administrator withdraw" : "NOTWITHDRAWN", 
+    "research director approval" : "NOTREADYFORAPPROVAL", 
+    "research director deletion" : "NOTDELETED", 
+    "research administrator submitted" : "NOTSUBMITTED", 
+    "research director archived" : "NOTARCHIVED", 
+    "investigator info" : {
+        "pi" : {
+            "user profile" : DBRef("userprofile", ObjectId("56e45a50af68c71ea4248edf")), 
+            "user profile id" : "56e45a50af68c71ea4248edf", 
+            "college" : "Engineering", 
+            "department" : "Computer Science", 
+            "position type" : "Non-tenure-track research faculty", 
+            "position title" : "Assistant Research Professor"
+        }, 
+        "co_pi" : [
+            {
+                "user profile" : DBRef("userprofile", ObjectId("56e45b25af68c71ea4248ef3")), 
+                "user profile id" : "56e45b25af68c71ea4248ef3", 
+                "college" : "Engineering", 
+                "department" : "Computer Engineering", 
+                "position type" : "Teaching faculty", 
+                "position title" : "Lecturer"
+            }, 
+            {
+                "user profile" : DBRef("userprofile", ObjectId("56e45ce6af68c71ea4248f33")), 
+                "user profile id" : "56e45ce6af68c71ea4248f33", 
+                "college" : "Engineering", 
+                "department" : "Computer Science", 
+                "position type" : "Non-tenure-track research faculty", 
+                "position title" : "Assistant Research Professor"
+            }
+        ], 
+        "senior personnel" : [
+            {
+                "user profile" : DBRef("userprofile", ObjectId("56fee3e965dbb35ce5c900ff")), 
+                "user profile id" : "56fee3e965dbb35ce5c900ff", 
+                "college" : "Engineering", 
+                "department" : "Computer Science", 
+                "position type" : "Non-tenure-track research faculty", 
+                "position title" : "Clinical Professor"
+            }
+        ]
+    }, 
+    "project info" : {
+        "project title" : "Proposal 1", 
+        "project type" : {
+            "research-basic" : false, 
+            "research-applied" : true, 
+            "research-development" : false, 
+            "instruction" : false, 
+            "other sponsored activity" : false
+        }, 
+        "type of request" : {
+            "pre-proposal" : false, 
+            "new proposal" : true, 
+            "continuation" : false, 
+            "supplement" : false
+        }, 
+        "due date" : ISODate("2016-05-02T06:00:00.000+0000"), 
+        "project period" : {
+            "from" : ISODate("2016-05-19T06:00:00.000+0000"), 
+            "to" : ISODate("2016-05-28T06:00:00.000+0000")
+        }, 
+        "location of project" : {
+            "off-campus" : false, 
+            "on-campus" : true
+        }
+    }, 
+    "sponsor and budget info" : {
+        "granting agency" : [
+            "NSF"
+        ], 
+        "direct costs" : 1.0, 
+        "fa costs" : 1.0, 
+        "total costs" : 1.0, 
+        "fa rate" : 1.0
+    }, 
+    "cost share info" : {
+        "institutional committed" : false, 
+        "third party committed" : false
+    }, 
+    "university commitments" : {
+        "new renovated facilities required" : false, 
+        "rental space required" : false, 
+        "institutional commitment required" : false
+    }, 
+    "conflict of interest and commitment info" : {
+        "financial COI" : false, 
+        "conflict disclosed" : false, 
+        "disclosure form change" : false
+    }, 
+    "compliance info" : {
+        "involve use of human subjects" : false, 
+        "irb" : "", 
+        "irb pending status" : false, 
+        "involve use of vertebrate animals" : false, 
+        "iacuc" : "", 
+        "iacuc pending status" : false, 
+        "involve biosafety concerns" : false, 
+        "ibc" : "", 
+        "ibc pending status" : false, 
+        "involve environmental health and safety concerns" : false
+    }, 
+    "irb approval required" : false, 
+    "additional info" : {
+        "anticipates foreign nationals payment" : false, 
+        "anticipates course release time" : false, 
+        "related to center for advanced energy studies" : false
+    }, 
+    "collaboration info" : {
+        "involve non-funded collaborations" : false, 
+        "involve collaborators" : ""
+    }, 
+    "proprietary/confidential info" : {
+        "contain confidential information" : false, 
+        "on pages" : "", 
+        "patentable" : false, 
+        "copyrightable" : false, 
+        "involve intellectual property" : false
+    }, 
+    "osp section info" : {
+        "list agency" : "", 
+        "funding source" : {
+            "federal" : false, 
+            "federal flow-through" : false, 
+            "Sate of Idaho entity" : false, 
+            "private for profit" : false, 
+            "non-profit organization" : false, 
+            "non-Idaho State entity" : false, 
+            "college or university" : false, 
+            "local entity" : false, 
+            "non-Idaho local entity" : false, 
+            "tirbal government" : false, 
+            "foreign" : false
+        }, 
+        "cfda no" : "", 
+        "program no" : "", 
+        "program title" : "", 
+        "recovery" : {
+            "full recovery" : false, 
+            "no recovery normal sponsor policy" : false, 
+            "no recovery institutional waiver" : false, 
+            "limited recovery normal sponsor policy" : false, 
+            "limited recovery institutional waiver" : false
+        }, 
+        "base" : {
+            "mtdc" : false, 
+            "tdc" : false, 
+            "tc" : false, 
+            "other" : false, 
+            "not applicable" : false
+        }, 
+        "pi salary included" : false, 
+        "pi salary" : 0.0, 
+        "pi fringe" : 0.0, 
+        "department id" : "", 
+        "institutional cost share documented" : {
+            "yes" : false, 
+            "no" : false, 
+            "not applicable" : false
+        }, 
+        "third party cost share documented" : {
+            "yes" : false, 
+            "no" : false, 
+            "not applicable" : false
+        }, 
+        "anticipated subrecipients" : false, 
+        "pi eligibility waiver on file" : {
+            "yes" : false, 
+            "no" : false, 
+            "not applicable" : false, 
+            "this proposal only" : false, 
+            "blanket" : false
+        }, 
+        "conflict of interest forms on file" : {
+            "yes" : false, 
+            "no" : false, 
+            "not applicable" : false
+        }, 
+        "excluded party list checked" : {
+            "yes" : false, 
+            "no" : false, 
+            "not applicable" : false
+        }
+    }, 
+    "signature info" : [
+        {
+            "user profile id" : "56e45a50af68c71ea4248edf", 
+            "full name" : "Milson Munakami", 
+            "signature" : "Milson", 
+            "position title" : "PI", 
+            "signed date" : ISODate("2016-05-17T00:18:00.000+0000"), 
+            "note" : "Test", 
+            "delegated" : false, 
+            "delegated as" : ""
+        }
+    ], 
+    "audit log" : [
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e45a50af68c71ea4248edf")), 
+            "action" : "Created proposal by milson", 
+            "activity on" : ISODate("2016-05-17T00:17:34.450+0000")
+        }
+    ], 
+    "version" : NumberLong(1)
+}
+{ 
+    "_id" : ObjectId("573a634065dbb3298d4e8f3c"), 
+    "date created" : ISODate("2016-05-17T00:18:08.290+0000"), 
+    "date submitted" : ISODate("2016-05-17T00:40:03.239+0000"), 
+    "proposal status" : [
+        "ARCHIVEDBYRESEARCHDIRECTOR"
+    ], 
+    "submitted by PI" : "SUBMITTED", 
+    "ready for submission by PI" : true, 
+    "deleted by PI" : "NOTDELETED", 
+    "chair approval" : "APPROVED", 
+    "business manager approval" : "APPROVED", 
+    "irb approval" : "NOTREADYFORAPPROVAL", 
+    "dean approval" : "APPROVED", 
+    "research administrator approval" : "APPROVED", 
+    "research administrator withdraw" : "NOTWITHDRAWN", 
+    "research director approval" : "NOTREADYFORAPPROVAL", 
+    "research director deletion" : "NOTDELETED", 
+    "research administrator submitted" : "SUBMITTED", 
+    "research director archived" : "NOTARCHIVED", 
+    "investigator info" : {
+        "pi" : {
+            "user profile" : DBRef("userprofile", ObjectId("56e45a50af68c71ea4248edf")), 
+            "user profile id" : "56e45a50af68c71ea4248edf", 
+            "college" : "Engineering", 
+            "department" : "Computer Science", 
+            "position type" : "Non-tenure-track research faculty", 
+            "position title" : "Assistant Research Professor"
+        }
+    }, 
+    "project info" : {
+        "project title" : "Proposal 2", 
+        "project type" : {
+            "research-basic" : false, 
+            "research-applied" : true, 
+            "research-development" : false, 
+            "instruction" : false, 
+            "other sponsored activity" : false
+        }, 
+        "type of request" : {
+            "pre-proposal" : false, 
+            "new proposal" : true, 
+            "continuation" : false, 
+            "supplement" : false
+        }, 
+        "due date" : ISODate("2016-05-05T06:00:00.000+0000"), 
+        "project period" : {
+            "from" : ISODate("2016-05-18T06:00:00.000+0000"), 
+            "to" : ISODate("2016-05-28T06:00:00.000+0000")
+        }, 
+        "location of project" : {
+            "off-campus" : false, 
+            "on-campus" : true
+        }
+    }, 
+    "sponsor and budget info" : {
+        "granting agency" : [
+            "NASA"
+        ], 
+        "direct costs" : 1.0, 
+        "fa costs" : 1.0, 
+        "total costs" : 1.0, 
+        "fa rate" : 1.0
+    }, 
+    "cost share info" : {
+        "institutional committed" : false, 
+        "third party committed" : false
+    }, 
+    "university commitments" : {
+        "new renovated facilities required" : false, 
+        "rental space required" : false, 
+        "institutional commitment required" : false
+    }, 
+    "conflict of interest and commitment info" : {
+        "financial COI" : false, 
+        "conflict disclosed" : false, 
+        "disclosure form change" : false
+    }, 
+    "compliance info" : {
+        "involve use of human subjects" : false, 
+        "irb" : "", 
+        "irb pending status" : false, 
+        "involve use of vertebrate animals" : false, 
+        "iacuc" : "", 
+        "iacuc pending status" : false, 
+        "involve biosafety concerns" : false, 
+        "ibc" : "", 
+        "ibc pending status" : false, 
+        "involve environmental health and safety concerns" : false
+    }, 
+    "irb approval required" : false, 
+    "additional info" : {
+        "anticipates foreign nationals payment" : false, 
+        "anticipates course release time" : false, 
+        "related to center for advanced energy studies" : false
+    }, 
+    "collaboration info" : {
+        "involve non-funded collaborations" : false, 
+        "involve collaborators" : ""
+    }, 
+    "proprietary/confidential info" : {
+        "contain confidential information" : false, 
+        "on pages" : "", 
+        "patentable" : false, 
+        "copyrightable" : false, 
+        "involve intellectual property" : false
+    }, 
+    "osp section info" : {
+        "list agency" : "NSF", 
+        "funding source" : {
+            "federal" : true, 
+            "federal flow-through" : false, 
+            "Sate of Idaho entity" : false, 
+            "private for profit" : false, 
+            "non-profit organization" : false, 
+            "non-Idaho State entity" : false, 
+            "college or university" : false, 
+            "local entity" : false, 
+            "non-Idaho local entity" : false, 
+            "tirbal government" : true, 
+            "foreign" : false
+        }, 
+        "cfda no" : "1", 
+        "program no" : "1", 
+        "program title" : "fsadf", 
+        "recovery" : {
+            "full recovery" : true, 
+            "no recovery normal sponsor policy" : false, 
+            "no recovery institutional waiver" : false, 
+            "limited recovery normal sponsor policy" : false, 
+            "limited recovery institutional waiver" : false
+        }, 
+        "base" : {
+            "mtdc" : false, 
+            "tdc" : true, 
+            "tc" : false, 
+            "other" : false, 
+            "not applicable" : false
+        }, 
+        "pi salary included" : false, 
+        "pi salary" : 10.0, 
+        "pi fringe" : 10.0, 
+        "department id" : "1", 
+        "institutional cost share documented" : {
+            "yes" : false, 
+            "no" : false, 
+            "not applicable" : true
+        }, 
+        "third party cost share documented" : {
+            "yes" : false, 
+            "no" : true, 
+            "not applicable" : false
+        }, 
+        "anticipated subrecipients" : false, 
+        "pi eligibility waiver on file" : {
+            "yes" : false, 
+            "no" : false, 
+            "not applicable" : false, 
+            "this proposal only" : true, 
+            "blanket" : false
+        }, 
+        "conflict of interest forms on file" : {
+            "yes" : false, 
+            "no" : false, 
+            "not applicable" : true
+        }, 
+        "excluded party list checked" : {
+            "yes" : true, 
+            "no" : false, 
+            "not applicable" : false
+        }
+    }, 
+    "signature info" : [
+        {
+            "user profile id" : "56e45a50af68c71ea4248edf", 
+            "full name" : "Milson Munakami", 
+            "signature" : "Milson", 
+            "position title" : "PI", 
+            "signed date" : ISODate("2016-05-17T00:18:35.000+0000"), 
+            "note" : "Test", 
+            "delegated" : false, 
+            "delegated as" : ""
+        }, 
+        {
+            "user profile id" : "56e45ae8af68c71ea4248eeb", 
+            "full name" : "Department Chair", 
+            "signature" : "Chair", 
+            "position title" : "Department Chair", 
+            "signed date" : ISODate("2016-05-17T00:41:02.000+0000"), 
+            "note" : "Test", 
+            "delegated" : false, 
+            "delegated as" : ""
+        }, 
+        {
+            "user profile id" : "56e45c5eaf68c71ea4248f1b", 
+            "full name" : "Department Manager", 
+            "signature" : "manager", 
+            "position title" : "Business Manager", 
+            "signed date" : ISODate("2016-05-17T00:41:22.000+0000"), 
+            "note" : "Test", 
+            "delegated" : false, 
+            "delegated as" : ""
+        }, 
+        {
+            "user profile id" : "56e45badaf68c71ea4248f03", 
+            "full name" : "University College Dean", 
+            "signature" : "Dean", 
+            "position title" : "Dean", 
+            "signed date" : ISODate("2016-05-17T00:41:40.000+0000"), 
+            "note" : "Tst", 
+            "delegated" : false, 
+            "delegated as" : ""
+        }, 
+        {
+            "user profile id" : "56e45bedaf68c71ea4248f0b", 
+            "full name" : "Research Admin", 
+            "signature" : "Admin", 
+            "position title" : "University Research Administrator", 
+            "signed date" : ISODate("2016-05-17T00:42:02.000+0000"), 
+            "note" : "Test", 
+            "delegated" : false, 
+            "delegated as" : ""
+        }, 
+        {
+            "user profile id" : "56e45c28af68c71ea4248f13", 
+            "full name" : "University Director", 
+            "signature" : "Dirctor", 
+            "position title" : "University Research Director", 
+            "signed date" : ISODate("2016-05-17T00:42:42.000+0000"), 
+            "note" : "test", 
+            "delegated" : false, 
+            "delegated as" : ""
+        }
+    ], 
+    "version" : NumberLong(9), 
+    "audit log" : [
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e45a50af68c71ea4248edf")), 
+            "action" : "Created proposal by milson", 
+            "activity on" : ISODate("2016-05-17T00:18:08.369+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e45a50af68c71ea4248edf")), 
+            "action" : "Updated proposal by milson", 
+            "activity on" : ISODate("2016-05-17T00:40:03.256+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e45ae8af68c71ea4248eeb")), 
+            "action" : "Updated proposal by chair", 
+            "activity on" : ISODate("2016-05-17T00:40:34.379+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e45c5eaf68c71ea4248f1b")), 
+            "action" : "Updated proposal by manager", 
+            "activity on" : ISODate("2016-05-17T00:40:54.438+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e45badaf68c71ea4248f03")), 
+            "action" : "Updated proposal by dean", 
+            "activity on" : ISODate("2016-05-17T00:41:12.430+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e45bedaf68c71ea4248f0b")), 
+            "action" : "Updated proposal by researchadmin", 
+            "activity on" : ISODate("2016-05-17T00:41:58.634+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e45c28af68c71ea4248f13")), 
+            "action" : "Updated proposal by director", 
+            "activity on" : ISODate("2016-05-17T00:42:14.655+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e45bedaf68c71ea4248f0b")), 
+            "action" : "Updated proposal by researchadmin", 
+            "activity on" : ISODate("2016-05-17T00:42:26.578+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e45c28af68c71ea4248f13")), 
+            "action" : "Updated proposal by director", 
+            "activity on" : ISODate("2016-05-17T00:42:40.897+0000")
+        }
+    ]
+}
