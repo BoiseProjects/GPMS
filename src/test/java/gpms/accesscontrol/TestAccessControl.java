@@ -3,10 +3,8 @@ package gpms.accesscontrol;
 import static org.junit.Assert.assertEquals;
 import gpms.DAL.MongoDBConnector;
 import gpms.dao.ProposalDAO;
-import gpms.model.Proposal;
 import gpms.model.UserAccount;
 import gpms.model.UserProfile;
-import gpms.utils.EmailUtil;
 
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -15,10 +13,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
-import org.bson.types.ObjectId;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -407,7 +401,6 @@ public class TestAccessControl {
 			}
 
 			Boolean preCondition = false;
-			String preText = new String();
 
 			System.out
 					.println("\n======================== Printing Obligations ====================");
@@ -430,9 +423,6 @@ public class TestAccessControl {
 						// obligationType = assignment.getContent();
 						// break;
 
-						case "preText":
-							preText = assignment.getContent();
-							break;
 						case "signedByCurrentUser":
 							preCondition = Boolean.parseBoolean(assignment
 									.getContent());
@@ -459,7 +449,6 @@ public class TestAccessControl {
 
 						String obligationType = "postobligation";
 
-						EmailUtil emailUtil = new EmailUtil();
 						String emailSubject = new String();
 						String emailBody = new String();
 						String authorName = new String();
@@ -518,22 +507,10 @@ public class TestAccessControl {
 						System.out.println(obligationType + " is RUNNING");
 
 						boolean proposalIsChanged = true;
-						// saveProposal(
-						// message, existingProposal,
-						// oldProposal, authorProfile,
-						// proposalID);
 						if (proposalIsChanged) {
 							System.out.println(piEmail + ":::" + emaillist
 									+ ":::" + userlist + ":::" + emailSubject
 									+ authorName + ":::" + emailBody);
-
-							// emailUtil
-							// .sendMailMultipleUsersWithoutAuth(
-							// piEmail,
-							// emaillist,
-							// emailSubject
-							// + authorName,
-							// emailBody);
 						}
 					}
 				}

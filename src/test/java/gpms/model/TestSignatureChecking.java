@@ -114,18 +114,14 @@ public class TestSignatureChecking {
 		boolean noDupes = true;
 		List<Proposal> propList = newProposalDAO.findAllProposals();
 		for (Proposal prop : propList) {
-			
-			for(SignatureInfo sigs : prop.getSignatureInfo())
-			{
+
+			for (SignatureInfo sigs : prop.getSignatureInfo()) {
 				int unique = 0;
-				for(SignatureInfo otherSigs : prop.getSignatureInfo())
-				{
-					if(sigs.equals(otherSigs))
-					{
+				for (SignatureInfo otherSigs : prop.getSignatureInfo()) {
+					if (sigs.equals(otherSigs)) {
 						unique++;
 					}
-					if(unique>1)
-					{
+					if (unique > 1) {
 						noDupes = false;
 					}
 				}
@@ -133,7 +129,7 @@ public class TestSignatureChecking {
 		}
 		assertTrue(noDupes);
 	}
-	
+
 	// ///////////////////////////////////////////
 	// THIS IS THE EXACT COPY OF THE METHOD FROM//
 	// PROPOSALSERVICE.JAVA, IF THIS WORKS, THAT//

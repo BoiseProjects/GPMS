@@ -65,15 +65,13 @@ public class NotificationDAO extends BasicDAO<NotificationLog, String> {
 				.createQuery(NotificationLog.class);
 
 		if (isUserAdmin) {
-			notificationQuery.and(
-					notificationQuery.criteria("for admin").equal(true),
-					notificationQuery.criteria("viewed by admin").equal(
-							false));
+			notificationQuery.and(notificationQuery.criteria("for admin")
+					.equal(true), notificationQuery.criteria("viewed by admin")
+					.equal(false));
 			return notificationQuery.countAll();
 		} else {
 			notificationQuery.and(
-					notificationQuery.criteria("viewed by user")
-							.equal(false),
+					notificationQuery.criteria("viewed by user").equal(false),
 					notificationQuery.criteria("user profile id").equal(
 							userProfileId),
 					notificationQuery.criteria("college").equal(userCollege),
@@ -100,9 +98,9 @@ public class NotificationDAO extends BasicDAO<NotificationLog, String> {
 				.retrievedFields(true, "type", "action", "proposal id",
 						"proposal title", "user profile id", "user name",
 						"college", "department", "position type",
-						"position title", "viewed by user",
-						"viewed by admin", "activity on", "for admin",
-						"critical").order("-activity on");
+						"position title", "viewed by user", "viewed by admin",
+						"activity on", "for admin", "critical")
+				.order("-activity on");
 
 		Query<NotificationLog> removeNotifyQuery = ds.createQuery(
 				NotificationLog.class).retrievedFields(true, "type", "action",
@@ -115,10 +113,9 @@ public class NotificationDAO extends BasicDAO<NotificationLog, String> {
 			// int rowTotal = notificationQuery.asList().size();
 			notificationQuery.criteria("for admin").equal(true);
 
-			removeNotifyQuery.and(
-					removeNotifyQuery.criteria("viewed by admin").equal(
-							false), removeNotifyQuery.criteria("for admin")
-							.equal(true));
+			removeNotifyQuery.and(removeNotifyQuery.criteria("viewed by admin")
+					.equal(false), removeNotifyQuery.criteria("for admin")
+					.equal(true));
 
 			notifications = notificationQuery.offset(offset - 1).limit(limit)
 					.asList();
@@ -141,8 +138,7 @@ public class NotificationDAO extends BasicDAO<NotificationLog, String> {
 
 			removeNotifyQuery.and(
 					removeNotifyQuery.criteria("for admin").equal(false),
-					removeNotifyQuery.criteria("viewed by user")
-							.equal(false),
+					removeNotifyQuery.criteria("viewed by user").equal(false),
 					removeNotifyQuery.criteria("user profile id").equal(
 							userProfileId),
 					removeNotifyQuery.criteria("college").equal(userCollege),

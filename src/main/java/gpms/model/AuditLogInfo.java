@@ -32,7 +32,7 @@ public class AuditLogInfo implements Comparable<AuditLogInfo> {
 	private Date activityDate = new Date();
 
 	public AuditLogInfo() {
-		
+
 	}
 
 	public int getRowTotal() {

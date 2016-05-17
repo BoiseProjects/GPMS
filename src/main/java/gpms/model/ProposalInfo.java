@@ -9,36 +9,30 @@ import com.ebay.xcelite.annotations.Row;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-@JsonPropertyOrder({ "rowTotal", "id", "proposalNo", "projectTitle",
-		"projectType", "typeOfRequest", "projectLocation", "grantingAgencies",
-		"directCosts", "faCosts", "totalCosts", "faRate", "dateCreated",
-		"dateSubmitted", "dueDate", "projectPeriodFrom", "projectPeriodTo",
-		"lastAudited", "lastAuditedBy", "lastAuditAction", "piUser",
-		"copiUsers", "seniorUsers", "allUsers", "currentuserProposalRoles",
-		"deleted", "proposalStatus", "submittedByPI", "readyForSubmissionByPI",
+@JsonPropertyOrder({ "rowTotal", "id", "projectTitle", "projectType",
+		"typeOfRequest", "projectLocation", "grantingAgencies", "directCosts",
+		"faCosts", "totalCosts", "faRate", "dateCreated", "dateSubmitted",
+		"dueDate", "projectPeriodFrom", "projectPeriodTo", "lastAudited",
+		"lastAuditedBy", "lastAuditAction", "piUser", "copiUsers",
+		"seniorUsers", "allUsers", "currentuserProposalRoles", "deleted",
+		"proposalStatus", "submittedByPI", "readyForSubmissionByPI",
 		"deletedByPI", "chairApproval", "businessManagerApproval",
 		"irbapproval", "deanApproval", "researchAdministratorApproval",
 		"researchAdministratorWithdraw", "researchDirectorApproval",
 		"researchDirectorDeletion", "researchAdministratorSubmission",
 		"researchDirectorArchived", "irbApprovalRequired" })
-@Row(colsOrder = { "Proposal No", "Project Title", "Project Type",
-		"Type Of Request", "Project Location", "Granting Agencies",
-		"Direct Costs", "F&A Costs", "Total Costs", "F&A Rate", "Date Created",
-		"Date Submitted", "Due Date", "Project Period From",
-		"Project Period To", "Proposal Status", "Last Audited",
-		"Last Audited By", "Last Audit Action", "Is Deleted?",
-		"IRB Approval Required?" })
+@Row(colsOrder = { "Project Title", "Project Type", "Type Of Request",
+		"Project Location", "Granting Agencies", "Direct Costs", "F&A Costs",
+		"Total Costs", "F&A Rate", "Date Created", "Date Submitted",
+		"Due Date", "Project Period From", "Project Period To",
+		"Proposal Status", "Last Audited", "Last Audited By",
+		"Last Audit Action", "Is Deleted?", "IRB Approval Required?" })
 public class ProposalInfo {
 	@JsonProperty("rowTotal")
 	private int rowTotal;
 
 	@JsonProperty("id")
 	private String id = new String();
-
-	// Proposal
-	@JsonProperty("proposalNo")
-	@Column(name = "Proposal No")
-	private int proposalNo = 0;
 
 	// ProjectInfo
 	@JsonProperty("projectTitle")
@@ -200,14 +194,6 @@ public class ProposalInfo {
 
 	public void setId(String id) {
 		this.id = id;
-	}
-
-	public int getProposalNo() {
-		return proposalNo;
-	}
-
-	public void setProposalNo(int proposalNo) {
-		this.proposalNo = proposalNo;
 	}
 
 	public String getProjectTitle() {

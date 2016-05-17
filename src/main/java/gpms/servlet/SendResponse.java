@@ -22,7 +22,6 @@ public class SendResponse extends HttpServlet {
 	 */
 	public SendResponse() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -31,7 +30,6 @@ public class SendResponse extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		response.setContentType("text/event-stream");
 		PrintWriter out = response.getWriter();
 		while (true) {
@@ -55,7 +53,6 @@ public class SendResponse extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 

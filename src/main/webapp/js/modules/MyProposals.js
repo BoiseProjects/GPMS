@@ -850,15 +850,6 @@ $(function() {
 											hide : true
 										},
 										{
-											display : 'Proposal No',
-											name : 'proposal_no',
-											cssclass : '',
-											controlclass : '',
-											coltype : 'label',
-											align : 'left',
-											hide : true
-										},
-										{
 											display : 'Project Title',
 											name : 'project_title',
 											cssclass : '',
@@ -1235,7 +1226,7 @@ $(function() {
 											_event : 'click',
 											trigger : '1',
 											callMethod : 'myProposal.EditProposal',
-											arguments : '2, 6, 11, 22, 23, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39'
+											arguments : '1, 5, 10, 21, 22, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38'
 										},
 										{
 											display : 'Delete',
@@ -1244,7 +1235,7 @@ $(function() {
 											_event : 'click',
 											trigger : '2',
 											callMethod : 'myProposal.DeleteProposal',
-											arguments : '23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38'
+											arguments : '22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37'
 										},
 										{
 											display : 'View Change Logs',
@@ -1253,7 +1244,7 @@ $(function() {
 											_event : 'click',
 											trigger : '3',
 											callMethod : 'myProposal.ViewChangeLogs',
-											arguments : '23'
+											arguments : '22'
 										} ],
 								rp : perpage,
 								nomsg : 'No Records Found!',
@@ -1264,7 +1255,7 @@ $(function() {
 									0 : {
 										sorter : false
 									},
-									40 : {
+									39 : {
 										sorter : false
 									}
 								}
@@ -1405,23 +1396,6 @@ $(function() {
 
 				// OSP Section
 				$('#ui-id-23').show();
-
-				var currentPositionTitle = GPMS.utils.GetUserPositionTitle();
-
-				if (currentPositionTitle == "University Research Administrator"
-						|| currentPositionTitle == "University Research Director") {
-					$('#ui-id-24').find('input, select, textarea').each(
-							function() {
-								// $(this).addClass("ignore");
-								$(this).prop('disabled', false);
-							});
-				} else {
-					$('#ui-id-24').find('input, select, textarea').each(
-							function() {
-								// $(this).addClass("ignore");
-								$(this).prop('disabled', true);
-							});
-				}
 
 				$('#ddlProposalStatus option').length = 0;
 				$('#ddlProposalStatus').append(new Option(argus[6], argus[6]))
@@ -1568,7 +1542,6 @@ $(function() {
 			myProposal.BindInvestigatorInfo(response.investigatorInfo);
 
 			// Project Extra Information
-			$("#lblProposalNo").text(response.proposalNo);
 			$("#lblHiddenDateReceived").text(response.dateReceived);
 
 			// Project Information
@@ -4980,6 +4953,21 @@ $(function() {
 			$('#btnSubmitProposal')
 					.click(
 							function(event) {
+								var currentPositionTitle = GPMS.utils
+										.GetUserPositionTitle();
+
+								if (currentPositionTitle == "University Research Administrator") {
+									$('#ui-id-24').find(
+											'input, select, textarea')
+											.each(
+													function() {
+														// $(this).addClass("ignore");
+														$(this).prop(
+																'disabled',
+																false);
+													});
+								}
+
 								if (validator.form()) {
 									var properties = {
 										onComplete : function(e) {
@@ -5023,6 +5011,22 @@ $(function() {
 			$('#btnApproveProposal')
 					.click(
 							function(event) {
+								var currentPositionTitle = GPMS.utils
+										.GetUserPositionTitle();
+
+								if (currentPositionTitle == "University Research Administrator"
+										|| currentPositionTitle == "University Research Director") {
+									$('#ui-id-24').find(
+											'input, select, textarea')
+											.each(
+													function() {
+														// $(this).addClass("ignore");
+														$(this).prop(
+																'disabled',
+																false);
+													});
+								}
+
 								if (validator.form()) {
 									var properties = {
 										onComplete : function(e) {
@@ -5068,6 +5072,12 @@ $(function() {
 			$('#btnDisapproveProposal')
 					.click(
 							function(event) {
+								$('#ui-id-24').find('input, select, textarea')
+										.each(function() {
+											// $(this).addClass("ignore");
+											$(this).prop('disabled', true);
+										});
+
 								if (validator.form()) {
 									var properties = {
 										onComplete : function(e) {

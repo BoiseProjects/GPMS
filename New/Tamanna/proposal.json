@@ -2331,19 +2331,20 @@
     "_id" : ObjectId("5734feff65dbb3fb21b5f048"), 
     "proposal no" : NumberInt(18), 
     "date created" : ISODate("2016-05-12T22:09:03.768+0000"), 
+    "date submitted" : ISODate("2016-05-16T22:29:51.495+0000"), 
     "proposal status" : [
-        "NOTSUBMITTEDBYPI"
+        "WAITINGFORRESEARCHDIRECTORAPPROVAL"
     ], 
-    "submitted by PI" : "NOTSUBMITTED", 
-    "ready for submission by PI" : false, 
+    "submitted by PI" : "SUBMITTED", 
+    "ready for submission by PI" : true, 
     "deleted by PI" : "NOTDELETED", 
-    "chair approval" : "NOTREADYFORAPPROVAL", 
-    "business manager approval" : "NOTREADYFORAPPROVAL", 
+    "chair approval" : "APPROVED", 
+    "business manager approval" : "APPROVED", 
     "irb approval" : "NOTREADYFORAPPROVAL", 
-    "dean approval" : "NOTREADYFORAPPROVAL", 
-    "research administrator approval" : "NOTREADYFORAPPROVAL", 
+    "dean approval" : "APPROVED", 
+    "research administrator approval" : "APPROVED", 
     "research administrator withdraw" : "NOTWITHDRAWN", 
-    "research director approval" : "NOTREADYFORAPPROVAL", 
+    "research director approval" : "READYFORAPPROVAL", 
     "research director deletion" : "NOTDELETED", 
     "research administrator submitted" : "NOTSUBMITTED", 
     "research director archived" : "NOTARCHIVED", 
@@ -2358,12 +2359,20 @@
         }, 
         "co_pi" : [
             {
+                "user profile" : DBRef("userprofile", ObjectId("56e45ce6af68c71ea4248f33")), 
+                "user profile id" : "56e45ce6af68c71ea4248f33", 
+                "college" : "Engineering", 
+                "department" : "Computer Science", 
+                "position type" : "Non-tenure-track research faculty", 
+                "position title" : "Assistant Research Professor"
+            }, 
+            {
                 "user profile" : DBRef("userprofile", ObjectId("56e45b25af68c71ea4248ef3")), 
                 "user profile id" : "56e45b25af68c71ea4248ef3", 
                 "college" : "Engineering", 
-                "department" : "Computer Science", 
-                "position type" : "Tenured/tenure-track faculty", 
-                "position title" : "Professor"
+                "department" : "Computer Engineering", 
+                "position type" : "Teaching faculty", 
+                "position title" : "Lecturer"
             }
         ], 
         "senior personnel" : [
@@ -2455,9 +2464,9 @@
         "involve intellectual property" : false
     }, 
     "osp section info" : {
-        "list agency" : "", 
+        "list agency" : "fdsaf", 
         "funding source" : {
-            "federal" : false, 
+            "federal" : true, 
             "federal flow-through" : false, 
             "Sate of Idaho entity" : false, 
             "private for profit" : false, 
@@ -2466,56 +2475,56 @@
             "college or university" : false, 
             "local entity" : false, 
             "non-Idaho local entity" : false, 
-            "tirbal government" : false, 
+            "tirbal government" : true, 
             "foreign" : false
         }, 
-        "cfda no" : "", 
-        "program no" : "", 
-        "program title" : "", 
+        "cfda no" : "1", 
+        "program no" : "1", 
+        "program title" : "fdsaf", 
         "recovery" : {
             "full recovery" : false, 
-            "no recovery normal sponsor policy" : false, 
+            "no recovery normal sponsor policy" : true, 
             "no recovery institutional waiver" : false, 
             "limited recovery normal sponsor policy" : false, 
             "limited recovery institutional waiver" : false
         }, 
         "base" : {
-            "mtdc" : false, 
+            "mtdc" : true, 
             "tdc" : false, 
             "tc" : false, 
             "other" : false, 
             "not applicable" : false
         }, 
         "pi salary included" : false, 
-        "pi salary" : 0.0, 
-        "pi fringe" : 0.0, 
-        "department id" : "", 
+        "pi salary" : 10.0, 
+        "pi fringe" : 10.0, 
+        "department id" : "2", 
         "institutional cost share documented" : {
-            "yes" : false, 
+            "yes" : true, 
             "no" : false, 
             "not applicable" : false
         }, 
         "third party cost share documented" : {
             "yes" : false, 
             "no" : false, 
-            "not applicable" : false
+            "not applicable" : true
         }, 
         "anticipated subrecipients" : false, 
         "pi eligibility waiver on file" : {
             "yes" : false, 
             "no" : false, 
             "not applicable" : false, 
-            "this proposal only" : false, 
+            "this proposal only" : true, 
             "blanket" : false
         }, 
         "conflict of interest forms on file" : {
             "yes" : false, 
-            "no" : false, 
+            "no" : true, 
             "not applicable" : false
         }, 
         "excluded party list checked" : {
             "yes" : false, 
-            "no" : false, 
+            "no" : true, 
             "not applicable" : false
         }
     }, 
@@ -2529,14 +2538,164 @@
             "note" : "Test", 
             "delegated" : false, 
             "delegated as" : ""
+        }, 
+        {
+            "user profile id" : "56e45b25af68c71ea4248ef3", 
+            "full name" : "Thomas Volz", 
+            "signature" : "Thomas", 
+            "position title" : "Co-PI", 
+            "signed date" : ISODate("2016-05-16T22:24:47.000+0000"), 
+            "note" : "Test", 
+            "delegated" : false, 
+            "delegated as" : ""
+        }, 
+        {
+            "user profile id" : "56e45ce6af68c71ea4248f33", 
+            "full name" : "Arthur Fan", 
+            "signature" : "Arthur", 
+            "position title" : "Co-PI", 
+            "signed date" : ISODate("2016-05-16T22:25:30.000+0000"), 
+            "note" : "Test", 
+            "delegated" : false, 
+            "delegated as" : ""
+        }, 
+        {
+            "user profile id" : "56e45ae8af68c71ea4248eeb", 
+            "full name" : "Department Chair", 
+            "signature" : "Chair", 
+            "position title" : "Department Chair", 
+            "signed date" : ISODate("2016-05-16T22:31:00.000+0000"), 
+            "note" : "Testssss", 
+            "delegated" : false, 
+            "delegated as" : ""
+        }, 
+        {
+            "user profile id" : "56e7398465dbb36ec3824379", 
+            "full name" : "Chair2 Chair2", 
+            "signature" : "Chair2", 
+            "position title" : "Department Chair", 
+            "signed date" : ISODate("2016-05-16T22:31:32.000+0000"), 
+            "note" : "Test", 
+            "delegated" : false, 
+            "delegated as" : ""
+        }, 
+        {
+            "user profile id" : "56e45c5eaf68c71ea4248f1b", 
+            "full name" : "Department Manager", 
+            "signature" : "Manager", 
+            "position title" : "Business Manager", 
+            "signed date" : ISODate("2016-05-16T22:32:19.000+0000"), 
+            "note" : "Test", 
+            "delegated" : false, 
+            "delegated as" : ""
+        }, 
+        {
+            "user profile id" : "56e45badaf68c71ea4248f03", 
+            "full name" : "University College Dean", 
+            "signature" : "Dean", 
+            "position title" : "Dean", 
+            "signed date" : ISODate("2016-05-16T22:32:46.000+0000"), 
+            "note" : "TEst", 
+            "delegated" : false, 
+            "delegated as" : ""
+        }, 
+        {
+            "user profile id" : "570017ce65dbb3c4058144c7", 
+            "full name" : "Samir Khasem", 
+            "signature" : "Dean 2", 
+            "position title" : "Dean", 
+            "signed date" : ISODate("2016-05-16T22:33:19.000+0000"), 
+            "note" : "TEst", 
+            "delegated" : false, 
+            "delegated as" : ""
+        }, 
+        {
+            "user profile id" : "56e45bedaf68c71ea4248f0b", 
+            "full name" : "Research Admin", 
+            "signature" : "test", 
+            "position title" : "University Research Administrator", 
+            "signed date" : ISODate("2016-05-16T23:15:37.000+0000"), 
+            "note" : "Test", 
+            "delegated" : false, 
+            "delegated as" : ""
         }
     ], 
+    "version" : NumberLong(15), 
     "audit log" : [
         {
             "author info" : DBRef("userprofile", ObjectId("56e45a50af68c71ea4248edf")), 
             "action" : "Created proposal by milson", 
             "activity on" : ISODate("2016-05-12T22:09:03.795+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e45a50af68c71ea4248edf")), 
+            "action" : "Updated proposal by milson", 
+            "activity on" : ISODate("2016-05-16T22:20:03.318+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e45b25af68c71ea4248ef3")), 
+            "action" : "Updated proposal by thomas", 
+            "activity on" : ISODate("2016-05-16T22:23:44.897+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e45a50af68c71ea4248edf")), 
+            "action" : "Updated proposal by milson", 
+            "activity on" : ISODate("2016-05-16T22:24:24.576+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e45b25af68c71ea4248ef3")), 
+            "action" : "Updated proposal by thomas", 
+            "activity on" : ISODate("2016-05-16T22:24:55.140+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e45ce6af68c71ea4248f33")), 
+            "action" : "Updated proposal by arthur", 
+            "activity on" : ISODate("2016-05-16T22:25:53.848+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e45a50af68c71ea4248edf")), 
+            "action" : "Updated proposal by milson", 
+            "activity on" : ISODate("2016-05-16T22:26:35.065+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e45ae8af68c71ea4248eeb")), 
+            "action" : "Updated proposal by chair", 
+            "activity on" : ISODate("2016-05-16T22:27:27.973+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e45a50af68c71ea4248edf")), 
+            "action" : "Updated proposal by milson", 
+            "activity on" : ISODate("2016-05-16T22:29:51.497+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e45ae8af68c71ea4248eeb")), 
+            "action" : "Updated proposal by chair", 
+            "activity on" : ISODate("2016-05-16T22:31:06.915+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e7398465dbb36ec3824379")), 
+            "action" : "Updated proposal by chair2", 
+            "activity on" : ISODate("2016-05-16T22:31:38.480+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e45c5eaf68c71ea4248f1b")), 
+            "action" : "Updated proposal by manager", 
+            "activity on" : ISODate("2016-05-16T22:32:23.442+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e45badaf68c71ea4248f03")), 
+            "action" : "Updated proposal by dean", 
+            "activity on" : ISODate("2016-05-16T22:32:51.447+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("570017ce65dbb3c4058144c7")), 
+            "action" : "Updated proposal by samir", 
+            "activity on" : ISODate("2016-05-16T22:39:17.632+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("56e45bedaf68c71ea4248f0b")), 
+            "action" : "Updated proposal by researchadmin", 
+            "activity on" : ISODate("2016-05-16T23:16:10.067+0000")
         }
-    ], 
-    "version" : NumberLong(1)
+    ]
 }

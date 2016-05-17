@@ -28,7 +28,7 @@ public class BaseInfo implements Serializable {
 	private boolean notApplicable;
 
 	public BaseInfo() {
-		
+
 	}
 
 	public boolean isMtdc() {

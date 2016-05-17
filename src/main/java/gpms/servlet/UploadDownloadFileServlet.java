@@ -50,7 +50,6 @@ public class UploadDownloadFileServlet extends HttpServlet {
 			policyLocation = this.getClass().getResource("/tmpfiles").toURI()
 					.getPath();
 		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

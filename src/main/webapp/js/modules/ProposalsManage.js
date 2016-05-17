@@ -548,14 +548,6 @@ $(function() {
 									elemDefault : false,
 									controlclass : 'attribHeaderChkbox'
 								}, {
-									display : 'Proposal No',
-									name : 'proposal_no',
-									cssclass : '',
-									controlclass : '',
-									coltype : 'label',
-									align : 'left',
-									hide : true
-								}, {
 									display : 'Project Title',
 									name : 'project_title',
 									cssclass : '',
@@ -837,7 +829,8 @@ $(function() {
 
 			var canUpdateRoles = [ "PI", "Co-PI" ];
 			var canUpdateTitles = [ "Business Manager",
-					"University Research Administrator", "Department Chair", "Dean" ];
+					"University Research Administrator", "Department Chair",
+					"Dean" ];
 			var canSubmitRoles = [ "PI" ];
 			var canApproveTitles = [ "Department Chair", "Dean",
 					"University Research Director" ];
@@ -846,16 +839,15 @@ $(function() {
 			var canWithDrawTitles = [ "University Research Administrator" ];
 			var canArchiveTitles = [ "University Research Director" ];
 
-			$.each(currentProposalRoles,
-					function(index, value) {
-						if ($.inArray(value, canSubmitRoles) !== -1
-								&& proposalStatus == "Not Submitted by PI") {
-							$("#btnSubmitProposal").show();	
-							return false;
-						} else {
-							$("#btnSubmitProposal").hide();
-						}
-					});
+			$.each(currentProposalRoles, function(index, value) {
+				if ($.inArray(value, canSubmitRoles) !== -1
+						&& proposalStatus == "Not Submitted by PI") {
+					$("#btnSubmitProposal").show();
+					return false;
+				} else {
+					$("#btnSubmitProposal").hide();
+				}
+			});
 
 			var currentPositionTitle = GPMS.utils.GetUserPositionTitle();
 
@@ -998,7 +990,6 @@ $(function() {
 			proposalsManage.BindInvestigatorInfo(response.investigatorInfo);
 
 			// Project Extra Information
-			$("#lblProposalNo").text(response.proposalNo);
 			$("#lblHiddenDateReceived").text(response.dateReceived);
 
 			// Project Information
@@ -1472,7 +1463,8 @@ $(function() {
 			});
 
 			$.each(investigatorInfo.seniorPersonnel, function(j, senior) {
-				proposalsManage.BindUserToPositionDetails(senior, "Senior Personnel");
+				proposalsManage.BindUserToPositionDetails(senior,
+						"Senior Personnel");
 			});
 
 			$('#dataTable>tbody tr:first').remove();
@@ -1573,12 +1565,14 @@ $(function() {
 											$(this).val(1).prop('selected',
 													'selected');
 											$(this).prop('disabled', true);
-											$(this).find('option').not(':selected').remove();
+											$(this).find('option').not(
+													':selected').remove();
 										} else if (userType == "Senior Personnel") {
 											$(this).val(2).prop('selected',
 													'selected');
 											$(this).prop('disabled', true);
-											$(this).find('option').not(':selected').remove();
+											$(this).find('option').not(
+													':selected').remove();
 										}
 									} else if (this.name == "ddlName") {
 										$(this).val(userDetails.userProfileId)
@@ -1588,10 +1582,12 @@ $(function() {
 											$(this).prop('disabled', true);
 										} else if (userType == "Co-PI") {
 											$(this).prop('disabled', true);
-											$(this).find('option').not(':selected').remove();
+											$(this).find('option').not(
+													':selected').remove();
 										} else if (userType == "Senior Personnel") {
 											$(this).prop('disabled', true);
-											$(this).find('option').not(':selected').remove();
+											$(this).find('option').not(
+													':selected').remove();
 										}
 
 										proposalsManage.BindUserMobileNo($(
@@ -1604,21 +1600,28 @@ $(function() {
 									} else if (this.name == "ddlCollege") {
 										$(this).val(userDetails.college).prop(
 												'selected', 'selected');
-										proposalsManage.BindDepartmentDropDown($(
-												'select[name="ddlName"]').eq(
-												rowIndex).val(), $(
-												'select[name="ddlCollege"]')
-												.eq(rowIndex).val());
+										proposalsManage.BindDepartmentDropDown(
+												$('select[name="ddlName"]').eq(
+														rowIndex).val(),
+												$('select[name="ddlCollege"]')
+														.eq(rowIndex).val());
 									} else if (this.name == "ddlDepartment") {
 										$(this).val(userDetails.department)
 												.prop('selected', 'selected');
-										proposalsManage.BindPositionTypeDropDown($(
-												'select[name="ddlName"]').eq(
-												rowIndex).val(), $(
-												'select[name="ddlCollege"]')
-												.eq(rowIndex).val(), $(
-												'select[name="ddlDepartment"]')
-												.eq(rowIndex).val());
+										proposalsManage
+												.BindPositionTypeDropDown(
+														$(
+																'select[name="ddlName"]')
+																.eq(rowIndex)
+																.val(),
+														$(
+																'select[name="ddlCollege"]')
+																.eq(rowIndex)
+																.val(),
+														$(
+																'select[name="ddlDepartment"]')
+																.eq(rowIndex)
+																.val());
 									} else if (this.name == "ddlPositionType") {
 										$(this).val(userDetails.positionType)
 												.prop('selected', 'selected');
@@ -1683,8 +1686,8 @@ $(function() {
 				proposalId = "0";
 			}
 
-			proposalsManage.BindProposalAuditLogGrid(proposalId, action, auditedBy,
-					activityOnFrom, activityOnTo);
+			proposalsManage.BindProposalAuditLogGrid(proposalId, action,
+					auditedBy, activityOnFrom, activityOnTo);
 		},
 
 		BindProposalAuditLogGrid : function(proposalId, action, auditedBy,
@@ -1769,8 +1772,8 @@ $(function() {
 					$('#tblLastAuditedInfo').hide();
 				}
 				// Get Audit Logs
-				proposalsManage.BindProposalAuditLogGrid(argus[0], null, null, null,
-						null);
+				proposalsManage.BindProposalAuditLogGrid(argus[0], null, null,
+						null, null);
 
 				$('#divProposalGrid').hide();
 				$('#divProposalForm').hide();
@@ -1803,10 +1806,9 @@ $(function() {
 					proposalsManage.ConfirmSingleDelete(_proposalId, e);
 				}
 			};
-			csscody.confirm(
-					"<h2>" + 'Delete Confirmation' + "</h2><p>"
-							+ 'Are you certain you want to delete this proposal?'
-							+ "</p>", properties);
+			csscody.confirm("<h2>" + 'Delete Confirmation' + "</h2><p>"
+					+ 'Are you certain you want to delete this proposal?'
+					+ "</p>", properties);
 		},
 
 		ConfirmDeleteMultiple : function(proposal_ids, event) {
@@ -1943,18 +1945,18 @@ $(function() {
 
 			proposalsManage.BindCollegeDropDown($('select[name="ddlName"]').eq(
 					rowIndexVal).val());
-			proposalsManage.BindDepartmentDropDown($('select[name="ddlName"]').eq(
-					rowIndexVal).val(), $('select[name="ddlCollege"]').eq(
-					rowIndexVal).val());
-			proposalsManage.BindPositionTypeDropDown($('select[name="ddlName"]').eq(
-					rowIndexVal).val(), $('select[name="ddlCollege"]').eq(
-					rowIndexVal).val(), $('select[name="ddlDepartment"]').eq(
-					rowIndexVal).val());
-			proposalsManage.BindPositionTitleDropDown($('select[name="ddlName"]')
+			proposalsManage.BindDepartmentDropDown($('select[name="ddlName"]')
 					.eq(rowIndexVal).val(), $('select[name="ddlCollege"]').eq(
-					rowIndexVal).val(), $('select[name="ddlDepartment"]').eq(
-					rowIndexVal).val(), $('select[name="ddlPositionType"]').eq(
 					rowIndexVal).val());
+			proposalsManage.BindPositionTypeDropDown(
+					$('select[name="ddlName"]').eq(rowIndexVal).val(), $(
+							'select[name="ddlCollege"]').eq(rowIndexVal).val(),
+					$('select[name="ddlDepartment"]').eq(rowIndexVal).val());
+			proposalsManage.BindPositionTitleDropDown($(
+					'select[name="ddlName"]').eq(rowIndexVal).val(), $(
+					'select[name="ddlCollege"]').eq(rowIndexVal).val(), $(
+					'select[name="ddlDepartment"]').eq(rowIndexVal).val(), $(
+					'select[name="ddlPositionType"]').eq(rowIndexVal).val());
 			return false;
 		},
 
@@ -1996,18 +1998,22 @@ $(function() {
 													.trim(ui.newHeader.text());
 											alert("Allowed to EDIT this Panel "
 													+ selectedSection);
-											//TODO get the ui and find all input select and textarea then disable them 
-											//ui.newPanel
-													//.find("input, select")
-													//.each(
-															//function() {
-															//});
-													
+											// TODO get the ui and find all
+											// input select and textarea then
+											// disable them
+											// ui.newPanel
+											// .find("input, select")
+											// .each(
+											// function() {
+											// });
+
 										} else {
 											alert("You are not Allowed to EDIT this Panel "
 													+ $.trim(ui.newHeader
 															.text()));
-											//TODO get the ui and find all input select and textarea then enabled them 
+											// TODO get the ui and find all
+											// input select and textarea then
+											// enabled them
 											event.preventDefault();
 										}
 									}
@@ -2109,7 +2115,8 @@ $(function() {
 			var errors = '';
 			if (!textBoxProjectTitle.hasClass('error')
 					&& projectTitle.length > 0) {
-				if (!proposalsManage.isUniqueProjectTitle(proposal_id, projectTitle)) {
+				if (!proposalsManage.isUniqueProjectTitle(proposal_id,
+						projectTitle)) {
 					errors += "'" + 'Please enter unique Project Title.' + " '"
 							+ projectTitle.trim() + "' "
 							+ 'has already been taken.';
@@ -2190,8 +2197,9 @@ $(function() {
 			if (validator.form()) {
 				var $projectTitle = $('#txtProjectTitle');
 				var projectTitle = $.trim($projectTitle.val());
-				var validateErrorMessage = proposalsManage.checkUniqueProjectTitle(
-						_proposalId, projectTitle, $projectTitle);
+				var validateErrorMessage = proposalsManage
+						.checkUniqueProjectTitle(_proposalId, projectTitle,
+								$projectTitle);
 
 				if (validateErrorMessage == "") {
 					var investigatorInfo = '';
@@ -2808,8 +2816,8 @@ $(function() {
 				break;
 
 			case 2: // Single Proposal Delete
-				proposalsManage.BindProposalGrid(null, null, null, null, null, null,
-						null, null);
+				proposalsManage.BindProposalGrid(null, null, null, null, null,
+						null, null, null);
 				csscody.info("<h2>" + 'Successful Message' + "</h2><p>"
 						+ 'Proposal has been deleted successfully.' + "</p>");
 
@@ -2821,8 +2829,8 @@ $(function() {
 
 		case 3: // Multiple Proposal Delete
 			SageData.Get("gdvProposals").Arr.length = 0;
-			proposalsManage.BindProposalGrid(null, null, null, null, null, null,
-					null, null);
+			proposalsManage.BindProposalGrid(null, null, null, null, null,
+					null, null, null);
 			csscody.info("<h2>" + 'Successful Message' + "</h2><p>"
 					+ 'Selected proposal(s) has been deleted successfully.'
 					+ "</p>");
@@ -2954,8 +2962,8 @@ $(function() {
 			break;
 
 		case 9:
-			proposalsManage.BindProposalGrid(null, null, null, null, null, null,
-					null, null);
+			proposalsManage.BindProposalGrid(null, null, null, null, null,
+					null, null, null);
 			$('#divProposalGrid').show();
 			$("#btnSaveProposal").removeData("name");
 
@@ -3064,8 +3072,8 @@ $(function() {
 					}).mask("9999-99-99", {
 				placeholder : "yyyy-mm-dd"
 			});
-			proposalsManage.BindProposalGrid(null, null, null, null, null, null,
-					null, null);
+			proposalsManage.BindProposalGrid(null, null, null, null, null,
+					null, null, null);
 			$('#divProposalForm').hide();
 			$('#divProposalGrid').show();
 			$('#divProposalAuditGrid').hide();
@@ -3158,13 +3166,14 @@ $(function() {
 											rowIndex).val(), $(
 											'select[name="ddlCollege"]').eq(
 											rowIndex).val(), $(this).val());
-									proposalsManage.BindPositionTitleDropDown($(
-											'select[name="ddlName"]').eq(
-											rowIndex).val(), $(
-											'select[name="ddlCollege"]').eq(
-											rowIndex).val(), $(this).val(), $(
-											'select[name="ddlPositionType"]')
-											.eq(rowIndex).val());
+									proposalsManage.BindPositionTitleDropDown(
+											$('select[name="ddlName"]').eq(
+													rowIndex).val(),
+											$('select[name="ddlCollege"]').eq(
+													rowIndex).val(), $(this)
+													.val(),
+											$('select[name="ddlPositionType"]')
+													.eq(rowIndex).val());
 								} else {
 									$('select[name="ddlPositionType"]').find(
 											'option:gt(0)').remove();
@@ -3181,13 +3190,14 @@ $(function() {
 										&& $('select[name="ddlDepartment"]')
 												.eq(rowIndex).val() != "0"
 										&& $(this).val() != "0") {
-									proposalsManage.BindPositionTitleDropDown($(
-											'select[name="ddlName"]').eq(
-											rowIndex).val(), $(
-											'select[name="ddlCollege"]').eq(
-											rowIndex).val(), $(
-											'select[name="ddlDepartment"]').eq(
-											rowIndex).val(), $(this).val());
+									proposalsManage.BindPositionTitleDropDown(
+											$('select[name="ddlName"]').eq(
+													rowIndex).val(),
+											$('select[name="ddlCollege"]').eq(
+													rowIndex).val(),
+											$('select[name="ddlDepartment"]')
+													.eq(rowIndex).val(),
+											$(this).val());
 								} else {
 									$('select[name="ddlPositionTitle"]').find(
 											'option:gt(0)').remove();
@@ -3205,8 +3215,9 @@ $(function() {
 								if (proposal_ids.length > 10) {
 									var properties = {
 										onComplete : function(e) {
-											proposalsManage.ConfirmDeleteMultiple(
-													proposal_ids, e);
+											proposalsManage
+													.ConfirmDeleteMultiple(
+															proposal_ids, e);
 										}
 									};
 									csscody

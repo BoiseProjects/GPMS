@@ -32,7 +32,6 @@ import org.bson.types.ObjectId;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
 import org.mongodb.morphia.dao.BasicDAO;
-import org.mongodb.morphia.query.CriteriaContainer;
 import org.mongodb.morphia.query.Query;
 
 import com.mongodb.MongoClient;
@@ -412,17 +411,6 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 		return proposalQuery.get();
 	}
 
-	public int findLatestProposalNo() {
-		Datastore ds = getDatastore();
-		List<Proposal> q1 = ds.createQuery(Proposal.class)
-				.retrievedFields(true, "proposal no").asList();
-		if (q1.size() == 0) {
-			return 0;
-		} else {
-			return q1.get(q1.size() - 1).getProposalNo();
-		}
-	}
-
 	public List<ProposalInfo> findAllForProposalGrid(int offset, int limit,
 			String projectTitle, String usernameBy, String submittedOnFrom,
 			String submittedOnTo, Double totalCostsFrom, Double totalCostsTo,
@@ -447,8 +435,6 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 			proposalQuery.field("date submitted").lessThanOrEq(receivedOnT);
 		}
 
-		// TODO for Date Submitted
-
 		if (totalCostsFrom != null && totalCostsFrom != 0.0) {
 			proposalQuery.field("sponsor and budget info.total costs")
 					.greaterThanOrEq(totalCostsFrom);
@@ -458,7 +444,6 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 					.lessThanOrEq(totalCostsTo);
 		}
 
-		// TODO
 		if (proposalStatus != null) {
 			proposalQuery.field("proposal status").contains(proposalStatus);
 		}
@@ -520,7 +505,6 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 			// Proposal
 			proposal.setRowTotal(rowTotal);
 			proposal.setId(userProposal.getId().toString());
-			proposal.setProposalNo(userProposal.getProposalNo());
 
 			// ProjectInfo
 			proposal.setProjectTitle(userProposal.getProjectInfo()
@@ -709,8 +693,6 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 			proposalQuery.field("date submitted").lessThanOrEq(receivedOnT);
 		}
 
-		// TODO for Date Submitted
-
 		if (totalCostsFrom != null && totalCostsFrom != 0.0) {
 			proposalQuery.field("sponsor and budget info.total costs")
 					.greaterThanOrEq(totalCostsFrom);
@@ -720,7 +702,6 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 					.lessThanOrEq(totalCostsTo);
 		}
 
-		// TODO
 		if (proposalStatus != null) {
 			proposalQuery.field("proposal status").contains(proposalStatus);
 		}
@@ -943,7 +924,6 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 			// Proposal
 			proposal.setRowTotal(rowTotal);
 			proposal.setId(userProposal.getId().toString());
-			proposal.setProposalNo(userProposal.getProposalNo());
 
 			// ProjectInfo
 			proposal.setProjectTitle(userProposal.getProjectInfo()
@@ -1132,7 +1112,6 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 					proposal.getAllUsers().add(seniorUser);
 				}
 
-				// TODO Bind Proposal Roles for the User
 				if (seniorUser.equals(userId)
 						&& seniorUserCollege.equals(college)
 						&& seniorUserDepartment.equals(department)
@@ -1174,8 +1153,6 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 			proposalQuery.field("date submitted").lessThanOrEq(receivedOnT);
 		}
 
-		// TODO for Date Submitted
-
 		if (totalCostsFrom != null && totalCostsFrom != 0.0) {
 			proposalQuery.field("sponsor and budget info.total costs")
 					.greaterThanOrEq(totalCostsFrom);
@@ -1185,7 +1162,6 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 					.lessThanOrEq(totalCostsTo);
 		}
 
-		// TODO
 		if (proposalStatus != null) {
 			proposalQuery.field("proposal status").contains(proposalStatus);
 		}
@@ -1379,7 +1355,6 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 			// Proposal
 			proposal.setRowTotal(rowTotal);
 			proposal.setId(userProposal.getId().toString());
-			proposal.setProposalNo(userProposal.getProposalNo());
 
 			// ProjectInfo
 			proposal.setProjectTitle(userProposal.getProjectInfo()
@@ -1543,7 +1518,6 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 					proposal.getAllUsers().add(seniorUser);
 				}
 
-				// TODO Bind Proposal Roles for the User
 				if (senior.getUserProfileId().equals(userId)) {
 					proposal.getCurrentuserProposalRoles().add(
 							"Senior Personnel");

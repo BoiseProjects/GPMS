@@ -22,7 +22,7 @@ public class AdditionalInfo implements Serializable {
 	private boolean relatedToCenterForAdvancedEnergyStudies;
 
 	public AdditionalInfo() {
-		
+
 	}
 
 	public boolean isAnticipatesForeignNationalsPayment() {
@@ -91,5 +91,5 @@ public class AdditionalInfo implements Serializable {
 			return false;
 		return true;
 	}
-	
+
 }

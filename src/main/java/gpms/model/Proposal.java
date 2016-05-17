@@ -10,9 +10,7 @@ import java.util.List;
 
 import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Entity;
-import org.mongodb.morphia.annotations.Indexed;
 import org.mongodb.morphia.annotations.Property;
-import org.mongodb.morphia.utils.IndexDirection;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -25,10 +23,6 @@ public class Proposal extends BaseEntity implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
-	@Property("proposal no")
-	@Indexed(value = IndexDirection.ASC, name = "proposalNoIndex", unique = true)
-	private int proposalNo = 0;
 
 	@Property("date created")
 	private Date dateCreated = new Date();
@@ -125,14 +119,6 @@ public class Proposal extends BaseEntity implements Serializable {
 
 	public Proposal() {
 
-	}
-
-	public int getProposalNo() {
-		return proposalNo;
-	}
-
-	public void setProposalNo(int proposalNo) {
-		this.proposalNo = proposalNo;
 	}
 
 	public Date getDateCreated() {
@@ -383,15 +369,15 @@ public class Proposal extends BaseEntity implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Proposal [proposalNo=" + proposalNo + ", dateCreated="
-				+ dateCreated + ", dateSubmitted=" + dateSubmitted
-				+ ", proposalStatus=" + proposalStatus + ", submittedByPI="
-				+ submittedByPI + ", readyForSubmissionByPI="
-				+ readyForSubmissionByPI + ", deletedByPI=" + deletedByPI
-				+ ", chairApproval=" + chairApproval
-				+ ", businessManagerApproval=" + businessManagerApproval
-				+ ", irbApproval=" + irbApproval + ", deanApproval="
-				+ deanApproval + ", researchAdministratorApproval="
+		return "Proposal [dateCreated=" + dateCreated + ", dateSubmitted="
+				+ dateSubmitted + ", proposalStatus=" + proposalStatus
+				+ ", submittedByPI=" + submittedByPI
+				+ ", readyForSubmissionByPI=" + readyForSubmissionByPI
+				+ ", deletedByPI=" + deletedByPI + ", chairApproval="
+				+ chairApproval + ", businessManagerApproval="
+				+ businessManagerApproval + ", irbApproval=" + irbApproval
+				+ ", deanApproval=" + deanApproval
+				+ ", researchAdministratorApproval="
 				+ researchAdministratorApproval
 				+ ", researchAdministratorWithdraw="
 				+ researchAdministratorWithdraw + ", researchDirectorApproval="
@@ -460,7 +446,6 @@ public class Proposal extends BaseEntity implements Serializable {
 				+ ((ospSectionInfo == null) ? 0 : ospSectionInfo.hashCode());
 		result = prime * result
 				+ ((projectInfo == null) ? 0 : projectInfo.hashCode());
-		result = prime * result + proposalNo;
 		result = prime * result
 				+ ((proposalStatus == null) ? 0 : proposalStatus.hashCode());
 		result = prime * result + (readyForSubmissionByPI ? 1231 : 1237);
@@ -583,8 +568,6 @@ public class Proposal extends BaseEntity implements Serializable {
 			if (other.projectInfo != null)
 				return false;
 		} else if (!projectInfo.equals(other.projectInfo))
-			return false;
-		if (proposalNo != other.proposalNo)
 			return false;
 		if (proposalStatus == null) {
 			if (other.proposalStatus != null)

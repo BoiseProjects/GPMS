@@ -1,9 +1,7 @@
 package gpms.queue;
 
-import java.io.File;
 import java.util.Properties;
 
-import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 
 public class ServletContextListener implements

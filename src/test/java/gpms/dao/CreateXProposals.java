@@ -14,9 +14,7 @@ import gpms.model.SponsorAndBudgetInfo;
 import gpms.model.TypeOfRequest;
 import gpms.model.UserAccount;
 import gpms.model.UserProfile;
-import gpms.utils.SerializationHelper;
 
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -40,14 +38,17 @@ public class CreateXProposals {
 	ProposalDAO newProposalDAO;
 	String dbName = "db_gpms";
 
-	//The number of proposals that will be made is going to be dependent on the number of users we
-	//create with the Create10UsersMethod.
-	//This is now modified to only use a PI who has position details of
-	//"Tenured/tenure-track faculty" || "Non-tenure-track research faculty"
-	//This means that while we may have 100 users in the database, we will likely have fewer than
-	//100 proposals, as we generate one proposal per pi pulled from the database
-	//that matches our needed criteria.
-	
+	// The number of proposals that will be made is going to be dependent on the
+	// number of users we
+	// create with the Create10UsersMethod.
+	// This is now modified to only use a PI who has position details of
+	// "Tenured/tenure-track faculty" || "Non-tenure-track research faculty"
+	// This means that while we may have 100 users in the database, we will
+	// likely have fewer than
+	// 100 proposals, as we generate one proposal per pi pulled from the
+	// database
+	// that matches our needed criteria.
+
 	private int SIGNATURE_MODE = 1;
 
 	// This switch can be used to determine the signature creation mode you
@@ -114,79 +115,91 @@ public class CreateXProposals {
 				}
 			}
 
-			if(foundPi){
+			if (foundPi) {
 
 				List<UserProfile> copiList = new ArrayList<UserProfile>();
 				int totalCops = 0;
 				if (dupMasterList.size() > 0) {
 					totalCops = rand.nextInt(5);
-				
-				for (int a = 0; a < totalCops; a++) {
-//					System.out.println("dupMasterList size: " + dupMasterList.size());
-					int coPIChoice = rand.nextInt(dupMasterList.size());
-//					System.out.println("coPiChoice rand: " + coPIChoice);
-					UserProfile coPIProfile = dupMasterList.get(coPIChoice);
-					
-                    dupMasterList.remove(coPIChoice);
-					newInvPos = new InvestigatorRefAndPosition();
-					if(!copiList.contains(coPIProfile)){
-					for (PositionDetails details : coPIProfile.getDetails()) {
-						if (details.getPositionType().equals(
-								"Tenured/tenure-track faculty")
-								|| details.getPositionType().equals(
-										"Non-tenure-track research faculty")
-								|| details.getPositionType().equals(
-										"Teaching faculty")) {
-							newInvPos.setCollege(details.getCollege());
-							newInvPos.setDepartment(details.getDepartment());
-							newInvPos.setPositionType(details.getPositionType());
-							newInvPos.setPositionTitle(details.getPositionTitle());
-							newInvPos.setUserProfileId(coPIProfile.getId()
-									.toString());
-							newInvPos.setUserRef(coPIProfile);
 
-							newInfo.getCo_pi().add(newInvPos);
-							copiList.add(coPIProfile);
-							
-							break;
+					for (int a = 0; a < totalCops; a++) {
+						// System.out.println("dupMasterList size: " +
+						// dupMasterList.size());
+						int coPIChoice = rand.nextInt(dupMasterList.size());
+						// System.out.println("coPiChoice rand: " + coPIChoice);
+						UserProfile coPIProfile = dupMasterList.get(coPIChoice);
+
+						dupMasterList.remove(coPIChoice);
+						newInvPos = new InvestigatorRefAndPosition();
+						if (!copiList.contains(coPIProfile)) {
+							for (PositionDetails details : coPIProfile
+									.getDetails()) {
+								if (details.getPositionType().equals(
+										"Tenured/tenure-track faculty")
+										|| details
+												.getPositionType()
+												.equals("Non-tenure-track research faculty")
+										|| details.getPositionType().equals(
+												"Teaching faculty")) {
+									newInvPos.setCollege(details.getCollege());
+									newInvPos.setDepartment(details
+											.getDepartment());
+									newInvPos.setPositionType(details
+											.getPositionType());
+									newInvPos.setPositionTitle(details
+											.getPositionTitle());
+									newInvPos.setUserProfileId(coPIProfile
+											.getId().toString());
+									newInvPos.setUserRef(coPIProfile);
+
+									newInfo.getCo_pi().add(newInvPos);
+									copiList.add(coPIProfile);
+
+									break;
+								}
+							}
+
 						}
 					}
-					
-				}
-				}
 				}
 
 				int totalSeniors = 0;
 				if (dupMasterList.size() > 0) {
 					totalSeniors = rand.nextInt(3);
-				
-				for (int b = 0; b < totalSeniors; b++) {
-					int seniorChoice = rand.nextInt(dupMasterList.size());
-					UserProfile seniorProfile = dupMasterList.get(seniorChoice);
- 			        dupMasterList.remove(seniorChoice);
-					newInvPos = new InvestigatorRefAndPosition();
 
-					for (PositionDetails details : seniorProfile.getDetails()) {
-						if (details.getPositionType().equals(
-								"Tenured/tenure-track faculty")
-								|| details.getPositionType().equals(
-										"Non-tenure-track research faculty")
-								|| details.getPositionType().equals(
-										"Teaching faculty")) {
-							newInvPos.setCollege(details.getCollege());
-							newInvPos.setDepartment(details.getDepartment());
-							newInvPos.setPositionType(details.getPositionType());
-							newInvPos.setPositionTitle(details.getPositionTitle());
-							newInvPos.setUserProfileId(seniorProfile.getId()
-									.toString());
-							newInvPos.setUserRef(seniorProfile);
+					for (int b = 0; b < totalSeniors; b++) {
+						int seniorChoice = rand.nextInt(dupMasterList.size());
+						UserProfile seniorProfile = dupMasterList
+								.get(seniorChoice);
+						dupMasterList.remove(seniorChoice);
+						newInvPos = new InvestigatorRefAndPosition();
 
-							newInfo.getSeniorPersonnel().add(newInvPos);
-							
-							break;
+						for (PositionDetails details : seniorProfile
+								.getDetails()) {
+							if (details.getPositionType().equals(
+									"Tenured/tenure-track faculty")
+									|| details
+											.getPositionType()
+											.equals("Non-tenure-track research faculty")
+									|| details.getPositionType().equals(
+											"Teaching faculty")) {
+								newInvPos.setCollege(details.getCollege());
+								newInvPos
+										.setDepartment(details.getDepartment());
+								newInvPos.setPositionType(details
+										.getPositionType());
+								newInvPos.setPositionTitle(details
+										.getPositionTitle());
+								newInvPos.setUserProfileId(seniorProfile
+										.getId().toString());
+								newInvPos.setUserRef(seniorProfile);
+
+								newInfo.getSeniorPersonnel().add(newInvPos);
+
+								break;
+							}
 						}
 					}
-				}
 				}
 
 				newProposal.setInvestigatorInfo(newInfo);
@@ -196,15 +209,18 @@ public class CreateXProposals {
 
 				// Begin Signature Info Section
 
-				// TODO : first add all investigators signatures then only others
+				// TODO : first add all investigators signatures then only
+				// others
 				// can sign it
 
 				// I have an idea here...
 				// On Odd number proposals I'm going to try and fill out the
 				// Signature fields with
-				// appropriate signees, so the right members of each department sign
+				// appropriate signees, so the right members of each department
+				// sign
 				// it, and try
-				// and fill the fields completely so hopefully my signature check
+				// and fill the fields completely so hopefully my signature
+				// check
 				// tests pass if
 				// all systems are go with this
 				//
@@ -216,8 +232,10 @@ public class CreateXProposals {
 				// ///SEE THE DEBUG SWITCH AT THE TOP OF THE CLASS TO CHOOSE
 				// THE/////
 				// ///METHOD OF CREATION FOR THE SIGNATURE INFO OBJECT. //////
-				// ///THIS WILL BE USED WITH THE TESTSIGNATURECHECKING CLASS //////
-				// ///DUPLICATE KEY ERRORS THAT COME FROM NOT FILLING OUT ALL THE
+				// ///THIS WILL BE USED WITH THE TESTSIGNATURECHECKING CLASS
+				// //////
+				// ///DUPLICATE KEY ERRORS THAT COME FROM NOT FILLING OUT ALL
+				// THE
 				// ///
 				// ///FIELDS WHEN SOMETHING IS CREATED IN THE MONGO DB
 				// //////////////
@@ -231,8 +249,8 @@ public class CreateXProposals {
 					// PI Signs proposal
 					newProposal.getInvestigatorInfo().getPi();
 					newSignInfo = new SignatureInfo();
-					newSignInfo.setUserProfileId(newProposal.getInvestigatorInfo()
-							.getPi().getUserProfileId());
+					newSignInfo.setUserProfileId(newProposal
+							.getInvestigatorInfo().getPi().getUserProfileId());
 					newSignInfo.setFullName(newProposal.getInvestigatorInfo()
 							.getPi().getUserRef().getFullName());
 					newSignInfo.setSignature(newProposal.getInvestigatorInfo()
@@ -247,8 +265,10 @@ public class CreateXProposals {
 							.getInvestigatorInfo().getCo_pi()) {
 						newSignInfo = new SignatureInfo();
 						newSignInfo.setUserProfileId(cops.getUserProfileId());
-						newSignInfo.setFullName(cops.getUserRef().getFullName());
-						newSignInfo.setSignature(cops.getUserRef().getFullName());
+						newSignInfo
+								.setFullName(cops.getUserRef().getFullName());
+						newSignInfo.setSignature(cops.getUserRef()
+								.getFullName());
 						newSignInfo.setPositionTitle("Co-PI");
 						newSignInfo.setSignedDate(new Date());
 						newSignInfo.setNote("This is Note from Co-PI");
@@ -256,7 +276,7 @@ public class CreateXProposals {
 					}
 				}
 
-				if (SIGNATURE_MODE == 2 || SIGNATURE_MODE==5) {
+				if (SIGNATURE_MODE == 2 || SIGNATURE_MODE == 5) {
 					// This will populate the signatures with Deans only
 
 					List<String> collegeList = new ArrayList<String>();
@@ -269,16 +289,15 @@ public class CreateXProposals {
 						}
 					}
 
-					List<UserProfile>retrievedDeans;
-					
+					List<UserProfile> retrievedDeans;
+
 					for (String college : collegeList) {
 						System.out.println("college: " + college);
-						retrievedDeans = newUserProfileDAO.getSupervisoryPersonnels(
-								college, "", "Dean", true);
-						for(UserProfile deans : retrievedDeans)
-						{
-							if(!deanList.contains(deans))
-							{
+						retrievedDeans = newUserProfileDAO
+								.getSupervisoryPersonnels(college, "", "Dean",
+										true);
+						for (UserProfile deans : retrievedDeans) {
+							if (!deanList.contains(deans)) {
 								deanList.add(deans);
 							}
 						}
@@ -290,7 +309,8 @@ public class CreateXProposals {
 							newSignInfo = new SignatureInfo();
 							newSignInfo.setFullName(dean.getFullName());
 							newSignInfo.setPositionTitle("Dean");
-							newSignInfo.setUserProfileId(dean.getId().toString());
+							newSignInfo.setUserProfileId(dean.getId()
+									.toString());
 							newSignInfo.setSignature(dean.getFullName());
 							newProposal.getSignatureInfo().add(newSignInfo);
 						}
@@ -301,7 +321,8 @@ public class CreateXProposals {
 				}
 
 				if (SIGNATURE_MODE == 3 || SIGNATURE_MODE == 5) {
-					// This will populate the signatures with Department Chairs only
+					// This will populate the signatures with Department Chairs
+					// only
 
 					List<UserProfile> chairList = new ArrayList<UserProfile>();
 					List<UserProfile> coChairList = new ArrayList<UserProfile>();
@@ -313,14 +334,16 @@ public class CreateXProposals {
 					department = newProposal.getInvestigatorInfo().getPi()
 							.getDepartment();
 
-					chairList.addAll(newUserProfileDAO.getSupervisoryPersonnels(
-							college, department, "Department Chair", false));
+					chairList.addAll(newUserProfileDAO
+							.getSupervisoryPersonnels(college, department,
+									"Department Chair", false));
 
 					for (InvestigatorRefAndPosition copi : newProposal
 							.getInvestigatorInfo().getCo_pi()) {
-						coChairList = newUserProfileDAO.getSupervisoryPersonnels(
-								copi.getCollege(), copi.getDepartment(),
-								"Department Chair", false);
+						coChairList = newUserProfileDAO
+								.getSupervisoryPersonnels(copi.getCollege(),
+										copi.getDepartment(),
+										"Department Chair", false);
 
 						for (UserProfile prof : coChairList) {
 							if (!chairList.contains(prof)) {
@@ -336,7 +359,8 @@ public class CreateXProposals {
 							newSignInfo = new SignatureInfo();
 							newSignInfo.setFullName(chair.getFullName());
 							newSignInfo.setPositionTitle("Department Chair");
-							newSignInfo.setUserProfileId(chair.getId().toString());
+							newSignInfo.setUserProfileId(chair.getId()
+									.toString());
 							newSignInfo.setSignature(chair.getFullName());
 							newProposal.getSignatureInfo().add(newSignInfo);
 						}
@@ -345,14 +369,13 @@ public class CreateXProposals {
 						System.out.println("Chair list is empty");
 					}
 
-				}//End SignatureMode = 3
-				
-				//Begin SIGNATURE_MODE = 5
-//				if(SIGNATURE_MODE==5)
-//				{
-//					
-//				}
-				
+				}// End SignatureMode = 3
+
+				// Begin SIGNATURE_MODE = 5
+				// if(SIGNATURE_MODE==5)
+				// {
+				//
+				// }
 
 				// End Signature Info Section
 
@@ -375,8 +398,6 @@ public class CreateXProposals {
 				newSandBud.setFaRate(10.00);
 
 				newProposal.setSponsorAndBudgetInfo(newSandBud);
-
-				newProposal.setProposalNo(propNumb);
 
 				ProjectInfo newProjInf = new ProjectInfo();
 

@@ -1,7 +1,5 @@
 package gpms.accesscontrol;
 
-import gpms.model.InvestigatorRefAndPosition;
-
 import java.io.InputStream;
 import java.util.Collection;
 import java.util.HashMap;
@@ -240,12 +238,14 @@ public class Accesscontrol {
 		contentProfile
 				.append("</ak:approvedbyuniversityresearchadministrator>");
 
-		contentProfile.append("<ak:withdrawnbyuniversityresearchadministrator>");
+		contentProfile
+				.append("<ak:withdrawnbyuniversityresearchadministrator>");
 		contentProfile.append("Not Withdrawn");
 		contentProfile
 				.append("</ak:withdrawnbyuniversityresearchadministrator>");
 
-		contentProfile.append("<ak:submittedbyuniversityresearchadministrator>");
+		contentProfile
+				.append("<ak:submittedbyuniversityresearchadministrator>");
 		contentProfile.append("Not Submitted");
 		contentProfile
 				.append("</ak:submittedbyuniversityresearchadministrator>");

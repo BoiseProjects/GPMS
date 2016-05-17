@@ -1433,12 +1433,6 @@
 															</tr>
 
 															<tr>
-																<td><span class="cssClassLabel">Proposal No:</span></td>
-																<td class="cssClassTableRightCol"><span
-																	id="lblProposalNo" class="cssClassLabel"></span></td>
-															</tr>
-
-															<tr>
 																<td><span class="cssClassLabel">Proposal
 																		Date Received:</span></td>
 																<td class="cssClassTableRightCol"><span

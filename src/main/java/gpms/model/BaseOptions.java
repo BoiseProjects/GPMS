@@ -22,7 +22,7 @@ public class BaseOptions implements Serializable {
 	private boolean notApplicable;
 
 	public BaseOptions() {
-		
+
 	}
 
 	public boolean isYes() {

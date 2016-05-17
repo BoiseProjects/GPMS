@@ -58,7 +58,6 @@ public class FileService {
 			DOWNLOAD_PATH = this.getClass().getResource("/uploads").toURI()
 					.getPath();
 		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -110,7 +109,6 @@ public class FileService {
 			UPLOAD_PATH = this.getClass().getResource("/uploads").toURI()
 					.getPath();
 		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -152,7 +150,6 @@ public class FileService {
 			UPLOAD_PATH = this.getClass().getResource("/uploads").toURI()
 					.getPath();
 		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
