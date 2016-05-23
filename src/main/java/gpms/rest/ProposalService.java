@@ -592,7 +592,8 @@ public class ProposalService {
 				contentProfile.append("</ak:irbApprovalRequired>");
 
 				contentProfile.append("<ak:submittedbypi>");
-				contentProfile.append(existingProposal.getSubmittedByPI());
+				contentProfile.append(existingProposal.getSubmittedByPI()
+						.name());
 				contentProfile.append("</ak:submittedbypi>");
 
 				contentProfile.append("<ak:readyforsubmissionbypi>");
@@ -601,65 +602,67 @@ public class ProposalService {
 				contentProfile.append("</ak:readyforsubmissionbypi>");
 
 				contentProfile.append("<ak:deletedbypi>");
-				contentProfile.append(existingProposal.getDeletedByPI());
+				contentProfile.append(existingProposal.getDeletedByPI().name());
 				contentProfile.append("</ak:deletedbypi>");
 
 				contentProfile.append("<ak:approvedbydepartmentchair>");
-				contentProfile.append(existingProposal.getChairApproval());
+				contentProfile.append(existingProposal.getChairApproval()
+						.name());
 				contentProfile.append("</ak:approvedbydepartmentchair>");
 
 				contentProfile.append("<ak:approvedbybusinessmanager>");
 				contentProfile.append(existingProposal
-						.getBusinessManagerApproval());
+						.getBusinessManagerApproval().name());
 				contentProfile.append("</ak:approvedbybusinessmanager>");
 
 				contentProfile.append("<ak:approvedbyirb>");
-				contentProfile.append(existingProposal.getIrbApproval());
+				contentProfile.append(existingProposal.getIrbApproval().name());
 				contentProfile.append("</ak:approvedbyirb>");
 
 				contentProfile.append("<ak:approvedbydean>");
-				contentProfile.append(existingProposal.getDeanApproval());
+				contentProfile
+						.append(existingProposal.getDeanApproval().name());
 				contentProfile.append("</ak:approvedbydean>");
 
 				contentProfile
 						.append("<ak:approvedbyuniversityresearchadministrator>");
 				contentProfile.append(existingProposal
-						.getResearchAdministratorApproval());
+						.getResearchAdministratorApproval().name());
 				contentProfile
 						.append("</ak:approvedbyuniversityresearchadministrator>");
 
 				contentProfile
 						.append("<ak:withdrawnbyuniversityresearchadministrator>");
 				contentProfile.append(existingProposal
-						.getResearchAdministratorWithdraw());
+						.getResearchAdministratorWithdraw().name());
 				contentProfile
 						.append("</ak:withdrawnbyuniversityresearchadministrator>");
 
 				contentProfile
 						.append("<ak:submittedbyuniversityresearchadministrator>");
 				contentProfile.append(existingProposal
-						.getResearchAdministratorSubmission());
+						.getResearchAdministratorSubmission().name());
 				contentProfile
 						.append("</ak:submittedbyuniversityresearchadministrator>");
 
 				contentProfile
 						.append("<ak:approvedbyuniversityresearchdirector>");
 				contentProfile.append(existingProposal
-						.getResearchDirectorDeletion());
+						.getResearchDirectorDeletion().name());
 				contentProfile
 						.append("</ak:approvedbyuniversityresearchdirector>");
 
 				contentProfile
 						.append("<ak:deletedbyuniversityresearchdirector>");
 				contentProfile.append(existingProposal
-						.getResearchDirectorDeletion());
+						.getResearchDirectorDeletion().name());
 				contentProfile
 						.append("</ak:deletedbyuniversityresearchdirector>");
 
 				contentProfile
 						.append("<ak:archivedbyuniversityresearchdirector>");
 				contentProfile.append(existingProposal
-						.getResearchDirectorArchived());
+						.getResearchDirectorArchived().name());
 				contentProfile
 						.append("</ak:archivedbyuniversityresearchdirector>");
 
@@ -1646,7 +1649,8 @@ public class ProposalService {
 				contentProfile.append("</ak:irbApprovalRequired>");
 
 				contentProfile.append("<ak:submittedbypi>");
-				contentProfile.append(existingProposal.getSubmittedByPI());
+				contentProfile.append(existingProposal.getSubmittedByPI()
+						.name());
 				contentProfile.append("</ak:submittedbypi>");
 
 				contentProfile.append("<ak:readyforsubmissionbypi>");
@@ -1655,65 +1659,67 @@ public class ProposalService {
 				contentProfile.append("</ak:readyforsubmissionbypi>");
 
 				contentProfile.append("<ak:deletedbypi>");
-				contentProfile.append(existingProposal.getDeletedByPI());
+				contentProfile.append(existingProposal.getDeletedByPI().name());
 				contentProfile.append("</ak:deletedbypi>");
 
 				contentProfile.append("<ak:approvedbydepartmentchair>");
-				contentProfile.append(existingProposal.getChairApproval());
+				contentProfile.append(existingProposal.getChairApproval()
+						.name());
 				contentProfile.append("</ak:approvedbydepartmentchair>");
 
 				contentProfile.append("<ak:approvedbybusinessmanager>");
 				contentProfile.append(existingProposal
-						.getBusinessManagerApproval());
+						.getBusinessManagerApproval().name());
 				contentProfile.append("</ak:approvedbybusinessmanager>");
 
 				contentProfile.append("<ak:approvedbyirb>");
-				contentProfile.append(existingProposal.getIrbApproval());
+				contentProfile.append(existingProposal.getIrbApproval().name());
 				contentProfile.append("</ak:approvedbyirb>");
 
 				contentProfile.append("<ak:approvedbydean>");
-				contentProfile.append(existingProposal.getDeanApproval());
+				contentProfile
+						.append(existingProposal.getDeanApproval().name());
 				contentProfile.append("</ak:approvedbydean>");
 
 				contentProfile
 						.append("<ak:approvedbyuniversityresearchadministrator>");
 				contentProfile.append(existingProposal
-						.getResearchAdministratorApproval());
+						.getResearchAdministratorApproval().name());
 				contentProfile
 						.append("</ak:approvedbyuniversityresearchadministrator>");
 
 				contentProfile
 						.append("<ak:withdrawnbyuniversityresearchadministrator>");
 				contentProfile.append(existingProposal
-						.getResearchAdministratorWithdraw());
+						.getResearchAdministratorWithdraw().name());
 				contentProfile
 						.append("</ak:withdrawnbyuniversityresearchadministrator>");
 
 				contentProfile
 						.append("<ak:submittedbyuniversityresearchadministrator>");
 				contentProfile.append(existingProposal
-						.getResearchAdministratorSubmission());
+						.getResearchAdministratorSubmission().name());
 				contentProfile
 						.append("</ak:submittedbyuniversityresearchadministrator>");
 
 				contentProfile
 						.append("<ak:approvedbyuniversityresearchdirector>");
 				contentProfile.append(existingProposal
-						.getResearchDirectorDeletion());
+						.getResearchDirectorDeletion().name());
 				contentProfile
 						.append("</ak:approvedbyuniversityresearchdirector>");
 
 				contentProfile
 						.append("<ak:deletedbyuniversityresearchdirector>");
 				contentProfile.append(existingProposal
-						.getResearchDirectorDeletion());
+						.getResearchDirectorDeletion().name());
 				contentProfile
 						.append("</ak:deletedbyuniversityresearchdirector>");
 
 				contentProfile
 						.append("<ak:archivedbyuniversityresearchdirector>");
 				contentProfile.append(existingProposal
-						.getResearchDirectorArchived());
+						.getResearchDirectorArchived().name());
 				contentProfile
 						.append("</ak:archivedbyuniversityresearchdirector>");
 
@@ -2846,7 +2852,7 @@ public class ProposalService {
 
 						contentProfile.append("<ak:submittedbypi>");
 						contentProfile.append(existingProposal
-								.getSubmittedByPI());
+								.getSubmittedByPI().name());
 						contentProfile.append("</ak:submittedbypi>");
 
 						contentProfile.append("<ak:readyforsubmissionbypi>");
@@ -2855,71 +2861,71 @@ public class ProposalService {
 						contentProfile.append("</ak:readyforsubmissionbypi>");
 
 						contentProfile.append("<ak:deletedbypi>");
-						contentProfile
-								.append(existingProposal.getDeletedByPI());
+						contentProfile.append(existingProposal.getDeletedByPI()
+								.name());
 						contentProfile.append("</ak:deletedbypi>");
 
 						contentProfile.append("<ak:approvedbydepartmentchair>");
 						contentProfile.append(existingProposal
-								.getChairApproval());
+								.getChairApproval().name());
 						contentProfile
 								.append("</ak:approvedbydepartmentchair>");
 
 						contentProfile.append("<ak:approvedbybusinessmanager>");
 						contentProfile.append(existingProposal
-								.getBusinessManagerApproval());
+								.getBusinessManagerApproval().name());
 						contentProfile
 								.append("</ak:approvedbybusinessmanager>");
 
 						contentProfile.append("<ak:approvedbyirb>");
-						contentProfile
-								.append(existingProposal.getIrbApproval());
+						contentProfile.append(existingProposal.getIrbApproval()
+								.name());
 						contentProfile.append("</ak:approvedbyirb>");
 
 						contentProfile.append("<ak:approvedbydean>");
 						contentProfile.append(existingProposal
-								.getDeanApproval());
+								.getDeanApproval().name());
 						contentProfile.append("</ak:approvedbydean>");
 
 						contentProfile
 								.append("<ak:approvedbyuniversityresearchadministrator>");
 						contentProfile.append(existingProposal
-								.getResearchAdministratorApproval());
+								.getResearchAdministratorApproval().name());
 						contentProfile
 								.append("</ak:approvedbyuniversityresearchadministrator>");
 
 						contentProfile
 								.append("<ak:withdrawnbyuniversityresearchadministrator>");
 						contentProfile.append(existingProposal
-								.getResearchAdministratorWithdraw());
+								.getResearchAdministratorWithdraw().name());
 						contentProfile
 								.append("</ak:withdrawnbyuniversityresearchadministrator>");
 
 						contentProfile
 								.append("<ak:submittedbyuniversityresearchadministrator>");
 						contentProfile.append(existingProposal
-								.getResearchAdministratorSubmission());
+								.getResearchAdministratorSubmission().name());
 						contentProfile
 								.append("</ak:submittedbyuniversityresearchadministrator>");
 
 						contentProfile
 								.append("<ak:approvedbyuniversityresearchdirector>");
 						contentProfile.append(existingProposal
-								.getResearchDirectorDeletion());
+								.getResearchDirectorDeletion().name());
 						contentProfile
 								.append("</ak:approvedbyuniversityresearchdirector>");
 
 						contentProfile
 								.append("<ak:deletedbyuniversityresearchdirector>");
 						contentProfile.append(existingProposal
-								.getResearchDirectorDeletion());
+								.getResearchDirectorDeletion().name());
 						contentProfile
 								.append("</ak:deletedbyuniversityresearchdirector>");
 
 						contentProfile
 								.append("<ak:archivedbyuniversityresearchdirector>");
 						contentProfile.append(existingProposal
-								.getResearchDirectorArchived());
+								.getResearchDirectorArchived().name());
 						contentProfile
 								.append("</ak:archivedbyuniversityresearchdirector>");
 
