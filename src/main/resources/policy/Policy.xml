@@ -659,8 +659,8 @@
   <Rule Effect="Permit" RuleId="SubmitProposalByPI-Rule10">
     <Description>
       "PI" can "Submit" a "Whole Proposal"
-      when SubmittedByPI = NOTSUBMITTED and ReadyForSubmissionByPI = True and
-      DeletedByPI = NOTDELETED
+      when SubmittedByPI = NOTSUBMITTED and ReadyForSubmissionByPI = True and 
+      DeletedByPI = NOTDELETED where condition check all Co-PI is signed.
     </Description>
     <Target>
       <AnyOf>
@@ -710,6 +710,17 @@
         </AllOf>
       </AnyOf>
     </Target>
+	<Condition>
+			<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:boolean-equal">
+				<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:boolean-one-and-only">
+				  <AttributeSelector MustBePresent="false"
+						Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" 
+						Path="//ak:signedByAllCoPIs/text()" 
+						DataType="http://www.w3.org/2001/XMLSchema#boolean"/>
+				</Apply>
+				<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#boolean">true</AttributeValue>	
+			</Apply>
+	</Condition>
     <ObligationExpressions>
       <ObligationExpression ObligationId="sendAlert" FulfillOn="Permit">
        <AttributeAssignmentExpression AttributeId="obligationType">
@@ -767,6 +778,73 @@
         </AttributeAssignmentExpression> 
       </ObligationExpression>      
     </ObligationExpressions>
+  </Rule>
+  
+  <Rule Effect="Deny" RuleId="SubmitProposalByPI-Rule10b">
+    <Description>
+      "PI" can not "Submit" a "Whole Proposal"
+      when SubmittedByPI = NOTSUBMITTED and ReadyForSubmissionByPI = True and 
+      DeletedByPI = NOTDELETED where condition check all Co-PI is not signed.
+    </Description>
+    <Target>
+      <AnyOf>
+        <AllOf>
+          <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">PI</AttributeValue>
+            <AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role"
+							Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+          </Match>
+          <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Whole Proposal</AttributeValue>
+            <AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:proposal.section"
+							Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+          </Match>
+          <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">NOTSUBMITTED</AttributeValue>
+            <AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:SubmittedByPI"
+							Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+          </Match>
+          <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">NOTDELETED</AttributeValue>
+            <AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:DeletedByPI"
+							Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+          </Match>
+          <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">True</AttributeValue>
+            <AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ReadyForSubmissionByPI"
+							Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+          </Match>
+          <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Submit</AttributeValue>
+            <AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action"
+							Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+          </Match>
+        </AllOf>
+      </AnyOf>
+    </Target>
+	<Condition>
+			<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:boolean-equal">
+				<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:boolean-one-and-only">
+				  <AttributeSelector MustBePresent="false"
+						Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" 
+						Path="//ak:signedByAllCoPIs/text()" 
+						DataType="http://www.w3.org/2001/XMLSchema#boolean"/>
+				</Apply>
+				<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#boolean">false</AttributeValue>	
+			</Apply>
+	</Condition>
   </Rule>
   
   <Rule Effect="Deny" RuleId="NotSubmitProposalByCoPI-Rule11">
