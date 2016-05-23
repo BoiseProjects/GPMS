@@ -307,6 +307,21 @@
 			<version>1.0.4</version>
 		</dependency>
 
+		<!-- http://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java -->
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-java</artifactId>
+			<version>2.53.0</version>
+		</dependency>
+
+		<!-- http://mvnrepository.com/artifact/org.seleniumhq.webdriver/webdriver-common -->
+		<dependency>
+			<groupId>org.seleniumhq.webdriver</groupId>
+			<artifactId>webdriver-common</artifactId>
+			<version>0.9.7376</version>
+		</dependency>
+
+
 	</dependencies>
 
 	<properties>
