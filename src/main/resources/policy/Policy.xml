@@ -656,7 +656,7 @@
     </ObligationExpressions>
   </Rule>
   
-  <Rule Effect="Permit" RuleId="SubmitProposalByPI-Rule10">
+  <Rule Effect="Permit" RuleId="SubmitProposalByPI-Rule10a">
     <Description>
       "PI" can "Submit" a "Whole Proposal"
       when SubmittedByPI = NOTSUBMITTED and ReadyForSubmissionByPI = True and 
@@ -2462,7 +2462,7 @@
 				<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:boolean-one-and-only">
 				  <AttributeSelector MustBePresent="false"
 						Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" 
-						Path="//ak:signedByDeans/text()" 
+						Path="//ak:signedByAllDeans/text()" 
 						DataType="http://www.w3.org/2001/XMLSchema#boolean"/>
 				</Apply>
 				<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#boolean">false</AttributeValue>	
@@ -2591,7 +2591,7 @@
 				<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:boolean-one-and-only">
 				  <AttributeSelector MustBePresent="false"
 						Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" 
-						Path="//ak:signedByDeans/text()" 
+						Path="//ak:signedByAllDeans/text()" 
 						DataType="http://www.w3.org/2001/XMLSchema#boolean"/>
 				</Apply>
 				<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#boolean">true</AttributeValue>	
