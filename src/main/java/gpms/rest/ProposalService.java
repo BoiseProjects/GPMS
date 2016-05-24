@@ -5158,6 +5158,39 @@ public class ProposalService {
 										}
 									}
 								}
+
+								for (SignatureUserInfo userToNotify : signatures) {
+									if (userToNotify.getPositionTitle().equals(
+											"Department Chair")) {
+										notification = new NotificationLog();
+										notification.setCritical(false);
+										notification.setType("Proposal");
+										notification
+												.setAction(notificationMessage);
+										notification.setProposalId(proposalID);
+										notification
+												.setProposalTitle(existingProposal
+														.getProjectInfo()
+														.getProjectTitle());
+										notification
+												.setUserProfileId(userToNotify
+														.getUserProfileId());
+										notification.setUsername(userToNotify
+												.getUserName());
+										notification.setCollege(userToNotify
+												.getCollege());
+										notification.setDepartment(userToNotify
+												.getDepartment());
+										notification
+												.setPositionType(userToNotify
+														.getPositionType());
+										notification
+												.setPositionTitle(userToNotify
+														.getPositionTitle());
+
+										notificationDAO.save(notification);
+									}
+								}
 							} else if (existingProposal
 									.getBusinessManagerApproval() == ApprovalType.READYFORAPPROVAL
 									&& proposalUserTitle.textValue().equals(
@@ -5206,6 +5239,39 @@ public class ProposalService {
 
 											notificationDAO.save(notification);
 										}
+									}
+								}
+
+								for (SignatureUserInfo userToNotify : signatures) {
+									if (userToNotify.getPositionTitle().equals(
+											"Business Manager")) {
+										notification = new NotificationLog();
+										notification.setCritical(false);
+										notification.setType("Proposal");
+										notification
+												.setAction(notificationMessage);
+										notification.setProposalId(proposalID);
+										notification
+												.setProposalTitle(existingProposal
+														.getProjectInfo()
+														.getProjectTitle());
+										notification
+												.setUserProfileId(userToNotify
+														.getUserProfileId());
+										notification.setUsername(userToNotify
+												.getUserName());
+										notification.setCollege(userToNotify
+												.getCollege());
+										notification.setDepartment(userToNotify
+												.getDepartment());
+										notification
+												.setPositionType(userToNotify
+														.getPositionType());
+										notification
+												.setPositionTitle(userToNotify
+														.getPositionTitle());
+
+										notificationDAO.save(notification);
 									}
 								}
 							} else if (existingProposal.getDeanApproval() == ApprovalType.READYFORAPPROVAL
@@ -5329,6 +5395,39 @@ public class ProposalService {
 										}
 									}
 								}
+
+								for (SignatureUserInfo userToNotify : signatures) {
+									if (userToNotify.getPositionTitle().equals(
+											"Dean")) {
+										notification = new NotificationLog();
+										notification.setCritical(false);
+										notification.setType("Proposal");
+										notification
+												.setAction(notificationMessage);
+										notification.setProposalId(proposalID);
+										notification
+												.setProposalTitle(existingProposal
+														.getProjectInfo()
+														.getProjectTitle());
+										notification
+												.setUserProfileId(userToNotify
+														.getUserProfileId());
+										notification.setUsername(userToNotify
+												.getUserName());
+										notification.setCollege(userToNotify
+												.getCollege());
+										notification.setDepartment(userToNotify
+												.getDepartment());
+										notification
+												.setPositionType(userToNotify
+														.getPositionType());
+										notification
+												.setPositionTitle(userToNotify
+														.getPositionTitle());
+
+										notificationDAO.save(notification);
+									}
+								}
 							} else if (existingProposal.getIrbApproval() == ApprovalType.READYFORAPPROVAL
 									&& proposalUserTitle.textValue().equals(
 											"IRB") && irbApprovalRequired) {
@@ -5397,6 +5496,39 @@ public class ProposalService {
 										}
 									}
 								}
+
+								for (SignatureUserInfo userToNotify : signatures) {
+									if (userToNotify.getPositionTitle().equals(
+											"IRB")) {
+										notification = new NotificationLog();
+										notification.setCritical(false);
+										notification.setType("Proposal");
+										notification
+												.setAction(notificationMessage);
+										notification.setProposalId(proposalID);
+										notification
+												.setProposalTitle(existingProposal
+														.getProjectInfo()
+														.getProjectTitle());
+										notification
+												.setUserProfileId(userToNotify
+														.getUserProfileId());
+										notification.setUsername(userToNotify
+												.getUserName());
+										notification.setCollege(userToNotify
+												.getCollege());
+										notification.setDepartment(userToNotify
+												.getDepartment());
+										notification
+												.setPositionType(userToNotify
+														.getPositionType());
+										notification
+												.setPositionTitle(userToNotify
+														.getPositionTitle());
+
+										notificationDAO.save(notification);
+									}
+								}
 							} else if (existingProposal
 									.getResearchAdministratorApproval() == ApprovalType.READYFORAPPROVAL
 									&& proposalUserTitle
@@ -5456,6 +5588,40 @@ public class ProposalService {
 										}
 									}
 								}
+
+								for (SignatureUserInfo userToNotify : signatures) {
+									if (userToNotify
+											.getPositionTitle()
+											.equals("University Research Administrator")) {
+										notification = new NotificationLog();
+										notification.setCritical(false);
+										notification.setType("Proposal");
+										notification
+												.setAction(notificationMessage);
+										notification.setProposalId(proposalID);
+										notification
+												.setProposalTitle(existingProposal
+														.getProjectInfo()
+														.getProjectTitle());
+										notification
+												.setUserProfileId(userToNotify
+														.getUserProfileId());
+										notification.setUsername(userToNotify
+												.getUserName());
+										notification.setCollege(userToNotify
+												.getCollege());
+										notification.setDepartment(userToNotify
+												.getDepartment());
+										notification
+												.setPositionType(userToNotify
+														.getPositionType());
+										notification
+												.setPositionTitle(userToNotify
+														.getPositionTitle());
+
+										notificationDAO.save(notification);
+									}
+								}
 							} else if (existingProposal
 									.getResearchDirectorApproval() == ApprovalType.READYFORAPPROVAL
 									&& proposalUserTitle.textValue().equals(
@@ -5508,6 +5674,39 @@ public class ProposalService {
 
 											notificationDAO.save(notification);
 										}
+									}
+								}
+
+								for (SignatureUserInfo userToNotify : signatures) {
+									if (userToNotify.getPositionTitle().equals(
+											"University Research Director")) {
+										notification = new NotificationLog();
+										notification.setCritical(false);
+										notification.setType("Proposal");
+										notification
+												.setAction(notificationMessage);
+										notification.setProposalId(proposalID);
+										notification
+												.setProposalTitle(existingProposal
+														.getProjectInfo()
+														.getProjectTitle());
+										notification
+												.setUserProfileId(userToNotify
+														.getUserProfileId());
+										notification.setUsername(userToNotify
+												.getUserName());
+										notification.setCollege(userToNotify
+												.getCollege());
+										notification.setDepartment(userToNotify
+												.getDepartment());
+										notification
+												.setPositionType(userToNotify
+														.getPositionType());
+										notification
+												.setPositionTitle(userToNotify
+														.getPositionTitle());
+
+										notificationDAO.save(notification);
 									}
 								}
 							} else {
