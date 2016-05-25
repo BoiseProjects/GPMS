@@ -714,11 +714,11 @@
     "position type" : "", 
     "position title" : "", 
     "viewed by user" : false, 
-    "viewed by admin" : false, 
+    "viewed by admin" : true, 
     "activity on" : ISODate("2016-05-25T20:03:06.864+0000"), 
     "for admin" : true, 
     "critical" : false, 
-    "version" : NumberLong(1)
+    "version" : NumberLong(2)
 }
 { 
     "_id" : ObjectId("574604fabcbb29192ce0d46c"), 
@@ -752,11 +752,11 @@
     "position type" : "", 
     "position title" : "", 
     "viewed by user" : false, 
-    "viewed by admin" : false, 
+    "viewed by admin" : true, 
     "activity on" : ISODate("2016-05-25T20:05:09.999+0000"), 
     "for admin" : true, 
     "critical" : false, 
-    "version" : NumberLong(1)
+    "version" : NumberLong(2)
 }
 { 
     "_id" : ObjectId("57460576bcbb29192ce0d475"), 
@@ -790,11 +790,11 @@
     "position type" : "", 
     "position title" : "", 
     "viewed by user" : false, 
-    "viewed by admin" : false, 
+    "viewed by admin" : true, 
     "activity on" : ISODate("2016-05-25T20:06:10.857+0000"), 
     "for admin" : true, 
     "critical" : false, 
-    "version" : NumberLong(1)
+    "version" : NumberLong(2)
 }
 { 
     "_id" : ObjectId("574605b2bcbb29192ce0d47d"), 
@@ -828,11 +828,11 @@
     "position type" : "", 
     "position title" : "", 
     "viewed by user" : false, 
-    "viewed by admin" : false, 
+    "viewed by admin" : true, 
     "activity on" : ISODate("2016-05-25T20:08:55.111+0000"), 
     "for admin" : true, 
     "critical" : false, 
-    "version" : NumberLong(1)
+    "version" : NumberLong(2)
 }
 { 
     "_id" : ObjectId("57460657bcbb29192ce0d485"), 
@@ -849,6 +849,120 @@
     "viewed by user" : false, 
     "viewed by admin" : false, 
     "activity on" : ISODate("2016-05-25T20:08:55.112+0000"), 
+    "for admin" : false, 
+    "critical" : false, 
+    "version" : NumberLong(1)
+}
+{ 
+    "_id" : ObjectId("57460f0ebcbb29192ce0d488"), 
+    "type" : "User", 
+    "action" : "Account is updated.", 
+    "proposal id" : "", 
+    "proposal title" : "", 
+    "user profile id" : "57460657bcbb29192ce0d483", 
+    "user name" : "deanchemistry1", 
+    "college" : "", 
+    "department" : "", 
+    "position type" : "", 
+    "position title" : "", 
+    "viewed by user" : false, 
+    "viewed by admin" : false, 
+    "activity on" : ISODate("2016-05-25T20:46:06.525+0000"), 
+    "for admin" : true, 
+    "critical" : false, 
+    "version" : NumberLong(1)
+}
+{ 
+    "_id" : ObjectId("57460f0ebcbb29192ce0d489"), 
+    "type" : "User", 
+    "action" : "Account is updated.", 
+    "proposal id" : "", 
+    "proposal title" : "", 
+    "user profile id" : "57460657bcbb29192ce0d483", 
+    "user name" : "deanchemistry1", 
+    "college" : "Science", 
+    "department" : "Chemistry", 
+    "position type" : "Administrator", 
+    "position title" : "Dean", 
+    "viewed by user" : false, 
+    "viewed by admin" : false, 
+    "activity on" : ISODate("2016-05-25T20:46:06.525+0000"), 
+    "for admin" : false, 
+    "critical" : false, 
+    "version" : NumberLong(1)
+}
+{ 
+    "_id" : ObjectId("57462057bcbb291504876420"), 
+    "type" : "User", 
+    "action" : "Account is created.", 
+    "proposal id" : "", 
+    "proposal title" : "", 
+    "user profile id" : "57462057bcbb29150487641f", 
+    "user name" : "irbchemistry", 
+    "college" : "", 
+    "department" : "", 
+    "position type" : "", 
+    "position title" : "", 
+    "viewed by user" : false, 
+    "viewed by admin" : false, 
+    "activity on" : ISODate("2016-05-25T21:59:51.772+0000"), 
+    "for admin" : true, 
+    "critical" : false, 
+    "version" : NumberLong(1)
+}
+{ 
+    "_id" : ObjectId("57462057bcbb291504876421"), 
+    "type" : "User", 
+    "action" : "Account is created.", 
+    "proposal id" : "", 
+    "proposal title" : "", 
+    "user profile id" : "57462057bcbb29150487641f", 
+    "user name" : "irbchemistry", 
+    "college" : "Science", 
+    "department" : "Chemistry", 
+    "position type" : "Professional staff", 
+    "position title" : "IRB", 
+    "viewed by user" : false, 
+    "viewed by admin" : false, 
+    "activity on" : ISODate("2016-05-25T21:59:51.773+0000"), 
+    "for admin" : false, 
+    "critical" : false, 
+    "version" : NumberLong(1)
+}
+{ 
+    "_id" : ObjectId("574620c6bcbb29150487642b"), 
+    "type" : "User", 
+    "action" : "Account is created.", 
+    "proposal id" : "", 
+    "proposal title" : "", 
+    "user profile id" : "574620c6bcbb29150487642a", 
+    "user name" : "bmchemistry1", 
+    "college" : "", 
+    "department" : "", 
+    "position type" : "", 
+    "position title" : "", 
+    "viewed by user" : false, 
+    "viewed by admin" : false, 
+    "activity on" : ISODate("2016-05-25T22:01:42.974+0000"), 
+    "for admin" : true, 
+    "critical" : false, 
+    "version" : NumberLong(1)
+}
+{ 
+    "_id" : ObjectId("574620c6bcbb29150487642c"), 
+    "type" : "User", 
+    "action" : "Account is created.", 
+    "proposal id" : "", 
+    "proposal title" : "", 
+    "user profile id" : "574620c6bcbb29150487642a", 
+    "user name" : "bmchemistry1", 
+    "college" : "Science", 
+    "department" : "Chemistry", 
+    "position type" : "Professional staff", 
+    "position title" : "Business Manager", 
+    "viewed by user" : false, 
+    "viewed by admin" : false, 
+    "activity on" : ISODate("2016-05-25T22:01:42.975+0000"), 
     "for admin" : false, 
     "critical" : false, 
     "version" : NumberLong(1)

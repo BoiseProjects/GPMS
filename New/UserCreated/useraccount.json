@@ -228,3 +228,23 @@
     "added on" : ISODate("2016-05-25T20:08:55.097+0000"), 
     "version" : NumberLong(1)
 }
+{ 
+    "_id" : ObjectId("57462057bcbb29150487641e"), 
+    "username" : "irbchemistry", 
+    "password" : "1000:fdd73095445c9e76a5aa78e953c6c6e05ae6b9b73edc52e1:23f849f311d017e60c4664dd5ded334c628459b398e72f8f", 
+    "deleted" : false, 
+    "active" : true, 
+    "admin" : false, 
+    "added on" : ISODate("2016-05-25T21:59:51.622+0000"), 
+    "version" : NumberLong(1)
+}
+{ 
+    "_id" : ObjectId("574620c6bcbb291504876429"), 
+    "username" : "bmchemistry1", 
+    "password" : "1000:c7cd9164b6fce02d0a35c96f99fe1f67e8c094445a581324:291233b81ecbc13937c95a1378329e474a05d6392f0ed980", 
+    "deleted" : false, 
+    "active" : true, 
+    "admin" : false, 
+    "added on" : ISODate("2016-05-25T22:01:42.948+0000"), 
+    "version" : NumberLong(1)
+}
