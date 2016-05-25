@@ -128,3 +128,103 @@
     "added on" : ISODate("2016-05-25T18:44:46.191+0000"), 
     "version" : NumberLong(1)
 }
+{ 
+    "_id" : ObjectId("5745f5ebbcbb29192ce0d437"), 
+    "username" : "deancomputerscience", 
+    "password" : "1000:843a7980dd3e481eeb7fcd77dd1a88bc037c37c6abd9640e:84689b7f844c4adc04e8208e5eb5fd84ece3d9e56e25aee2", 
+    "deleted" : false, 
+    "active" : true, 
+    "admin" : false, 
+    "added on" : ISODate("2016-05-25T18:58:51.935+0000"), 
+    "version" : NumberLong(1)
+}
+{ 
+    "_id" : ObjectId("5745fc43bcbb29192ce0d43f"), 
+    "username" : "deanelectricalengineering", 
+    "password" : "1000:25ceff0dc454c92deeb593b1e99c3ebb38758737f4c87f37:015367eb0f1a4ce216afe0c0bd517af7e3a8d10cf1b50f06", 
+    "deleted" : false, 
+    "active" : true, 
+    "admin" : false, 
+    "added on" : ISODate("2016-05-25T19:25:55.300+0000"), 
+    "version" : NumberLong(1)
+}
+{ 
+    "_id" : ObjectId("5745fca7bcbb29192ce0d448"), 
+    "username" : "irbcomputerscience", 
+    "password" : "1000:c58f1933abffd4c950dcf44e13f9c532b6f23c19341fa621:18f5f79a60dda849245aebbf3c36dddfb79bc3e1f7992713", 
+    "deleted" : false, 
+    "active" : true, 
+    "admin" : false, 
+    "added on" : ISODate("2016-05-25T19:27:35.612+0000"), 
+    "version" : NumberLong(1)
+}
+{ 
+    "_id" : ObjectId("5745fcfdbcbb29192ce0d450"), 
+    "username" : "racomputerscience", 
+    "password" : "1000:2517b94de0757323e50e767bad94a9f2fbb52fceb34cd845:3f3a2395112f6a469d77fe81b0e2e8c5d740e0a76a16b6e3", 
+    "deleted" : false, 
+    "active" : true, 
+    "admin" : false, 
+    "added on" : ISODate("2016-05-25T19:29:01.265+0000"), 
+    "version" : NumberLong(1)
+}
+{ 
+    "_id" : ObjectId("5745fd43bcbb29192ce0d458"), 
+    "username" : "directorcomputerscience", 
+    "password" : "1000:8de16881efbfd02e0ac1d544adbeaee1b9270bdbeecef39a:b40fe45369bf7452b31b1348916986b9d82802f8ccc5ac40", 
+    "deleted" : false, 
+    "active" : true, 
+    "admin" : false, 
+    "added on" : ISODate("2016-05-25T19:30:11.921+0000"), 
+    "version" : NumberLong(1)
+}
+{ 
+    "_id" : ObjectId("5745fd92bcbb29192ce0d460"), 
+    "username" : "directorphysics", 
+    "password" : "1000:ba2901bd8ec5af550fcf53296c6a12aaff9ee8f288cf0602:6f462adfb6b0e5eed161bbb8f5cb9fce3aa31d1dbb445a3c", 
+    "deleted" : false, 
+    "active" : true, 
+    "admin" : false, 
+    "added on" : ISODate("2016-05-25T19:31:30.930+0000"), 
+    "version" : NumberLong(1)
+}
+{ 
+    "_id" : ObjectId("574604fabcbb29192ce0d469"), 
+    "username" : "irbelectricalengineering", 
+    "password" : "1000:1caecb0901addb2f4efe7b1b3cdf9d4373ea7a2b21b297ba:56d2569172c89038952158fe57b7fdc734b64f1e149387c1", 
+    "deleted" : false, 
+    "active" : true, 
+    "admin" : false, 
+    "added on" : ISODate("2016-05-25T20:03:06.846+0000"), 
+    "version" : NumberLong(1)
+}
+{ 
+    "_id" : ObjectId("57460575bcbb29192ce0d472"), 
+    "username" : "raphysics1", 
+    "password" : "1000:791d85cb6aac1032eb5d864757e9cc0995bbf919d05417b8:c79a68d0d84d4a638bb156ec7ac5810b5d6e562fcfbed21b", 
+    "deleted" : false, 
+    "active" : true, 
+    "admin" : false, 
+    "added on" : ISODate("2016-05-25T20:05:09.985+0000"), 
+    "version" : NumberLong(1)
+}
+{ 
+    "_id" : ObjectId("574605b2bcbb29192ce0d47a"), 
+    "username" : "irbphysics", 
+    "password" : "1000:ea6d53df5bedb998373c1bbf65c94c65cc2c57612f13d5b7:312d9d182a1527610442d681e1360ed5bbcfbc31a957c8ed", 
+    "deleted" : false, 
+    "active" : true, 
+    "admin" : false, 
+    "added on" : ISODate("2016-05-25T20:06:10.841+0000"), 
+    "version" : NumberLong(1)
+}
+{ 
+    "_id" : ObjectId("57460657bcbb29192ce0d482"), 
+    "username" : "deanchemistry1", 
+    "password" : "1000:26db57cd5258213096b62902e62e96bbc86514bb3396b7bb:6c0db8a7fe0d83b403b0bc369b8804266a64f27618b0efa4", 
+    "deleted" : false, 
+    "active" : true, 
+    "admin" : false, 
+    "added on" : ISODate("2016-05-25T20:08:55.097+0000"), 
+    "version" : NumberLong(1)
+}

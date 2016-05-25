@@ -692,3 +692,553 @@
     ], 
     "version" : NumberLong(1)
 }
+{ 
+    "_id" : ObjectId("5745f5ebbcbb29192ce0d438"), 
+    "first name" : "Dean", 
+    "middle name" : "", 
+    "last name" : "Computer Science", 
+    "date of birth" : ISODate("2016-05-25T06:00:00.000+0000"), 
+    "gender" : "Male", 
+    "details" : [
+        {
+            "position title" : "Dean", 
+            "position type" : "Administrator", 
+            "department" : "Computer Science", 
+            "college" : "Engineering", 
+            "as default" : true
+        }
+    ], 
+    "office number" : [
+        ""
+    ], 
+    "mobile number" : [
+        "2323232323"
+    ], 
+    "home number" : [
+        ""
+    ], 
+    "other number" : [
+        ""
+    ], 
+    "addresses" : [
+        {
+            "street" : "2601 W Boise Ave", 
+            "apt" : "3F", 
+            "city" : "Boise", 
+            "state" : "Idaho", 
+            "zipcode" : "23232", 
+            "country" : "United States"
+        }
+    ], 
+    "work email" : [
+        "deancomputerscience@gmail.com"
+    ], 
+    "personal email" : [
+        ""
+    ], 
+    "user id" : DBRef("useraccount", ObjectId("5745f5ebbcbb29192ce0d437")), 
+    "deleted" : false, 
+    "audit log" : [
+        {
+            "author info" : DBRef("userprofile", ObjectId("5745ed6fbcbb29192ce0d3c9")), 
+            "action" : "Created user account and profile of deancomputerscience", 
+            "activity on" : ISODate("2016-05-25T18:58:51.957+0000")
+        }
+    ], 
+    "version" : NumberLong(1)
+}
+{ 
+    "_id" : ObjectId("5745fc43bcbb29192ce0d440"), 
+    "first name" : "Deans", 
+    "middle name" : "", 
+    "last name" : "Electrical Engineering", 
+    "date of birth" : ISODate("2016-05-25T06:00:00.000+0000"), 
+    "gender" : "Male", 
+    "details" : [
+        {
+            "position title" : "Dean", 
+            "position type" : "Administrator", 
+            "department" : "Electrical Engineering", 
+            "college" : "Engineering", 
+            "as default" : true
+        }
+    ], 
+    "office number" : [
+        ""
+    ], 
+    "mobile number" : [
+        "2232323232"
+    ], 
+    "home number" : [
+        ""
+    ], 
+    "other number" : [
+        ""
+    ], 
+    "addresses" : [
+        {
+            "street" : "2601 South Ave", 
+            "apt" : "", 
+            "city" : "Boise", 
+            "state" : "Idaho", 
+            "zipcode" : "23232", 
+            "country" : "United States"
+        }
+    ], 
+    "work email" : [
+        "deanelectricalengineering@gmail.com"
+    ], 
+    "personal email" : [
+        ""
+    ], 
+    "user id" : DBRef("useraccount", ObjectId("5745fc43bcbb29192ce0d43f")), 
+    "deleted" : false, 
+    "audit log" : [
+        {
+            "author info" : DBRef("userprofile", ObjectId("5745ed6fbcbb29192ce0d3c9")), 
+            "action" : "Created user account and profile of deanelectricalengineering", 
+            "activity on" : ISODate("2016-05-25T19:25:55.310+0000")
+        }
+    ], 
+    "version" : NumberLong(1)
+}
+{ 
+    "_id" : ObjectId("5745fca7bcbb29192ce0d449"), 
+    "first name" : "Computer Science", 
+    "middle name" : "", 
+    "last name" : "IRB", 
+    "date of birth" : ISODate("2016-05-25T06:00:00.000+0000"), 
+    "gender" : "Male", 
+    "details" : [
+        {
+            "position title" : "IRB", 
+            "position type" : "Professional staff", 
+            "department" : "Computer Science", 
+            "college" : "Engineering", 
+            "as default" : true
+        }
+    ], 
+    "office number" : [
+        "2323232232"
+    ], 
+    "mobile number" : [
+        "3232323232"
+    ], 
+    "home number" : [
+        ""
+    ], 
+    "other number" : [
+        ""
+    ], 
+    "addresses" : [
+        {
+            "street" : "2601 W Boise Att", 
+            "apt" : "A", 
+            "city" : "Boise", 
+            "state" : "Idaho", 
+            "zipcode" : "23232", 
+            "country" : "United States"
+        }
+    ], 
+    "work email" : [
+        "irbcomputerscience@gmail.com"
+    ], 
+    "personal email" : [
+        ""
+    ], 
+    "user id" : DBRef("useraccount", ObjectId("5745fca7bcbb29192ce0d448")), 
+    "deleted" : false, 
+    "audit log" : [
+        {
+            "author info" : DBRef("userprofile", ObjectId("5745ed6fbcbb29192ce0d3c9")), 
+            "action" : "Created user account and profile of irbcomputerscience", 
+            "activity on" : ISODate("2016-05-25T19:27:35.622+0000")
+        }
+    ], 
+    "version" : NumberLong(1)
+}
+{ 
+    "_id" : ObjectId("5745fcfdbcbb29192ce0d451"), 
+    "first name" : "Computer Science", 
+    "middle name" : "", 
+    "last name" : "University Research Administrators", 
+    "date of birth" : ISODate("2016-05-25T06:00:00.000+0000"), 
+    "gender" : "Male", 
+    "details" : [
+        {
+            "position title" : "University Research Administrator", 
+            "position type" : "Administrator", 
+            "department" : "Computer Science", 
+            "college" : "Engineering", 
+            "as default" : true
+        }
+    ], 
+    "office number" : [
+        "2323232232"
+    ], 
+    "mobile number" : [
+        "2323232323"
+    ], 
+    "home number" : [
+        ""
+    ], 
+    "other number" : [
+        ""
+    ], 
+    "addresses" : [
+        {
+            "street" : "1232 Boise Ave Street Alvis", 
+            "apt" : "13", 
+            "city" : "Boise", 
+            "state" : "Idaho", 
+            "zipcode" : "23232", 
+            "country" : "United States"
+        }
+    ], 
+    "work email" : [
+        "racomputerscience@gmail.com"
+    ], 
+    "personal email" : [
+        ""
+    ], 
+    "user id" : DBRef("useraccount", ObjectId("5745fcfdbcbb29192ce0d450")), 
+    "deleted" : false, 
+    "audit log" : [
+        {
+            "author info" : DBRef("userprofile", ObjectId("5745ed6fbcbb29192ce0d3c9")), 
+            "action" : "Created user account and profile of racomputerscience", 
+            "activity on" : ISODate("2016-05-25T19:29:01.275+0000")
+        }
+    ], 
+    "version" : NumberLong(1)
+}
+{ 
+    "_id" : ObjectId("5745fd43bcbb29192ce0d459"), 
+    "first name" : "Computer Science", 
+    "middle name" : "", 
+    "last name" : "University Research Directors", 
+    "date of birth" : ISODate("2016-05-25T06:00:00.000+0000"), 
+    "gender" : "Female", 
+    "details" : [
+        {
+            "position title" : "University Research Director", 
+            "position type" : "Administrator", 
+            "department" : "Computer Science", 
+            "college" : "Engineering", 
+            "as default" : true
+        }
+    ], 
+    "office number" : [
+        "2323232232"
+    ], 
+    "mobile number" : [
+        "2323232323"
+    ], 
+    "home number" : [
+        ""
+    ], 
+    "other number" : [
+        ""
+    ], 
+    "addresses" : [
+        {
+            "street" : "2323 Boise Alvis Street", 
+            "apt" : "13B", 
+            "city" : "Ada", 
+            "state" : "Alabama", 
+            "zipcode" : "23232", 
+            "country" : "United States"
+        }
+    ], 
+    "work email" : [
+        "directorcomputerscience@gmail.com"
+    ], 
+    "personal email" : [
+        ""
+    ], 
+    "user id" : DBRef("useraccount", ObjectId("5745fd43bcbb29192ce0d458")), 
+    "deleted" : false, 
+    "audit log" : [
+        {
+            "author info" : DBRef("userprofile", ObjectId("5745ed6fbcbb29192ce0d3c9")), 
+            "action" : "Created user account and profile of directorcomputerscience", 
+            "activity on" : ISODate("2016-05-25T19:30:11.929+0000")
+        }
+    ], 
+    "version" : NumberLong(1)
+}
+{ 
+    "_id" : ObjectId("5745fd92bcbb29192ce0d461"), 
+    "first name" : "Physics", 
+    "middle name" : "", 
+    "last name" : "University Research Directors", 
+    "date of birth" : ISODate("2016-05-25T06:00:00.000+0000"), 
+    "gender" : "Male", 
+    "details" : [
+        {
+            "position title" : "University Research Director", 
+            "position type" : "Administrator", 
+            "department" : "Physics", 
+            "college" : "Science", 
+            "as default" : true
+        }
+    ], 
+    "office number" : [
+        "2323232232"
+    ], 
+    "mobile number" : [
+        "2323232323"
+    ], 
+    "home number" : [
+        ""
+    ], 
+    "other number" : [
+        ""
+    ], 
+    "addresses" : [
+        {
+            "street" : "Boise Hottlville Ave", 
+            "apt" : "34", 
+            "city" : "Boise", 
+            "state" : "Alaska", 
+            "zipcode" : "23232", 
+            "country" : "United States"
+        }
+    ], 
+    "work email" : [
+        "directorphysics@gmail.com"
+    ], 
+    "personal email" : [
+        ""
+    ], 
+    "user id" : DBRef("useraccount", ObjectId("5745fd92bcbb29192ce0d460")), 
+    "deleted" : false, 
+    "audit log" : [
+        {
+            "author info" : DBRef("userprofile", ObjectId("5745ed6fbcbb29192ce0d3c9")), 
+            "action" : "Created user account and profile of directorphysics", 
+            "activity on" : ISODate("2016-05-25T19:31:30.939+0000")
+        }
+    ], 
+    "version" : NumberLong(1)
+}
+{ 
+    "_id" : ObjectId("574604fabcbb29192ce0d46a"), 
+    "first name" : "Electrical Engineering", 
+    "middle name" : "", 
+    "last name" : "IRBs", 
+    "date of birth" : ISODate("2016-05-25T06:00:00.000+0000"), 
+    "gender" : "Male", 
+    "details" : [
+        {
+            "position title" : "IRB", 
+            "position type" : "Professional staff", 
+            "department" : "Electrical Engineering", 
+            "college" : "Engineering", 
+            "as default" : true
+        }
+    ], 
+    "office number" : [
+        ""
+    ], 
+    "mobile number" : [
+        "2323232323"
+    ], 
+    "home number" : [
+        ""
+    ], 
+    "other number" : [
+        ""
+    ], 
+    "addresses" : [
+        {
+            "street" : "Bolliveyard Boise Ave", 
+            "apt" : "S13", 
+            "city" : "Boise", 
+            "state" : "Idaho", 
+            "zipcode" : "22323", 
+            "country" : "United States"
+        }
+    ], 
+    "work email" : [
+        "irbelectricalengineering@gmail.com"
+    ], 
+    "personal email" : [
+        ""
+    ], 
+    "user id" : DBRef("useraccount", ObjectId("574604fabcbb29192ce0d469")), 
+    "deleted" : false, 
+    "audit log" : [
+        {
+            "author info" : DBRef("userprofile", ObjectId("5745ed6fbcbb29192ce0d3c9")), 
+            "action" : "Created user account and profile of irbelectricalengineering", 
+            "activity on" : ISODate("2016-05-25T20:03:06.859+0000")
+        }
+    ], 
+    "version" : NumberLong(1)
+}
+{ 
+    "_id" : ObjectId("57460575bcbb29192ce0d473"), 
+    "first name" : "Physics", 
+    "middle name" : "", 
+    "last name" : "University Research Administrators", 
+    "date of birth" : ISODate("2016-05-25T06:00:00.000+0000"), 
+    "gender" : "Male", 
+    "details" : [
+        {
+            "position title" : "University Research Administrator", 
+            "position type" : "Administrator", 
+            "department" : "Physics", 
+            "college" : "Science", 
+            "as default" : true
+        }
+    ], 
+    "office number" : [
+        ""
+    ], 
+    "mobile number" : [
+        "1212121212"
+    ], 
+    "home number" : [
+        ""
+    ], 
+    "other number" : [
+        ""
+    ], 
+    "addresses" : [
+        {
+            "street" : "Street ave Boilivus", 
+            "apt" : "", 
+            "city" : "Boise", 
+            "state" : "Alabama", 
+            "zipcode" : "23232", 
+            "country" : "United States"
+        }
+    ], 
+    "work email" : [
+        "raphysics1@gmail.com"
+    ], 
+    "personal email" : [
+        ""
+    ], 
+    "user id" : DBRef("useraccount", ObjectId("57460575bcbb29192ce0d472")), 
+    "deleted" : false, 
+    "audit log" : [
+        {
+            "author info" : DBRef("userprofile", ObjectId("5745ed6fbcbb29192ce0d3c9")), 
+            "action" : "Created user account and profile of raphysics1", 
+            "activity on" : ISODate("2016-05-25T20:05:09.993+0000")
+        }
+    ], 
+    "version" : NumberLong(1)
+}
+{ 
+    "_id" : ObjectId("574605b2bcbb29192ce0d47b"), 
+    "first name" : "Physics", 
+    "middle name" : "", 
+    "last name" : "IRBs", 
+    "date of birth" : ISODate("2016-05-25T06:00:00.000+0000"), 
+    "gender" : "Male", 
+    "details" : [
+        {
+            "position title" : "IRB", 
+            "position type" : "Professional staff", 
+            "department" : "Physics", 
+            "college" : "Science", 
+            "as default" : true
+        }
+    ], 
+    "office number" : [
+        ""
+    ], 
+    "mobile number" : [
+        "2323232323"
+    ], 
+    "home number" : [
+        ""
+    ], 
+    "other number" : [
+        ""
+    ], 
+    "addresses" : [
+        {
+            "street" : "Boise Ave TrLR", 
+            "apt" : "B12", 
+            "city" : "Boise", 
+            "state" : "Alabama", 
+            "zipcode" : "23232", 
+            "country" : "United States"
+        }
+    ], 
+    "work email" : [
+        "irbphysics@gmail.com"
+    ], 
+    "personal email" : [
+        ""
+    ], 
+    "user id" : DBRef("useraccount", ObjectId("574605b2bcbb29192ce0d47a")), 
+    "deleted" : false, 
+    "audit log" : [
+        {
+            "author info" : DBRef("userprofile", ObjectId("5745ed6fbcbb29192ce0d3c9")), 
+            "action" : "Created user account and profile of irbphysics", 
+            "activity on" : ISODate("2016-05-25T20:06:10.851+0000")
+        }
+    ], 
+    "version" : NumberLong(1)
+}
+{ 
+    "_id" : ObjectId("57460657bcbb29192ce0d483"), 
+    "first name" : "Chemistry", 
+    "middle name" : "", 
+    "last name" : "Deans", 
+    "date of birth" : ISODate("2016-05-25T06:00:00.000+0000"), 
+    "gender" : "Male", 
+    "details" : [
+        {
+            "position title" : "Distinguished Professor", 
+            "position type" : "Tenured/tenure-track faculty", 
+            "department" : "Computer Science", 
+            "college" : "Engineering", 
+            "as default" : true
+        }
+    ], 
+    "office number" : [
+        ""
+    ], 
+    "mobile number" : [
+        "3443434343"
+    ], 
+    "home number" : [
+        ""
+    ], 
+    "other number" : [
+        ""
+    ], 
+    "addresses" : [
+        {
+            "street" : "Boise Ave TRL B", 
+            "apt" : "13B", 
+            "city" : "Boise", 
+            "state" : "Idaho", 
+            "zipcode" : "23232", 
+            "country" : "United States"
+        }
+    ], 
+    "work email" : [
+        "deanchemistry1@gmail.com"
+    ], 
+    "personal email" : [
+        ""
+    ], 
+    "user id" : DBRef("useraccount", ObjectId("57460657bcbb29192ce0d482")), 
+    "deleted" : false, 
+    "audit log" : [
+        {
+            "author info" : DBRef("userprofile", ObjectId("5745ed6fbcbb29192ce0d3c9")), 
+            "action" : "Created user account and profile of deanchemistry1", 
+            "activity on" : ISODate("2016-05-25T20:08:55.105+0000")
+        }
+    ], 
+    "version" : NumberLong(1)
+}
