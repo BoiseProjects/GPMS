@@ -248,3 +248,63 @@
     "added on" : ISODate("2016-05-25T22:01:42.948+0000"), 
     "version" : NumberLong(1)
 }
+{ 
+    "_id" : ObjectId("5748900cbcbb290f9803272c"), 
+    "username" : "raelectricalengineering", 
+    "password" : "1000:32b434eec0920e1d2f54bf69cf893676e296f87d5b06f6a5:4e319e010df7386f15fa4a7667eacc9fbdb58f53cb1ba7ca", 
+    "deleted" : false, 
+    "active" : true, 
+    "admin" : false, 
+    "added on" : ISODate("2016-05-27T18:21:00.819+0000"), 
+    "version" : NumberLong(1)
+}
+{ 
+    "_id" : ObjectId("5748907dbcbb290f98032734"), 
+    "username" : "directorelectricalengineering", 
+    "password" : "1000:8b64da503f6a001063af8748204f25af0f203d63a62661c5:a75e0fb53634411249013b56436447ce15132ef337638dcf", 
+    "deleted" : false, 
+    "active" : true, 
+    "admin" : false, 
+    "added on" : ISODate("2016-05-27T18:22:53.728+0000"), 
+    "version" : NumberLong(1)
+}
+{ 
+    "_id" : ObjectId("5748910abcbb290f9803273c"), 
+    "username" : "rachemistry1", 
+    "password" : "1000:2c0d99bb8b473ac0112f45eb59f996932590eb71758c9cf3:ba9ef37db1882b8f53a4ca5eb1170ef70b1315ab75faba24", 
+    "deleted" : false, 
+    "active" : true, 
+    "admin" : false, 
+    "added on" : ISODate("2016-05-27T18:25:14.510+0000"), 
+    "version" : NumberLong(1)
+}
+{ 
+    "_id" : ObjectId("57489150bcbb290f98032744"), 
+    "username" : "directorchemistry1", 
+    "password" : "1000:b804f89aa58680aafd1d4d654b575f861bee39c4c39e88cc:86517cb8bcc8b1a15a49478fbb0499b85c542091f3e2b9ba", 
+    "deleted" : false, 
+    "active" : true, 
+    "admin" : false, 
+    "added on" : ISODate("2016-05-27T18:26:24.817+0000"), 
+    "version" : NumberLong(1)
+}
+{ 
+    "_id" : ObjectId("5748944dbcbb290f9803274c"), 
+    "username" : "deanphysics1", 
+    "password" : "1000:bbdb4867904fb54f9c26b80cb71643864432fefb7ddac8f8:06485c17764c92901960c7da3c9e4b4d10cf7951bd774edd", 
+    "deleted" : false, 
+    "active" : true, 
+    "admin" : false, 
+    "added on" : ISODate("2016-05-27T18:39:09.438+0000"), 
+    "version" : NumberLong(1)
+}
+{ 
+    "_id" : ObjectId("5748950bbcbb290f98032754"), 
+    "username" : "bmphysics1", 
+    "password" : "1000:5f970ba8ffc737b140ba468a48975e4dbbe596e3e5bd2bde:e0e63db344236f7fdffbabecea40d8709404400593f2b31b", 
+    "deleted" : false, 
+    "active" : true, 
+    "admin" : false, 
+    "added on" : ISODate("2016-05-27T18:42:19.575+0000"), 
+    "version" : NumberLong(1)
+}

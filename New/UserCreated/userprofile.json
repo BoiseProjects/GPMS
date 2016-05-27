@@ -1357,3 +1357,333 @@
     ], 
     "version" : NumberLong(1)
 }
+{ 
+    "_id" : ObjectId("5748900cbcbb290f9803272d"), 
+    "first name" : "University Research Administrators", 
+    "middle name" : "", 
+    "last name" : "Electrical Engineering", 
+    "date of birth" : ISODate("2016-05-27T06:00:00.000+0000"), 
+    "gender" : "Male", 
+    "details" : [
+        {
+            "position title" : "University Research Administrator", 
+            "position type" : "Administrator", 
+            "department" : "Electrical Engineering", 
+            "college" : "Engineering", 
+            "as default" : true
+        }
+    ], 
+    "office number" : [
+        ""
+    ], 
+    "mobile number" : [
+        "1234567891"
+    ], 
+    "home number" : [
+        ""
+    ], 
+    "other number" : [
+        ""
+    ], 
+    "addresses" : [
+        {
+            "street" : "1510 University Dr", 
+            "apt" : "13B", 
+            "city" : "Boise", 
+            "state" : "U.S. Virgin Islands", 
+            "zipcode" : "23232", 
+            "country" : "United States"
+        }
+    ], 
+    "work email" : [
+        "raelectricalengineering@gmail.com"
+    ], 
+    "personal email" : [
+        ""
+    ], 
+    "user id" : DBRef("useraccount", ObjectId("5748900cbcbb290f9803272c")), 
+    "deleted" : false, 
+    "audit log" : [
+        {
+            "author info" : DBRef("userprofile", ObjectId("5745ed6fbcbb29192ce0d3c9")), 
+            "action" : "Created user account and profile of raelectricalengineering", 
+            "activity on" : ISODate("2016-05-27T18:21:00.855+0000")
+        }
+    ], 
+    "version" : NumberLong(1)
+}
+{ 
+    "_id" : ObjectId("5748907dbcbb290f98032735"), 
+    "first name" : "Electrical Engineering", 
+    "middle name" : "", 
+    "last name" : "University Research Directors", 
+    "date of birth" : ISODate("2016-05-27T06:00:00.000+0000"), 
+    "gender" : "Male", 
+    "details" : [
+        {
+            "position title" : "University Research Director", 
+            "position type" : "Administrator", 
+            "department" : "Electrical Engineering", 
+            "college" : "Engineering", 
+            "as default" : true
+        }
+    ], 
+    "office number" : [
+        ""
+    ], 
+    "mobile number" : [
+        "1234567891"
+    ], 
+    "home number" : [
+        ""
+    ], 
+    "other number" : [
+        ""
+    ], 
+    "addresses" : [
+        {
+            "street" : "2601 W Boise Ave TRLR", 
+            "apt" : "B", 
+            "city" : "Boise", 
+            "state" : "Idaho", 
+            "zipcode" : "12121", 
+            "country" : "United States"
+        }
+    ], 
+    "work email" : [
+        "directorelectricalengineering@gmail.com"
+    ], 
+    "personal email" : [
+        ""
+    ], 
+    "user id" : DBRef("useraccount", ObjectId("5748907dbcbb290f98032734")), 
+    "deleted" : false, 
+    "audit log" : [
+        {
+            "author info" : DBRef("userprofile", ObjectId("5745ed6fbcbb29192ce0d3c9")), 
+            "action" : "Created user account and profile of directorelectricalengineering", 
+            "activity on" : ISODate("2016-05-27T18:22:53.746+0000")
+        }
+    ], 
+    "version" : NumberLong(1)
+}
+{ 
+    "_id" : ObjectId("5748910abcbb290f9803273d"), 
+    "first name" : "University Research Administrators", 
+    "middle name" : "", 
+    "last name" : "Chemistry", 
+    "date of birth" : ISODate("2016-05-27T06:00:00.000+0000"), 
+    "gender" : "Male", 
+    "details" : [
+        {
+            "position title" : "University Research Administrator", 
+            "position type" : "Administrator", 
+            "department" : "Chemistry", 
+            "college" : "Science", 
+            "as default" : true
+        }
+    ], 
+    "office number" : [
+        ""
+    ], 
+    "mobile number" : [
+        "1234556666"
+    ], 
+    "home number" : [
+        ""
+    ], 
+    "other number" : [
+        ""
+    ], 
+    "addresses" : [
+        {
+            "street" : "2601 W Boise Ave TRLR", 
+            "apt" : "B", 
+            "city" : "Boise", 
+            "state" : "Idaho", 
+            "zipcode" : "83706", 
+            "country" : "United States"
+        }
+    ], 
+    "work email" : [
+        "rachemistry1@gmail.com"
+    ], 
+    "personal email" : [
+        ""
+    ], 
+    "user id" : DBRef("useraccount", ObjectId("5748910abcbb290f9803273c")), 
+    "deleted" : false, 
+    "audit log" : [
+        {
+            "author info" : DBRef("userprofile", ObjectId("5745ed6fbcbb29192ce0d3c9")), 
+            "action" : "Created user account and profile of rachemistry1", 
+            "activity on" : ISODate("2016-05-27T18:25:14.586+0000")
+        }
+    ], 
+    "version" : NumberLong(1)
+}
+{ 
+    "_id" : ObjectId("57489150bcbb290f98032745"), 
+    "first name" : "University Research Directors", 
+    "middle name" : "", 
+    "last name" : "Chemistry", 
+    "date of birth" : ISODate("2016-05-26T06:00:00.000+0000"), 
+    "gender" : "Male", 
+    "details" : [
+        {
+            "position title" : "University Research Director", 
+            "position type" : "Administrator", 
+            "department" : "Chemistry", 
+            "college" : "Science", 
+            "as default" : true
+        }
+    ], 
+    "office number" : [
+        ""
+    ], 
+    "mobile number" : [
+        "2323232323"
+    ], 
+    "home number" : [
+        ""
+    ], 
+    "other number" : [
+        ""
+    ], 
+    "addresses" : [
+        {
+            "street" : "2601 W Boise Ave TRLR", 
+            "apt" : "B13", 
+            "city" : "Boise", 
+            "state" : "Idaho", 
+            "zipcode" : "12212", 
+            "country" : "United States"
+        }
+    ], 
+    "work email" : [
+        "directorchemistry1@gmail.com"
+    ], 
+    "personal email" : [
+        ""
+    ], 
+    "user id" : DBRef("useraccount", ObjectId("57489150bcbb290f98032744")), 
+    "deleted" : false, 
+    "audit log" : [
+        {
+            "author info" : DBRef("userprofile", ObjectId("5745ed6fbcbb29192ce0d3c9")), 
+            "action" : "Created user account and profile of directorchemistry1", 
+            "activity on" : ISODate("2016-05-27T18:26:24.827+0000")
+        }
+    ], 
+    "version" : NumberLong(1)
+}
+{ 
+    "_id" : ObjectId("5748944dbcbb290f9803274d"), 
+    "first name" : "Dean", 
+    "middle name" : "", 
+    "last name" : "Physics", 
+    "date of birth" : ISODate("2016-05-26T06:00:00.000+0000"), 
+    "gender" : "Male", 
+    "details" : [
+        {
+            "position title" : "Dean", 
+            "position type" : "Administrator", 
+            "department" : "Physics", 
+            "college" : "Science", 
+            "as default" : true
+        }
+    ], 
+    "office number" : [
+        ""
+    ], 
+    "mobile number" : [
+        "1222222222"
+    ], 
+    "home number" : [
+        ""
+    ], 
+    "other number" : [
+        ""
+    ], 
+    "addresses" : [
+        {
+            "street" : "2601 Boise Ave TRLR B", 
+            "apt" : "", 
+            "city" : "Boise", 
+            "state" : "Alaska", 
+            "zipcode" : "83706", 
+            "country" : "United States"
+        }
+    ], 
+    "work email" : [
+        "deanphysics1@gmail.com"
+    ], 
+    "personal email" : [
+        ""
+    ], 
+    "user id" : DBRef("useraccount", ObjectId("5748944dbcbb290f9803274c")), 
+    "deleted" : false, 
+    "audit log" : [
+        {
+            "author info" : DBRef("userprofile", ObjectId("5745ed6fbcbb29192ce0d3c9")), 
+            "action" : "Created user account and profile of deanphysics1", 
+            "activity on" : ISODate("2016-05-27T18:39:09.449+0000")
+        }
+    ], 
+    "version" : NumberLong(1)
+}
+{ 
+    "_id" : ObjectId("5748950bbcbb290f98032755"), 
+    "first name" : "Business Managers", 
+    "middle name" : "", 
+    "last name" : "Physics", 
+    "date of birth" : ISODate("2016-05-27T06:00:00.000+0000"), 
+    "gender" : "Male", 
+    "details" : [
+        {
+            "position title" : "Business Manager", 
+            "position type" : "Professional staff", 
+            "department" : "Physics", 
+            "college" : "Science", 
+            "as default" : true
+        }
+    ], 
+    "office number" : [
+        ""
+    ], 
+    "mobile number" : [
+        "1111111111"
+    ], 
+    "home number" : [
+        ""
+    ], 
+    "other number" : [
+        ""
+    ], 
+    "addresses" : [
+        {
+            "street" : "2601 W Boise Ave TRLR", 
+            "apt" : "B12", 
+            "city" : "Boise", 
+            "state" : "Idaho", 
+            "zipcode" : "83706", 
+            "country" : "United States"
+        }
+    ], 
+    "work email" : [
+        "bmphysics1@gmail.com"
+    ], 
+    "personal email" : [
+        ""
+    ], 
+    "user id" : DBRef("useraccount", ObjectId("5748950bbcbb290f98032754")), 
+    "deleted" : false, 
+    "audit log" : [
+        {
+            "author info" : DBRef("userprofile", ObjectId("5745ed6fbcbb29192ce0d3c9")), 
+            "action" : "Created user account and profile of bmphysics1", 
+            "activity on" : ISODate("2016-05-27T18:42:19.587+0000")
+        }
+    ], 
+    "version" : NumberLong(1)
+}
