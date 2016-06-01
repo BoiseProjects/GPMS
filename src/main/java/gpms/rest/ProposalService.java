@@ -3071,6 +3071,43 @@ public class ProposalService {
 							signedByAllCoPIs = true;
 						}
 
+						List<String> requiredChairSigns = new ArrayList<String>();
+						List<String> existingChairSigns = new ArrayList<String>();
+						List<String> requiredBusinessManagerSigns = new ArrayList<String>();
+						List<String> existingBusinessManagerSigns = new ArrayList<String>();
+						List<String> requiredDeanSigns = new ArrayList<String>();
+						List<String> existingDeanSigns = new ArrayList<String>();
+						List<String> requiredIRBSigns = new ArrayList<String>();
+						List<String> existingIRBSigns = new ArrayList<String>();
+						List<String> requiredResearchAdminSigns = new ArrayList<String>();
+						List<String> existingResearchAdminSigns = new ArrayList<String>();
+						List<String> requiredResearchDirectorSigns = new ArrayList<String>();
+						List<String> existingResearchDirectorSigns = new ArrayList<String>();
+
+						for (SignatureInfo sign : existingProposal
+								.getSignatureInfo()) {
+							if (sign.getPositionTitle().equals(
+									"Department Chair")) {
+								existingChairSigns.add(sign.getUserProfileId());
+							} else if (sign.getPositionTitle().equals(
+									"Business Manager")) {
+								existingBusinessManagerSigns.add(sign
+										.getUserProfileId());
+							} else if (sign.getPositionTitle().equals("Dean")) {
+								existingDeanSigns.add(sign.getUserProfileId());
+							} else if (sign.getPositionTitle().equals("IRB")) {
+								existingIRBSigns.add(sign.getUserProfileId());
+							} else if (sign.getPositionTitle().equals(
+									"University Research Administrator")) {
+								existingResearchAdminSigns.add(sign
+										.getUserProfileId());
+							} else if (sign.getPositionTitle().equals(
+									"University Research Director")) {
+								existingResearchDirectorSigns.add(sign
+										.getUserProfileId());
+							}
+						}
+
 						for (SignatureUserInfo signatureInfo : signatures) {
 							switch (signatureInfo.getPositionTitle()) {
 							case "Department Chair":
@@ -3090,20 +3127,8 @@ public class ProposalService {
 								contentProfile.append("</ak:userid>");
 								contentProfile.append("</ak:chair>");
 
-								for (SignatureInfo sign : existingProposal
-										.getSignatureInfo()) {
-									if (signatureInfo.getUserProfileId()
-											.equals(sign.getUserProfileId())) {
-										foundChair = true;
-										break;
-									}
-								}
-								if (!foundChair) {
-									signedByAllChairs = false;
-								} else {
-									signedByAllChairs = true;
-								}
-								foundChair = false;
+								requiredChairSigns.add(signatureInfo
+										.getUserProfileId());
 
 								break;
 							case "Business Manager":
@@ -3123,20 +3148,8 @@ public class ProposalService {
 								contentProfile.append("</ak:userid>");
 								contentProfile.append("</ak:manager>");
 
-								for (SignatureInfo sign : existingProposal
-										.getSignatureInfo()) {
-									if (signatureInfo.getUserProfileId()
-											.equals(sign.getUserProfileId())) {
-										foundBusinessManager = true;
-										break;
-									}
-								}
-								if (!foundBusinessManager) {
-									signedByAllBusinessManagers = false;
-								} else {
-									signedByAllBusinessManagers = true;
-								}
-								foundBusinessManager = false;
+								requiredBusinessManagerSigns.add(signatureInfo
+										.getUserProfileId());
 
 								break;
 							case "Dean":
@@ -3156,20 +3169,8 @@ public class ProposalService {
 								contentProfile.append("</ak:userid>");
 								contentProfile.append("</ak:dean>");
 
-								for (SignatureInfo sign : existingProposal
-										.getSignatureInfo()) {
-									if (signatureInfo.getUserProfileId()
-											.equals(sign.getUserProfileId())) {
-										foundDean = true;
-										break;
-									}
-								}
-								if (!foundDean) {
-									signedByAllDeans = false;
-								} else {
-									signedByAllDeans = true;
-								}
-								foundDean = false;
+								requiredDeanSigns.add(signatureInfo
+										.getUserProfileId());
 
 								break;
 							case "IRB":
@@ -3189,20 +3190,8 @@ public class ProposalService {
 								contentProfile.append("</ak:userid>");
 								contentProfile.append("</ak:irb>");
 
-								for (SignatureInfo sign : existingProposal
-										.getSignatureInfo()) {
-									if (signatureInfo.getUserProfileId()
-											.equals(sign.getUserProfileId())) {
-										foundIRB = true;
-										break;
-									}
-								}
-								if (!foundIRB) {
-									signedByAllIRBs = false;
-								} else {
-									signedByAllIRBs = true;
-								}
-								foundIRB = false;
+								requiredIRBSigns.add(signatureInfo
+										.getUserProfileId());
 
 								break;
 							case "University Research Administrator":
@@ -3222,20 +3211,8 @@ public class ProposalService {
 								contentProfile.append("</ak:userid>");
 								contentProfile.append("</ak:administrator>");
 
-								for (SignatureInfo sign : existingProposal
-										.getSignatureInfo()) {
-									if (signatureInfo.getUserProfileId()
-											.equals(sign.getUserProfileId())) {
-										foundResearchAdmin = true;
-										break;
-									}
-								}
-								if (!foundResearchAdmin) {
-									signedByAllResearchAdmins = false;
-								} else {
-									signedByAllResearchAdmins = true;
-								}
-								foundResearchAdmin = false;
+								requiredResearchAdminSigns.add(signatureInfo
+										.getUserProfileId());
 
 								break;
 							case "University Research Director":
@@ -3255,24 +3232,43 @@ public class ProposalService {
 								contentProfile.append("</ak:userid>");
 								contentProfile.append("</ak:director>");
 
-								for (SignatureInfo sign : existingProposal
-										.getSignatureInfo()) {
-									if (signatureInfo.getUserProfileId()
-											.equals(sign.getUserProfileId())) {
-										foundResearchDirector = true;
-										break;
-									}
-								}
-								if (!foundResearchDirector) {
-									signedByAllResearchDirectors = false;
-								} else {
-									signedByAllResearchDirectors = true;
-								}
-								foundResearchDirector = false;
+								requiredResearchDirectorSigns.add(signatureInfo
+										.getUserProfileId());
 
 								break;
 							}
 						}
+
+						signedByAllChairs = existingChairSigns
+								.containsAll(requiredChairSigns);
+
+						signedByAllBusinessManagers = existingBusinessManagerSigns
+								.containsAll(requiredBusinessManagerSigns);
+
+						signedByAllDeans = existingDeanSigns
+								.containsAll(requiredDeanSigns);
+
+						signedByAllIRBs = existingIRBSigns
+								.containsAll(requiredIRBSigns);
+
+						signedByAllResearchAdmins = existingResearchAdminSigns
+								.containsAll(requiredResearchAdminSigns);
+
+						signedByAllResearchDirectors = existingResearchDirectorSigns
+								.containsAll(requiredResearchDirectorSigns);
+
+						requiredChairSigns.clear();
+						existingChairSigns.clear();
+						requiredBusinessManagerSigns.clear();
+						existingBusinessManagerSigns.clear();
+						requiredDeanSigns.clear();
+						existingDeanSigns.clear();
+						requiredIRBSigns.clear();
+						existingIRBSigns.clear();
+						requiredResearchAdminSigns.clear();
+						existingResearchAdminSigns.clear();
+						requiredResearchDirectorSigns.clear();
+						existingResearchDirectorSigns.clear();
 
 						contentProfile.append("<ak:signedByCurrentUser>");
 						contentProfile.append(signedByCurrentUser);

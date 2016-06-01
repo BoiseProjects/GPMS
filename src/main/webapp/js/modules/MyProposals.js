@@ -1244,7 +1244,7 @@ $(function() {
 											_event : 'click',
 											trigger : '3',
 											callMethod : 'myProposal.ViewChangeLogs',
-											arguments : '22'
+											arguments : '1, 15, 16, 17, 22'
 										} ],
 								rp : perpage,
 								nomsg : 'No Records Found!',
@@ -2391,7 +2391,7 @@ $(function() {
 		ViewChangeLogs : function(tblID, argus) {
 			switch (tblID) {
 			case "gdvProposals":
-				var proposal_roles = $.trim(argus[1]);
+				var proposal_roles = $.trim(argus[5]);
 				myProposal.config.proposalId = argus[0];
 				myProposal.config.proposalRoles = proposal_roles;
 				myProposal.config.ajaxCallMode = 16;

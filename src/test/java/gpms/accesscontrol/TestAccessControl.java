@@ -57,21 +57,27 @@ public class TestAccessControl {
 
 		Multimap<String, String> subjectMap = ArrayListMultimap.create();
 		// subjectMap.put("position.type", "Tenured/tenure-track faculty");
-		// subjectMap.put("position.title", "Department Chair");
-		subjectMap.put("proposal.role", "PI");
+		subjectMap.put("position.title", "Department Chair");
+		// subjectMap.put("proposal.role", "PI");
 
 		attrMap.put("Subject", subjectMap);
 
 		Multimap<String, String> resourceMap = ArrayListMultimap.create();
+		//
+		// resourceMap.put("proposal.section", "Whole Proposal");
+		// resourceMap.put("SubmittedByPI", "NOTSUBMITTED");
+
+		resourceMap.put("proposal.section", "Certification/Signatures");
+		resourceMap.put("ApprovedByDepartmentChair", "READYFORAPPROVAL");
 		resourceMap.put("DeletedByPI", "NOTDELETED");
-		resourceMap.put("proposal.section", "Whole Proposal");
-		resourceMap.put("SubmittedByPI", "NOTSUBMITTED");
 
 		attrMap.put("Resource", resourceMap);
 
 		Multimap<String, String> actionMap = ArrayListMultimap.create();
 		// actionMap.put("proposal.action", "Add");
-		actionMap.put("proposal.action", "Save");
+		// actionMap.put("proposal.action", "Save");
+
+		actionMap.put("proposal.action", "Edit");
 
 		attrMap.put("Action", actionMap);
 
