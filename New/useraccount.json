@@ -1,0 +1,260 @@
+{ 
+    "_id" : ObjectId("5745ed6fbcbb29192ce0d3c8"), 
+    "username" : "admin", 
+    "password" : "1000:b6a6e04ceb83d6952401a5d49f4a5fb963c44d4f620a2fed:1e1f95bb87424656b7e07561aec58aac7d59f29ad0747c5b", 
+    "deleted" : false, 
+    "active" : true, 
+    "admin" : true, 
+    "added on" : ISODate("2016-05-25T18:22:39.009+0000"), 
+    "version" : NumberLong(1)
+}
+{ 
+    "_id" : ObjectId("5745efcfbcbb29192ce0d3eb"), 
+    "username" : "irbcomputerengineering", 
+    "password" : "1000:744dbb83d14875224c1c1f169a41be1aa15dfa84a7e48825:8129fd898769b25dd052d6cc49a659b4fb22661ff1badcba", 
+    "deleted" : false, 
+    "active" : true, 
+    "admin" : false, 
+    "added on" : ISODate("2016-05-25T18:32:47.494+0000"), 
+    "version" : NumberLong(1)
+}
+{ 
+    "_id" : ObjectId("5745fca7bcbb29192ce0d448"), 
+    "username" : "irbcomputerscience", 
+    "password" : "1000:c58f1933abffd4c950dcf44e13f9c532b6f23c19341fa621:18f5f79a60dda849245aebbf3c36dddfb79bc3e1f7992713", 
+    "deleted" : false, 
+    "active" : true, 
+    "admin" : false, 
+    "added on" : ISODate("2016-05-25T19:27:35.612+0000"), 
+    "version" : NumberLong(1)
+}
+{ 
+    "_id" : ObjectId("574604fabcbb29192ce0d469"), 
+    "username" : "irbelectricalengineering", 
+    "password" : "1000:1caecb0901addb2f4efe7b1b3cdf9d4373ea7a2b21b297ba:56d2569172c89038952158fe57b7fdc734b64f1e149387c1", 
+    "deleted" : false, 
+    "active" : true, 
+    "admin" : false, 
+    "added on" : ISODate("2016-05-25T20:03:06.846+0000"), 
+    "version" : NumberLong(1)
+}
+{ 
+    "_id" : ObjectId("5745fcfdbcbb29192ce0d450"), 
+    "username" : "racomputerscience", 
+    "password" : "1000:2517b94de0757323e50e767bad94a9f2fbb52fceb34cd845:3f3a2395112f6a469d77fe81b0e2e8c5d740e0a76a16b6e3", 
+    "deleted" : false, 
+    "active" : true, 
+    "admin" : false, 
+    "added on" : ISODate("2016-05-25T19:29:01.265+0000"), 
+    "version" : NumberLong(1)
+}
+{ 
+    "_id" : ObjectId("5745fd43bcbb29192ce0d458"), 
+    "username" : "directorcomputerscience", 
+    "password" : "1000:8de16881efbfd02e0ac1d544adbeaee1b9270bdbeecef39a:b40fe45369bf7452b31b1348916986b9d82802f8ccc5ac40", 
+    "deleted" : false, 
+    "active" : true, 
+    "admin" : false, 
+    "added on" : ISODate("2016-05-25T19:30:11.921+0000"), 
+    "version" : NumberLong(1)
+}
+{ 
+    "_id" : ObjectId("5745ee5ebcbb29192ce0d3cf"), 
+    "username" : "chaircomputerengineering", 
+    "password" : "1000:186a95b019f4cb53c525bb22f0cef6b25afa610b267cd7ce:66f2e79494156b78203cb876f36716386e6fd04f6b6ee954", 
+    "deleted" : false, 
+    "active" : true, 
+    "admin" : false, 
+    "added on" : ISODate("2016-05-25T18:26:38.422+0000"), 
+    "version" : NumberLong(1)
+}
+{ 
+    "_id" : ObjectId("5745eedcbcbb29192ce0d3d9"), 
+    "username" : "bmcomputerengineering1", 
+    "password" : "1000:b3864a444e75caa8ffd0dcf27a80235d8312568ef58f6932:bc10559fa505cc42e085f41eae566b7a31896569b0d70d3d", 
+    "deleted" : false, 
+    "active" : true, 
+    "admin" : false, 
+    "added on" : ISODate("2016-05-25T18:28:44.885+0000"), 
+    "version" : NumberLong(1)
+}
+{ 
+    "_id" : ObjectId("5745ef7cbcbb29192ce0d3e3"), 
+    "username" : "deancomputerengineering", 
+    "password" : "1000:791505915b5ff2bee9f7ab59418cab92a17bca1db73ed027:a3a6fd639633670668692c85e447ba3bd6211957bfda3e72", 
+    "deleted" : false, 
+    "active" : true, 
+    "admin" : false, 
+    "added on" : ISODate("2016-05-25T18:31:24.033+0000"), 
+    "version" : NumberLong(1)
+}
+{ 
+    "_id" : ObjectId("5745f0f7bcbb29192ce0d404"), 
+    "username" : "chaircomputerscience", 
+    "password" : "1000:5056b97b7c6e91750a6c9b912ab981470f0da410b622db30:3356ef47d58a70f153f4fc270437e87713a88dc1eff478df", 
+    "deleted" : false, 
+    "active" : true, 
+    "admin" : false, 
+    "added on" : ISODate("2016-05-25T18:37:43.448+0000"), 
+    "version" : NumberLong(1)
+}
+{ 
+    "_id" : ObjectId("5745f147bcbb29192ce0d40c"), 
+    "username" : "bmcomputerscience", 
+    "password" : "1000:53d6a5581b05832ade9ab9daeeff922074735eeed74f74f9:371eda2af51e1c9d177d5fbe8d0eb9c1a1630b9f72b694ae", 
+    "deleted" : false, 
+    "active" : true, 
+    "admin" : false, 
+    "added on" : ISODate("2016-05-25T18:39:03.246+0000"), 
+    "version" : NumberLong(1)
+}
+{ 
+    "_id" : ObjectId("5745f5ebbcbb29192ce0d437"), 
+    "username" : "deancomputerscience", 
+    "password" : "1000:843a7980dd3e481eeb7fcd77dd1a88bc037c37c6abd9640e:84689b7f844c4adc04e8208e5eb5fd84ece3d9e56e25aee2", 
+    "deleted" : false, 
+    "active" : true, 
+    "admin" : false, 
+    "added on" : ISODate("2016-05-25T18:58:51.935+0000"), 
+    "version" : NumberLong(1)
+}
+{ 
+    "_id" : ObjectId("5745f1a4bcbb29192ce0d414"), 
+    "username" : "chairelectricalengineering", 
+    "password" : "1000:b60a8af6389e52b9acbe29cefd315e9e009b94d74a55ea39:12d72b99f9553553687cb57d206052556d45021dccd13ff9", 
+    "deleted" : false, 
+    "active" : true, 
+    "admin" : false, 
+    "added on" : ISODate("2016-05-25T18:40:36.844+0000"), 
+    "version" : NumberLong(1)
+}
+{ 
+    "_id" : ObjectId("5745f1f4bcbb29192ce0d41c"), 
+    "username" : "bmelectricalengineering", 
+    "password" : "1000:9495ed70edb1dcc3fe638b43dffd93d7f3fd1d54712974a4:ffc78b0eb2a84a59aec2d268c46fbcbe523e0975622a3e60", 
+    "deleted" : false, 
+    "active" : true, 
+    "admin" : false, 
+    "added on" : ISODate("2016-05-25T18:41:56.126+0000"), 
+    "version" : NumberLong(1)
+}
+{ 
+    "_id" : ObjectId("5745fc43bcbb29192ce0d43f"), 
+    "username" : "deanelectricalengineering", 
+    "password" : "1000:25ceff0dc454c92deeb593b1e99c3ebb38758737f4c87f37:015367eb0f1a4ce216afe0c0bd517af7e3a8d10cf1b50f06", 
+    "deleted" : false, 
+    "active" : true, 
+    "admin" : false, 
+    "added on" : ISODate("2016-05-25T19:25:55.300+0000"), 
+    "version" : NumberLong(1)
+}
+{ 
+    "_id" : ObjectId("5745f250bcbb29192ce0d425"), 
+    "username" : "chairphysics1", 
+    "password" : "1000:853722e5e66df060077083952412809a38e914714e62ce2a:73b9abd543f57b1662cb197b428ad005aa6f8e563f5e77a2", 
+    "deleted" : false, 
+    "active" : true, 
+    "admin" : false, 
+    "added on" : ISODate("2016-05-25T18:43:28.964+0000"), 
+    "version" : NumberLong(1)
+}
+{ 
+    "_id" : ObjectId("5748950bbcbb290f98032754"), 
+    "username" : "bmphysics1", 
+    "password" : "1000:5f970ba8ffc737b140ba468a48975e4dbbe596e3e5bd2bde:e0e63db344236f7fdffbabecea40d8709404400593f2b31b", 
+    "deleted" : false, 
+    "active" : true, 
+    "admin" : false, 
+    "added on" : ISODate("2016-05-27T18:42:19.575+0000"), 
+    "version" : NumberLong(1)
+}
+{ 
+    "_id" : ObjectId("5748944dbcbb290f9803274c"), 
+    "username" : "deanphysics1", 
+    "password" : "1000:bbdb4867904fb54f9c26b80cb71643864432fefb7ddac8f8:06485c17764c92901960c7da3c9e4b4d10cf7951bd774edd", 
+    "deleted" : false, 
+    "active" : true, 
+    "admin" : false, 
+    "added on" : ISODate("2016-05-27T18:39:09.438+0000"), 
+    "version" : NumberLong(1)
+}
+{ 
+    "_id" : ObjectId("5745f29ebcbb29192ce0d42e"), 
+    "username" : "chairchemistry", 
+    "password" : "1000:ddb4cfe4b4da314b898f6ab138e5b06251db9ede68e35082:594cc9cd45a0b834466d497533f4fbc4ca43d9134d9a7d75", 
+    "deleted" : false, 
+    "active" : true, 
+    "admin" : false, 
+    "added on" : ISODate("2016-05-25T18:44:46.191+0000"), 
+    "version" : NumberLong(1)
+}
+{ 
+    "_id" : ObjectId("574620c6bcbb291504876429"), 
+    "username" : "bmchemistry1", 
+    "password" : "1000:c7cd9164b6fce02d0a35c96f99fe1f67e8c094445a581324:291233b81ecbc13937c95a1378329e474a05d6392f0ed980", 
+    "deleted" : false, 
+    "active" : true, 
+    "admin" : false, 
+    "added on" : ISODate("2016-05-25T22:01:42.948+0000"), 
+    "version" : NumberLong(1)
+}
+{ 
+    "_id" : ObjectId("57460657bcbb29192ce0d482"), 
+    "username" : "deanchemistry1", 
+    "password" : "1000:26db57cd5258213096b62902e62e96bbc86514bb3396b7bb:6c0db8a7fe0d83b403b0bc369b8804266a64f27618b0efa4", 
+    "deleted" : false, 
+    "active" : true, 
+    "admin" : false, 
+    "added on" : ISODate("2016-05-25T20:08:55.097+0000"), 
+    "version" : NumberLong(1)
+}
+{ 
+    "_id" : ObjectId("57489f2565dbb306cef6702b"), 
+    "username" : "milson", 
+    "password" : "1000:6bf6d3cd181a184564ac856e490c835014441ed4f5c979e0:4be63e67818512e19d0b5b29452d443b15611e083bc3ea21", 
+    "deleted" : false, 
+    "active" : true, 
+    "admin" : false, 
+    "added on" : ISODate("2016-05-27T19:25:25.456+0000"), 
+    "version" : NumberLong(2)
+}
+{ 
+    "_id" : ObjectId("574de98665dbb329a30308e3"), 
+    "username" : "tamanna", 
+    "password" : "1000:78ddceafc21bba333f7a8d5db83d748aacee77210663eb11:beb72a89096db1f07b07c36c76fc9dc58674165e8563d64b", 
+    "deleted" : false, 
+    "active" : true, 
+    "admin" : false, 
+    "added on" : ISODate("2016-05-31T19:44:06.913+0000"), 
+    "version" : NumberLong(2)
+}
+{ 
+    "_id" : ObjectId("574f1f5d65dbb329a395a8d9"), 
+    "username" : "samer", 
+    "password" : "1000:7e1ba639ec2bd4d5bfb089de983649f86a3027018254ca78:60e84c329f6ad22b8dd5652679aa8566645385004bc98f38", 
+    "deleted" : false, 
+    "active" : true, 
+    "admin" : false, 
+    "added on" : ISODate("2016-06-01T17:46:05.308+0000"), 
+    "version" : NumberLong(1)
+}
+{ 
+    "_id" : ObjectId("574f638565dbb34d17834b32"), 
+    "username" : "liliana", 
+    "password" : "1000:ce03d882c1b26863ede2d6ba5a25741b067ab8fdb5c433d5:855e29be751a1438b4be2844538c0951882e29befabe1243", 
+    "deleted" : false, 
+    "active" : true, 
+    "admin" : false, 
+    "added on" : ISODate("2016-06-01T22:36:53.217+0000"), 
+    "version" : NumberLong(3)
+}
+{ 
+    "_id" : ObjectId("574f7adb65dbb34d17834b56"), 
+    "username" : "NickC", 
+    "password" : "1000:8e4bb238606509cf079a039b97e30488233c46c09f982446:01d835359dba42a093569a86ff72b2d8a1fd5971ebd9b92b", 
+    "deleted" : false, 
+    "active" : true, 
+    "admin" : false, 
+    "added on" : ISODate("2016-06-02T00:16:27.383+0000"), 
+    "version" : NumberLong(3)
+}

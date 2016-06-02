@@ -60,7 +60,7 @@
 
 	$(function() {
 		// For Sidebar active menu
-		$('.acitem').find('a').eq(2).prop("class", "active");
+		$('.acitem').find('a').eq(3).prop("class", "active");
 	});
 
 	//]]>

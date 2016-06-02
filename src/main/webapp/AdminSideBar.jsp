@@ -14,20 +14,9 @@
 			dataType : 'json',
 			method : "",
 			url : "",
-			categoryList : "",
 			ajaxCallMode : 0,
-			arr : [],
-			arrModules : [],
-			baseURL : '/aspx'
-					+ '/Modules/Dashboard/Services/DashboardWebService.asmx/',
-			PortalID : 1,
-			Path : '/aspx' + '/Modules/Dashboard/',
-			SaveMode : "Add",
-			SidebarItemID : 0,
 			SidebarMode : '1',
 			ShowSideBar : '1',
-			UserName : 'superuser',
-			PortalID : '1',
 			ForceTrigger : ''
 		},
 		init : function() {
@@ -183,6 +172,8 @@
 			<ul style="display: none" class="acitem">
 				<li class="sfLevel1"><a href="./ManageUsers.jsp"><i
 						class="icon-user-accounts"></i><span>Manage Users</span></a></li>
+				<li class="sfLevel1"><a href="./ManageAdminUsers.jsp"><i
+						class="icon-totalcustomerorder"></i><span>Manage Admin Users</span></a></li>
 				<li class="sfLevel1"><a href="./ManageProposals.jsp"><i
 						class="icon-message-template"></i><span>Manage Proposals</span></a></li>
 				<li class="sfLevel1"><a href="./Settings.jsp"><i

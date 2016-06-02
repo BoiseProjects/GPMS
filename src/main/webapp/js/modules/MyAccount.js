@@ -315,161 +315,187 @@ $(function() {
 
 		BindUserPostionDetails : function(postitionDetails) {
 			if (postitionDetails.length != 0) {
+				var isAdminRole = false;
 				$
 						.each(
 								postitionDetails,
 								function(i, value) {
 									// alert(i + " :: " +
 									// value['positionTitle']);
-									var cloneRow = $(
-											'#dataTable tbody>tr:first').clone(
-											true);
-									$(cloneRow).appendTo("#dataTable");
+									if (value['positionType'] != "University administrator") {
+										var cloneRow = $(
+												'#dataTable tbody>tr:first')
+												.clone(true);
+										$(cloneRow).appendTo("#dataTable");
 
-									rowIndex = i + 1;
-									$(
-											'#dataTable tbody>tr:eq('
-													+ rowIndex + ')')
-											.find("select")
-											.each(
-													function(j) {
-														if (this.name == "ddlCollege") {
-															// $(this).val(value['college']);
+										rowIndex = i + 1;
+										$(
+												'#dataTable tbody>tr:eq('
+														+ rowIndex + ')')
+												.find("select")
+												.each(
+														function(j) {
+															if (this.name == "ddlCollege") {
+																// $(this).val(value['college']);
 
-															$(this)
-																	.find(
-																			'option')
-																	.each(
-																			function() {
-																				var $this = $(this);
-																				if ($this
-																						.text() == value['college']) {
-																					$this
-																							.prop(
-																									'selected',
-																									'selected');
-																					myAccount
-																							.BindDepartmentOnly($(
-																									'select[name="ddlCollege"] option:selected')
-																									.eq(
-																											rowIndex)
-																									.val());
-																				} else {
-																					$this
-																							.remove();
-																				}
-																			});
-														} else if (this.name == "ddlDepartment") {
-															// $(this).val(value['department']);
+																$(this)
+																		.find(
+																				'option')
+																		.each(
+																				function() {
+																					var $this = $(this);
+																					if ($this
+																							.text() == value['college']) {
+																						$this
+																								.prop(
+																										'selected',
+																										'selected');
+																						myAccount
+																								.BindDepartmentOnly($(
+																										'select[name="ddlCollege"] option:selected')
+																										.eq(
+																												rowIndex)
+																										.val());
+																					} else {
+																						$this
+																								.remove();
+																					}
+																				});
+															} else if (this.name == "ddlDepartment") {
+																// $(this).val(value['department']);
 
-															$(this)
-																	.find(
-																			'option')
-																	.each(
-																			function() {
-																				var $this = $(this);
-																				if ($this
-																						.text() == value['department']) {
-																					$this
-																							.prop(
-																									'selected',
-																									'selected');
+																$(this)
+																		.find(
+																				'option')
+																		.each(
+																				function() {
+																					var $this = $(this);
+																					if ($this
+																							.text() == value['department']) {
+																						$this
+																								.prop(
+																										'selected',
+																										'selected');
 
-																					myAccount
-																							.BindPositionTypeOnly(
-																									$(
-																											'select[name="ddlCollege"] option:selected')
-																											.eq(
-																													rowIndex)
-																											.val(),
-																									$(
-																											'select[name="ddlDepartment"] option:selected')
-																											.eq(
-																													rowIndex)
-																											.val());
-																				} else {
-																					$this
-																							.remove();
-																				}
-																			});
-														} else if (this.name == "ddlPositionType") {
-															// $(this).val(value['positionType']);
+																						myAccount
+																								.BindPositionTypeOnly(
+																										$(
+																												'select[name="ddlCollege"] option:selected')
+																												.eq(
+																														rowIndex)
+																												.val(),
+																										$(
+																												'select[name="ddlDepartment"] option:selected')
+																												.eq(
+																														rowIndex)
+																												.val());
+																					} else {
+																						$this
+																								.remove();
+																					}
+																				});
+															} else if (this.name == "ddlPositionType") {
+																// $(this).val(value['positionType']);
 
-															$(this)
-																	.find(
-																			'option')
-																	.each(
-																			function() {
-																				var $this = $(this);
-																				if ($this
-																						.text() == value['positionType']) {
-																					$this
-																							.prop(
-																									'selected',
-																									'selected');
+																$(this)
+																		.find(
+																				'option')
+																		.each(
+																				function() {
+																					var $this = $(this);
+																					if ($this
+																							.text() == value['positionType']) {
+																						$this
+																								.prop(
+																										'selected',
+																										'selected');
 
-																					myAccount
-																							.BindPositionTitleOnly(
-																									$(
-																											'select[name="ddlCollege"] option:selected')
-																											.eq(
-																													rowIndex)
-																											.val(),
-																									$(
-																											'select[name="ddlDepartment"] option:selected')
-																											.eq(
-																													rowIndex)
-																											.val(),
-																									$(
-																											'select[name="ddlPositionType"] option:selected')
-																											.eq(
-																													rowIndex)
-																											.val());
-																				} else {
-																					$this
-																							.remove();
-																				}
-																			});
-														} else if (this.name == "ddlPositionTitle") {
-															// $(this).val(value['positionTitle']);
+																						myAccount
+																								.BindPositionTitleOnly(
+																										$(
+																												'select[name="ddlCollege"] option:selected')
+																												.eq(
+																														rowIndex)
+																												.val(),
+																										$(
+																												'select[name="ddlDepartment"] option:selected')
+																												.eq(
+																														rowIndex)
+																												.val(),
+																										$(
+																												'select[name="ddlPositionType"] option:selected')
+																												.eq(
+																														rowIndex)
+																												.val());
+																					} else {
+																						$this
+																								.remove();
+																					}
+																				});
+															} else if (this.name == "ddlPositionTitle") {
+																// $(this).val(value['positionTitle']);
 
-															$(this)
-																	.find(
-																			'option')
-																	.each(
-																			function() {
-																				var $this = $(this);
-																				if ($this
-																						.text() == value['positionTitle']) {
-																					$this
-																							.prop(
-																									'selected',
-																									'selected');
-																				} else {
-																					$this
-																							.remove();
-																				}
-																			});
-														}
-													});
+																$(this)
+																		.find(
+																				'option')
+																		.each(
+																				function() {
+																					var $this = $(this);
+																					if ($this
+																							.text() == value['positionTitle']) {
+																						$this
+																								.prop(
+																										'selected',
+																										'selected');
+																					} else {
+																						$this
+																								.remove();
+																					}
+																				});
+															}
+														});
 
-									$(
-											'#dataTable tbody>tr:eq('
-													+ rowIndex + ')')
-											.find("input")
-											.each(
-													function(l) {
-														var $button = $(this);
-														if ($button
-																.hasClass("class-isdefault")) {
-															$button
-																	.prop(
-																			'checked',
-																			value['asDefault']);
-														}
-													});
+										$(
+												'#dataTable tbody>tr:eq('
+														+ rowIndex + ')')
+												.find("input")
+												.each(
+														function(l) {
+															var $button = $(this);
+															if ($button
+																	.hasClass("class-isdefault")) {
+																$button
+																		.prop(
+																				'checked',
+																				value['asDefault']);
+															}
+														});
+									} else {
+										isAdminRole = true;
+
+										$('select[name="ddlPositionTitle"]')
+												.find('option')
+												.remove()
+												.end()
+												.append(
+														'<option value="IRB">IRB</option>')
+												.append(
+														'<option value="University Research Administrator">University Research Administrator</option>')
+												.append(
+														'<option value="University Research Director">University Research Director</option>')
+												.val(value['positionTitle']);
+									}
 								});
-				$('#dataTable>tbody tr:first').remove();
+
+				if (!isAdminRole) {
+					$('#dataTable>tbody tr:first').remove();
+				} else {
+					$('#dataTable>thead th:not(:nth-last-child(2))').remove();
+					$('#dataTable>tbody>tr td:not(:nth-last-child(2))')
+							.remove();
+					// $('#ui-id-2').hide();
+					// $('#fragment-2').hide();
+				}
 			} else {
 				myAccount.BindDepartmentDropDown($('select[name="ddlCollege"]')
 						.eq(0).val());
@@ -624,34 +650,6 @@ $(function() {
 				}
 
 				if (validateErrorMessage == "") {
-					var _saveOptions = '';
-					$("#dataTable")
-							.find("tr input, select")
-							.each(
-									function(i) {
-										var optionsText = $(this).val();
-										if ($(this).hasClass("sfListmenu")) {
-											if (!optionsText
-													&& $(this).prop("name") != "ddlPositionTitle") {
-												validateErrorMessage = 'Please select all position details for this user.'
-														+ "<br/>";
-												myAccount.SetFirstTabActive();
-												$(this).focus();
-											} else {
-												_saveOptions += optionsText
-														+ "!#!";
-											}
-										} else if ($(this).hasClass(
-												"class-isdefault")) {
-											var _IsChecked = $(this).prop(
-													'checked');
-											_saveOptions += _IsChecked + "#!#";
-										}
-									});
-
-					_saveOptions = _saveOptions.substring(0,
-							_saveOptions.length - 3);
-
 					var userInfo = {
 						UserID : _userId,
 						FirstName : $.trim($('#txtFirstName').val()),
@@ -671,8 +669,7 @@ $(function() {
 						OtherNumber : $('#txtOtherNumber').mask(),
 						WorkEmail : $('#txtWorkEmail').val(),
 						PersonalEmail : $('#txtPersonalEmail').val(),
-						UserName : $.trim($('#txtUserName').val()),
-						SaveOptions : _saveOptions
+						UserName : $.trim($('#txtUserName').val())
 					};
 
 					var password = $.trim($('#txtPassword').val());

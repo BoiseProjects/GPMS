@@ -405,7 +405,6 @@
 																								Title:</span> <span class="cssClassRequired">*</span></th>
 																						<th><span class="cssClassLabel">Default:</span>
 																							<span class="cssClassRequired">*</span></th>
-																						<th></th>
 																					</tr>
 																				</thead>
 																				<tbody>

@@ -2947,6 +2947,32 @@ public class ProposalService {
 						contentProfile.append("</ak:fullname>");
 						contentProfile.append("</ak:authorprofile>");
 
+						boolean signedByPI = false;
+						boolean signedByAllCoPIs = false;
+						boolean signedByAllChairs = false;
+						boolean signedByAllBusinessManagers = false;
+						boolean signedByAllDeans = false;
+						boolean signedByAllIRBs = false;
+						boolean signedByAllResearchAdmins = false;
+						boolean signedByAllResearchDirectors = false;
+
+						List<String> requiredPISign = new ArrayList<String>();
+						List<String> existingPISign = new ArrayList<String>();
+						List<String> requiredCoPISigns = new ArrayList<String>();
+						List<String> existingCoPISigns = new ArrayList<String>();
+						List<String> requiredChairSigns = new ArrayList<String>();
+						List<String> existingChairSigns = new ArrayList<String>();
+						List<String> requiredBusinessManagerSigns = new ArrayList<String>();
+						List<String> existingBusinessManagerSigns = new ArrayList<String>();
+						List<String> requiredDeanSigns = new ArrayList<String>();
+						List<String> existingDeanSigns = new ArrayList<String>();
+						List<String> requiredIRBSigns = new ArrayList<String>();
+						List<String> existingIRBSigns = new ArrayList<String>();
+						List<String> requiredResearchAdminSigns = new ArrayList<String>();
+						List<String> existingResearchAdminSigns = new ArrayList<String>();
+						List<String> requiredResearchDirectorSigns = new ArrayList<String>();
+						List<String> existingResearchDirectorSigns = new ArrayList<String>();
+
 						if (!existingProposal.getInvestigatorInfo().getPi()
 								.getUserRef().isDeleted()) {
 							contentProfile.append("<ak:pi>");
@@ -2968,6 +2994,10 @@ public class ProposalService {
 									.getUserProfileId());
 							contentProfile.append("</ak:userid>");
 							contentProfile.append("</ak:pi>");
+
+							requiredPISign.add(existingProposal
+									.getInvestigatorInfo().getPi()
+									.getUserProfileId());
 						}
 
 						for (InvestigatorRefAndPosition copis : existingProposal
@@ -2988,6 +3018,8 @@ public class ProposalService {
 								contentProfile.append(copis.getUserProfileId());
 								contentProfile.append("</ak:userid>");
 								contentProfile.append("</ak:copi>");
+
+								requiredCoPISigns.add(copis.getUserProfileId());
 							}
 						}
 
@@ -3013,80 +3045,13 @@ public class ProposalService {
 							}
 						}
 
-						boolean foundCoPI = false;
-						boolean foundChair = false;
-						boolean foundBusinessManager = false;
-						boolean foundDean = false;
-						boolean foundIRB = false;
-						boolean foundResearchAdmin = false;
-						boolean foundResearchDirector = false;
-
-						boolean signedByPI = false;
-						boolean signedByAllCoPIs = false;
-						boolean signedByAllChairs = false;
-						boolean signedByAllBusinessManagers = false;
-						boolean signedByAllDeans = false;
-						boolean signedByAllIRBs = false;
-						boolean signedByAllResearchAdmins = false;
-						boolean signedByAllResearchDirectors = false;
-
 						for (SignatureInfo sign : existingProposal
 								.getSignatureInfo()) {
-							if (existingProposal.getInvestigatorInfo().getPi()
-									.getUserProfileId()
-									.equals(sign.getUserProfileId())
-									&& !existingProposal.getInvestigatorInfo()
-											.getPi().getUserRef().isDeleted()
-									&& sign.getPositionTitle().equals("PI")) {
-								signedByPI = true;
-								break;
-							}
-						}
-
-						int coPICount = existingProposal.getInvestigatorInfo()
-								.getCo_pi().size();
-						if (coPICount > 0) {
-							for (InvestigatorRefAndPosition copi : existingProposal
-									.getInvestigatorInfo().getCo_pi()) {
-								for (SignatureInfo sign : existingProposal
-										.getSignatureInfo()) {
-									if (copi.getUserProfileId().equals(
-											sign.getUserProfileId())
-											&& !copi.getUserRef().isDeleted()
-											&& sign.getPositionTitle().equals(
-													"Co-PI")) {
-										foundCoPI = true;
-										break;
-									}
-								}
-								if (!foundCoPI) {
-									signedByAllCoPIs = false;
-									break;
-								} else {
-									signedByAllCoPIs = true;
-								}
-								foundCoPI = false;
-							}
-						} else {
-							signedByAllCoPIs = true;
-						}
-
-						List<String> requiredChairSigns = new ArrayList<String>();
-						List<String> existingChairSigns = new ArrayList<String>();
-						List<String> requiredBusinessManagerSigns = new ArrayList<String>();
-						List<String> existingBusinessManagerSigns = new ArrayList<String>();
-						List<String> requiredDeanSigns = new ArrayList<String>();
-						List<String> existingDeanSigns = new ArrayList<String>();
-						List<String> requiredIRBSigns = new ArrayList<String>();
-						List<String> existingIRBSigns = new ArrayList<String>();
-						List<String> requiredResearchAdminSigns = new ArrayList<String>();
-						List<String> existingResearchAdminSigns = new ArrayList<String>();
-						List<String> requiredResearchDirectorSigns = new ArrayList<String>();
-						List<String> existingResearchDirectorSigns = new ArrayList<String>();
-
-						for (SignatureInfo sign : existingProposal
-								.getSignatureInfo()) {
-							if (sign.getPositionTitle().equals(
+							if (sign.getPositionTitle().equals("PI")) {
+								existingPISign.add(sign.getUserProfileId());
+							} else if (sign.getPositionTitle().equals("Co-PI")) {
+								existingCoPISigns.add(sign.getUserProfileId());
+							} else if (sign.getPositionTitle().equals(
 									"Department Chair")) {
 								existingChairSigns.add(sign.getUserProfileId());
 							} else if (sign.getPositionTitle().equals(
@@ -3239,6 +3204,11 @@ public class ProposalService {
 							}
 						}
 
+						signedByPI = existingPISign.containsAll(requiredPISign);
+
+						signedByAllCoPIs = existingCoPISigns
+								.containsAll(requiredCoPISigns);
+
 						signedByAllChairs = existingChairSigns
 								.containsAll(requiredChairSigns);
 
@@ -3257,6 +3227,10 @@ public class ProposalService {
 						signedByAllResearchDirectors = existingResearchDirectorSigns
 								.containsAll(requiredResearchDirectorSigns);
 
+						requiredPISign.clear();
+						existingPISign.clear();
+						requiredCoPISigns.clear();
+						existingCoPISigns.clear();
 						requiredChairSigns.clear();
 						existingChairSigns.clear();
 						requiredBusinessManagerSigns.clear();

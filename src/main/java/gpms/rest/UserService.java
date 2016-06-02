@@ -189,6 +189,57 @@ public class UserService {
 	}
 
 	@POST
+	@Path("/GetAdminUsersList")
+	public String produceAdminUsersJSON(String message)
+			throws JsonGenerationException, JsonMappingException, IOException {
+		List<UserInfo> users = new ArrayList<UserInfo>();
+
+		int offset = 0, limit = 0;
+		String userName = new String();
+		String positionTitle = new String();
+		Boolean isActive = null;
+
+		ObjectMapper mapper = new ObjectMapper();
+		JsonNode root = mapper.readTree(message);
+
+		if (root != null && root.has("offset")) {
+			offset = root.get("offset").intValue();
+		}
+
+		if (root != null && root.has("limit")) {
+			limit = root.get("limit").intValue();
+		}
+
+		if (root != null && root.has("userBindObj")) {
+			JsonNode userObj = root.get("userBindObj");
+			if (userObj != null && userObj.has("UserName")) {
+				userName = userObj.get("UserName").textValue();
+			}
+
+			if (userObj != null && userObj.has("PositionTitle")) {
+				positionTitle = userObj.get("PositionTitle").textValue();
+			}
+
+			if (userObj != null && userObj.has("IsActive")) {
+				if (!userObj.get("IsActive").isNull()) {
+					isActive = userObj.get("IsActive").booleanValue();
+				} else {
+					isActive = null;
+				}
+			}
+		}
+
+		users = userProfileDAO.findAllForAdminUserGrid(offset, limit, userName,
+				positionTitle, isActive);
+
+		// final Gson gson = new GsonBuilder().setPrettyPrinting().create();
+		// return gson.toJson(users);
+
+		return mapper.writerWithDefaultPrettyPrinter()
+				.writeValueAsString(users);
+	}
+
+	@POST
 	@Path("/UsersExportToExcel")
 	@Produces(MediaType.TEXT_HTML)
 	public String exportUsersJSON(String message)
@@ -1318,6 +1369,18 @@ public class UserService {
 					} else {
 						newProfile.getDetails().add(newDetails);
 					}
+				}
+			} else if (userInfo != null && userInfo.has("positionTitle")) {
+				PositionDetails newDetails = new PositionDetails();
+				newDetails.setPositionType("University administrator");
+				newDetails.setPositionTitle(userInfo.get("positionTitle")
+						.textValue());
+				newDetails.setAsDefault(true);
+				if (!userID.equals("0")) {
+					existingUserProfile.getDetails().clear();
+					existingUserProfile.getDetails().add(newDetails);
+				} else {
+					newProfile.getDetails().add(newDetails);
 				}
 			}
 		}
