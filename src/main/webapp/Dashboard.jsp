@@ -134,6 +134,10 @@
 											class="sfModuleicon"> <i class="icon-user-accounts"></i></span>
 											<span class="sfModulename">Users</span> </a></li>
 
+									<li><a href="./ManageAdminUsers.jsp"><span
+											class="sfModuleicon"> <i class="icon-totalcustomerorder"></i></span>
+											<span class="sfModulename">Admin Users</span> </a></li>
+
 									<li><a href="./ManageProposals.jsp"><span
 											class="sfModuleicon"> <i class="icon-message-template"></i></span>
 											<span class="sfModulename">Proposals</span> </a></li>

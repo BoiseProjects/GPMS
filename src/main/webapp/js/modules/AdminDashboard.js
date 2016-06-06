@@ -11,7 +11,7 @@ $(function() {
 				UserPositionType : GPMS.utils.GetUserPositionType(),
 				UserPositionTitle : GPMS.utils.GetUserPositionTitle()
 		};
-		console.log(gpmsCommonInfo);
+		//console.log(gpmsCommonInfo);
 		return gpmsCommonInfo;
 	};
 

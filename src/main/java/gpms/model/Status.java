@@ -27,7 +27,7 @@ public enum Status {
 			"Disapproved by Research Director"), DELETEDBYRESEARCHDIRECTOR(
 			"Deleted by Research Director"), SUBMITTEDBYRESEARCHADMIN(
 			"Submitted by Research Administrator"), ARCHIVEDBYRESEARCHDIRECTOR(
-			"Archived by Research Director");
+			"Archived by Research Director"), DELETEDBYADMIN("Deleted by Admin");
 
 	private final String name;
 

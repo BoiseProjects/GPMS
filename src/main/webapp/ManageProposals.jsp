@@ -102,8 +102,13 @@
 
 <script type="text/javascript" src="js/modules/ProposalsManage.js"></script>
 
+<script type="text/javascript" src="js/Uploader/jquery.uploadfile.js"></script>
+
 <link type="text/css" rel="stylesheet"
 	href="css/Templates/jquery-ui.css" />
+
+<link type="text/css" rel="stylesheet"
+	href="css/Templates/uploadfile.css">
 
 <link type="text/css" rel="stylesheet" href="css/MessageBox/style.css" />
 
@@ -222,13 +227,13 @@
 																		class="cssClassLabel">Submitted On:</label>
 																		<div>
 																			<span class="cssClassLabel">From:</span> <input
-																				type="text" title="Received On From"
+																				type="text" title="Submitted On From"
 																				id="txtSearchSubmittedOnFrom" class="sfTextBoxFix"
 																				placeholder="From">
 																		</div>
 																		<div>
 																			<span class="cssClassLabel">To:</span> <input
-																				type="text" title="Received On To"
+																				type="text" title="Submitted On To"
 																				id="txtSearchSubmittedOnTo" class="sfTextBoxFix"
 																				placeholder="To">
 																		</div></td>
@@ -254,15 +259,6 @@
 																		id="ddlSearchProposalStatus" class="sfListmenu"
 																		style="width: 80px;">
 																			<option value="0">--All--</option>
-																	</select></td>
-
-																	<td><label class="cssClassLabel">As:</label> <select
-																		title="Choose User Role" id="ddlSearchUserRole"
-																		class="sfListmenu" style="width: 58px;">
-																			<option value="0">--All--</option>
-																			<option value="PI">PI</option>
-																			<option value="Co-PI">Co-PI</option>
-																			<option value="Senior Personnel">Senior Personnel</option>
 																	</select></td>
 
 																	<td><label class="cssClassLabel">&nbsp;</label>
@@ -327,19 +323,19 @@
 														id="dataTable">
 														<thead>
 															<tr>
-																<th><span class="cssClassLabel">Role:</span> <span
+																<th><span class="cssClassLabelTitle">Role:</span> <span
 																	class="cssClassRequired">*</span></th>
-																<th><span class="cssClassLabel">Name:</span> <span
+																<th><span class="cssClassLabelTitle">Name:</span> <span
 																	class="cssClassRequired">*</span></th>
-																<th><span class="cssClassLabel">College:</span> <span
+																<th><span class="cssClassLabelTitle">College:</span> <span
 																	class="cssClassRequired">*</span></th>
-																<th><span class="cssClassLabel">Department:</span>
+																<th><span class="cssClassLabelTitle">Department:</span>
 																	<span class="cssClassRequired">*</span></th>
-																<th><span class="cssClassLabel">Position
+																<th><span class="cssClassLabelTitle">Position
 																		Type:</span> <span class="cssClassRequired">*</span></th>
-																<th><span class="cssClassLabel">Position
+																<th><span class="cssClassLabelTitle">Position
 																		Title:</span> <span class="cssClassRequired">*</span></th>
-																<th><span class="cssClassLabel">Phone #:</span> <span
+																<th><span class="cssClassLabelTitle">Phone #:</span> <span
 																	class="cssClassRequired">*</span></th>
 																<th></th>
 															</tr>
@@ -347,36 +343,39 @@
 														<tbody>
 															<tr>
 																<td><select title="Choose Role" class="sfListmenu"
-																	name="ddlRole" style="width: 55px;">
+																	name="ddlRole" style="width: 55px;" required="true">
 																		<option value="0">PI</option>
 																		<option value="1">Co-PI</option>
 																		<option value="2">Senior Personnel</option>
 																</select></td>
 																<td><select title="Choose Full Name"
-																	class="sfListmenu" name="ddlName" style="width: 140px;">
+																	class="sfListmenu" name="ddlName" style="width: 140px;"
+																	required="true">
 																</select></td>
 																<td><select title="Choose College Name"
 																	class="sfListmenu" name="ddlCollege"
-																	style="width: 90px;">
+																	style="width: 90px;" required="true">
 																</select></td>
 																<td><select title="Choose Department Name"
 																	class="sfListmenu" name="ddlDepartment"
-																	style="width: 126px;">
+																	style="width: 126px;" required="true">
 																</select></td>
 																<td><select title="Choose Position Type"
 																	class="sfListmenu" name="ddlPositionType"
-																	style="width: 122px;">
+																	style="width: 122px;" required="true">
 																</select></td>
 																<td><select title="Choose Position Title"
 																	class="sfListmenu" name="ddlPositionTitle"
-																	style="width: 169px;">
+																	style="width: 169px;" required="true">
 																</select></td>
 																<td><input title="Phone #" type="text"
 																	readonly="readonly" class="sfTextBoxSmall"
 																	name="txtPhoneNo" placeholder="Phone #"
-																	style="width: 90px !important" /></td>
-																<td><input type="Button" value="Add More"
-																	name="AddMore" class="AddOption cssClassButtonSubmit" /></td>
+																	style="width: 90px !important" required="true" /></td>
+																<td><input type="Button" value="Add Co-PI"
+																	name="AddCoPI" class="AddCoPI cssClassButtonSubmit" /></td>
+																<td><input type="Button" value="Add Senior Personnel"
+																	name="AddSenior" class="AddSenior cssClassButtonSubmit" /></td>
 															</tr>
 														</tbody>
 													</table>
@@ -468,8 +467,7 @@
 												</div>
 
 												<h3>
-													<span id="lblSection3">Sponsor And Budget
-														Information</span>
+													<span id="lblSection3">Sponsor and Budget Information</span>
 												</h3>
 												<div class="sfFormwrapper ui-tabs-panel">
 													<table cellspacing="0" cellpadding="0" border="0">
@@ -609,8 +607,7 @@
 												</div>
 
 												<h3>
-													<span id="lblSection6">Conflict of Interest And
-														Commitment Information</span>
+													<span id="lblSection6">Conflict of Interest and Commitment Information</span>
 												</h3>
 												<div class="sfFormwrapper ui-tabs-panel">
 													<table cellspacing="0" cellpadding="0" border="0">
@@ -873,8 +870,7 @@
 												</div>
 
 												<h3>
-													<span id="lblSection10">Proprietary/Confidential
-														Information</span>
+													<span id="lblSection10">Proprietary/Confidential Information</span>
 												</h3>
 												<div class="sfFormwrapper ui-tabs-panel">
 													<table cellspacing="0" cellpadding="0" border="0">
@@ -936,7 +932,7 @@
 													</table>
 
 													<span class="cssClassFooter"> <span
-														class="cssClassLabel"><strong>Note:</strong>
+														class="cssClassLabelTitle"><strong>Note:</strong>
 															Contact the Office of Technology Transfer for additional
 															assistance on proprietary and patentable information at
 															208-426-5765.</span>
@@ -951,7 +947,7 @@
 														<tbody>
 															<tr>
 																<td><span class="cssClassLabel"><b>Investigators,
-																			department chairs directors, deans</b> certify that 1)
+																			department chairs, directors, deans</b> certify that 1)
 																		the proposed activities are appropriate to the
 																		research, instruction and public service mission of
 																		the University; 2) if funded all necessary resources
@@ -1000,9 +996,10 @@
 														id="trSignPICOPI">
 														<thead>
 															<tr>
-																<th><span class="cssClassLabelTitle">Principal/Co-Investigator(s)</span></th>
+																<th class="cssClassSignName"><span class="cssClassLabelTitle">Principal/Co-Investigator(s)</span></th>
 																<th><span class="cssClassLabelTitle">Signature(s)</span></th>
 																<th><span class="cssClassLabelTitle">Date</span></th>
+																<th><span class="cssClassLabelTitle">Note</span></th>
 															</tr>
 														</thead>
 														<tbody>
@@ -1013,10 +1010,11 @@
 														id="trSignChair">
 														<thead>
 															<tr>
-																<th><span class="cssClassLabelTitle">Department
-																		Chair(s) or Director(s)</span></th>
+																<th class="cssClassSignName"><span class="cssClassLabelTitle">Department
+																		Chair(s)</span></th>
 																<th><span class="cssClassLabelTitle">Signature(s)</span></th>
 																<th><span class="cssClassLabelTitle">Date</span></th>
+																<th><span class="cssClassLabelTitle">Note</span></th>
 															</tr>
 														</thead>
 														<tbody>
@@ -1027,9 +1025,40 @@
 														id="trSignDean">
 														<thead>
 															<tr>
-																<th><span class="cssClassLabelTitle">Dean(s)</span></th>
-																<th><span class="cssClassLabelTitle">Name(s)</span></th>
+																<th class="cssClassSignName"><span class="cssClassLabelTitle">Dean(s)</span></th>
+																<th><span class="cssClassLabelTitle">Signature(s)</span></th>
 																<th><span class="cssClassLabelTitle">Date</span></th>
+																<th><span class="cssClassLabelTitle">Note</span></th>
+															</tr>
+														</thead>
+														<tbody>
+														</tbody>
+													</table>
+
+													<table cellspacing="0" cellpadding="0" border="0"
+														id="trSignAdministrator">
+														<thead>
+															<tr>
+																<th class="cssClassSignName"><span class="cssClassLabelTitle">Research
+																		Administrator(s)</span></th>
+																<th><span class="cssClassLabelTitle">Signature(s)</span></th>
+																<th><span class="cssClassLabelTitle">Date</span></th>
+																<th><span class="cssClassLabelTitle">Note</span></th>
+															</tr>
+														</thead>
+														<tbody>
+														</tbody>
+													</table>
+
+													<table cellspacing="0" cellpadding="0" border="0"
+														id="trSignDirector">
+														<thead>
+															<tr>
+																<th class="cssClassSignName"><span class="cssClassLabelTitle">Research
+																		Director(s)</span></th>
+																<th><span class="cssClassLabelTitle">Signature(s)</span></th>
+																<th><span class="cssClassLabelTitle">Date</span></th>
+																<th><span class="cssClassLabelTitle">Note</span></th>
 															</tr>
 														</thead>
 														<tbody>
@@ -1040,11 +1069,25 @@
 														id="trSignBusinessManager">
 														<thead>
 															<tr>
-																<th><span class="cssClassLabelTitle">Business
-																		Manager (if applicable) has reviewed this proposal.</span></th>
-																<th><span class="cssClassLabelTitle">Initials:</span>
-																	<span class="cssClassRequired">*</span></th>
-																<th></th>
+																<th class="cssClassSignName"><span class="cssClassLabelTitle">Business
+																		Manager(s)</span></th>
+																<th><span class="cssClassLabelTitle">Signature(s)</span>
+																<th><span class="cssClassLabelTitle">Date</span></th>
+																<th><span class="cssClassLabelTitle">Note</span></th>
+															</tr>
+														</thead>
+														<tbody>
+														</tbody>
+													</table>
+
+													<table cellspacing="0" cellpadding="0" border="0"
+														id="trSignIRB">
+														<thead>
+															<tr>
+																<th class="cssClassSignName"><span class="cssClassLabelTitle">IRB(s)</span></th>
+																<th><span class="cssClassLabelTitle">Signature(s)</span>
+																<th><span class="cssClassLabelTitle">Date</span></th>
+																<th><span class="cssClassLabelTitle">Note</span></th>
 															</tr>
 														</thead>
 														<tbody>
@@ -1057,8 +1100,7 @@
 												</h3>
 												<div class="sfFormwrapper ui-tabs-panel">
 													<div class="cssClassHeader">
-														<span class="cssClassLabel">Office of Sponsored
-															Programs Administrative Use Only</span>
+														<span class="cssClassLabelTitle">Office of Sponsored Programs Administrative Use Only</span>
 													</div>
 													<table cellspacing="0" cellpadding="0" border="0">
 														<tbody>
@@ -1406,8 +1448,7 @@
 															<!-- 																		cols="26" rows="2" name="proposalNotes" -->
 															<!-- 																		id="txtProposalNotes" placeholder="Proposal Notes" -->
 															<!-- 																		required></textarea></td> -->
-															<!-- 															</tr> -->
-															Research Administrator Put sign here
+															<!-- 							
 															<!-- 															<tr> -->
 															<!-- 																<td><span class="cssClassLabel">Research -->
 															<!-- 																		Administrator:</span> <span class="cssClassRequired">*</span></td> -->
@@ -1429,69 +1470,46 @@
 													</table>
 
 													<div class="cssClassFooter">
-														<span class="cssClassLabel">Send Original to Office
+														<span class="cssClassLabelTitle">Send Original to Office
 															of Sponsored Programs, MS 1135 or osp@boisestate.edu.
 															Please Send email to osp@boisestate.edu to request a
 															final copy of the Porposal Data Sheet.</span>
 													</div>
 												</div>
+
+												<h3>
+													<span id="lblSection13">Appendices</span>
+												</h3>
+												<div class="sfFormwrapper ui-tabs-panel">
+													<div id="fileuploader">Upload</div>
+												</div>
 											</div>
 
 											<div class="sfButtonwrapper">
 												<p>
-													<button title="Go Back" type="button" id="btnBack"
-														class="sfBtn">
+													<button class="sfBtn" id="btnBack" type="button"
+														title="Go Back">
 														<span class="icon-arrow-slim-w">Back</span>
 													</button>
 												</p>
 												<p>
-													<button title="Reset" type="button" id="btnReset"
-														class="sfBtn">
+													<button class="sfBtn" id="btnReset" type="button"
+														title="Reset">
 														<span class="icon-refresh">Reset</span>
 													</button>
 												</p>
 												<p>
-													<button title="Save Proposal As Draft" type="button"
-														id="btnSaveProposal" class="sfBtn">
-														<span class="icon-save">Save As Draft</span>
+													<button class="sfBtn" id="btnSaveProposal" type="button"
+														title="Save Proposal">
+														<span class="icon-edit">Save</span>
 													</button>
 												</p>
 												<p>
-													<button title="Update Proposal" type="button"
-														id="btnUpdateProposal" class="sfBtn">
-														<span class="icon-save">Update</span>
+													<button class="sfBtn" id="btnDeleteProposal" type="button"
+														title="Delete Proposal">
+														<span class="icon-delete">Delete</span>
 													</button>
-												</p>
-												<p>
-													<button title="Submit Proposal" type="button"
-														id="btnSubmitProposal" class="sfBtn">
-														<span class="icon-save">Submit</span>
-													</button>
-												</p>
-												<p>
-													<button title="Approve Proposal" type="button"
-														id="btnApproveProposal" class="sfBtn">
-														<span class="icon-save">Approve</span>
-													</button>
-												</p>
-												<p>
-													<button title="Disapprove Proposal" type="button"
-														id="btnDisapproveProposal" class="sfBtn">
-														<span class="icon-save">Disapprove</span>
-													</button>
-												</p>
-												<p>
-													<button title="Withdraw Proposal" type="button"
-														id="btnWithdrawProposal" class="sfBtn">
-														<span class="icon-save">Withdraw</span>
-													</button>
-												</p>
-												<p>
-													<button title="Archive Proposal" type="button"
-														id="btnArchiveProposal" class="sfBtn">
-														<span class="icon-save">Archive</span>
-													</button>
-												</p>
+												</p>												
 											</div>
 										</div>
 									</div>
@@ -1504,6 +1522,26 @@
 												<h1>
 													<span id="lblLogsHeading"></span>
 												</h1>
+												<div class="cssClassHeaderRight">
+													<div class="sfButtonwrapper">
+														<p>
+															<button title="Export to Excel" type="button"
+																id="btnLogsExportToExcel" class="sfBtn">
+																<span class="icon-excel">Export to Excel</span>
+															</button>
+														</p>
+														<!-- <p>
+															<button title="Export to CSV" type="button"
+																id="btnExportToCSV" class="sfBtn">
+																<span class="icon-excel">Export to CSV</span>
+															</button>
+														</p> -->
+
+														<div class="cssClassClear"></div>
+													</div>
+													<div class="cssClassClear"></div>
+												</div>
+												<div class="cssClassClear"></div>
 											</div>
 											<div class="sfGridwrapper">
 												<div class="sfGridWrapperContent">
@@ -1587,6 +1625,7 @@
 					<!-- END Body Content sfContentwrapper -->
 				</div>
 			</div>
+		</div>
 	</form>
 </body>
 </html>

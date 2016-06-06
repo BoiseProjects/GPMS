@@ -843,11 +843,10 @@ $(function() {
 											cssclass : 'cssClassHeadCheckBox',
 											coltype : 'checkbox',
 											align : 'center',
-											checkFor : '24',
+											checkFor : '23',
 											elemClass : 'attrChkbox',
 											elemDefault : false,
-											controlclass : 'attribHeaderChkbox',
-											hide : true
+											controlclass : 'attribHeaderChkbox'
 										},
 										{
 											display : 'Project Title',
@@ -1424,9 +1423,9 @@ $(function() {
 
 				myProposal.BindProposalDetailsByProposalId(argus[0]);
 
-				$('.sfButtonwrapper>p>button').show();
+				// $('.sfButtonwrapper>p>button').show();
 
-				// myProposal.ButtonHideShow(myProposal.config);
+				myProposal.ButtonHideShow(myProposal.config);
 
 				// Certification/ Signatures Info
 				myProposal.BindAllSignatureForAProposal(argus[0], argus[20]);
@@ -2459,27 +2458,6 @@ $(function() {
 			default:
 				break;
 			}
-		},
-
-		ConfirmDeleteMultiple : function(proposal_ids, event) {
-			if (event) {
-				myProposal.DeleteMultipleProposals(proposal_ids);
-			}
-		},
-
-		// TODO need to remove this multiple delete options otherwise need to
-		// alert in each row
-		DeleteMultipleProposals : function(_proposalIds) {
-			// this.config.dataType = "html";
-			this.config.url = this.config.baseURL
-					+ "DeleteMultipleProposalsByProposalID";
-			this.config.data = JSON2.stringify({
-				proposalIds : _proposalIds,
-				gpmsCommonObj : gpmsCommonObj()
-			});
-			this.config.ajaxCallMode = 3;
-			this.ajaxCall(this.config);
-			return false;
 		},
 
 		DeleteSingleProposal : function(buttonType, proposalSection, config) {
@@ -3836,6 +3814,7 @@ $(function() {
 				break;
 			break;
 
+		// Unused
 		case 3: // Multiple Proposal Delete
 			SageData.Get("gdvProposals").Arr.length = 0;
 			myProposal.BindProposalGrid(null, null, null, null, null, null,
@@ -3900,6 +3879,8 @@ $(function() {
 								var focusMethod = '';
 								var allowedChange = false;
 								var allowedSign = false;
+								var userPositionTitle = item.positionTitle
+										.split(' ').join('_');
 
 								if (item.signedDate != null) {
 									signedDate = item.signedDate;
@@ -3921,17 +3902,17 @@ $(function() {
 										+ item.signature
 										+ '" name="'
 										+ item.userProfileId
-										+ item.positionTitle
+										+ userPositionTitle
 										+ '" readonly="true">'
 										+ '</td><td><input data-for="signaturedate" name="signaturedate'
 										+ item.userProfileId
-										+ item.positionTitle
+										+ userPositionTitle
 										+ '" title="Signed Date" class="sfInputbox" placeholder="Signed Date" type="text" readonly="true" value="'
 										+ $.format.date(signedDate,
 												'yyyy/MM/dd hh:mm:ss a')
 										+ '"></td><td><textarea rows="2" cols="26" name="proposalNotes'
 										+ item.userProfileId
-										+ item.positionTitle
+										+ userPositionTitle
 										+ '" readonly="true" title="Proposal Notes" class="cssClassTextArea" >'
 										+ item.note + '</textarea></td></tr>';
 
@@ -4259,9 +4240,8 @@ $(function() {
 		case 21:
 			var t = myProposal.config.investigatorButton.closest('tr');
 			t.find("td").wrapInner("<div style='display: block'/>").parent()
-					.find("td div").slideUp(300, function() {
-						t.remove();
-					});
+					.find("td div").slideUp(300);
+			t.remove();
 			break;
 
 		}
@@ -4657,39 +4637,6 @@ $(function() {
 											'option:gt(0)').remove();
 								}
 
-							});
-
-			// unused
-			$('#btnDeleteSelected')
-					.click(
-							function() {
-								var proposal_ids = '';
-								proposal_ids = SageData.Get("gdvProposals").Arr
-										.join(',');
-
-								if (proposal_ids.length > 10) {
-									var properties = {
-										onComplete : function(e) {
-											myProposal.ConfirmDeleteMultiple(
-													proposal_ids, e);
-										}
-									};
-									csscody
-											.confirm(
-													"<h2>"
-															+ 'Delete Confirmation'
-															+ "</h2><p>"
-															+ 'Are you certain you want to delete selected proposal(s)?'
-															+ "</p>",
-													properties);
-								} else {
-									csscody
-											.alert('<h2>'
-													+ 'Information Alert'
-													+ '</h2><p>'
-													+ 'Please select at least one proposal before deleting.'
-													+ '</p>');
-								}
 							});
 
 			$("#btnLogsExportToExcel").on(
@@ -5300,12 +5247,8 @@ $(function() {
 																		"<div style='display: block'/>")
 																.parent()
 																.find("td div")
-																.slideUp(
-																		300,
-																		function() {
-																			t
-																					.remove();
-																		});
+																.slideUp(300);
+														t.remove();
 													} else {
 														var subSection = "";
 														if (t.find(

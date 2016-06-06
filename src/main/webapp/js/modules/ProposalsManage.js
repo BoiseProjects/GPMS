@@ -420,7 +420,6 @@ $(function() {
 					});
 
 	var rowIndex = 0;
-	var editFlag = "0";
 	var projectTitleIsUnique = false;
 	var signatureInfo = '';
 
@@ -439,7 +438,29 @@ $(function() {
 			baseURL : GPMS.utils.GetGPMSServicePath() + "proposals/",
 			method : "",
 			url : "",
-			ajaxCallMode : 0
+			ajaxCallMode : 0,
+			proposalId : "0",
+			proposalRoles : "",
+			proposalStatus : "",
+			submittedByPI : "",
+			readyForSubmitionByPI : "",
+			deletedByPI : "",
+			chairApproval : "",
+			businessManagerApproval : "",
+			irbapproval : "",
+			deanApproval : "",
+			researchAdministratorApproval : "",
+			researchAdministratorWithdraw : "",
+			researchDirectorApproval : "",
+			researchDirectorDeletion : "",
+			researchAdministratorSubmission : "",
+			researchDirectorArchived : "",
+			buttonType : "",
+			arguments : [],
+			events : "",
+			content : "",
+			uploadObj : "",
+			investigatorButton : ""
 		},
 
 		ajaxCall : function(config) {
@@ -480,10 +501,6 @@ $(function() {
 					: $.trim($('#ddlSearchProposalStatus').val()) == "0" ? null
 							: $.trim($('#ddlSearchProposalStatus').val());
 
-			var userRole = $.trim($('#ddlSearchUserRole').val()) == "" ? null
-					: $.trim($('#ddlSearchUserRole').val()) == "0" ? null : $
-							.trim($('#ddlSearchUserRole').val());
-
 			if (projectTitle.length < 1) {
 				projectTitle = null;
 			}
@@ -505,12 +522,11 @@ $(function() {
 
 			proposalsManage.BindProposalGrid(projectTitle, usernameBy,
 					submittedOnFrom, submittedOnTo, totalCostsFrom,
-					totalCostsTo, proposalStatus, userRole);
+					totalCostsTo, proposalStatus);
 		},
 
 		BindProposalGrid : function(projectTitle, usernameBy, submittedOnFrom,
-				submittedOnTo, totalCostsFrom, totalCostsTo, proposalStatus,
-				userRole) {
+				submittedOnTo, totalCostsFrom, totalCostsTo, proposalStatus) {
 			this.config.url = this.config.baseURL;
 			this.config.method = "GetProposalsList";
 			var offset_ = 1;
@@ -525,9 +541,9 @@ $(function() {
 				SubmittedOnTo : submittedOnTo,
 				TotalCostsFrom : totalCostsFrom,
 				TotalCostsTo : totalCostsTo,
-				ProposalStatus : proposalStatus,
-				UserRole : userRole
+				ProposalStatus : proposalStatus
 			};
+
 			this.config.data = {
 				proposalBindObj : proposalBindObj
 			};
@@ -538,231 +554,386 @@ $(function() {
 							{
 								url : this.config.url,
 								functionMethod : this.config.method,
-								colModel : [ {
-									display : 'Proposal ID',
-									cssclass : 'cssClassHeadCheckBox',
-									coltype : 'checkbox',
-									align : 'center',
-									checkFor : '25',
-									elemClass : 'attrChkbox',
-									elemDefault : false,
-									controlclass : 'attribHeaderChkbox'
-								}, {
-									display : 'Project Title',
-									name : 'project_title',
-									cssclass : '',
-									controlclass : '',
-									coltype : 'label',
-									align : 'left'
-								}, {
-									display : 'Project Type',
-									name : 'project_type',
-									cssclass : '',
-									controlclass : '',
-									coltype : 'label',
-									align : 'left',
-									hide : true
-								}, {
-									display : 'Type of Request',
-									name : 'type_of_request',
-									cssclass : '',
-									controlclass : '',
-									coltype : 'label',
-									align : 'left',
-									type : 'array',
-									hide : true
-								}, {
-									display : 'Project Location',
-									name : 'project_location',
-									cssclass : '',
-									controlclass : '',
-									coltype : 'label',
-									align : 'left',
-									hide : true
-								}, {
-									display : 'Granting Agencies',
-									name : 'granting_agencies',
-									cssclass : '',
-									controlclass : '',
-									coltype : 'label',
-									align : 'left',
-									type : 'array'
-								}, {
-									display : 'Direct Costs',
-									name : 'directCosts',
-									cssclass : '',
-									controlclass : '',
-									coltype : 'label',
-									align : 'left',
-									type : 'currency',
-									hide : true
-								}, {
-									display : 'FA Costs',
-									name : 'FA_costs',
-									cssclass : '',
-									controlclass : '',
-									coltype : 'label',
-									align : 'left',
-									type : 'currency',
-									hide : true
-								}, {
-									display : 'Total Costs',
-									name : 'total_costs',
-									cssclass : '',
-									controlclass : '',
-									coltype : 'label',
-									align : 'left',
-									type : 'currency'
-								}, {
-									display : 'FA Rate',
-									name : 'FA_rate',
-									cssclass : '',
-									controlclass : '',
-									coltype : 'label',
-									align : 'left',
-									type : 'percent',
-									hide : true
-								}, {
-									display : 'Date Created',
-									name : 'date_created',
-									cssclass : '',
-									controlclass : '',
-									coltype : 'label',
-									align : 'left',
-									type : 'date',
-									format : 'yyyy/MM/dd hh:mm:ss a',
-									hide : true
-								}, {
-									display : 'Date Submitted',
-									name : 'date_submitted',
-									cssclass : '',
-									controlclass : '',
-									coltype : 'label',
-									align : 'left',
-									type : 'date',
-									format : 'yyyy/MM/dd hh:mm:ss a'
-								}, {
-									display : 'Due Date',
-									name : 'due_date',
-									cssclass : 'cssClassHeadDate',
-									controlclass : '',
-									coltype : 'label',
-									align : 'left',
-									type : 'date',
-									format : 'yyyy/MM/dd hh:mm:ss a'
-								}, {
-									display : 'Project Period From',
-									name : 'project_period_from',
-									cssclass : 'cssClassHeadDate',
-									controlclass : '',
-									coltype : 'label',
-									align : 'left',
-									type : 'date',
-									format : 'yyyy/MM/dd hh:mm:ss a',
-									hide : true
-								}, {
-									display : 'Project Period To',
-									name : 'project_period_to',
-									cssclass : 'cssClassHeadDate',
-									controlclass : '',
-									coltype : 'label',
-									align : 'left',
-									type : 'date',
-									format : 'yyyy/MM/dd hh:mm:ss a',
-									hide : true
-								}, {
-									display : 'Status',
-									name : 'proposal_status',
-									cssclass : '',
-									controlclass : '',
-									coltype : 'label',
-									align : 'left',
-									type : 'array'
-								}, {
-									display : 'Last Audited',
-									name : 'last_audited',
-									cssclass : 'cssClassHeadDate',
-									controlclass : '',
-									coltype : 'label',
-									align : 'left',
-									type : 'date',
-									format : 'yyyy/MM/dd hh:mm:ss a',
-									hide : true
-								}, {
-									display : 'Last Audited By',
-									name : 'last_audited_by',
-									cssclass : '',
-									controlclass : '',
-									coltype : 'label',
-									align : 'left',
-									hide : true
-								}, {
-									display : 'Last Audited Action',
-									name : 'last_audited_action',
-									cssclass : '',
-									controlclass : '',
-									coltype : 'label',
-									align : 'left',
-									hide : true
-								}, {
-									display : 'PI User',
-									name : 'pi_user',
-									cssclass : '',
-									controlclass : '',
-									coltype : 'label',
-									align : 'left',
-									hide : true
-								}, {
-									display : 'Co-PI Users',
-									name : 'co_pi_users',
-									cssclass : '',
-									controlclass : '',
-									coltype : 'label',
-									align : 'left',
-									type : 'array',
-									hide : true
-								}, {
-									display : 'Senior Personnel Users',
-									name : 'senior_personnel_users',
-									cssclass : '',
-									controlclass : '',
-									coltype : 'label',
-									align : 'left',
-									type : 'array',
-									hide : true
-								}, {
-									display : 'All Involved Users',
-									name : 'all_users',
-									cssclass : '',
-									controlclass : '',
-									coltype : 'label',
-									align : 'left',
-									type : 'array',
-									hide : true
-								}, {
-									display : 'Current User Roles',
-									name : 'proposal_roles',
-									cssclass : '',
-									controlclass : '',
-									coltype : 'label',
-									align : 'left',
-									type : 'array'
-								}, {
-									display : 'Is Deleted?',
-									name : 'is_deleted',
-									cssclass : 'cssClassHeadBoolean',
-									controlclass : '',
-									coltype : 'label',
-									align : 'left',
-									type : 'boolean',
-									format : 'Yes/No'
-								}, {
-									display : 'Actions',
-									name : 'action',
-									cssclass : 'cssClassAction',
-									coltype : 'label',
-									align : 'center'
-								} ],
+								colModel : [
+										{
+											display : 'Proposal ID',
+											cssclass : 'cssClassHeadCheckBox',
+											coltype : 'checkbox',
+											align : 'center',
+											checkFor : '23',
+											elemClass : 'attrChkbox',
+											elemDefault : false,
+											controlclass : 'attribHeaderChkbox'
+										},
+										{
+											display : 'Project Title',
+											name : 'project_title',
+											cssclass : '',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left'
+										},
+										{
+											display : 'Project Type',
+											name : 'project_type',
+											cssclass : '',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left',
+											hide : true
+										},
+										{
+											display : 'Type of Request',
+											name : 'type_of_request',
+											cssclass : '',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left',
+											type : 'array',
+											hide : true
+										},
+										{
+											display : 'Project Location',
+											name : 'project_location',
+											cssclass : '',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left',
+											hide : true
+										},
+										{
+											display : 'Granting Agencies',
+											name : 'granting_agencies',
+											cssclass : '',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left',
+											type : 'array'
+										},
+										{
+											display : 'Direct Costs',
+											name : 'directCosts',
+											cssclass : '',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left',
+											type : 'currency',
+											hide : true
+										},
+										{
+											display : 'FA Costs',
+											name : 'FA_costs',
+											cssclass : '',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left',
+											type : 'currency',
+											hide : true
+										},
+										{
+											display : 'Total Costs',
+											name : 'total_costs',
+											cssclass : '',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left',
+											type : 'currency'
+										},
+										{
+											display : 'FA Rate',
+											name : 'FA_rate',
+											cssclass : '',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left',
+											type : 'percent',
+											hide : true
+										},
+										{
+											display : 'Date Created',
+											name : 'date_created',
+											cssclass : '',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left',
+											type : 'date',
+											format : 'yyyy/MM/dd hh:mm:ss a',
+											hide : true
+										},
+										{
+											display : 'Date Submitted',
+											name : 'date_submitted',
+											cssclass : '',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left',
+											type : 'date',
+											format : 'yyyy/MM/dd hh:mm:ss a'
+										},
+										{
+											display : 'Due Date',
+											name : 'due_date',
+											cssclass : 'cssClassHeadDate',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left',
+											type : 'date',
+											format : 'yyyy/MM/dd hh:mm:ss a'
+										},
+										{
+											display : 'Project Period From',
+											name : 'project_period_from',
+											cssclass : 'cssClassHeadDate',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left',
+											type : 'date',
+											format : 'yyyy/MM/dd hh:mm:ss a',
+											hide : true
+										},
+										{
+											display : 'Project Period To',
+											name : 'project_period_to',
+											cssclass : 'cssClassHeadDate',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left',
+											type : 'date',
+											format : 'yyyy/MM/dd hh:mm:ss a',
+											hide : true
+										},
+										{
+											display : 'Last Audited',
+											name : 'last_audited',
+											cssclass : 'cssClassHeadDate',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left',
+											type : 'date',
+											format : 'yyyy/MM/dd hh:mm:ss a',
+											hide : true
+										},
+										{
+											display : 'Last Audited By',
+											name : 'last_audited_by',
+											cssclass : '',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left',
+											hide : true
+										},
+										{
+											display : 'Last Audited Action',
+											name : 'last_audited_action',
+											cssclass : '',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left',
+											hide : true
+										},
+										{
+											display : 'PI User',
+											name : 'pi_user',
+											cssclass : '',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left',
+											hide : true
+										},
+										{
+											display : 'Co-PI Users',
+											name : 'co_pi_users',
+											cssclass : '',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left',
+											type : 'array',
+											hide : true
+										},
+										{
+											display : 'Senior Personnel Users',
+											name : 'senior_personnel_users',
+											cssclass : '',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left',
+											type : 'array',
+											hide : true
+										},
+										{
+											display : 'All Involved Users',
+											name : 'all_users',
+											cssclass : '',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left',
+											type : 'array',
+											hide : true
+										},
+										{
+											display : 'Your Role',
+											name : 'proposal_roles',
+											cssclass : '',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left',
+											type : 'array',
+											hide : true
+										},
+										{
+											display : 'Is Deleted?',
+											name : 'is_deleted',
+											cssclass : 'cssClassHeadBoolean',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left',
+											type : 'boolean',
+											format : 'Yes/No'
+										},
+										{
+											display : 'Status',
+											name : 'proposal_status',
+											cssclass : '',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left',
+											type : 'array'
+										},
+										{
+											display : 'Submitted by PI',
+											name : 'submitted_by_PI',
+											cssclass : '',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left',
+											hide : true
+										},
+										{
+											display : 'Ready for Submission by PI',
+											name : 'ready_for_submission_by_PI',
+											cssclass : '',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left',
+											type : 'boolean',
+											format : 'True/False',
+											hide : true
+										},
+										{
+											display : 'Deleted by PI',
+											name : 'deleted_by_PI',
+											cssclass : '',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left',
+											hide : true
+										},
+										{
+											display : 'Chair Approval',
+											name : 'chair_approval',
+											cssclass : '',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left',
+											hide : true
+										},
+										{
+											display : 'Business Manager Approval',
+											name : 'business_manager_approval',
+											cssclass : '',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left',
+											hide : true
+										},
+										{
+											display : 'IRB Approval',
+											name : 'IRB_approval',
+											cssclass : '',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left',
+											hide : true
+										},
+										{
+											display : 'Dean Approval',
+											name : 'dean_approval',
+											cssclass : '',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left',
+											hide : true
+										},
+										{
+											display : 'Research Administrator Approval',
+											name : 'research_administrator_approval',
+											cssclass : '',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left',
+											hide : true
+										},
+										{
+											display : 'Withdrawn by Research Administrator',
+											name : 'withdrawn_by_research_administrator',
+											cssclass : '',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left',
+											hide : true
+										},
+										{
+											display : 'Research Director Approval',
+											name : 'research_director_approval',
+											cssclass : '',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left',
+											hide : true
+										},
+										{
+											display : 'Deleted by Research Director',
+											name : 'deleted_by_research_director',
+											cssclass : '',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left',
+											hide : true
+										},
+										{
+											display : 'Submitted by Research Administrator',
+											name : 'submitted_by_research_administrator',
+											cssclass : 'cssClassHeadBoolean',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left',
+											hide : true
+										},
+										{
+											display : 'Archived by Research Director',
+											name : 'archived_by_research_director',
+											cssclass : '',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left',
+											hide : true
+										}, {
+											display : 'IRB Approval Required?',
+											name : 'irb_approval_required',
+											cssclass : 'cssClassHeadBoolean',
+											controlclass : '',
+											coltype : 'label',
+											align : 'left',
+											type : 'boolean',
+											format : 'True/False',
+											hide : true
+										}, {
+											display : 'Actions',
+											name : 'action',
+											cssclass : 'cssClassAction',
+											coltype : 'label',
+											align : 'center'
+										} ],
 
 								buttons : [
 										{
@@ -772,7 +943,7 @@ $(function() {
 											_event : 'click',
 											trigger : '1',
 											callMethod : 'proposalsManage.EditProposal',
-											arguments : '1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25'
+											arguments : '1, 5, 10, 21, 22, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38'
 										},
 										{
 											display : 'Delete',
@@ -781,7 +952,7 @@ $(function() {
 											_event : 'click',
 											trigger : '2',
 											callMethod : 'proposalsManage.DeleteProposal',
-											arguments : '25'
+											arguments : '22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37'
 										},
 										{
 											display : 'View Change Logs',
@@ -790,7 +961,7 @@ $(function() {
 											_event : 'click',
 											trigger : '3',
 											callMethod : 'proposalsManage.ViewChangeLogs',
-											arguments : '2,17,18,19'
+											arguments : '1, 15, 16, 17, 22'
 										} ],
 								rp : perpage,
 								nomsg : 'No Records Found!',
@@ -801,157 +972,174 @@ $(function() {
 									0 : {
 										sorter : false
 									},
-									26 : {
+									39 : {
 										sorter : false
 									}
 								}
 							});
 		},
 
-		ButtonHideShow : function(currentProposalRoles, proposalStatus,
-				proposalId) {
-			$("#btnReset").hide();
-			$("#btnSaveProposal").hide();
-			$("#btnUpdateProposal").hide();
-			$("#btnSubmitProposal").hide();
-			$("#btnApproveProposal").hide();
-			$("#btnDisapproveProposal").hide();
-			$("#btnWithdrawProposal").hide();
-			$("#btnArchiveProposal").hide();
-
-			$("#btnSaveProposal").data("name", proposalId);
-			$("#btnUpdateProposal").data("name", proposalId);
-			$("#btnSubmitProposal").data("name", proposalId);
-			$("#btnApproveProposal").data("name", proposalId);
-			$("#btnDisapproveProposal").data("name", proposalId);
-			$("#btnWithdrawProposal").data("name", proposalId);
-			$("#btnArchiveProposal").data("name", proposalId);
-
-			var canUpdateRoles = [ "PI", "Co-PI" ];
-			var canUpdateTitles = [ "Business Manager",
-					"University Research Administrator", "Department Chair",
-					"Dean" ];
-			var canSubmitRoles = [ "PI" ];
-			var canApproveTitles = [ "Department Chair", "Dean",
-					"University Research Director" ];
-			var canDisApproveTitles = [ "Department Chair", "Dean",
-					"University Research Director" ];
-			var canWithDrawTitles = [ "University Research Administrator" ];
-			var canArchiveTitles = [ "University Research Director" ];
-
-			$.each(currentProposalRoles, function(index, value) {
-				if ($.inArray(value, canSubmitRoles) !== -1
-						&& proposalStatus == "Not Submitted by PI") {
-					$("#btnSubmitProposal").show();
-					return false;
-				} else {
-					$("#btnSubmitProposal").hide();
-				}
-			});
-
-			var currentPositionTitle = GPMS.utils.GetUserPositionTitle();
-
-			if ($.inArray(currentPositionTitle, canUpdateTitles) !== -1) {
-				$("#btnUpdateProposal").show();
-				return false;
-			} else {
-				$.each(currentProposalRoles, function(index, value) {
-					if ($.inArray(value, canUpdateRoles) !== -1) {
-						$("#btnUpdateProposal").show();
-						return false;
-					} else {
-						$("#btnUpdateProposal").hide();
-					}
-				});
-			}
-
-			if ($.inArray(currentPositionTitle, canUpdateTitles) !== -1) {
-				$("#btnUpdateProposal").show();
-				return false;
-			} else {
-				$.each(currentProposalRoles, function(index, value) {
-					if ($.inArray(value, canUpdateRoles) !== -1) {
-						$("#btnUpdateProposal").show();
-						return false;
-					} else {
-						$("#btnUpdateProposal").hide();
-					}
-				});
-			}
-
-			if ($.inArray(currentPositionTitle, canApproveTitles) !== -1) {
-				$("#btnApproveProposal").show();
-				return false;
-			} else {
-				$("#btnApproveProposal").hide();
-			}
-
-			if ($.inArray(currentPositionTitle, canDisApproveTitles) !== -1) {
-				$("#btnDisapproveProposal").show();
-				return false;
-			} else {
-				$("#btnDisapproveProposal").hide();
-			}
-
-			if ($.inArray(currentPositionTitle, canDisApproveTitles) !== -1) {
-				$("#btnWithdrawProposal").show();
-				return false;
-			} else {
-				$("#btnWithdrawProposal").hide();
-			}
-
-			if ($.inArray(currentPositionTitle, canDisApproveTitles) !== -1) {
-				$("#btnArchiveProposal").show();
-				return false;
-			} else {
-				$("#btnArchiveProposal").hide();
-			}
-		},
-
 		EditProposal : function(tblID, argus) {
 			switch (tblID) {
 			case "gdvProposals":
-
-				// TODO
 				// $('#accordion-expand-holder').show();
 				$("#accordion").accordion("option", "active", false);
 
 				$('#lblFormHeading').html(
-						'Edit Proposal Details for: ' + argus[2]);
+						'Edit Proposal Details for: ' + argus[1]);
 
-				$("#lblProposalDateReceived").text(argus[12]);
+				$("#lblProposalDateReceived").text(argus[3]);
 
 				proposalsManage.ClearForm();
 
-				$("#txtNameOfGrantingAgency").val(argus[6]);
+				proposalsManage.config.proposalRoles = $.trim(argus[5]);
+				proposalsManage.config.proposalId = argus[0];
+
+				proposalsManage.config.submittedByPI = argus[7];
+				proposalsManage.config.readyForSubmitionByPI = argus[8];
+				proposalsManage.config.deletedByPI = argus[9];
+				proposalsManage.config.chairApproval = argus[10];
+				proposalsManage.config.businessManagerApproval = argus[11];
+				proposalsManage.config.irbapproval = argus[12];
+				proposalsManage.config.deanApproval = argus[13];
+				proposalsManage.config.researchAdministratorApproval = argus[14];
+				proposalsManage.config.researchAdministratorWithdraw = argus[15];
+				proposalsManage.config.researchDirectorApproval = argus[16];
+				proposalsManage.config.researchDirectorDeletion = argus[17];
+				proposalsManage.config.researchAdministratorSubmission = argus[18];
+				proposalsManage.config.researchDirectorArchived = argus[19];
+
+				$("#txtNameOfGrantingAgency").val(argus[2]);
 
 				$("#trSignChair").show();
-				$("#trSignDean").show();
 				$("#trSignBusinessManager").show();
+				if (argus[20].toLowerCase() != "true") {
+					$("#trSignIRB").hide();
+				} else {
+					$("#trSignIRB").show();
+				}
+				$("#trSignDean").show();
+				$("#trSignAdministrator").show();
+				$("#trSignDirector").show();
 
 				// OSP Section
 				$('#ui-id-23').show();
 
-				$('#ddlProposalStatus option').length = 0;
-				$('#ddlProposalStatus')
-						.append(new Option(argus[16], argus[16])).prop(
-								'disabled', true);
+				var currentPositionTitle = GPMS.utils.GetUserPositionTitle();
 
-				proposalsManage.BindUserPositionDetailsForAProposal(argus[23]);
+				if (currentPositionTitle == "University Research Administrator"
+						|| currentPositionTitle == "University Research Director") {
+					$('#ui-id-24').find('input, select, textarea').each(
+							function() {
+								// $(this).addClass("ignore");
+								$(this).prop('disabled', false);
+							});
+				} else {
+					$('#ui-id-24').find('input, select, textarea').each(
+							function() {
+								// $(this).addClass("ignore");
+								$(this).prop('disabled', true);
+							});
+				}
+
+				$('#ddlProposalStatus option').length = 0;
+				$('#ddlProposalStatus').append(new Option(argus[6], argus[6]))
+						.prop('disabled', true);
+
+				proposalsManage.config.proposalStatus = argus[6];
+
+				proposalsManage.BindUserPositionDetailsForAProposal(argus[4]);
 
 				proposalsManage.BindProposalDetailsByProposalId(argus[0]);
 
-				proposalsManage.ButtonHideShow($.trim(argus[24]).split(', '),
-						argus[16], argus[0]);
+				$("#btnReset").hide();
 
 				// Certification/ Signatures Info
-				proposalsManage.BindAllSignatureForAProposal(argus[0]);
+				proposalsManage.BindAllSignatureForAProposal(argus[0],
+						argus[20]);
 
 				// Delegation Info
 
+				$("#dataTable tbody tr:gt(0)").find('input.AddSenior').remove();
+				$("#fileuploader").show();
+				$("#dataTable tbody tr").find('input.AddCoPI').show();
+				$("#dataTable tbody tr").find('input.AddSenior').show();
 				break;
 			default:
 				break;
+			}
+		},
+
+		InitializeUploader : function(appendices) {
+			// Uploader for Appendix
+			var globalSettings = {
+				url : GPMS.utils.GetGPMSServicePath() + "files/multiupload",
+				multiple : true,
+				dragDrop : true,
+				fileName : "myfile",
+				allowDuplicates : false,
+				duplicateStrict : true,
+				nestedForms : false,
+				fileCounterStyle : ") ",
+				// autoSubmit : true,
+				// sequential : true,
+				// sequentialCount : 1,
+				// autoSubmit : false,
+				// formData : {
+				// "name" : "Milson",
+				// "age" : 29
+				// },uploadObj
+				// acceptFiles : "image/*",
+				maxFileCount : 5,
+				// maxFileSize : 5*100 * 1024, //5MB
+				returnType : "json",
+				showDelete : true,
+				confirmDelete : true,
+				statusBarWidth : 600,
+				dragdropWidth : 600,
+				uploadQueueOrder : 'top',
+				deleteCallback : function(data, pd) {
+					pd.statusbar.hide(); // You choice.
+				}
+			}
+
+			var settings = {
+				showDownload : true,
+				// deleteCallback : function(data, pd) {
+				// $.post(GPMS.utils.GetGPMSServicePath() + "files/delete", {
+				// op : "delete",
+				// name : data
+				// }, function(resp, textStatus, jqXHR) {
+				// // Show Message
+				// alert("File Deleted");
+				// });
+				// pd.statusbar.hide(); // You choice.
+				// },
+				downloadCallback : function(filename, pd) {
+					// location.href =
+					// GPMS.utils.GetGPMSServicePath()
+					// + "download.php?fileName="
+					// + filename;
+					window.location.href = GPMS.utils.GetGPMSServicePath()
+							+ 'files/download?fileName=' + filename;
+				}
+			}
+
+			proposalsManage.config.uploadObj = $("#fileuploader").uploadFile(
+					globalSettings);
+
+			if (appendices != "") {
+				proposalsManage.config.uploadObj.update(settings);
+
+				$.each(appendices, function(index, value) {
+					proposalsManage.config.uploadObj.createProgress(
+							value.filename, value.filepath, value.filesize,
+							value.title);
+				});
+
+				proposalsManage.config.uploadObj.update({
+					showDownload : false
+				});
 			}
 		},
 
@@ -980,12 +1168,6 @@ $(function() {
 		},
 
 		FillForm : function(response) {
-			// TODO
-			if ($.inArray("NOTSUBMITTEDBYPI", response.proposalStatus) !== -1) {
-				$("#btnSubmitProposal").show();
-			} else {
-				$("#btnSubmitProposal").hide();
-			}
 			// Investigator Information
 			proposalsManage.BindInvestigatorInfo(response.investigatorInfo);
 
@@ -994,7 +1176,7 @@ $(function() {
 
 			// Project Information
 			$("#txtProjectTitle").val(response.projectInfo.projectTitle).prop(
-					"disabled", "disabled");
+					"disabled", true);
 
 			if (response.projectInfo.projectType.researchBasic) {
 				$("#ddlProjectType").val(1);
@@ -1467,42 +1649,117 @@ $(function() {
 						"Senior Personnel");
 			});
 
+			$("#dataTable>tbody select[name='ddlName']").each(function(index) {
+				if ($(this).find('option').length == 0) {
+					$(this).parents('tr').remove();
+				}
+			});
+
 			$('#dataTable>tbody tr:first').remove();
 		},
 
-		ExpandAccordion : function() {
-			var icons = $("#accordion").accordion("option", "icons");
-			$('.ui-accordion-header').removeClass('ui-corner-all').addClass(
-					'ui-accordion-header-active ui-state-active ui-corner-top')
-					.attr({
-						'aria-selected' : 'true',
-						'aria-expanded' : 'true',
-						'tabindex' : '0'
+		AddCoPIInvestigator : function(button) {
+			var cloneRow = button.closest('tr').clone(true)
+					.addClass("trStatic");
+			$(cloneRow).find("input").each(function(i) {
+				if ($(this).is(".AddCoPI")) {
+					$(this).prop("name", "DeleteOption");
+					$(this).prop("value", "Delete");
+					$(this).prop("title", "Delete");
+					$(this).show();
+				} else if ($(this).is(".AddSenior")) {
+					$(this).remove();
+				}
+			});
+
+			$(cloneRow).find("select").each(
+					function(j) {
+						$(this).removeProp("disabled");
+						$(this).removeProp("required");
+						// Remove PI
+						// option
+						// after first
+						// row
+						if (j == 0) {
+							$(this).find('option:first').remove();
+							$(this).find('option:last').remove();
+							$(this).prop("disabled", true);
+						} else if (j == 1) {
+							$(this).prop("disabled", false);
+							$('#ui-id-2').find("select[name='ddlName']").each(
+									function(k) {
+										$(cloneRow).find(
+												'option[value=' + $(this).val()
+														+ ']').remove();
+									});
+						}
+						$(this).find("option").removeProp("selected");
 					});
-			$('.ui-accordion-header-icon').removeClass(icons.header).addClass(
-					icons.activeHeader);
-			$('.ui-accordion-content').addClass('ui-accordion-content-active')
-					.attr({
-						'aria-hidden' : 'false'
-					}).show('blind');
+
+			if ($(cloneRow).find("select[name='ddlName'] option").length > 0) {
+				$('#dataTable tr:last').find("select[name='ddlName']").prop(
+						"disabled", true);
+
+				$(cloneRow).appendTo("#dataTable").hide().fadeIn(1200);
+
+				rowIndex = $('#dataTable > tbody tr').size() - 1;
+				proposalsManage.BindDefaultUserPosition(rowIndex);
+			} else {
+				csscody.alert('<h2>' + 'Error Message' + '</h2><p>'
+						+ 'There are no user available to be added!</p>');
+			}
 		},
 
-		CollapseAccordion : function() {
-			var icons = $("#accordion").accordion("option", "icons");
-			$('.ui-accordion-header').removeClass(
-					'ui-accordion-header-active ui-state-active ui-corner-top')
-					.addClass('ui-corner-all').attr({
-						'aria-selected' : 'false',
-						'aria-expanded' : 'false',
-						'tabindex' : '-1'
+		AddSeniorPersonnelInvestigator : function(button) {
+			var cloneRow = button.closest('tr').clone(true)
+					.addClass("trStatic");
+			$(cloneRow).find("input").each(function(i) {
+				if ($(this).is(".AddCoPI")) {
+					$(this).prop("name", "DeleteOption");
+					$(this).prop("value", "Delete");
+					$(this).prop("title", "Delete");
+					$(this).show();
+				} else if ($(this).is(".AddSenior")) {
+					$(this).remove();
+				}
+			});
+
+			$(cloneRow).find("select").each(
+					function(j) {
+						$(this).removeProp("disabled");
+						$(this).removeProp("required");
+						// Remove PI
+						// option
+						// after first
+						// row
+						if (j == 0) {
+							$(this).find('option:lt(2)').remove();
+							$(this).prop("disabled", true);
+							;
+						} else if (j == 1) {
+							$(this).prop("disabled", false);
+							$('#ui-id-2').find("select[name='ddlName']").each(
+									function(k) {
+										$(cloneRow).find(
+												'option[value=' + $(this).val()
+														+ ']').remove();
+									});
+						}
+						$(this).find("option").removeProp("selected");
 					});
-			$('.ui-accordion-header-icon').removeClass(icons.activeHeader)
-					.addClass(icons.header);
-			$('.ui-accordion-content').removeClass(
-					'ui-accordion-content-active').attr({
-				'aria-hidden' : 'true'
-			}).hide('blind');
-			// $("#accordion").accordion("option", "active", -1);
+
+			if ($(cloneRow).find("select[name='ddlName'] option").length > 0) {
+				$('#dataTable tr:last').find("select[name='ddlName']").prop(
+						"disabled", true);
+
+				$(cloneRow).appendTo("#dataTable").hide().fadeIn(1200);
+
+				rowIndex = $('#dataTable > tbody tr').size() - 1;
+				proposalsManage.BindDefaultUserPosition(rowIndex);
+			} else {
+				csscody.alert('<h2>' + 'Error Message' + '</h2><p>'
+						+ 'There are no user available to be added!</p>');
+			}
 		},
 
 		SelectFirstAccordion : function() {
@@ -1541,11 +1798,11 @@ $(function() {
 				$(cloneRow).appendTo("#dataTable");
 
 				rowIndex += 1;
-				var btnOption = "[+] Add";
-				var btnTitle = "Add More"
-				var btnName = "AddMore";
+				var btnOption = "Add Co-PI";
+				var btnTitle = "Add Co-PI"
+				var btnName = "AddCoPI";
 				if (rowIndex > 1) {
-					btnOption = "Delete ";
+					btnOption = "Delete";
 					btnTitle = "Delete";
 					btnName = "DeleteOption";
 				}
@@ -1557,35 +1814,30 @@ $(function() {
 									if (this.name == "ddlRole") {
 										if (userType == "PI") {
 											$(this).val(0).prop('selected',
-													'selected');
-											$(this)
-													.prop('disabled',
-															'disabled');
+													'selected').prop(
+													'disabled', true);
 										} else if (userType == "Co-PI") {
 											$(this).val(1).prop('selected',
-													'selected');
-											$(this).prop('disabled', true);
+													'selected').prop(
+													'disabled', true);
 											$(this).find('option').not(
 													':selected').remove();
 										} else if (userType == "Senior Personnel") {
 											$(this).val(2).prop('selected',
-													'selected');
-											$(this).prop('disabled', true);
+													'selected').prop(
+													'disabled', true);
 											$(this).find('option').not(
 													':selected').remove();
 										}
 									} else if (this.name == "ddlName") {
 										$(this).val(userDetails.userProfileId)
-												.prop('selected', 'selected');
+												.prop('selected', 'selected')
+												.prop('disabled', true);
 
-										if (userType == "PI") {
-											$(this).prop('disabled', true);
-										} else if (userType == "Co-PI") {
-											$(this).prop('disabled', true);
+										if (userType == "Co-PI") {
 											$(this).find('option').not(
 													':selected').remove();
 										} else if (userType == "Senior Personnel") {
-											$(this).prop('disabled', true);
 											$(this).find('option').not(
 													':selected').remove();
 										}
@@ -1599,7 +1851,8 @@ $(function() {
 												rowIndex).val());
 									} else if (this.name == "ddlCollege") {
 										$(this).val(userDetails.college).prop(
-												'selected', 'selected');
+												'selected', 'selected').prop(
+												'disabled', true);
 										proposalsManage.BindDepartmentDropDown(
 												$('select[name="ddlName"]').eq(
 														rowIndex).val(),
@@ -1607,7 +1860,8 @@ $(function() {
 														.eq(rowIndex).val());
 									} else if (this.name == "ddlDepartment") {
 										$(this).val(userDetails.department)
-												.prop('selected', 'selected');
+												.prop('selected', 'selected')
+												.prop('disabled', true);
 										proposalsManage
 												.BindPositionTypeDropDown(
 														$(
@@ -1624,7 +1878,8 @@ $(function() {
 																.val());
 									} else if (this.name == "ddlPositionType") {
 										$(this).val(userDetails.positionType)
-												.prop('selected', 'selected');
+												.prop('selected', 'selected')
+												.prop('disabled', true);
 										proposalsManage
 												.BindPositionTitleDropDown(
 														$(
@@ -1645,13 +1900,14 @@ $(function() {
 																.val());
 									} else if (this.name == "ddlPositionTitle") {
 										$(this).val(userDetails.positionTitle)
-												.prop('selected', 'selected');
+												.prop('selected', 'selected')
+												.prop('disabled', true);
 									}
 								});
 
 				$('#dataTable tbody>tr:eq(' + rowIndex + ')').find("input")
 						.each(function(l) {
-							if ($(this).is(".AddOption")) {
+							if ($(this).is(".AddCoPI")) {
 								$(this).prop("name", btnName);
 								$(this).prop("value", btnOption);
 								$(this).prop("title", btnTitle);
@@ -1681,13 +1937,9 @@ $(function() {
 				activityOnTo = null;
 			}
 
-			var proposalId = $('#btnLogsBack').data("name");
-			if (proposalId == '') {
-				proposalId = "0";
-			}
-
-			proposalsManage.BindProposalAuditLogGrid(proposalId, action,
-					auditedBy, activityOnFrom, activityOnTo);
+			proposalsManage.BindProposalAuditLogGrid(
+					proposalsManage.config.proposalId, action, auditedBy,
+					activityOnFrom, activityOnTo);
 		},
 
 		BindProposalAuditLogGrid : function(proposalId, action, auditedBy,
@@ -1761,23 +2013,30 @@ $(function() {
 		ViewChangeLogs : function(tblID, argus) {
 			switch (tblID) {
 			case "gdvProposals":
-				$('#lblLogsHeading').html('View Audit Logs for: ' + argus[1]);
-				$('#btnLogsBack').prop('name', argus[0]);
-				if (argus[2] != null && argus[2] != "") {
-					$('#tblLastAuditedInfo').show();
-					$('#lblLastUpdatedOn').html(argus[2]);
-					$('#lblLastUpdatedBy').html(argus[3]);
-					$('#lblActivity').html(argus[4]);
-				} else {
-					$('#tblLastAuditedInfo').hide();
-				}
-				// Get Audit Logs
-				proposalsManage.BindProposalAuditLogGrid(argus[0], null, null,
-						null, null);
+				proposalsManage.config.proposalId = argus[0];
+				if (argus[0] != '0') {
+					$('#lblLogsHeading').html(
+							'View Audit Logs for: ' + argus[1]);
 
-				$('#divProposalGrid').hide();
-				$('#divProposalForm').hide();
-				$('#divProposalAuditGrid').show();
+					if (argus[2] != null && argus[2] != "") {
+						$('#tblLastAuditedInfo').show();
+						$('#lblLastUpdatedOn').html(argus[2]);
+						$('#lblLastUpdatedBy').html(argus[3]);
+						$('#lblActivity').html(argus[4]);
+					} else {
+						$('#tblLastAuditedInfo').hide();
+					}
+					// Get Audit Logs
+					// $("#gdvProposalsAuditLog").empty();
+					// $("#gdvProposalsAuditLog_Pagination").remove();
+
+					proposalsManage.BindProposalAuditLogGrid(argus[0], null,
+							null, null, null);
+
+					$('#divProposalGrid').hide();
+					$('#divProposalForm').hide();
+					$('#divProposalAuditGrid').show();
+				}
 				break;
 			default:
 				break;
@@ -1787,8 +2046,41 @@ $(function() {
 		DeleteProposal : function(tblID, argus) {
 			switch (tblID) {
 			case "gdvProposals":
-				if (argus[1].toLowerCase() != "yes") {
-					proposalsManage.DeleteProposalById(argus[0]);
+				var proposal_roles = $.trim(argus[1]);
+				if (argus[2].toLowerCase() != "yes") {
+					var properties = {
+						onComplete : function(e) {
+							if (e) {
+								proposalsManage.config.proposalRoles = proposal_roles;
+								proposalsManage.config.proposalId = argus[0];
+								proposalsManage.config.proposalStatus = argus[3];
+								proposalsManage.config.submittedByPI = argus[4];
+								proposalsManage.config.readyForSubmissionByPI = argus[5];
+								proposalsManage.config.deletedByPI = argus[6];
+								proposalsManage.config.chairApproval = argus[7];
+								proposalsManage.config.businessManagerApproval = argus[8];
+								proposalsManage.config.irbapproval = argus[9];
+								proposalsManage.config.deanApproval = argus[10];
+								proposalsManage.config.researchAdministratorApproval = argus[11];
+								proposalsManage.config.researchAdministratorWithdraw = argus[12];
+								proposalsManage.config.researchDirectorApproval = argus[13];
+								proposalsManage.config.researchDirectorDeletion = argus[14];
+								proposalsManage.config.researchAdministratorSubmission = argus[15];
+								proposalsManage.config.researchDirectorArchived = argus[16];
+
+								proposalsManage.DeleteSingleProposal("Delete",
+										proposalsManage.config);
+							}
+						}
+					};
+					csscody
+							.confirm(
+									"<h2>"
+											+ 'Delete Confirmation'
+											+ "</h2><p>"
+											+ 'Are you certain you want to delete this proposal?'
+											+ "</p>", properties);
+					return false;
 				} else {
 					csscody.alert('<h2>' + 'Information Alert' + '</h2><p>'
 							+ 'Sorry! this proposal is already deleted.'
@@ -1800,29 +2092,16 @@ $(function() {
 			}
 		},
 
-		DeleteProposalById : function(_proposalId) {
-			var properties = {
-				onComplete : function(e) {
-					proposalsManage.ConfirmSingleDelete(_proposalId, e);
-				}
-			};
-			csscody.confirm("<h2>" + 'Delete Confirmation' + "</h2><p>"
-					+ 'Are you certain you want to delete this proposal?'
-					+ "</p>", properties);
-		},
-
 		ConfirmDeleteMultiple : function(proposal_ids, event) {
 			if (event) {
 				proposalsManage.DeleteMultipleProposals(proposal_ids);
 			}
 		},
 
-		// TODO need to remove this multiple delete options otherwise need to
-		// alert in each row
 		DeleteMultipleProposals : function(_proposalIds) {
 			// this.config.dataType = "html";
 			this.config.url = this.config.baseURL
-					+ "DeleteMultipleProposalsByProposalID";
+					+ "DeleteMultipleProposalsByAdmin";
 			this.config.data = JSON2.stringify({
 				proposalIds : _proposalIds,
 				gpmsCommonObj : gpmsCommonObj()
@@ -1832,20 +2111,14 @@ $(function() {
 			return false;
 		},
 
-		ConfirmSingleDelete : function(proposal_id, event) {
-			if (event) {
-				proposalsManage.DeleteSingleUser(proposal_id);
-			}
-		},
-
-		DeleteSingleUser : function(_proposalId) {
-			this.config.url = this.config.baseURL
-					+ "DeleteProposalByProposalID";
+		DeleteSingleProposal : function(buttonType, config) {
+			this.config.url = this.config.baseURL + "DeleteProposalByAdmin";
 			this.config.data = JSON2.stringify({
-				proposalId : _proposalId,
+				proposalId : config.proposalId,
 				gpmsCommonObj : gpmsCommonObj()
 			});
 			this.config.ajaxCallMode = 2;
+			this.config.buttonType = buttonType;
 			this.ajaxCall(this.config);
 			return false;
 		},
@@ -1853,6 +2126,18 @@ $(function() {
 		ClearForm : function() {
 			validator.resetForm();
 			// $('#accordion-expand-holder').hide();
+
+			if (this.config.uploadObj != "") {
+				this.config.uploadObj.reset(true);
+			}
+
+			proposalsManage.config.proposalId = '0';
+			proposalsManage.config.proposalRoles = "";
+			proposalsManage.config.buttonType = "";
+			proposalsManage.config.arguments = [];
+			proposalsManage.config.events = "";
+			proposalsManage.config.content = "";
+			proposalsManage.config.investigatorButton = "";
 
 			$('.cssClassRight').hide();
 			$('.cssClassError').hide();
@@ -1883,36 +2168,27 @@ $(function() {
 
 			// For Signature Section
 			$("#trSignChair").hide();
-			$("#trSignDean").hide();
 			$("#trSignBusinessManager").hide();
+			$("#trSignIRB").hide();
+			$("#trSignDean").hide();
+			$("#trSignAdministrator").hide();
+			$("#trSignDirector").hide();
 			signatureInfo = '';
 			$("#trSignPICOPI tbody").empty();
 			$("#trSignChair tbody").empty();
-			$("#trSignDean tbody").empty();
 			$("#trSignBusinessManager tbody").empty();
+			$("#trSignIRB tbody").empty();
+			$("#trSignDean tbody").empty();
+			$("#trSignAdministrator tbody").empty();
+			$("#trSignDirector tbody").empty();
 
-			$("#gdvProposalsAuditLog").empty();
-			$("#gdvProposalsAuditLog_Pagination").remove();
-
-			$("#btnSaveProposal").removeData("name");
-			$('#txtProjectTitle').removeAttr('disabled');
+			$('#txtProjectTitle').removeProp('disabled');
 
 			rowIndex = 0;
 			$("#dataTable tbody>tr:gt(0)").remove();
 
-			var $nameVal = $('select[name=ddlName]').eq(rowIndex).val(
-					GPMS.utils.GetUserProfileID()).prop('selected', 'selected')
-					.val();
-			if ($nameVal == null) {
-				$('select[name="ddlCollege"]').get(rowIndex).options.length = 0;
-				$('select[name="ddlDepartment"]').get(rowIndex).options.length = 0;
-				$('select[name="ddlPositionType"]').get(rowIndex).options.length = 0;
-				$('select[name="ddlPositionTitle"]').get(rowIndex).options.length = 0;
-				$('input[name="txtPhoneNo"]').eq(rowIndex).val('');
-			}
-
 			$('select[name=ddlRole]').eq(0).val(0).prop('selected', 'selected')
-					.prop('disabled', 'disabled');
+					.prop('disabled', true);
 
 			var container = $("#accordion > div").slice(1, 12);
 			var inputs = container.find('INPUT, SELECT, TEXTAREA');
@@ -1921,22 +2197,38 @@ $(function() {
 				$(this).val('');
 				$(this).val($(this).find('option').first().val());
 			});
-			$(".AddOption").val("[+] Add");
+			$(".AddCoPI").val("Add Co-PI");
+			$(".AddSenior").val("Add Senior Personnel");
+			return false;
+		},
 
-			// TODO: I suppose by default the OSP Admin section don't need any
-			// validation default only activate validation once it is clicked
-			// and allowed to edit is set true
+		BindCurrentUserPosition : function(rowIndexVal) {
+			// For form Dropdown Binding
+			proposalsManage.BindAllPositionDetailsForAUser($(
+					'select[name=ddlName]').eq(0).val());
 
-			$("#ui-id-24").find('input:text, select, textarea').each(
-					function() {
-						$(this).addClass("ignore");
-					});
+			proposalsManage.BindUserMobileNo($('select[name="ddlName"]').eq(
+					rowIndexVal).val());
+
+			proposalsManage.BindCollegeDropDown($('select[name="ddlName"]').eq(
+					rowIndexVal).val());
+			proposalsManage.BindDepartmentDropDown($('select[name="ddlName"]')
+					.eq(rowIndexVal).val(), $('select[name="ddlCollege"]').eq(
+					rowIndexVal).val());
+			proposalsManage.BindPositionTypeDropDown(
+					$('select[name="ddlName"]').eq(rowIndexVal).val(), $(
+							'select[name="ddlCollege"]').eq(rowIndexVal).val(),
+					$('select[name="ddlDepartment"]').eq(rowIndexVal).val());
+			proposalsManage.BindPositionTitleDropDown($(
+					'select[name="ddlName"]').eq(rowIndexVal).val(), $(
+					'select[name="ddlCollege"]').eq(rowIndexVal).val(), $(
+					'select[name="ddlDepartment"]').eq(rowIndexVal).val(), $(
+					'select[name="ddlPositionType"]').eq(rowIndexVal).val());
 			return false;
 		},
 
 		BindDefaultUserPosition : function(rowIndexVal) {
 			// For form Dropdown Binding
-			alert(rowIndexVal);
 			proposalsManage.BindAllPositionDetailsForAUser($(
 					'select[name="ddlName"]').eq(rowIndexVal).val());
 
@@ -1963,13 +2255,22 @@ $(function() {
 		BindPICoPISignatures : function() {
 			var fullName = $('select[name="ddlName"]').eq(0).find(
 					"option:selected").text();
-			var cloneRow = '<tr allowchange="true" allowsign="true"><td><span class="cssClassLabel" name ="fullname" role="PI" delegated="false">'
+			var cloneRow = '<tr><td><span class="cssClassLabel" name ="fullname" role="PI" delegated="false">'
 					+ fullName
-					+ '</span></td><td><input id="pi_signature" title="PI\'s Signature" class="sfInputbox" placeholder="PI\'s Signature" type="text" required="true" name="'
+					+ '</span></td><td><input id="pi_signature" data-for="signature" data-value="'
 					+ $('select[name="ddlName"]').eq(0).val()
-					+ '">'
-					+ '</td><td><input id="pi_signaturedate" name="signaturedate" title="Signed Date" class="sfInputbox" placeholder="Signed Date" type="text" required="true" readonly="true" onfocus="proposalsManage.BindCurrentDateTime(this);"></td></tr>';
+					+ '" title="PI\'s Signature" class="sfInputbox" placeholder="PI\'s Signature" type="text" required="true" name="'
+					+ $('select[name="ddlName"]').eq(0).val()
+					+ 'PI">'
+					+ '</td><td><input id="pi_signaturedate" data-for="signaturedate" name="signaturedate'
+					+ $('select[name="ddlName"]').eq(0).val()
+					+ 'PI" title="Signed Date" class="sfInputbox" placeholder="Signed Date" type="text" required="true" readonly="true" onfocus="proposalsManage.BindCurrentDateTime(this);"></td><td><textarea rows="2" cols="26" name="proposalNotes'
+					+ $('select[name="ddlName"]').eq(0).val()
+					+ 'PI" required="true" title="Proposal Notes" class="cssClassTextArea"></textarea></td></tr>';
 			$(cloneRow).appendTo("#trSignPICOPI tbody");
+
+			$('#trSignPICOPI tbody tr:last').data("allowchange", "true").data(
+					"allowsign", "true");
 		},
 
 		InitializeAccordion : function() {
@@ -1978,91 +2279,23 @@ $(function() {
 				activeHeader : "ui-icon-circle-arrow-s"
 			};
 
-			var $accordion = $("#accordion")
-					.accordion(
-							{
-								heightStyle : "content",
-								icons : icons,
-								active : false,
-								collapsible : true,
-								activate : function(event, ui) {
-									var proposal_id = $("#btnSaveProposal")
-											.data("name");
-									if (proposal_id != ''
-											&& ui.newHeader.size() != 0
-											&& ui.newPanel.size() != 0) {
-										alert("After Activated! GO to XACML to see if he is allowed to change this panel content");
-										var allowedToEdit = true;
-										if (allowedToEdit) {
-											var selectedSection = $
-													.trim(ui.newHeader.text());
-											alert("Allowed to EDIT this Panel "
-													+ selectedSection);
-											// TODO get the ui and find all
-											// input select and textarea then
-											// disable them
-											// ui.newPanel
-											// .find("input, select")
-											// .each(
-											// function() {
-											// });
-
-										} else {
-											alert("You are not Allowed to EDIT this Panel "
-													+ $.trim(ui.newHeader
-															.text()));
-											// TODO get the ui and find all
-											// input select and textarea then
-											// enabled them
-											event.preventDefault();
-										}
-									}
-								},
-								beforeActivate : function(event, ui) {
-									// Size = 0 --> collapsing
-									// Size = 1 --> Expanding
-									var proposal_id = $("#btnSaveProposal")
-											.data("name");
-									if (proposal_id != ''
-											&& ui.newHeader.size() != 0
-											&& ui.newPanel.size() != 0) {
-										alert("Before Activated! need to check XACML if the user is allowed to view this panel content");
-
-										var beforeactive = $("#accordion")
-												.accordion("option", "active");
-										// OSP Section
-										if (beforeactive == 11) {
-											$("#ui-id-24")
-													.find(
-															'input:text, select, textarea')
-													.each(
-															function() {
-																$(this)
-																		.addClass(
-																				"ignore");
-															});
-										}
-
-										var allowedToView = true;
-										if (allowedToView) {
-											alert("Allowed to VIEW this Panel");
-										} else {
-											alert("You are not Allowed to VIEW this Panel");
-											event.preventDefault();
-										}
-									}
-								}
-							});
+			var $accordion = $("#accordion").accordion({
+				heightStyle : "content",
+				icons : icons,
+				active : false,
+				collapsible : true
+			});
 			// proposalsManage.SelectFirstAccordion();
 			// $("#accordion").accordion("option", "active", 0);
 			return false;
 		},
 
-		BindAllSignatureForAProposal : function(proposalId) {
+		BindAllSignatureForAProposal : function(proposalId, irbSignRequired) {
 			proposalsManage.config.url = proposalsManage.config.baseURL
 					+ "GetAllSignatureForAProposal";
 			proposalsManage.config.data = JSON2.stringify({
-				proposalId : proposalId
+				proposalId : proposalId,
+				irbApprovalRequired : irbSignRequired
 			});
 			proposalsManage.config.ajaxCallMode = 8;
 			proposalsManage.ajaxCall(proposalsManage.config);
@@ -2074,30 +2307,28 @@ $(function() {
 		},
 
 		GetUserSignature : function(obj) {
-			var allowedChangeAttr = obj.attr('allowchange');
-			var allowedSignAttr = obj.attr('allowsign');
+			var allowedChangeAttr = obj.data('allowchange');
+			var allowedSignAttr = obj.data('allowsign');
 
 			if (typeof allowedChangeAttr !== typeof undefined
 					&& allowedChangeAttr !== false
 					&& allowedChangeAttr == "true"
 					&& typeof allowedSignAttr !== typeof undefined
 					&& allowedSignAttr !== false && allowedSignAttr == "true") {
-				obj
-						.find("input")
-						.each(
-								function() {
-									var optionsText = $(this).val();
-									if (optionsText
-											&& $(this).prop("name") != "signaturedate") {
+				obj.find("input").each(function() {
+					var optionsText = $(this).val();
+					if ($(this).attr("data-for") != "signaturedate") {
 
-										signatureInfo += $(this).prop("name")
-												+ "!#!"; // UserProfileID
+						signatureInfo += $(this).attr("data-value") + "!#!"; // UserProfileID
 
-										signatureInfo += optionsText + "!#!"; // Signature
-									} else {
-										signatureInfo += optionsText + "!#!"; // SignedDate
-									}
-								});
+						signatureInfo += optionsText + "!#!"; // Signature
+					} else {
+						signatureInfo += optionsText + "!#!"; // SignedDate
+					}
+				});
+				obj.find("textarea").each(function() {
+					signatureInfo += $(this).val() + "!#!"; // Note
+				});
 
 				signatureInfo += obj.find('span.cssClassLabel').text() + "!#!"; // FullName
 				signatureInfo += obj.find('span.cssClassLabel').attr("role")
@@ -2158,332 +2389,223 @@ $(function() {
 			return projectTitleIsUnique;
 		},
 
-		/**
-		 * Save Proposal
-		 */
-		SaveProposal : function(_proposalId, _flag) {
-			var permit = true;
-			var policyAttributeInfo = {};
+		SaveProposal : function(buttonType, config) {
+			// if (validator.form()) {
 
-			var attributeArray = [];
-			attributeArray.push({
-				attributeType : "Subject",
-				attributeName : "position-type",
-				attributeValue : GPMS.utils.GetUserPositionType()
-			});
+			var $projectTitle = $('#txtProjectTitle');
+			var projectTitle = $.trim($projectTitle.val());
+			var validateErrorMessage = proposalsManage.checkUniqueProjectTitle(
+					config.proposalId, projectTitle, $projectTitle);
 
-			attributeArray.push({
-				attributeType : "Resource",
-				attributeName : "proposal-section",
-				attributeValue : "Whole Proposal"
-			});
-			if (_proposalId === "0" && _flag) { // TODO I have changed this
-				alert('create');
-				attributeArray.push({
-					attributeType : "Action",
-					attributeName : "proposal-action",
-					attributeValue : "Create"
-				});
-			} else {
-				attributeArray.push({
-					attributeType : "Action",
-					attributeName : "proposal-action",
-					attributeValue : "Edit"
-				});
-			}
+			if (validateErrorMessage == "") {
+				var investigatorInfo = '';
+				$('#dataTable > tbody  > tr')
+						.each(
+								function() {
+									$(this)
+											.find("select")
+											.each(
+													function() {
+														var optionsText = $(
+																this).val();
+														if (!optionsText
+																&& $(this)
+																		.prop(
+																				"name") != "ddlPositionTitle") {
+															validateErrorMessage = 'Please select all position details for this user.'
+																	+ "<br/>";
+															$(this).focus();
+														} else if (optionsText
+																&& $(this)
+																		.prop(
+																				"name") != "ddlPositionTitle") {
+															investigatorInfo += optionsText
+																	+ "!#!";
+														} else {
+															investigatorInfo += optionsText
+																	+ "!#!";
+														}
+													});
 
-			policyAttributeInfo = attributeArray;
+									investigatorInfo += $(this).find(
+											'input[name="txtPhoneNo"]').mask()
+											+ "#!#";
+								});
 
-			if (validator.form()) {
-				var $projectTitle = $('#txtProjectTitle');
-				var projectTitle = $.trim($projectTitle.val());
-				var validateErrorMessage = proposalsManage
-						.checkUniqueProjectTitle(_proposalId, projectTitle,
-								$projectTitle);
+				investigatorInfo = investigatorInfo.substring(0,
+						investigatorInfo.length - 3);
 
-				if (validateErrorMessage == "") {
-					var investigatorInfo = '';
-					$('#dataTable > tbody  > tr')
-							.each(
-									function() {
-										$(this)
-												.find("select")
-												.each(
-														function() {
-															var optionsText = $(
-																	this).val();
-															if (!optionsText
-																	&& $(this)
-																			.prop(
-																					"name") != "ddlPositionTitle") {
-																validateErrorMessage = 'Please select all position details for this user.'
-																		+ "<br/>";
-																$(this).focus();
-															} else if (optionsText
-																	&& $(this)
-																			.prop(
-																					"name") != "ddlPositionTitle") {
-																investigatorInfo += optionsText
-																		+ "!#!";
-															} else {
-																investigatorInfo += optionsText
-																		+ "!#!";
-															}
-														});
+				signatureInfo = '';
 
-										investigatorInfo += $(this).find(
-												'input[name="txtPhoneNo"]')
-												.mask()
-												+ "#!#";
-									});
+				$(
+						'#trSignPICOPI > tbody  > tr, #trSignChair > tbody  > tr, #trSignDean > tbody  > tr, #trSignBusinessManager > tbody  > tr, #trSignIRB > tbody  > tr, #trSignAdministrator > tbody  > tr, #trSignDirector > tbody  > tr')
+						.each(function() {
+							proposalsManage.GetUserSignature($(this));
+						});
 
-					investigatorInfo = investigatorInfo.substring(0,
-							investigatorInfo.length - 3);
+				signatureInfo = signatureInfo.substring(0,
+						signatureInfo.length - 3);
 
-					signatureInfo = '';
+				var projectInfo = {
+					ProjectTitle : $.trim($("#txtProjectTitle").val()),
+					ProjectType : $("#ddlProjectType").val(),
+					TypeOfRequest : $("#ddlTypeOfRequest").val(),
+					ProjectLocation : $("#ddlLocationOfProject").val(),
+					DueDate : $("#txtDueDate").val(),
+					ProjectPeriodFrom : $("#txtProjectPeriodFrom").val(),
+					ProjectPeriodTo : $("#txtProjectPeriodTo").val()
+				};
 
-					$(
-							'#trSignPICOPI > tbody  > tr, #trSignChair > tbody  > tr, #trSignDean > tbody  > tr, #trSignBusinessManager > tbody  > tr')
-							.each(function() {
-								proposalsManage.GetUserSignature($(this));
-							});
+				var sponsorAndBudgetInfo = {
+					GrantingAgency : $
+							.trim($("#txtNameOfGrantingAgency").val()),
+					DirectCosts : $('#txtDirectCosts').autoNumeric('get'),
+					FACosts : $("#txtFACosts").autoNumeric('get'),
+					TotalCosts : $("#txtTotalCosts").autoNumeric('get'),
+					FARate : $("#txtFARate").autoNumeric('get')
+				};
 
-					signatureInfo = signatureInfo.substring(0,
-							signatureInfo.length - 3);
+				var costShareInfo = {
+					InstitutionalCommitted : $(
+							"#ddlInstitutionalCommitmentCost").val(),
+					ThirdPartyCommitted : $("#ddlThirdPartyCommitmentCost")
+							.val()
+				};
 
-					var projectInfo = {
-						ProjectTitle : $.trim($("#txtProjectTitle").val()),
-						ProjectType : $("#ddlProjectType").val(),
-						TypeOfRequest : $("#ddlTypeOfRequest").val(),
-						ProjectLocation : $("#ddlLocationOfProject").val(),
-						DueDate : $("#txtDueDate").val(),
-						ProjectPeriodFrom : $("#txtProjectPeriodFrom").val(),
-						ProjectPeriodTo : $("#txtProjectPeriodTo").val()
-					};
+				var univCommitments = {
+					NewRenovatedFacilitiesRequired : $("#ddlNewSpaceRequired")
+							.val(),
+					RentalSpaceRequired : $("#ddlRentalSpaceRequired").val(),
+					InstitutionalCommitmentRequired : $(
+							"#ddlInstitutionalCommitmentsRequired").val()
+				};
 
-					var sponsorAndBudgetInfo = {
-						GrantingAgency : $.trim($("#txtNameOfGrantingAgency")
-								.val()),
-						DirectCosts : $('#txtDirectCosts').autoNumeric('get'),
-						FACosts : $("#txtFACosts").autoNumeric('get'),
-						TotalCosts : $("#txtTotalCosts").autoNumeric('get'),
-						FARate : $("#txtFARate").autoNumeric('get')
-					};
+				var conflicOfInterestInfo = {
+					FinancialCOI : $("#ddlFinancialCOI").val(),
+					ConflictDisclosed : $("#ddlDisclosedFinancialCOI").val(),
+					DisclosureFormChange : $("#ddlMaterialChanged").val()
+				};
 
-					var costShareInfo = {
-						InstitutionalCommitted : $(
-								"#ddlInstitutionalCommitmentCost").val(),
-						ThirdPartyCommitted : $("#ddlThirdPartyCommitmentCost")
-								.val()
-					};
+				var complianceInfo = {
+					InvolveUseOfHumanSubjects : $("#ddlUseHumanSubjects").val(),
+					InvolveUseOfVertebrateAnimals : $(
+							"#ddlUseVertebrateAnimals").val(),
+					InvolveBiosafetyConcerns : $("#ddlInvovleBioSafety").val(),
+					InvolveEnvironmentalHealthAndSafetyConcerns : $(
+							"#ddlEnvironmentalConcerns").val()
+				};
 
-					var univCommitments = {
-						NewRenovatedFacilitiesRequired : $(
-								"#ddlNewSpaceRequired").val(),
-						RentalSpaceRequired : $("#ddlRentalSpaceRequired")
-								.val(),
-						InstitutionalCommitmentRequired : $(
-								"#ddlInstitutionalCommitmentsRequired").val()
-					};
-
-					var conflicOfInterestInfo = {
-						FinancialCOI : $("#ddlFinancialCOI").val(),
-						ConflictDisclosed : $("#ddlDisclosedFinancialCOI")
-								.val(),
-						DisclosureFormChange : $("#ddlMaterialChanged").val()
-					};
-
-					var complianceInfo = {
-						InvolveUseOfHumanSubjects : $("#ddlUseHumanSubjects")
-								.val(),
-						InvolveUseOfVertebrateAnimals : $(
-								"#ddlUseVertebrateAnimals").val(),
-						InvolveBiosafetyConcerns : $("#ddlInvovleBioSafety")
-								.val(),
-						InvolveEnvironmentalHealthAndSafetyConcerns : $(
-								"#ddlEnvironmentalConcerns").val()
-					};
-
-					if ($("#ddlUseHumanSubjects").val() == "1") {
-						complianceInfo.IRBPending = $("#ddlIRBOptions").val();
-					}
-
-					if ($("#ddlIRBOptions").val() == "1") {
-						complianceInfo.IRB = $("#txtIRB").val();
-					}
-
-					if ($("#ddlUseVertebrateAnimals").val() == "1") {
-						complianceInfo.IACUCPending = $("#ddlIACUCOptions")
-								.val();
-					}
-
-					if ($("#ddlIACUCOptions").val() == "1") {
-						complianceInfo.IACUC = $("#txtIACUC").val();
-					}
-
-					if ($("#ddlInvovleBioSafety").val() == "1") {
-						complianceInfo.IBCPending = $("#ddlIBCOptions").val();
-					}
-
-					if ($("#ddlIBCOptions").val() == "1") {
-						complianceInfo.IBC = $("#txtIBC").val();
-					}
-
-					var additionalInfo = {
-						AnticipatesForeignNationalsPayment : $(
-								"#ddlAnticipateForeignNationals").val(),
-						AnticipatesCourseReleaseTime : $(
-								"#ddlAnticipateReleaseTime").val(),
-						RelatedToCenterForAdvancedEnergyStudies : $(
-								"#ddlRelatedToEnergyStudies").val()
-					};
-
-					var collaborationInfo = {
-						InvolveNonFundedCollab : $(
-								"#ddlInvolveNonFundedCollabs").val()
-					};
-
-					if ($("#ddlInvolveNonFundedCollabs").val() == "1") {
-						collaborationInfo.Collaborators = $("#txtCollaborators")
-								.val();
-					}
-
-					var confidentialInfo = {
-						ContainConfidentialInformation : $(
-								"#ddlProprietaryInformation").val(),
-						InvolveIntellectualProperty : $(
-								"#ddlOwnIntellectualProperty").val()
-					};
-
-					if ($("#ddlProprietaryInformation").val() == "1") {
-						confidentialInfo.OnPages = $.trim($(
-								"#txtPagesWithProprietaryInfo").val());
-						confidentialInfo.Patentable = $("#chkPatentable").prop(
-								"checked");
-						confidentialInfo.Copyrightable = $("#chkCopyrightable")
-								.prop("checked");
-					}
-
-					var proposalInfo = {
-						ProposalID : _proposalId,
-						InvestigatorInfo : investigatorInfo,
-						ProjectInfo : projectInfo,
-						SponsorAndBudgetInfo : sponsorAndBudgetInfo,
-						CostShareInfo : costShareInfo,
-						UnivCommitments : univCommitments,
-						ConflicOfInterestInfo : conflicOfInterestInfo,
-						ComplianceInfo : complianceInfo,
-						AdditionalInfo : additionalInfo,
-						CollaborationInfo : collaborationInfo,
-						ConfidentialInfo : confidentialInfo
-					};
-
-					if (signatureInfo != "") {
-						proposalInfo.SignatureInfo = signatureInfo;
-					}
-
-					// TODO check if the OSP section is allowed to edit ?
-					if (!_flag) {
-						// proposalInfo.ProposalStatus = $("#ddlProposalStatus")
-						// .val();
-
-						var OSPSection = {
-							ListAgency : $.trim($("#txtAgencyList").val()),
-
-							Federal : $("#chkFederal").prop("checked"),
-							FederalFlowThrough : $("#chkFederalFlowThrough")
-									.prop("checked"),
-							StateOfIdahoEntity : $("#chkStateOfIdahoEntity")
-									.prop("checked"),
-							PrivateForProfit : $("#chkPrivateForProfit").prop(
-									"checked"),
-							NonProfitOrganization : $(
-									"#chkNonProfitOrganization")
-									.prop("checked"),
-							NonIdahoStateEntity : $("#chkNonIdahoStateEntity")
-									.prop("checked"),
-							CollegeOrUniversity : $("#chkCollegeUniversity")
-									.prop("checked"),
-							LocalEntity : $("#chkLocalEntity").prop("checked"),
-							NonIdahoLocalEntity : $("#chkNonIdahoLocalEntity")
-									.prop("checked"),
-							TirbalGovernment : $("#chkTribalGovernment").prop(
-									"checked"),
-							Foreign : $("#chkForeign").prop("checked"),
-
-							CFDANo : $.trim($("#txtCFDANo").val()),
-							ProgramNo : $.trim($("#txtProgramNo").val()),
-							ProgramTitle : $.trim($("#txtProgramTitle").val()),
-
-							// --------------------------
-							FullRecovery : $("#chkFullRecovery")
-									.prop("checked"),
-							NoRecoveryNormalSponsorPolicy : $(
-									"#chkNoRecoveryNormal").prop("checked"),
-							NoRecoveryInstitutionalWaiver : $(
-									"#chkNoRecoveryInstitutional").prop(
-									"checked"),
-							LimitedRecoveryNormalSponsorPolicy : $(
-									"#chkLimitedRecoveryNormal")
-									.prop("checked"),
-							LimitedRecoveryInstitutionalWaiver : $(
-									"#chkLimitedRecoveryInstitutional").prop(
-									"checked"),
-
-							MTDC : $("#chkMTDC").prop("checked"),
-							TDC : $("#chkTDC").prop("checked"),
-							TC : $("#chkTC").prop("checked"),
-							Other : $("#chkOther").prop("checked"),
-							NotApplicable : $("#chkNA").prop("checked"),
-
-							// --------------------------
-							IsPISalaryIncluded : $("#ddlPISalaryIncluded")
-									.val(),
-							PISalary : $("#txtPISalary").autoNumeric('get'),
-							PIFringe : $("#txtPIFringe").autoNumeric('get'),
-							DepartmentId : $.trim($("#txtDepartmentID").val()),
-							InstitutionalCostDocumented : $(
-									"#ddlInstitutionalCostDocumented").val(),
-							ThirdPartyCostDocumented : $(
-									"#ddlThirdPartyCostDocumented").val(),
-
-							// --------------------------
-							IsAnticipatedSubRecipients : $("#ddlSubrecipients")
-									.val(),
-
-							// --------------------------
-							PIEligibilityWaiver : $("#ddlPIEligibilityWaiver")
-									.val(),
-							ConflictOfInterestForms : $("#ddlCOIForms").val(),
-							ExcludedPartyListChecked : $(
-									"#ddlCheckedExcludedPartyList").val()
-						};
-
-						if ($("#ddlSubrecipients").val() == "1") {
-							OSPSection.AnticipatedSubRecipientsNames = $
-									.trim($("#txtNamesSubrecipients").val());
-						}
-
-						proposalInfo.OSPSectionInfo = OSPSection;
-					}
-
-					proposalsManage.AddProposalInfo(proposalInfo,
-							policyAttributeInfo);
-
+				if ($("#ddlUseHumanSubjects").val() == "1") {
+					complianceInfo.IRBPending = $("#ddlIRBOptions").val();
 				}
+
+				if ($("#ddlIRBOptions").val() == "1") {
+					complianceInfo.IRB = $("#txtIRB").val();
+				}
+
+				if ($("#ddlUseVertebrateAnimals").val() == "1") {
+					complianceInfo.IACUCPending = $("#ddlIACUCOptions").val();
+				}
+
+				if ($("#ddlIACUCOptions").val() == "1") {
+					complianceInfo.IACUC = $("#txtIACUC").val();
+				}
+
+				if ($("#ddlInvovleBioSafety").val() == "1") {
+					complianceInfo.IBCPending = $("#ddlIBCOptions").val();
+				}
+
+				if ($("#ddlIBCOptions").val() == "1") {
+					complianceInfo.IBC = $("#txtIBC").val();
+				}
+
+				var additionalInfo = {
+					AnticipatesForeignNationalsPayment : $(
+							"#ddlAnticipateForeignNationals").val(),
+					AnticipatesCourseReleaseTime : $(
+							"#ddlAnticipateReleaseTime").val(),
+					RelatedToCenterForAdvancedEnergyStudies : $(
+							"#ddlRelatedToEnergyStudies").val()
+				};
+
+				var collaborationInfo = {
+					InvolveNonFundedCollab : $("#ddlInvolveNonFundedCollabs")
+							.val()
+				};
+
+				if ($("#ddlInvolveNonFundedCollabs").val() == "1") {
+					collaborationInfo.Collaborators = $("#txtCollaborators")
+							.val();
+				}
+
+				var confidentialInfo = {
+					ContainConfidentialInformation : $(
+							"#ddlProprietaryInformation").val(),
+					InvolveIntellectualProperty : $(
+							"#ddlOwnIntellectualProperty").val()
+				};
+
+				if ($("#ddlProprietaryInformation").val() == "1") {
+					confidentialInfo.OnPages = $.trim($(
+							"#txtPagesWithProprietaryInfo").val());
+					confidentialInfo.Patentable = $("#chkPatentable").prop(
+							"checked");
+					confidentialInfo.Copyrightable = $("#chkCopyrightable")
+							.prop("checked");
+				}
+
+				var proposalInfo = {
+					ProposalID : config.proposalId,
+					InvestigatorInfo : investigatorInfo,
+					ProjectInfo : projectInfo,
+					SponsorAndBudgetInfo : sponsorAndBudgetInfo,
+					CostShareInfo : costShareInfo,
+					UnivCommitments : univCommitments,
+					ConflicOfInterestInfo : conflicOfInterestInfo,
+					ComplianceInfo : complianceInfo,
+					AdditionalInfo : additionalInfo,
+					CollaborationInfo : collaborationInfo,
+					ConfidentialInfo : confidentialInfo
+				};
+
+				$
+						.each(
+								this.config.uploadObj.getResponses().reverse(),
+								function(i, val) {
+									val['title'] = $(
+											proposalsManage.config.uploadObj.container
+													.children(
+															".ajax-file-upload-statusbar")
+													.find('.extrahtml').find(
+															"input").get(i))
+											.val();
+								});
+
+				proposalInfo.AppendixInfo = this.config.uploadObj
+						.getResponses().reverse();
+
+				proposalsManage.AddProposalInfo(buttonType, config,
+						proposalInfo);
+
 			} else {
 				proposalsManage.focusTabWithErrors("#accordion");
 			}
+			// } else {
+			// proposalsManage.focusTabWithErrors("#accordion");
+			// }
 		},
 
-		AddProposalInfo : function(info, policyAttr) {
-			this.config.url = this.config.baseURL + "SaveUpdateProposal";
+		AddProposalInfo : function(buttonType, config, info) {
+			alert(buttonType);
+
+			this.config.url = this.config.baseURL + "SaveUpdateProposalByAdmin";
 			this.config.data = JSON2.stringify({
+				buttonType : buttonType,
 				proposalInfo : info,
-				policyInfo : policyAttr,
 				gpmsCommonObj : gpmsCommonObj()
 			});
 			this.config.ajaxCallMode = 9;
+			this.config.buttonType = buttonType;
 			this.ajaxCall(this.config);
 			return false;
 		},
@@ -2513,6 +2635,29 @@ $(function() {
 			this.config.data = "{}";
 			this.config.ajaxCallMode = 5;
 			this.ajaxCall(this.config);
+			return false;
+		},
+
+		BindCurrentDetailsForPI : function(userId) {
+			if (userId != null) {
+				var doExists = false;
+				$.each(positionsDetails, function(item, value) {
+					if (value.id == userId) {
+						doExists = true;
+						return false;
+					}
+				});
+
+				if (!doExists) {
+					this.config.url = this.config.rootURL + "users/"
+							+ "GetCurrentPositionDetailsForPI";
+					this.config.data = JSON2.stringify({
+						gpmsCommonObj : gpmsCommonObj()
+					});
+					this.config.ajaxCallMode = 6;
+					this.ajaxCall(this.config);
+				}
+			}
 			return false;
 		},
 
@@ -2817,20 +2962,27 @@ $(function() {
 
 			case 2: // Single Proposal Delete
 				proposalsManage.BindProposalGrid(null, null, null, null, null,
-						null, null, null);
+						null, null);
 				csscody.info("<h2>" + 'Successful Message' + "</h2><p>"
 						+ 'Proposal has been deleted successfully.' + "</p>");
 
 				$('#divProposalForm').hide();
 				$('#divProposalGrid').show();
 				$('#divProposalAuditGrid').hide();
+				proposalsManage.config.proposalId = '0';
+				proposalsManage.config.proposalRoles = "";
+				proposalsManage.config.buttonType = "";
+				proposalsManage.config.arguments = [];
+				proposalsManage.config.events = "";
+				proposalsManage.config.content = "";
+				proposalsManage.config.investigatorButton = "";
 				break;
 			break;
 
 		case 3: // Multiple Proposal Delete
 			SageData.Get("gdvProposals").Arr.length = 0;
 			proposalsManage.BindProposalGrid(null, null, null, null, null,
-					null, null, null);
+					null, null);
 			csscody.info("<h2>" + 'Successful Message' + "</h2><p>"
 					+ 'Selected proposal(s) has been deleted successfully.'
 					+ "</p>");
@@ -2838,6 +2990,10 @@ $(function() {
 
 		case 4:// For Proposal Edit Action
 			proposalsManage.FillForm(msg);
+
+			// Initialize Appendices content and Uploader
+			proposalsManage.InitializeUploader(msg.appendices);
+
 			$('#divProposalGrid').hide();
 			$('#divProposalForm').show();
 			$('#divProposalAuditGrid').hide();
@@ -2887,56 +3043,49 @@ $(function() {
 								var focusMethod = '';
 								var allowedChange = false;
 								var allowedSign = false;
+								var userPositionTitle = item.positionTitle
+										.split(' ').join('_');
 
 								if (item.signedDate != null) {
 									signedDate = item.signedDate;
 								}
 
-								if (GPMS.utils.GetUserProfileID() != item.userProfileId) {
-									readOnly = 'readonly="true"';
-								} else if (GPMS.utils.GetUserProfileID() == item.userProfileId) {
-									if (item.signature != ""
-											&& item.signedDate != null) {
-										readOnly = 'readonly="true"';
-									} else if (item.signedDate == null) {
-										focusMethod = 'onfocus="proposalsManage.BindCurrentDateTime(this);" required="true"';
-										readOnly = 'required="true"';
-										allowedSign = true;
-										allowedChange = true;
-									}
-								}
-
-								// if (readOnly == '') {
-								// allowedChange = true;
-								// }
-								var cloneRow = '<tr allowchange="'
-										+ allowedChange
-										+ '" allowsign="'
-										+ allowedSign
-										+ '"><td><span class="cssClassLabel" name="fullname" role="'
+								var cloneRow = '<tr><td><span class="cssClassLabel" name="fullname" role="'
 										+ item.positionTitle
 										+ '" delegated="'
 										+ item.delegated
 										+ '">'
 										+ item.fullName
-										+ '</span></td><td><input title="'
+										+ '</span></td><td><input data-for="signature" data-value="'
+										+ item.userProfileId
+										+ '" title="'
 										+ item.positionTitle
 										+ '\'s Signature" class="sfInputbox" placeholder="'
 										+ item.positionTitle
 										+ '\'s Signature" type="text" value="'
 										+ item.signature
-										+ '"'
-										+ ' name="'
+										+ '" name="'
 										+ item.userProfileId
-										+ '" '
-										+ readOnly
-										+ '>'
-										+ '</td><td><input name="signaturedate" title="Signed Date" class="sfInputbox" placeholder="Signed Date" type="text" readonly="true" '
-										+ focusMethod
-										+ ' value="'
+										+ userPositionTitle
+										+ '" readonly="true">'
+										+ '</td><td><input data-for="signaturedate" name="signaturedate'
+										+ item.userProfileId
+										+ userPositionTitle
+										+ '" title="Signed Date" class="sfInputbox" placeholder="Signed Date" type="text" readonly="true" value="'
 										+ $.format.date(signedDate,
 												'yyyy/MM/dd hh:mm:ss a')
-										+ '"></td></tr>';
+										+ '"></td><td><textarea rows="2" cols="26" name="proposalNotes'
+										+ item.userProfileId
+										+ userPositionTitle
+										+ '" readonly="true" title="Proposal Notes" class="cssClassTextArea" >'
+										+ item.note + '</textarea></td></tr>';
+
+								// $('#trSignChair').hide();
+								// $('#trSignDean').hide();
+								// $('#trSignBusinessManager').hide();
+								// $('#trSignIRB').hide();
+								// $('#trSignAdministrator').hide();
+								// $('#trSignDirector').hide();
 
 								switch (item.positionTitle) {
 								case "PI":
@@ -2944,43 +3093,235 @@ $(function() {
 									$(cloneRow).appendTo("#trSignPICOPI tbody");
 									break;
 								case "Department Chair":
-								case "Research Director":
 									$(cloneRow).appendTo("#trSignChair tbody");
+									$('#trSignChair').show();
 									break;
 								case "Dean":
 									$(cloneRow).appendTo("#trSignDean tbody");
+									$('#trSignDean').show();
 									break;
 								case "Business Manager":
 									$(cloneRow).appendTo(
 											"#trSignBusinessManager tbody");
+									$('#trSignBusinessManager').show();
+									break;
+								case "IRB":
+									$(cloneRow).appendTo("#trSignIRB tbody");
+									$('#trSignIRB').show();
+									break;
+								case "University Research Administrator":
+									$(cloneRow).appendTo(
+											"#trSignAdministrator tbody");
+									$('#trSignAdministrator').show();
+									break;
+								case "University Research Director":
+									$(cloneRow).appendTo(
+											"#trSignDirector tbody");
+									$('#trSignDirector').show();
 									break;
 								default:
 									break;
 								}
 							});
 
+			var signTable = '';
+			var currentProposalRoles = proposalsManage.config.proposalRoles
+					.split(', ');
+			if ($.inArray("PI", currentProposalRoles) !== -1
+					|| $.inArray("Co-PI", currentProposalRoles) !== -1) {
+				signTable = "#trSignPICOPI";
+			} else {
+				switch (GPMS.utils.GetUserPositionTitle()) {
+				case "Department Chair":
+					signTable = "#trSignChair";
+					break;
+				case "Dean":
+					signTable = "#trSignDean";
+					break;
+				case "Business Manager":
+					signTable = "#trSignBusinessManager";
+					break;
+				case "IRB":
+					signTable = "#trSignIRB";
+					break;
+				case "University Research Administrator":
+					signTable = "#trSignAdministrator";
+					break;
+				case "University Research Director":
+					signTable = "#trSignDirector";
+					break;
+				default:
+					break;
+				}
+			}
+
+			if (signTable !== "") {
+				$(signTable + " tbody tr")
+						.find('input:eq(0)')
+						.each(
+								function(index) {
+
+									if (GPMS.utils.GetUserProfileID() == $(this)
+											.attr("data-value")) {
+										// if (item.signedDate == null) {
+										$(this).parents('tr').data(
+												"allowchange", "true").data(
+												"allowsign", "true");
+										$(this)
+												.parents('tr')
+												.find('input, textarea')
+												.each(
+														function(index) {
+															$(this).removeProp(
+																	"readonly");
+
+															if (index == 1) {// Date
+																$(this)
+																		.click(
+																				function() {
+																					proposalsManage
+																							.BindCurrentDateTime(this);
+																				});
+																$(this)
+																		.attr(
+																				"required",
+																				"true");
+															} else { // Signature,
+																// Note
+																$(this)
+																		.attr(
+																				"required",
+																				"true");
+															}
+														});
+										// }
+									}
+								});
+			}
+
 			break;
 
 		case 9:
 			proposalsManage.BindProposalGrid(null, null, null, null, null,
-					null, null, null);
+					null, null);
 			$('#divProposalGrid').show();
-			$("#btnSaveProposal").removeData("name");
 
 			// $("#accordion").accordion("option", "active", 0);
 
-			if (editFlag != "0") {
-				csscody.info("<h2>" + 'Successful Message' + "</h2><p>"
-						+ 'Proposal has been updated successfully.' + "</p>");
-			} else {
-				csscody.info("<h2>" + 'Successful Message' + "</h2><p>"
-						+ 'Proposal has been saved successfully.' + "</p>");
+			// if (proposalsManage.config.proposalId != "0") {
+			var changeMade = "Saved";
+			switch (proposalsManage.config.buttonType) {
+			case "Submit":
+				changeMade = "Submitted";
+				break;
+			case "Approve":
+				changeMade = "Approved";
+				break;
+			case "Disapprove":
+				changeMade = "Disapproved";
+				break;
+			case "Withdraw":
+				changeMade = "Withdrawn";
+				break;
+			case "Archive":
+				changeMade = "Archived";
+				break;
+			default:
+				break;
 			}
+			csscody.info("<h2>" + 'Successful Message' + "</h2><p>"
+					+ 'Proposal has been ' + changeMade + ' successfully.'
+					+ "</p>");
+			// } else {
+			// csscody.info("<h2>" + 'Successful Message' + "</h2><p>"
+			// + 'Proposal has been Saved successfully.' + "</p>");
+			// }
 			$('#divProposalForm').hide();
 			$('#divProposalAuditGrid').hide();
 			// proposalsManage.CollapseAccordion();
 			// proposalsManage.SelectFirstAccordion();
+
+			proposalsManage.config.proposalId = '0';
+			proposalsManage.config.proposalRoles = "";
+			proposalsManage.config.buttonType = "";
+			proposalsManage.config.arguments = [];
+			proposalsManage.config.events = "";
+			proposalsManage.config.content = "";
+			proposalsManage.config.investigatorButton = "";
 			break;
+
+		case 10:
+			// proposalsManage.DeleteSingleProposal(proposalsManage.config.proposalId,
+			// proposalsManage.config.proposalRoles);
+			break;
+
+		case 11:
+			// if (proposalsManage.config.proposalId != '0') {
+			// proposalsManage.SaveProposal(proposalsManage.config.buttonType,
+			// proposalsManage.config.proposalRoles,
+			// proposalsManage.config.proposalId, false);
+			// }
+			break;
+
+		case 12:
+			// Removed
+			break;
+
+		// Withdraw/ Archive
+		case 13:
+			// if (proposalsManage.config.proposalId != '0') {
+			// proposalsManage.UpdateProposalStatus(proposalsManage.config.buttonType,
+			// proposalsManage.config.proposalId);
+			// }
+
+			break;
+
+		case 14:
+			// if (proposalsManage.config.proposalId != '0') {
+			// return false;
+			// }
+			break;
+
+		case 15:
+			// Removed
+			break;
+
+		case 16:
+			// Removed
+			break;
+
+		case 17:
+			if (msg != "No Record") {
+				window.location.href = GPMS.utils.GetGPMSServicePath()
+						+ 'files/download?fileName=' + msg;
+			} else {
+				csscody.alert("<h2>" + 'Information Message' + "</h2><p>"
+						+ 'No Record found!' + "</p>");
+			}
+			break;
+
+		case 18:
+			positionsDetails = [];
+			$.merge(positionsDetails, msg);
+			$('select[name="ddlCollege"]').get(0).options.length = 0;
+			$('select[name="ddlDepartment"]').get(0).options.length = 0;
+			$('select[name="ddlPositionType"]').get(0).options.length = 0;
+			$('select[name="ddlPositionTitle"]').get(0).options.length = 0;
+			$('input[name="txtPhoneNo"]').eq(0).val('');
+			break;
+
+		case 19:
+			// Removed
+			break;
+
+		case 20:
+			// Removed
+			break;
+
+		case 21:
+			// Removed
+			break;
+
 		}
 	},
 
@@ -2993,8 +3334,11 @@ $(function() {
 						+ 'Failed to load Proposal Status.' + '</p>');
 				break;
 			case 2:
+				// csscody.error('<h2>' + 'Error Message' + '</h2><p>'
+				// + 'Failed to delete the proposal.' + '</p>');
 				csscody.error('<h2>' + 'Error Message' + '</h2><p>'
-						+ 'Failed to delete the proposal.' + '</p>');
+						+ 'You are not allowed to DELETE this proposal! '
+						+ msg.responseText + '</p>');
 				break;
 			case 3:
 				csscody.error('<h2>' + 'Error Message' + '</h2><p>'
@@ -3026,26 +3370,194 @@ $(function() {
 				break;
 
 			case 9:
-				if (editFlag != "0") {
-					csscody.error("<h2>" + 'Error Message' + "</h2><p>"
-							+ 'Failed to update proposal! ' + msg.responseText
-							+ "</p>");
-				} else {
-					csscody.error("<h2>" + 'Error Message' + "</h2><p>"
-							+ 'Failed to save proposal! ' + msg.responseText
-							+ "</p>");
-				}
+				csscody.error('<h2>' + 'Error Message' + '</h2><p>'
+						+ 'You are not allowed to '
+						+ proposalsManage.config.buttonType
+						+ ' this proposal! ' + msg.responseText + '</p>');
 				break;
+
+			case 10:
+				// csscody.error('<h2>' + 'Error Message' + '</h2><p>'
+				// + 'You are not allowed to DELETE this proposal! '
+				// + msg.responseText + '</p>');
+				break;
+
+			case 11:
+				// csscody.error('<h2>' + 'Error Message' + '</h2><p>'
+				// + 'You are not allowed to perform this OPERATION! '
+				// + msg.responseText + '</p>');
+				break;
+
+			case 12:
+				csscody.error('<h2>' + 'Error Message' + '</h2><p>'
+						+ 'You are not allowed to CREATE a Proposal! '
+						+ msg.responseText + '</p>');
+				break;
+
+			case 13:
+				// csscody.error('<h2>' + 'Error Message' + '</h2><p>'
+				// + 'You are not allowed to perform this OPERATION! '
+				// + msg.responseText + '</p>');
+				break;
+
+			case 14:
+				// csscody.error('<h2>' + 'Error Message' + '</h2><p>'
+				// + 'You are not Allowed to View this Section! '
+				// + msg.responseText + '</p>');
+				// proposalsManage.config.event.preventDefault();
+				break;
+
+			case 15:
+				// csscody.error('<h2>' + 'Error Message' + '</h2><p>'
+				// + 'You are not Allowed to EDIT this Section! '
+				// + msg.responseText + '</p>');
+				// proposalsManage.config.event.preventDefault();
+
+				if (proposalsManage.config.content.attr("id") == "ui-id-2") {
+					$("input.AddCoPI").hide();
+					$("input.AddSenior").hide();
+				} else if (proposalsManage.config.content.attr("id") == "ui-id-26") {
+					$("#fileuploader").hide();
+					$('.ajax-file-upload-red').hide();
+				}
+
+				$(proposalsManage.config.content).find(
+						'input, select, textarea').each(function() {
+					// $(this).addClass("ignore");
+					$(this).prop('disabled', true);
+
+				});
+				// proposalsManage.config.event.preventDefault();
+				break;
+
+			case 16:
+				csscody.error('<h2>' + 'Error Message' + '</h2><p>'
+						+ 'You are not Allowed to VIEW Audit Logs! '
+						+ msg.responseText + '</p>');
+				break;
+
+			case 17:
+				csscody.error("<h2>" + 'Error Message' + "</h2><p>"
+						+ 'Cannot create and download Excel report!' + "</p>");
+				break;
+
+			case 18:
+				csscody.error("<h2>" + 'Error Message' + "</h2><p>"
+						+ 'Cannot load user position details!' + "</p>");
+				break;
+
+			case 19:
+				csscody.error("<h2>" + 'Error Message' + "</h2><p>"
+						+ 'Cannot add Co-PI! ' + msg.responseText + "</p>");
+				break;
+
+			case 20:
+				csscody.error("<h2>" + 'Error Message' + "</h2><p>"
+						+ 'Cannot add Senior Personnel! ' + msg.responseText
+						+ "</p>");
+				break;
+
+			case 21:
+				csscody.error("<h2>" + 'Error Message' + "</h2><p>"
+						+ 'Cannot delete Investigator! ' + msg.responseText
+						+ "</p>");
+				break;
+
 			}
+		},
+
+		ExportToExcel : function(projectTitle, usernameBy, submittedOnFrom,
+				submittedOnTo, totalCostsFrom, totalCostsTo, proposalStatus) {
+			var proposalBindObj = {
+				ProjectTitle : projectTitle,
+				UsernameBy : usernameBy,
+				SubmittedOnFrom : submittedOnFrom,
+				SubmittedOnTo : submittedOnTo,
+				TotalCostsFrom : totalCostsFrom,
+				TotalCostsTo : totalCostsTo,
+				ProposalStatus : proposalStatus
+			};
+
+			this.config.data = JSON2.stringify({
+				proposalBindObj : proposalBindObj,
+				gpmsCommonObj : gpmsCommonObj()
+			});
+
+			this.config.url = this.config.baseURL + "AllProposalsExportToExcel";
+			this.config.ajaxCallMode = 17;
+			this.ajaxCall(this.config);
+			return false;
+		},
+
+		LogsExportToExcel : function(proposalId, action, auditedBy,
+				activityOnFrom, activityOnTo) {
+			var auditLogBindObj = {
+				Action : action,
+				AuditedBy : auditedBy,
+				ActivityOnFrom : activityOnFrom,
+				ActivityOnTo : activityOnTo,
+			};
+			this.config.data = JSON2.stringify({
+				proposalId : proposalId,
+				auditLogBindObj : auditLogBindObj
+			});
+
+			this.config.url = this.config.baseURL + "ProposalLogsExportToExcel";
+			this.config.ajaxCallMode = 17;
+			this.ajaxCall(this.config);
+			return false;
+		},
+
+		countCoPIs : function() {
+			var countCoPIs = 0;
+			$("#dataTable tbody tr:gt(0)").find('select:first').each(
+					function(index) {
+						if ($(this).val() == 1) {
+							countCoPIs++;
+						}
+					});
+			return countCoPIs;
+		},
+
+		countSeniorPersonnels : function() {
+			var countSeniors = 0;
+			$("#dataTable tbody tr:gt(0)").find('select:first').each(
+					function(index) {
+						if ($(this).val() == 2) {
+							countSeniors++;
+						}
+					});
+			return countSeniors;
 		},
 
 		init : function(config) {
 			proposalsManage.InitializeAccordion();
 
+			// var appendices = [ {
+			// "filename" : "one.pdf",
+			// "extension" : "pdf",
+			// "filepath" : "uploads\one.pdf",
+			// "filesize" : "82393"
+			// }, {
+			// "filename" : "two.jpg",
+			// "extension" : "jpg",
+			// "filepath" : "uploads\two.jpg",
+			// "filesize" : "82393"
+			// } ];
+
+			// proposalsManage.InitializeUploader(appendices);
+
 			$('#btnLogsBack').on("click", function() {
 				$('#divProposalGrid').show();
 				$('#divProposalForm').hide();
 				$('#divProposalAuditGrid').hide();
+				proposalsManage.config.proposalId = '0';
+				proposalsManage.config.proposalRoles = "";
+				proposalsManage.config.buttonType = "";
+				proposalsManage.config.arguments = [];
+				proposalsManage.config.events = "";
+				proposalsManage.config.content = "";
+				proposalsManage.config.investigatorButton = "";
 			});
 
 			$("#txtSearchSubmittedOnFrom").datepicker(
@@ -3073,7 +3585,7 @@ $(function() {
 				placeholder : "yyyy-mm-dd"
 			});
 			proposalsManage.BindProposalGrid(null, null, null, null, null,
-					null, null, null);
+					null, null);
 			$('#divProposalForm').hide();
 			$('#divProposalGrid').show();
 			$('#divProposalAuditGrid').hide();
@@ -3238,81 +3750,272 @@ $(function() {
 								}
 							});
 
-			$('#btnAddNew').on(
+			$("#btnLogsExportToExcel").on(
 					"click",
 					function() {
-						// proposalsManage.InitializeAccordion();
+						var action = $.trim($("#txtSearchAction").val());
+						if (action.length < 1) {
+							action = null;
+						}
 
-						$('#lblFormHeading').html('New Proposal Details');
+						var auditedBy = $.trim($("#txtSearchAuditedBy").val());
+						if (auditedBy.length < 1) {
+							auditedBy = null;
+						}
 
-						$("#btnReset").show();
-						$("#btnUpdateProposal").hide();
-						$("#btnSaveProposal").show();
-						$("#btnSubmitProposal").show();
+						var activityOnFrom = $.trim($(
+								"#txtSearchActivityOnFrom").val());
+						if (activityOnFrom.length < 1) {
+							activityOnFrom = null;
+						}
 
-						// For Admin user only
-						$("#btnApproveProposal").hide();
-						$("#btnDisapproveProposal").hide();
-						$("#btnWithdrawProposal").hide();
-						$("#btnArchiveProposal").hide();
+						var activityOnTo = $.trim($("#txtSearchActivityOnTo")
+								.val());
+						if (activityOnTo.length < 1) {
+							activityOnTo = null;
+						}
 
-						$('#ui-id-23').hide();
-
-						$('select[name=ddlName]').eq(0).val(
-								GPMS.utils.GetUserProfileID()).prop('selected',
-								'selected').prop('disabled', false);
-
-						proposalsManage.ClearForm();
-						proposalsManage.BindDefaultUserPosition(0);
-						proposalsManage.BindPICoPISignatures();
-
-						$('#divProposalGrid').hide();
-						$('#divProposalForm').show();
-						$('#divProposalAuditGrid').hide();
-						$("#accordion").accordion("option", "active", 0);
+						proposalsManage.LogsExportToExcel(
+								proposalsManage.config.proposalId, action,
+								auditedBy, activityOnFrom, activityOnTo);
 					});
+
+			$("#btnExportToExcel")
+					.on(
+							"click",
+							function() {
+
+								var projectTitle = $.trim($(
+										"#txtSearchProjectTitle").val());
+								var usernameBy = $.trim($("#txtSearchUserName")
+										.val());
+								var submittedOnFrom = $.trim($(
+										"#txtSearchSubmittedOnFrom").val());
+								var submittedOnTo = $.trim($(
+										"#txtSearchSubmittedOnTo").val());
+								var totalCostsFrom = $.trim($(
+										"#txtSearchTotalCostsFrom")
+										.autoNumeric('get'));
+								var totalCostsTo = $.trim($(
+										"#txtSearchTotalCostsTo").autoNumeric(
+										'get'));
+
+								var proposalStatus = $.trim($(
+										'#ddlSearchProposalStatus').val()) == "" ? null
+										: $.trim($('#ddlSearchProposalStatus')
+												.val()) == "0" ? null
+												: $
+														.trim($(
+																'#ddlSearchProposalStatus')
+																.val());
+
+								if (projectTitle.length < 1) {
+									projectTitle = null;
+								}
+								if (usernameBy.length < 1) {
+									usernameBy = null;
+								}
+								if (totalCostsFrom.length < 1) {
+									totalCostsFrom = null;
+								}
+								if (totalCostsTo.length < 1) {
+									totalCostsTo = null;
+								}
+								if (submittedOnFrom.length < 1) {
+									submittedOnFrom = null;
+								}
+								if (submittedOnTo.length < 1) {
+									submittedOnTo = null;
+								}
+
+								proposalsManage.ExportToExcel(projectTitle,
+										usernameBy, submittedOnFrom,
+										submittedOnTo, totalCostsFrom,
+										totalCostsTo, proposalStatus);
+							});
 
 			$('#btnBack').on("click", function() {
 				$('#divProposalGrid').show();
 				$('#divProposalForm').hide();
 				$('#divProposalAuditGrid').hide();
-				$("#btnSaveProposal").removeData("name");
-				// $("#accordion").accordion("option", "active", 0);
+				proposalsManage.config.proposalId = '0';
+				proposalsManage.config.proposalRoles = "";
+				proposalsManage.config.proposalStatus = "";
+				proposalsManage.config.submittedByPI = "";
+				proposalsManage.config.readyForSubmitionByPI = "";
+				proposalsManage.config.deletedByPI = "";
+				proposalsManage.config.chairApproval = "";
+				proposalsManage.config.businessManagerApproval = "";
+				proposalsManage.config.irbapproval = "";
+				proposalsManage.config.deanApproval = "";
+				proposalsManage.config.researchAdministratorApproval = "";
+				proposalsManage.config.researchAdministratorWithdraw = "";
+				proposalsManage.config.researchDirectorApproval = "";
+				proposalsManage.config.researchDirectorDeletion = "";
+				proposalsManage.config.researchAdministratorSubmission = "";
+				proposalsManage.config.researchDirectorArchived = "";
+				proposalsManage.config.buttonType = "";
+				proposalsManage.config.arguments = [];
+				proposalsManage.config.events = "";
+				proposalsManage.config.content = "";
+				proposalsManage.config.investigatorButton = "";
+				// $("#accordion").accordion("option", "active",
+				// 0);
 			});
 
-			$('#btnReset').on("click", function() {
-				proposalsManage.ClearForm();
-				proposalsManage.BindDefaultUserPosition(0);
-				proposalsManage.BindPICoPISignatures();
-				// $("#accordion").accordion("option", "active", 0);
-			});
+			$('#btnAddNew').on(
+					"click",
+					function() {
+						if (proposalsManage.config.proposalId == '0') {
+							$('#lblFormHeading').html('New Proposal Details');
 
-			$('#btnSaveProposal').click(function(e) {
-				$(this).disableWith('Saving...');
-				var proposal_id = $(this).data("name");
-				if (proposal_id != '') {
-					editFlag = proposal_id;
-					proposalsManage.SaveProposal(proposal_id, false);
-				} else {
-					editFlag = "0";
-					proposalsManage.SaveProposal("0", true);
-				}
-				$(this).enableAgain();
-				e.preventDefault();
-				return false;
-			});
+							// Initialize Appendices content and Uploader
+							proposalsManage.InitializeUploader("");
 
-			$('#btnUpdateProposal').click(function(e) {
-				$(this).disableWith('Updating...');
-				var proposal_id = $(this).data("name");
-				if (proposal_id != '') {
-					editFlag = proposal_id;
-					proposalsManage.SaveProposal(proposal_id, false);
-				}
-				$(this).enableAgain();
-				e.preventDefault();
-				return false;
-			});
+							$("#btnReset").show();
+							$("#btnSaveProposal").show();
+							$("#btnDeleteProposal").hide();
+
+							$('#ui-id-23').hide();
+							$('#ui-id-24').find('input, select, textarea')
+									.each(function() {
+										// $(this).addClass("ignore");
+										$(this).prop('disabled', true);
+									});
+
+							proposalsManage.ClearForm();
+
+							proposalsManage.BindCurrentUserPosition(0);
+
+							proposalsManage.BindPICoPISignatures();
+
+							$('#divProposalGrid').hide();
+							$('#divProposalForm').show();
+							$('#divProposalAuditGrid').hide();
+							$("#accordion").accordion("option", "active", 0);
+						}
+					});
+
+			$('#btnReset')
+					.on(
+							"click",
+							function() {
+								var properties = {
+									onComplete : function(e) {
+										if (e) {
+											if (proposalsManage.config.proposalId == "0") {
+												proposalsManage.ClearForm();
+
+												$('select[name=ddlName]')
+														.eq(0)
+														.prop('disabled', false);
+
+												proposalsManage
+														.BindCurrentUserPosition(0);
+
+												proposalsManage
+														.BindPICoPISignatures();
+												// $("#accordion").accordion("option",
+												// "active", 0);
+											}
+										}
+									}
+								};
+								csscody
+										.confirm(
+												"<h2>"
+														+ 'Reset Confirmation'
+														+ "</h2><p>"
+														+ 'Are you certain you want to reset this proposal?'
+														+ "</p>", properties);
+							});
+
+			// Delete
+			$('#btnDeleteProposal')
+					.click(
+							function(event) {
+								$('#ui-id-24').find('input, select, textarea')
+										.each(function() {
+											// $(this).addClass("ignore");
+											$(this).prop('disabled', true);
+										});
+
+								var properties = {
+									onComplete : function(e) {
+										if (e) {
+											// if (validator.form()) {
+											var $buttonType = $.trim($(
+													'#btnDeleteProposal')
+													.text());
+											$('#btnDeleteProposal')
+													.disableWith('Deleting...');
+
+											if (proposalsManage.config.proposalId != "0"
+													&& proposalsManage.config.proposalStatus != "") {
+												proposalsManage
+														.DeleteSingleProposal(
+																$buttonType,
+																proposalsManage.config);
+											}
+
+											$('#btnDeleteProposal')
+													.enableAgain();
+											event.preventDefault();
+											return false;
+											// } else {
+											// proposalsManage.focusTabWithErrors("#accordion");
+											// }
+										}
+									}
+								};
+								csscody
+										.confirm(
+												"<h2>"
+														+ 'Delete Confirmation'
+														+ "</h2><p>"
+														+ 'Are you certain you want to delete this proposal?'
+														+ "</p>", properties);
+							});
+
+			// Save
+			$('#btnSaveProposal')
+					.click(
+							function(event) {
+								if (validator.form()) {
+									var properties = {
+										onComplete : function(e) {
+											if (e) {
+												var $buttonType = $.trim($(
+														'#btnSaveProposal')
+														.text());
+												$('#btnSaveProposal')
+														.disableWith(
+																'Saving...');
+
+												proposalsManage.SaveProposal(
+														$buttonType,
+														proposalsManage.config);
+
+												$('#btnSaveProposal')
+														.enableAgain();
+												event.preventDefault();
+												return false;
+											}
+										}
+									};
+									csscody
+											.confirm(
+													"<h2>"
+															+ 'Save Confirmation'
+															+ "</h2><p>"
+															+ 'Are you certain you want to save this proposal?'
+															+ "</p>",
+													properties);
+								} else {
+									proposalsManage
+											.focusTabWithErrors("#accordion");
+								}
+							});
 
 			$('#txtProjectTitle').on("focus", function() {
 				$(this).siblings('.cssClassRight').hide();
@@ -3320,59 +4023,76 @@ $(function() {
 					"blur",
 					function() {
 						var projectTitle = $.trim($(this).val());
-						var proposal_id = $('#btnSaveProposal').data("name");
-						if (proposal_id == '') {
-							proposal_id = "0";
-						}
-						proposalsManage.checkUniqueProjectTitle(proposal_id,
+
+						proposalsManage.checkUniqueProjectTitle(
+								proposalsManage.config.proposalId,
 								projectTitle, $(this));
 						return false;
 					});
 
-			$("input[type=button].AddOption").on(
-					"click",
-					function() {
-						if ($(this).prop("name") == "DeleteOption") {
-							var t = $(this).closest('tr');
+			$("input[type=button].AddCoPI")
+					.on(
+							"click",
+							function() {
+								if ($(this).prop("name") == "DeleteOption") {
+									var t = $(this).closest('tr');
+									var properties = {
+										onComplete : function(e) {
+											if (e) {
+												t
+														.find("td")
+														.wrapInner(
+																"<div style='display: block'/>")
+														.parent()
+														.find("td div")
+														.slideUp(300);
+												t.remove();
 
-							t.find("td").wrapInner(
-									"<div style='display: block'/>").parent()
-									.find("td div").slideUp(300, function() {
-										t.remove();
-									});
-
-						} else if ($(this).prop("name") == "AddMore") {
-							var cloneRow = $(this).closest('tr').clone(true);
-							$(cloneRow).find("input").each(
-									function(i) {
-										if ($(this).is(".AddOption")) {
-											$(this)
-													.prop("name",
-															"DeleteOption");
-											$(this).prop("value", "Delete ");
-											$(this).prop("title", "Delete");
+												$('#dataTable tbody tr:last')
+														.find(
+																$('select[name=ddlName]'))
+														.prop('disabled', false);
+											}
 										}
-										$(this).parent('td').find('span')
-												.removeClass('error');
-										$(this).removeClass('error');
-									});
-							$(cloneRow).find("select").each(function(j) {
-								// Remove PI option
-								// after first row
-								if (j == 0) {
-									$(this).find('option:first').remove();
+									};
+									csscody
+											.confirm(
+													"<h2>"
+															+ 'Delete Confirmation'
+															+ "</h2><p>"
+															+ 'Are you certain you want to delete this investigator?'
+															+ "</p>",
+													properties);
+
+								} else if ($(this).prop("name") == "AddCoPI") {
+									if (proposalsManage.countCoPIs() < 4) {
+										proposalsManage
+												.AddCoPIInvestigator($(this));
+									} else {
+										csscody
+												.error('<h2>'
+														+ 'Error Message'
+														+ '</h2><p>'
+														+ 'Maximum of Co-PIs is 4!</p>');
+									}
 								}
-
-								$(this).removeAttr("disabled");
-								$(this).find("option").removeAttr("selected");
 							});
-							$(cloneRow).appendTo("#dataTable").hide().fadeIn(
-									1200);
 
-							rowIndex = $('#dataTable > tbody tr').size() - 1;
-							proposalsManage.BindDefaultUserPosition(rowIndex);
-						}
-					});
+			$("input[type=button].AddSenior")
+					.on(
+							"click",
+							function() {
+								if (proposalsManage.countSeniorPersonnels() < 10) {
+									proposalsManage
+											.AddSeniorPersonnelInvestigator($(this));
+								} else {
+									csscody
+											.error('<h2>'
+													+ 'Error Message'
+													+ '</h2><p>'
+													+ 'Maximum of Senior Personnel is 10!</p>');
+								}
+							});
 
 			$("#btnSearchProposal").on("click", function() {
 				// if ($("#form1").valid()) {

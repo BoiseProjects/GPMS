@@ -165,12 +165,6 @@
 																<span class="icon-addnew">Add New Proposal</span>
 															</button>
 														</p>
-														<!-- 														<p> -->
-														<!-- 															<button title="Delete All Selected" type="button" -->
-														<!-- 																id="btnDeleteSelected" class="sfBtn"> -->
-														<!-- 																<span class="icon-delete">Delete All Selected</span> -->
-														<!-- 															</button> -->
-														<!-- 														</p> -->
 														<p>
 															<button title="Export to Excel" type="button"
 																id="btnExportToExcel" class="sfBtn">
@@ -223,16 +217,16 @@
 																	<!-- 																		</select></td> -->
 
 																	<td style="width: 180px; float: left;"><label
-																		class="cssClassLabel">Recieved On:</label>
+																		class="cssClassLabel">Submitted On:</label>
 																		<div>
 																			<span class="cssClassLabel">From:</span> <input
-																				type="text" title="Received On From"
+																				type="text" title="Submitted On From"
 																				id="txtSearchSubmittedOnFrom" class="sfTextBoxFix"
 																				placeholder="From">
 																		</div>
 																		<div>
 																			<span class="cssClassLabel">To:</span> <input
-																				type="text" title="Received On To"
+																				type="text" title="Submitted On To"
 																				id="txtSearchSubmittedOnTo" class="sfTextBoxFix"
 																				placeholder="To">
 																		</div></td>
