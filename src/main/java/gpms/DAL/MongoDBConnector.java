@@ -6,11 +6,10 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
@@ -25,10 +24,10 @@ import com.mongodb.MongoException;
  * MongoDBConnector providing the database connection.
  */
 public class MongoDBConnector {
-	private static final Logger logger = LoggerFactory
-			.getLogger(MongoDBConnector.class);
+	private static final Logger logger = Logger
+			.getLogger(MongoDBConnector.class.getName());
 
-	private static MongoDBConnector instance = new MongoDBConnector();
+	private static MongoDBConnector INSTANCE;
 
 	private Datastore ds = null;
 	public static final String DB_NAME = "db_gpms";
@@ -54,8 +53,11 @@ public class MongoDBConnector {
 		}
 	}
 
-	public static MongoDBConnector instance() {
-		return instance;
+	public static MongoDBConnector getInstance() {
+		if (INSTANCE == null) {
+			INSTANCE = new MongoDBConnector();
+		}
+		return INSTANCE;
 	}
 
 	public Datastore readDatabase() {
@@ -129,14 +131,14 @@ public class MongoDBConnector {
 			synchronized (MongoDBConnector.class) {
 				if (connection == null) {
 					try {
-						instance = new MongoDBConnector(DB_NAME);
+						INSTANCE = new MongoDBConnector(DB_NAME);
 					} catch (UnknownHostException e) {
 						e.printStackTrace();
 					}
 				}
 			}
 		}
-		return instance;
+		return INSTANCE;
 	}
 
 	public DBCursor find(DBObject ref, DBObject keys, String collName) {

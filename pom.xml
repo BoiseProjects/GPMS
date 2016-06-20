@@ -145,22 +145,25 @@
 		</dependency>
 
 		<!-- For logging -->
+		<!-- http://mvnrepository.com/artifact/log4j/log4j -->
 		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<version>${slf4j.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>jcl-over-slf4j</artifactId>
-			<version>${slf4j.version}</version>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-			<version>${slf4j.version}</version>
-			<scope>runtime</scope>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>${version.log4j}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.sun.jax</groupId>
+					<artifactId>jmxri</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.sun.jdmk</groupId>
+					<artifactId>jmxtools</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>javax.jms</groupId>
+					<artifactId>jms</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<!-- For servlet -->
@@ -326,12 +329,12 @@
 			<artifactId>swagger-jersey2-jaxrs</artifactId>
 			<version>1.5.0</version>
 		</dependency>
-		
+
 	</dependencies>
 
 	<properties>
 		<jersey.version>2.22.2</jersey.version>
-		<slf4j.version>1.7.12</slf4j.version>
+		<version.log4j>1.2.17</version.log4j>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 </project>

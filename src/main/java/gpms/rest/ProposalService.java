@@ -652,7 +652,7 @@ public class ProposalService {
 			String piEmail = new String();
 			List<String> emaillist = new ArrayList<String>();
 
-			emailSubject = "The proposal has been deleted by:" + authorUserName;
+			emailSubject = "The proposal has been deleted by: " + authorUserName;
 			emailBody = "Hello User,<br/><br/>The proposal has been deleted by Admin.<br/><br/>Thank you, <br/> GPMS Team";
 			piEmail = existingProposal.getInvestigatorInfo().getPi()
 					.getUserRef().getWorkEmails().get(0);
@@ -1434,7 +1434,7 @@ public class ProposalService {
 				String piEmail = new String();
 				List<String> emaillist = new ArrayList<String>();
 
-				emailSubject = "The proposal has been deleted by:"
+				emailSubject = "The proposal has been deleted by: "
 						+ authorUserName;
 				emailBody = "Hello User,<br/><br/>The proposal has been deleted by Admin.<br/><br/>Thank you, <br/> GPMS Team";
 				piEmail = existingProposal.getInvestigatorInfo().getPi()
@@ -3563,7 +3563,7 @@ public class ProposalService {
 				if (!existingProposal.equals(oldProposal)) {
 					proposalDAO.updateProposal(existingProposal, authorProfile);
 					proposalIsChanged = true;
-					emailSubject = "The proposal has been updated by:"
+					emailSubject = "The proposal has been updated by: "
 							+ authorUserName;
 					emailBody = "Hello User,<br/><br/>The proposal has been updated by Admin.<br/><br/>Thank you, <br/> GPMS Team";
 
@@ -3580,7 +3580,7 @@ public class ProposalService {
 			} else {
 				proposalDAO.saveProposal(existingProposal, authorProfile);
 				proposalIsChanged = true;
-				emailSubject = "The proposal has been created by:"
+				emailSubject = "The proposal has been created by: "
 						+ authorUserName;
 				emailBody = "Hello User,<br/><br/>The proposal has been created by Admin.<br/><br/>Thank you, <br/> GPMS Team";
 			}

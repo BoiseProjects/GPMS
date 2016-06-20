@@ -1,8 +1,29 @@
 package gpms.rest;
 
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
 public class TestJerseyClient {
 
 	public static void main(String[] args) {
+		// Using API Tutorial in pluralsight
+		// https://app.pluralsight.com/player?course=five-essential-tools-building-rest-api&author=elton-stoneman&name=five-essential-tools-building-rest-api-m1&clip=13&mode=live
+
+		// Client client = ClientBuilder.newClient();
+		// Response response = client
+		// .target("http://private-cede7-spiderlog216.apiary-mock.com/spiders?page=1&size=10")
+		// .request(MediaType.TEXT_PLAIN_TYPE)
+		// .header("Authorization", "Basic dXNlcjpwYXNzd29yZA==")
+		// .header("x-api-version", "1.0").get();
+		//
+		// System.out.println("status: " + response.getStatus());
+		// System.out.println("headers: " + response.getHeaders());
+		// System.out.println("body:" + response.readEntity(String.class));
+		
+		//END pluralsight demo
+
 		// try {
 		// String dateOfBirth = "Nov 4, 1984 8:14 PM";
 		// SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd hh.mm.ss");

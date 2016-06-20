@@ -1062,8 +1062,8 @@ $(function() {
 
 				$("#dataTable tbody tr:gt(0)").find('input.AddSenior').remove();
 				$("#fileuploader").show();
-				$("#dataTable tbody tr").find('input.AddCoPI').show();
-				$("#dataTable tbody tr").find('input.AddSenior').show();
+				$('input.AddCoPI').show();
+				$('input.AddSenior').show();
 				break;
 			default:
 				break;
@@ -1175,8 +1175,7 @@ $(function() {
 			$("#lblHiddenDateReceived").text(response.dateReceived);
 
 			// Project Information
-			$("#txtProjectTitle").val(response.projectInfo.projectTitle).prop(
-					"disabled", true);
+			$("#txtProjectTitle").val(response.projectInfo.projectTitle);
 
 			if (response.projectInfo.projectType.researchBasic) {
 				$("#ddlProjectType").val(1);
@@ -2182,13 +2181,16 @@ $(function() {
 			$("#trSignAdministrator tbody").empty();
 			$("#trSignDirector tbody").empty();
 
-			$('#txtProjectTitle').removeProp('disabled');
-
 			rowIndex = 0;
 			$("#dataTable tbody>tr:gt(0)").remove();
 
 			$('select[name=ddlRole]').eq(0).val(0).prop('selected', 'selected')
 					.prop('disabled', true);
+			$('select[name=ddlName]').eq(0).prop('disabled', false);
+			$('select[name = ddlCollege]').eq(0).prop('disabled', false);
+			$('select[name = ddlDepartment]').eq(0).prop('disabled', false);
+			$('select[name = ddlPositionType]').eq(0).prop('disabled', false);
+			$('select[name=ddlPositionTitle]').eq(0).prop('disabled', false);
 
 			var container = $("#accordion > div").slice(1, 12);
 			var inputs = container.find('INPUT, SELECT, TEXTAREA');
@@ -2618,7 +2620,6 @@ $(function() {
 			return false;
 		},
 
-		// TODO only bind user based on current user details not show all users
 		BindUserDropDown : function() {
 			// Used User REST API instead Proposal
 			this.config.url = this.config.rootURL + "users/"
@@ -3887,7 +3888,7 @@ $(function() {
 
 							proposalsManage.BindCurrentUserPosition(0);
 
-							proposalsManage.BindPICoPISignatures();
+							// proposalsManage.BindPICoPISignatures();
 
 							$('#divProposalGrid').hide();
 							$('#divProposalForm').show();
@@ -3906,15 +3907,11 @@ $(function() {
 											if (proposalsManage.config.proposalId == "0") {
 												proposalsManage.ClearForm();
 
-												$('select[name=ddlName]')
-														.eq(0)
-														.prop('disabled', false);
-
 												proposalsManage
 														.BindCurrentUserPosition(0);
 
-												proposalsManage
-														.BindPICoPISignatures();
+												// proposalsManage
+												// .BindPICoPISignatures();
 												// $("#accordion").accordion("option",
 												// "active", 0);
 											}

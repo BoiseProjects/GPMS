@@ -1423,9 +1423,9 @@ $(function() {
 
 				myProposal.BindProposalDetailsByProposalId(argus[0]);
 
-				// $('.sfButtonwrapper>p>button').show();
+				$('.sfButtonwrapper>p>button').show();
 
-				myProposal.ButtonHideShow(myProposal.config);
+				// myProposal.ButtonHideShow(myProposal.config);
 
 				// Certification/ Signatures Info
 				myProposal.BindAllSignatureForAProposal(argus[0], argus[20]);
@@ -2602,6 +2602,11 @@ $(function() {
 
 			$('select[name=ddlRole]').eq(0).val(0).prop('selected', 'selected')
 					.prop('disabled', true);
+			$('select[name=ddlName]').eq(0).prop('disabled', false);
+			$('select[name = ddlCollege]').eq(0).prop('disabled', false);
+			$('select[name = ddlDepartment]').eq(0).prop('disabled', false);
+			$('select[name = ddlPositionType]').eq(0).prop('disabled', false);
+			$('select[name=ddlPositionTitle]').eq(0).prop('disabled', false);
 
 			var container = $("#accordion > div").slice(1, 12);
 			var inputs = container.find('INPUT, SELECT, TEXTAREA');
@@ -3034,7 +3039,6 @@ $(function() {
 					proposalInfo.SignatureInfo = signatureInfo;
 				}
 
-				// TODO check if the OSP section is allowed to edit ?
 				if (!_flag) {
 					// proposalInfo.ProposalStatus = $("#ddlProposalStatus")
 					// .val();
@@ -3453,7 +3457,6 @@ $(function() {
 			return false;
 		},
 
-		// TODO only bind user based on current user details not show all users
 		BindUserDropDown : function() {
 			// Used User REST API instead Proposal
 			this.config.url = this.config.rootURL + "users/"
@@ -4130,8 +4133,14 @@ $(function() {
 				$('select[name=ddlName]').eq(0).val(
 						GPMS.utils.GetUserProfileID()).prop('selected',
 						'selected').prop('disabled', true);
+				$('select[name=ddlName]').eq(0).prop('disabled', false);
+				$('select[name = ddlCollege]').eq(0).prop('disabled', false);
+				$('select[name = ddlDepartment]').eq(0).prop('disabled', false);
+				$('select[name = ddlPositionType]').eq(0).prop('disabled',
+						false);
+				$('select[name=ddlPositionTitle]').eq(0)
+						.prop('disabled', false);
 
-				// TODO for admin this need to be not set!
 				myProposal.BindCurrentUserPosition(0);
 
 				$("#dataTable tbody tr").find('select').prop('disabled', true);
@@ -4142,6 +4151,8 @@ $(function() {
 				$('#divProposalForm').show();
 				$('#divProposalAuditGrid').hide();
 				$("#accordion").accordion("option", "active", 0);
+				
+				$('.sfButtonwrapper>p>button').show();
 			}
 			break;
 
@@ -4787,9 +4798,6 @@ $(function() {
 																'selected')
 														.prop('disabled', true);
 
-												// TODO for admin this need to
-												// be
-												// not set!
 												myProposal
 														.BindCurrentUserPosition(0);
 
@@ -4883,8 +4891,6 @@ $(function() {
 															myProposal.config,
 															false);
 												} else if (myProposal.config.proposalId == "0") {
-
-													// TODO ::???
 													myProposal.SaveProposal(
 															$buttonType,
 															"Whole Proposal",
