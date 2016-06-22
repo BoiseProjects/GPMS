@@ -1,2 +1,4 @@
 /test.testpolicy.xml
 /com.stackoverflow.xacml.accessPages.xml
+/regexTest.matchResources.xml
+/stackoverflow.example.xml
