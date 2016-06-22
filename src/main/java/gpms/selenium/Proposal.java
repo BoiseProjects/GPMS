@@ -9,10 +9,15 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
+/*
+ *	Created by: Liliana Acevedo 
+ *	last modified: 6/22/16 
+ */
 
 public class Proposal {
 
 	public void createProjectInformation(WebDriver driver) {
+		//Fills out the project information tab of proposal 
 
 		String currentElement;
 		FluentWait<WebDriver> wait = new FluentWait<WebDriver>(driver)
@@ -116,10 +121,31 @@ public class Proposal {
 
 	public void createSponsorAndBudgetInformation(WebDriver driver) {
 		/*
-		 * id=lblSection3 click type id=txtNameOfGrantingAgency Wayne Fdn type
-		 * id=txtDirectCosts 500 type id=txtTotalCosts 700 type id=txtFACosts
-		 * 800 type id=txtFARate 20
+		 * Fill out the Sponsor and Budget information tab of proposal
 		 */
+		
+		WebElement sponsorDdl = driver.findElement(By.id("lblSection3"));
+		sponsorDdl.click();
+		
+		WebElement grantingAgency = driver.findElement(By.id("txtNameOfGrantingAgency"));
+		grantingAgency.clear();
+	    grantingAgency.sendKeys("The Wayne Foundation");
+	    
+	    WebElement directCosts = driver.findElement(By.id("txtDirectCosts"));
+	    directCosts.clear();
+	    directCosts.sendKeys("500");
+	    
+	    WebElement totalCosts = driver.findElement(By.id("txtTotalCosts"));
+	    totalCosts.clear();
+	    totalCosts.sendKeys("700");
+	    
+	    WebElement faCosts = driver.findElement(By.id("txtFACosts"));
+	    faCosts.clear();
+	    faCosts.sendKeys("800");
+	    
+	    WebElement faRate = driver.findElement(By.id("txtFARate"));
+	    faRate.clear();
+	    faRate.sendKeys("20");
 	}
 
 	public void createCostShareInformation(WebDriver driver) {
@@ -128,6 +154,13 @@ public class Proposal {
 		 * select id=ddlThirdPartyCommitmentCost no click
 		 * css=#ddlThirdPartyCommitmentCost > option[value="2"]
 		 */
+		
+		WebElement costShareDdl = driver.findElement(By.id("lblSection4"));
+		costShareDdl.click();
+		
+		WebElement ddlThirdParty = driver.findElement(By.id("id=ddlThirdPartyCommitmentCost"));
+		ddlThirdParty.sendKeys(Keys.ARROW_DOWN);
+		//**** I left off here, need to continue from this point
 	}
 
 	public void createUniversityCommitments(WebDriver driver) {

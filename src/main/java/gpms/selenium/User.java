@@ -8,7 +8,7 @@ import org.openqa.selenium.WebElement;
 
 /*
  * Created by: Liliana Acevedo
- * last modified: 6/20/16
+ * last modified: 6/22/16
  */
 
 public class User {

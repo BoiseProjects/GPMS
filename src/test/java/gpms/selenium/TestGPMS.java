@@ -7,9 +7,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 /*
  * Created by: Liliana Acevedo
- * last modified: 6/20/16
- * 
- * Test
+ * last modified: 6/22/16
  */
 
 public class TestGPMS {
@@ -18,15 +16,17 @@ public class TestGPMS {
 
 		// objects and vars instantiation
 		long timeoutInSeconds = 2;
-		/*
-		 * String currentUser = "liliana"; String userEmail =
-		 * "lva34bsu@gmail.com"; String pword = "password";
-		 */
-
+		
+		  String currentUser = "liliana"; 
+		  String userEmail =
+		  "lva34bsu@gmail.com"; 
+		  String pword = "password";
+		 
+/*
 		String currentUser = "bmcomputerengineering1";
 		String userEmail = "bmcomputerengineering1@gmail.com";
 		String pword = "gpmspassword";
-		Browser bub = new Browser();
+*/		Browser bub = new Browser();
 		User us = new User();
 		Proposal pup = new Proposal();
 
@@ -111,9 +111,14 @@ public class TestGPMS {
 
 		// us.addCoPI(driver);
 
+		//Fill out project information tab of proposal sheet
 		pup.createProjectInformation(driver);
+		
+		//Fill out Sponsor and Budget tab of proposal sheet
+		pup.createSponsorAndBudgetInformation(driver);
+		
 		// click on sign out button
-		// us.userLogout(driver);
+		us.userLogout(driver);
 
 		// close the web browser
 		driver.close();
