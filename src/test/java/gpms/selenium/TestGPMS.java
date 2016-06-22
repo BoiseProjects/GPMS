@@ -8,6 +8,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 /*
  * Created by: Liliana Acevedo
  * last modified: 6/20/16
+ * 
+ * Test
  */
 
 public class TestGPMS {
