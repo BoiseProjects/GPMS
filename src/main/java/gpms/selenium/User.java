@@ -147,7 +147,8 @@ public class User {
 	 * Purpose: Get the data table from the add proposal page with investigator
 	 * information
 	 */
-	public void getInvestigatorInfo(WebDriver driver) {
+	public void getInvestigatorInfo(WebDriver driver) 
+	{
 		int index = 0;
 		WebElement baseTable = driver.findElement(By.id("dataTable"));
 		List<WebElement> tableRows = baseTable.findElements(By.tagName("tr"));

@@ -112,10 +112,7 @@ public class TestGPMS {
 		// us.addCoPI(driver);
 
 		//Fill out project information tab of proposal sheet
-		pup.createProjectInformation(driver);
-		
-		//Fill out Sponsor and Budget tab of proposal sheet
-		pup.createSponsorAndBudgetInformation(driver);
+		pup.addProposal(driver);
 		
 		// click on sign out button
 		us.userLogout(driver);

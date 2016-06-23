@@ -11,7 +11,12 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 /*
  *	Created by: Liliana Acevedo 
- *	last modified: 6/22/16 
+ *	last modified: 6/23/16
+ *
+ * I would like to go back through these and ensure that the tabs open properly; 
+ * otherwise the user will not have any data visible, proving they cannot access that part
+ * of the page through the visible elements;
+ * being able to access hidden items will be tested using JS later
  */
 
 public class Proposal {
@@ -148,77 +153,210 @@ public class Proposal {
 	    faRate.sendKeys("20");
 	}
 
+	/*
+	 * Fill out Cost Share Information Tab on proposal
+	 */
 	public void createCostShareInformation(WebDriver driver) {
-		/*
-		 * click id=lblSection4 select id=ddlInstitutionalCommitmentCost no
-		 * select id=ddlThirdPartyCommitmentCost no click
-		 * css=#ddlThirdPartyCommitmentCost > option[value="2"]
-		 */
 		
 		WebElement costShareDdl = driver.findElement(By.id("lblSection4"));
 		costShareDdl.click();
 		
-		WebElement ddlThirdParty = driver.findElement(By.id("id=ddlThirdPartyCommitmentCost"));
+		//Select "No" in dropdown "Institutional Commitment Cost"
+		WebElement ddlInstitutionCost = driver.findElement(By.id("ddlInstitutionalCommitmentCost"));
+		ddlInstitutionCost.sendKeys(Keys.ARROW_DOWN);
+		ddlInstitutionCost.sendKeys(Keys.ARROW_DOWN);
+		
+		//Select "No" in dropdown "Third Party Commitment Cost"
+		WebElement ddlThirdParty = driver.findElement(By.id("ddlThirdPartyCommitmentCost"));
 		ddlThirdParty.sendKeys(Keys.ARROW_DOWN);
-		//**** I left off here, need to continue from this point
+		ddlThirdParty.sendKeys(Keys.ARROW_DOWN);
 	}
 
-	public void createUniversityCommitments(WebDriver driver) {
-		/*
-		 * click id=lblSection5 select id=ddlNewSpaceRequired no select
-		 * id=ddlRentalSpaceRequired no select
-		 * id=ddlInstitutionalCommitmentsRequired no click
-		 * css=#ddlInstitutionalCommitmentsRequired > option[value="2"]
-		 */
+	/*
+	 * Fill out University Commitments tab of proposal
+	 */
+	public void createUniversityCommitments(WebDriver driver) 
+	{		
+		//Open the University Commitments tab
+		WebElement ddlUniCommitments = driver.findElement(By.id("lblSection5"));
+		ddlUniCommitments.click();
+		
+		//Will new or renovated space/facilities be required? Select yes/no from ddl
+		WebElement ddlNewSpace = driver.findElement(By.id("ddlNewSpaceRequired"));
+		ddlNewSpace.sendKeys(Keys.ARROW_DOWN);//yes
+		ddlNewSpace.sendKeys(Keys.ARROW_DOWN);//no
+		
+		//Will rental space be required? Select yes/no from ddl
+		WebElement ddlRentalSpace = driver.findElement(By.id("ddlRentalSpaceRequired"));
+		ddlRentalSpace.sendKeys(Keys.ARROW_DOWN);//yes
+		ddlRentalSpace.sendKeys(Keys.ARROW_DOWN);//no
+		
+		//Does this project require institutional commitments beyond the end date of the project?
+		//Select yes/no from ddl
+		WebElement ddlInstCommitments = driver.findElement(By.id("ddlInstitutionalCommitmentsRequired"));
+		ddlInstCommitments.sendKeys(Keys.ARROW_DOWN);//yes
+		ddlInstCommitments.sendKeys(Keys.ARROW_DOWN);//no
 	}
 
-	public void createConflictOfInterest(WebDriver driver) {
-		/*
-		 * click id=lblSection6 select id=ddlFinancialCOI no select
-		 * id=ddlDisclosedFinancialCOI no select id=ddlMaterialChanged no click
-		 * css=#ddlMaterialChanged > option[value="2"]
-		 */
+	/*
+	 * Open and fill out Conflict of Interest and Commitment Information
+	 */
+	public void createConflictOfInterest(WebDriver driver) 
+	{
+		//Open conflict of interest tab
+		WebElement ddlConflictInterest = driver.findElement(By.id("lblSection6"));
+		ddlConflictInterest.click();
+		
+		//Is there a financial conflict of interest related to this proposal?
+		//Select yes/no from ddl
+		WebElement ddlFinancialCOI = driver.findElement(By.id("ddlFinancialCOI"));
+		ddlFinancialCOI.sendKeys(Keys.ARROW_DOWN);//yes
+		ddlFinancialCOI.sendKeys(Keys.ARROW_DOWN);//no
+		
+		//Has the financial conflict been disclosed?
+		WebElement ddlDisclosedFinancialCOI = driver.findElement(By.id("ddlDisclosedFinancialCOI"));
+		ddlDisclosedFinancialCOI.sendKeys(Keys.ARROW_DOWN);//yes
+		ddlDisclosedFinancialCOI.sendKeys(Keys.ARROW_DOWN);//no
+		
+		//Has there been a material change to your annual disclosure form? 
+		WebElement ddlMaterialChanged = driver.findElement(By.id("ddlMaterialChanged"));
+		ddlMaterialChanged.sendKeys(Keys.ARROW_DOWN);//yes
+		ddlMaterialChanged.sendKeys(Keys.ARROW_DOWN);//no
 	}
 
-	public void createComplianceInformation(WebDriver driver) {
-		/*
-		 * click id=ui-id-13 select id=ddlUseHumanSubjects no select
-		 * id=ddlUseVertebrateAnimals no select id=ddlInvovleBioSafety no select
-		 * id=ddlEnvironmentalConcerns no click css=#ddlEnvironmentalConcerns >
-		 * option[value="2"]
-		 */
+	/*
+	 * Open and fill out Compliance Information
+	 */
+	public void createComplianceInformation(WebDriver driver) 
+	{	
+		//Open Compliance Information tab
+		WebElement ddlComplianceInformation = driver.findElement(By.id("lblSection7"));
+		ddlComplianceInformation.click();
+		
+		//Does this project involve the use of Human Subjects?
+		//Select yes/no
+		WebElement ddlUseHumanSubjects = driver.findElement(By.id("ddlUseHumanSubjects"));
+		ddlUseHumanSubjects.sendKeys(Keys.ARROW_DOWN);//yes
+		ddlUseHumanSubjects.sendKeys(Keys.ARROW_DOWN);//no
+
+		//Does this project involve the use of Vertebrate Animals? 
+		//Select yes/no
+		WebElement ddlUseVertebrateAnimals = driver.findElement(By.id("ddlUseVertebrateAnimals"));
+		ddlUseVertebrateAnimals.sendKeys(Keys.ARROW_DOWN);//yes
+		ddlUseVertebrateAnimals.sendKeys(Keys.ARROW_DOWN);//no
+		
+		//Does this project involve Biosafety concerns? 
+		//Select yes/no
+		WebElement ddlInvovleBioSafety = driver.findElement(By.id("ddlInvovleBioSafety"));
+		ddlInvovleBioSafety.sendKeys(Keys.ARROW_DOWN);//yes
+		ddlInvovleBioSafety.sendKeys(Keys.ARROW_DOWN);//no
+		
+		//Does this project have Environmental Health & Safety concerns? 
+		//Select yes/no
+		WebElement ddlEnvironmentalConcerns = driver.findElement(By.id("ddlEnvironmentalConcerns"));
+		ddlEnvironmentalConcerns.sendKeys(Keys.ARROW_DOWN);//yes
+		ddlEnvironmentalConcerns.sendKeys(Keys.ARROW_DOWN);//no
 	}
 
-	public void createAdditionalInformation(WebDriver driver) {
-		/*
-		 * click id=lblSection8 select id=ddlAnticipateForeignNationals no
-		 * select id=ddlAnticipateReleaseTime no select
-		 * id=ddlAnticipateReleaseTime no select id=ddlRelatedToEnergyStudies
-		 * click css=#ddlRelatedToEnergyStudies > option[value="2"]
-		 */
+	/*
+	 * Open and fill out Additional Information
+	 */
+	public void createAdditionalInformation(WebDriver driver) 
+	{
+		//Open Additional Information Tab
+		WebElement ddlAdditionalInformation = driver.findElement(By.id("lblSection8"));
+		ddlAdditionalInformation.click();
+
+		//Do you anticipate payment(s) to foreign nationals or on behalf of foreign nationals?
+		//Select yes/no
+		WebElement ddlAnticipateForeignNationals = driver.findElement(By.id("ddlAnticipateForeignNationals"));
+		ddlAnticipateForeignNationals.sendKeys(Keys.ARROW_DOWN);//yes
+		ddlAnticipateForeignNationals.sendKeys(Keys.ARROW_DOWN);//no
+		
+		//Do you anticipate course release time?
+		//Select yes/no
+		WebElement ddlAnticipateReleaseTime = driver.findElement(By.id("ddlAnticipateReleaseTime"));
+		ddlAnticipateReleaseTime.sendKeys(Keys.ARROW_DOWN);//yes
+		ddlAnticipateReleaseTime.sendKeys(Keys.ARROW_DOWN);//no
+		
+		//Are the proposed activities related to Center for Advanced Energy Studies? 
+		//Select yes/no
+		WebElement ddlRelatedToEnergyStudies = driver.findElement(By.id("ddlRelatedToEnergyStudies"));
+		ddlRelatedToEnergyStudies.sendKeys(Keys.ARROW_DOWN);//yes
+		ddlRelatedToEnergyStudies.sendKeys(Keys.ARROW_DOWN);//no
 	}
 
-	public void createCollaborationInformation(WebDriver driver) {
-		/*
-		 * click id=lblSection9 select id=ddlInvolveNonFundedCollabs no click
-		 * css=#ddlInvolveNonFundedCollabs > option[value="2"]
-		 */
+	
+	/*
+	 * Open and fill out Collaboration Information
+	 */
+	public void createCollaborationInformation(WebDriver driver) 
+	{
+		//Open Collaboration Information tab
+		WebElement ddlCollaborationInformation = driver.findElement(By.id("lblSection9"));
+		ddlCollaborationInformation.click();
+		
+		//Does this project involve non-funded collaborations?
+		//Select yes/no
+		WebElement ddlInvolveNonFundedCollabs = driver.findElement(By.id("ddlInvolveNonFundedCollabs"));
+		ddlInvolveNonFundedCollabs.sendKeys(Keys.ARROW_DOWN);//yes
+		ddlInvolveNonFundedCollabs.sendKeys(Keys.ARROW_DOWN);//no
 	}
 
+	/*
+	 * Open and fill out Proprietary/Confidential Information
+	 */
 	public void createProprietaryConfidentialInformation(WebDriver driver) {
 		/*
 		 * click id=lblSection10 select id=ddlProprietaryInformation no select
 		 * id=ddlOwnIntellectualProperty no click
 		 * css=#ddlOwnIntellectualProperty > option[value="2"]
 		 */
+		WebElement ddlProprietaryConfidentialInformation = driver.findElement(By.id("lblSection10"));
+		ddlProprietaryConfidentialInformation.click();
+		
+		//Does this proposal contain any confidential information which is Proprietary that should not be publicly released?
+		//Select yes, on pages/no
+		WebElement ddlProprietaryInformation = driver.findElement(By.id("ddlProprietaryInformation"));
+		ddlProprietaryInformation.sendKeys(Keys.ARROW_DOWN);//yes, on pages
+		ddlProprietaryInformation.sendKeys(Keys.ARROW_DOWN);//no
+
+		//Will this project involve intellectual property in which the University may own or have an interest?
+		//Select yes/no
+		WebElement ddlOwnIntellectualProperty = driver.findElement(By.id("ddlProprietaryInformation"));
+		ddlOwnIntellectualProperty.sendKeys(Keys.ARROW_DOWN);//yes
+		ddlOwnIntellectualProperty.sendKeys(Keys.ARROW_DOWN);//no
 	}
 
-	public void certificationSignatures(WebDriver driver) {
+	/*
+	 * Open and fill out Certification/Signatures
+	 * This will vary according to user
+	 */
+	public void certificationSignatures(WebDriver driver) 
+	{
+		User uu = new User();
+		//Open Certification/Signatures tab
+		WebElement ddlCertificationSignatures = driver.findElement(By.id("lblSection11"));
+		ddlCertificationSignatures.click();
+		
 		/*
-		 * click id=lblSection11 type id=pi_signature SIGNATURE type
-		 * name=proposalNotes574f638565dbb34d17834b33PI ENTERED SIG click
-		 * id=pi_signaturedate
+		 * What is the position type of the user at the moment?
+		 * What box, if any, is available to be signed?
+		 * Are all other signatures present/not present as required?
 		 */
+		//Start with making sure a PI can sign their proposal
+		String currentUserPositionType = uu.getPositionType(driver);
+		if(currentUserPositionType.equals("Tenured/tenure-track faculty") ^ 
+				currentUserPositionType.equals("Non-tenure-track research faculty"))
+		{
+			//This position type can only be a PI or coPI
+			WebElement sigbox;
+			sigbox = driver.findElement(By.cssSelector("input[class='sfInputbox']"));
+			if(sigbox.isEnabled())
+			{
+				sigbox.sendKeys("siggy");
+			}
+		}
 	}
 
 	public void saveProposal(WebDriver driver) {
@@ -228,5 +366,22 @@ public class Proposal {
 		 * id=alert-BoxContenedor storeElementPresent id=BoxAlertBtnOk
 		 * assertText id=alert-BoxContenedor Successful message
 		 */
+	}
+	
+	/*
+	 * Single method to fill out entire proposal
+	 */
+	public void addProposal(WebDriver driver)
+	{
+		this.createProjectInformation(driver);
+		this.createSponsorAndBudgetInformation(driver);
+		this.createCostShareInformation(driver);
+		this.createUniversityCommitments(driver);
+		this.createConflictOfInterest(driver);
+		this.createComplianceInformation(driver);
+		this.createAdditionalInformation(driver);
+		this.createCollaborationInformation(driver);
+		this.createProprietaryConfidentialInformation(driver);
+		this.certificationSignatures(driver);
 	}
 }
