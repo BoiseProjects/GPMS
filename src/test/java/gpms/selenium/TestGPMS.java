@@ -7,7 +7,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 /*
  * Created by: Liliana Acevedo
- * last modified: 6/22/16
+ * last modified: 6/27/16
  */
 
 public class TestGPMS {
@@ -16,13 +16,13 @@ public class TestGPMS {
 
 		// objects and vars instantiation
 		long timeoutInSeconds = 2;
-		
+
 		  String currentUser = "liliana"; 
 		  String userEmail =
 		  "lva34bsu@gmail.com"; 
 		  String pword = "password";
-		 
-/*
+/*		 
+
 		String currentUser = "bmcomputerengineering1";
 		String userEmail = "bmcomputerengineering1@gmail.com";
 		String pword = "gpmspassword";
@@ -54,8 +54,8 @@ public class TestGPMS {
 		// Home page: Home - GPMS
 		expectedTitle = "Home - GPMS";
 
-		String actualTitle = driver.getTitle();
-		System.out.println(actualTitle);
+	//	String actualTitle = driver.getTitle();
+
 		// Call method to compare to the actual title of the web page
 		bub.compareTitle(expectedTitle, driver);
 
@@ -65,14 +65,21 @@ public class TestGPMS {
 		String expectedUser = currentUser;
 		us.compareUser(expectedUser, driver);
 
+		//Hooray! We are logged in
 		// click on myProfile Dropdown menu
 		// bub.clickProfileDropdown(driver);
 
 		// Wait for the desired link to load
 		bub.waitForPageLoad(driver);
 
+		//Get full name of user - this method currently questionable
+		String userName = us.getUserFullName(driver);
+
+		
 		// Get position type of current user
-		String moo = us.getPositionType(driver);
+		String positionType = us.getPositionType(driver);
+		System.out.println("POSITION " + positionType);
+		
 		/*
 		 * //Click on "View as Professor", if it is not already checked
 		 * WebElement viewAsProfessor =
@@ -112,7 +119,7 @@ public class TestGPMS {
 		// us.addCoPI(driver);
 
 		//Fill out project information tab of proposal sheet
-		pup.addProposal(driver);
+		pup.addProposal(driver, userName, positionType);
 		
 		// click on sign out button
 		us.userLogout(driver);

@@ -11,7 +11,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 /*
  *	Created by: Liliana Acevedo 
- *	last modified: 6/23/16
+ *	last modified: 6/27/16
  *
  * I would like to go back through these and ensure that the tabs open properly; 
  * otherwise the user will not have any data visible, proving they cannot access that part
@@ -330,35 +330,76 @@ public class Proposal {
 
 	/*
 	 * Open and fill out Certification/Signatures
-	 * This will vary according to user
+	 * Requires first calling getUserFullName:String (User)
+	 * and getPositionType:String (User)
+	 * in order to call with correct parameters, unless they are to be entered manually
 	 */
-	public void certificationSignatures(WebDriver driver) 
+	public void certificationSignatures(WebDriver driver, String currentUserFullName, 
+			String currentUserPositionType) 
 	{
-		User uu = new User();
+		WebElement sigbox;
 		//Open Certification/Signatures tab
 		WebElement ddlCertificationSignatures = driver.findElement(By.id("lblSection11"));
 		ddlCertificationSignatures.click();
 		
+		
+		//find that user's name in the table... 
+		//I believe this is successful
+		//*** Still need to include an if statement for when user not found
+		WebElement nameLabel = driver.findElement(By.xpath("//span[contains(text(),'" + 
+													currentUserFullName + "')]"));
+		String nameText = nameLabel.getText();
+		System.out.println(nameText);
+
+		//find the position associated with that element
+		//I believe this works as well
+		String currRole = nameLabel.getAttribute("role");
+		System.out.println(currRole);
+		
+		//determine whether role and position type actually makes sense
+		
 		/*
-		 * What is the position type of the user at the moment?
+		 * Gather user position type and user full name
 		 * What box, if any, is available to be signed?
 		 * Are all other signatures present/not present as required?
+		 * Seek the box associated with user, verify that is the ONLY modifiable box
 		 */
+		
 		//Start with making sure a PI can sign their proposal
-		String currentUserPositionType = uu.getPositionType(driver);
-		if(currentUserPositionType.equals("Tenured/tenure-track faculty") ^ 
-				currentUserPositionType.equals("Non-tenure-track research faculty"))
+		//These signatures should only be allowed in the "trSignPICOPI" table
+		//ONLY Tenured/tenure-track or Non-tenure-track research faculty can add a new
+		//proposal and be a PI *** logic following is likely backwards
+		
+		//currentUserPositionType.equals("Tenured/tenure-track faculty") ^ 
+		//currentUserPositionType.equals("Non-tenure-track research faculty")
+		
+		if(currRole.equals("PI"))
 		{
-			//This position type can only be a PI or coPI
-			WebElement sigbox;
-			sigbox = driver.findElement(By.cssSelector("input[class='sfInputbox']"));
-			if(sigbox.isEnabled())
+			//This user role can only be a Tenured/tenure-track or 
+			//Non-tenure-track research faculty
+			if(currentUserPositionType.equals("Tenured/tenure-track faculty") ^
+					currentUserPositionType.equals("Non-tenure-track research faculty"))
+				{
+					sigbox = driver.findElement(By.cssSelector("input[class='sfInputbox']"));
+
+				}
+			
+	/*		if(sigbox.isEnabled())
 			{
 				sigbox.sendKeys("siggy");
 			}
-		}
+	*/	}
+	
+		
 	}
 
+	/*
+	 * Note! Attempting to SAVE the proposal without SIGNING it first does not produce
+	 * an alert box
+	 * Instead it navigates to the same page with span class=error under the unsigned
+	 * text boxes
+	 * INCOMPLETE
+	 */
 	public void saveProposal(WebDriver driver) {
 		/*
 		 * click id=btnSaveProposal storeElementPresent id=BoxAlertBtnOk
@@ -371,7 +412,7 @@ public class Proposal {
 	/*
 	 * Single method to fill out entire proposal
 	 */
-	public void addProposal(WebDriver driver)
+	public void addProposal(WebDriver driver, String userName, String positionType)
 	{
 		this.createProjectInformation(driver);
 		this.createSponsorAndBudgetInformation(driver);
@@ -382,6 +423,6 @@ public class Proposal {
 		this.createAdditionalInformation(driver);
 		this.createCollaborationInformation(driver);
 		this.createProprietaryConfidentialInformation(driver);
-		this.certificationSignatures(driver);
+		this.certificationSignatures(driver, userName, positionType);
 	}
 }

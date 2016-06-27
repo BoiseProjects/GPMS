@@ -1,18 +1,25 @@
 package gpms.selenium;
 
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.MarionetteDriver;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.logging.LogType;
+import org.openqa.selenium.logging.LoggingPreferences;
+import org.openqa.selenium.remote.CapabilityType;
+import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 /*
  * Created by: Liliana Acevedo
- * last modified: 6/20/16
+ * last modified: 6/27/16
  */
 
 public class Browser {
@@ -21,10 +28,16 @@ public class Browser {
 	// Method to call driver and open web app
 	// No parameters required
 	public WebDriver openWebApp() {
+		
+		//ATTEMPTING TO FIND A WAY TO SUPPRESS DEBUG LOGS TO CONSOLE -
+		//HAVEN'T FIGURED IT OUT... 
 		System.setProperty("webdriver.gecko.driver",
 				"C:/Users/Liliana/workspace/Tools/Marionette/wires.exe");
-
-		WebDriver driver = new MarionetteDriver();
+		DesiredCapabilities caps = DesiredCapabilities.firefox(); 
+		LoggingPreferences logs = new LoggingPreferences(); 
+		logs.enable(LogType.DRIVER, Level.INFO); 
+		caps.setCapability(CapabilityType.LOGGING_PREFS, logs);
+		WebDriver driver = new MarionetteDriver(caps);
 		String appUrl = "http://seal.boisestate.edu:8080/GPMS/";
 		driver.get(appUrl);
 
@@ -51,10 +64,22 @@ public class Browser {
 	}
 
 	// Purpose: click the myProfile dropdown list icon
-	public void clickProfileDropdown(WebDriver driver) {
+	public void clickProfileDropdown(WebDriver driver) 
+	{
 		WebElement myProfileDrop = driver.findElement(By
 				.cssSelector("span[class='myProfile icon-arrow-s']"));
 		myProfileDrop.click();
+	}
+	
+	/*
+	 * Purpose: click on a link from the myProfile dropdown
+	 * Requires input string indicating part of the visible link text
+	 */
+	public void clickProfileDDLOption(WebDriver driver, String option)
+	{
+		this.clickProfileDropdown(driver);
+		WebElement desired = driver.findElement(By.cssSelector(option));
+		desired.click();
 	}
 
 	// The tricky part here is identifying where the header is actually located
@@ -93,6 +118,19 @@ public class Browser {
 				.id("topStickybar_hypLogo")));
 		System.out.println("Home logo detected");
 
+	}
+	
+	/*
+	 * Purpose: wait for a particular element to load
+	 * Requires ID of element input parameters
+	 */
+	public void waitForElementLoad(WebDriver driver, String currentElement)
+	{
+		FluentWait<WebDriver> wait = new FluentWait<WebDriver>(driver)
+				.withTimeout(30, TimeUnit.SECONDS)
+				.pollingEvery(5, TimeUnit.SECONDS)
+				.ignoring(NoSuchElementException.class);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(currentElement)));
 	}
 
 	// Alert boxes for ERROR messages have the tag

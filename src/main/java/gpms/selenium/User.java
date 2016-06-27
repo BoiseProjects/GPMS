@@ -8,7 +8,7 @@ import org.openqa.selenium.WebElement;
 
 /*
  * Created by: Liliana Acevedo
- * last modified: 6/22/16
+ * last modified: 6/27/16
  */
 
 public class User {
@@ -146,6 +146,9 @@ public class User {
 	/*
 	 * Purpose: Get the data table from the add proposal page with investigator
 	 * information
+	 * Goal: get all users from investigator info tab on proposal page and their
+	 * associated roles
+	 *INCOMPLETE
 	 */
 	public void getInvestigatorInfo(WebDriver driver) 
 	{
@@ -154,11 +157,53 @@ public class User {
 		List<WebElement> tableRows = baseTable.findElements(By.tagName("tr"));
 		tableRows.get(index).getText();
 	}
+	
 
+	/*
+	 * Get user's full name from My Account page
+	 */
+	public String getUserFullName(WebDriver driver)
+	{
+		Browser bb = new Browser();
+		String option = "a[href='./MyAccount.jsp']", 
+				expectedTitle = "User Account - Profile",
+				expectedHeader = "Manage Your Profile", 
+				fname, mname, lname, fullName;
+		WebElement firstName, middleName, lastName;
+		
+		//Go to My Account page to Manage My Profile, verify we are on correct page
+		bb.clickProfileDropdown(driver);
+/*		String currentElement = "ulLoggedRoles";
+		bb.waitForElementLoad(driver, currentElement);
+		bb.clickProfileDDLOption(driver, option);
+*/
+		WebElement aa = driver.findElement(By.cssSelector(option));
+		aa.click();
+		bb.waitForPageLoad(driver);
+		bb.compareTitle(expectedTitle, driver);
+		bb.verifyPageHeader(expectedHeader, driver);
+		
+		//gather data
+		firstName = driver.findElement(By.id("txtFirstName"));
+		fname = firstName.getAttribute("value");
+		
+		middleName = driver.findElement(By.id("txtMiddleName"));
+		mname = middleName.getAttribute("value");
+		
+		lastName = driver.findElement(By.id("txtLastName"));
+		lname = lastName.getAttribute("value");
+		
+		fullName = fname + " " + mname + " " + lname;
+		
+		System.out.println("FULL NAME: " + fullName);
+		return fullName;
+	} 
+	
 	/*
 	 * Purpose: click on Investigator info tab
 	 */
-	public void clickInvestigatorInfo(WebDriver driver) {
+	public void clickInvestigatorInfo(WebDriver driver) 
+	{
 
 	}
 
