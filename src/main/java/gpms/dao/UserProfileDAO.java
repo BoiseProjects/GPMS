@@ -416,6 +416,83 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 		return users;
 	}
 
+	public List<UserInfo> findAllAdminUsers(String userName, String college,
+			String department, String positionType, String positionTitle,
+			Boolean isActive) throws UnknownHostException {
+		Datastore ds = getDatastore();
+		List<UserInfo> users = new ArrayList<UserInfo>();
+
+		Query<UserProfile> profileQuery = ds.createQuery(UserProfile.class);
+		Query<UserAccount> accountQuery = ds.createQuery(UserAccount.class);
+
+		if (userName != null) {
+			accountQuery.criteria("username").containsIgnoreCase(userName);
+		}
+
+		if (isActive != null) {
+			accountQuery.criteria("active").equal(isActive);
+		}
+
+		profileQuery.criteria("user id").in(accountQuery.asKeyList());
+
+		List<String> positionTypes = new ArrayList<String>();
+		positionTypes.add("University administrator");
+
+		profileQuery.criteria("details.position type").in(positionTypes);
+
+		if (positionTitle != null) {
+			profileQuery.criteria("details.position title")
+					.equal(positionTitle);
+		} else {
+			List<String> positionTitles = new ArrayList<String>();
+			positionTitles.add("IRB");
+			positionTitles.add("University Research Administrator");
+			positionTitles.add("University Research Director");
+
+			profileQuery.criteria("details.position title").in(positionTitles);
+		}
+
+		List<UserProfile> userProfiles = profileQuery.order(
+				"-audit log.activity on").asList();
+
+		for (UserProfile userProfile : userProfiles) {
+			UserInfo user = new UserInfo();
+			user.setId(userProfile.getId().toString());
+			user.setUserName(userProfile.getUserAccount().getUserName());
+			user.setFullName(userProfile.getFullName());
+
+			user.setNoOfPIedProposal(countPIProposal(userProfile));
+			user.setNoOfCoPIedProposal(countCoPIProposal(userProfile));
+			user.setNoOfSenioredProposal(countSeniorPersonnel(userProfile));
+
+			user.setAddedOn(userProfile.getUserAccount().getAddedOn());
+
+			Date lastAudited = null;
+			String lastAuditedBy = new String();
+			String lastAuditAction = new String();
+
+			int auditLogCount = userProfile.getAuditLog().size();
+			if (userProfile.getAuditLog() != null && auditLogCount != 0) {
+				AuditLog auditLog = userProfile.getAuditLog().get(
+						auditLogCount - 1);
+				lastAudited = auditLog.getActivityDate();
+				lastAuditedBy = auditLog.getUserProfile().getFullName();
+				lastAuditAction = auditLog.getAction();
+			}
+
+			user.setLastAudited(lastAudited);
+			user.setLastAuditedBy(lastAuditedBy);
+			user.setLastAuditAction(lastAuditAction);
+
+			user.setDeleted(userProfile.getUserAccount().isDeleted());
+			user.setActivated(userProfile.getUserAccount().isActive());
+			user.setAdminUser(userProfile.getUserAccount().isAdmin());
+			users.add(user);
+		}
+		// Collections.sort(users);
+		return users;
+	}
+
 	public List<AuditLogInfo> findAllForUserAuditLogGrid(int offset, int limit,
 			ObjectId userId, String action, String auditedBy,
 			String activityOnFrom, String activityOnTo) throws ParseException,
