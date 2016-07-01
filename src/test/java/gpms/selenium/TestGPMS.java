@@ -17,18 +17,13 @@ public class TestGPMS {
 		// objects and vars instantiation
 		long timeoutInSeconds = 2;
 
-		  String currentUser = "liliana"; 
-		  String userEmail =
-		  "lva34bsu@gmail.com"; 
-		  String pword = "password";
-/*		 
+		  String currentUser; 
 
-		String currentUser = "bmcomputerengineering1";
-		String userEmail = "bmcomputerengineering1@gmail.com";
-		String pword = "gpmspassword";
-*/		Browser bub = new Browser();
+
+		Browser bub = new Browser();
 		User us = new User();
 		Proposal pup = new Proposal();
+		UserLogin ul = new UserLogin();
 
 		// Run method to open browser
 		WebDriver driver = bub.openWebApp();
@@ -45,7 +40,7 @@ public class TestGPMS {
 		bub.compareTitle(expectedTitle, driver);
 
 		// Run method to login desired user
-		us.userLogin(userEmail, pword, driver);
+		currentUser = ul.bmceLogin(driver);
 
 		// Wait for page to load
 		bub.waitForPageLoad(driver);
@@ -112,20 +107,20 @@ public class TestGPMS {
 		// Attempt to edit a proposal
 
 		// Click Add New Proposal button
-		us.addNewProposal(driver);
+		us.addNewProposal(driver, userName, positionType);
 
 		bub.waitForPageLoad(driver);
 
 		// us.addCoPI(driver);
 
 		//Fill out project information tab of proposal sheet
-		pup.addProposal(driver, userName, positionType);
+	//	pup.addProposal(driver, userName, positionType);
 		
 		// click on sign out button
-		us.userLogout(driver);
+//		us.userLogout(driver);
 
 		// close the web browser
-		driver.close();
+//		driver.close();
 		System.out.println("Test script executed successfully");
 
 		// terminate program

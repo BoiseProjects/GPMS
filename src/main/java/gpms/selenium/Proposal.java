@@ -348,8 +348,28 @@ public class Proposal {
 		//*** Still need to include an if statement for when user not found
 		WebElement nameLabel = driver.findElement(By.xpath("//span[contains(text(),'" + 
 													currentUserFullName + "')]"));
-		String nameText = nameLabel.getText();
-		System.out.println(nameText);
+//WebElement parent = driver.findElement(By.xpath("//input[@id='abc']/../../img[2]"));
+		if (nameLabel.isDisplayed())
+		{
+			String nameText = nameLabel.getText();
+			System.out.println(nameText);
+/*			sigbox = driver.findElement(By.xpath("//span[contains(text(),'" + 
+													currentUserFullName + 
+													"')]/../input[data-for='signature']"));
+*/
+			sigbox = driver.findElement(By.cssSelector("input[data-for='signature']"));
+
+			
+			if(sigbox.isEnabled())
+			{
+				sigbox.sendKeys("siggy");
+			}
+			else
+			{
+				System.out.println("Whoops, I see my name but can't type in it!");
+			}
+		}
+		
 
 		//find the position associated with that element
 		//I believe this works as well
@@ -373,7 +393,7 @@ public class Proposal {
 		//currentUserPositionType.equals("Tenured/tenure-track faculty") ^ 
 		//currentUserPositionType.equals("Non-tenure-track research faculty")
 		
-		if(currRole.equals("PI"))
+/*		if(currRole.equals("PI"))
 		{
 			//This user role can only be a Tenured/tenure-track or 
 			//Non-tenure-track research faculty
@@ -384,13 +404,12 @@ public class Proposal {
 
 				}
 			
-	/*		if(sigbox.isEnabled())
+			if(sigbox.isEnabled())
 			{
 				sigbox.sendKeys("siggy");
 			}
-	*/	}
-	
-		
+		}
+*/		
 	}
 
 	/*

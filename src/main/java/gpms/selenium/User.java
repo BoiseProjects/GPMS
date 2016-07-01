@@ -83,8 +83,10 @@ public class User {
 	 * important to verify pre- and post-conditions and report whether it should
 	 * have worked...
 	 */
-	public void addNewProposal(WebDriver driver) {
+	public void addNewProposal(WebDriver driver, String userName, String positionType) 
+	{
 		Browser bb = new Browser();
+		Proposal pp = new Proposal();
 		WebElement addNewProp = driver.findElement(By.id("btnAddNew"));
 		String currentPosition, expectedHeader;
 		boolean verificationResult;
@@ -105,6 +107,7 @@ public class User {
 			verificationResult = bb.verifyPageHeader(expectedHeader, driver);
 			if (verificationResult == true) {
 				System.out.println("Access granted, as required");
+				pp.addProposal(driver, userName, positionType);
 			} else
 				System.out.println("Uh oh, why can't faculty add a proposal?");
 		} else {
