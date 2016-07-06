@@ -1,5 +1,9 @@
 package gpms.selenium;
 
+import java.awt.AWTException;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -7,7 +11,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 /*
  * Created by: Liliana Acevedo
- * last modified: 6/27/16
+ * last modified: 7/5/16
  */
 
 public class TestGPMS {
@@ -26,7 +30,7 @@ public class TestGPMS {
 		UserLogin ul = new UserLogin();
 
 		// Run method to open browser
-		WebDriver driver = bub.openWebApp();
+		WebDriver driver = bub.openWebApp("firefox");
 		WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
 		System.out.println("Open browser");
 
@@ -40,7 +44,7 @@ public class TestGPMS {
 		bub.compareTitle(expectedTitle, driver);
 
 		// Run method to login desired user
-		currentUser = ul.bmceLogin(driver);
+		currentUser = ul.lilyLogin(driver);
 
 		// Wait for page to load
 		bub.waitForPageLoad(driver);
@@ -67,13 +71,20 @@ public class TestGPMS {
 		// Wait for the desired link to load
 		bub.waitForPageLoad(driver);
 
-		//Get full name of user - this method currently questionable
+		//Get full name of user 
 		String userName = us.getUserFullName(driver);
+			
 
 		
 		// Get position type of current user
 		String positionType = us.getPositionType(driver);
 		System.out.println("POSITION " + positionType);
+		
+		//testing session method ---- I have not figured out how to get data from session yet
+/*		HttpServletRequest req;
+		bub.getSessionID(driver, req);
+*/		System.out.println("DO I SEE A SESSION ID?");
+//	Above not working
 		
 		/*
 		 * //Click on "View as Professor", if it is not already checked
@@ -107,7 +118,12 @@ public class TestGPMS {
 		// Attempt to edit a proposal
 
 		// Click Add New Proposal button
-		us.addNewProposal(driver, userName, positionType);
+		try {
+			us.addNewProposal(driver, userName, positionType);
+		} catch (AWTException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		bub.waitForPageLoad(driver);
 

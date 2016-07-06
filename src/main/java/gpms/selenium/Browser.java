@@ -3,10 +3,16 @@ package gpms.selenium;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import javax.ws.rs.core.Context;
+import gpms.rest.UserService;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.MarionetteDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.logging.LogType;
@@ -17,9 +23,12 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 /*
  * Created by: Liliana Acevedo
- * last modified: 6/27/16
+ * last modified: 7/5/16
  */
 
 public class Browser {
@@ -27,17 +36,28 @@ public class Browser {
 
 	// Method to call driver and open web app
 	// No parameters required
-	public WebDriver openWebApp() {
+	public WebDriver openWebApp(String browser) {
 		
-		//ATTEMPTING TO FIND A WAY TO SUPPRESS DEBUG LOGS TO CONSOLE -
-		//HAVEN'T FIGURED IT OUT... 
-		System.setProperty("webdriver.gecko.driver",
-				"C:/Users/Liliana/workspace/Tools/Marionette/wires.exe");
-		DesiredCapabilities caps = DesiredCapabilities.firefox(); 
-		LoggingPreferences logs = new LoggingPreferences(); 
-		logs.enable(LogType.DRIVER, Level.INFO); 
-		caps.setCapability(CapabilityType.LOGGING_PREFS, logs);
-		WebDriver driver = new MarionetteDriver(caps);
+		WebDriver driver;
+		if (browser.equalsIgnoreCase("firefox"))
+		{
+			//ATTEMPTING TO FIND A WAY TO SUPPRESS DEBUG LOGS TO CONSOLE -
+			//HAVEN'T FIGURED IT OUT... 
+			System.setProperty("webdriver.gecko.driver",
+					"C:/Users/Liliana/workspace/Tools/Marionette/wires.exe");
+			DesiredCapabilities caps = DesiredCapabilities.firefox(); 
+			LoggingPreferences logs = new LoggingPreferences(); 
+			logs.enable(LogType.DRIVER, Level.INFO); 
+			caps.setCapability(CapabilityType.LOGGING_PREFS, logs);
+			driver = new MarionetteDriver(caps);
+		}
+		else //if(browser.equalsIgnoreCase("chrome"))
+		{
+			System.setProperty("webdriver.chrome.driver",
+					"C:/Users/Liliana/workspace/Tools/Chrome/chromedriver.exe");
+			driver = new ChromeDriver();
+		}
+			
 		String appUrl = "http://seal.boisestate.edu:8080/GPMS/";
 		driver.get(appUrl);
 
@@ -163,4 +183,106 @@ public class Browser {
 		act.moveToElement(subMenu);
 		act.click().build().perform();
 	}
+	
+	//Not working... aiming to get userID from Session
+	//String ASPNET_SessionId = driver.manage().getCookieNamed("ASP.NET_SessionId").toString();
+    //System.out.println(ASPNET_SessionId);
+	//from...Set User Session based on selected position detail
+	public void getSessionID(WebDriver driver,@Context HttpServletRequest request)
+	{
+		UserService haa = new UserService();
+/*
+		ObjectMapper mapper = new ObjectMapper();
+		JsonNode root = mapper.readTree(message);
+		String userProfileID = new String();
+		String userName = new String();
+
+		
+		HttpServletRequest req;
+//		HttpSession session = request.getSession();
+		if (session.getAttribute("userProfileId") != null) 
+			{return (String) session.getAttribute("userProfileId");}
+		else 
+			return "I don't have what you seek";
+*/
+		//String sessionID = driver.manage().getCookieNamed("session").toString();
+		//System.out.println(sessionID);
+	}
+	
+	//Purpose: click Back button at bottom of proposal page
+	public void clickProposalGoBackBtn(WebDriver driver)
+	{
+		WebElement backBtn = driver.findElement(By.id("btnBack"));
+		backBtn.click();
+	}
+	
+	//Purpose: click Reset button at bottom of proposal page
+	public void clickProposalResetBtn(WebDriver driver)
+	{
+		WebElement resetBtn = driver.findElement(By.id("btnReset"));
+		resetBtn.click();
+	}
+		
+	//Purpose: click Save button at bottom of proposal page
+	//Will not work if any fields have not been filled in, 
+	//need to account for these errors
+	public void clickProposalSaveBtn(WebDriver driver)
+	{
+		WebElement saveBtn = driver.findElement(By.id("btnSaveProposal"));
+		saveBtn.click();
+	}	
+	
+	//Purpose: click Delete button at bottom of proposal page
+	//Will not work if user does not have permission to delete proposal, 
+	//need to account for these errors
+	public void clickProposalDeleteBtn(WebDriver driver)
+	{
+		WebElement deleteBtn = driver.findElement(By.id("btnDeleteProposal"));
+		deleteBtn.click();
+	}	
+	
+	//Purpose: click Submit button at bottom of proposal page
+	//Will not work if user does not have permission to submit this proposal, 
+	//need to account for these errors
+	public void clickProposalSubmitBtn(WebDriver driver)
+	{
+		WebElement submitBtn = driver.findElement(By.id("btnSubmitProposal"));
+		submitBtn.click();
+	}		
+	
+	//Purpose: click Approve button at bottom of proposal page
+	//Will not work if user does not have permission to approve proposal, 
+	//need to account for these errors
+	public void clickProposalApproveBtn(WebDriver driver)
+	{
+		WebElement approveBtn = driver.findElement(By.id("btnApproveProposal"));
+		approveBtn.click();
+	}		
+	
+	//Purpose: click Disapprove button at bottom of proposal page
+	//Will not work if user does not have permission to disapprove proposal, 
+	//need to account for these errors
+	public void clickProposalDisapproveBtn(WebDriver driver)
+	{
+		WebElement disapproveBtn = driver.findElement(By.id("btnDisapproveProposal"));
+		disapproveBtn.click();
+	}		
+
+	//Purpose: click Withdraw button at bottom of proposal page
+	//Will not work if user does not have permission to withdraw proposal, 
+	//need to account for these errors
+	public void clickProposalWithdrawBtn(WebDriver driver)
+	{
+		WebElement withdrawBtn = driver.findElement(By.id("btnWithdrawProposal"));
+		withdrawBtn.click();
+	}	
+	
+	//Purpose: click Archive button at bottom of proposal page
+	//Will not work if user does not have permission to archive proposal, 
+	//need to account for these errors
+	public void clickProposalArchiveBtn(WebDriver driver)
+	{
+		WebElement archiveBtn = driver.findElement(By.id("btnArchiveProposal"));
+		archiveBtn.click();
+	}		
 }

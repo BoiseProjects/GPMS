@@ -1,14 +1,16 @@
 package gpms.selenium;
 
+import java.awt.AWTException;
 import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+
 /*
  * Created by: Liliana Acevedo
- * last modified: 6/27/16
+ * last modified: 7/5/16
  */
 
 public class User {
@@ -83,7 +85,7 @@ public class User {
 	 * important to verify pre- and post-conditions and report whether it should
 	 * have worked...
 	 */
-	public void addNewProposal(WebDriver driver, String userName, String positionType) 
+	public void addNewProposal(WebDriver driver, String userName, String positionType) throws AWTException 
 	{
 		Browser bb = new Browser();
 		Proposal pp = new Proposal();
@@ -209,5 +211,7 @@ public class User {
 	{
 
 	}
+	
+	//Useful for when I want to check email... http://toolsqa.com/selenium-webdriver/handling-multiple-browsers-in-selenium-webdriver/
 
 }

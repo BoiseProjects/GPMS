@@ -1,5 +1,10 @@
 package gpms.selenium;
 
+import java.awt.AWTException;
+import java.awt.Robot;
+import java.awt.Toolkit;
+import java.awt.datatransfer.StringSelection;
+import java.awt.event.KeyEvent;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
@@ -323,11 +328,46 @@ public class Proposal {
 
 		//Will this project involve intellectual property in which the University may own or have an interest?
 		//Select yes/no
-		WebElement ddlOwnIntellectualProperty = driver.findElement(By.id("ddlProprietaryInformation"));
+		WebElement ddlOwnIntellectualProperty = driver.findElement(By.id("ddlOwnIntellectualProperty"));
 		ddlOwnIntellectualProperty.sendKeys(Keys.ARROW_DOWN);//yes
 		ddlOwnIntellectualProperty.sendKeys(Keys.ARROW_DOWN);//no
 	}
 
+	/*
+	 * Purpose: click on Appendices tab and attempt to add a document
+	 */
+	public void createAppendices(WebDriver driver)
+	{
+		//Open Certification/Signatures tab
+		WebElement ddlAppendices = driver.findElement(By.id("lblSection13"));
+		ddlAppendices.click();
+		
+		//Click on upload button
+		WebElement uploadBtn = driver.findElement(By.className("ajax-file-upload"));
+		uploadBtn.click();
+		
+		StringSelection ss = new StringSelection("C:\\Users\\Liliana\\Desktop\\NSF REU\\MAIN - DocumentsFor2016REUstudents\\YouDon'tSay.jpg");
+		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(ss, null);
+	
+		//native key strokes for CTRL, V and ENTER keys
+		Robot robot = null;
+		try {
+			robot = new Robot();
+		} catch (AWTException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		robot.keyPress(KeyEvent.VK_CONTROL);
+		robot.keyPress(KeyEvent.VK_V);
+		robot.keyRelease(KeyEvent.VK_V);
+		robot.keyRelease(KeyEvent.VK_CONTROL);
+		robot.keyPress(KeyEvent.VK_ENTER);
+		robot.keyRelease(KeyEvent.VK_ENTER);
+/*		robot.keyPress(KeyEvent.VK_ENTER);
+		robot.keyRelease(KeyEvent.VK_ENTER);	
+*/	
+	}
 	/*
 	 * Open and fill out Certification/Signatures
 	 * Requires first calling getUserFullName:String (User)
@@ -338,10 +378,13 @@ public class Proposal {
 			String currentUserPositionType) 
 	{
 		WebElement sigbox;
+		Browser bb = new Browser();
 		//Open Certification/Signatures tab
 		WebElement ddlCertificationSignatures = driver.findElement(By.id("lblSection11"));
+		String currentElement = "ddlCertificationSignatures";
 		ddlCertificationSignatures.click();
 		
+		bb.waitForElementLoad(driver, "pi_signature");
 		
 		//find that user's name in the table... 
 		//I believe this is successful
@@ -368,9 +411,19 @@ public class Proposal {
 			{
 				System.out.println("Whoops, I see my name but can't type in it!");
 			}
+			
+			
 		}
 		
 
+		//Click the date box
+		WebElement date = driver.findElement(By.cssSelector("input[data-for='signaturedate']"));
+		date.click();
+		
+		//Input a note
+		WebElement note = driver.findElement(By.cssSelector("textarea[title='Proposal Notes']"));
+		note.sendKeys("Check one, two. Testing, testing.");
+		
 		//find the position associated with that element
 		//I believe this works as well
 		String currRole = nameLabel.getAttribute("role");
@@ -411,7 +464,7 @@ public class Proposal {
 		}
 */		
 	}
-
+	
 	/*
 	 * Note! Attempting to SAVE the proposal without SIGNING it first does not produce
 	 * an alert box
@@ -426,6 +479,8 @@ public class Proposal {
 		 * id=alert-BoxContenedor storeElementPresent id=BoxAlertBtnOk
 		 * assertText id=alert-BoxContenedor Successful message
 		 */
+		Browser bb = new Browser();
+		bb.clickProposalSaveBtn(driver);
 	}
 	
 	/*
@@ -433,7 +488,7 @@ public class Proposal {
 	 */
 	public void addProposal(WebDriver driver, String userName, String positionType)
 	{
-		this.createProjectInformation(driver);
+/*		this.createProjectInformation(driver);
 		this.createSponsorAndBudgetInformation(driver);
 		this.createCostShareInformation(driver);
 		this.createUniversityCommitments(driver);
@@ -443,5 +498,6 @@ public class Proposal {
 		this.createCollaborationInformation(driver);
 		this.createProprietaryConfidentialInformation(driver);
 		this.certificationSignatures(driver, userName, positionType);
+*/		this.createAppendices(driver);
 	}
 }
