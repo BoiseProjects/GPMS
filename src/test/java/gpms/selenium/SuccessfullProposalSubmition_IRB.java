@@ -21,7 +21,7 @@ public class SuccessfullProposalSubmition_IRB {
 
   @Before
   public void setUp() throws Exception {
-	System.setProperty("webdriver.chrome.driver", "E:/REU Internship/Selenium/chromedriver.exe");
+	System.setProperty("webdriver.chrome.driver", "C:/Users/Liliana/workspace/Tools/Chrome/chromedriver.exe");
     driver = new ChromeDriver();
     baseUrl = "http://seal.boisestate.edu:8080/";
     driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
@@ -51,7 +51,7 @@ public class SuccessfullProposalSubmition_IRB {
     Thread.sleep(1000);
     driver.findElement(By.id("txtProjectTitle")).clear();
     Thread.sleep(1000);
-    driver.findElement(By.id("txtProjectTitle")).sendKeys("Proposal test16");
+    driver.findElement(By.id("txtProjectTitle")).sendKeys("Proposal liliana test 1");
     Thread.sleep(1000);
     driver.findElement(By.cssSelector("td.cssClassTableRightCol")).click();
     Thread.sleep(1000);

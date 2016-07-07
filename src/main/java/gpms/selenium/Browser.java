@@ -9,6 +9,7 @@ import javax.ws.rs.core.Context;
 import gpms.rest.UserService;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -28,7 +29,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 /*
  * Created by: Liliana Acevedo
- * last modified: 7/5/16
+ * last modified: 7/7/16
  */
 
 public class Browser {
@@ -171,17 +172,16 @@ public class Browser {
 		alertOkBtn.click();
 	}
 
-	// Purpose: Hover over an icon to present a hidden dropdown menu and
-	// select an item from the list
-	public void hoverClick(WebDriver driver) {
-		Actions act = new Actions(driver);
-		WebElement mainMenu = driver.findElement(By
-				.cssSelector("div[class='cssClassActionOnClickShow"));
-		act.moveToElement(mainMenu);
-
-		WebElement subMenu = driver.findElement(By.id("edit0"));
-		act.moveToElement(subMenu);
-		act.click().build().perform();
+	
+	/* 
+	 * Purpose: Hover over an icon to present a hidden dropdown menu and
+	 * select an item from the list
+	 * Currently works exclusively on the first proposal in the manage proposals list
+	 */
+	public void hoverClick(WebDriver driver) 
+	{
+		((JavascriptExecutor) driver)
+        .executeScript("var s=document.getElementById('edit0');s.click();");
 	}
 	
 	//Not working... aiming to get userID from Session

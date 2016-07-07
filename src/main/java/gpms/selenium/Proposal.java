@@ -16,51 +16,66 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 /*
  *	Created by: Liliana Acevedo 
- *	last modified: 6/27/16
+ *	last modified: 7/7/16
  *
- * I would like to go back through these and ensure that the tabs open properly; 
- * otherwise the user will not have any data visible, proving they cannot access that part
- * of the page through the visible elements;
  * being able to access hidden items will be tested using JS later
+ * need to include booleans indicating desired pass or fail
+ * include input parameter indicating which option should be selected
  */
 
 public class Proposal {
 
-	public void createProjectInformation(WebDriver driver) {
-		//Fills out the project information tab of proposal 
-
-		String currentElement;
-		FluentWait<WebDriver> wait = new FluentWait<WebDriver>(driver)
-				.withTimeout(30, TimeUnit.SECONDS)
-				.pollingEvery(5, TimeUnit.SECONDS)
-				.ignoring(NoSuchElementException.class);
-
-		// Locate and open Project information tab
-		currentElement = "lblSection2";
-		wait.until(ExpectedConditions.visibilityOfElementLocated(By
-				.id(currentElement)));
-		WebElement projInfoDrop = driver.findElement(By.id(currentElement));
-		projInfoDrop.click();
-
+	/*
+	 * Purpose: creates a randomized title
+	 * Called by: Create Project Information
+	 */
+	public void createProjectTitle(WebDriver driver)
+	{
 		// Insert a title
-		currentElement = "txtProjectTitle";
+		String currentElement = "txtProjectTitle";
 		int projNum = (int) Math.floor(Math.random() * 10000);
-		wait.until(ExpectedConditions.visibilityOfElementLocated(By
-				.id(currentElement)));
+//		wait.until(ExpectedConditions.visibilityOfElementLocated(By
+//				.id(currentElement)));
 		WebElement projTitle = driver.findElement(By.id(currentElement));
 		projTitle.clear();
 		projTitle.sendKeys("Proposal " + projNum);
-
-		// Select a project type
-		currentElement = "ddlProjectType";
-		wait.until(ExpectedConditions.visibilityOfElementLocated(By
-				.id(currentElement)));
+	}
+	
+	/*
+	 * Purpose: Select a project type from the drop down menu
+	 * Called by: createProjectInformation
+	 */
+	public void selectProjectType(WebDriver driver)
+	{
+		Browser bb = new Browser();
+		String currentElement = "ddlProjectType";
+		bb.waitForElementLoad(driver, currentElement);
+//		wait.until(ExpectedConditions.visibilityOfElementLocated(By
+//				.id(currentElement)));
 		WebElement projType = driver.findElement(By.id(currentElement));
 		// new Select(projType).selectByVisibleText("Research-Basic");
 		projType.sendKeys(Keys.ARROW_DOWN);
 		projType.sendKeys(Keys.ARROW_DOWN);
 		projType.sendKeys(Keys.ARROW_DOWN);
 		System.out.println("Selected project type");
+	}
+	
+	public void createProjectInformation(WebDriver driver) {
+		//Fills out the project information tab of proposal 
+
+		String currentElement;
+
+		// Locate and open Project information tab
+		currentElement = "lblSection2";
+
+		WebElement projInfoDrop = driver.findElement(By.id(currentElement));
+		projInfoDrop.click();
+
+		// Insert a title
+		this.createProjectTitle(driver);
+
+		// Select a project type
+		this.selectProjectType(driver);
 
 		// Select a due date
 		driver.findElement(By.id("txtDueDate")).click();
@@ -335,6 +350,7 @@ public class Proposal {
 
 	/*
 	 * Purpose: click on Appendices tab and attempt to add a document
+	 * **** Include logic to 
 	 */
 	public void createAppendices(WebDriver driver)
 	{
@@ -357,6 +373,13 @@ public class Proposal {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		robot.keyPress(KeyEvent.VK_CONTROL);
 		robot.keyPress(KeyEvent.VK_V);
@@ -364,9 +387,11 @@ public class Proposal {
 		robot.keyRelease(KeyEvent.VK_CONTROL);
 		robot.keyPress(KeyEvent.VK_ENTER);
 		robot.keyRelease(KeyEvent.VK_ENTER);
-/*		robot.keyPress(KeyEvent.VK_ENTER);
+		robot.keyPress(KeyEvent.VK_ENTER);
 		robot.keyRelease(KeyEvent.VK_ENTER);	
-*/	
+
+		WebElement fileName = driver.findElement(By.cssSelector("input[name=tile_0"));
+		fileName.sendKeys("Cage");
 	}
 	/*
 	 * Open and fill out Certification/Signatures
@@ -488,7 +513,7 @@ public class Proposal {
 	 */
 	public void addProposal(WebDriver driver, String userName, String positionType)
 	{
-/*		this.createProjectInformation(driver);
+		this.createProjectInformation(driver);
 		this.createSponsorAndBudgetInformation(driver);
 		this.createCostShareInformation(driver);
 		this.createUniversityCommitments(driver);
@@ -498,6 +523,17 @@ public class Proposal {
 		this.createCollaborationInformation(driver);
 		this.createProprietaryConfidentialInformation(driver);
 		this.certificationSignatures(driver, userName, positionType);
-*/		this.createAppendices(driver);
+		this.createAppendices(driver);
+	}
+	
+	/*
+	 * Purpose: manage the editing of a proposal
+	 * 
+	 * *** Include some way of changing which proposal is being managed
+	 */
+	public void editProposal(WebDriver driver)
+	{
+		Browser bb = new Browser();
+		bb.hoverClick(driver);
 	}
 }

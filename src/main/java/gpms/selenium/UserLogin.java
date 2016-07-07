@@ -1,9 +1,18 @@
 package gpms.selenium;
 
 import org.openqa.selenium.WebDriver;
-
+/*
+ *	Created by: Liliana Acevedo 
+ *	last modified: 7/7/16
+ *
+ * User login details for users currently on the system
+ */
 public class UserLogin 
 {
+	/*
+	 * Word document for users' login:
+	 * 		Admin Users Login Details
+	 */
 
 	public String lilyLogin(WebDriver driver)
 	{
@@ -76,17 +85,6 @@ public class UserLogin
 		return currentUser;
 	}
 	
-	public String irbCELogin(WebDriver driver)
-	{
-		User uu = new User();
-
-		String currentUser = "irbcomputerengineering";
-		String userEmail = "irbcomputerengineering@gmail.com";
-		String pword = "gpmspassword";
-
-		uu.userLogin(userEmail, pword, driver);
-		return currentUser;
-	}
 	
 	public String irbCSLogin(WebDriver driver)
 	{
@@ -111,31 +109,7 @@ public class UserLogin
 		uu.userLogin(userEmail, pword, driver);
 		return currentUser;
 	}
-	
-	//This account does not seem to be working 
-	public String irbCMLogin(WebDriver driver)
-	{
-		User uu = new User();
 
-		String currentUser = "irbchemistry";
-		String userEmail = "irbchemistry@gmail.com";
-		String pword = "gpmspassword";
-
-		uu.userLogin(userEmail, pword, driver);
-		return currentUser;
-	}
-	
-	public String irbPYLogin(WebDriver driver)
-	{
-		User uu = new User();
-
-		String currentUser = "irbphysics";
-		String userEmail = "irbphysicsg@gmail.com";
-		String pword = "gpmspassword";
-
-		uu.userLogin(userEmail, pword, driver);
-		return currentUser;
-	}
 	
 	public String chairEELogin(WebDriver driver)
 	{
@@ -256,19 +230,7 @@ public class UserLogin
 		uu.userLogin(userEmail, pword, driver);
 		return currentUser;
 	}
-	
-	public String raEELogin(WebDriver driver)
-	{
-		User uu = new User();
 
-		String currentUser = "raelectricalengineering";
-		String userEmail = "raelectricalengineering@gmail.com";
-		String pword = "gpmspassword";
-
-		uu.userLogin(userEmail, pword, driver);
-		return currentUser;
-	}
-	
 	public String raCSLogin(WebDriver driver)
 	{
 		User uu = new User();
@@ -280,55 +242,7 @@ public class UserLogin
 		uu.userLogin(userEmail, pword, driver);
 		return currentUser;
 	}
-	
-	public String raCELogin(WebDriver driver)
-	{
-		User uu = new User();
 
-		String currentUser = "racomputerengineering";
-		String userEmail = "racomputerengineering@gmail.com";
-		String pword = "gpmspassword";
-
-		uu.userLogin(userEmail, pword, driver);
-		return currentUser;
-	}
-	
-	public String raPYLogin(WebDriver driver)
-	{
-		User uu = new User();
-
-		String currentUser = "raphysics1";
-		String userEmail = "raphysics1@gmail.com";
-		String pword = "gpmspassword";
-
-		uu.userLogin(userEmail, pword, driver);
-		return currentUser;
-	}
-	
-	public String raCMLogin(WebDriver driver)
-	{
-		User uu = new User();
-
-		String currentUser = "rachemistry1";
-		String userEmail = "rachemistry1@gmail.com";
-		String pword = "gpmspassword";
-
-		uu.userLogin(userEmail, pword, driver);
-		return currentUser;
-	}
-	
-	public String directorCELogin(WebDriver driver)
-	{
-		User uu = new User();
-
-		String currentUser = "directorcomputerengineering";
-		String userEmail = "directorcomputerengineering@gmail.com";
-		String pword = "gpmspassword";
-
-		uu.userLogin(userEmail, pword, driver);
-		return currentUser;
-	}
-	
 	public String directorCSLogin(WebDriver driver)
 	{
 		User uu = new User();
@@ -340,40 +254,5 @@ public class UserLogin
 		uu.userLogin(userEmail, pword, driver);
 		return currentUser;
 	}
-	
-	public String directorEELogin(WebDriver driver)
-	{
-		User uu = new User();
 
-		String currentUser = "directorelectricalengineering";
-		String userEmail = "directorelectricalengineering@gmail.com";
-		String pword = "gpmspassword";
-
-		uu.userLogin(userEmail, pword, driver);
-		return currentUser;
-	}
-	
-	public String directorPXLogin(WebDriver driver)
-	{
-		User uu = new User();
-
-		String currentUser = "directorphysics";
-		String userEmail = "directorphysics@gmail.com";
-		String pword = "gpmspassword";
-
-		uu.userLogin(userEmail, pword, driver);
-		return currentUser;
-	}
-	
-	public String directorCMLogin(WebDriver driver)
-	{
-		User uu = new User();
-
-		String currentUser = "directorchemistry1";
-		String userEmail = "directorchemistry1@gmail.com";
-		String pword = "gpmspassword";
-
-		uu.userLogin(userEmail, pword, driver);
-		return currentUser;
-	}
 }

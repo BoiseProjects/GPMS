@@ -1,6 +1,7 @@
 package gpms.selenium;
 
 import java.awt.AWTException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -10,7 +11,7 @@ import org.openqa.selenium.WebElement;
 
 /*
  * Created by: Liliana Acevedo
- * last modified: 7/5/16
+ * last modified: 7/6/16
  */
 
 public class User {
@@ -66,9 +67,13 @@ public class User {
 		logOffButton.click();
 	}
 
+	/*
+	 * Purpose: get currently marked position type for current user
+	 */
 	public String getPositionType(WebDriver driver) {
 		String positionType;
 		Browser bb = new Browser();
+		
 		bb.clickProfileDropdown(driver);
 		WebElement positionChecked = driver.findElement(By
 				.cssSelector("a[class='icon-checked']"));
@@ -76,6 +81,38 @@ public class User {
 		System.out.println("Position type of user is: " + positionType);
 		bb.clickProfileDropdown(driver);
 		return positionType;
+	}
+	
+	/*
+	 * Purpose: get all position types associated with user
+	 * 	Return array list of strings
+	 */
+	public List<String> getAllPositionTypes(WebDriver driver)
+	{
+		Browser bb = new Browser();
+		WebElement ddl;
+		List<String> positionTypes = new ArrayList<String>();
+		List<WebElement> ddlPositionTypes;
+		String positionType;
+		
+		bb.clickProfileDropdown(driver);
+		ddl = driver.findElement(By.cssSelector("div[class='myProfileDrop']"));
+		ddlPositionTypes = ddl.findElements(By.cssSelector("a[href='#']"));
+				
+		//for debugging purposes:
+		System.out.println("Number in array... " + ddlPositionTypes.size());
+
+		for (int ii = 0; ii < ddlPositionTypes.size(); ii++)
+		{
+			positionType = ddlPositionTypes.get(ii).getAttribute("data-positiontype");
+			positionTypes.add(positionType);
+		
+			//for debugging purposes... 
+			System.out.println("Added: " + positionType);
+		}
+		
+		bb.clickProfileDropdown(driver);
+		return positionTypes;
 	}
 
 	/*
@@ -136,7 +173,7 @@ public class User {
 		// if(current)
 
 		// row of table currently being worked on
-		// problem here is that every fucking row has the same fucking title
+		// problem here is that every  row has the same  title
 		driver.findElement(By.cssSelector("select[title='Choose Role']"));
 
 		// Get number of rows In table.
@@ -214,4 +251,21 @@ public class User {
 	
 	//Useful for when I want to check email... http://toolsqa.com/selenium-webdriver/handling-multiple-browsers-in-selenium-webdriver/
 
+	
+	/*
+	 * Control workflow for PI
+	 */
+	public void piWorkflow(WebDriver driver)
+	{
+		UserLogin us = new UserLogin();
+		Browser bb = new Browser();
+		Proposal pp = new Proposal();
+		String currentUser;
+		
+		// Run method to login desired user
+		currentUser = us.lilyLogin(driver);
+		
+		// Wait for page to load
+		bb.waitForPageLoad(driver);	
+	}
 }

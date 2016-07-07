@@ -1,17 +1,12 @@
 package gpms.selenium;
 
-import java.awt.AWTException;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 /*
  * Created by: Liliana Acevedo
- * last modified: 7/5/16
+ * last modified: 7/7/16
  */
 
 public class TestGPMS {
@@ -19,9 +14,7 @@ public class TestGPMS {
 	public static void main(String[] args) {
 
 		// objects and vars instantiation
-		long timeoutInSeconds = 2;
-
-		  String currentUser; 
+		String currentUser; 
 
 
 		Browser bub = new Browser();
@@ -30,8 +23,7 @@ public class TestGPMS {
 		UserLogin ul = new UserLogin();
 
 		// Run method to open browser
-		WebDriver driver = bub.openWebApp("firefox");
-		WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
+		WebDriver driver = bub.openWebApp("");
 		System.out.println("Open browser");
 
 		// declare and initialize the variable to store
@@ -44,10 +36,10 @@ public class TestGPMS {
 		bub.compareTitle(expectedTitle, driver);
 
 		// Run method to login desired user
-		currentUser = ul.lilyLogin(driver);
+//		currentUser = ul.lilyLogin(driver);
 
 		// Wait for page to load
-		bub.waitForPageLoad(driver);
+//		bub.waitForPageLoad(driver);
 
 		// verify title of web page
 		// Home page: Home - GPMS
@@ -65,9 +57,8 @@ public class TestGPMS {
 		us.compareUser(expectedUser, driver);
 
 		//Hooray! We are logged in
-		// click on myProfile Dropdown menu
-		// bub.clickProfileDropdown(driver);
-
+		us.getAllPositionTypes(driver);
+		
 		// Wait for the desired link to load
 		bub.waitForPageLoad(driver);
 
@@ -116,15 +107,15 @@ public class TestGPMS {
 		bub.verifyPageHeader(expectedHeader, driver);
 
 		// Attempt to edit a proposal
-
+		pup.editProposal(driver);
 		// Click Add New Proposal button
-		try {
+/*		try {
 			us.addNewProposal(driver, userName, positionType);
 		} catch (AWTException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+*/
 		bub.waitForPageLoad(driver);
 
 		// us.addCoPI(driver);
