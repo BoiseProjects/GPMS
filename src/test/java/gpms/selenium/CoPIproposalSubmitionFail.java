@@ -1,10 +1,5 @@
 package gpms.selenium;
 
-/*CoPIattemptsToDeleteCoPI
- * Made by: Nick chapa
- * The Co PI attempts to delete another Co PI
- */
-
 import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;
@@ -18,7 +13,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 
-public class CoPIattemptsToDeleteCoPI {
+public class CoPIproposalSubmitionFail {
   private WebDriver driver;
   private String baseUrl;
   private boolean acceptNextAlert = true;
@@ -33,42 +28,7 @@ public class CoPIattemptsToDeleteCoPI {
   }
 
   @Test
-  public void testPIaddsCoPI() throws Exception {
-    driver.get(baseUrl + "GPMS/");
-    driver.findElement(By.id("user_password")).clear();
-    driver.findElement(By.id("user_password")).sendKeys("Nickman5030");
-    driver.findElement(By.id("user_email")).clear();
-    driver.findElement(By.id("user_email")).sendKeys("nicholaschapa@u.boisestate.edu");
-    Thread.sleep(1000);
-    driver.findElement(By.name("commit")).click();
-    Thread.sleep(1000);
-    driver.findElement(By.cssSelector("li.sfLevel1 > a > span")).click();
-    Thread.sleep(1000);
-    
-    ((JavascriptExecutor) driver)
-	.executeScript("var s=document.getElementById('edit0');s.click();");
-    
-    Thread.sleep(1000);
-    driver.findElement(By.id("ui-id-1")).click();
-    Thread.sleep(1000);
-    driver.findElement(By.name("AddCoPI")).click();
-    Thread.sleep(1000);
-    driver.findElement(By.name("AddCoPI")).click();
-    Thread.sleep(1000);
-    driver.findElement(By.id("btnSaveProposal")).click();
-    Thread.sleep(1000);
-    driver.findElement(By.id("BoxConfirmBtnOk")).click();
-    Thread.sleep(1000);
-    assertEquals("Save", closeAlertAndGetItsText());
-    Thread.sleep(1000);
-    driver.findElement(By.id("BoxAlertBtnOk")).click();
-    Thread.sleep(1000);
-    driver.findElement(By.cssSelector("span.myProfile.icon-arrow-s")).click();
-    Thread.sleep(1000);
-    driver.findElement(By.linkText("Log Out")).click();
-    Thread.sleep(2000);
-    
-    //CoPI attempts deletion
+  public void testCoPIcantSubmitProposal() throws Exception {
     driver.get(baseUrl + "GPMS/");
     driver.findElement(By.id("user_password")).clear();
     driver.findElement(By.id("user_password")).sendKeys("gpmspassword");
@@ -77,31 +37,37 @@ public class CoPIattemptsToDeleteCoPI {
     Thread.sleep(1000);
     driver.findElement(By.name("commit")).click();
     Thread.sleep(1000);
-    driver.findElement(By.linkText("My Proposals")).click();
+    driver.findElement(By.cssSelector("li.sfLevel1 > a > span")).click();
     Thread.sleep(1000);
     ((JavascriptExecutor) driver)
 	.executeScript("var s=document.getElementById('edit0');s.click();");
     Thread.sleep(1000);
-    driver.findElement(By.id("ui-id-1")).click();
+    driver.findElement(By.id("ui-id-21")).click();
     Thread.sleep(1000);
-    driver.findElement(By.name("DeleteOption")).click();
+    driver.findElement(By.name("57505b2d65dbb34d173fc6f9Co-PI")).clear();
+    Thread.sleep(1000);
+    driver.findElement(By.name("57505b2d65dbb34d173fc6f9Co-PI")).sendKeys("Selena");
+    Thread.sleep(1000);
+    driver.findElement(By.name("proposalNotes57505b2d65dbb34d173fc6f9Co-PI")).clear();
+    Thread.sleep(1000);
+    driver.findElement(By.name("proposalNotes57505b2d65dbb34d173fc6f9Co-PI")).sendKeys("Test");
+    Thread.sleep(1000);
+    driver.findElement(By.name("signaturedate57505b2d65dbb34d173fc6f9Co-PI")).click();
+    Thread.sleep(1000);
+    driver.findElement(By.xpath("//table[@id='trSignPICOPI']/tbody/tr[3]/td[3]")).click();
+    Thread.sleep(1000);
+    driver.findElement(By.id("btnSubmitProposal")).click();
     Thread.sleep(1000);
     driver.findElement(By.id("BoxConfirmBtnOk")).click();
     Thread.sleep(1000);
-    driver.findElement(By.cssSelector("span.myProfile.icon-arrow-s")).click();
-    Thread.sleep(1000);
-    driver.findElement(By.id("btnSaveProposal")).click();
-    Thread.sleep(1000);
-    driver.findElement(By.id("BoxConfirmBtnOk")).click();
-    Thread.sleep(1000);
-    assertEquals("Save", closeAlertAndGetItsText());
+    assertEquals("Submit", closeAlertAndGetItsText());
     Thread.sleep(1000);
     driver.findElement(By.id("BoxAlertBtnOk")).click();
     Thread.sleep(1000);
     driver.findElement(By.cssSelector("span.myProfile.icon-arrow-s")).click();
     Thread.sleep(1000);
     driver.findElement(By.linkText("Log Out")).click();
-    Thread.sleep(2000);
+    Thread.sleep(1000);
   }
 
   @After

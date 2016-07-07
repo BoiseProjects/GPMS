@@ -39,22 +39,8 @@ public class PIdeletesCoPI {
     Thread.sleep(1000);
     driver.findElement(By.linkText("My Proposals")).click();
     Thread.sleep(1000);
-    if (isElementPresent(By.id("edit0")))
-    {
-    	Actions actions = new Actions(driver);
-    	WebElement mainMenu = driver.findElement(By.className("cssClassActionOnClick"));
-    	actions.moveToElement(mainMenu);
-
-    	WebElement subMenu = driver.findElement(By.linkText("Edit"));
-    	actions.moveToElement(subMenu);
-    	actions.click().build().perform();
-    }
-    else
-    {
-    	Thread.sleep(2000);
-    	JOptionPane.showMessageDialog(null, "Element not found");
-    	Thread.sleep(2000);
-    }
+    ((JavascriptExecutor) driver)
+	.executeScript("var s=document.getElementById('edit0');s.click();");
     Thread.sleep(1000);
     driver.findElement(By.id("ui-id-1")).click();
     Thread.sleep(1000);

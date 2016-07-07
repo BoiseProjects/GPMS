@@ -53,7 +53,7 @@ public class ChairApprovalFail {
     driver.findElement(By.id("lblSection2")).click();
     driver.findElement(By.id("txtProjectTitle")).click();
     driver.findElement(By.id("txtProjectTitle")).clear();
-    driver.findElement(By.id("txtProjectTitle")).sendKeys("Chair fails to approve test");
+    driver.findElement(By.id("txtProjectTitle")).sendKeys("Chair approval test");
     driver.findElement(By.cssSelector("td.cssClassTableRightCol")).click();
     new Select(driver.findElement(By.id("ddlProjectType"))).selectByVisibleText("Research-Applied");
     Thread.sleep(1000);
@@ -230,22 +230,10 @@ public class ChairApprovalFail {
     Thread.sleep(1000);
     driver.findElement(By.cssSelector("li.sfLevel1 > a > span")).click();
     Thread.sleep(1000);
-    if (isElementPresent(By.id("edit0")))
-    {
-    	Actions actions = new Actions(driver);
-    	WebElement mainMenu = driver.findElement(By.className("cssClassActionOnClick"));
-    	actions.moveToElement(mainMenu);
-
-    	WebElement subMenu = driver.findElement(By.linkText("Edit"));
-    	actions.moveToElement(subMenu);
-    	actions.click().build().perform();
-    }
-    else
-    {
-    	Thread.sleep(2000);
-    	JOptionPane.showMessageDialog(null, "Element not found");
-    	Thread.sleep(2000);
-    }
+    
+    ((JavascriptExecutor) driver)
+	.executeScript("var s=document.getElementById('edit0');s.click();");
+    
     Thread.sleep(1000);
     driver.findElement(By.id("ui-id-21")).click();
     Thread.sleep(1000);

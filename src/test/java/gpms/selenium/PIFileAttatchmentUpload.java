@@ -1,8 +1,8 @@
 package gpms.selenium;
 
-/*CoPIattemptsToDeleteCoPI
- * Made by: Nick chapa
- * The Co PI attempts to delete another Co PI
+/*PIFileAttatchmentUpload
+ * Made by: Nick
+ * PI is permited to add an attatchment, program will exit successfully upon completion.
  */
 
 import java.util.regex.Pattern;
@@ -18,7 +18,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 
-public class CoPIattemptsToDeleteCoPI {
+public class PIFileAttatchmentUpload {
   private WebDriver driver;
   private String baseUrl;
   private boolean acceptNextAlert = true;
@@ -33,7 +33,7 @@ public class CoPIattemptsToDeleteCoPI {
   }
 
   @Test
-  public void testPIaddsCoPI() throws Exception {
+  public void testPIaddsFileAttatchment() throws Exception {
     driver.get(baseUrl + "GPMS/");
     driver.findElement(By.id("user_password")).clear();
     driver.findElement(By.id("user_password")).sendKeys("Nickman5030");
@@ -42,53 +42,16 @@ public class CoPIattemptsToDeleteCoPI {
     Thread.sleep(1000);
     driver.findElement(By.name("commit")).click();
     Thread.sleep(1000);
-    driver.findElement(By.cssSelector("li.sfLevel1 > a > span")).click();
-    Thread.sleep(1000);
-    
-    ((JavascriptExecutor) driver)
-	.executeScript("var s=document.getElementById('edit0');s.click();");
-    
-    Thread.sleep(1000);
-    driver.findElement(By.id("ui-id-1")).click();
-    Thread.sleep(1000);
-    driver.findElement(By.name("AddCoPI")).click();
-    Thread.sleep(1000);
-    driver.findElement(By.name("AddCoPI")).click();
-    Thread.sleep(1000);
-    driver.findElement(By.id("btnSaveProposal")).click();
-    Thread.sleep(1000);
-    driver.findElement(By.id("BoxConfirmBtnOk")).click();
-    Thread.sleep(1000);
-    assertEquals("Save", closeAlertAndGetItsText());
-    Thread.sleep(1000);
-    driver.findElement(By.id("BoxAlertBtnOk")).click();
-    Thread.sleep(1000);
-    driver.findElement(By.cssSelector("span.myProfile.icon-arrow-s")).click();
-    Thread.sleep(1000);
-    driver.findElement(By.linkText("Log Out")).click();
-    Thread.sleep(2000);
-    
-    //CoPI attempts deletion
-    driver.get(baseUrl + "GPMS/");
-    driver.findElement(By.id("user_password")).clear();
-    driver.findElement(By.id("user_password")).sendKeys("gpmspassword");
-    driver.findElement(By.id("user_email")).clear();
-    driver.findElement(By.id("user_email")).sendKeys("selena");
-    Thread.sleep(1000);
-    driver.findElement(By.name("commit")).click();
-    Thread.sleep(1000);
     driver.findElement(By.linkText("My Proposals")).click();
     Thread.sleep(1000);
+    
     ((JavascriptExecutor) driver)
 	.executeScript("var s=document.getElementById('edit0');s.click();");
+    
     Thread.sleep(1000);
-    driver.findElement(By.id("ui-id-1")).click();
+    driver.findElement(By.id("lblSection13")).click();
     Thread.sleep(1000);
-    driver.findElement(By.name("DeleteOption")).click();
-    Thread.sleep(1000);
-    driver.findElement(By.id("BoxConfirmBtnOk")).click();
-    Thread.sleep(1000);
-    driver.findElement(By.cssSelector("span.myProfile.icon-arrow-s")).click();
+    driver.findElement(By.cssSelector("div.ajax-file-upload")).click();
     Thread.sleep(1000);
     driver.findElement(By.id("btnSaveProposal")).click();
     Thread.sleep(1000);
