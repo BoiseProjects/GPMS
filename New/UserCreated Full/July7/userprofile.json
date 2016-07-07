@@ -77,22 +77,27 @@
         ""
     ], 
     "user id" : DBRef("useraccount", ObjectId("5745efcfbcbb29192ce0d3eb")), 
-    "deleted" : false, 
+    "deleted" : true, 
+    "version" : NumberLong(2), 
     "audit log" : [
         {
             "author info" : DBRef("userprofile", ObjectId("5745ed6fbcbb29192ce0d3c9")), 
             "action" : "Created user account and profile of irbcomputerengineering", 
             "activity on" : ISODate("2016-05-25T18:32:47.507+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("5745ed6fbcbb29192ce0d3c9")), 
+            "action" : "Deleted user profile and account of University Human IRB", 
+            "activity on" : ISODate("2016-06-02T17:25:39.687+0000")
         }
-    ], 
-    "version" : NumberLong(1)
+    ]
 }
 { 
     "_id" : ObjectId("5745fca7bcbb29192ce0d449"), 
     "first name" : "University", 
     "middle name" : "Animal", 
     "last name" : "IRB", 
-    "date of birth" : ISODate("2016-05-25T06:00:00.000+0000"), 
+    "date of birth" : ISODate("2016-05-27T06:00:00.000+0000"), 
     "gender" : "Male", 
     "details" : [
         {
@@ -133,14 +138,19 @@
     ], 
     "user id" : DBRef("useraccount", ObjectId("5745fca7bcbb29192ce0d448")), 
     "deleted" : false, 
+    "version" : NumberLong(2), 
     "audit log" : [
         {
             "author info" : DBRef("userprofile", ObjectId("5745ed6fbcbb29192ce0d3c9")), 
             "action" : "Created user account and profile of irbcomputerscience", 
             "activity on" : ISODate("2016-05-25T19:27:35.622+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("5745fca7bcbb29192ce0d449")), 
+            "action" : "Updated user account and profile of irbcomputerscience", 
+            "activity on" : ISODate("2016-06-02T17:26:32.442+0000")
         }
-    ], 
-    "version" : NumberLong(1)
+    ]
 }
 { 
     "_id" : ObjectId("574604fabcbb29192ce0d46a"), 
@@ -243,7 +253,7 @@
     ], 
     "user id" : DBRef("useraccount", ObjectId("5745fcfdbcbb29192ce0d450")), 
     "deleted" : false, 
-    "version" : NumberLong(3), 
+    "version" : NumberLong(2), 
     "audit log" : [
         {
             "author info" : DBRef("userprofile", ObjectId("5745ed6fbcbb29192ce0d3c9")), 
@@ -254,11 +264,6 @@
             "author info" : DBRef("userprofile", ObjectId("5745fcfdbcbb29192ce0d451")), 
             "action" : "Updated user account and profile of racomputerscience", 
             "activity on" : ISODate("2016-06-02T16:42:34.671+0000")
-        }, 
-        {
-            "author info" : DBRef("userprofile", ObjectId("5745ed6fbcbb29192ce0d3c9")), 
-            "action" : "Updated user account and profile of racomputerscience", 
-            "activity on" : ISODate("2016-06-02T19:37:45.213+0000")
         }
     ]
 }
@@ -1106,6 +1111,20 @@
             "department" : "Chemistry", 
             "college" : "Science", 
             "as default" : true
+        }, 
+        {
+            "position title" : "Professor", 
+            "position type" : "Tenured/tenure-track faculty", 
+            "department" : "Chemistry", 
+            "college" : "Science", 
+            "as default" : false
+        }, 
+        {
+            "position title" : "Research Professor", 
+            "position type" : "Non-tenure-track research faculty", 
+            "department" : "Chemistry", 
+            "college" : "Science", 
+            "as default" : false
         }
     ], 
     "office number" : [
@@ -1138,7 +1157,7 @@
     ], 
     "user id" : DBRef("useraccount", ObjectId("57460657bcbb29192ce0d482")), 
     "deleted" : false, 
-    "version" : NumberLong(2), 
+    "version" : NumberLong(3), 
     "audit log" : [
         {
             "author info" : DBRef("userprofile", ObjectId("5745ed6fbcbb29192ce0d3c9")), 
@@ -1149,6 +1168,11 @@
             "author info" : DBRef("userprofile", ObjectId("5745ed6fbcbb29192ce0d3c9")), 
             "action" : "Updated user account and profile of deanchemistry1", 
             "activity on" : ISODate("2016-05-25T20:46:06.517+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("5745ed6fbcbb29192ce0d3c9")), 
+            "action" : "Updated user account and profile of deanchemistry1", 
+            "activity on" : ISODate("2016-06-16T19:32:27.485+0000")
         }
     ]
 }
@@ -1166,6 +1190,13 @@
             "department" : "Computer Engineering", 
             "college" : "Engineering", 
             "as default" : true
+        }, 
+        {
+            "position title" : "Assistant Research Professor", 
+            "position type" : "Non-tenure-track research faculty", 
+            "department" : "Computer Science", 
+            "college" : "Engineering", 
+            "as default" : false
         }
     ], 
     "office number" : [
@@ -1198,7 +1229,7 @@
     ], 
     "user id" : DBRef("useraccount", ObjectId("57489f2565dbb306cef6702b")), 
     "deleted" : false, 
-    "version" : NumberLong(5), 
+    "version" : NumberLong(6), 
     "audit log" : [
         {
             "author info" : DBRef("userprofile", ObjectId("57489f2565dbb306cef6702c")), 
@@ -1219,6 +1250,11 @@
             "author info" : DBRef("userprofile", ObjectId("57489f2565dbb306cef6702c")), 
             "action" : "Updated user account and profile of milson", 
             "activity on" : ISODate("2016-06-02T16:28:20.475+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("5745ed6fbcbb29192ce0d3c9")), 
+            "action" : "Updated user account and profile of milson", 
+            "activity on" : ISODate("2016-06-07T16:23:22.774+0000")
         }
     ]
 }
@@ -1341,14 +1377,14 @@
         }
     ], 
     "work email" : [
-        "milsonmunakami@u.boisestate.edu"
+        "samerkhamaiseh@u.boisestate.edu"
     ], 
     "personal email" : [
         ""
     ], 
     "user id" : DBRef("useraccount", ObjectId("574f1f5d65dbb329a395a8d9")), 
     "deleted" : false, 
-    "version" : NumberLong(2), 
+    "version" : NumberLong(3), 
     "audit log" : [
         {
             "author info" : DBRef("userprofile", ObjectId("5745ed6fbcbb29192ce0d3c9")), 
@@ -1359,6 +1395,11 @@
             "author info" : DBRef("userprofile", ObjectId("5745ed6fbcbb29192ce0d3c9")), 
             "action" : "Updated user account and profile of samer", 
             "activity on" : ISODate("2016-06-01T17:46:54.597+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("5745ed6fbcbb29192ce0d3c9")), 
+            "action" : "Updated user account and profile of samer", 
+            "activity on" : ISODate("2016-06-15T22:53:57.296+0000")
         }
     ]
 }
@@ -1447,20 +1488,34 @@
             "position type" : "Non-tenure-track research faculty", 
             "department" : "Chemistry", 
             "college" : "Science", 
-            "as default" : true
+            "as default" : false
         }, 
         {
             "position title" : "Distinguished Professor", 
             "position type" : "Tenured/tenure-track faculty", 
-            "department" : "Computer Science", 
-            "college" : "Engineering", 
-            "as default" : false
+            "department" : "Chemistry", 
+            "college" : "Science", 
+            "as default" : true
         }, 
         {
             "position title" : "Senior Lecturer", 
             "position type" : "Teaching faculty", 
             "department" : "Physics", 
             "college" : "Science", 
+            "as default" : false
+        }, 
+        {
+            "position title" : "Business Manager", 
+            "position type" : "Professional staff", 
+            "department" : "Computer Engineering", 
+            "college" : "Engineering", 
+            "as default" : false
+        }, 
+        {
+            "position title" : "Associate Professor", 
+            "position type" : "Tenured/tenure-track faculty", 
+            "department" : "Electrical Engineering", 
+            "college" : "Engineering", 
             "as default" : false
         }
     ], 
@@ -1494,7 +1549,7 @@
     ], 
     "user id" : DBRef("useraccount", ObjectId("574f7adb65dbb34d17834b56")), 
     "deleted" : false, 
-    "version" : NumberLong(4), 
+    "version" : NumberLong(10), 
     "audit log" : [
         {
             "author info" : DBRef("userprofile", ObjectId("574f7adb65dbb34d17834b57")), 
@@ -1510,6 +1565,36 @@
             "author info" : DBRef("userprofile", ObjectId("5745ed6fbcbb29192ce0d3c9")), 
             "action" : "Updated user account and profile of NickC", 
             "activity on" : ISODate("2016-06-02T00:17:49.752+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("5745ed6fbcbb29192ce0d3c9")), 
+            "action" : "Updated user account and profile of NickC", 
+            "activity on" : ISODate("2016-06-06T19:55:08.628+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("5745ed6fbcbb29192ce0d3c9")), 
+            "action" : "Updated user account and profile of NickC", 
+            "activity on" : ISODate("2016-06-07T19:10:37.824+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("5745ed6fbcbb29192ce0d3c9")), 
+            "action" : "Updated user account and profile of NickC", 
+            "activity on" : ISODate("2016-06-15T17:39:44.704+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("5745ed6fbcbb29192ce0d3c9")), 
+            "action" : "Updated user account and profile of NickC", 
+            "activity on" : ISODate("2016-06-21T20:13:38.471+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("5745ed6fbcbb29192ce0d3c9")), 
+            "action" : "Updated user account and profile of NickC", 
+            "activity on" : ISODate("2016-06-22T18:07:30.302+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("5745ed6fbcbb29192ce0d3c9")), 
+            "action" : "Updated user account and profile of NickC", 
+            "activity on" : ISODate("2016-06-22T18:35:05.479+0000")
         }
     ]
 }
@@ -1559,14 +1644,19 @@
     ], 
     "user id" : DBRef("useraccount", ObjectId("57505b2d65dbb34d173fc6f8")), 
     "deleted" : false, 
+    "version" : NumberLong(2), 
     "audit log" : [
         {
             "author info" : DBRef("userprofile", ObjectId("5745ed6fbcbb29192ce0d3c9")), 
             "action" : "Created user account and profile of selena", 
             "activity on" : ISODate("2016-06-02T16:13:33.970+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("5745ed6fbcbb29192ce0d3c9")), 
+            "action" : "Updated user account and profile of selena", 
+            "activity on" : ISODate("2016-06-06T22:19:44.368+0000")
         }
-    ], 
-    "version" : NumberLong(1)
+    ]
 }
 { 
     "_id" : ObjectId("57505b9e65dbb34d173fc701"), 
@@ -1613,13 +1703,778 @@
         ""
     ], 
     "user id" : DBRef("useraccount", ObjectId("57505b9e65dbb34d173fc700")), 
-    "deleted" : false, 
+    "deleted" : true, 
+    "version" : NumberLong(2), 
     "audit log" : [
         {
             "author info" : DBRef("userprofile", ObjectId("5745ed6fbcbb29192ce0d3c9")), 
             "action" : "Created user account and profile of edmund", 
             "activity on" : ISODate("2016-06-02T16:15:26.812+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("5745ed6fbcbb29192ce0d3c9")), 
+            "action" : "Deleted user profile and account of Edmund O. Schweitzer III", 
+            "activity on" : ISODate("2016-06-02T17:25:39.840+0000")
+        }
+    ]
+}
+{ 
+    "_id" : ObjectId("575890a265dbb325468075d1"), 
+    "first name" : "Admin2", 
+    "middle name" : "", 
+    "last name" : "admin", 
+    "date of birth" : ISODate("1998-06-04T06:00:00.000+0000"), 
+    "gender" : "Male", 
+    "details" : [
+        {
+            "position title" : "University Research Administrator", 
+            "position type" : "University administrator", 
+            "department" : "", 
+            "college" : "", 
+            "as default" : true
+        }
+    ], 
+    "office number" : [
+        ""
+    ], 
+    "mobile number" : [
+        "2225555555"
+    ], 
+    "home number" : [
+        ""
+    ], 
+    "other number" : [
+        ""
+    ], 
+    "addresses" : [
+        {
+            "street" : "12 st", 
+            "apt" : "", 
+            "city" : "boise", 
+            "state" : "Idaho", 
+            "zipcode" : "83706", 
+            "country" : "United States"
+        }
+    ], 
+    "work email" : [
+        "noemail@noemail.com"
+    ], 
+    "personal email" : [
+        ""
+    ], 
+    "user id" : DBRef("useraccount", ObjectId("575890a265dbb325468075d0")), 
+    "deleted" : false, 
+    "audit log" : [
+        {
+            "author info" : DBRef("userprofile", ObjectId("5745ed6fbcbb29192ce0d3c9")), 
+            "action" : "Created user account and profile of admin2", 
+            "activity on" : ISODate("2016-06-08T21:39:46.663+0000")
         }
     ], 
     "version" : NumberLong(1)
+}
+{ 
+    "_id" : ObjectId("5761c3be65dbb34423f3acb0"), 
+    "first name" : "sh", 
+    "middle name" : "", 
+    "last name" : "a", 
+    "date of birth" : ISODate("1994-10-22T06:00:00.000+0000"), 
+    "gender" : "Female", 
+    "details" : [
+        {
+            "position title" : "Professor", 
+            "position type" : "Tenured/tenure-track faculty", 
+            "department" : "Computer Science", 
+            "college" : "Engineering", 
+            "as default" : true
+        }
+    ], 
+    "office number" : [
+        ""
+    ], 
+    "mobile number" : [
+        "2083922389"
+    ], 
+    "home number" : [
+        ""
+    ], 
+    "other number" : [
+        ""
+    ], 
+    "addresses" : [
+        {
+            "street" : "0000 S. Boise", 
+            "apt" : "", 
+            "city" : "Boise", 
+            "state" : "Idaho", 
+            "zipcode" : "83705", 
+            "country" : "United States"
+        }
+    ], 
+    "work email" : [
+        "sharihanali@u.boisestate.edu"
+    ], 
+    "personal email" : [
+        ""
+    ], 
+    "user id" : DBRef("useraccount", ObjectId("5761c3be65dbb34423f3acaf")), 
+    "deleted" : true, 
+    "version" : NumberLong(3), 
+    "audit log" : [
+        {
+            "author info" : DBRef("userprofile", ObjectId("5761c3be65dbb34423f3acb0")), 
+            "action" : "Signed up new user account and profile of deptchairsh", 
+            "activity on" : ISODate("2016-06-15T21:08:14.161+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("5745ed6fbcbb29192ce0d3c9")), 
+            "action" : "Updated user account and profile of deptchairsh", 
+            "activity on" : ISODate("2016-06-15T22:52:17.337+0000")
+        }
+    ]
+}
+{ 
+    "_id" : ObjectId("5762597c65dbb34423f3acd3"), 
+    "first name" : "sherri", 
+    "middle name" : "", 
+    "last name" : "A", 
+    "date of birth" : ISODate("2016-06-08T06:00:00.000+0000"), 
+    "gender" : "Female", 
+    "details" : [
+        {
+            "position title" : "Research Professor", 
+            "position type" : "Non-tenure-track research faculty", 
+            "department" : "Computer Science", 
+            "college" : "Engineering", 
+            "as default" : true
+        }
+    ], 
+    "office number" : [
+        ""
+    ], 
+    "mobile number" : [
+        "2080000000"
+    ], 
+    "home number" : [
+        ""
+    ], 
+    "other number" : [
+        ""
+    ], 
+    "addresses" : [
+        {
+            "street" : "0000 S. Boise", 
+            "apt" : "", 
+            "city" : "Boise", 
+            "state" : "Idaho", 
+            "zipcode" : "83705", 
+            "country" : "United States"
+        }
+    ], 
+    "work email" : [
+        "sharihan1994@gmail.com"
+    ], 
+    "personal email" : [
+        ""
+    ], 
+    "user id" : DBRef("useraccount", ObjectId("5762597c65dbb34423f3acd2")), 
+    "deleted" : false, 
+    "version" : NumberLong(4), 
+    "audit log" : [
+        {
+            "author info" : DBRef("userprofile", ObjectId("5745ed6fbcbb29192ce0d3c9")), 
+            "action" : "Created user account and profile of sherri", 
+            "activity on" : ISODate("2016-06-16T07:47:08.309+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("5745ed6fbcbb29192ce0d3c9")), 
+            "action" : "Updated user account and profile of sherri", 
+            "activity on" : ISODate("2016-06-16T07:51:05.518+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("5745ed6fbcbb29192ce0d3c9")), 
+            "action" : "Updated user account and profile of sherri", 
+            "activity on" : ISODate("2016-06-27T00:43:20.329+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("5745ed6fbcbb29192ce0d3c9")), 
+            "action" : "Updated user account and profile of sherri", 
+            "activity on" : ISODate("2016-06-27T00:45:56.726+0000")
+        }
+    ]
+}
+{ 
+    "_id" : ObjectId("576cfb1265dbb33f620e56ef"), 
+    "first name" : "new", 
+    "middle name" : "", 
+    "last name" : "user", 
+    "date of birth" : ISODate("2016-06-01T06:00:00.000+0000"), 
+    "gender" : "Female", 
+    "mobile number" : [
+        "0002081110"
+    ], 
+    "addresses" : [
+        {
+            "street" : "000 Boise ave.", 
+            "apt" : "", 
+            "city" : "Boise", 
+            "state" : "Alabama", 
+            "zipcode" : "83725", 
+            "country" : "United States"
+        }
+    ], 
+    "work email" : [
+        "newuser1@gmail.com"
+    ], 
+    "user id" : DBRef("useraccount", ObjectId("576cfb1265dbb33f620e56ee")), 
+    "deleted" : false, 
+    "version" : NumberLong(2), 
+    "audit log" : [
+        {
+            "author info" : DBRef("userprofile", ObjectId("576cfb1265dbb33f620e56ef")), 
+            "action" : "Signed up new user account and profile of newUser", 
+            "activity on" : ISODate("2016-06-24T09:19:14.152+0000")
+        }
+    ]
+}
+{ 
+    "_id" : ObjectId("576cfc0b65dbb33f620e5702"), 
+    "first name" : "new", 
+    "middle name" : "", 
+    "last name" : "user", 
+    "date of birth" : ISODate("2016-06-01T06:00:00.000+0000"), 
+    "gender" : "Female", 
+    "mobile number" : [
+        "0208111000"
+    ], 
+    "addresses" : [
+        {
+            "street" : "000 Boise ave.", 
+            "apt" : "", 
+            "city" : "Boise", 
+            "state" : "Idaho", 
+            "zipcode" : "83725", 
+            "country" : "United States"
+        }
+    ], 
+    "work email" : [
+        "newuser@gmail.com"
+    ], 
+    "user id" : DBRef("useraccount", ObjectId("576cfc0b65dbb33f620e5701")), 
+    "deleted" : false, 
+    "version" : NumberLong(2), 
+    "audit log" : [
+        {
+            "author info" : DBRef("userprofile", ObjectId("576cfc0b65dbb33f620e5702")), 
+            "action" : "Signed up new user account and profile of newUser1", 
+            "activity on" : ISODate("2016-06-24T09:23:23.623+0000")
+        }
+    ]
+}
+{ 
+    "_id" : ObjectId("576cfc9065dbb33f620e5709"), 
+    "first name" : "new", 
+    "middle name" : "", 
+    "last name" : "user", 
+    "date of birth" : ISODate("2016-06-01T06:00:00.000+0000"), 
+    "gender" : "Female", 
+    "mobile number" : [
+        "0000208111"
+    ], 
+    "addresses" : [
+        {
+            "street" : "000 Boise ave.", 
+            "apt" : "", 
+            "city" : "Boise", 
+            "state" : "Idaho", 
+            "zipcode" : "83725", 
+            "country" : "United States"
+        }
+    ], 
+    "work email" : [
+        "newuser2@gmail.com"
+    ], 
+    "user id" : DBRef("useraccount", ObjectId("576cfc9065dbb33f620e5708")), 
+    "deleted" : false, 
+    "version" : NumberLong(2), 
+    "audit log" : [
+        {
+            "author info" : DBRef("userprofile", ObjectId("576cfc9065dbb33f620e5709")), 
+            "action" : "Signed up new user account and profile of newUser11", 
+            "activity on" : ISODate("2016-06-24T09:25:36.113+0000")
+        }
+    ]
+}
+{ 
+    "_id" : ObjectId("576cfcd765dbb33f620e5713"), 
+    "first name" : "new", 
+    "middle name" : "", 
+    "last name" : "user", 
+    "date of birth" : ISODate("2016-06-01T06:00:00.000+0000"), 
+    "gender" : "Female", 
+    "mobile number" : [
+        "1000020811"
+    ], 
+    "addresses" : [
+        {
+            "street" : "000 Boise ave.", 
+            "apt" : "", 
+            "city" : "Boise", 
+            "state" : "Idaho", 
+            "zipcode" : "83725", 
+            "country" : "United States"
+        }
+    ], 
+    "work email" : [
+        "newuser22@gmail.com"
+    ], 
+    "user id" : DBRef("useraccount", ObjectId("576cfcd765dbb33f620e5712")), 
+    "deleted" : false, 
+    "version" : NumberLong(2), 
+    "audit log" : [
+        {
+            "author info" : DBRef("userprofile", ObjectId("576cfcd765dbb33f620e5713")), 
+            "action" : "Signed up new user account and profile of newUser121", 
+            "activity on" : ISODate("2016-06-24T09:26:47.212+0000")
+        }
+    ]
+}
+{ 
+    "_id" : ObjectId("576cffbe65dbb33f620e571c"), 
+    "first name" : "new", 
+    "middle name" : "", 
+    "last name" : "user", 
+    "date of birth" : ISODate("2016-06-01T06:00:00.000+0000"), 
+    "gender" : "Female", 
+    "mobile number" : [
+        "1000020811"
+    ], 
+    "addresses" : [
+        {
+            "street" : "000 Boise ave.", 
+            "apt" : "", 
+            "city" : "Boise", 
+            "state" : "Idaho", 
+            "zipcode" : "83725", 
+            "country" : "United States"
+        }
+    ], 
+    "work email" : [
+        "newuser262@gmail.com"
+    ], 
+    "user id" : DBRef("useraccount", ObjectId("576cffbe65dbb33f620e571b")), 
+    "deleted" : false, 
+    "version" : NumberLong(2), 
+    "audit log" : [
+        {
+            "author info" : DBRef("userprofile", ObjectId("576cffbe65dbb33f620e571c")), 
+            "action" : "Signed up new user account and profile of newUser1261", 
+            "activity on" : ISODate("2016-06-24T09:39:10.712+0000")
+        }
+    ]
+}
+{ 
+    "_id" : ObjectId("576d000d65dbb33f620e5723"), 
+    "first name" : "new", 
+    "middle name" : "", 
+    "last name" : "user", 
+    "date of birth" : ISODate("2016-06-01T06:00:00.000+0000"), 
+    "gender" : "Female", 
+    "mobile number" : [
+        "2081110000"
+    ], 
+    "addresses" : [
+        {
+            "street" : "000 Boise ave.", 
+            "apt" : "", 
+            "city" : "Boise", 
+            "state" : "Idaho", 
+            "zipcode" : "37258", 
+            "country" : "United States"
+        }
+    ], 
+    "work email" : [
+        "newuser202@gmail.com"
+    ], 
+    "user id" : DBRef("useraccount", ObjectId("576d000d65dbb33f620e5722")), 
+    "deleted" : false, 
+    "version" : NumberLong(2), 
+    "audit log" : [
+        {
+            "author info" : DBRef("userprofile", ObjectId("576d000d65dbb33f620e5723")), 
+            "action" : "Signed up new user account and profile of newUser101", 
+            "activity on" : ISODate("2016-06-24T09:40:29.145+0000")
+        }
+    ]
+}
+{ 
+    "_id" : ObjectId("576d063865dbb33f620e572c"), 
+    "first name" : "new", 
+    "middle name" : "", 
+    "last name" : "user", 
+    "date of birth" : ISODate("2016-06-01T06:00:00.000+0000"), 
+    "gender" : "Female", 
+    "mobile number" : [
+        "0002081110"
+    ], 
+    "addresses" : [
+        {
+            "street" : "000 Boise ave.", 
+            "apt" : "", 
+            "city" : "Boise", 
+            "state" : "Idaho", 
+            "zipcode" : "83725", 
+            "country" : "United States"
+        }
+    ], 
+    "work email" : [
+        "newuser2002@gmail.com"
+    ], 
+    "user id" : DBRef("useraccount", ObjectId("576d063865dbb33f620e572b")), 
+    "deleted" : false, 
+    "version" : NumberLong(2), 
+    "audit log" : [
+        {
+            "author info" : DBRef("userprofile", ObjectId("576d063865dbb33f620e572c")), 
+            "action" : "Signed up new user account and profile of newUser0101", 
+            "activity on" : ISODate("2016-06-24T10:06:48.767+0000")
+        }
+    ]
+}
+{ 
+    "_id" : ObjectId("576e139c65dbb33f620e57c0"), 
+    "first name" : "samertestuser", 
+    "middle name" : "test", 
+    "last name" : "test1", 
+    "date of birth" : ISODate("2016-06-24T06:00:00.000+0000"), 
+    "gender" : "Male", 
+    "mobile number" : [
+        "2089717779"
+    ], 
+    "addresses" : [
+        {
+            "street" : "boisew", 
+            "apt" : "park", 
+            "city" : "boise", 
+            "state" : "Idaho", 
+            "zipcode" : "83706", 
+            "country" : "United States"
+        }
+    ], 
+    "work email" : [
+        "samer3020@gmail.com"
+    ], 
+    "user id" : DBRef("useraccount", ObjectId("576e139c65dbb33f620e57bf")), 
+    "deleted" : false, 
+    "version" : NumberLong(2), 
+    "audit log" : [
+        {
+            "author info" : DBRef("userprofile", ObjectId("576e139c65dbb33f620e57c0")), 
+            "action" : "Signed up new user account and profile of newuserSamerTest", 
+            "activity on" : ISODate("2016-06-25T05:16:12.908+0000")
+        }
+    ]
+}
+{ 
+    "_id" : ObjectId("576e15d465dbb33f620e57c7"), 
+    "first name" : "samertestuser", 
+    "middle name" : "test", 
+    "last name" : "test1", 
+    "date of birth" : ISODate("2016-06-24T06:00:00.000+0000"), 
+    "gender" : "Male", 
+    "mobile number" : [
+        "2081110000"
+    ], 
+    "addresses" : [
+        {
+            "street" : "boisew", 
+            "apt" : "park", 
+            "city" : "boise", 
+            "state" : "Idaho", 
+            "zipcode" : "83725", 
+            "country" : "United States"
+        }
+    ], 
+    "work email" : [
+        "samertest3020@gmail.com"
+    ], 
+    "user id" : DBRef("useraccount", ObjectId("576e15d465dbb33f620e57c6")), 
+    "deleted" : false, 
+    "version" : NumberLong(2), 
+    "audit log" : [
+        {
+            "author info" : DBRef("userprofile", ObjectId("576e15d465dbb33f620e57c7")), 
+            "action" : "Signed up new user account and profile of newuserSamerTest24", 
+            "activity on" : ISODate("2016-06-25T05:25:40.209+0000")
+        }
+    ]
+}
+{ 
+    "_id" : ObjectId("576e16de65dbb33f620e57d0"), 
+    "first name" : "samertestuser1", 
+    "middle name" : "test", 
+    "last name" : "test1", 
+    "date of birth" : ISODate("2016-06-24T06:00:00.000+0000"), 
+    "gender" : "Male", 
+    "mobile number" : [
+        "2081110000"
+    ], 
+    "addresses" : [
+        {
+            "street" : "boisew", 
+            "apt" : "park", 
+            "city" : "boise", 
+            "state" : "Idaho", 
+            "zipcode" : "83725", 
+            "country" : "United States"
+        }
+    ], 
+    "work email" : [
+        "samertest53020@gmail.com"
+    ], 
+    "user id" : DBRef("useraccount", ObjectId("576e16de65dbb33f620e57cf")), 
+    "deleted" : false, 
+    "version" : NumberLong(2), 
+    "audit log" : [
+        {
+            "author info" : DBRef("userprofile", ObjectId("576e16de65dbb33f620e57d0")), 
+            "action" : "Signed up new user account and profile of newuserSamerTest240", 
+            "activity on" : ISODate("2016-06-25T05:30:06.665+0000")
+        }
+    ]
+}
+{ 
+    "_id" : ObjectId("576e173b65dbb33f620e57d7"), 
+    "first name" : "samertestuser10", 
+    "middle name" : "test", 
+    "last name" : "test1", 
+    "date of birth" : ISODate("2016-06-24T06:00:00.000+0000"), 
+    "gender" : "Male", 
+    "mobile number" : [
+        "2081110000"
+    ], 
+    "addresses" : [
+        {
+            "street" : "boisew", 
+            "apt" : "park", 
+            "city" : "boise", 
+            "state" : "Idaho", 
+            "zipcode" : "83725", 
+            "country" : "United States"
+        }
+    ], 
+    "work email" : [
+        "samertest55020@gmail.com"
+    ], 
+    "user id" : DBRef("useraccount", ObjectId("576e173b65dbb33f620e57d6")), 
+    "deleted" : false, 
+    "version" : NumberLong(2), 
+    "audit log" : [
+        {
+            "author info" : DBRef("userprofile", ObjectId("576e173b65dbb33f620e57d7")), 
+            "action" : "Signed up new user account and profile of newuserSamerTest520", 
+            "activity on" : ISODate("2016-06-25T05:31:39.265+0000")
+        }
+    ]
+}
+{ 
+    "_id" : ObjectId("576e17a665dbb33f620e57de"), 
+    "first name" : "sss", 
+    "middle name" : "dd", 
+    "last name" : "dd", 
+    "date of birth" : ISODate("2016-06-07T06:00:00.000+0000"), 
+    "gender" : "Male", 
+    "mobile number" : [
+        "2087474444"
+    ], 
+    "addresses" : [
+        {
+            "street" : "ddd", 
+            "apt" : "dd", 
+            "city" : "dd", 
+            "state" : "Alabama", 
+            "zipcode" : "21345", 
+            "country" : "United States"
+        }
+    ], 
+    "work email" : [
+        "samer123456@gmail.com"
+    ], 
+    "user id" : DBRef("useraccount", ObjectId("576e17a665dbb33f620e57dd")), 
+    "deleted" : false, 
+    "version" : NumberLong(2), 
+    "audit log" : [
+        {
+            "author info" : DBRef("userprofile", ObjectId("576e17a665dbb33f620e57de")), 
+            "action" : "Signed up new user account and profile of 123", 
+            "activity on" : ISODate("2016-06-25T05:33:26.312+0000")
+        }
+    ]
+}
+{ 
+    "_id" : ObjectId("576e183f65dbb33f620e57e5"), 
+    "first name" : "samertestuser10", 
+    "middle name" : "test", 
+    "last name" : "test1", 
+    "date of birth" : ISODate("2016-06-24T06:00:00.000+0000"), 
+    "gender" : "Male", 
+    "mobile number" : [
+        "2081110000"
+    ], 
+    "addresses" : [
+        {
+            "street" : "boisew", 
+            "apt" : "park", 
+            "city" : "boise", 
+            "state" : "Idaho", 
+            "zipcode" : "83725", 
+            "country" : "United States"
+        }
+    ], 
+    "work email" : [
+        "samertest5112@gmail.com"
+    ], 
+    "user id" : DBRef("useraccount", ObjectId("576e183f65dbb33f620e57e4")), 
+    "deleted" : false, 
+    "version" : NumberLong(2), 
+    "audit log" : [
+        {
+            "author info" : DBRef("userprofile", ObjectId("576e183f65dbb33f620e57e5")), 
+            "action" : "Signed up new user account and profile of newuserSamerTest600", 
+            "activity on" : ISODate("2016-06-25T05:35:59.328+0000")
+        }
+    ]
+}
+{ 
+    "_id" : ObjectId("576f634865dbb33f620e57ef"), 
+    "first name" : "samertestuser10", 
+    "middle name" : "test", 
+    "last name" : "test1", 
+    "date of birth" : ISODate("2016-06-24T06:00:00.000+0000"), 
+    "gender" : "Male", 
+    "mobile number" : [
+        "2081110000"
+    ], 
+    "addresses" : [
+        {
+            "street" : "boisew", 
+            "apt" : "park", 
+            "city" : "boise", 
+            "state" : "Idaho", 
+            "zipcode" : "83725", 
+            "country" : "United States"
+        }
+    ], 
+    "work email" : [
+        "samertest712@gmail.com"
+    ], 
+    "user id" : DBRef("useraccount", ObjectId("576f634865dbb33f620e57ee")), 
+    "deleted" : false, 
+    "version" : NumberLong(2), 
+    "audit log" : [
+        {
+            "author info" : DBRef("userprofile", ObjectId("576f634865dbb33f620e57ef")), 
+            "action" : "Signed up new user account and profile of newuserSamerTest800", 
+            "activity on" : ISODate("2016-06-26T05:08:24.739+0000")
+        }
+    ]
+}
+{ 
+    "_id" : ObjectId("5777393465dbb33f620e58da"), 
+    "first name" : "CO", 
+    "middle name" : "", 
+    "last name" : "PI", 
+    "date of birth" : ISODate("2016-07-01T06:00:00.000+0000"), 
+    "gender" : "Male", 
+    "details" : [
+        {
+            "position title" : "Research Professor", 
+            "position type" : "Non-tenure-track research faculty", 
+            "department" : "Computer Science", 
+            "college" : "Engineering", 
+            "as default" : true
+        }
+    ], 
+    "office number" : [
+        ""
+    ], 
+    "mobile number" : [
+        "2081111111"
+    ], 
+    "home number" : [
+        ""
+    ], 
+    "other number" : [
+        ""
+    ], 
+    "addresses" : [
+        {
+            "street" : "222222 BOISE", 
+            "apt" : "112", 
+            "city" : "BOISE", 
+            "state" : "Idaho", 
+            "zipcode" : "83702", 
+            "country" : "United States"
+        }
+    ], 
+    "work email" : [
+        "copi@gmail.com"
+    ], 
+    "personal email" : [
+        ""
+    ], 
+    "user id" : DBRef("useraccount", ObjectId("5777393465dbb33f620e58d9")), 
+    "deleted" : false, 
+    "version" : NumberLong(4), 
+    "audit log" : [
+        {
+            "author info" : DBRef("userprofile", ObjectId("5777393465dbb33f620e58da")), 
+            "action" : "Signed up new user account and profile of CO-PI", 
+            "activity on" : ISODate("2016-07-02T03:47:00.976+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("5745ed6fbcbb29192ce0d3c9")), 
+            "action" : "Updated user account and profile of CO-PI", 
+            "activity on" : ISODate("2016-07-02T03:58:39.815+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("5745ed6fbcbb29192ce0d3c9")), 
+            "action" : "Activated user account and profile of CO PI", 
+            "activity on" : ISODate("2016-07-02T03:58:46.366+0000")
+        }
+    ]
+}
+{ 
+    "_id" : ObjectId("57773ba765dbb33f620e58e3"), 
+    "first name" : "co", 
+    "middle name" : "", 
+    "last name" : "pi", 
+    "date of birth" : ISODate("2016-07-01T06:00:00.000+0000"), 
+    "gender" : "Female", 
+    "mobile number" : [
+        "2222222222"
+    ], 
+    "addresses" : [
+        {
+            "street" : "222222", 
+            "apt" : "", 
+            "city" : "bosie", 
+            "state" : "Idaho", 
+            "zipcode" : "83702", 
+            "country" : "United States"
+        }
+    ], 
+    "work email" : [
+        "copi1@gmail.com"
+    ], 
+    "user id" : DBRef("useraccount", ObjectId("57773ba765dbb33f620e58e2")), 
+    "deleted" : false, 
+    "version" : NumberLong(2), 
+    "audit log" : [
+        {
+            "author info" : DBRef("userprofile", ObjectId("57773ba765dbb33f620e58e3")), 
+            "action" : "Signed up new user account and profile of copi", 
+            "activity on" : ISODate("2016-07-02T03:57:27.689+0000")
+        }
+    ]
 }
