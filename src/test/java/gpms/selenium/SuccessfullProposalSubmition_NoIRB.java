@@ -212,22 +212,8 @@ public class SuccessfullProposalSubmition_NoIRB {
     Thread.sleep(1000);
     driver.findElement(By.id("BoxAlertBtnOk")).click();
     Thread.sleep(1000);
-    if (isElementPresent(By.id("edit0")))
-    {
-    	Actions actions = new Actions(driver);
-    	WebElement mainMenu = driver.findElement(By.className("cssClassActionOnClick"));
-    	actions.moveToElement(mainMenu);
-
-    	WebElement subMenu = driver.findElement(By.linkText("Edit"));
-    	actions.moveToElement(subMenu);
-    	actions.click().build().perform();
-    }
-    else
-    {
-    	Thread.sleep(2000);
-    	JOptionPane.showMessageDialog(null, "Element not found");
-    	Thread.sleep(2000);
-    }
+    ((JavascriptExecutor) driver)
+	.executeScript("var s=document.getElementById('edit0');s.click();");
     Thread.sleep(1000);
     driver.findElement(By.id("btnSubmitProposal")).click();
     Thread.sleep(1000);
@@ -259,22 +245,8 @@ public class SuccessfullProposalSubmition_NoIRB {
     Thread.sleep(1000);
     driver.findElement(By.cssSelector("li.sfLevel1 > a > span")).click();
     Thread.sleep(1000);
-    if (isElementPresent(By.id("edit0")))
-    {
-    	Actions actions = new Actions(driver);
-    	WebElement mainMenu = driver.findElement(By.className("cssClassActionOnClick"));
-    	actions.moveToElement(mainMenu);
-
-    	WebElement subMenu = driver.findElement(By.linkText("Edit"));
-    	actions.moveToElement(subMenu);
-    	actions.click().build().perform();
-    }
-    else
-    {
-    	Thread.sleep(2000);
-    	JOptionPane.showMessageDialog(null, "Element not found");
-    	Thread.sleep(2000);
-    }
+    ((JavascriptExecutor) driver)
+	.executeScript("var s=document.getElementById('edit0');s.click();");
     Thread.sleep(1000);
     driver.findElement(By.id("ui-id-21")).click();
     Thread.sleep(1000);
@@ -325,22 +297,8 @@ public class SuccessfullProposalSubmition_NoIRB {
     driver.findElement(By.cssSelector("li.sfLevel1 > a > span")).click();
     Thread.sleep(1000);
     
-    if (isElementPresent(By.id("edit0")))
-    {
-    	Actions actions = new Actions(driver);
-    	WebElement mainMenu = driver.findElement(By.className("cssClassActionOnClick"));
-    	actions.moveToElement(mainMenu);
-
-    	WebElement subMenu = driver.findElement(By.linkText("Edit"));
-    	actions.moveToElement(subMenu);
-    	actions.click().build().perform();
-    }
-    else
-    {
-    	Thread.sleep(2000);
-    	JOptionPane.showMessageDialog(null, "Element not found");
-    	Thread.sleep(2000);
-    }
+    ((JavascriptExecutor) driver)
+	.executeScript("var s=document.getElementById('edit0');s.click();");
         
     Thread.sleep(1000);
     //driver.findElement(By.id("edit0")).click();
@@ -388,22 +346,8 @@ public class SuccessfullProposalSubmition_NoIRB {
     Thread.sleep(1000);
     driver.findElement(By.cssSelector("li.sfLevel1 > a > span")).click();
     Thread.sleep(1000);
-    if (isElementPresent(By.id("edit0")))
-    {
-    	Actions actions = new Actions(driver);
-    	WebElement mainMenu = driver.findElement(By.className("cssClassActionOnClick"));
-    	actions.moveToElement(mainMenu);
-
-    	WebElement subMenu = driver.findElement(By.linkText("Edit"));
-    	actions.moveToElement(subMenu);
-    	actions.click().build().perform();
-    }
-    else
-    {
-    	Thread.sleep(2000);
-    	JOptionPane.showMessageDialog(null, "Element not found");
-    	Thread.sleep(2000);
-    }
+    ((JavascriptExecutor) driver)
+	.executeScript("var s=document.getElementById('edit0');s.click();");
     Thread.sleep(1000);
     driver.findElement(By.id("btnApproveProposal")).click();
     Thread.sleep(1000);
@@ -453,22 +397,8 @@ public class SuccessfullProposalSubmition_NoIRB {
     // Warning: assertTextPresent may require manual changes
     assertTrue(driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*$"));
     Thread.sleep(1000);
-    if (isElementPresent(By.id("edit0")))
-    {
-    	Actions actions = new Actions(driver);
-    	WebElement mainMenu = driver.findElement(By.className("cssClassActionOnClick"));
-    	actions.moveToElement(mainMenu);
-
-    	WebElement subMenu = driver.findElement(By.linkText("Edit"));
-    	actions.moveToElement(subMenu);
-    	actions.click().build().perform();
-    }
-    else
-    {
-    	Thread.sleep(2000);
-    	JOptionPane.showMessageDialog(null, "Element not found");
-    	Thread.sleep(2000);
-    }
+    ((JavascriptExecutor) driver)
+	.executeScript("var s=document.getElementById('edit0');s.click();");
     Thread.sleep(1000);
     driver.findElement(By.id("lblSection11")).click();
     Thread.sleep(1000);
@@ -601,22 +531,8 @@ public class SuccessfullProposalSubmition_NoIRB {
     Thread.sleep(1000);
     driver.findElement(By.cssSelector("div.sfButtonwrapper")).click();
     Thread.sleep(1000);
-    if (isElementPresent(By.id("edit0")))
-    {
-    	Actions actions = new Actions(driver);
-    	WebElement mainMenu = driver.findElement(By.className("cssClassActionOnClick"));
-    	actions.moveToElement(mainMenu);
-
-    	WebElement subMenu = driver.findElement(By.linkText("Edit"));
-    	actions.moveToElement(subMenu);
-    	actions.click().build().perform();
-    }
-    else
-    {
-    	Thread.sleep(2000);
-    	JOptionPane.showMessageDialog(null, "Element not found");
-    	Thread.sleep(2000);
-    }
+    ((JavascriptExecutor) driver)
+	.executeScript("var s=document.getElementById('edit0');s.click();");
     Thread.sleep(1000);
     driver.findElement(By.id("ui-id-21")).click();
     Thread.sleep(1000);
@@ -660,22 +576,8 @@ public class SuccessfullProposalSubmition_NoIRB {
     driver.findElement(By.cssSelector("li.sfLevel1 > a > span")).click();
     Thread.sleep(1000);
     
-    if (isElementPresent(By.id("edit0")))
-    {
-    	Actions actions = new Actions(driver);
-    	WebElement mainMenu = driver.findElement(By.className("cssClassActionOnClick"));
-    	actions.moveToElement(mainMenu);
-
-    	WebElement subMenu = driver.findElement(By.linkText("Edit"));
-    	actions.moveToElement(subMenu);
-    	actions.click().build().perform();
-    }
-    else
-    {
-    	Thread.sleep(2000);
-    	JOptionPane.showMessageDialog(null, "Element not found");
-    	Thread.sleep(2000);
-    }
+    ((JavascriptExecutor) driver)
+	.executeScript("var s=document.getElementById('edit0');s.click();");
     
     Thread.sleep(1000);
     driver.findElement(By.id("lblSection11")).click();
@@ -726,22 +628,8 @@ public class SuccessfullProposalSubmition_NoIRB {
     Thread.sleep(1000);
     driver.findElement(By.linkText("My Proposals")).click();
     Thread.sleep(1000);
-    if (isElementPresent(By.id("edit0")))
-    {
-    	Actions actions = new Actions(driver);
-    	WebElement mainMenu = driver.findElement(By.className("cssClassActionOnClick"));
-    	actions.moveToElement(mainMenu);
-
-    	WebElement subMenu = driver.findElement(By.linkText("Edit"));
-    	actions.moveToElement(subMenu);
-    	actions.click().build().perform();
-    }
-    else
-    {
-    	Thread.sleep(2000);
-    	JOptionPane.showMessageDialog(null, "Element not found");
-    	Thread.sleep(2000);
-    }
+    ((JavascriptExecutor) driver)
+	.executeScript("var s=document.getElementById('edit0');s.click();");
     Thread.sleep(1000);
     driver.findElement(By.id("btnSubmitProposal")).click();
     Thread.sleep(1000);

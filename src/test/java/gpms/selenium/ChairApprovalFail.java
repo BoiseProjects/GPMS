@@ -1,12 +1,8 @@
 package gpms.selenium;
 
-/*TenuredChemFacultyProposal.java
- * Made by: Nicholas Chapa
- * REU software security
- * Creates a new proposal by a tenured chemistry clinical professor then submits the proposal to the
- * department chair.
- * NOTE: Selenium has no mouse control capabilities so you must manually hover the mouse over the proposal
- * options symbol to move on to submitting the proposal.
+/*ChairApprovalFailure
+ * Made By: Nick
+ * Chair attempts to approve a proposal that has not been submited by PI yet.
  */
 
 import java.util.regex.Pattern;
@@ -22,7 +18,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 
-public class TenuredChemFacultyProposal {
+public class ChairApprovalFail {
   private WebDriver driver;
   private String baseUrl;
   private boolean acceptNextAlert = true;
@@ -55,15 +51,10 @@ public class TenuredChemFacultyProposal {
     driver.findElement(By.cssSelector("i.sidebarExpand")).click();
     Thread.sleep(1000);
     driver.findElement(By.id("lblSection2")).click();
-    Thread.sleep(1000);
     driver.findElement(By.id("txtProjectTitle")).click();
-    Thread.sleep(1000);
     driver.findElement(By.id("txtProjectTitle")).clear();
-    Thread.sleep(1000);
-    driver.findElement(By.id("txtProjectTitle")).sendKeys("Chemistry Proposal4");
-    Thread.sleep(1000);
+    driver.findElement(By.id("txtProjectTitle")).sendKeys("Chair approval test");
     driver.findElement(By.cssSelector("td.cssClassTableRightCol")).click();
-    Thread.sleep(1000);
     new Select(driver.findElement(By.id("ddlProjectType"))).selectByVisibleText("Research-Applied");
     Thread.sleep(1000);
     driver.findElement(By.id("txtDueDate")).click();
@@ -73,7 +64,6 @@ public class TenuredChemFacultyProposal {
     driver.findElement(By.id("txtDueDate")).click();
     Thread.sleep(1000);
     driver.findElement(By.linkText("8")).click();
-    Thread.sleep(1000);
     new Select(driver.findElement(By.id("ddlTypeOfRequest"))).selectByVisibleText("New Proposal");
     Thread.sleep(1000);
     new Select(driver.findElement(By.id("ddlLocationOfProject"))).selectByVisibleText("On-campus");
@@ -197,6 +187,7 @@ public class TenuredChemFacultyProposal {
     driver.findElement(By.id("ui-id-21")).click();
     Thread.sleep(1000);
     driver.findElement(By.id("pi_signature")).clear();
+    Thread.sleep(1000);
     driver.findElement(By.id("pi_signature")).sendKeys("Nicholas chapa");
     Thread.sleep(1000);
     driver.findElement(By.id("pi_signaturedate")).click();
@@ -215,23 +206,7 @@ public class TenuredChemFacultyProposal {
     Thread.sleep(1000);
     assertEquals("Save", closeAlertAndGetItsText());
     // Warning: assertTextPresent may require manual changes
-    Thread.sleep(2000);
-    assertTrue(driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*$"));
-    Thread.sleep(2000);
-    driver.findElement(By.id("BoxAlertBtnOk")).click();
-    //Thread.sleep(2000);
-    //driver.findElement(By.linkText("My Proposals")).click();
-    Thread.sleep(2000);
-    ((JavascriptExecutor) driver)
-	.executeScript("var s=document.getElementById('edit0');s.click();");
     Thread.sleep(1000);
-    driver.findElement(By.id("btnSubmitProposal")).click();
-    Thread.sleep(1000);
-    driver.findElement(By.id("BoxConfirmBtnOk")).click();
-    Thread.sleep(1000);
-    assertEquals("Submit", closeAlertAndGetItsText());
-    Thread.sleep(1000);
-    // Warning: assertTextPresent may require manual changes
     assertTrue(driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*$"));
     Thread.sleep(1000);
     driver.findElement(By.id("BoxAlertBtnOk")).click();
@@ -239,7 +214,57 @@ public class TenuredChemFacultyProposal {
     driver.findElement(By.cssSelector("span.myProfile.icon-arrow-s")).click();
     Thread.sleep(1000);
     driver.findElement(By.linkText("Log Out")).click();
-    Thread.sleep(7000);
+    Thread.sleep(2000);
+    
+    //Chair approval
+    driver.get(baseUrl + "GPMS/");
+    driver.findElement(By.id("user_email")).clear();
+    driver.findElement(By.id("user_email")).sendKeys("chairchemistry@gmail.com");
+    driver.findElement(By.id("user_password")).clear();
+    driver.findElement(By.id("user_password")).sendKeys("gpmspassword");
+    Thread.sleep(1000);
+    driver.findElement(By.name("commit")).click();
+    Thread.sleep(1000);
+    // Warning: assertTextPresent may require manual changes
+    assertTrue(driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*$"));
+    Thread.sleep(1000);
+    driver.findElement(By.cssSelector("li.sfLevel1 > a > span")).click();
+    Thread.sleep(1000);
+    
+    ((JavascriptExecutor) driver)
+	.executeScript("var s=document.getElementById('edit0');s.click();");
+    
+    Thread.sleep(1000);
+    driver.findElement(By.id("ui-id-21")).click();
+    Thread.sleep(1000);
+    driver.findElement(By.name("5745f29ebcbb29192ce0d42fDepartment_Chair")).click();
+    Thread.sleep(1000);
+    driver.findElement(By.name("5745f29ebcbb29192ce0d42fDepartment_Chair")).clear();
+    Thread.sleep(1000);
+    driver.findElement(By.name("5745f29ebcbb29192ce0d42fDepartment_Chair")).sendKeys("chair");
+    Thread.sleep(1000);
+    driver.findElement(By.name("signaturedate5745f29ebcbb29192ce0d42fDepartment_Chair")).click();
+    Thread.sleep(1000);
+    driver.findElement(By.xpath("//table[@id='trSignChair']/tbody/tr/td[3]")).click();
+    Thread.sleep(1000);
+    driver.findElement(By.name("proposalNotes5745f29ebcbb29192ce0d42fDepartment_Chair")).clear();
+    Thread.sleep(1000);
+    driver.findElement(By.name("proposalNotes5745f29ebcbb29192ce0d42fDepartment_Chair")).sendKeys("Test");
+    Thread.sleep(1000);
+    driver.findElement(By.id("btnApproveProposal")).click();
+    Thread.sleep(1000);
+    driver.findElement(By.id("BoxConfirmBtnOk")).click();
+    Thread.sleep(1000);
+    driver.findElement(By.cssSelector("h2")).click();
+    // Warning: assertTextPresent may require manual changes
+    assertTrue(driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*$"));
+    Thread.sleep(1000);
+    driver.findElement(By.id("BoxAlertBtnOk")).click();
+    Thread.sleep(1000);
+    // ERROR: Caught exception [ERROR: Unsupported command [selectWindow | null | ]]
+    driver.findElement(By.cssSelector("span.myProfile.icon-arrow-s")).click();
+    Thread.sleep(1000);
+    driver.findElement(By.linkText("Log Out")).click();
   }
 
   @After
@@ -250,7 +275,7 @@ public class TenuredChemFacultyProposal {
       fail(verificationErrorString);
     }
   }
-
+  
   private boolean isElementPresent(By by) {
 	    try {
 	      driver.findElement(by);
@@ -259,7 +284,7 @@ public class TenuredChemFacultyProposal {
 	      return false;
 	    }
 	  }
-  
+
   private String closeAlertAndGetItsText() {
     try {
       Alert alert = driver.switchTo().alert();
