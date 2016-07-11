@@ -59,6 +59,7 @@ public class TestSignatureChecking {
 	 * @throws UnknownHostException
 	 */
 	@Test
+	@Ignore
 	public void testAllPISigned() throws UnknownHostException {
 		boolean allSigned = true;
 		List<Proposal> propList = newProposalDAO.findAllProposals();
@@ -72,6 +73,7 @@ public class TestSignatureChecking {
 	}
 
 	@Test
+	@Ignore
 	public void testAllCoPiSigned() throws UnknownHostException {
 		boolean allSigned = true;
 		List<Proposal> propList = newProposalDAO.findAllProposals();
