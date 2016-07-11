@@ -14,8 +14,7 @@ public class TestGPMS {
 	public static void main(String[] args) {
 
 		// objects and vars instantiation
-		String currentUser; 
-
+		String currentUser = new String();
 
 		Browser bub = new Browser();
 		User us = new User();
@@ -36,16 +35,16 @@ public class TestGPMS {
 		bub.compareTitle(expectedTitle, driver);
 
 		// Run method to login desired user
-//		currentUser = ul.lilyLogin(driver);
+		// currentUser = ul.lilyLogin(driver);
 
 		// Wait for page to load
-//		bub.waitForPageLoad(driver);
+		// bub.waitForPageLoad(driver);
 
 		// verify title of web page
 		// Home page: Home - GPMS
 		expectedTitle = "Home - GPMS";
 
-	//	String actualTitle = driver.getTitle();
+		// String actualTitle = driver.getTitle();
 
 		// Call method to compare to the actual title of the web page
 		bub.compareTitle(expectedTitle, driver);
@@ -56,27 +55,26 @@ public class TestGPMS {
 		String expectedUser = currentUser;
 		us.compareUser(expectedUser, driver);
 
-		//Hooray! We are logged in
+		// Hooray! We are logged in
 		us.getAllPositionTypes(driver);
-		
+
 		// Wait for the desired link to load
 		bub.waitForPageLoad(driver);
 
-		//Get full name of user 
+		// Get full name of user
 		String userName = us.getUserFullName(driver);
-			
 
-		
 		// Get position type of current user
 		String positionType = us.getPositionType(driver);
 		System.out.println("POSITION " + positionType);
-		
-		//testing session method ---- I have not figured out how to get data from session yet
-/*		HttpServletRequest req;
-		bub.getSessionID(driver, req);
-*/		System.out.println("DO I SEE A SESSION ID?");
-//	Above not working
-		
+
+		// testing session method ---- I have not figured out how to get data
+		// from session yet
+		/*
+		 * HttpServletRequest req; bub.getSessionID(driver, req);
+		 */System.out.println("DO I SEE A SESSION ID?");
+		// Above not working
+
 		/*
 		 * //Click on "View as Professor", if it is not already checked
 		 * WebElement viewAsProfessor =
@@ -109,25 +107,23 @@ public class TestGPMS {
 		// Attempt to edit a proposal
 		pup.editProposal(driver);
 		// Click Add New Proposal button
-/*		try {
-			us.addNewProposal(driver, userName, positionType);
-		} catch (AWTException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-*/
+		/*
+		 * try { us.addNewProposal(driver, userName, positionType); } catch
+		 * (AWTException e) { // TODO Auto-generated catch block
+		 * e.printStackTrace(); }
+		 */
 		bub.waitForPageLoad(driver);
 
 		// us.addCoPI(driver);
 
-		//Fill out project information tab of proposal sheet
-	//	pup.addProposal(driver, userName, positionType);
-		
+		// Fill out project information tab of proposal sheet
+		// pup.addProposal(driver, userName, positionType);
+
 		// click on sign out button
-//		us.userLogout(driver);
+		// us.userLogout(driver);
 
 		// close the web browser
-//		driver.close();
+		// driver.close();
 		System.out.println("Test script executed successfully");
 
 		// terminate program
