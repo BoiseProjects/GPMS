@@ -147,24 +147,18 @@
 								id="divBottompanel">
 								<div class="sfModulecontent clearfix">
 									<!-- Grid -->
-									<div id="divProposalGrid" style="display: none">
+									<div id="divDelegationGrid" style="display: none">
 										<div class="cssClassCommonBox Curve">
 											<div class="cssClassHeader">
 												<h1>
-													<span>Manage Your Notifications</span>
+													<span>Manage Your Delegations</span>
 												</h1>
 												<div class="cssClassHeaderRight">
 													<div class="sfButtonwrapper">
 														<p>
-															<button title="Add New Proposal" type="button"
+															<button title="Add New Delegation" type="button"
 																id="btnAddNew" class="sfBtn">
-																<span class="icon-addnew">Add New Proposal</span>
-															</button>
-														</p>
-														<p>
-															<button title="Delete All Selected" type="button"
-																id="btnDeleteSelected" class="sfBtn">
-																<span class="icon-delete">Delete All Selected</span>
+																<span class="icon-addnew">Add New Delegation</span>
 															</button>
 														</p>
 														<p>
@@ -173,13 +167,6 @@
 																<span class="icon-excel">Export to Excel</span>
 															</button>
 														</p>
-														<!-- <p>
-															<button title="Export to CSV" type="button"
-																id="btnExportToCSV" class="sfBtn">
-																<span class="icon-excel">Export to CSV</span>
-															</button>
-														</p> -->
-
 														<div class="cssClassClear"></div>
 													</div>
 													<div class="cssClassClear"></div>
@@ -201,23 +188,6 @@
 																			By:</label> <input title="Proposed By"
 																		id="txtSearchProposedBy" class="sfTextBoxFix"
 																		type="text" placeholder="Proposed By" /></td>
-
-																	<!-- 																		<td><label class="cssClassLabel"> -->
-																	<!-- 																				Project Type:</label> <select title="Choose Project Type" id="ddlProjectType" -->
-																	<!-- 																			class="sfListmenu" style="width: 100px;"> -->
-																	<!-- 																				<option value="0" >--All--</option> -->
-																	<!-- 																		</select></td> -->
-																	<!-- 																		<td><label class="cssClassLabel"> -->
-																	<!-- 																				Type of Request:</label> <select title="Choose Type of Request" id="ddlTypeOfRequest" -->
-																	<!-- 																			class="sfListmenu" style="width: 100px;"> -->
-																	<!-- 																				<option value="0" >--All--</option> -->
-																	<!-- 																		</select></td> -->
-																	<!-- 																		<td><label class="cssClassLabel"> -->
-																	<!-- 																				Location of Project:</label> <select  title="Choose Location of Project" id="ddlLocationOfProject" -->
-																	<!-- 																			class="sfListmenu" style="width: 100px;"> -->
-																	<!-- 																				<option value="0" >--All--</option> -->
-																	<!-- 																		</select></td> -->
-
 																	<td style="width: 180px; float: left;"><label
 																		class="cssClassLabel">Received On:</label>
 																		<div>
@@ -249,15 +219,15 @@
 																				class="sfTextBoxFix" placeholder="To">
 																		</div></td>
 
-																	<td><label class="cssClassLabel">Proposal
-																			Status:</label> <select title="Choose Proposal Status"
-																		id="ddlSearchProposalStatus" class="sfListmenu"
+																	<td><label class="cssClassLabel">Delegation
+																			Status:</label> <select title="Choose Delegation Status"
+																		id="ddlSearchDelegationstatus" class="sfListmenu"
 																		style="width: 80px;">
 																			<option value="0">--All--</option>
 																	</select></td>
 																	<td><label class="cssClassLabel">&nbsp;</label>
-																		<button title="Search Proposal" class="sfBtn"
-																			id="btnSearchProposal" type="button">
+																		<button title="Search Delegation" class="sfBtn"
+																			id="btnSearchDelegation" type="button">
 																			<span class="icon-search">Search</span>
 																		</button></td>
 																</tr>
@@ -269,7 +239,7 @@
 															title="Loading..." />
 													</div>
 													<div class="log"></div>
-													<table id="gdvProposals" cellspacing="0" cellpadding="0"
+													<table id="gdvDelegations" cellspacing="0" cellpadding="0"
 														border="0" width="100%"></table>
 												</div>
 											</div>
@@ -277,17 +247,96 @@
 									</div>
 									<!-- End of Grid -->
 									<!-- form -->
-									<div id="divNotificationForm">
+									<div id="divDelegationForm" style="display: none;">
 										<div class="cssClassCommonBox Curve">
 											<div class="cssClassHeader">
 												<h1>
-													<span id="lblFormHeading">Manage Your Delegation</span>
+													<span id="lblFormHeading">New Delegation Details</span>
 												</h1>
-												Goes here Your Delegation!
+												<div>
+													<span class="cssClassRequired">*</span> <span
+														class="cssClassLabelTitle">indicates required
+														fields</span>
+												</div>
+											</div>
+											<div class="sfFormwrapper">
+												<table cellspacing="0" cellpadding="0" border="0">
+													<tbody>
+														<tr>
+															<td><span class="cssClassLabel" id="lblUserName">User
+																	Name:</span> <span class="cssClassRequired">*</span></td>
+															<td><select title="Choose Full Name"
+																class="sfListmenu" name="ddlName" style="width: 140px;"
+																required="true">
+															</select></td>
+														</tr>
+														<tr>
+															<td><span class="cssClassLabel" id="lblProposal">Proposal:</span>
+																<span class="cssClassRequired">*</span></td>
+															<td><select title="Choose Proposal" id="ddlProposal"
+																class="sfListmenu">
+																	<option value="0">--All--</option>
+															</select></td>
+														</tr>
+														<tr>
+															<td><span id="lblDOB" class="cssClassLabel">Start
+																	From:</span> <span class="cssClassRequired">*</span></td>
+															<td class="cssClassTableRightCol"><input
+																title="Delegation Start From" type="text"
+																id="txtdelegationFrom" class="sfInputbox"
+																name="delegationFrom"
+																placeholder="Delegation Start From" /></td>
+															<td><span id="lblDOB" class="cssClassLabel">Start
+																	To:</span> <span class="cssClassRequired">*</span></td>
+															<td class="cssClassTableRightCol"><input
+																title="Delegation Start To" type="text"
+																id="txtdelegationTo" class="sfInputbox"
+																name="delegationTo" placeholder="Delegation Start To" /></td>
+														</tr>
+														<tr>
+															<td><span id="lblGender" class="cssClassLabel">Gender:</span>
+																<span class="cssClassRequired">*</span></td>
+															<td class="cssClassTableRightCol"><select
+																title="Choose Gender" id="ddlGender" name="gender"
+																class="sfListmenu">
+																	<option value="">Choose Gender</option>
+																	<option value="Male">Male</option>
+																	<option value="Female">Female</option>
+															</select></td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+
+											<div class="sfButtonwrapper">
+												<p>
+													<button class="sfBtn" id="btnBack" type="button"
+														title="Go Back">
+														<span class="icon-arrow-slim-w">Back</span>
+													</button>
+												</p>
+												<p>
+													<button class="sfBtn" id="btnReset" type="button"
+														title="Reset">
+														<span class="icon-refresh">Reset</span>
+													</button>
+												</p>
+												<p>
+													<button class="sfBtn" id="btnSaveDelegation" type="button"
+														title="Save Delegation">
+														<span class="icon-edit">Save</span>
+													</button>
+												</p>
+												<p>
+													<button class="sfBtn" id="btnDeleteDelegation"
+														type="button" title="Delete Delegation">
+														<span class="icon-delete">Delete</span>
+													</button>
+												</p>
 											</div>
 										</div>
-										<!-- End form -->
 									</div>
+									<!-- End form -->
 								</div>
 							</div>
 							<!-- END sfMaincontent -->
@@ -296,6 +345,7 @@
 					<!-- END Body Content sfContentwrapper -->
 				</div>
 			</div>
+		</div>
 	</form>
 </body>
 </html>
