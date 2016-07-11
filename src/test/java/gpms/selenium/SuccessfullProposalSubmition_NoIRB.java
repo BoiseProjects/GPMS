@@ -519,6 +519,7 @@ public class SuccessfullProposalSubmition_NoIRB {
     Thread.sleep(1000);
     
     //Second Admin approval
+    /*
     driver.get(baseUrl + "GPMS/");
     driver.findElement(By.id("user_password")).clear();
     driver.findElement(By.id("user_password")).sendKeys("gpmspassword");
@@ -560,6 +561,7 @@ public class SuccessfullProposalSubmition_NoIRB {
     Thread.sleep(1000);
     driver.findElement(By.linkText("Log Out")).click();
     Thread.sleep(5000);
+    */
     
     //Research Director Approval
     driver.get(baseUrl + "GPMS/");
