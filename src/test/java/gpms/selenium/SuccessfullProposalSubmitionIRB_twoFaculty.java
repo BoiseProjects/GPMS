@@ -233,7 +233,7 @@ public class SuccessfullProposalSubmitionIRB_twoFaculty {
     driver.findElement(By.id("user_password")).clear();
     driver.findElement(By.id("user_password")).sendKeys("gpmspassword");
     driver.findElement(By.id("user_email")).clear();
-    driver.findElement(By.id("user_email")).sendKeys("selena");
+    driver.findElement(By.id("user_email")).sendKeys("sherri");
     Thread.sleep(500);
     driver.findElement(By.name("commit")).click();
     Thread.sleep(500);
@@ -244,26 +244,27 @@ public class SuccessfullProposalSubmitionIRB_twoFaculty {
     Thread.sleep(500);
     driver.findElement(By.id("ui-id-21")).click();
     Thread.sleep(500);
-    driver.findElement(By.name("57505b2d65dbb34d173fc6f9Co-PI")).clear();
+    driver.findElement(By.name("5762597c65dbb34423f3acd3Co-PI")).clear();
     Thread.sleep(500);
-    driver.findElement(By.name("57505b2d65dbb34d173fc6f9Co-PI")).sendKeys("Selena");
-    Thread.sleep(500);
-    driver.findElement(By.name("proposalNotes57505b2d65dbb34d173fc6f9Co-PI")).clear();
-    Thread.sleep(500);
-    driver.findElement(By.name("proposalNotes57505b2d65dbb34d173fc6f9Co-PI")).sendKeys("Test");
-    Thread.sleep(500);
-    driver.findElement(By.name("signaturedate57505b2d65dbb34d173fc6f9Co-PI")).click();
-    Thread.sleep(500);
+    driver.findElement(By.name("5762597c65dbb34423f3acd3Co-PI")).sendKeys("Selena");
+    Thread.sleep(1000);
+    driver.findElement(By.name("proposalNotes5762597c65dbb34423f3acd3Co-PI")).clear();
+    Thread.sleep(1000);
+    driver.findElement(By.name("proposalNotes5762597c65dbb34423f3acd3Co-PI")).sendKeys("Test");
+    Thread.sleep(1000);
+    driver.findElement(By.name("signaturedate5762597c65dbb34423f3acd3Co-PI")).click();
+    Thread.sleep(1000);
     driver.findElement(By.xpath("//table[@id='trSignPICOPI']/tbody/tr[2]/td[3]")).click();
-    Thread.sleep(500);
+    Thread.sleep(1000);
     driver.findElement(By.id("btnSaveProposal")).click();
-    Thread.sleep(500);
+    Thread.sleep(1000);
     driver.findElement(By.id("BoxConfirmBtnOk")).click();
-    Thread.sleep(500);
+    Thread.sleep(1000);
     assertEquals("Save", closeAlertAndGetItsText());
-    Thread.sleep(500);
+    Thread.sleep(1000);
     driver.findElement(By.id("BoxAlertBtnOk")).click();
     Thread.sleep(500);
+    
     driver.findElement(By.cssSelector("span.myProfile.icon-arrow-s")).click();
     Thread.sleep(500);
     driver.findElement(By.linkText("Log Out")).click();
@@ -282,6 +283,7 @@ public class SuccessfullProposalSubmitionIRB_twoFaculty {
     Thread.sleep(500);
     driver.findElement(By.cssSelector("li.sfLevel1 > a > span")).click();
     Thread.sleep(500);
+    
     ((JavascriptExecutor) driver)
 	.executeScript("var s=document.getElementById('edit0');s.click();");
     
@@ -297,6 +299,10 @@ public class SuccessfullProposalSubmitionIRB_twoFaculty {
     Thread.sleep(500);
     driver.findElement(By.id("BoxAlertBtnOk")).click();
     Thread.sleep(500);
+    driver.findElement(By.cssSelector("span.myProfile.icon-arrow-s")).click();
+    Thread.sleep(500);
+    driver.findElement(By.linkText("Log Out")).click();
+    Thread.sleep(2000);
     
     //Chemistry Chair approval
     driver.get(baseUrl + "GPMS/");
@@ -351,10 +357,10 @@ public class SuccessfullProposalSubmitionIRB_twoFaculty {
     Thread.sleep(1000);
     driver.findElement(By.linkText("Log Out")).click();
     
-  //Engineering Chair approval
+  //Comp Sci Chair approval
     driver.get(baseUrl + "GPMS/");
     driver.findElement(By.id("user_email")).clear();
-    driver.findElement(By.id("user_email")).sendKeys("chairchemistry@gmail.com");
+    driver.findElement(By.id("user_email")).sendKeys("chaircomputerscience@gmail.com");
     driver.findElement(By.id("user_password")).clear();
     driver.findElement(By.id("user_password")).sendKeys("gpmspassword");
     Thread.sleep(1000);
@@ -372,19 +378,19 @@ public class SuccessfullProposalSubmitionIRB_twoFaculty {
     Thread.sleep(1000);
     driver.findElement(By.id("ui-id-21")).click();
     Thread.sleep(1000);
-    driver.findElement(By.name("5745f29ebcbb29192ce0d42fDepartment_Chair")).click();
+    driver.findElement(By.name("5745f0f7bcbb29192ce0d405Department_Chair")).click();
     Thread.sleep(1000);
-    driver.findElement(By.name("5745f29ebcbb29192ce0d42fDepartment_Chair")).clear();
+    driver.findElement(By.name("5745f0f7bcbb29192ce0d405Department_Chair")).clear();
     Thread.sleep(1000);
-    driver.findElement(By.name("5745f29ebcbb29192ce0d42fDepartment_Chair")).sendKeys("chair");
+    driver.findElement(By.name("5745f0f7bcbb29192ce0d405Department_Chair")).sendKeys("chair");
     Thread.sleep(1000);
-    driver.findElement(By.name("signaturedate5745f29ebcbb29192ce0d42fDepartment_Chair")).click();
+    driver.findElement(By.name("signaturedate5745f0f7bcbb29192ce0d405Department_Chair")).click();
     Thread.sleep(1000);
-    driver.findElement(By.xpath("//table[@id='trSignChair']/tbody/tr/td[3]")).click();
+    driver.findElement(By.xpath("//table[@id='trSignPICOPI']/tbody/tr[2]/td[3]")).click();
     Thread.sleep(1000);
-    driver.findElement(By.name("proposalNotes5745f29ebcbb29192ce0d42fDepartment_Chair")).clear();
+    driver.findElement(By.name("proposalNotes5745f0f7bcbb29192ce0d405Department_Chair")).clear();
     Thread.sleep(1000);
-    driver.findElement(By.name("proposalNotes5745f29ebcbb29192ce0d42fDepartment_Chair")).sendKeys("Test");
+    driver.findElement(By.name("proposalNotes5745f0f7bcbb29192ce0d405Department_Chair")).sendKeys("Test");
     Thread.sleep(1000);
     driver.findElement(By.id("btnApproveProposal")).click();
     Thread.sleep(1000);
@@ -404,7 +410,7 @@ public class SuccessfullProposalSubmitionIRB_twoFaculty {
     Thread.sleep(1000);
     driver.findElement(By.linkText("Log Out")).click();
     
-    //Business manager approval
+    //Chemistry Business manager approval
     driver.get(baseUrl + "GPMS/");
     driver.findElement(By.id("user_email")).clear();
     driver.findElement(By.id("user_email")).sendKeys("bmchemistry1@gmail.com");
@@ -438,6 +444,59 @@ public class SuccessfullProposalSubmitionIRB_twoFaculty {
     driver.findElement(By.name("signaturedate574620c6bcbb29150487642aBusiness_Manager")).click();
     Thread.sleep(1000);
     driver.findElement(By.xpath("//table[@id='trSignBusinessManager']/tbody/tr/td[3]")).click();
+    Thread.sleep(1000);
+    driver.findElement(By.id("btnApproveProposal")).click();
+    Thread.sleep(1000);
+    driver.findElement(By.id("BoxConfirmBtnOk")).click();
+    Thread.sleep(1000);
+    assertEquals("Approve", closeAlertAndGetItsText());
+    Thread.sleep(1000);
+    driver.findElement(By.cssSelector("h2")).click();
+    Thread.sleep(1000);
+    // Warning: assertTextPresent may require manual changes
+    assertTrue(driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*$"));
+    Thread.sleep(1000);
+    driver.findElement(By.id("BoxAlertBtnOk")).click();
+    Thread.sleep(1000);
+    driver.findElement(By.cssSelector("span.myProfile.icon-arrow-s")).click();
+    Thread.sleep(1000);
+    driver.findElement(By.linkText("Log Out")).click();
+    Thread.sleep(7000);
+    
+  //Computer Science Business manager approval
+    driver.get(baseUrl + "GPMS/");
+    driver.findElement(By.id("user_email")).clear();
+    driver.findElement(By.id("user_email")).sendKeys("bmcomputerscience@gmail.com");
+    driver.findElement(By.id("user_password")).clear();
+    driver.findElement(By.id("user_password")).sendKeys("gpmspassword");
+    Thread.sleep(1000);
+    driver.findElement(By.name("commit")).click();
+    // Warning: assertTextPresent may require manual changes
+    Thread.sleep(1000);
+    assertTrue(driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*$"));
+    Thread.sleep(1000);
+    driver.findElement(By.cssSelector("li.sfLevel1 > a > span")).click();
+    Thread.sleep(1000);
+    
+    ((JavascriptExecutor) driver)
+	.executeScript("var s=document.getElementById('edit0');s.click();");
+        
+    Thread.sleep(1000);
+    //driver.findElement(By.id("edit0")).click();
+    Thread.sleep(1000);
+    driver.findElement(By.id("ui-id-21")).click();
+    Thread.sleep(1000);
+    driver.findElement(By.name("5745f147bcbb29192ce0d40dBusiness_Manager")).clear();
+    Thread.sleep(1000);
+    driver.findElement(By.name("5745f147bcbb29192ce0d40dBusiness_Manager")).sendKeys("Business Manager");
+    Thread.sleep(1000);
+    driver.findElement(By.name("proposalNotes5745f147bcbb29192ce0d40dBusiness_Manager")).clear();
+    Thread.sleep(1000);
+    driver.findElement(By.name("proposalNotes5745f147bcbb29192ce0d40dBusiness_Manager")).sendKeys("Test");
+    Thread.sleep(1000);
+    driver.findElement(By.name("signaturedate5745f0f7bcbb29192ce0d405Department_Chair")).click();
+    Thread.sleep(1000);
+    driver.findElement(By.xpath("//table[@id='trSignPICOPI']/tbody/tr[2]/td[3]")).click();
     Thread.sleep(1000);
     driver.findElement(By.id("btnApproveProposal")).click();
     Thread.sleep(1000);
