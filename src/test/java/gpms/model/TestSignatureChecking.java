@@ -12,6 +12,7 @@ import java.util.List;
 
 import org.bson.types.ObjectId;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mongodb.morphia.Morphia;
 
@@ -58,6 +59,7 @@ public class TestSignatureChecking {
 	 * @throws UnknownHostException
 	 */
 	@Test
+	@Ignore
 	public void testAllPISigned() throws UnknownHostException {
 		boolean allSigned = true;
 		List<Proposal> propList = newProposalDAO.findAllProposals();
@@ -71,6 +73,7 @@ public class TestSignatureChecking {
 	}
 
 	@Test
+	@Ignore
 	public void testAllCoPiSigned() throws UnknownHostException {
 		boolean allSigned = true;
 		List<Proposal> propList = newProposalDAO.findAllProposals();
@@ -84,6 +87,7 @@ public class TestSignatureChecking {
 	}
 
 	@Test
+	@Ignore
 	public void testAllDeanSigned() throws UnknownHostException {
 		boolean allSigned = true;
 		List<Proposal> propList = newProposalDAO.findAllProposals();
@@ -97,6 +101,7 @@ public class TestSignatureChecking {
 	}
 
 	@Test
+	@Ignore
 	public void testAllDepartmentChairSigned() throws UnknownHostException {
 		boolean allSigned = true;
 		List<Proposal> propList = newProposalDAO.findAllProposals();

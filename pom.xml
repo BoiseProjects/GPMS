@@ -98,6 +98,13 @@
 	</build>
 	<description>Proposal Workflow Management System - A web-based application for replacing the manual approval process of grant submission.</description>
 
+	<repositories>
+		<repository>
+			<id>wso2-nexus</id>
+			<url>http://maven.wso2.org/nexus/content/repositories/releases</url>
+		</repository>
+	</repositories>
+
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -316,13 +323,13 @@
 			<artifactId>selenium-java</artifactId>
 			<version>2.53.0</version>
 		</dependency>
- 		
-	<!-- http://mvnrepository.com/artifact/org.seleniumhq.webdriver/webdriver-common -->
-<!-- 		<dependency> -->
-<!-- 			<groupId>org.seleniumhq.webdriver</groupId> -->
-<!-- 			<artifactId>webdriver-common</artifactId> -->
-<!-- 			<version>0.9.7376</version> -->
-<!-- 		</dependency> -->
+
+		<!-- http://mvnrepository.com/artifact/org.seleniumhq.webdriver/webdriver-common -->
+		<!-- <dependency> -->
+		<!-- <groupId>org.seleniumhq.webdriver</groupId> -->
+		<!-- <artifactId>webdriver-common</artifactId> -->
+		<!-- <version>0.9.7376</version> -->
+		<!-- </dependency> -->
 
 		<!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-chrome-driver -->
 		<dependency>
@@ -337,8 +344,6 @@
 			<artifactId>selenium-server</artifactId>
 			<version>2.53.0</version>
 		</dependency>
-		
-		
 
 		<dependency>
 			<groupId>io.swagger</groupId>
@@ -346,9 +351,16 @@
 			<version>1.5.0</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.wso2.balana</groupId>
+			<artifactId>org.wso2.balana</artifactId>
+			<version>${balana.version}</version>
+		</dependency>
+
 	</dependencies>
 
 	<properties>
+		<balana.version>1.0.4</balana.version>
 		<jersey.version>2.22.2</jersey.version>
 		<version.log4j>1.2.17</version.log4j>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
