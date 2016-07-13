@@ -1,5 +1,7 @@
 package gpms.selenium;
 
+import java.awt.AWTException;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -23,6 +25,8 @@ public class TestGPMS {
 		UserLogin ul = new UserLogin();
 
 		// Run method to open browser
+		//openWebApp("firefox") will run firefox
+		//openWebApp("") will run in chrome
 		WebDriver driver = bub.openWebApp("");
 		System.out.println("Open browser");
 
@@ -36,10 +40,10 @@ public class TestGPMS {
 		bub.compareTitle(expectedTitle, driver);
 
 		// Run method to login desired user
-//		currentUser = ul.lilyLogin(driver);
+		currentUser = ul.lilyLogin(driver);
 
 		// Wait for page to load
-//		bub.waitForPageLoad(driver);
+		bub.waitForPageLoad(driver);
 
 		// verify title of web page
 		// Home page: Home - GPMS
@@ -76,21 +80,9 @@ public class TestGPMS {
 		bub.getSessionID(driver, req);
 */		System.out.println("DO I SEE A SESSION ID?");
 //	Above not working
-		
-		/*
-		 * //Click on "View as Professor", if it is not already checked
-		 * WebElement viewAsProfessor =
-		 * driver.findElement(By.cssSelector("[data-positiontitle='Professor']"
-		 * )); boolean selection = viewAsProfessor.isSelected();
-		 * 
-		 * if(selection = true) {
-		 * System.out.println("View as Professor already selected"); } else {
-		 * viewAsProfessor.click(); }
-		 */
+
 		// View proposals
-		WebElement viewProposals = driver.findElement(By
-				.cssSelector("a[href='./MyProposals.jsp']"));
-		viewProposals.click();
+		bub.viewMyProposals(driver);
 
 		// Wait for the next page to load
 		bub.waitForPageLoad(driver);
@@ -106,29 +98,132 @@ public class TestGPMS {
 		String expectedHeader = "Manage Your Proposals";
 		bub.verifyPageHeader(expectedHeader, driver);
 
-		// Attempt to edit a proposal
-		pup.editProposal(driver);
-		// Click Add New Proposal button
-/*		try {
+		bub.waitForPageLoad(driver);
+		
+		WebElement addNewProp = driver.findElement(By.id("btnAddNew"));
+		addNewProp.click();
+		WebElement element = driver.findElement(By.cssSelector("select[class='sfListmenu']"));
+		bub.enableDisabledElement(driver, element);
+/*
+		//Fill out project information tab of proposal sheet
+		try {
 			us.addNewProposal(driver, userName, positionType);
 		} catch (AWTException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-*/
-		bub.waitForPageLoad(driver);
 
-		// us.addCoPI(driver);
-
-		//Fill out project information tab of proposal sheet
-	//	pup.addProposal(driver, userName, positionType);
+	
 		
-		// click on sign out button
-//		us.userLogout(driver);
+		//Actually save the proposal
+		pup.saveProposal(driver);
 
+		// click on sign out button
+		us.userLogout(driver);
+
+		//Start the process of signing with the department chair
+		ul.chairCSLogin(driver);
+
+		bub.viewMyProposals(driver);
+
+		pup.editProposal(driver);
+		
+		String currentUserFullName = us.getUserFullName(driver);
+		String currentUserPositionType = us.getPositionType(driver);
+
+		bub.viewMyProposals(driver);
+
+		pup.editProposal(driver);
+		
+		pup.certificationSignatures(driver, currentUserFullName, currentUserPositionType);
+		
+		pup.saveProposal(driver);
+		
+		us.userLogout(driver);
+		
+		//Start the process of signing with the business manager
+		ul.bmCSLogin(driver);
+
+		
+		currentUserFullName = us.getUserFullName(driver);
+		currentUserPositionType = us.getPositionType(driver);
+
+		bub.viewMyProposals(driver);
+
+		pup.editProposal(driver);
+			
+		pup.certificationSignatures(driver, currentUserFullName, currentUserPositionType);
+		
+		pup.saveProposal(driver);
+		
+		us.userLogout(driver);
+		
+		//Start the process of signing with the dean
+		ul.deanCSLogin(driver);
+		
+		currentUserFullName = us.getUserFullName(driver);
+		currentUserPositionType = us.getPositionType(driver);
+
+		bub.viewMyProposals(driver);
+
+		pup.editProposal(driver);
+			
+		pup.certificationSignatures(driver, currentUserFullName, currentUserPositionType);
+		
+		pup.saveProposal(driver);
+		
+		us.userLogout(driver);
+		
+		//Start the process of signing with the research admin
+		ul.raCSLogin(driver);
+		
+		currentUserFullName = us.getUserFullName(driver);
+		currentUserPositionType = us.getPositionType(driver);
+	
+		bub.viewMyProposals(driver);
+
+		pup.editProposal(driver);
+			
+		pup.certificationSignatures(driver, currentUserFullName, currentUserPositionType);
+		
+		pup.saveProposal(driver);
+		
+		us.userLogout(driver);
+		
+		//Start the process of signing with the research director
+		ul.directorCSLogin(driver);
+		
+		currentUserFullName = us.getUserFullName(driver);
+		currentUserPositionType = us.getPositionType(driver);
+		
+		bub.viewMyProposals(driver);
+
+		pup.editProposal(driver);
+			
+		pup.certificationSignatures(driver, currentUserFullName, currentUserPositionType);
+		
+		pup.saveProposal(driver);
+		
+		us.userLogout(driver);
+		
+		//Start the submission process with the research admin
+		ul.raCSLogin(driver);
+		
+		currentUserFullName = us.getUserFullName(driver);
+		currentUserPositionType = us.getPositionType(driver);
+	
+		bub.viewMyProposals(driver);
+
+		pup.editProposal(driver);
+			
+		pup.certificationSignatures(driver, currentUserFullName, currentUserPositionType);
+		
+		bub.clickProposalSubmitBtn(driver);
+		
+		us.userLogout(driver);
 		// close the web browser
 //		driver.close();
-		System.out.println("Test script executed successfully");
+	*/	System.out.println("Test script executed successfully");
 
 		// terminate program
 		System.exit(0);

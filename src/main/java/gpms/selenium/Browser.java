@@ -153,7 +153,32 @@ public class Browser {
 				.ignoring(NoSuchElementException.class);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(currentElement)));
 	}
+	
+	/*
+	 * Purpose: enable disabled element
+	 * **** Not sure if this is going to work... My reading indicates the element must be 
+	 * 	removed
+	 */
+	public void enableDisabledElement(WebDriver driver, WebElement element)
+	{
+		JavascriptExecutor js = (JavascriptExecutor)driver;
+		js.executeScript("arguments[0].removeAttribute('disabled');", element);
+		if (element.isEnabled())
+		{
+			System.out.println("Element enabled");
+			element.click();
+		}
+	}
 
+	/*
+	 * Purpose: click on a hidden element
+	 */
+	public void clickHiddenElement(WebDriver driver, WebElement element)
+	{
+		JavascriptExecutor js = (JavascriptExecutor)driver;
+		js.executeScript("arguments[0].click();", element);
+	}
+	
 	// Alert boxes for ERROR messages have the tag
 	// <div id="alert-BoxContenedor" class="BoxError">
 	public void errorConfirm(WebDriver driver) {
@@ -284,5 +309,16 @@ public class Browser {
 	{
 		WebElement archiveBtn = driver.findElement(By.id("btnArchiveProposal"));
 		archiveBtn.click();
-	}		
+	}	
+	
+	/*
+	 * Purpose: Navigate to proposals page
+	 */
+	public void viewMyProposals(WebDriver driver)
+	{
+		this.waitForPageLoad(driver);
+		WebElement viewProposals = driver.findElement(By
+				.cssSelector("a[href='./MyProposals.jsp']"));
+		viewProposals.click();
+	}
 }

@@ -43,9 +43,11 @@ public class Proposal {
 	
 	/*
 	 * Purpose: Select a project type from the drop down menu
+	 * Parameter option: enter a string indicating which option is to be selected
+	 * 		Basic, Applied, Development, Instruction, or Other
 	 * Called by: createProjectInformation
 	 */
-	public void selectProjectType(WebDriver driver)
+	public void selectProjectType(WebDriver driver, String option)
 	{
 		Browser bb = new Browser();
 		String currentElement = "ddlProjectType";
@@ -54,16 +56,171 @@ public class Proposal {
 //				.id(currentElement)));
 		WebElement projType = driver.findElement(By.id(currentElement));
 		// new Select(projType).selectByVisibleText("Research-Basic");
-		projType.sendKeys(Keys.ARROW_DOWN);
-		projType.sendKeys(Keys.ARROW_DOWN);
-		projType.sendKeys(Keys.ARROW_DOWN);
+		if (option.equalsIgnoreCase("Basic"))
+		{
+			projType.sendKeys(Keys.ARROW_DOWN);
+
+		}
+		else if (option.equalsIgnoreCase("Applied"))
+		{
+			projType.sendKeys(Keys.ARROW_DOWN);
+			projType.sendKeys(Keys.ARROW_DOWN);			
+		}
+		else if (option.equalsIgnoreCase("Development"))
+		{
+			projType.sendKeys(Keys.ARROW_DOWN);
+			projType.sendKeys(Keys.ARROW_DOWN);
+			projType.sendKeys(Keys.ARROW_DOWN);			
+		}
+		else if (option.equalsIgnoreCase("Instruction"))
+		{
+			projType.sendKeys(Keys.ARROW_DOWN);
+			projType.sendKeys(Keys.ARROW_DOWN);
+			projType.sendKeys(Keys.ARROW_DOWN);			
+			projType.sendKeys(Keys.ARROW_DOWN);			
+		}
+		else if (option.equalsIgnoreCase("Other"))
+		{
+			projType.sendKeys(Keys.ARROW_DOWN);
+			projType.sendKeys(Keys.ARROW_DOWN);
+			projType.sendKeys(Keys.ARROW_DOWN);			
+			projType.sendKeys(Keys.ARROW_DOWN);			
+			projType.sendKeys(Keys.ARROW_DOWN);			
+		}
+
 		System.out.println("Selected project type");
 	}
 	
+	/*
+	 * Purpose: Select a date, 
+	 * Input parameter: option indicates which date box to be manipulated
+	 * 	Options: DUE, START, END
+	 * Returns: int indicating month so that we can indicate whether the project start/end 
+	 * dates should make sense or not
+	 */
+	public int selectDate(WebDriver driver, String option, Boolean logical, int prevMonth)
+	{
+		int tmp;
+		//pick one of the next four months
+		int month = (int) Math.floor(Math.random() * 4);
+
+		//Select the date dropdown to be manipulated
+		if (option.equalsIgnoreCase("DUE"))
+		{
+			driver.findElement(By.id("txtDueDate")).click();
+		}
+		else if (option.equalsIgnoreCase("START"))
+		{
+			driver.findElement(By.id("txtProjectPeriodFrom")).click();
+		}
+		else if (option.equalsIgnoreCase("END"))
+		{
+			driver.findElement(By.id("txtProjectPeriodTo")).click();
+		}
+		
+		//Determine whether the dates come in chronological order or fail to make sense
+		if (logical.equals(true))
+		{
+			tmp = prevMonth + month;
+			month = tmp;
+		}
+		else if (logical.equals(false))
+		{
+			tmp = prevMonth - month;
+			month = tmp;
+		}
+		
+		for (int ii = 0; ii < month; ii++)
+		{
+			driver.findElement(
+					By.cssSelector("span.ui-icon.ui-icon-circle-triangle-e"))
+					.click();			
+		}
+
+		//Pick some day of the month
+		int dayInt = (int) Math.floor(Math.random() * 28);
+		String day = Integer.toString(dayInt);
+		driver.findElement(By.linkText(day)).click();		
+		
+		return month;
+	}
+
+	/*
+	 * Purpose: select drop down for Type of Request and choose an option
+	 * Options:
+	 * 		Pre-Proposal, New Proposal, Continuation, Supplement
+	 */
+	public void ddlTypeOfRequest(WebDriver driver, String option)
+	{
+		int count;
+		WebElement ddlTypeOfRequest = driver.findElement(By
+				.id("ddlTypeOfRequest"));
+		if (option.equalsIgnoreCase("Pre-Proposal"))
+		{
+			count = 1;
+		}
+		else if (option.equalsIgnoreCase("New Proposal"))
+		{
+			count = 2;
+		}
+		else if (option.equalsIgnoreCase("Continuation"))
+		{
+			count = 3;
+		}
+		else if (option.equalsIgnoreCase("Supplement"))
+		{
+			count = 4;
+		}
+		//If not initialized, default to New Proposal
+		else
+			count = 2;
+		
+		for(int ii = 0; ii < count; ii++)
+		{
+			ddlTypeOfRequest.sendKeys(Keys.ARROW_DOWN);	
+		}
+
+	}
+	
+	/*
+	 * Purpose: Select an option for the location of the project
+	 * Options:
+	 * 		Off-campus, On-campus
+	 */
+	public void ddlLocationOfProject(WebDriver driver, String option)
+	{
+		int count;
+		WebElement ddlLocationOfProject = driver.findElement(By
+				.id("ddlLocationOfProject"));
+		if (option.equalsIgnoreCase("Off-campus"))
+		{
+			count = 1;
+		}
+		else if (option.equalsIgnoreCase("On-campus"))
+		{
+			count = 2;
+		}
+		else
+			count = 2;
+		
+		for(int ii = 0; ii < count; ii++)
+		{
+			ddlLocationOfProject.sendKeys(Keys.ARROW_DOWN);			
+		}
+	}
+	
+	/*
+	 * Options are currently hard-coded in option variables... perhaps add more 
+	 * 	parameters for control
+	 * Each input in the tab has its own function... we can decide to leave any out
+	 * Uses parameters indicating Project Type, 
+	 */
 	public void createProjectInformation(WebDriver driver) {
 		//Fills out the project information tab of proposal 
 
-		String currentElement;
+		String currentElement, option;
+		int prevMonth, tmp;
+		Boolean logical;
 
 		// Locate and open Project information tab
 		currentElement = "lblSection2";
@@ -75,72 +232,36 @@ public class Proposal {
 		this.createProjectTitle(driver);
 
 		// Select a project type
-		this.selectProjectType(driver);
+		option = "Basic";
+		this.selectProjectType(driver, option);
 
-		// Select a due date
-		driver.findElement(By.id("txtDueDate")).click();
-		driver.findElement(
-				By.cssSelector("span.ui-icon.ui-icon-circle-triangle-e"))
-				.click();
-		driver.findElement(
-				By.cssSelector("span.ui-icon.ui-icon-circle-triangle-e"))
-				.click();
-		driver.findElement(
-				By.cssSelector("span.ui-icon.ui-icon-circle-triangle-e"))
-				.click();
-		driver.findElement(By.linkText("1")).click();
+		// Select a due date. No preceding selection, so order is null and prevMonth is 0
+		option = "due";
+		logical = true;
+		prevMonth = this.selectDate(driver, option, logical, 0);
+		
 
 		// Select when the project period will start via Project From
-		driver.findElement(By.id("txtProjectPeriodFrom")).click();
-		driver.findElement(
-				By.cssSelector("span.ui-icon.ui-icon-circle-triangle-e"))
-				.click();
-		driver.findElement(
-				By.cssSelector("span.ui-icon.ui-icon-circle-triangle-e"))
-				.click();
-		driver.findElement(
-				By.cssSelector("span.ui-icon.ui-icon-circle-triangle-e"))
-				.click();
-		driver.findElement(
-				By.cssSelector("span.ui-icon.ui-icon-circle-triangle-e"))
-				.click();
-		driver.findElement(By.linkText("5")).click();
-
+		option = "start";
+		tmp = this.selectDate(driver, option, logical, prevMonth);
+		prevMonth = tmp;
+		
 		// Select project period end date via Project To
-		driver.findElement(By.id("txtProjectPeriodTo")).click();
-		driver.findElement(
-				By.cssSelector("span.ui-icon.ui-icon-circle-triangle-e"))
-				.click();
-		driver.findElement(
-				By.cssSelector("span.ui-icon.ui-icon-circle-triangle-e"))
-				.click();
-		driver.findElement(
-				By.cssSelector("span.ui-icon.ui-icon-circle-triangle-e"))
-				.click();
-		driver.findElement(
-				By.cssSelector("span.ui-icon.ui-icon-circle-triangle-e"))
-				.click();
-		driver.findElement(
-				By.cssSelector("span.ui-icon.ui-icon-circle-triangle-e"))
-				.click();
-		driver.findElement(By.linkText("1")).click();
+		option = "end";
+		this.selectDate(driver, option, logical, prevMonth);
 
 		// Select Type of Request from dropdown
 		// The Select method is not working for FireFox
 		// new
 		// Select(driver.findElement(By.id("ddlTypeOfRequest"))).selectByIndex(2);
-		WebElement ddlTypeOfRequest = driver.findElement(By
-				.id("ddlTypeOfRequest"));
-		ddlTypeOfRequest.sendKeys(Keys.ARROW_DOWN);
-		ddlTypeOfRequest.sendKeys(Keys.ARROW_DOWN);
-		ddlTypeOfRequest.sendKeys(Keys.ARROW_DOWN);
-
+		option = "new proposal";
+		this.ddlTypeOfRequest(driver, option);
+		
 		// Select Location of Project from drop down
 		// new
 		// Select(driver.findElement(By.id("ddlLocationOfProject"))).selectByVisibleText("On-campus");
-		WebElement ddlLocationOfProject = driver.findElement(By
-				.id("ddlLocationOfProject"));
-		ddlLocationOfProject.sendKeys(Keys.ARROW_DOWN);
+		option = "On-campus";
+		this.ddlLocationOfProject(driver, option);
 
 	}
 
@@ -409,7 +530,7 @@ public class Proposal {
 		String currentElement = "ddlCertificationSignatures";
 		ddlCertificationSignatures.click();
 		
-		bb.waitForElementLoad(driver, "pi_signature");
+		bb.waitForElementLoad(driver, "ui-id-22");
 		
 		//find that user's name in the table... 
 		//I believe this is successful
