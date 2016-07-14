@@ -480,7 +480,7 @@ public class Proposal {
 		ddlAppendices.click();
 		
 		//Click on upload button
-		WebElement uploadBtn = driver.findElement(By.className("ajax-file-upload"));
+		WebElement uploadBtn = driver.findElement(By.cssSelector("div[class='ajax-file-upload']"));
 		uploadBtn.click();
 		
 		StringSelection ss = new StringSelection("C:\\Users\\Liliana\\Desktop\\NSF REU\\MAIN - DocumentsFor2016REUstudents\\YouDon'tSay.jpg");
