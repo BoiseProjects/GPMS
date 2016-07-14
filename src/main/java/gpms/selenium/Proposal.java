@@ -16,7 +16,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 /*
  *	Created by: Liliana Acevedo 
- *	last modified: 7/7/16
+ *	last modified: 7/11/16
  *
  * being able to access hidden items will be tested using JS later
  * need to include booleans indicating desired pass or fail

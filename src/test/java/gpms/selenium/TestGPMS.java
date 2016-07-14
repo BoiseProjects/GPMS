@@ -8,7 +8,7 @@ import org.openqa.selenium.WebElement;
 
 /*
  * Created by: Liliana Acevedo
- * last modified: 7/7/16
+ * last modified: 7/13/16
  */
 
 public class TestGPMS {
@@ -39,17 +39,17 @@ public class TestGPMS {
 		bub.compareTitle(expectedTitle, driver);
 
 		// Run method to login desired user
-<<<<<<< HEAD
+//<<<<<<< HEAD
 		currentUser = ul.lilyLogin(driver);
 
 		// Wait for page to load
 		bub.waitForPageLoad(driver);
-=======
+//=======
 		// currentUser = ul.lilyLogin(driver);
 
 		// Wait for page to load
 		// bub.waitForPageLoad(driver);
->>>>>>> 791b98db077e70b77e1b53f7f15b16c55c04cde9
+//>>>>>>> 791b98db077e70b77e1b53f7f15b16c55c04cde9
 
 		// verify title of web page
 		// Home page: Home - GPMS
@@ -78,7 +78,7 @@ public class TestGPMS {
 		// Get position type of current user
 		String positionType = us.getPositionType(driver);
 		System.out.println("POSITION " + positionType);
-<<<<<<< HEAD
+//<<<<<<< HEAD
 		
 		//testing session method ---- I have not figured out how to get data from session yet
 /*		HttpServletRequest req;
@@ -86,7 +86,7 @@ public class TestGPMS {
 */		System.out.println("DO I SEE A SESSION ID?");
 //	Above not working
 
-=======
+//=======
 
 		// testing session method ---- I have not figured out how to get data
 		// from session yet
@@ -105,7 +105,7 @@ public class TestGPMS {
 		 * System.out.println("View as Professor already selected"); } else {
 		 * viewAsProfessor.click(); }
 		 */
->>>>>>> 791b98db077e70b77e1b53f7f15b16c55c04cde9
+//>>>>>>> 791b98db077e70b77e1b53f7f15b16c55c04cde9
 		// View proposals
 		bub.viewMyProposals(driver);
 
@@ -123,13 +123,14 @@ public class TestGPMS {
 		String expectedHeader = "Manage Your Proposals";
 		bub.verifyPageHeader(expectedHeader, driver);
 
-<<<<<<< HEAD
+//<<<<<<< HEAD
 		bub.waitForPageLoad(driver);
 		
 		WebElement addNewProp = driver.findElement(By.id("btnAddNew"));
 		addNewProp.click();
-		WebElement element = driver.findElement(By.cssSelector("select[class='sfListmenu']"));
-		bub.enableDisabledElement(driver, element);
+		us.addCoPI(driver);
+		WebElement element = driver.findElement(By.cssSelector("#dataTable > tbody > tr.trStatic > td:nth-child(9)"));
+		bub.clickHiddenElement(driver, element);
 /*
 		//Fill out project information tab of proposal sheet
 		try {
@@ -207,7 +208,7 @@ public class TestGPMS {
 		currentUserPositionType = us.getPositionType(driver);
 	
 		bub.viewMyProposals(driver);
-=======
+//=======
 		// Attempt to edit a proposal
 		pup.editProposal(driver);
 		// Click Add New Proposal button
@@ -216,7 +217,7 @@ public class TestGPMS {
 		 * (AWTException e) { // TODO Auto-generated catch block
 		 * e.printStackTrace(); }
 		 */
-		bub.waitForPageLoad(driver);
+/*		bub.waitForPageLoad(driver);
 
 		// us.addCoPI(driver);
 
@@ -225,7 +226,7 @@ public class TestGPMS {
 
 		// click on sign out button
 		// us.userLogout(driver);
->>>>>>> 791b98db077e70b77e1b53f7f15b16c55c04cde9
+//>>>>>>> 791b98db077e70b77e1b53f7f15b16c55c04cde9
 
 		pup.editProposal(driver);
 			
@@ -267,13 +268,12 @@ public class TestGPMS {
 		
 		us.userLogout(driver);
 		// close the web browser
-<<<<<<< HEAD
+//<<<<<<< HEAD
 //		driver.close();
 	*/	System.out.println("Test script executed successfully");
-=======
-		// driver.close();
-		System.out.println("Test script executed successfully");
->>>>>>> 791b98db077e70b77e1b53f7f15b16c55c04cde9
+//=======
+
+//>>>>>>> 791b98db077e70b77e1b53f7f15b16c55c04cde9
 
 		// terminate program
 		System.exit(0);

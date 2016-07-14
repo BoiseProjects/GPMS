@@ -11,7 +11,7 @@ import org.openqa.selenium.WebElement;
 
 /*
  * Created by: Liliana Acevedo
- * last modified: 7/6/16
+ * last modified: 7/13/16
  */
 
 public class User {
@@ -163,8 +163,10 @@ public class User {
 	 * add-coPI button
 	 */
 	public void addCoPI(WebDriver driver) {
-		WebElement addCoPIBtn = driver.findElement(By
-				.className("AddCoPI cssClassButtonSubmit"));
+		Browser bb = new Browser();
+		bb.waitForPageLoad(driver);
+		WebElement addCoPIBtn = driver.findElement(By.cssSelector(".AddCoPI.cssClassButtonSubmit"));
+//				name("addCoPI"));
 		// String currentUser = this.compareUser(driver);
 		// I need a method that collects information about the person currently
 		// logged in

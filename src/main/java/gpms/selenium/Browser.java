@@ -29,7 +29,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 /*
  * Created by: Liliana Acevedo
- * last modified: 7/7/16
+ * last modified: 7/13/16
  */
 
 public class Browser {
@@ -176,6 +176,8 @@ public class Browser {
 	public void clickHiddenElement(WebDriver driver, WebElement element)
 	{
 		JavascriptExecutor js = (JavascriptExecutor)driver;
+		js.executeScript("arguments[0].setAttribute('type', 'button')", element);
+
 		js.executeScript("arguments[0].click();", element);
 	}
 	
