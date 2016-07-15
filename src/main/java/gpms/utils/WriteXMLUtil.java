@@ -1,6 +1,12 @@
 package gpms.utils;
 
 import java.io.File;
+import java.net.URISyntaxException;
+import java.text.DateFormat;
+import java.text.Format;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -19,8 +25,41 @@ import org.w3c.dom.Node;
 
 public class WriteXMLUtil {
 
+	private static String filePath = new String();
+
+	public static String getFilePath() {
+		return filePath;
+	}
+
+	public void setFilePath(String filePath) {
+		WriteXMLUtil.filePath = filePath;
+	}
+
+	public WriteXMLUtil() throws URISyntaxException {
+		System.out.println("Init");
+		this.setFilePath(this.getClass().getResource("/policy").toURI()
+				.getPath());
+	}
+
 	public static void main(String[] args) {
+		saveDelegationPolicy();
+	}
+
+	private static void saveDelegationPolicy() {
 		try {
+			DateFormat dateFormat = new SimpleDateFormat(
+					"yyyy-MM-dd'T'HH:mm:ssXXX");
+			Date fromDate = new Date();
+			String toDate = new String();
+
+			Calendar date = Calendar.getInstance();
+			date.setTime(new Date());
+			System.out.println(dateFormat.format(date.getTime()));
+			date.add(Calendar.YEAR, 1);
+			toDate = dateFormat.format(date.getTime());
+
+			String userProfileId = "578918b9bcbb29090c4278e7";
+
 			DocumentBuilderFactory docFactory = DocumentBuilderFactory
 					.newInstance();
 			DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
@@ -104,7 +143,7 @@ public class WriteXMLUtil {
 			Element allOf = doc.createElement("AllOf");
 			anyOf.appendChild(allOf);
 
-			allOf.appendChild(getMatch(doc, "Department Chair",
+			allOf.appendChild(getMatch(doc, "Associate Chair",
 					"urn:oasis:names:tc:xacml:1.0:subject:position.title",
 					"urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"));
 
@@ -126,9 +165,38 @@ public class WriteXMLUtil {
 			Element condition = doc.createElement("Condition");
 			rule.appendChild(condition);
 
-			condition.appendChild(getConditionApply(doc,
+			Element conditionRootApply = doc.createElement("Apply");
+			condition.appendChild(conditionRootApply);
+			conditionRootApply.setAttribute("FunctionId",
+					"urn:oasis:names:tc:xacml:1.0:function:and");
+
+			conditionRootApply.appendChild(getConditionApplyBoolean(doc,
 					"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
 					"//ak:signedByAllChairs/text()", "false"));
+
+			// user.id, proposal.id current.datetime TODO
+			conditionRootApply.appendChild(getConditionApplyString(doc,
+					"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
+					"//ak:authorprofile/ak:userid/text()", userProfileId));
+
+			// conditionRootApply.appendChild(getConditionApplyString(doc,
+			// "urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
+			// "//ak:proposalid/text()", "5787dbcb65dbb3f1874190dc"));
+
+			conditionRootApply
+					.appendChild(getConditionApplyDateTime(
+							doc,
+							"urn:oasis:names:tc:xacml:1.0:function:dateTime-greater-than-or-equal",
+							"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
+							"//ak:currentdatetime/text()",
+							dateFormat.format(fromDate)));
+
+			conditionRootApply
+					.appendChild(getConditionApplyDateTime(
+							doc,
+							"urn:oasis:names:tc:xacml:1.0:function:dateTime-less-than-or-equal",
+							"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
+							"//ak:currentdatetime/text()", toDate));
 
 			// ObligationExpressions
 			Element obligationExpressions = doc
@@ -176,7 +244,7 @@ public class WriteXMLUtil {
 			Element allOf2 = doc.createElement("AllOf");
 			anyOf2.appendChild(allOf2);
 
-			allOf2.appendChild(getMatch(doc, "Department Chair",
+			allOf2.appendChild(getMatch(doc, "Associate Chair",
 					"urn:oasis:names:tc:xacml:1.0:subject:position.title",
 					"urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"));
 
@@ -198,18 +266,42 @@ public class WriteXMLUtil {
 			Element condition2 = doc.createElement("Condition");
 			rule2.appendChild(condition2);
 
-			Element conditionRootApply = doc.createElement("Apply");
-			condition2.appendChild(conditionRootApply);
-			conditionRootApply.setAttribute("FunctionId",
+			Element conditionRootApply2 = doc.createElement("Apply");
+			condition2.appendChild(conditionRootApply2);
+			conditionRootApply2.setAttribute("FunctionId",
 					"urn:oasis:names:tc:xacml:1.0:function:and");
 
-			conditionRootApply.appendChild(getConditionApply(doc,
+			conditionRootApply2.appendChild(getConditionApplyBoolean(doc,
 					"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
 					"//ak:signedByAllChairs/text()", "true"));
 
-			conditionRootApply.appendChild(getConditionApply(doc,
+			conditionRootApply2.appendChild(getConditionApplyBoolean(doc,
 					"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
 					"//ak:irbApprovalRequired/text()", "false"));
+
+			// user.id, proposal.id current.datetime TODO
+			conditionRootApply2.appendChild(getConditionApplyString(doc,
+					"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
+					"//ak:authorprofile/ak:userid/text()", userProfileId));
+
+			// conditionRootApply.appendChild(getConditionApplyString(doc,
+			// "urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
+			// "//ak:proposalid/text()", "5787dbcb65dbb3f1874190dc"));
+
+			conditionRootApply2
+					.appendChild(getConditionApplyDateTime(
+							doc,
+							"urn:oasis:names:tc:xacml:1.0:function:dateTime-greater-than-or-equal",
+							"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
+							"//ak:currentdatetime/text()",
+							dateFormat.format(fromDate)));
+
+			conditionRootApply2
+					.appendChild(getConditionApplyDateTime(
+							doc,
+							"urn:oasis:names:tc:xacml:1.0:function:dateTime-less-than-or-equal",
+							"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
+							"//ak:currentdatetime/text()", toDate));
 
 			// ObligationExpressions
 			Element obligationExpressions2 = doc
@@ -257,7 +349,7 @@ public class WriteXMLUtil {
 			Element allOf3 = doc.createElement("AllOf");
 			anyOf3.appendChild(allOf3);
 
-			allOf3.appendChild(getMatch(doc, "Department Chair",
+			allOf3.appendChild(getMatch(doc, "Associate Chair",
 					"urn:oasis:names:tc:xacml:1.0:subject:position.title",
 					"urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"));
 
@@ -279,18 +371,42 @@ public class WriteXMLUtil {
 			Element condition3 = doc.createElement("Condition");
 			rule3.appendChild(condition3);
 
-			Element conditionRootApply2 = doc.createElement("Apply");
-			condition3.appendChild(conditionRootApply2);
-			conditionRootApply2.setAttribute("FunctionId",
+			Element conditionRootApply3 = doc.createElement("Apply");
+			condition3.appendChild(conditionRootApply3);
+			conditionRootApply3.setAttribute("FunctionId",
 					"urn:oasis:names:tc:xacml:1.0:function:and");
 
-			conditionRootApply2.appendChild(getConditionApply(doc,
+			conditionRootApply3.appendChild(getConditionApplyBoolean(doc,
 					"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
 					"//ak:signedByAllChairs/text()", "true"));
 
-			conditionRootApply2.appendChild(getConditionApply(doc,
+			conditionRootApply3.appendChild(getConditionApplyBoolean(doc,
 					"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
 					"//ak:irbApprovalRequired/text()", "true"));
+
+			// user.id, proposal.id current.datetime TODO
+			conditionRootApply3.appendChild(getConditionApplyString(doc,
+					"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
+					"//ak:authorprofile/ak:userid/text()", userProfileId));
+
+			// conditionRootApply.appendChild(getConditionApplyString(doc,
+			// "urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
+			// "//ak:proposalid/text()", "5787dbcb65dbb3f1874190dc"));
+
+			conditionRootApply3
+					.appendChild(getConditionApplyDateTime(
+							doc,
+							"urn:oasis:names:tc:xacml:1.0:function:dateTime-greater-than-or-equal",
+							"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
+							"//ak:currentdatetime/text()",
+							dateFormat.format(fromDate)));
+
+			conditionRootApply3
+					.appendChild(getConditionApplyDateTime(
+							doc,
+							"urn:oasis:names:tc:xacml:1.0:function:dateTime-less-than-or-equal",
+							"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
+							"//ak:currentdatetime/text()", toDate));
 
 			// ObligationExpressions
 			Element obligationExpressions3 = doc
@@ -318,7 +434,9 @@ public class WriteXMLUtil {
 					"{http://xml.apache.org/xslt}indent-amount", "2");
 
 			DOMSource source = new DOMSource(doc);
-			StreamResult result = new StreamResult(new File("D:\\file.xml"));
+
+			StreamResult result = new StreamResult(new File(getFilePath()
+					+ "/chairdelegation.xml"));
 
 			// Output to console for testing
 			// StreamResult result = new StreamResult(System.out);
@@ -332,6 +450,39 @@ public class WriteXMLUtil {
 		} catch (TransformerException tfe) {
 			tfe.printStackTrace();
 		}
+
+	}
+
+	private static Node getConditionApplyDateTime(Document doc,
+			String functionId, String attrSelectorCategory,
+			String attrSelectorPath, String attrValue) {
+		Element conditionApply = doc.createElement("Apply");
+
+		conditionApply.setAttribute("FunctionId", functionId);
+
+		Element conditionLastApply = doc.createElement("Apply");
+		conditionApply.appendChild(conditionLastApply);
+
+		conditionLastApply.setAttribute("FunctionId",
+				"urn:oasis:names:tc:xacml:1.0:function:dateTime-one-and-only");
+
+		Element conditionAttributeSelector = doc
+				.createElement("AttributeSelector");
+		conditionLastApply.appendChild(conditionAttributeSelector);
+		conditionAttributeSelector.setAttribute("MustBePresent", "false");
+		conditionAttributeSelector.setAttribute("Category",
+				attrSelectorCategory);
+		conditionAttributeSelector.setAttribute("Path", attrSelectorPath);
+		conditionAttributeSelector.setAttribute("DataType",
+				"http://www.w3.org/2001/XMLSchema#dateTime");
+
+		Element conditionAttrValue = doc.createElement("AttributeValue");
+		conditionAttrValue.setAttribute("DataType",
+				"http://www.w3.org/2001/XMLSchema#dateTime");
+		conditionAttrValue.appendChild(doc.createTextNode(attrValue));
+		conditionApply.appendChild(conditionAttrValue);
+
+		return conditionApply;
 	}
 
 	private static Node getObligationExpressionAlert(Document doc,
@@ -458,7 +609,7 @@ public class WriteXMLUtil {
 		return attributeAssignmentExpression;
 	}
 
-	private static Node getConditionApply(Document doc,
+	private static Node getConditionApplyBoolean(Document doc,
 			String attrSelectorCategory, String attrSelectorPath,
 			String attrValue) {
 		Element conditionApply = doc.createElement("Apply");
@@ -485,6 +636,39 @@ public class WriteXMLUtil {
 		Element conditionAttrValue = doc.createElement("AttributeValue");
 		conditionAttrValue.setAttribute("DataType",
 				"http://www.w3.org/2001/XMLSchema#boolean");
+		conditionAttrValue.appendChild(doc.createTextNode(attrValue));
+		conditionApply.appendChild(conditionAttrValue);
+
+		return conditionApply;
+	}
+
+	private static Node getConditionApplyString(Document doc,
+			String attrSelectorCategory, String attrSelectorPath,
+			String attrValue) {
+		Element conditionApply = doc.createElement("Apply");
+
+		conditionApply.setAttribute("FunctionId",
+				"urn:oasis:names:tc:xacml:1.0:function:string-equal");
+
+		Element conditionLastApply = doc.createElement("Apply");
+		conditionApply.appendChild(conditionLastApply);
+
+		conditionLastApply.setAttribute("FunctionId",
+				"urn:oasis:names:tc:xacml:1.0:function:string-one-and-only");
+
+		Element conditionAttributeSelector = doc
+				.createElement("AttributeSelector");
+		conditionLastApply.appendChild(conditionAttributeSelector);
+		conditionAttributeSelector.setAttribute("MustBePresent", "false");
+		conditionAttributeSelector.setAttribute("Category",
+				attrSelectorCategory);
+		conditionAttributeSelector.setAttribute("Path", attrSelectorPath);
+		conditionAttributeSelector.setAttribute("DataType",
+				"http://www.w3.org/2001/XMLSchema#string");
+
+		Element conditionAttrValue = doc.createElement("AttributeValue");
+		conditionAttrValue.setAttribute("DataType",
+				"http://www.w3.org/2001/XMLSchema#string");
 		conditionAttrValue.appendChild(doc.createTextNode(attrValue));
 		conditionApply.appendChild(conditionAttrValue);
 
