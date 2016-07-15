@@ -1,12 +1,9 @@
 package gpms.selenium;
 
-/*TenuredChemFacultyProposal.java
+/*SeniorPersonalProposalSaveFail.java
  * Made by: Nicholas Chapa
  * REU software security
- * Creates a new proposal by a tenured chemistry clinical professor then submits the proposal to the
- * department chair.
- * NOTE: Selenium has no mouse control capabilities so you must manually hover the mouse over the proposal
- * options symbol to move on to submitting the proposal.
+ *Senior Personal will log in and attempt to save the proposal, an error will display and the program will close successfully.
  */
 
 import java.util.regex.Pattern;
@@ -22,7 +19,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 
-public class TenuredChemFacultyProposal {
+public class SeniorPersonalProposalSaveFail {
   private WebDriver driver;
   private String baseUrl;
   private boolean acceptNextAlert = true;
@@ -52,6 +49,8 @@ public class TenuredChemFacultyProposal {
     driver.findElement(By.cssSelector("li.sfLevel1 > a > span")).click();
     driver.findElement(By.id("btnAddNew")).click();
     Thread.sleep(1000);
+    driver.findElement(By.name("AddSenior")).click();
+    Thread.sleep(1000);
     driver.findElement(By.cssSelector("i.sidebarExpand")).click();
     Thread.sleep(1000);
     driver.findElement(By.id("lblSection2")).click();
@@ -62,7 +61,7 @@ public class TenuredChemFacultyProposal {
     Thread.sleep(1000);
     int randTest = (int)(Math.random() * 9999);
     
-    driver.findElement(By.id("txtProjectTitle")).sendKeys("Chemistry Proposal" + randTest);
+    driver.findElement(By.id("txtProjectTitle")).sendKeys("senior personal Proposal" + randTest);
     Thread.sleep(1000);
     driver.findElement(By.cssSelector("td.cssClassTableRightCol")).click();
     Thread.sleep(1000);
@@ -242,6 +241,36 @@ public class TenuredChemFacultyProposal {
     Thread.sleep(1000);
     driver.findElement(By.linkText("Log Out")).click();
     Thread.sleep(7000);
+    
+    //Senior Personal attempts saving proposal
+    driver.get(baseUrl + "GPMS/");
+    driver.findElement(By.id("user_email")).clear();
+    driver.findElement(By.id("user_email")).sendKeys("sherri");
+    driver.findElement(By.id("user_password")).clear();
+    driver.findElement(By.id("user_password")).sendKeys("gpmspassword");
+    Thread.sleep(1000);
+    driver.findElement(By.name("commit")).click();
+    Thread.sleep(1000);
+    driver.findElement(By.linkText("My Proposals")).click();
+    Thread.sleep(1000);
+    ((JavascriptExecutor) driver)
+	.executeScript("var s=document.getElementById('edit0');s.click();");
+    Thread.sleep(1000);
+    driver.findElement(By.id("btnSaveProposal")).click();
+    Thread.sleep(1000);
+    driver.findElement(By.id("BoxConfirmBtnOk")).click();
+    Thread.sleep(1000);
+    assertEquals("Save", closeAlertAndGetItsText());
+    Thread.sleep(1000);
+    // Warning: assertTextPresent may require manual changes
+    assertTrue(driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*$"));
+    Thread.sleep(1000);
+    driver.findElement(By.id("BoxAlertBtnOk")).click();
+    Thread.sleep(1000);
+    driver.findElement(By.cssSelector("span.myProfile.icon-arrow-s")).click();
+    Thread.sleep(1000);
+    driver.findElement(By.linkText("Log Out")).click();
+    Thread.sleep(2000);
   }
 
   @After

@@ -51,7 +51,8 @@ public class SuccessfullProposalSubmition_NoIRB {
     Thread.sleep(1000);
     driver.findElement(By.id("txtProjectTitle")).clear();
     Thread.sleep(1000);
-    driver.findElement(By.id("txtProjectTitle")).sendKeys("Proposal test14");
+    int randTest = (int)(Math.random() * 9999);
+    driver.findElement(By.id("txtProjectTitle")).sendKeys("Proposal test" + randTest);
     Thread.sleep(1000);
     driver.findElement(By.cssSelector("td.cssClassTableRightCol")).click();
     Thread.sleep(1000);
@@ -269,14 +270,14 @@ public class SuccessfullProposalSubmition_NoIRB {
     driver.findElement(By.id("BoxConfirmBtnOk")).click();
     Thread.sleep(1000);
     assertEquals("Approve", closeAlertAndGetItsText());
-    Thread.sleep(1000);
+    Thread.sleep(1500);
     driver.findElement(By.cssSelector("h2")).click();
-    Thread.sleep(1000);
+    Thread.sleep(1500);
     // Warning: assertTextPresent may require manual changes
     assertTrue(driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*$"));
-    Thread.sleep(1000);
+    Thread.sleep(1500);
     driver.findElement(By.id("BoxAlertBtnOk")).click();
-    Thread.sleep(1000);
+    Thread.sleep(1500);
     // ERROR: Caught exception [ERROR: Unsupported command [selectWindow | null | ]]
     driver.findElement(By.cssSelector("span.myProfile.icon-arrow-s")).click();
     Thread.sleep(1000);

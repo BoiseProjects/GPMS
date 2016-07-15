@@ -1,12 +1,10 @@
 package gpms.selenium;
 
-/*TenuredChemFacultyProposal.java
+/*ResearchDirectorDeletesProposal.java
  * Made by: Nicholas Chapa
  * REU software security
- * Creates a new proposal by a tenured chemistry clinical professor then submits the proposal to the
- * department chair.
- * NOTE: Selenium has no mouse control capabilities so you must manually hover the mouse over the proposal
- * options symbol to move on to submitting the proposal.
+ * Creates a new proposal by a tenured chemistry clinical professor then The research Director
+ * attempts to delete the proposal. This fails and causes an error messege to pop up.
  */
 
 import java.util.regex.Pattern;
@@ -22,7 +20,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 
-public class TenuredChemFacultyProposal {
+public class ResearchDirectorDeletesProposal {
   private WebDriver driver;
   private String baseUrl;
   private boolean acceptNextAlert = true;
@@ -242,6 +240,36 @@ public class TenuredChemFacultyProposal {
     Thread.sleep(1000);
     driver.findElement(By.linkText("Log Out")).click();
     Thread.sleep(7000);
+    
+    //Research Director deletes proposal
+    driver.get(baseUrl + "GPMS/");
+    driver.findElement(By.id("user_password")).clear();
+    driver.findElement(By.id("user_password")).sendKeys("gpmspassword");
+    driver.findElement(By.id("user_email")).clear();
+    driver.findElement(By.id("user_email")).sendKeys("directorcomputerscience@gmail.com");
+    Thread.sleep(1000);
+    driver.findElement(By.name("commit")).click();
+    Thread.sleep(1000);
+    driver.findElement(By.linkText("My Proposals")).click();
+    Thread.sleep(1000);
+    
+    ((JavascriptExecutor) driver)
+	.executeScript("var s=document.getElementById('edit0');s.click();");
+    
+    Thread.sleep(1000);
+    driver.findElement(By.id("btnDeleteProposal")).click();
+    Thread.sleep(1000);
+    driver.findElement(By.id("BoxConfirmBtnOk")).click();
+    Thread.sleep(1000);
+    // Warning: assertTextPresent may require manual changes
+    assertTrue(driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*$"));
+    Thread.sleep(1000);
+    driver.findElement(By.id("BoxAlertBtnOk")).click();
+    Thread.sleep(1000);
+    driver.findElement(By.cssSelector("span.myProfile.icon-arrow-s")).click();
+    Thread.sleep(1000);
+    driver.findElement(By.linkText("Log Out")).click();
+    Thread.sleep(2000);
   }
 
   @After

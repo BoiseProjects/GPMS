@@ -22,7 +22,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 
-public class TenuredChemFacultyProposal {
+public class SeniorPersonalProposalDeleteFail {
   private WebDriver driver;
   private String baseUrl;
   private boolean acceptNextAlert = true;
@@ -52,6 +52,8 @@ public class TenuredChemFacultyProposal {
     driver.findElement(By.cssSelector("li.sfLevel1 > a > span")).click();
     driver.findElement(By.id("btnAddNew")).click();
     Thread.sleep(1000);
+    driver.findElement(By.name("AddSenior")).click();
+    Thread.sleep(1000);
     driver.findElement(By.cssSelector("i.sidebarExpand")).click();
     Thread.sleep(1000);
     driver.findElement(By.id("lblSection2")).click();
@@ -62,7 +64,7 @@ public class TenuredChemFacultyProposal {
     Thread.sleep(1000);
     int randTest = (int)(Math.random() * 9999);
     
-    driver.findElement(By.id("txtProjectTitle")).sendKeys("Chemistry Proposal" + randTest);
+    driver.findElement(By.id("txtProjectTitle")).sendKeys("senior personal Proposal" + randTest);
     Thread.sleep(1000);
     driver.findElement(By.cssSelector("td.cssClassTableRightCol")).click();
     Thread.sleep(1000);
@@ -242,6 +244,33 @@ public class TenuredChemFacultyProposal {
     Thread.sleep(1000);
     driver.findElement(By.linkText("Log Out")).click();
     Thread.sleep(7000);
+    
+    //Senior Personal attempts deletion
+    driver.get(baseUrl + "GPMS/");
+    driver.findElement(By.id("user_email")).clear();
+    driver.findElement(By.id("user_email")).sendKeys("sherri");
+    driver.findElement(By.id("user_password")).clear();
+    driver.findElement(By.id("user_password")).sendKeys("gpmspassword");
+    Thread.sleep(1000);
+    driver.findElement(By.name("commit")).click();
+    Thread.sleep(1000);
+    driver.findElement(By.linkText("My Proposals")).click();
+    Thread.sleep(1000);
+    ((JavascriptExecutor) driver)
+	.executeScript("var s=document.getElementById('edit0');s.click();");
+    Thread.sleep(1000);
+    driver.findElement(By.id("btnDeleteProposal")).click();
+    Thread.sleep(1000);
+    driver.findElement(By.id("BoxConfirmBtnOk")).click();
+ // Warning: assertTextPresent may require manual changes
+    assertTrue(driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*$"));
+    Thread.sleep(1000);
+    driver.findElement(By.id("BoxAlertBtnOk")).click();
+    Thread.sleep(1000);
+    driver.findElement(By.cssSelector("span.myProfile.icon-arrow-s")).click();
+    Thread.sleep(1000);
+    driver.findElement(By.linkText("Log Out")).click();
+    Thread.sleep(2000);
   }
 
   @After
