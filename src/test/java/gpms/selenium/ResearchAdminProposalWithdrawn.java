@@ -13,7 +13,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 
-public class ResearchDirectorWithdrawsProposal {
+public class ResearchAdminProposalWithdrawn {
   private WebDriver driver;
   private String baseUrl;
   private boolean acceptNextAlert = true;
@@ -518,7 +518,21 @@ public class ResearchDirectorWithdrawsProposal {
     driver.findElement(By.linkText("Log Out")).click();
     Thread.sleep(1000);
     
-    //Research Director Withdraws proposal
+    //Research admin Withdraws proposal
+    driver.get(baseUrl + "/GPMS/Login.jsp");
+    driver.findElement(By.id("user_password")).clear();
+    driver.findElement(By.id("user_password")).sendKeys("gpmspassword");
+    driver.findElement(By.id("user_email")).clear();
+    driver.findElement(By.id("user_email")).sendKeys("racomputerscience@gmail.com");
+    driver.findElement(By.name("commit")).click();
+    driver.findElement(By.cssSelector("li.sfLevel1 > a > span")).click();
+    driver.findElement(By.id("edit0")).click();
+    driver.findElement(By.id("btnWithdrawProposal")).click();
+    driver.findElement(By.id("BoxConfirmBtnOk")).click();
+    assertEquals("Withdraw", closeAlertAndGetItsText());
+    driver.findElement(By.id("BoxAlertBtnOk")).click();
+    driver.findElement(By.cssSelector("span.myProfile.icon-arrow-s")).click();
+    driver.findElement(By.linkText("Log Out")).click();
   }
     @After
     public void tearDown() throws Exception {
