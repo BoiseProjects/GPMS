@@ -1,8 +1,8 @@
 package gpms.selenium;
 
-/*ChairApprovalFailure
+/* ResearchAdminApprovalFailure
  * Made By: Nick
- * Chair attempts to approve a proposal that has not been submited by PI yet.
+ * Research admin attempts to approve a proposal that has not been submitted by PI yet.
  */
 
 import java.util.regex.Pattern;
@@ -18,7 +18,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 
-public class ChairApprovalFail {
+public class ResearchAdminApprovalFail {
   private WebDriver driver;
   private String baseUrl;
   private boolean acceptNextAlert = true;
@@ -53,7 +53,7 @@ public class ChairApprovalFail {
     driver.findElement(By.id("lblSection2")).click();
     driver.findElement(By.id("txtProjectTitle")).click();
     driver.findElement(By.id("txtProjectTitle")).clear();
-    driver.findElement(By.id("txtProjectTitle")).sendKeys("Chair approval fail test2223");
+    driver.findElement(By.id("txtProjectTitle")).sendKeys("Dean approval Fail222");
     driver.findElement(By.cssSelector("td.cssClassTableRightCol")).click();
     new Select(driver.findElement(By.id("ddlProjectType"))).selectByVisibleText("Research-Applied");
     Thread.sleep(1000);
@@ -216,10 +216,10 @@ public class ChairApprovalFail {
     driver.findElement(By.linkText("Log Out")).click();
     Thread.sleep(2000);
     
-    //Chair approval
+    //Dean approval fail
     driver.get(baseUrl + "GPMS/");
     driver.findElement(By.id("user_email")).clear();
-    driver.findElement(By.id("user_email")).sendKeys("chairchemistry@gmail.com");
+    driver.findElement(By.id("user_email")).sendKeys("racomputerscience@gmail.com");
     driver.findElement(By.id("user_password")).clear();
     driver.findElement(By.id("user_password")).sendKeys("gpmspassword");
     Thread.sleep(1000);
@@ -237,19 +237,19 @@ public class ChairApprovalFail {
     Thread.sleep(1000);
     driver.findElement(By.id("ui-id-21")).click();
     Thread.sleep(1000);
-    driver.findElement(By.name("5745f29ebcbb29192ce0d42fDepartment_Chair")).click();
+    driver.findElement(By.name("5745fcfdbcbb29192ce0d451University_Research_Administrator")).click();
     Thread.sleep(1000);
-    driver.findElement(By.name("5745f29ebcbb29192ce0d42fDepartment_Chair")).clear();
+    driver.findElement(By.name("5745fcfdbcbb29192ce0d451University_Research_Administrator")).clear();
     Thread.sleep(1000);
-    driver.findElement(By.name("5745f29ebcbb29192ce0d42fDepartment_Chair")).sendKeys("chair");
+    driver.findElement(By.name("5745fcfdbcbb29192ce0d451University_Research_Administrator")).sendKeys("RA");
     Thread.sleep(1000);
-    driver.findElement(By.name("signaturedate5745f29ebcbb29192ce0d42fDepartment_Chair")).click();
+    driver.findElement(By.name("signaturedate5745fcfdbcbb29192ce0d451University_Research_Administrator")).click();
     Thread.sleep(1000);
-    driver.findElement(By.xpath("//table[@id='trSignChair']/tbody/tr/td[3]")).click();
+    driver.findElement(By.xpath("//table[@id='trSignAdministrator']/tbody/tr/td[3]")).click();
     Thread.sleep(1000);
-    driver.findElement(By.name("proposalNotes5745f29ebcbb29192ce0d42fDepartment_Chair")).clear();
+    driver.findElement(By.name("proposalNotes5745fcfdbcbb29192ce0d451University_Research_Administrator")).clear();
     Thread.sleep(1000);
-    driver.findElement(By.name("proposalNotes5745f29ebcbb29192ce0d42fDepartment_Chair")).sendKeys("Test");
+    driver.findElement(By.name("proposalNotes5745fcfdbcbb29192ce0d451University_Research_Administrator")).sendKeys("Test");
     Thread.sleep(1000);
     driver.findElement(By.id("btnApproveProposal")).click();
     Thread.sleep(1000);
