@@ -1,5 +1,9 @@
 package gpms.selenium;
 
+/*Made by: Nick
+ * Co - PI will attempt to delete proposal, website error messege will appear preventing this action.
+ */
+
 import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;

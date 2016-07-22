@@ -1,5 +1,9 @@
 package gpms.selenium;
 
+/*Made by: Nick
+ * Creates a new proposal which will go through two of *every faculty member, including the IRB, to be signed an successfuly submited.
+ */
+
 import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;
@@ -833,7 +837,7 @@ public class SuccessfullProposalSubmitionIRB_twoFaculty {
     driver.findElement(By.linkText("Log Out")).click();
     Thread.sleep(1000);
     
-  //Research Director Approval
+    //Research Director Approval
     driver.get(baseUrl + "GPMS/");
     driver.findElement(By.id("user_email")).clear();
     driver.findElement(By.id("user_email")).sendKeys("directorcomputerscience@gmail.com");

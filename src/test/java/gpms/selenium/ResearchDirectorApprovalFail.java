@@ -2,7 +2,8 @@ package gpms.selenium;
 
 /* ResearchDirectorApprovalFailure
  * Made By: Nick
- * Research Director attempts to approve a proposal that has not been submitted by PI yet.
+ * Research Director attempts to approve a proposal that has not been submitted by PI yet. Program will close and throw an invalid element state
+ * exeption if test is successful.
  */
 
 import java.util.regex.Pattern;
@@ -53,7 +54,7 @@ public class ResearchDirectorApprovalFail {
     driver.findElement(By.id("lblSection2")).click();
     driver.findElement(By.id("txtProjectTitle")).click();
     driver.findElement(By.id("txtProjectTitle")).clear();
-    driver.findElement(By.id("txtProjectTitle")).sendKeys("Research Director approval fail");
+    driver.findElement(By.id("txtProjectTitle")).sendKeys("Research Director approval fail2");
     driver.findElement(By.cssSelector("td.cssClassTableRightCol")).click();
     new Select(driver.findElement(By.id("ddlProjectType"))).selectByVisibleText("Research-Applied");
     Thread.sleep(1000);

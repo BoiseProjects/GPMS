@@ -1,5 +1,9 @@
 package gpms.selenium;
 
+/*Made by: Nick
+ * PI logs in and deletes Co-PI
+ */
+
 import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;

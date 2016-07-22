@@ -2,7 +2,8 @@ package gpms.selenium;
 
 /*ChairApprovalFailure
  * Made By: Nick
- * Chair attempts to approve a proposal that has not been submited by PI yet.
+ * Chair attempts to approve a proposal that has not been submited by PI yet.Program will close and throw an invalid element state
+ * Exception if test is successful.
  */
 
 import java.util.regex.Pattern;

@@ -2,7 +2,7 @@ package gpms.selenium;
 
 /*CoPIattemptsToDeleteCoPI
  * Made by: Nick chapa
- * The Co PI attempts to delete another Co PI
+ * The Co PI attempts to delete another Co PI. Program will exit with element not visible exception if test is successful.
  */
 
 import java.util.regex.Pattern;

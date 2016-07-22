@@ -1,5 +1,9 @@
 package gpms.selenium;
 
+/*Made by: Nick
+ * Creates a new proposal which will go through every faculty member, including the IRB, to be signed an successfuly submited.
+ */
+
 import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;

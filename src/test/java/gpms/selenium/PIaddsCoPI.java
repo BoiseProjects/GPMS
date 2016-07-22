@@ -1,5 +1,9 @@
 package gpms.selenium;
 
+/*Made by: Nick
+ * PI logs in and adds a Co-PI to the proposal.
+ */
+
 import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;

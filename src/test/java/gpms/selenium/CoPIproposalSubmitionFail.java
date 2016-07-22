@@ -1,5 +1,9 @@
 package gpms.selenium;
 
+/*Made by: Nick
+ * Co-PI will attempt to submit proposal, attempt fails as Co-PI does not have this permission.
+ */
+
 import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;

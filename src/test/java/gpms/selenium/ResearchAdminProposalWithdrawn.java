@@ -1,5 +1,9 @@
 package gpms.selenium;
 
+/*Made by: Nick
+ * Research Admin withdraws proposal once it reaches them.
+ */
+
 import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;

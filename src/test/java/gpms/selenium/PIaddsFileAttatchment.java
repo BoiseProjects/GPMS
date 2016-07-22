@@ -1,5 +1,9 @@
 package gpms.selenium;
 
+/*Made by: Nick
+ * PI logs in and attatches a test file to a proposal.
+ */
+
 import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;
@@ -39,22 +43,8 @@ public class PIaddsFileAttatchment {
     Thread.sleep(1000);
     driver.findElement(By.cssSelector("li.sfLevel1 > a > span")).click();
     Thread.sleep(1000);
-    if (isElementPresent(By.id("edit0")))
-    {
-    	Actions actions = new Actions(driver);
-    	WebElement mainMenu = driver.findElement(By.className("cssClassActionOnClick"));
-    	actions.moveToElement(mainMenu);
-
-    	WebElement subMenu = driver.findElement(By.linkText("Edit"));
-    	actions.moveToElement(subMenu);
-    	actions.click().build().perform();
-    }
-    else
-    {
-    	Thread.sleep(2000);
-    	JOptionPane.showMessageDialog(null, "Element not found");
-    	Thread.sleep(2000);
-    }
+    ((JavascriptExecutor) driver)
+	.executeScript("var s=document.getElementById('edit0');s.click();");
     Thread.sleep(1000);
     driver.findElement(By.xpath("//h3[@id='ui-id-25']/span")).click();
     Thread.sleep(1000);

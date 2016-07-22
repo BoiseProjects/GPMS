@@ -3,10 +3,7 @@ package gpms.selenium;
 /*TenuredChemFacultyProposal.java
  * Made by: Nicholas Chapa
  * REU software security
- * Creates a new proposal by a tenured chemistry clinical professor then submits the proposal to the
- * department chair.
- * NOTE: Selenium has no mouse control capabilities so you must manually hover the mouse over the proposal
- * options symbol to move on to submitting the proposal.
+ * Creates a new proposal, Senior personal is added, senior personal then logs in and attempts to delete proposal.
  */
 
 import java.util.regex.Pattern;

@@ -1,5 +1,9 @@
 package gpms.selenium;
 
+/*Made by: Nick
+ * Co-PI will add a senior personal to the proposal.
+ */
+
 import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;

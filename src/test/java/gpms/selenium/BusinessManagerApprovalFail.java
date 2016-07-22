@@ -2,7 +2,8 @@ package gpms.selenium;
 
 /*BusinessManagerApprovalFailure
  * Made By: Nick
- * Business Manager attempts to approve a proposal that has not been submitted by PI yet.
+ * Business Manager attempts to approve a proposal that has not been submitted by PI yet.Program will close and throw an invalid element state
+ * Exception if test is successful.
  */
 
 import java.util.regex.Pattern;

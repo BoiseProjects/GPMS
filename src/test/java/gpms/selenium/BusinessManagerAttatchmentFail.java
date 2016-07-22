@@ -2,7 +2,7 @@ package gpms.selenium;
 
 /*BusinessManagerAttatchmentFail
  * Made by: Nick
- * Program will close if test is successful, Business manager is not permited to add an attatchment.
+ * Program will close with element not visible exception if test is successful, Business manager is not permited to add an attatchment.
  */
 
 import java.util.regex.Pattern;
@@ -38,7 +38,7 @@ public class BusinessManagerAttatchmentFail {
     driver.findElement(By.id("user_password")).clear();
     driver.findElement(By.id("user_password")).sendKeys("gpmspassword");
     driver.findElement(By.id("user_email")).clear();
-    driver.findElement(By.id("user_email")).sendKeys("chairchemistry@gmail.com");
+    driver.findElement(By.id("user_email")).sendKeys("bmchemistry1@gmail.com");
     Thread.sleep(1000);
     driver.findElement(By.name("commit")).click();
     Thread.sleep(1000);
