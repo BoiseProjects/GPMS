@@ -9,6 +9,9 @@
     "delegated position title" : "Department Chair", 
     "proposal id" : "", 
     "from" : ISODate("2016-06-02T19:37:36.859+0000"), 
-    "to" : ISODate("2016-10-02T19:37:36.859+0000"), 
-    "action" : "Approve"
+    "to" : ISODate("2017-07-02T19:37:36.859+0000"), 
+    "action" : "Approve", 
+    "delegation file name" : "chairdelegation.xml", 
+    "created on" : ISODate("2016-07-26T19:37:36.859+0000"), 
+    "revoked" : false
 }

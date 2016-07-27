@@ -2,8 +2,14 @@ var logIn = '';
 $(function() {
 
 	// alert(userProfileId + " From Login.jsp")
-	if (userProfileId != "null") {
-		window.location = 'Home.jsp';
+	if (isAdmin == false) {
+		if (userProfileId == "null") {
+			window.location = 'Login.jsp';
+		}
+	} else {
+		if (userProfileId == "null") {
+			window.location = 'Login.jsp';
+		}
 	}
 
 	var validator = $('#form1')

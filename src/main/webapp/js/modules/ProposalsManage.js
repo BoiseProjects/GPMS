@@ -2,8 +2,16 @@ var proposalsManage = '';
 
 $(function() {
 
-	if (userProfileId == "null") {
-		window.location = 'Login.jsp';
+	if (isAdmin == false) {
+		if (userProfileId == "null") {
+			window.location = 'Login.jsp';
+		} else {
+			window.location = 'Home.jsp';
+		}
+	} else {
+		if (userProfileId == "null") {
+			window.location = 'Login.jsp';
+		}
 	}
 
 	jQuery.fn.exists = function() {
@@ -1051,7 +1059,7 @@ $(function() {
 				proposalsManage.BindUserPositionDetailsForAProposal(argus[4]);
 
 				proposalsManage.BindProposalDetailsByProposalId(argus[0]);
-				
+
 				if (argus[6].toLowerCase() == "yes") {
 					$("#btnDeleteProposal").hide();
 				}
@@ -1096,7 +1104,7 @@ $(function() {
 				allowedTypes : "jpg,png,gif,jpeg,bmp,png,pdf,doc,docx,xls,xlsx,txt",
 				// acceptFiles : "image/*",
 				maxFileCount : 5,
-				maxFileSize : 5 * 1024 * 1024, //5MB
+				maxFileSize : 5 * 1024 * 1024, // 5MB
 				returnType : "json",
 				showDelete : true,
 				confirmDelete : true,

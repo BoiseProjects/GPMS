@@ -30,7 +30,7 @@
 <!--[if lt IE 7]>
         <script type="text/javascript" src="js/core/IE8.js"></script>
     <![endif]-->
-<title>User Management</title>
+<title>Global Settings</title>
 
 <script src="js/jQuery/jquery-1.11.3.min.js" type="text/javascript"></script>
 
@@ -157,12 +157,10 @@
 												</h1>
 												<div>
 													<span class="cssClassRequired">*</span> <span
-														class="cssClassLabelTitle">indicates required
-														fields</span>
+														class="cssClassLabelTitle">indicates required fields</span>
 												</div>
 											</div>
-											<div class="cssClassTabPanelTable">Add Your Content
-												Here</div>
+											<div class="cssClassTabPanelTable">Add Your Content Here</div>
 										</div>
 										<div class="sfButtonwrapper">
 											<p>
