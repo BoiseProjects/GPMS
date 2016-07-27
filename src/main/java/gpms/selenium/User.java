@@ -255,7 +255,12 @@ public class User {
 
 	
 	/*
-	 * Control workflow for PI
+	 * Control workflow for user
+	 * 	Login
+	 * 	Collect data
+	 * 	For every position type associated with that user:
+	 * 		Attempt to add a new proposal
+	 * 		If not
 	 */
 	public void piWorkflow(WebDriver driver)
 	{

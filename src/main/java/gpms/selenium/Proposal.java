@@ -5,6 +5,7 @@ import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.KeyEvent;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
@@ -16,11 +17,12 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 /*
  *	Created by: Liliana Acevedo 
- *	last modified: 7/11/16
+ *	last modified: 7/20/16
  *
  * being able to access hidden items will be tested using JS later
  * need to include booleans indicating desired pass or fail
  * include input parameter indicating which option should be selected
+ * Proposals have 13 sections, total
  */
 
 public class Proposal {
@@ -28,17 +30,27 @@ public class Proposal {
 	/*
 	 * Purpose: creates a randomized title
 	 * Called by: Create Project Information
+	 * What happens if I try to enter the wrong data type?
+	 * Notice 5-character minimum
 	 */
 	public void createProjectTitle(WebDriver driver)
 	{
 		// Insert a title
+		boolean pass; //will eventually become an input parameter
+		int tmp, projNum;
 		String currentElement = "txtProjectTitle";
-		int projNum = (int) Math.floor(Math.random() * 10000);
-//		wait.until(ExpectedConditions.visibilityOfElementLocated(By
-//				.id(currentElement)));
+		tmp = (int) Math.floor(Math.random());
+		projNum = tmp * 10000;
 		WebElement projTitle = driver.findElement(By.id(currentElement));
 		projTitle.clear();
-		projTitle.sendKeys("Proposal " + projNum);
+		if(pass = true)
+		{
+			projTitle.sendKeys("Proposal " + projNum);
+		}
+		else
+		{
+			projTitle.sendKeys("" + tmp);
+		}
 	}
 	
 	/*
@@ -51,7 +63,7 @@ public class Proposal {
 	{
 		Browser bb = new Browser();
 		String currentElement = "ddlProjectType";
-		bb.waitForElementLoad(driver, currentElement);
+		bb.waitForElementLoad(driver, currentElement, "id");
 //		wait.until(ExpectedConditions.visibilityOfElementLocated(By
 //				.id(currentElement)));
 		WebElement projType = driver.findElement(By.id(currentElement));
@@ -224,6 +236,8 @@ public class Proposal {
 
 		// Locate and open Project information tab
 		currentElement = "lblSection2";
+		
+		//If desired section is not visible, click the accordion section
 
 		WebElement projInfoDrop = driver.findElement(By.id(currentElement));
 		projInfoDrop.click();
@@ -480,7 +494,13 @@ public class Proposal {
 		ddlAppendices.click();
 		
 		//Click on upload button
+		Browser bb = new Browser();
+		String currentElement = "div[class='ajax-file-upload']";
+
+		bb.waitForElementLoad(driver, currentElement, "css");
 		WebElement uploadBtn = driver.findElement(By.cssSelector("div[class='ajax-file-upload']"));
+				//.linkText("Upload"));
+				//.cssSelector("div[class='ajax-file-upload']"));
 		uploadBtn.click();
 		
 		StringSelection ss = new StringSelection("C:\\Users\\Liliana\\Desktop\\NSF REU\\MAIN - DocumentsFor2016REUstudents\\YouDon'tSay.jpg");
@@ -530,16 +550,26 @@ public class Proposal {
 		String currentElement = "ddlCertificationSignatures";
 		ddlCertificationSignatures.click();
 		
-		bb.waitForElementLoad(driver, "ui-id-22");
+		bb.waitForElementLoad(driver, "ui-id-22", "id");
 		
 		//find that user's name in the table... 
 		//I believe this is successful
 		//*** Still need to include an if statement for when user not found
-		WebElement nameLabel = driver.findElement(By.xpath("//span[contains(text(),'" + 
-													currentUserFullName + "')]"));
-//WebElement parent = driver.findElement(By.xpath("//input[@id='abc']/../../img[2]"));
-		if (nameLabel.isDisplayed())
+		WebElement nameLabel = null;
+		boolean present = false;
+		try {
+			present = driver.findElement(By.xpath("//span[contains(text(),'" + 
+					currentUserFullName + "')]")).isDisplayed();
+		} catch (NoSuchElementException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			present = false;
+		}
+				
+		if (present == true)
 		{
+			nameLabel = driver.findElement(By.xpath("//span[contains(text(),'" + 
+					currentUserFullName + "')]"));
 			String nameText = nameLabel.getText();
 			System.out.println(nameText);
 /*			sigbox = driver.findElement(By.xpath("//span[contains(text(),'" + 
@@ -559,6 +589,11 @@ public class Proposal {
 			}
 			
 			
+		}
+		else if (present == false)
+		{
+			System.out.println("I got to where I want to be");
+			return;
 		}
 		
 

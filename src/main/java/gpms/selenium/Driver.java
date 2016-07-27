@@ -1,8 +1,11 @@
 package gpms.selenium;
 
 import java.awt.AWTException;
+import java.util.Arrays;
+import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
@@ -249,5 +252,173 @@ public class Driver {
 		// terminate program
 		System.exit(0);
 	}
+	
+	public void csChairFlow(WebDriver driver)
+	{
+		Browser bb = new Browser();
+		User us = new User();
+		Proposal pp = new Proposal();
+		UserLogin ul = new UserLogin();
+		Combinations cc = new Combinations();
+		
+		driver = bb.openWebApp("");
 
+		
+		//Start the process of signing with the department chair
+		ul.chairCSLogin(driver);
+		
+		// Hooray! We are logged in
+		us.getAllPositionTypes(driver);
+		
+		String currentUserFullName = us.getUserFullName(driver);
+		String currentUserPositionType = us.getPositionType(driver);
+		
+		bb.viewMyProposals(driver);
+
+		pp.editProposal(driver);
+				
+		this.buttonMucker(driver);
+		
+//		pp.certificationSignatures(driver, currentUserFullName, currentUserPositionType);
+		
+//		pp.saveProposal(driver);
+		
+//		us.userLogout(driver);
+		
+		// terminate program
+		System.exit(0);
+	}
+	
+	/*
+	 * Purpose: control individual workflow
+	 */
+	public void doThing(WebDriver driver, String user)
+	{
+/*		User us = new User();
+
+		//login the given user; if fail, let me know
+		login(user);
+		if homepage not visible, 
+			spew user login failed
+			
+		//gather user data
+		String currentUserFullName = us.getUserFullName(driver);
+		String currentUserPositionType = us.getPositionType(driver);		
+		us.getAllPositionTypes(driver);
+		
+		//Start the process
+		//For every position this user hold, try e'rything
+		for(every position in position type)
+			first, attempt to add a proposal
+			if successful
+				attempt saving with every comination of buttons that shouldnt go through
+				plus all the mucking
+				else
+					tell me I couldnt do it
+			for random proposal on the list
+				edit proposal - muck with all the buttons
+					
+*/
+		
+	}
+	
+	/*
+	 * The sequence of mucking with buttons
+	 * Same process whether we are editing or saving
+	 * don't forget to try every permutation of buttons
+	 * and data types
+	 */
+	public void buttonMucker(WebDriver driver)
+	{
+		Browser bb = new Browser();
+//		go to first section, fill out all permutations of buttons, trying to save after each
+		
+		//Expand all sections
+		WebElement element = driver.findElement(By.id("accordion-expand-holder"));
+		JavascriptExecutor js = (JavascriptExecutor)driver;
+		js.executeScript("arguments[0].removeAttribute('style')", element);
+		driver.findElement(By.cssSelector("button[class='expandAll sfBtn']")).click();
+		
+		//All table data within accordion
+		WebElement formElement = driver.findElement(By.id("accordion"));
+		List<WebElement> allFormInput = formElement.findElements(By.tagName("input"));
+		List<WebElement> allFormSelect = formElement.findElements(By.tagName("select"));		
+
+		int ii = 0, size;
+		size = allFormInput.size() + allFormSelect.size();
+		String name;
+		String[] nameList = new String[size];
+		
+		//Store names of all table data within string array
+		for (WebElement item : allFormInput)
+		{
+			name = item.getAttribute("name");
+			nameList[ii] = name;
+			ii++;
+		}
+		
+		for (WebElement item : allFormSelect)
+		{
+			name = item.getAttribute("name");
+			nameList[ii] = name;
+			ii++;
+		}		
+	
+		Arrays.sort(nameList);
+		
+		//Some webelements have identical names... I can't have that!!
+		//Use JS to change the name
+		
+		for(int jj=0; jj < size-1; jj++)
+		{
+			int kk = jj + 1;
+			if(nameList[jj].equals(nameList[kk]))
+			{
+				String nameOriginal;
+				nameOriginal = nameList[kk];
+				nameList[kk] = nameOriginal + kk;
+				String nameNew = nameList[kk];
+				bb.changeElementName(driver, nameOriginal, nameNew);
+			}
+			System.out.println(nameList[jj]);
+		}
+
+		//String[] result = new String[size];
+		//Combinations cc = new Combinations();
+/*        for (int jj = 0; jj <= nameList.length; jj++)
+        {
+    		this.combinations2(nameList, jj, 0, new String[jj]);
+        }
+*/
+		
+		//Runs the combination of all buttons... which is all buttons
+		int jj = nameList.length;
+   		this.combinations2(nameList, jj, 0, new String[jj]);
+        
+	}
+	
+	 public void combinations2(String[] arr, int len, 
+			 int startPosition, String[] result)
+	 {
+		 if (len == 0)
+	     {
+	        System.out.println(Arrays.toString(result));
+	        return;
+	     }       
+	     for (int ii = startPosition; ii <= arr.length-len; ii++)
+	     {
+	        result[result.length - len] = arr[ii];
+	        combinations2(arr, len-1, ii+1, result);
+	     }
+	}
+
+	 /*
+	  * A brief function that takes all the names, changes the name of the webelement
+	  * if needed, 
+	  * then clicks and mucks with them
+	  */
+	 public void doodad(WebDriver driver)
+	 {
+		 //Find the 
+	 }
 }
