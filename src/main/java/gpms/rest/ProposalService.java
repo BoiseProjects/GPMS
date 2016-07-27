@@ -1967,8 +1967,16 @@ public class ProposalService {
 
 				if (proposalUniqueObj != null
 						&& proposalUniqueObj.has("NewProjectTitle")) {
-					newProjectTitle = proposalUniqueObj.get("NewProjectTitle")
-							.textValue().trim().replaceAll("\\<[^>]*>", "");
+					String projectTitle = proposalUniqueObj
+							.get("NewProjectTitle").textValue().trim()
+							.replaceAll("\\<[^>]*>", "");
+					if (validateNotEmptyValue(projectTitle)) {
+						newProjectTitle = projectTitle;
+					} else {
+						return Response.status(403)
+								.entity("The Project Title can not be Empty")
+								.build();
+					}
 				}
 			}
 
@@ -3038,7 +3046,8 @@ public class ProposalService {
 										} else {
 											return Response
 													.status(403)
-													.entity("{\"error\": extension + \" is not allowed. Allowed extensions: jpg,png,gif,jpeg,bmp,png,pdf,doc,docx,xls,xlsx,txt\", \"status\": \"FAIL\"}")
+													.entity(extension
+															+ " is not allowed. Allowed extensions: jpg,png,gif,jpeg,bmp,png,pdf,doc,docx,xls,xlsx,txt")
 													.build();
 										}
 									}
@@ -3049,16 +3058,23 @@ public class ProposalService {
 									} else {
 										return Response
 												.status(403)
-												.entity("{\"error\": \"The uploaded file is larger than 5MB\", \"status\": \"FAIL\"}")
+												.entity("The uploaded file is larger than 5MB")
 												.build();
 									}
 									uploadFile.setFilepath("/uploads/"
 											+ fileName);
-									uploadFile
-											.setTitle(uploadFile
-													.getTitle()
-													.trim()
-													.replaceAll("\\<[^>]*>", ""));
+
+									String fileTitle = uploadFile.getTitle()
+											.trim().replaceAll("\\<[^>]*>", "");
+
+									if (validateNotEmptyValue(fileTitle)) {
+										uploadFile.setTitle(fileTitle);
+									} else {
+										return Response
+												.status(403)
+												.entity("The Uploaded File's Title can not be Empty")
+												.build();
+									}
 
 									existingProposal.getAppendices().add(
 											uploadFile);
@@ -3078,7 +3094,8 @@ public class ProposalService {
 									} else {
 										return Response
 												.status(403)
-												.entity("{\"error\": extension + \" is not allowed. Allowed extensions: jpg,png,gif,jpeg,bmp,png,pdf,doc,docx,xls,xlsx,txt\", \"status\": \"FAIL\"}")
+												.entity(extension
+														+ " is not allowed. Allowed extensions: jpg,png,gif,jpeg,bmp,png,pdf,doc,docx,xls,xlsx,txt")
 												.build();
 									}
 								}
@@ -3089,13 +3106,22 @@ public class ProposalService {
 								} else {
 									return Response
 											.status(403)
-											.entity("{\"error\": \"The uploaded file is larger than 5MB\", \"status\": \"FAIL\"}")
+											.entity("The uploaded file is larger than 5MB")
 											.build();
 								}
 								uploadFile.setFilesize(fileSize);
 								uploadFile.setFilepath("/uploads/" + fileName);
-								uploadFile.setTitle(uploadFile.getTitle()
-										.trim().replaceAll("\\<[^>]*>", ""));
+
+								String fileTitle = uploadFile.getTitle().trim()
+										.replaceAll("\\<[^>]*>", "");
+								if (validateNotEmptyValue(fileTitle)) {
+									uploadFile.setTitle(fileTitle);
+								} else {
+									return Response
+											.status(403)
+											.entity("The Uploaded File's Title can not be Empty")
+											.build();
+								}
 
 								existingProposal.getAppendices()
 										.add(uploadFile);
@@ -3276,14 +3302,22 @@ public class ProposalService {
 						final String proposalTitle = projectInfo
 								.get("ProjectTitle").textValue().trim()
 								.replaceAll("\\<[^>]*>", "");
-						if (!proposalID.equals("0")) {
-							if (!existingProposal.getProjectInfo()
-									.getProjectTitle().equals(proposalTitle)) {
-								existingProposal.getProjectInfo()
-										.setProjectTitle(proposalTitle);
+						if (validateNotEmptyValue(proposalTitle)) {
+							if (!proposalID.equals("0")) {
+								if (!existingProposal.getProjectInfo()
+										.getProjectTitle()
+										.equals(proposalTitle)) {
+									existingProposal.getProjectInfo()
+											.setProjectTitle(proposalTitle);
+								}
+							} else {
+								newProjectInfo.setProjectTitle(proposalTitle);
 							}
 						} else {
-							newProjectInfo.setProjectTitle(proposalTitle);
+							return Response
+									.status(403)
+									.entity("The Proposal Title can not be Empty")
+									.build();
 						}
 					}
 
@@ -3378,14 +3412,21 @@ public class ProposalService {
 						Date dueDate = formatter.parse(projectInfo
 								.get("DueDate").textValue().trim()
 								.replaceAll("\\<[^>]*>", ""));
-						if (!proposalID.equals("0")) {
-							if (!existingProposal.getProjectInfo().getDueDate()
-									.equals(dueDate)) {
-								existingProposal.getProjectInfo().setDueDate(
-										dueDate);
+
+						if (validateNotEmptyValue(dueDate.toString())) {
+							if (!proposalID.equals("0")) {
+								if (!existingProposal.getProjectInfo()
+										.getDueDate().equals(dueDate)) {
+									existingProposal.getProjectInfo()
+											.setDueDate(dueDate);
+								}
+							} else {
+								newProjectInfo.setDueDate(dueDate);
 							}
 						} else {
-							newProjectInfo.setDueDate(dueDate);
+							return Response.status(403)
+									.entity("The Due Date can not be Empty")
+									.build();
 						}
 					}
 
@@ -3396,7 +3437,14 @@ public class ProposalService {
 						Date periodFrom = formatter.parse(projectInfo
 								.get("ProjectPeriodFrom").textValue().trim()
 								.replaceAll("\\<[^>]*>", ""));
-						projectPeriod.setFrom(periodFrom);
+						if (validateNotEmptyValue(periodFrom.toString())) {
+							projectPeriod.setFrom(periodFrom);
+						} else {
+							return Response
+									.status(403)
+									.entity("The Project Period From can not be Empty")
+									.build();
+						}
 					}
 
 					if (projectInfo != null
@@ -3404,7 +3452,14 @@ public class ProposalService {
 						Date periodTo = formatter.parse(projectInfo
 								.get("ProjectPeriodTo").textValue().trim()
 								.replaceAll("\\<[^>]*>", ""));
-						projectPeriod.setTo(periodTo);
+						if (validateNotEmptyValue(periodTo.toString())) {
+							projectPeriod.setTo(periodTo);
+						} else {
+							return Response
+									.status(403)
+									.entity("The Project Period To can not be Empty")
+									.build();
+						}
 					}
 					if (!proposalID.equals("0")) {
 						if (!existingProposal.getProjectInfo()
@@ -3432,41 +3487,75 @@ public class ProposalService {
 						for (String grantingAgency : sponsorAndBudgetInfo
 								.get("GrantingAgency").textValue().trim()
 								.replaceAll("\\<[^>]*>", "").split(", ")) {
-							newSponsorAndBudgetInfo.getGrantingAgency().add(
-									grantingAgency);
+							if (validateNotEmptyValue(grantingAgency)) {
+								newSponsorAndBudgetInfo.getGrantingAgency()
+										.add(grantingAgency);
+							} else {
+								return Response
+										.status(403)
+										.entity("The Granting Agency can not be Empty")
+										.build();
+							}
 						}
 					}
 
 					if (sponsorAndBudgetInfo != null
 							&& sponsorAndBudgetInfo.has("DirectCosts")) {
-						newSponsorAndBudgetInfo.setDirectCosts(Double
-								.parseDouble(sponsorAndBudgetInfo
-										.get("DirectCosts").textValue().trim()
-										.replaceAll("\\<[^>]*>", "")));
+						final String directCost = sponsorAndBudgetInfo
+								.get("DirectCosts").textValue().trim()
+								.replaceAll("\\<[^>]*>", "");
+						if (validateNotEmptyValue(directCost)) {
+							newSponsorAndBudgetInfo.setDirectCosts(Double
+									.parseDouble(directCost));
+						} else {
+							return Response
+									.status(403)
+									.entity("The Direct Costs can not be Empty")
+									.build();
+						}
 					}
 
 					if (sponsorAndBudgetInfo != null
 							&& sponsorAndBudgetInfo.has("FACosts")) {
-						newSponsorAndBudgetInfo.setFaCosts(Double
-								.parseDouble(sponsorAndBudgetInfo
-										.get("FACosts").textValue().trim()
-										.replaceAll("\\<[^>]*>", "")));
+						final String FACosts = sponsorAndBudgetInfo
+								.get("FACosts").textValue().trim()
+								.replaceAll("\\<[^>]*>", "");
+						if (validateNotEmptyValue(FACosts)) {
+							newSponsorAndBudgetInfo.setFaCosts(Double
+									.parseDouble(FACosts));
+						} else {
+							return Response.status(403)
+									.entity("The FA Costs can not be Empty")
+									.build();
+						}
 					}
 
 					if (sponsorAndBudgetInfo != null
 							&& sponsorAndBudgetInfo.has("TotalCosts")) {
-						newSponsorAndBudgetInfo.setTotalCosts(Double
-								.parseDouble(sponsorAndBudgetInfo
-										.get("TotalCosts").textValue().trim()
-										.replaceAll("\\<[^>]*>", "")));
+						final String totalCosts = sponsorAndBudgetInfo
+								.get("TotalCosts").textValue().trim()
+								.replaceAll("\\<[^>]*>", "");
+						if (validateNotEmptyValue(totalCosts)) {
+							newSponsorAndBudgetInfo.setTotalCosts(Double
+									.parseDouble(totalCosts));
+						} else {
+							return Response.status(403)
+									.entity("The Total Costs can not be Empty")
+									.build();
+						}
 					}
 
 					if (sponsorAndBudgetInfo != null
 							&& sponsorAndBudgetInfo.has("FARate")) {
-						newSponsorAndBudgetInfo.setFaRate(Double
-								.parseDouble(sponsorAndBudgetInfo.get("FARate")
-										.textValue().trim()
-										.replaceAll("\\<[^>]*>", "")));
+						final String FARate = sponsorAndBudgetInfo
+								.get("FARate").textValue().trim()
+								.replaceAll("\\<[^>]*>", "");
+						if (validateNotEmptyValue(FARate)) {
+							newSponsorAndBudgetInfo.setFaRate(Double
+									.parseDouble(FARate));
+						} else {
+							throw new Exception("The FA Rate can not be Empty");
+						}
 					}
 				}
 
@@ -3740,11 +3829,18 @@ public class ProposalService {
 									.setInvolveNonFundedCollab(true);
 							if (collaborationInfo != null
 									&& collaborationInfo.has("Collaborators")) {
-								newCollaborationInfo
-										.setInvolvedCollaborators(collaborationInfo
-												.get("Collaborators")
-												.textValue().trim()
-												.replaceAll("\\<[^>]*>", ""));
+								final String collabarationName = collaborationInfo
+										.get("Collaborators").textValue()
+										.trim().replaceAll("\\<[^>]*>", "");
+								if (validateNotEmptyValue(collabarationName)) {
+									newCollaborationInfo
+											.setInvolvedCollaborators(collabarationName);
+								} else {
+									return Response
+											.status(403)
+											.entity("Collaborators can not be Empty")
+											.build();
+								}
 							}
 							break;
 						case "2":
@@ -3782,9 +3878,17 @@ public class ProposalService {
 									.setContainConfidentialInformation(true);
 							if (confidentialInfo != null
 									&& confidentialInfo.has("OnPages")) {
-								newConfidentialInfo.setOnPages(confidentialInfo
+								final String onPages = confidentialInfo
 										.get("OnPages").textValue().trim()
-										.replaceAll("\\<[^>]*>", ""));
+										.replaceAll("\\<[^>]*>", "");
+								if (validateNotEmptyValue(onPages)) {
+									newConfidentialInfo.setOnPages(onPages);
+								} else {
+									return Response
+											.status(403)
+											.entity("The Pages can not be Empty")
+											.build();
+								}
 							}
 							if (confidentialInfo != null
 									&& confidentialInfo.has("Patentable")) {
@@ -3858,8 +3962,17 @@ public class ProposalService {
 									newComplianceInfo.setIrbPending(false);
 									if (complianceInfo != null
 											&& complianceInfo.has("IRB")) {
-										newComplianceInfo.setIrb(complianceInfo
-												.get("IRB").textValue());
+										final String IRBNo = complianceInfo
+												.get("IRB").textValue().trim()
+												.replaceAll("\\<[^>]*>", "");
+										if (validateNotEmptyValue(IRBNo)) {
+											newComplianceInfo.setIrb(IRBNo);
+										} else {
+											return Response
+													.status(403)
+													.entity("The IRB # can not be Empty")
+													.build();
+										}
 									}
 									break;
 								case "2":
@@ -3896,9 +4009,18 @@ public class ProposalService {
 									newComplianceInfo.setIacucPending(false);
 									if (complianceInfo != null
 											&& complianceInfo.has("IACUC")) {
-										newComplianceInfo
-												.setIacuc(complianceInfo.get(
-														"IACUC").textValue());
+										final String IACUCNo = complianceInfo
+												.get("IACUC").textValue()
+												.trim()
+												.replaceAll("\\<[^>]*>", "");
+										if (validateNotEmptyValue(IACUCNo)) {
+											newComplianceInfo.setIacuc(IACUCNo);
+										} else {
+											return Response
+													.status(403)
+													.entity("The IACUC # can not be Empty")
+													.build();
+										}
 									}
 									break;
 								case "2":
@@ -3933,8 +4055,18 @@ public class ProposalService {
 									newComplianceInfo.setIbcPending(false);
 									if (complianceInfo != null
 											&& complianceInfo.has("IBC")) {
-										newComplianceInfo.setIbc(complianceInfo
-												.get("IBC").textValue());
+										final String IBCNo = complianceInfo
+												.get("IBC").textValue().trim()
+												.replaceAll("\\<[^>]*>", "");
+
+										if (validateNotEmptyValue(IBCNo)) {
+											newComplianceInfo.setIbc(IBCNo);
+										} else {
+											return Response
+													.status(403)
+													.entity("The IBC # can not be Empty")
+													.build();
+										}
 									}
 									break;
 								case "2":
@@ -4242,7 +4374,8 @@ public class ProposalService {
 										} else {
 											return Response
 													.status(403)
-													.entity("{\"error\": extension + \" is not allowed. Allowed extensions: jpg,png,gif,jpeg,bmp,png,pdf,doc,docx,xls,xlsx,txt\", \"status\": \"FAIL\"}")
+													.entity(extension
+															+ " is not allowed. Allowed extensions: jpg,png,gif,jpeg,bmp,png,pdf,doc,docx,xls,xlsx,txt")
 													.build();
 										}
 									}
@@ -4253,16 +4386,22 @@ public class ProposalService {
 									} else {
 										return Response
 												.status(403)
-												.entity("{\"error\": \"The uploaded file is larger than 5MB\", \"status\": \"FAIL\"}")
+												.entity("The uploaded file is larger than 5MB")
 												.build();
 									}
 									uploadFile.setFilepath("/uploads/"
 											+ fileName);
-									uploadFile
-											.setTitle(uploadFile
-													.getTitle()
-													.trim()
-													.replaceAll("\\<[^>]*>", ""));
+									String fileTitle = uploadFile.getTitle()
+											.trim().replaceAll("\\<[^>]*>", "");
+
+									if (validateNotEmptyValue(fileTitle)) {
+										uploadFile.setTitle(fileTitle);
+									} else {
+										return Response
+												.status(403)
+												.entity("The Uploaded File's Title can not be Empty")
+												.build();
+									}
 
 									existingProposal.getAppendices().add(
 											uploadFile);
@@ -4282,7 +4421,8 @@ public class ProposalService {
 									} else {
 										return Response
 												.status(403)
-												.entity("{\"error\": extension + \" is not allowed. Allowed extensions: jpg,png,gif,jpeg,bmp,png,pdf,doc,docx,xls,xlsx,txt\", \"status\": \"FAIL\"}")
+												.entity(extension
+														+ " is not allowed. Allowed extensions: jpg,png,gif,jpeg,bmp,png,pdf,doc,docx,xls,xlsx,txt")
 												.build();
 									}
 								}
@@ -4293,13 +4433,21 @@ public class ProposalService {
 								} else {
 									return Response
 											.status(403)
-											.entity("{\"error\": \"The uploaded file is larger than 5MB\", \"status\": \"FAIL\"}")
+											.entity("The uploaded file is larger than 5MB")
 											.build();
 								}
 								uploadFile.setFilesize(fileSize);
 								uploadFile.setFilepath("/uploads/" + fileName);
-								uploadFile.setTitle(uploadFile.getTitle()
-										.trim().replaceAll("\\<[^>]*>", ""));
+								String fileTitle = uploadFile.getTitle().trim()
+										.replaceAll("\\<[^>]*>", "");
+								if (validateNotEmptyValue(fileTitle)) {
+									uploadFile.setTitle(fileTitle);
+								} else {
+									return Response
+											.status(403)
+											.entity("The Uploaded File's Title can not be Empty")
+											.build();
+								}
 
 								existingProposal.getAppendices()
 										.add(uploadFile);
@@ -4489,12 +4637,37 @@ public class ProposalService {
 						String[] cols = col.split("!#!");
 						SignatureInfo signatureInfo = new SignatureInfo();
 						signatureInfo.setUserProfileId(cols[0]);
-						signatureInfo.setSignature(cols[1].replaceAll(
-								"\\<[^>]*>", ""));
-						signatureInfo.setSignedDate(format.parse(cols[2].trim()
-								.replaceAll("\\<[^>]*>", "")));
-						signatureInfo.setNote(cols[3].replaceAll("\\<[^>]*>",
-								""));
+						final String signatureText = cols[1].replaceAll(
+								"\\<[^>]*>", "");
+						if (validateNotEmptyValue(signatureText)) {
+							signatureInfo.setSignature(signatureText);
+						} else {
+							return Response.status(403)
+									.entity("The Signature can not be Empty")
+									.build();
+						}
+
+						final String signedDate = cols[2].trim().replaceAll(
+								"\\<[^>]*>", "");
+						if (validateNotEmptyValue(signedDate)) {
+							signatureInfo.setSignedDate(format
+									.parse(signedDate));
+						} else {
+							return Response.status(403)
+									.entity("The Signed Date can not be Empty")
+									.build();
+						}
+
+						final String noteText = cols[3].replaceAll("\\<[^>]*>",
+								"");
+						if (validateNotEmptyValue(signedDate)) {
+							signatureInfo.setNote(noteText);
+						} else {
+							return Response.status(403)
+									.entity("The Note can not be Empty")
+									.build();
+						}
+
 						signatureInfo.setFullName(cols[4]);
 						signatureInfo.setPositionTitle(cols[5]);
 						signatureInfo.setDelegated(Boolean
@@ -4571,9 +4744,17 @@ public class ProposalService {
 									newComplianceInfo.setIrbPending(false);
 									if (complianceInfo != null
 											&& complianceInfo.has("IRB")) {
-										newComplianceInfo.setIrb(complianceInfo
+										final String IRBNo = complianceInfo
 												.get("IRB").textValue().trim()
-												.replaceAll("\\<[^>]*>", ""));
+												.replaceAll("\\<[^>]*>", "");
+										if (validateNotEmptyValue(IRBNo)) {
+											newComplianceInfo.setIrb(IRBNo);
+										} else {
+											return Response
+													.status(403)
+													.entity("The IRB # can not be Empty")
+													.build();
+										}
 									}
 									break;
 								case "2":
@@ -4610,12 +4791,18 @@ public class ProposalService {
 									newComplianceInfo.setIacucPending(false);
 									if (complianceInfo != null
 											&& complianceInfo.has("IACUC")) {
-										newComplianceInfo
-												.setIacuc(complianceInfo
-														.get("IACUC")
-														.textValue()
-														.replaceAll(
-																"\\<[^>]*>", ""));
+										final String IACUCNo = complianceInfo
+												.get("IACUC").textValue()
+												.trim()
+												.replaceAll("\\<[^>]*>", "");
+										if (validateNotEmptyValue(IACUCNo)) {
+											newComplianceInfo.setIacuc(IACUCNo);
+										} else {
+											return Response
+													.status(403)
+													.entity("The IACUC # can not be Empty")
+													.build();
+										}
 									}
 									break;
 								case "2":
@@ -4650,9 +4837,18 @@ public class ProposalService {
 									newComplianceInfo.setIbcPending(false);
 									if (complianceInfo != null
 											&& complianceInfo.has("IBC")) {
-										newComplianceInfo.setIbc(complianceInfo
+										final String IBCNo = complianceInfo
 												.get("IBC").textValue().trim()
-												.replaceAll("\\<[^>]*>", ""));
+												.replaceAll("\\<[^>]*>", "");
+
+										if (validateNotEmptyValue(IBCNo)) {
+											newComplianceInfo.setIbc(IBCNo);
+										} else {
+											return Response
+													.status(403)
+													.entity("The IBC # can not be Empty")
+													.build();
+										}
 									}
 									break;
 								case "2":
@@ -5729,14 +5925,19 @@ public class ProposalService {
 					final String proposalTitle = projectInfo
 							.get("ProjectTitle").textValue().trim()
 							.replaceAll("\\<[^>]*>", "");
-					if (!proposalID.equals("0")) {
-						if (!existingProposal.getProjectInfo()
-								.getProjectTitle().equals(proposalTitle)) {
-							existingProposal.getProjectInfo().setProjectTitle(
-									proposalTitle);
+					if (validateNotEmptyValue(proposalTitle)) {
+						if (!proposalID.equals("0")) {
+							if (!existingProposal.getProjectInfo()
+									.getProjectTitle().equals(proposalTitle)) {
+								existingProposal.getProjectInfo()
+										.setProjectTitle(proposalTitle);
+							}
+						} else {
+							newProjectInfo.setProjectTitle(proposalTitle);
 						}
 					} else {
-						newProjectInfo.setProjectTitle(proposalTitle);
+						throw new Exception(
+								"The Proposal Title can not be Empty");
 					}
 				}
 
@@ -5828,14 +6029,18 @@ public class ProposalService {
 				if (projectInfo != null && projectInfo.has("DueDate")) {
 					Date dueDate = formatter.parse(projectInfo.get("DueDate")
 							.textValue().trim().replaceAll("\\<[^>]*>", ""));
-					if (!proposalID.equals("0")) {
-						if (!existingProposal.getProjectInfo().getDueDate()
-								.equals(dueDate)) {
-							existingProposal.getProjectInfo().setDueDate(
-									dueDate);
+					if (validateNotEmptyValue(dueDate.toString())) {
+						if (!proposalID.equals("0")) {
+							if (!existingProposal.getProjectInfo().getDueDate()
+									.equals(dueDate)) {
+								existingProposal.getProjectInfo().setDueDate(
+										dueDate);
+							}
+						} else {
+							newProjectInfo.setDueDate(dueDate);
 						}
 					} else {
-						newProjectInfo.setDueDate(dueDate);
+						throw new Exception("The Due Date can not be Empty");
 					}
 				}
 
@@ -5845,14 +6050,24 @@ public class ProposalService {
 					Date periodFrom = formatter.parse(projectInfo
 							.get("ProjectPeriodFrom").textValue().trim()
 							.replaceAll("\\<[^>]*>", ""));
-					projectPeriod.setFrom(periodFrom);
+					if (validateNotEmptyValue(periodFrom.toString())) {
+						projectPeriod.setFrom(periodFrom);
+					} else {
+						throw new Exception(
+								"The Project Period From can not be Empty");
+					}
 				}
 
 				if (projectInfo != null && projectInfo.has("ProjectPeriodTo")) {
 					Date periodTo = formatter.parse(projectInfo
 							.get("ProjectPeriodTo").textValue().trim()
 							.replaceAll("\\<[^>]*>", ""));
-					projectPeriod.setTo(periodTo);
+					if (validateNotEmptyValue(periodTo.toString())) {
+						projectPeriod.setTo(periodTo);
+					} else {
+						throw new Exception(
+								"The Project Period To can not be Empty");
+					}
 				}
 				if (!proposalID.equals("0")) {
 					if (!existingProposal.getProjectInfo().getProjectPeriod()
@@ -5880,41 +6095,64 @@ public class ProposalService {
 					for (String grantingAgency : sponsorAndBudgetInfo
 							.get("GrantingAgency").textValue().trim()
 							.replaceAll("\\<[^>]*>", "").split(", ")) {
-						newSponsorAndBudgetInfo.getGrantingAgency().add(
-								grantingAgency);
+						if (validateNotEmptyValue(grantingAgency)) {
+							newSponsorAndBudgetInfo.getGrantingAgency().add(
+									grantingAgency);
+						} else {
+							throw new Exception(
+									"The Granting Agency can not be Empty");
+						}
 					}
 				}
 
 				if (sponsorAndBudgetInfo != null
 						&& sponsorAndBudgetInfo.has("DirectCosts")) {
-					newSponsorAndBudgetInfo.setDirectCosts(Double
-							.parseDouble(sponsorAndBudgetInfo
-									.get("DirectCosts").textValue().trim()
-									.replaceAll("\\<[^>]*>", "")));
+					final String directCost = sponsorAndBudgetInfo
+							.get("DirectCosts").textValue().trim()
+							.replaceAll("\\<[^>]*>", "");
+					if (validateNotEmptyValue(directCost)) {
+						newSponsorAndBudgetInfo.setDirectCosts(Double
+								.parseDouble(directCost));
+					} else {
+						throw new Exception("The Direct Costs can not be Empty");
+					}
 				}
 
 				if (sponsorAndBudgetInfo != null
 						&& sponsorAndBudgetInfo.has("FACosts")) {
-					newSponsorAndBudgetInfo.setFaCosts(Double
-							.parseDouble(sponsorAndBudgetInfo.get("FACosts")
-									.textValue().trim()
-									.replaceAll("\\<[^>]*>", "")));
+					final String FACosts = sponsorAndBudgetInfo.get("FACosts")
+							.textValue().trim().replaceAll("\\<[^>]*>", "");
+					if (validateNotEmptyValue(FACosts)) {
+						newSponsorAndBudgetInfo.setFaCosts(Double
+								.parseDouble(FACosts));
+					} else {
+						throw new Exception("The FA Costs can not be Empty");
+					}
 				}
 
 				if (sponsorAndBudgetInfo != null
 						&& sponsorAndBudgetInfo.has("TotalCosts")) {
-					newSponsorAndBudgetInfo.setTotalCosts(Double
-							.parseDouble(sponsorAndBudgetInfo.get("TotalCosts")
-									.textValue().trim()
-									.replaceAll("\\<[^>]*>", "")));
+					final String totalCosts = sponsorAndBudgetInfo
+							.get("TotalCosts").textValue().trim()
+							.replaceAll("\\<[^>]*>", "");
+					if (validateNotEmptyValue(totalCosts)) {
+						newSponsorAndBudgetInfo.setTotalCosts(Double
+								.parseDouble(totalCosts));
+					} else {
+						throw new Exception("The Total Costs can not be Empty");
+					}
 				}
 
 				if (sponsorAndBudgetInfo != null
 						&& sponsorAndBudgetInfo.has("FARate")) {
-					newSponsorAndBudgetInfo.setFaRate(Double
-							.parseDouble(sponsorAndBudgetInfo.get("FARate")
-									.textValue().trim()
-									.replaceAll("\\<[^>]*>", "")));
+					final String FARate = sponsorAndBudgetInfo.get("FARate")
+							.textValue().trim().replaceAll("\\<[^>]*>", "");
+					if (validateNotEmptyValue(FARate)) {
+						newSponsorAndBudgetInfo.setFaRate(Double
+								.parseDouble(FARate));
+					} else {
+						throw new Exception("The FA Rate can not be Empty");
+					}
 				}
 			}
 
@@ -6177,10 +6415,16 @@ public class ProposalService {
 						newCollaborationInfo.setInvolveNonFundedCollab(true);
 						if (collaborationInfo != null
 								&& collaborationInfo.has("Collaborators")) {
-							newCollaborationInfo
-									.setInvolvedCollaborators(collaborationInfo
-											.get("Collaborators").textValue()
-											.trim().replaceAll("\\<[^>]*>", ""));
+							final String collabarationName = collaborationInfo
+									.get("Collaborators").textValue().trim()
+									.replaceAll("\\<[^>]*>", "");
+							if (validateNotEmptyValue(collabarationName)) {
+								newCollaborationInfo
+										.setInvolvedCollaborators(collabarationName);
+							} else {
+								throw new Exception(
+										"Collaborators can not be Empty");
+							}
 						}
 						break;
 					case "2":
@@ -6215,9 +6459,15 @@ public class ProposalService {
 								.setContainConfidentialInformation(true);
 						if (confidentialInfo != null
 								&& confidentialInfo.has("OnPages")) {
-							newConfidentialInfo.setOnPages(confidentialInfo
+							final String onPages = confidentialInfo
 									.get("OnPages").textValue().trim()
-									.replaceAll("\\<[^>]*>", ""));
+									.replaceAll("\\<[^>]*>", "");
+							if (validateNotEmptyValue(onPages)) {
+								newConfidentialInfo.setOnPages(onPages);
+							} else {
+								throw new Exception(
+										"The Pages can not be Empty");
+							}
 						}
 						if (confidentialInfo != null
 								&& confidentialInfo.has("Patentable")) {
@@ -6286,10 +6536,15 @@ public class ProposalService {
 							&& oSPSectionInfo.has("ListAgency")) {
 						String agencies = oSPSectionInfo.get("ListAgency")
 								.textValue().trim().replaceAll("\\<[^>]*>", "");
-						if (!existingProposal.getOspSectionInfo()
-								.getListAgency().equals(agencies)) {
-							existingProposal.getOspSectionInfo().setListAgency(
-									agencies);
+						if (validateNotEmptyValue(agencies)) {
+							if (!existingProposal.getOspSectionInfo()
+									.getListAgency().equals(agencies)) {
+								existingProposal.getOspSectionInfo()
+										.setListAgency(agencies);
+							}
+						} else {
+							throw new Exception(
+									"The Agency List can not be Empty");
 						}
 					}
 
@@ -6370,10 +6625,14 @@ public class ProposalService {
 					if (oSPSectionInfo != null && oSPSectionInfo.has("CFDANo")) {
 						String CFDANo = oSPSectionInfo.get("CFDANo")
 								.textValue().trim().replaceAll("\\<[^>]*>", "");
-						if (!existingProposal.getOspSectionInfo().getCfdaNo()
-								.equals(CFDANo)) {
-							existingProposal.getOspSectionInfo().setCfdaNo(
-									CFDANo);
+						if (validateNotEmptyValue(CFDANo)) {
+							if (!existingProposal.getOspSectionInfo()
+									.getCfdaNo().equals(CFDANo)) {
+								existingProposal.getOspSectionInfo().setCfdaNo(
+										CFDANo);
+							}
+						} else {
+							throw new Exception("The CFDA No can not be Empty");
 						}
 					}
 
@@ -6382,10 +6641,15 @@ public class ProposalService {
 							&& oSPSectionInfo.has("ProgramNo")) {
 						String programNo = oSPSectionInfo.get("ProgramNo")
 								.textValue().trim().replaceAll("\\<[^>]*>", "");
-						if (!existingProposal.getOspSectionInfo()
-								.getProgramNo().equals(programNo)) {
-							existingProposal.getOspSectionInfo().setProgramNo(
-									programNo);
+						if (validateNotEmptyValue(programNo)) {
+							if (!existingProposal.getOspSectionInfo()
+									.getProgramNo().equals(programNo)) {
+								existingProposal.getOspSectionInfo()
+										.setProgramNo(programNo);
+							}
+						} else {
+							throw new Exception(
+									"The Program No can not be Empty");
 						}
 					}
 
@@ -6395,10 +6659,15 @@ public class ProposalService {
 						String programTitle = oSPSectionInfo
 								.get("ProgramTitle").textValue().trim()
 								.replaceAll("\\<[^>]*>", "");
-						if (!existingProposal.getOspSectionInfo()
-								.getProgramTitle().equals(programTitle)) {
-							existingProposal.getOspSectionInfo()
-									.setProgramTitle(programTitle);
+						if (validateNotEmptyValue(programTitle)) {
+							if (!existingProposal.getOspSectionInfo()
+									.getProgramTitle().equals(programTitle)) {
+								existingProposal.getOspSectionInfo()
+										.setProgramTitle(programTitle);
+							}
+						} else {
+							throw new Exception(
+									"The Program Title can not be Empty");
 						}
 					}
 
@@ -6514,10 +6783,17 @@ public class ProposalService {
 						// PI Salary
 						String PISalary = oSPSectionInfo.get("PISalary")
 								.textValue().trim().replaceAll("\\<[^>]*>", "");
-						if (existingProposal.getOspSectionInfo().getPiSalary() != Double
-								.parseDouble(PISalary)) {
-							existingProposal.getOspSectionInfo().setPiSalary(
-									Double.parseDouble(PISalary));
+						if (validateNotEmptyValue(PISalary)) {
+							if (existingProposal.getOspSectionInfo()
+									.getPiSalary() != Double
+									.parseDouble(PISalary)) {
+								existingProposal.getOspSectionInfo()
+										.setPiSalary(
+												Double.parseDouble(PISalary));
+							}
+						} else {
+							throw new Exception(
+									"The PI Salary can not be Empty");
 						}
 					}
 
@@ -6526,10 +6802,17 @@ public class ProposalService {
 						// PI Fringe
 						String PiFringe = oSPSectionInfo.get("PIFringe")
 								.textValue().trim().replaceAll("\\<[^>]*>", "");
-						if (existingProposal.getOspSectionInfo().getPiFringe() != Double
-								.parseDouble(PiFringe)) {
-							existingProposal.getOspSectionInfo().setPiFringe(
-									Double.parseDouble(PiFringe));
+						if (validateNotEmptyValue(PiFringe)) {
+							if (existingProposal.getOspSectionInfo()
+									.getPiFringe() != Double
+									.parseDouble(PiFringe)) {
+								existingProposal.getOspSectionInfo()
+										.setPiFringe(
+												Double.parseDouble(PiFringe));
+							}
+						} else {
+							throw new Exception(
+									"The PI Fringe can not be Empty");
 						}
 					}
 
@@ -6539,10 +6822,15 @@ public class ProposalService {
 						String departmentId = oSPSectionInfo
 								.get("DepartmentId").textValue().trim()
 								.replaceAll("\\<[^>]*>", "");
-						if (!existingProposal.getOspSectionInfo()
-								.getDepartmentId().equals(departmentId)) {
-							existingProposal.getOspSectionInfo()
-									.setDepartmentId(departmentId);
+						if (validateNotEmptyValue(departmentId)) {
+							if (!existingProposal.getOspSectionInfo()
+									.getDepartmentId().equals(departmentId)) {
+								existingProposal.getOspSectionInfo()
+										.setDepartmentId(departmentId);
+							}
+						} else {
+							throw new Exception(
+									"The Department Id can not be Empty");
 						}
 					}
 
@@ -6610,11 +6898,17 @@ public class ProposalService {
 							if (oSPSectionInfo != null
 									&& oSPSectionInfo
 											.has("AnticipatedSubRecipientsNames")) {
-								newOSPSectionInfo
-										.setAnticipatedSubRecipientsNames(oSPSectionInfo
-												.get("AnticipatedSubRecipientsNames")
-												.textValue().trim()
-												.replaceAll("\\<[^>]*>", ""));
+								final String anticipatedSubRecipients = oSPSectionInfo
+										.get("AnticipatedSubRecipientsNames")
+										.textValue().trim()
+										.replaceAll("\\<[^>]*>", "");
+								if (validateNotEmptyValue(anticipatedSubRecipients)) {
+									newOSPSectionInfo
+											.setAnticipatedSubRecipientsNames(anticipatedSubRecipients);
+								} else {
+									throw new Exception(
+											"The Anticipated SubRecipients Names can not be Empty");
+								}
 							}
 							break;
 						case "2":
@@ -8970,6 +9264,14 @@ public class ProposalService {
 		}
 
 		return allCoPiSigned;
+	}
+
+	private boolean validateNotEmptyValue(String value) {
+		if (!value.equalsIgnoreCase("")) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 }
