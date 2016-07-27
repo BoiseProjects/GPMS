@@ -1968,7 +1968,7 @@ public class ProposalService {
 				if (proposalUniqueObj != null
 						&& proposalUniqueObj.has("NewProjectTitle")) {
 					newProjectTitle = proposalUniqueObj.get("NewProjectTitle")
-							.textValue();
+							.textValue().replaceAll("\\<[^>]*>", "");
 				}
 			}
 
