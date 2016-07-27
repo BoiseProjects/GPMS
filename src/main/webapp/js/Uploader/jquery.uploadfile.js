@@ -858,17 +858,17 @@
 			bar.cancel.addClass(s.cancelButtonClass);
 
 			/** ************ */
-			// Milson 2016/02/16
+			// Milson 2016/02/16 2016/07/27
 			// Modified only for GPMS
 			var titleVal = "";
 			if (title != null) {
 				titleVal = title;
 			}
 			bar.extraHTML = $(
-					"<div class='extrahtml'><b>Title: </b><input type='text' value="
-							+ titleVal + " name='tile_"
+					"<div class='extrahtml'><b>Title: </b><input type='text' name='tile_"
 							+ $('.ajax-file-upload-statusbar').size()
-							+ "' required='true' /></div>").insertAfter(
+							+ "' required='true' value="
+							+ titleVal + "></div>").insertAfter(
 					bar.filename);
 			/** ************ */
 

@@ -46,7 +46,6 @@ import gpms.model.UserAccount;
 import gpms.model.UserProfile;
 import gpms.model.WithdrawType;
 import gpms.utils.EmailUtil;
-import gpms.utils.HTMLUtil;
 import gpms.utils.SerializationHelper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -78,11 +77,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.log4j.Logger;
 import org.bson.types.ObjectId;
 import org.glassfish.jersey.media.sse.OutboundEvent;
-import org.joda.time.DateTime;
 import org.mongodb.morphia.Morphia;
 import org.wso2.balana.ObligationResult;
 import org.wso2.balana.ctx.AbstractResult;
@@ -3107,18 +3104,6 @@ public class ProposalService {
 						existingInvestigators = oldProposal
 								.getInvestigatorInfo();
 
-						// THIS IS HACK NO ONE CAN DELETE PI
-						// if (!existingProposal.getInvestigatorInfo().getPi()
-						// .equals(existingInvestigators.getPi())) {
-						// if (!deletedInvestigators.getPi().equals(
-						// existingInvestigators.getPi())) {
-						// deletedInvestigators.setPi(existingInvestigators
-						// .getPi());
-						// existingProposal.getInvestigatorInfo().getPi()
-						// .remove(existingInvestigators.getPi());
-						// }
-						// }
-
 						for (InvestigatorRefAndPosition coPI : existingInvestigators
 								.getCo_pi()) {
 							if (!existingProposal.getInvestigatorInfo()
@@ -3153,19 +3138,6 @@ public class ProposalService {
 						}
 
 						// Remove Signatures FOR Deleted Investigators
-
-						// THIS IS HACK PI CANNOT BE DELETED FROM PROPOSAL
-						// if (deletedInvestigators.getPi() != null) {
-						// for (SignatureInfo sign : oldProposal
-						// .getSignatureInfo()) {
-						// if (deletedInvestigators.getPi().getUserProfileId()
-						// .equalsIgnoreCase(sign.getUserProfileId())) {
-						// existingProposal.getSignatureInfo()
-						// .remove(sign);
-						// }
-						// }
-						// }
-
 						for (InvestigatorRefAndPosition coPI : deletedInvestigators
 								.getCo_pi()) {
 							for (SignatureInfo sign : oldProposal
@@ -3185,22 +3157,20 @@ public class ProposalService {
 				if (proposalInfo != null && proposalInfo.has("ProjectInfo")) {
 					JsonNode projectInfo = proposalInfo.get("ProjectInfo");
 					if (projectInfo != null && projectInfo.has("ProjectTitle")) {
+						final String proposalTitle = projectInfo
+								.get("ProjectTitle").textValue()
+								.replaceAll("\\<[^>]*>", "");
 						if (!proposalID.equals("0")) {
-							if (!existingProposal
-									.getProjectInfo()
-									.getProjectTitle()
-									.equals(projectInfo.get("ProjectTitle")
-											.textValue())) {
+							if (!existingProposal.getProjectInfo()
+									.getProjectTitle().equals(proposalTitle)) {
 								existingProposal.getProjectInfo()
-										.setProjectTitle(
-												projectInfo.get("ProjectTitle")
-														.textValue());
+										.setProjectTitle(proposalTitle);
 							}
 						} else {
-							newProjectInfo.setProjectTitle(projectInfo.get(
-									"ProjectTitle").textValue());
+							newProjectInfo.setProjectTitle(proposalTitle);
 						}
 					}
+
 					if (projectInfo != null && projectInfo.has("ProjectType")) {
 						ProjectType projectType = new ProjectType();
 						switch (projectInfo.get("ProjectType").textValue()) {
@@ -3289,8 +3259,9 @@ public class ProposalService {
 					}
 
 					if (projectInfo != null && projectInfo.has("DueDate")) {
-						Date dueDate = formatter.parse(projectInfo.get(
-								"DueDate").textValue());
+						Date dueDate = formatter.parse(projectInfo
+								.get("DueDate").textValue()
+								.replaceAll("\\<[^>]*>", ""));
 						if (!proposalID.equals("0")) {
 							if (!existingProposal.getProjectInfo().getDueDate()
 									.equals(dueDate)) {
@@ -3306,15 +3277,17 @@ public class ProposalService {
 
 					if (projectInfo != null
 							&& projectInfo.has("ProjectPeriodFrom")) {
-						Date periodFrom = formatter.parse(projectInfo.get(
-								"ProjectPeriodFrom").textValue());
+						Date periodFrom = formatter.parse(projectInfo
+								.get("ProjectPeriodFrom").textValue()
+								.replaceAll("\\<[^>]*>", ""));
 						projectPeriod.setFrom(periodFrom);
 					}
 
 					if (projectInfo != null
 							&& projectInfo.has("ProjectPeriodTo")) {
-						Date periodTo = formatter.parse(projectInfo.get(
-								"ProjectPeriodTo").textValue());
+						Date periodTo = formatter.parse(projectInfo
+								.get("ProjectPeriodTo").textValue()
+								.replaceAll("\\<[^>]*>", ""));
 						projectPeriod.setTo(periodTo);
 					}
 					if (!proposalID.equals("0")) {
@@ -3341,7 +3314,8 @@ public class ProposalService {
 					if (sponsorAndBudgetInfo != null
 							&& sponsorAndBudgetInfo.has("GrantingAgency")) {
 						for (String grantingAgency : sponsorAndBudgetInfo
-								.get("GrantingAgency").textValue().split(", ")) {
+								.get("GrantingAgency").textValue()
+								.replaceAll("\\<[^>]*>", "").split(", ")) {
 							newSponsorAndBudgetInfo.getGrantingAgency().add(
 									grantingAgency);
 						}
@@ -3350,29 +3324,33 @@ public class ProposalService {
 					if (sponsorAndBudgetInfo != null
 							&& sponsorAndBudgetInfo.has("DirectCosts")) {
 						newSponsorAndBudgetInfo.setDirectCosts(Double
-								.parseDouble(sponsorAndBudgetInfo.get(
-										"DirectCosts").textValue()));
+								.parseDouble(sponsorAndBudgetInfo
+										.get("DirectCosts").textValue()
+										.replaceAll("\\<[^>]*>", "")));
 					}
 
 					if (sponsorAndBudgetInfo != null
 							&& sponsorAndBudgetInfo.has("FACosts")) {
 						newSponsorAndBudgetInfo.setFaCosts(Double
 								.parseDouble(sponsorAndBudgetInfo
-										.get("FACosts").textValue()));
+										.get("FACosts").textValue()
+										.replaceAll("\\<[^>]*>", "")));
 					}
 
 					if (sponsorAndBudgetInfo != null
 							&& sponsorAndBudgetInfo.has("TotalCosts")) {
 						newSponsorAndBudgetInfo.setTotalCosts(Double
-								.parseDouble(sponsorAndBudgetInfo.get(
-										"TotalCosts").textValue()));
+								.parseDouble(sponsorAndBudgetInfo
+										.get("TotalCosts").textValue()
+										.replaceAll("\\<[^>]*>", "")));
 					}
 
 					if (sponsorAndBudgetInfo != null
 							&& sponsorAndBudgetInfo.has("FARate")) {
 						newSponsorAndBudgetInfo.setFaRate(Double
 								.parseDouble(sponsorAndBudgetInfo.get("FARate")
-										.textValue()));
+										.textValue()
+										.replaceAll("\\<[^>]*>", "")));
 					}
 				}
 
@@ -3649,7 +3627,8 @@ public class ProposalService {
 								newCollaborationInfo
 										.setInvolvedCollaborators(collaborationInfo
 												.get("Collaborators")
-												.textValue());
+												.textValue()
+												.replaceAll("\\<[^>]*>", ""));
 							}
 							break;
 						case "2":
@@ -3688,7 +3667,8 @@ public class ProposalService {
 							if (confidentialInfo != null
 									&& confidentialInfo.has("OnPages")) {
 								newConfidentialInfo.setOnPages(confidentialInfo
-										.get("OnPages").textValue());
+										.get("OnPages").textValue()
+										.replaceAll("\\<[^>]*>", ""));
 							}
 							if (confidentialInfo != null
 									&& confidentialInfo.has("Patentable")) {
@@ -3936,11 +3916,30 @@ public class ProposalService {
 									int i = fileName.lastIndexOf('.');
 									if (i > 0) {
 										extension = fileName.substring(i + 1);
-										uploadFile.setExtension(extension);
+
+										if (verifyValidFileExtension(extension)) {
+											uploadFile.setExtension(extension);
+										} else {
+											return Response
+													.status(403)
+													.entity("{\"error\": extension + \" is not allowed. Allowed extensions: jpg,png,gif,jpeg,bmp,png,pdf,doc,docx,xls,xlsx,txt\", \"status\": \"FAIL\"}")
+													.build();
+										}
 									}
-									uploadFile.setFilesize(file.length());
+
+									long fileSize = file.length();
+									if (verifyValidFileSize(fileSize)) {
+										uploadFile.setFilesize(fileSize);
+									} else {
+										return Response
+												.status(403)
+												.entity("{\"error\": \"The uploaded file is larger than 5MB\", \"status\": \"FAIL\"}")
+												.build();
+									}
 									uploadFile.setFilepath("/uploads/"
 											+ fileName);
+									uploadFile.setTitle(uploadFile.getTitle()
+											.replaceAll("\\<[^>]*>", ""));
 
 									existingProposal.getAppendices().add(
 											uploadFile);
@@ -3955,10 +3954,29 @@ public class ProposalService {
 								int i = fileName.lastIndexOf('.');
 								if (i > 0) {
 									extension = fileName.substring(i + 1);
-									uploadFile.setExtension(extension);
+									if (verifyValidFileExtension(extension)) {
+										uploadFile.setExtension(extension);
+									} else {
+										return Response
+												.status(403)
+												.entity("{\"error\": extension + \" is not allowed. Allowed extensions: jpg,png,gif,jpeg,bmp,png,pdf,doc,docx,xls,xlsx,txt\", \"status\": \"FAIL\"}")
+												.build();
+									}
 								}
-								uploadFile.setFilesize(file.length());
+
+								long fileSize = file.length();
+								if (verifyValidFileSize(fileSize)) {
+									uploadFile.setFilesize(fileSize);
+								} else {
+									return Response
+											.status(403)
+											.entity("{\"error\": \"The uploaded file is larger than 5MB\", \"status\": \"FAIL\"}")
+											.build();
+								}
+								uploadFile.setFilesize(fileSize);
 								uploadFile.setFilepath("/uploads/" + fileName);
+								uploadFile.setTitle(uploadFile.getTitle()
+										.replaceAll("\\<[^>]*>", ""));
 
 								existingProposal.getAppendices()
 										.add(uploadFile);
