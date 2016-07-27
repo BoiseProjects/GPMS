@@ -1968,7 +1968,7 @@ public class ProposalService {
 				if (proposalUniqueObj != null
 						&& proposalUniqueObj.has("NewProjectTitle")) {
 					newProjectTitle = proposalUniqueObj.get("NewProjectTitle")
-							.textValue().replaceAll("\\<[^>]*>", "");
+							.textValue().trim().replaceAll("\\<[^>]*>", "");
 				}
 			}
 
@@ -3054,8 +3054,11 @@ public class ProposalService {
 									}
 									uploadFile.setFilepath("/uploads/"
 											+ fileName);
-									uploadFile.setTitle(uploadFile.getTitle()
-											.replaceAll("\\<[^>]*>", ""));
+									uploadFile
+											.setTitle(uploadFile
+													.getTitle()
+													.trim()
+													.replaceAll("\\<[^>]*>", ""));
 
 									existingProposal.getAppendices().add(
 											uploadFile);
@@ -3092,7 +3095,7 @@ public class ProposalService {
 								uploadFile.setFilesize(fileSize);
 								uploadFile.setFilepath("/uploads/" + fileName);
 								uploadFile.setTitle(uploadFile.getTitle()
-										.replaceAll("\\<[^>]*>", ""));
+										.trim().replaceAll("\\<[^>]*>", ""));
 
 								existingProposal.getAppendices()
 										.add(uploadFile);
@@ -3271,7 +3274,7 @@ public class ProposalService {
 					JsonNode projectInfo = proposalInfo.get("ProjectInfo");
 					if (projectInfo != null && projectInfo.has("ProjectTitle")) {
 						final String proposalTitle = projectInfo
-								.get("ProjectTitle").textValue()
+								.get("ProjectTitle").textValue().trim()
 								.replaceAll("\\<[^>]*>", "");
 						if (!proposalID.equals("0")) {
 							if (!existingProposal.getProjectInfo()
@@ -3373,7 +3376,7 @@ public class ProposalService {
 
 					if (projectInfo != null && projectInfo.has("DueDate")) {
 						Date dueDate = formatter.parse(projectInfo
-								.get("DueDate").textValue()
+								.get("DueDate").textValue().trim()
 								.replaceAll("\\<[^>]*>", ""));
 						if (!proposalID.equals("0")) {
 							if (!existingProposal.getProjectInfo().getDueDate()
@@ -3391,7 +3394,7 @@ public class ProposalService {
 					if (projectInfo != null
 							&& projectInfo.has("ProjectPeriodFrom")) {
 						Date periodFrom = formatter.parse(projectInfo
-								.get("ProjectPeriodFrom").textValue()
+								.get("ProjectPeriodFrom").textValue().trim()
 								.replaceAll("\\<[^>]*>", ""));
 						projectPeriod.setFrom(periodFrom);
 					}
@@ -3399,7 +3402,7 @@ public class ProposalService {
 					if (projectInfo != null
 							&& projectInfo.has("ProjectPeriodTo")) {
 						Date periodTo = formatter.parse(projectInfo
-								.get("ProjectPeriodTo").textValue()
+								.get("ProjectPeriodTo").textValue().trim()
 								.replaceAll("\\<[^>]*>", ""));
 						projectPeriod.setTo(periodTo);
 					}
@@ -3427,7 +3430,7 @@ public class ProposalService {
 					if (sponsorAndBudgetInfo != null
 							&& sponsorAndBudgetInfo.has("GrantingAgency")) {
 						for (String grantingAgency : sponsorAndBudgetInfo
-								.get("GrantingAgency").textValue()
+								.get("GrantingAgency").textValue().trim()
 								.replaceAll("\\<[^>]*>", "").split(", ")) {
 							newSponsorAndBudgetInfo.getGrantingAgency().add(
 									grantingAgency);
@@ -3438,7 +3441,7 @@ public class ProposalService {
 							&& sponsorAndBudgetInfo.has("DirectCosts")) {
 						newSponsorAndBudgetInfo.setDirectCosts(Double
 								.parseDouble(sponsorAndBudgetInfo
-										.get("DirectCosts").textValue()
+										.get("DirectCosts").textValue().trim()
 										.replaceAll("\\<[^>]*>", "")));
 					}
 
@@ -3446,7 +3449,7 @@ public class ProposalService {
 							&& sponsorAndBudgetInfo.has("FACosts")) {
 						newSponsorAndBudgetInfo.setFaCosts(Double
 								.parseDouble(sponsorAndBudgetInfo
-										.get("FACosts").textValue()
+										.get("FACosts").textValue().trim()
 										.replaceAll("\\<[^>]*>", "")));
 					}
 
@@ -3454,7 +3457,7 @@ public class ProposalService {
 							&& sponsorAndBudgetInfo.has("TotalCosts")) {
 						newSponsorAndBudgetInfo.setTotalCosts(Double
 								.parseDouble(sponsorAndBudgetInfo
-										.get("TotalCosts").textValue()
+										.get("TotalCosts").textValue().trim()
 										.replaceAll("\\<[^>]*>", "")));
 					}
 
@@ -3462,7 +3465,7 @@ public class ProposalService {
 							&& sponsorAndBudgetInfo.has("FARate")) {
 						newSponsorAndBudgetInfo.setFaRate(Double
 								.parseDouble(sponsorAndBudgetInfo.get("FARate")
-										.textValue()
+										.textValue().trim()
 										.replaceAll("\\<[^>]*>", "")));
 					}
 				}
@@ -3740,7 +3743,7 @@ public class ProposalService {
 								newCollaborationInfo
 										.setInvolvedCollaborators(collaborationInfo
 												.get("Collaborators")
-												.textValue()
+												.textValue().trim()
 												.replaceAll("\\<[^>]*>", ""));
 							}
 							break;
@@ -3780,7 +3783,7 @@ public class ProposalService {
 							if (confidentialInfo != null
 									&& confidentialInfo.has("OnPages")) {
 								newConfidentialInfo.setOnPages(confidentialInfo
-										.get("OnPages").textValue()
+										.get("OnPages").textValue().trim()
 										.replaceAll("\\<[^>]*>", ""));
 							}
 							if (confidentialInfo != null
@@ -4255,8 +4258,11 @@ public class ProposalService {
 									}
 									uploadFile.setFilepath("/uploads/"
 											+ fileName);
-									uploadFile.setTitle(uploadFile.getTitle()
-											.replaceAll("\\<[^>]*>", ""));
+									uploadFile
+											.setTitle(uploadFile
+													.getTitle()
+													.trim()
+													.replaceAll("\\<[^>]*>", ""));
 
 									existingProposal.getAppendices().add(
 											uploadFile);
@@ -4293,7 +4299,7 @@ public class ProposalService {
 								uploadFile.setFilesize(fileSize);
 								uploadFile.setFilepath("/uploads/" + fileName);
 								uploadFile.setTitle(uploadFile.getTitle()
-										.replaceAll("\\<[^>]*>", ""));
+										.trim().replaceAll("\\<[^>]*>", ""));
 
 								existingProposal.getAppendices()
 										.add(uploadFile);
@@ -4485,7 +4491,7 @@ public class ProposalService {
 						signatureInfo.setUserProfileId(cols[0]);
 						signatureInfo.setSignature(cols[1].replaceAll(
 								"\\<[^>]*>", ""));
-						signatureInfo.setSignedDate(format.parse(cols[2]
+						signatureInfo.setSignedDate(format.parse(cols[2].trim()
 								.replaceAll("\\<[^>]*>", "")));
 						signatureInfo.setNote(cols[3].replaceAll("\\<[^>]*>",
 								""));
@@ -4566,7 +4572,7 @@ public class ProposalService {
 									if (complianceInfo != null
 											&& complianceInfo.has("IRB")) {
 										newComplianceInfo.setIrb(complianceInfo
-												.get("IRB").textValue()
+												.get("IRB").textValue().trim()
 												.replaceAll("\\<[^>]*>", ""));
 									}
 									break;
@@ -4645,7 +4651,7 @@ public class ProposalService {
 									if (complianceInfo != null
 											&& complianceInfo.has("IBC")) {
 										newComplianceInfo.setIbc(complianceInfo
-												.get("IBC").textValue()
+												.get("IBC").textValue().trim()
 												.replaceAll("\\<[^>]*>", ""));
 									}
 									break;
@@ -5721,7 +5727,7 @@ public class ProposalService {
 				JsonNode projectInfo = proposalInfo.get("ProjectInfo");
 				if (projectInfo != null && projectInfo.has("ProjectTitle")) {
 					final String proposalTitle = projectInfo
-							.get("ProjectTitle").textValue()
+							.get("ProjectTitle").textValue().trim()
 							.replaceAll("\\<[^>]*>", "");
 					if (!proposalID.equals("0")) {
 						if (!existingProposal.getProjectInfo()
@@ -5821,7 +5827,7 @@ public class ProposalService {
 
 				if (projectInfo != null && projectInfo.has("DueDate")) {
 					Date dueDate = formatter.parse(projectInfo.get("DueDate")
-							.textValue().replaceAll("\\<[^>]*>", ""));
+							.textValue().trim().replaceAll("\\<[^>]*>", ""));
 					if (!proposalID.equals("0")) {
 						if (!existingProposal.getProjectInfo().getDueDate()
 								.equals(dueDate)) {
@@ -5837,14 +5843,14 @@ public class ProposalService {
 
 				if (projectInfo != null && projectInfo.has("ProjectPeriodFrom")) {
 					Date periodFrom = formatter.parse(projectInfo
-							.get("ProjectPeriodFrom").textValue()
+							.get("ProjectPeriodFrom").textValue().trim()
 							.replaceAll("\\<[^>]*>", ""));
 					projectPeriod.setFrom(periodFrom);
 				}
 
 				if (projectInfo != null && projectInfo.has("ProjectPeriodTo")) {
 					Date periodTo = formatter.parse(projectInfo
-							.get("ProjectPeriodTo").textValue()
+							.get("ProjectPeriodTo").textValue().trim()
 							.replaceAll("\\<[^>]*>", ""));
 					projectPeriod.setTo(periodTo);
 				}
@@ -5872,7 +5878,7 @@ public class ProposalService {
 				if (sponsorAndBudgetInfo != null
 						&& sponsorAndBudgetInfo.has("GrantingAgency")) {
 					for (String grantingAgency : sponsorAndBudgetInfo
-							.get("GrantingAgency").textValue()
+							.get("GrantingAgency").textValue().trim()
 							.replaceAll("\\<[^>]*>", "").split(", ")) {
 						newSponsorAndBudgetInfo.getGrantingAgency().add(
 								grantingAgency);
@@ -5883,7 +5889,7 @@ public class ProposalService {
 						&& sponsorAndBudgetInfo.has("DirectCosts")) {
 					newSponsorAndBudgetInfo.setDirectCosts(Double
 							.parseDouble(sponsorAndBudgetInfo
-									.get("DirectCosts").textValue()
+									.get("DirectCosts").textValue().trim()
 									.replaceAll("\\<[^>]*>", "")));
 				}
 
@@ -5891,21 +5897,24 @@ public class ProposalService {
 						&& sponsorAndBudgetInfo.has("FACosts")) {
 					newSponsorAndBudgetInfo.setFaCosts(Double
 							.parseDouble(sponsorAndBudgetInfo.get("FACosts")
-									.textValue().replaceAll("\\<[^>]*>", "")));
+									.textValue().trim()
+									.replaceAll("\\<[^>]*>", "")));
 				}
 
 				if (sponsorAndBudgetInfo != null
 						&& sponsorAndBudgetInfo.has("TotalCosts")) {
 					newSponsorAndBudgetInfo.setTotalCosts(Double
 							.parseDouble(sponsorAndBudgetInfo.get("TotalCosts")
-									.textValue().replaceAll("\\<[^>]*>", "")));
+									.textValue().trim()
+									.replaceAll("\\<[^>]*>", "")));
 				}
 
 				if (sponsorAndBudgetInfo != null
 						&& sponsorAndBudgetInfo.has("FARate")) {
 					newSponsorAndBudgetInfo.setFaRate(Double
 							.parseDouble(sponsorAndBudgetInfo.get("FARate")
-									.textValue().replaceAll("\\<[^>]*>", "")));
+									.textValue().trim()
+									.replaceAll("\\<[^>]*>", "")));
 				}
 			}
 
@@ -6171,7 +6180,7 @@ public class ProposalService {
 							newCollaborationInfo
 									.setInvolvedCollaborators(collaborationInfo
 											.get("Collaborators").textValue()
-											.replaceAll("\\<[^>]*>", ""));
+											.trim().replaceAll("\\<[^>]*>", ""));
 						}
 						break;
 					case "2":
@@ -6207,7 +6216,7 @@ public class ProposalService {
 						if (confidentialInfo != null
 								&& confidentialInfo.has("OnPages")) {
 							newConfidentialInfo.setOnPages(confidentialInfo
-									.get("OnPages").textValue()
+									.get("OnPages").textValue().trim()
 									.replaceAll("\\<[^>]*>", ""));
 						}
 						if (confidentialInfo != null
@@ -6276,7 +6285,7 @@ public class ProposalService {
 					if (oSPSectionInfo != null
 							&& oSPSectionInfo.has("ListAgency")) {
 						String agencies = oSPSectionInfo.get("ListAgency")
-								.textValue().replaceAll("\\<[^>]*>", "");
+								.textValue().trim().replaceAll("\\<[^>]*>", "");
 						if (!existingProposal.getOspSectionInfo()
 								.getListAgency().equals(agencies)) {
 							existingProposal.getOspSectionInfo().setListAgency(
@@ -6360,7 +6369,7 @@ public class ProposalService {
 					// CFDA No
 					if (oSPSectionInfo != null && oSPSectionInfo.has("CFDANo")) {
 						String CFDANo = oSPSectionInfo.get("CFDANo")
-								.textValue().replaceAll("\\<[^>]*>", "");
+								.textValue().trim().replaceAll("\\<[^>]*>", "");
 						if (!existingProposal.getOspSectionInfo().getCfdaNo()
 								.equals(CFDANo)) {
 							existingProposal.getOspSectionInfo().setCfdaNo(
@@ -6372,7 +6381,7 @@ public class ProposalService {
 					if (oSPSectionInfo != null
 							&& oSPSectionInfo.has("ProgramNo")) {
 						String programNo = oSPSectionInfo.get("ProgramNo")
-								.textValue().replaceAll("\\<[^>]*>", "");
+								.textValue().trim().replaceAll("\\<[^>]*>", "");
 						if (!existingProposal.getOspSectionInfo()
 								.getProgramNo().equals(programNo)) {
 							existingProposal.getOspSectionInfo().setProgramNo(
@@ -6384,7 +6393,7 @@ public class ProposalService {
 					if (oSPSectionInfo != null
 							&& oSPSectionInfo.has("ProgramTitle")) {
 						String programTitle = oSPSectionInfo
-								.get("ProgramTitle").textValue()
+								.get("ProgramTitle").textValue().trim()
 								.replaceAll("\\<[^>]*>", "");
 						if (!existingProposal.getOspSectionInfo()
 								.getProgramTitle().equals(programTitle)) {
@@ -6504,7 +6513,7 @@ public class ProposalService {
 							&& oSPSectionInfo.has("PISalary")) {
 						// PI Salary
 						String PISalary = oSPSectionInfo.get("PISalary")
-								.textValue().replaceAll("\\<[^>]*>", "");
+								.textValue().trim().replaceAll("\\<[^>]*>", "");
 						if (existingProposal.getOspSectionInfo().getPiSalary() != Double
 								.parseDouble(PISalary)) {
 							existingProposal.getOspSectionInfo().setPiSalary(
@@ -6516,7 +6525,7 @@ public class ProposalService {
 							&& oSPSectionInfo.has("PIFringe")) {
 						// PI Fringe
 						String PiFringe = oSPSectionInfo.get("PIFringe")
-								.textValue().replaceAll("\\<[^>]*>", "");
+								.textValue().trim().replaceAll("\\<[^>]*>", "");
 						if (existingProposal.getOspSectionInfo().getPiFringe() != Double
 								.parseDouble(PiFringe)) {
 							existingProposal.getOspSectionInfo().setPiFringe(
@@ -6528,7 +6537,7 @@ public class ProposalService {
 							&& oSPSectionInfo.has("DepartmentId")) {
 						// Department Id
 						String departmentId = oSPSectionInfo
-								.get("DepartmentId").textValue()
+								.get("DepartmentId").textValue().trim()
 								.replaceAll("\\<[^>]*>", "");
 						if (!existingProposal.getOspSectionInfo()
 								.getDepartmentId().equals(departmentId)) {
@@ -6604,7 +6613,7 @@ public class ProposalService {
 								newOSPSectionInfo
 										.setAnticipatedSubRecipientsNames(oSPSectionInfo
 												.get("AnticipatedSubRecipientsNames")
-												.textValue()
+												.textValue().trim()
 												.replaceAll("\\<[^>]*>", ""));
 							}
 							break;
