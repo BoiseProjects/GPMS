@@ -3017,8 +3017,18 @@ public class ProposalService {
 							for (Appendix appendix : oldProposal
 									.getAppendices()) {
 								for (Appendix appendixObj : appendixInfo) {
-									if (appendix.getFilename().equals(
-											appendixObj.getFilename())) {
+									if (appendix.getFilename()
+											.equalsIgnoreCase(
+													appendixObj.getFilename())
+											&& appendix
+													.getTitle()
+													.equalsIgnoreCase(
+															appendixObj
+																	.getTitle()
+																	.trim()
+																	.replaceAll(
+																			"\\<[^>]*>",
+																			""))) {
 										alreadyExist = true;
 										existingFiles.add(appendixObj
 												.getFilename());
@@ -4345,8 +4355,18 @@ public class ProposalService {
 							for (Appendix appendix : oldProposal
 									.getAppendices()) {
 								for (Appendix appendixObj : appendixInfo) {
-									if (appendix.getFilename().equals(
-											appendixObj.getFilename())) {
+									if (appendix.getFilename()
+											.equalsIgnoreCase(
+													appendixObj.getFilename())
+											&& appendix
+													.getTitle()
+													.equalsIgnoreCase(
+															appendixObj
+																	.getTitle()
+																	.trim()
+																	.replaceAll(
+																			"\\<[^>]*>",
+																			""))) {
 										alreadyExist = true;
 										existingFiles.add(appendixObj
 												.getFilename());
@@ -4660,7 +4680,7 @@ public class ProposalService {
 
 						final String noteText = cols[3].replaceAll("\\<[^>]*>",
 								"");
-						if (validateNotEmptyValue(signedDate)) {
+						if (validateNotEmptyValue(noteText)) {
 							signatureInfo.setNote(noteText);
 						} else {
 							return Response.status(403)
@@ -5815,18 +5835,26 @@ public class ProposalService {
 								}
 
 								boolean proposalIsChanged = false;
-								if (proposalID.equals("0")) {
-									proposalIsChanged = saveProposal(message,
-											existingProposal, null,
-											authorProfile, proposalID, null,
-											irbApprovalRequired, null);
+								try {
+									if (proposalID.equals("0")) {
+										proposalIsChanged = saveProposal(
+												message, existingProposal,
+												null, authorProfile,
+												proposalID, null,
+												irbApprovalRequired, null);
 
-								} else {
-									proposalIsChanged = saveProposal(message,
-											existingProposal, oldProposal,
-											authorProfile, proposalID,
-											signatures, irbApprovalRequired,
-											signByAllUsersInfo);
+									} else {
+										proposalIsChanged = saveProposal(
+												message, existingProposal,
+												oldProposal, authorProfile,
+												proposalID, signatures,
+												irbApprovalRequired,
+												signByAllUsersInfo);
+									}
+								} catch (Exception e) {
+									return Response.status(403)
+											.type(MediaType.APPLICATION_JSON)
+											.entity(e.getMessage()).build();
 								}
 
 								if (proposalIsChanged) {

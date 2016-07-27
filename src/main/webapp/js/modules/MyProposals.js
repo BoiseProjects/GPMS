@@ -86,7 +86,7 @@ $(function() {
 							projectTitle : {
 								required : true,
 								minlength : 5,
-								maxlength : 50
+								maxlength : 250
 							},
 							projectType : {
 								required : true
@@ -276,7 +276,7 @@ $(function() {
 							projectTitle : {
 								required : "Please enter project title.",
 								minlength : "Your project title must be at least 5 characters long",
-								maxlength : "Your project title must be at most 50 characters long"
+								maxlength : "Your project title must be at most 250 characters long"
 							},
 							projectType : {
 								required : "Please select your project type"
