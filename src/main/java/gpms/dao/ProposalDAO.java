@@ -5,6 +5,7 @@ import gpms.model.ApprovalType;
 import gpms.model.AuditLog;
 import gpms.model.AuditLogInfo;
 import gpms.model.CollegeDepartmentInfo;
+import gpms.model.Delegation;
 import gpms.model.DeleteType;
 import gpms.model.InvestigatorRefAndPosition;
 import gpms.model.PositionDetails;
@@ -1734,7 +1735,8 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 				.field("_id")
 				.equal(id)
 				.retrievedFields(true, "_id", "investigator info",
-						"signature info");
+						"signature info", "chair approval",
+						"business manager approval", "dean approval");
 		Proposal proposal = q1.get();
 
 		// Adding PI
@@ -1742,7 +1744,9 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 		InvestigatorRefAndPosition PI = proposal.getInvestigatorInfo().getPi();
 
 		boolean piAlreadySigned = false;
-		for (SignatureInfo signature : proposal.getSignatureInfo()) {
+		final List<SignatureInfo> proposalSignatures = proposal
+				.getSignatureInfo();
+		for (SignatureInfo signature : proposalSignatures) {
 			if (PI.getUserProfileId().equals(signature.getUserProfileId())
 					&& !PI.getUserRef().isDeleted()
 					&& signature.getPositionTitle().equals("PI")) {
@@ -1801,7 +1805,7 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 			SignatureInfo coPISign = new SignatureInfo();
 
 			boolean coPIAlreadySigned = false;
-			for (SignatureInfo signature : proposal.getSignatureInfo()) {
+			for (SignatureInfo signature : proposalSignatures) {
 				if (coPIs.getUserProfileId().toString()
 						.equals(signature.getUserProfileId())
 						&& !coPIs.getUserRef().isDeleted()
@@ -1865,7 +1869,7 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 		// SignatureInfo seniorSign = new SignatureInfo();
 		//
 		// boolean seniorAlreadySigned = false;
-		// for (SignatureInfo signature : proposal.getSignatureInfo()) {
+		// for (SignatureInfo signature : proposalSignatures) {
 		// if (seniors.getUserProfileId().toString()
 		// .equals(signature.getUserProfileId()) &&
 		// !seniors.getUserRef().isDeleted()
@@ -1937,8 +1941,11 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 		// Research Administrator
 		List<String> positions = new ArrayList<String>();
 		positions.add("Department Chair");
+		// positions.add("Associate Chair");
 		positions.add("Business Manager");
+		// positions.add("Department Administrative Assistant");
 		positions.add("Dean");
+		// positions.add("Associate Dean");
 
 		positions.add("University Research Administrator");
 		positions.add("University Research Director");
@@ -1949,7 +1956,7 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 
 		Query<UserProfile> profileQuery = ds.createQuery(UserProfile.class)
 				.retrievedFields(true, "_id", "first name", "middle name",
-						"last name", "details");
+						"last name", "details", "is delegator");
 
 		profileQuery.and(profileQuery.criteria("deleted").equal(false),
 				profileQuery.criteria("details.position title").in(positions));
@@ -1964,11 +1971,11 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 									colDeptInfo.getDepartment())
 							&& posDetails.getPositionTitle().equalsIgnoreCase(
 									"Department Chair")) {
+
 						SignatureInfo signDeptChair = new SignatureInfo();
 
 						boolean departmentChairAlreadySigned = false;
-						for (SignatureInfo signature : proposal
-								.getSignatureInfo()) {
+						for (SignatureInfo signature : proposalSignatures) {
 							if (user.getId().toString()
 									.equals(signature.getUserProfileId())
 									&& signature.getPositionTitle().equals(
@@ -1994,15 +2001,78 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 						}
 
 						if (!departmentChairAlreadySigned) {
-							signDeptChair.setUserProfileId(user.getId()
-									.toString());
-							signDeptChair.setFullName(user.getFullName());
-							signDeptChair.setSignature("");
-							signDeptChair.setNote("");
-							signDeptChair.setPositionTitle("Department Chair");
-							signDeptChair.setDelegated(false);
-							if (!signatures.contains(signDeptChair)) {
-								signatures.add(signDeptChair);
+							if (!user.isDelegater()
+									&& proposal.getChairApproval() == ApprovalType.READYFORAPPROVAL) {
+								signDeptChair.setUserProfileId(user.getId()
+										.toString());
+								signDeptChair.setFullName(user.getFullName());
+								signDeptChair.setSignature("");
+								signDeptChair.setNote("");
+								signDeptChair
+										.setPositionTitle("Department Chair");
+								signDeptChair.setDelegated(false);
+								if (!signatures.contains(signDeptChair)) {
+									signatures.add(signDeptChair);
+								}
+							} else {
+								// TODO :: here I used Transfer mode of
+								// Delegation to unable the User
+								// with is delegator = true to sign the proposal
+								// Find all delegation with delegatee =
+								// user.getId().toString()
+								// I only consider for Not Signed Case to show
+								// delegated Users to sign
+								// TODO Find the delegated User details
+								List<SignatureInfo> delegatedChair = findDelegatedUsersForAUser(
+										user.getId(), id.toString(),
+										posDetails.getCollege(),
+										posDetails.getDepartment(),
+										posDetails.getPositionType(),
+										"Department Chair");
+
+								boolean delegatedDepartmentChairAlreadySigned = false;
+
+								for (SignatureInfo delegateeInfo : delegatedChair) {
+									for (SignatureInfo signature : proposalSignatures) {
+										if (delegateeInfo.getUserProfileId()
+												.equals(signature
+														.getUserProfileId())
+												&& signature
+														.getPositionTitle()
+														.equals("Department Chair")) {
+											delegateeInfo
+													.setUserProfileId(signature
+															.getUserProfileId());
+											delegateeInfo.setFullName(signature
+													.getFullName());
+											delegateeInfo
+													.setSignature(signature
+															.getSignature());
+											delegateeInfo
+													.setSignedDate(signature
+															.getSignedDate());
+											delegateeInfo.setNote(signature
+													.getNote());
+											delegateeInfo
+													.setPositionTitle(signature
+															.getPositionTitle());
+											delegateeInfo
+													.setDelegated(signature
+															.isDelegated());
+											if (!signatures
+													.contains(delegateeInfo)) {
+												signatures.add(delegateeInfo);
+											}
+											delegatedDepartmentChairAlreadySigned = true;
+										}
+									}
+
+									if (!delegatedDepartmentChairAlreadySigned) {
+										if (!signatures.contains(delegateeInfo)) {
+											signatures.add(delegateeInfo);
+										}
+									}
+								}
 							}
 						}
 					} else if (posDetails.getCollege().equalsIgnoreCase(
@@ -2014,8 +2084,7 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 						SignatureInfo signBusinessMgr = new SignatureInfo();
 
 						boolean businessManagerAlreadySigned = false;
-						for (SignatureInfo signature : proposal
-								.getSignatureInfo()) {
+						for (SignatureInfo signature : proposalSignatures) {
 							if (user.getId().toString()
 									.equals(signature.getUserProfileId())
 									&& signature.getPositionTitle().equals(
@@ -2041,16 +2110,70 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 						}
 
 						if (!businessManagerAlreadySigned) {
-							signBusinessMgr.setUserProfileId(user.getId()
-									.toString());
-							signBusinessMgr.setFullName(user.getFullName());
-							signBusinessMgr.setSignature("");
-							signBusinessMgr.setNote("");
-							signBusinessMgr
-									.setPositionTitle("Business Manager");
-							signBusinessMgr.setDelegated(false);
-							if (!signatures.contains(signBusinessMgr)) {
-								signatures.add(signBusinessMgr);
+							if (!user.isDelegater()
+									&& proposal.getBusinessManagerApproval() == ApprovalType.READYFORAPPROVAL) {
+								signBusinessMgr.setUserProfileId(user.getId()
+										.toString());
+								signBusinessMgr.setFullName(user.getFullName());
+								signBusinessMgr.setSignature("");
+								signBusinessMgr.setNote("");
+								signBusinessMgr
+										.setPositionTitle("Business Manager");
+								signBusinessMgr.setDelegated(false);
+								if (!signatures.contains(signBusinessMgr)) {
+									signatures.add(signBusinessMgr);
+								}
+							} else {
+								List<SignatureInfo> delegatedBusinessManager = findDelegatedUsersForAUser(
+										user.getId(), id.toString(),
+										posDetails.getCollege(),
+										posDetails.getDepartment(),
+										posDetails.getPositionType(),
+										"Business Manager");
+
+								boolean delegatedBusinessManagerAlreadySigned = false;
+
+								for (SignatureInfo delegateeInfo : delegatedBusinessManager) {
+									for (SignatureInfo signature : proposalSignatures) {
+										if (delegateeInfo.getUserProfileId()
+												.equals(signature
+														.getUserProfileId())
+												&& signature
+														.getPositionTitle()
+														.equals("Business Manager")) {
+											delegateeInfo
+													.setUserProfileId(signature
+															.getUserProfileId());
+											delegateeInfo.setFullName(signature
+													.getFullName());
+											delegateeInfo
+													.setSignature(signature
+															.getSignature());
+											delegateeInfo
+													.setSignedDate(signature
+															.getSignedDate());
+											delegateeInfo.setNote(signature
+													.getNote());
+											delegateeInfo
+													.setPositionTitle(signature
+															.getPositionTitle());
+											delegateeInfo
+													.setDelegated(signature
+															.isDelegated());
+											if (!signatures
+													.contains(delegateeInfo)) {
+												signatures.add(delegateeInfo);
+											}
+											delegatedBusinessManagerAlreadySigned = true;
+										}
+									}
+
+									if (!delegatedBusinessManagerAlreadySigned) {
+										if (!signatures.contains(delegateeInfo)) {
+											signatures.add(delegateeInfo);
+										}
+									}
+								}
 							}
 						}
 					} else if (posDetails.getCollege().equalsIgnoreCase(
@@ -2062,8 +2185,7 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 						SignatureInfo signDean = new SignatureInfo();
 
 						boolean deanAlreadySigned = false;
-						for (SignatureInfo signature : proposal
-								.getSignatureInfo()) {
+						for (SignatureInfo signature : proposalSignatures) {
 							if (user.getId().toString()
 									.equals(signature.getUserProfileId())
 									&& signature.getPositionTitle().equals(
@@ -2086,14 +2208,67 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 						}
 
 						if (!deanAlreadySigned) {
-							signDean.setUserProfileId(user.getId().toString());
-							signDean.setFullName(user.getFullName());
-							signDean.setSignature("");
-							signDean.setNote("");
-							signDean.setPositionTitle("Dean");
-							signDean.setDelegated(false);
-							if (!signatures.contains(signDean)) {
-								signatures.add(signDean);
+							if (!user.isDelegater()
+									&& proposal.getDeanApproval() == ApprovalType.READYFORAPPROVAL) {
+								signDean.setUserProfileId(user.getId()
+										.toString());
+								signDean.setFullName(user.getFullName());
+								signDean.setSignature("");
+								signDean.setNote("");
+								signDean.setPositionTitle("Dean");
+								signDean.setDelegated(false);
+								if (!signatures.contains(signDean)) {
+									signatures.add(signDean);
+								}
+							} else {
+								List<SignatureInfo> delegatedDean = findDelegatedUsersForAUser(
+										user.getId(), id.toString(),
+										posDetails.getCollege(),
+										posDetails.getDepartment(),
+										posDetails.getPositionType(), "Dean");
+
+								boolean delegatedDeanAlreadySigned = false;
+
+								for (SignatureInfo delegateeInfo : delegatedDean) {
+									for (SignatureInfo signature : proposalSignatures) {
+										if (delegateeInfo.getUserProfileId()
+												.equals(signature
+														.getUserProfileId())
+												&& signature.getPositionTitle()
+														.equals("Dean")) {
+											delegateeInfo
+													.setUserProfileId(signature
+															.getUserProfileId());
+											delegateeInfo.setFullName(signature
+													.getFullName());
+											delegateeInfo
+													.setSignature(signature
+															.getSignature());
+											delegateeInfo
+													.setSignedDate(signature
+															.getSignedDate());
+											delegateeInfo.setNote(signature
+													.getNote());
+											delegateeInfo
+													.setPositionTitle(signature
+															.getPositionTitle());
+											delegateeInfo
+													.setDelegated(signature
+															.isDelegated());
+											if (!signatures
+													.contains(delegateeInfo)) {
+												signatures.add(delegateeInfo);
+											}
+											delegatedDeanAlreadySigned = true;
+										}
+									}
+
+									if (!delegatedDeanAlreadySigned) {
+										if (!signatures.contains(delegateeInfo)) {
+											signatures.add(delegateeInfo);
+										}
+									}
+								}
 							}
 						}
 					}
@@ -2104,7 +2279,7 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 					SignatureInfo signBusinessMgr = new SignatureInfo();
 
 					boolean irbAlreadySigned = false;
-					for (SignatureInfo signature : proposal.getSignatureInfo()) {
+					for (SignatureInfo signature : proposalSignatures) {
 						if (user.getId().toString()
 								.equals(signature.getUserProfileId())
 								&& signature.getPositionTitle().equals("IRB")) {
@@ -2145,7 +2320,7 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 					SignatureInfo signAdmin = new SignatureInfo();
 
 					boolean adminAlreadySigned = false;
-					for (SignatureInfo signature : proposal.getSignatureInfo()) {
+					for (SignatureInfo signature : proposalSignatures) {
 						if (user.getId().toString()
 								.equals(signature.getUserProfileId())
 								&& signature.getPositionTitle().equals(
@@ -2183,7 +2358,7 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 					SignatureInfo signDirector = new SignatureInfo();
 
 					boolean directorAlreadySigned = false;
-					for (SignatureInfo signature : proposal.getSignatureInfo()) {
+					for (SignatureInfo signature : proposalSignatures) {
 						if (user.getId().toString()
 								.equals(signature.getUserProfileId())
 								&& signature.getPositionTitle().equals(
@@ -2218,6 +2393,171 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 						}
 					}
 				}
+			}
+		}
+		return signatures;
+	}
+
+	public List<SignatureInfo> findDelegatedUsersForAUser(ObjectId userId,
+			String proposalId, String positionCollege,
+			String positionDeptartment, String positionType,
+			String positionTitle) {
+		Datastore ds = getDatastore();
+		List<SignatureInfo> signatures = new ArrayList<SignatureInfo>();
+
+		Query<Delegation> delegationQuery = ds.createQuery(Delegation.class);
+
+		Query<UserProfile> profileQuery = ds.createQuery(UserProfile.class)
+				.field("_id").equal(userId).retrievedFields(true, "_id");
+
+		// delegationQuery.criteria("delegater user profile")
+		// .in(profileQuery.asKeyList())
+		// .criteria("delegated position title")
+		// .equalIgnoreCase(positionTitle).criteria("proposal id")
+		// .equal("").criteria("to").greaterThanOrEq(new Date());
+
+		delegationQuery.or(
+				delegationQuery
+						.and(delegationQuery.criteria("delegater user profile")
+								.in(profileQuery.asKeyList()),
+								delegationQuery.criteria("delegated college")
+										.equalIgnoreCase(positionCollege),
+								delegationQuery
+										.criteria("delegated department")
+										.equalIgnoreCase(positionDeptartment),
+								delegationQuery.criteria(
+										"delegated position type")
+										.equalIgnoreCase(positionType),
+								delegationQuery.criteria(
+										"delegated position title")
+										.equalIgnoreCase(positionTitle),
+								delegationQuery.criteria("proposal id").equal(
+										"")).criteria("from")
+						.lessThanOrEq(new Date()).criteria("to")
+						.greaterThanOrEq(new Date()),
+				delegationQuery
+						.and(delegationQuery.criteria("delegater user profile")
+								.in(profileQuery.asKeyList()),
+								delegationQuery.criteria("delegated college")
+										.equalIgnoreCase(positionCollege),
+								delegationQuery
+										.criteria("delegated department")
+										.equalIgnoreCase(positionDeptartment),
+								delegationQuery.criteria(
+										"delegated position type")
+										.equalIgnoreCase(positionType),
+								delegationQuery.criteria(
+										"delegated position title")
+										.equalIgnoreCase(positionTitle),
+								delegationQuery.criteria("proposal id")
+										.containsIgnoreCase(proposalId))
+						.criteria("from").lessThanOrEq(new Date())
+						.criteria("to").greaterThanOrEq(new Date()));
+
+		List<Delegation> delegates = delegationQuery.asList();
+
+		for (Delegation delegation : delegates) {
+			SignatureInfo signature = new SignatureInfo();
+
+			signature.setUserProfileId(delegation.getDelegateeId());
+			signature.setFullName(delegation.getDelegateeFullName());
+
+			signature.setPositionTitle(positionTitle);
+
+			signature.setSignature("");
+			signature.setNote("");
+
+			signature.setDelegated(true);
+			signature.setDelegatedAs(positionTitle);
+
+			if (!signatures.contains(signature)) {
+				signatures.add(signature);
+			}
+		}
+		return signatures;
+
+	}
+
+	public List<SignatureUserInfo> findDelegatedUsersInfoForAUser(
+			ObjectId userId, String proposalId, String positionCollege,
+			String positionDeptartment, String positionType,
+			String positionTitle) {
+		Datastore ds = getDatastore();
+		List<SignatureUserInfo> signatures = new ArrayList<SignatureUserInfo>();
+
+		Query<Delegation> delegationQuery = ds.createQuery(Delegation.class);
+
+		Query<UserProfile> profileQuery = ds.createQuery(UserProfile.class)
+				.field("_id").equal(userId).retrievedFields(true, "_id");
+
+		delegationQuery.or(
+				delegationQuery
+						.and(delegationQuery.criteria("delegater user profile")
+								.in(profileQuery.asKeyList()),
+								delegationQuery.criteria("delegated college")
+										.equalIgnoreCase(positionCollege),
+								delegationQuery
+										.criteria("delegated department")
+										.equalIgnoreCase(positionDeptartment),
+								delegationQuery.criteria(
+										"delegated position type")
+										.equalIgnoreCase(positionType),
+								delegationQuery.criteria(
+										"delegated position title")
+										.equalIgnoreCase(positionTitle),
+								delegationQuery.criteria("proposal id").equal(
+										"")).criteria("from")
+						.lessThanOrEq(new Date()).criteria("to")
+						.greaterThanOrEq(new Date()),
+				delegationQuery
+						.and(delegationQuery.criteria("delegater user profile")
+								.in(profileQuery.asKeyList()),
+								delegationQuery.criteria("delegated college")
+										.equalIgnoreCase(positionCollege),
+								delegationQuery
+										.criteria("delegated department")
+										.equalIgnoreCase(positionDeptartment),
+								delegationQuery.criteria(
+										"delegated position type")
+										.equalIgnoreCase(positionType),
+								delegationQuery.criteria(
+										"delegated position title")
+										.equalIgnoreCase(positionTitle),
+								delegationQuery.criteria("proposal id")
+										.containsIgnoreCase(proposalId))
+						.criteria("from").lessThanOrEq(new Date())
+						.criteria("to").greaterThanOrEq(new Date()));
+
+		List<Delegation> delegates = delegationQuery.asList();
+		for (Delegation delegation : delegates) {
+			ObjectId delegateeUserProfileId = new ObjectId(
+					delegation.getDelegateeId());
+
+			UserProfile userQuery = ds
+					.createQuery(UserProfile.class)
+					.field("_id")
+					.equal(delegateeUserProfileId)
+					.retrievedFields(true, "_id", "first name", "middle name",
+							"last name", "work email", "user id").get();
+
+			SignatureUserInfo signature = new SignatureUserInfo();
+
+			signature.setUserProfileId(userQuery.getId().toString());
+			signature.setFullName(userQuery.getFullName());
+			signature.setUserName(userQuery.getUserAccount().getUserName());
+			signature.setEmail(userQuery.getWorkEmails().get(0));
+			signature.setCollege(positionCollege);
+			signature.setDepartment(positionDeptartment);
+			signature.setPositionType(positionType);
+			signature.setPositionTitle(positionTitle);
+			signature.setDelegatedAs(positionTitle);
+			signature.setSignature("");
+			signature.setNote("");
+
+			signature.setDelegated(true);
+
+			if (!signatures.contains(signature)) {
+				signatures.add(signature);
 			}
 		}
 		return signatures;
@@ -2298,7 +2638,7 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 
 		Query<UserProfile> profileQuery = ds.createQuery(UserProfile.class)
 				.retrievedFields(true, "_id", "first name", "middle name",
-						"last name", "details", "work email");
+						"last name", "details", "work email", "is delegator");
 
 		profileQuery.and(profileQuery.criteria("deleted").equal(false),
 				profileQuery.criteria("details.position title").in(positions));
@@ -2315,23 +2655,41 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 									"Department Chair")) {
 						SignatureUserInfo signDeptChair = new SignatureUserInfo();
 
-						signDeptChair.setUserProfileId(user.getId().toString());
-						signDeptChair.setFullName(user.getFullName());
-						signDeptChair.setUserName(user.getUserAccount()
-								.getUserName());
-						signDeptChair.setEmail(user.getWorkEmails().get(0));
-						signDeptChair.setCollege(posDetails.getCollege());
-						signDeptChair.setDepartment(posDetails.getDepartment());
-						signDeptChair.setPositionType(posDetails
-								.getPositionType());
-						signDeptChair.setPositionTitle(posDetails
-								.getPositionTitle());
-						signDeptChair.setSignature("");
-						signDeptChair.setNote("");
-						signDeptChair.setPositionTitle("Department Chair");
-						signDeptChair.setDelegated(false);
-						if (!signatures.contains(signDeptChair)) {
-							signatures.add(signDeptChair);
+						if (!user.isDelegater()) {
+
+							signDeptChair.setUserProfileId(user.getId()
+									.toString());
+							signDeptChair.setFullName(user.getFullName());
+							signDeptChair.setUserName(user.getUserAccount()
+									.getUserName());
+							signDeptChair.setEmail(user.getWorkEmails().get(0));
+							signDeptChair.setCollege(posDetails.getCollege());
+							signDeptChair.setDepartment(posDetails
+									.getDepartment());
+							signDeptChair.setPositionType(posDetails
+									.getPositionType());
+							signDeptChair.setPositionTitle(posDetails
+									.getPositionTitle());
+							signDeptChair.setSignature("");
+							signDeptChair.setNote("");
+							signDeptChair.setPositionTitle("Department Chair");
+							signDeptChair.setDelegated(false);
+							if (!signatures.contains(signDeptChair)) {
+								signatures.add(signDeptChair);
+							}
+						} else {
+							List<SignatureUserInfo> delegatedChair = findDelegatedUsersInfoForAUser(
+									user.getId(), id.toString(),
+									posDetails.getCollege(),
+									posDetails.getDepartment(),
+									posDetails.getPositionType(),
+									"Department Chair");
+							for (SignatureUserInfo delegateeInfo : delegatedChair) {
+								if (!signatures.contains(delegateeInfo)) {
+									signatures.add(delegateeInfo);
+								}
+
+							}
 						}
 					} else if (posDetails.getCollege().equalsIgnoreCase(
 							colDeptInfo.getCollege())
@@ -2340,25 +2698,42 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 							&& posDetails.getPositionTitle().equalsIgnoreCase(
 									"Business Manager")) {
 						SignatureUserInfo signBusinessMgr = new SignatureUserInfo();
-						signBusinessMgr.setUserProfileId(user.getId()
-								.toString());
-						signBusinessMgr.setFullName(user.getFullName());
-						signBusinessMgr.setUserName(user.getUserAccount()
-								.getUserName());
-						signBusinessMgr.setEmail(user.getWorkEmails().get(0));
-						signBusinessMgr.setCollege(posDetails.getCollege());
-						signBusinessMgr.setDepartment(posDetails
-								.getDepartment());
-						signBusinessMgr.setPositionType(posDetails
-								.getPositionType());
-						signBusinessMgr.setPositionTitle(posDetails
-								.getPositionTitle());
-						signBusinessMgr.setSignature("");
-						signBusinessMgr.setNote("");
-						signBusinessMgr.setPositionTitle("Business Manager");
-						signBusinessMgr.setDelegated(false);
-						if (!signatures.contains(signBusinessMgr)) {
-							signatures.add(signBusinessMgr);
+						if (!user.isDelegater()) {
+							signBusinessMgr.setUserProfileId(user.getId()
+									.toString());
+							signBusinessMgr.setFullName(user.getFullName());
+							signBusinessMgr.setUserName(user.getUserAccount()
+									.getUserName());
+							signBusinessMgr.setEmail(user.getWorkEmails()
+									.get(0));
+							signBusinessMgr.setCollege(posDetails.getCollege());
+							signBusinessMgr.setDepartment(posDetails
+									.getDepartment());
+							signBusinessMgr.setPositionType(posDetails
+									.getPositionType());
+							signBusinessMgr.setPositionTitle(posDetails
+									.getPositionTitle());
+							signBusinessMgr.setSignature("");
+							signBusinessMgr.setNote("");
+							signBusinessMgr
+									.setPositionTitle("Business Manager");
+							signBusinessMgr.setDelegated(false);
+							if (!signatures.contains(signBusinessMgr)) {
+								signatures.add(signBusinessMgr);
+							}
+						} else {
+							List<SignatureUserInfo> delegatedBusinessManager = findDelegatedUsersInfoForAUser(
+									user.getId(), id.toString(),
+									posDetails.getCollege(),
+									posDetails.getDepartment(),
+									posDetails.getPositionType(),
+									"Business Manager");
+							for (SignatureUserInfo delegateeInfo : delegatedBusinessManager) {
+								if (!signatures.contains(delegateeInfo)) {
+									signatures.add(delegateeInfo);
+								}
+
+							}
 						}
 					} else if (posDetails.getCollege().equalsIgnoreCase(
 							colDeptInfo.getCollege())
@@ -2367,21 +2742,37 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 							&& posDetails.getPositionTitle().equalsIgnoreCase(
 									"Dean")) {
 						SignatureUserInfo signDean = new SignatureUserInfo();
-						signDean.setUserProfileId(user.getId().toString());
-						signDean.setFullName(user.getFullName());
-						signDean.setUserName(user.getUserAccount()
-								.getUserName());
-						signDean.setEmail(user.getWorkEmails().get(0));
-						signDean.setCollege(posDetails.getCollege());
-						signDean.setDepartment(posDetails.getDepartment());
-						signDean.setPositionType(posDetails.getPositionType());
-						signDean.setPositionTitle(posDetails.getPositionTitle());
-						signDean.setSignature("");
-						signDean.setNote("");
-						signDean.setPositionTitle("Dean");
-						signDean.setDelegated(false);
-						if (!signatures.contains(signDean)) {
-							signatures.add(signDean);
+						if (!user.isDelegater()) {
+							signDean.setUserProfileId(user.getId().toString());
+							signDean.setFullName(user.getFullName());
+							signDean.setUserName(user.getUserAccount()
+									.getUserName());
+							signDean.setEmail(user.getWorkEmails().get(0));
+							signDean.setCollege(posDetails.getCollege());
+							signDean.setDepartment(posDetails.getDepartment());
+							signDean.setPositionType(posDetails
+									.getPositionType());
+							signDean.setPositionTitle(posDetails
+									.getPositionTitle());
+							signDean.setSignature("");
+							signDean.setNote("");
+							signDean.setPositionTitle("Dean");
+							signDean.setDelegated(false);
+							if (!signatures.contains(signDean)) {
+								signatures.add(signDean);
+							}
+						} else {
+							List<SignatureUserInfo> delegatedDean = findDelegatedUsersInfoForAUser(
+									user.getId(), id.toString(),
+									posDetails.getCollege(),
+									posDetails.getDepartment(),
+									posDetails.getPositionType(), "Dean");
+							for (SignatureUserInfo delegateeInfo : delegatedDean) {
+								if (!signatures.contains(delegateeInfo)) {
+									signatures.add(delegateeInfo);
+								}
+
+							}
 						}
 					}
 				}

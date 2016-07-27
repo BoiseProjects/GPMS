@@ -943,7 +943,7 @@ $(function() {
 											_event : 'click',
 											trigger : '1',
 											callMethod : 'proposalsManage.EditProposal',
-											arguments : '1, 5, 10, 21, 22, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38'
+											arguments : '1, 5, 10, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38'
 										},
 										{
 											display : 'Delete',
@@ -995,25 +995,25 @@ $(function() {
 				proposalsManage.config.proposalRoles = $.trim(argus[5]);
 				proposalsManage.config.proposalId = argus[0];
 
-				proposalsManage.config.submittedByPI = argus[7];
-				proposalsManage.config.readyForSubmitionByPI = argus[8];
-				proposalsManage.config.deletedByPI = argus[9];
-				proposalsManage.config.chairApproval = argus[10];
-				proposalsManage.config.businessManagerApproval = argus[11];
-				proposalsManage.config.irbapproval = argus[12];
-				proposalsManage.config.deanApproval = argus[13];
-				proposalsManage.config.researchAdministratorApproval = argus[14];
-				proposalsManage.config.researchAdministratorWithdraw = argus[15];
-				proposalsManage.config.researchDirectorApproval = argus[16];
-				proposalsManage.config.researchDirectorDeletion = argus[17];
-				proposalsManage.config.researchAdministratorSubmission = argus[18];
-				proposalsManage.config.researchDirectorArchived = argus[19];
+				proposalsManage.config.submittedByPI = argus[8];
+				proposalsManage.config.readyForSubmitionByPI = argus[9];
+				proposalsManage.config.deletedByPI = argus[10];
+				proposalsManage.config.chairApproval = argus[11];
+				proposalsManage.config.businessManagerApproval = argus[12];
+				proposalsManage.config.irbapproval = argus[13];
+				proposalsManage.config.deanApproval = argus[14];
+				proposalsManage.config.researchAdministratorApproval = argus[15];
+				proposalsManage.config.researchAdministratorWithdraw = argus[16];
+				proposalsManage.config.researchDirectorApproval = argus[17];
+				proposalsManage.config.researchDirectorDeletion = argus[18];
+				proposalsManage.config.researchAdministratorSubmission = argus[19];
+				proposalsManage.config.researchDirectorArchived = argus[20];
 
 				$("#txtNameOfGrantingAgency").val(argus[2]);
 
 				$("#trSignChair").show();
 				$("#trSignBusinessManager").show();
-				if (argus[20].toLowerCase() != "true") {
+				if (argus[21].toLowerCase() != "true") {
 					$("#trSignIRB").hide();
 				} else {
 					$("#trSignIRB").show();
@@ -1043,14 +1043,18 @@ $(function() {
 				}
 
 				$('#ddlProposalStatus option').length = 0;
-				$('#ddlProposalStatus').append(new Option(argus[6], argus[6]))
+				$('#ddlProposalStatus').append(new Option(argus[7], argus[7]))
 						.prop('disabled', true);
 
-				proposalsManage.config.proposalStatus = argus[6];
+				proposalsManage.config.proposalStatus = argus[7];
 
 				proposalsManage.BindUserPositionDetailsForAProposal(argus[4]);
 
 				proposalsManage.BindProposalDetailsByProposalId(argus[0]);
+				
+				if (argus[6].toLowerCase() == "yes") {
+					$("#btnDeleteProposal").hide();
+				}
 
 				$("#btnReset").hide();
 
@@ -2598,8 +2602,6 @@ $(function() {
 		},
 
 		AddProposalInfo : function(buttonType, config, info) {
-			alert(buttonType);
-
 			this.config.url = this.config.baseURL + "SaveUpdateProposalByAdmin";
 			this.config.data = JSON2.stringify({
 				buttonType : buttonType,

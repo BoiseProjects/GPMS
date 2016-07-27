@@ -70,6 +70,21 @@ public class NotificationDAO extends BasicDAO<NotificationLog, String> {
 					.equal(false));
 			return notificationQuery.countAll();
 		} else {
+
+			switch (userPositionTitle) {
+			case "Associate Chair":
+				userPositionTitle = "Department Chair";
+				break;
+			case "Department Administrative Assistant":
+				userPositionTitle = "Business Manager";
+				break;
+			case "Associate Dean":
+				userPositionTitle = "Dean";
+				break;
+			default:
+				break;
+			}
+
 			notificationQuery.and(
 					notificationQuery.criteria("viewed by user").equal(false),
 					notificationQuery.criteria("user profile id").equal(
@@ -124,6 +139,20 @@ public class NotificationDAO extends BasicDAO<NotificationLog, String> {
 					NotificationLog.class).set("viewed by admin", true);
 			ds.update(removeNotifyQuery, ops);
 		} else {
+			switch (userPositionTitle) {
+			case "Associate Chair":
+				userPositionTitle = "Department Chair";
+				break;
+			case "Department Administrative Assistant":
+				userPositionTitle = "Business Manager";
+				break;
+			case "Associate Dean":
+				userPositionTitle = "Dean";
+				break;
+			default:
+				break;
+			}
+
 			notificationQuery.and(
 					notificationQuery.criteria("for admin").equal(false),
 					notificationQuery.criteria("user profile id").equal(

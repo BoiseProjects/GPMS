@@ -72,6 +72,9 @@ public class UserProfile extends BaseEntity implements Serializable {
 	@Property("deleted")
 	private boolean deleted = false;
 
+	@Property("is delegator")
+	private boolean isDelegater = false;
+
 	public UserProfile() {
 
 	}
@@ -196,6 +199,14 @@ public class UserProfile extends BaseEntity implements Serializable {
 		this.deleted = deleted;
 	}
 
+	public boolean isDelegater() {
+		return isDelegater;
+	}
+
+	public void setDelegater(boolean isDelegater) {
+		this.isDelegater = isDelegater;
+	}
+
 	@Override
 	public String toString() {
 		return "UserProfile [firstName=" + firstName + ", middleName="
@@ -206,7 +217,7 @@ public class UserProfile extends BaseEntity implements Serializable {
 				+ ", otherNumbers=" + otherNumbers + ", addresses=" + addresses
 				+ ", workEmails=" + workEmails + ", personalEmails="
 				+ personalEmails + ", userAccount=" + userAccount
-				+ ", deleted=" + deleted + "]";
+				+ ", deleted=" + deleted + ", isDelegater=" + isDelegater + "]";
 	}
 
 	@Override
@@ -224,6 +235,7 @@ public class UserProfile extends BaseEntity implements Serializable {
 		result = prime * result + ((gender == null) ? 0 : gender.hashCode());
 		result = prime * result
 				+ ((homeNumbers == null) ? 0 : homeNumbers.hashCode());
+		result = prime * result + (isDelegater ? 1231 : 1237);
 		result = prime * result
 				+ ((lastName == null) ? 0 : lastName.hashCode());
 		result = prime * result
@@ -283,6 +295,8 @@ public class UserProfile extends BaseEntity implements Serializable {
 			if (other.homeNumbers != null)
 				return false;
 		} else if (!homeNumbers.equals(other.homeNumbers))
+			return false;
+		if (isDelegater != other.isDelegater)
 			return false;
 		if (lastName == null) {
 			if (other.lastName != null)

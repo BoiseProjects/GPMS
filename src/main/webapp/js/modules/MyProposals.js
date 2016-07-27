@@ -634,6 +634,8 @@ $(function() {
 
 				switch (currentPositionTitle) {
 				case "Department Chair":
+					// Delegation
+				case "Associate Chair":
 					attributeArray.push({
 						attributeType : "Resource",
 						attributeName : "ApprovedByDepartmentChair",
@@ -641,6 +643,7 @@ $(function() {
 					});
 					break;
 				case "Business Manager":
+				case "Department Administrative Assistant":
 					attributeArray.push({
 						attributeType : "Resource",
 						attributeName : "ApprovedByBusinessManager",
@@ -655,6 +658,7 @@ $(function() {
 					});
 					break;
 				case "Dean":
+				case "Associate Dean":
 					attributeArray.push({
 						attributeType : "Resource",
 						attributeName : "ApprovedByDean",
@@ -1320,9 +1324,12 @@ $(function() {
 
 			if (proposalStatus != ""
 					&& ((currentPositionTitle == "Department Chair" && config.chairApproval == "READYFORAPPROVAL")
+							|| (currentPositionTitle == "Associate Chair" && config.chairApproval == "READYFORAPPROVAL")
 							|| (currentPositionTitle == "Business Manager" && config.businessManagerApproval == "READYFORAPPROVAL")
+							|| (currentPositionTitle == "Department Administrative Assistant" && config.businessManagerApproval == "READYFORAPPROVAL")
 							|| (currentPositionTitle == "IRB" && config.irbapproval == "READYFORAPPROVAL")
 							|| (currentPositionTitle == "Dean" && config.deanApproval == "READYFORAPPROVAL")
+							|| (currentPositionTitle == "Associate Dean" && config.deanApproval == "READYFORAPPROVAL")
 							|| (currentPositionTitle == "University Research Administrator" && config.researchAdministratorApproval == "READYFORAPPROVAL") || (currentPositionTitle == "University Research Director" && config.researchDirectorApproval == "READYFORAPPROVAL"))) {
 				$("#btnApproveProposal").show();
 				$("#btnDisapproveProposal").show();
@@ -1423,9 +1430,7 @@ $(function() {
 
 				myProposal.BindProposalDetailsByProposalId(argus[0]);
 
-				$('.sfButtonwrapper>p>button').show();
-
-				// myProposal.ButtonHideShow(myProposal.config);
+				myProposal.ButtonHideShow(myProposal.config);
 
 				// Certification/ Signatures Info
 				myProposal.BindAllSignatureForAProposal(argus[0], argus[20]);
@@ -3147,8 +3152,6 @@ $(function() {
 
 		AddProposalInfo : function(buttonType, proposalSection, config, info,
 				flag) {
-			alert(buttonType);
-
 			var attributeArray = [];
 			var currentPositionTitle = GPMS.utils.GetUserPositionTitle();
 
@@ -3256,6 +3259,8 @@ $(function() {
 
 					switch (currentPositionTitle) {
 					case "Department Chair":
+						// Delegation
+					case "Associate Chair":
 						attributeArray.push({
 							attributeType : "Resource",
 							attributeName : "ApprovedByDepartmentChair",
@@ -3263,6 +3268,7 @@ $(function() {
 						});
 						break;
 					case "Business Manager":
+					case "Department Administrative Assistant":
 						attributeArray.push({
 							attributeType : "Resource",
 							attributeName : "ApprovedByBusinessManager",
@@ -3277,6 +3283,7 @@ $(function() {
 						});
 						break;
 					case "Dean":
+					case "Associate Dean":
 						attributeArray.push({
 							attributeType : "Resource",
 							attributeName : "ApprovedByDean",
@@ -3325,7 +3332,7 @@ $(function() {
 					attributeArray.push({
 						attributeType : "Subject",
 						attributeName : "position.type",
-						attributeValue : GPMS.utils.GetUserPositionType()
+						attributeValue : gpmsCommonObj().UserPositionType
 					});
 
 					attributeArray.push({
@@ -3362,7 +3369,6 @@ $(function() {
 		},
 
 		UpdateProposalStatus : function(buttonType, proposalSection, config) {
-			alert(buttonType);
 			var attributeArray = [];
 
 			var currentPositionTitle = GPMS.utils.GetUserPositionTitle();
@@ -3972,12 +3978,15 @@ $(function() {
 			} else {
 				switch (GPMS.utils.GetUserPositionTitle()) {
 				case "Department Chair":
+				case "Associate Chair":
 					signTable = "#trSignChair";
 					break;
 				case "Dean":
+				case "Associate Dean":
 					signTable = "#trSignDean";
 					break;
 				case "Business Manager":
+				case "Department Administrative Assistant":
 					signTable = "#trSignBusinessManager";
 					break;
 				case "IRB":
@@ -3999,7 +4008,6 @@ $(function() {
 						.find('input:eq(0)')
 						.each(
 								function(index) {
-
 									if (GPMS.utils.GetUserProfileID() == $(this)
 											.attr("data-value")) {
 										// if (item.signedDate == null) {
@@ -4151,7 +4159,7 @@ $(function() {
 				$('#divProposalForm').show();
 				$('#divProposalAuditGrid').hide();
 				$("#accordion").accordion("option", "active", 0);
-				
+
 				$('.sfButtonwrapper>p>button').show();
 			}
 			break;

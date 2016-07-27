@@ -80,6 +80,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.log4j.Logger;
 import org.bson.types.ObjectId;
 import org.glassfish.jersey.media.sse.OutboundEvent;
+import org.joda.time.DateTime;
 import org.mongodb.morphia.Morphia;
 import org.wso2.balana.ObligationResult;
 import org.wso2.balana.ctx.AbstractResult;
@@ -1052,6 +1053,11 @@ public class ProposalService {
 					contentProfile.append("<ak:fullname>");
 					contentProfile.append(authorFullName);
 					contentProfile.append("</ak:fullname>");
+
+					contentProfile.append("<ak:userid>");
+					contentProfile.append(authorProfile.getId().toString());
+					contentProfile.append("</ak:userid>");
+
 					contentProfile.append("</ak:authorprofile>");
 
 					contentProfile.append("<ak:pi>");
@@ -2323,6 +2329,11 @@ public class ProposalService {
 					contentProfile.append("<ak:fullname>");
 					contentProfile.append(authorFullName);
 					contentProfile.append("</ak:fullname>");
+
+					contentProfile.append("<ak:userid>");
+					contentProfile.append(authorProfile.getId().toString());
+					contentProfile.append("</ak:userid>");
+
 					contentProfile.append("</ak:authorprofile>");
 
 					contentProfile.append("<ak:pi>");
@@ -4780,7 +4791,21 @@ public class ProposalService {
 							contentProfile.append("<ak:fullname>");
 							contentProfile.append(authorFullName);
 							contentProfile.append("</ak:fullname>");
+
+							contentProfile.append("<ak:userid>");
+							contentProfile.append(authorProfile.getId()
+									.toString());
+							contentProfile.append("</ak:userid>");
+
 							contentProfile.append("</ak:authorprofile>");
+
+							DateFormat dateFormat = new SimpleDateFormat(
+									"yyyy-MM-dd'T'HH:mm:ssXXX");
+
+							contentProfile.append("<ak:currentdatetime>");
+							contentProfile
+									.append(dateFormat.format(new Date()));
+							contentProfile.append("</ak:currentdatetime>");
 
 							boolean signedByPI = false;
 							boolean signedByAllCoPIs = false;
@@ -5195,6 +5220,12 @@ public class ProposalService {
 							contentProfile.append("<ak:fullname>");
 							contentProfile.append(authorFullName);
 							contentProfile.append("</ak:fullname>");
+
+							contentProfile.append("<ak:userid>");
+							contentProfile.append(authorProfile.getId()
+									.toString());
+							contentProfile.append("</ak:userid>");
+
 							contentProfile.append("</ak:authorprofile>");
 
 							contentProfile.append("<ak:pi>");
@@ -5496,6 +5527,7 @@ public class ProposalService {
 											existingProposal, null,
 											authorProfile, proposalID, null,
 											irbApprovalRequired, null);
+
 								} else {
 									proposalIsChanged = saveProposal(message,
 											existingProposal, oldProposal,
@@ -6132,507 +6164,6 @@ public class ProposalService {
 				existingProposal.setConfidentialInfo(newConfidentialInfo);
 			}
 
-			// OSP Section Info
-			OSPSectionInfo newOSPSectionInfo = new OSPSectionInfo();
-			if (proposalInfo != null && proposalInfo.has("OSPSectionInfo")) {
-				JsonNode oSPSectionInfo = proposalInfo.get("OSPSectionInfo");
-
-				// List Agency
-				if (oSPSectionInfo != null && oSPSectionInfo.has("ListAgency")) {
-					if (!proposalID.equals("0")) {
-						if (!existingProposal
-								.getOspSectionInfo()
-								.getListAgency()
-								.equals(oSPSectionInfo.get("ListAgency")
-										.textValue())) {
-							existingProposal.getOspSectionInfo().setListAgency(
-									oSPSectionInfo.get("ListAgency")
-											.textValue());
-						}
-					}
-				}
-
-				FundingSource newFundingSource = new FundingSource();
-				if (oSPSectionInfo != null && oSPSectionInfo.has("Federal")) {
-					newFundingSource.setFederal(oSPSectionInfo.get("Federal")
-							.booleanValue());
-				}
-
-				if (oSPSectionInfo != null
-						&& oSPSectionInfo.has("FederalFlowThrough")) {
-					newFundingSource.setFederalFlowThrough(oSPSectionInfo.get(
-							"FederalFlowThrough").booleanValue());
-				}
-
-				if (oSPSectionInfo != null
-						&& oSPSectionInfo.has("StateOfIdahoEntity")) {
-					newFundingSource.setStateOfIdahoEntity(oSPSectionInfo.get(
-							"StateOfIdahoEntity").booleanValue());
-				}
-
-				if (oSPSectionInfo != null
-						&& oSPSectionInfo.has("PrivateForProfit")) {
-					newFundingSource.setPrivateForProfit(oSPSectionInfo.get(
-							"PrivateForProfit").booleanValue());
-				}
-
-				if (oSPSectionInfo != null
-						&& oSPSectionInfo.has("NonProfitOrganization")) {
-					newFundingSource.setNonProfitOrganization(oSPSectionInfo
-							.get("NonProfitOrganization").booleanValue());
-				}
-
-				if (oSPSectionInfo != null
-						&& oSPSectionInfo.has("NonIdahoStateEntity")) {
-					newFundingSource.setNonIdahoStateEntity(oSPSectionInfo.get(
-							"NonIdahoStateEntity").booleanValue());
-				}
-
-				if (oSPSectionInfo != null
-						&& oSPSectionInfo.has("CollegeOrUniversity")) {
-					newFundingSource.setCollegeOrUniversity(oSPSectionInfo.get(
-							"CollegeOrUniversity").booleanValue());
-				}
-
-				if (oSPSectionInfo != null && oSPSectionInfo.has("LocalEntity")) {
-					newFundingSource.setLocalEntity(oSPSectionInfo.get(
-							"LocalEntity").booleanValue());
-				}
-
-				if (oSPSectionInfo != null
-						&& oSPSectionInfo.has("NonIdahoLocalEntity")) {
-					newFundingSource.setNonIdahoLocalEntity(oSPSectionInfo.get(
-							"NonIdahoLocalEntity").booleanValue());
-				}
-
-				if (oSPSectionInfo != null
-						&& oSPSectionInfo.has("TirbalGovernment")) {
-					newFundingSource.setTirbalGovernment(oSPSectionInfo.get(
-							"TirbalGovernment").booleanValue());
-				}
-
-				if (oSPSectionInfo != null && oSPSectionInfo.has("Foreign")) {
-					newFundingSource.setForeign(oSPSectionInfo.get("Foreign")
-							.booleanValue());
-				}
-
-				// Funding Source
-				if (!proposalID.equals("0")) {
-					if (!existingProposal.getOspSectionInfo()
-							.getFundingSource().equals(newFundingSource)) {
-						existingProposal.getOspSectionInfo().setFundingSource(
-								newFundingSource);
-					}
-				}
-
-				// CFDA No
-				if (oSPSectionInfo != null && oSPSectionInfo.has("CFDANo")) {
-					if (!proposalID.equals("0")) {
-						if (!existingProposal
-								.getOspSectionInfo()
-								.getCfdaNo()
-								.equals(oSPSectionInfo.get("CFDANo")
-										.textValue())) {
-							existingProposal.getOspSectionInfo().setCfdaNo(
-									oSPSectionInfo.get("CFDANo").textValue());
-						}
-					}
-				}
-
-				// Program No
-				if (oSPSectionInfo != null && oSPSectionInfo.has("ProgramNo")) {
-					if (!proposalID.equals("0")) {
-						if (!existingProposal
-								.getOspSectionInfo()
-								.getProgramNo()
-								.equals(oSPSectionInfo.get("ProgramNo")
-										.textValue())) {
-							existingProposal.getOspSectionInfo()
-									.setProgramNo(
-											oSPSectionInfo.get("ProgramNo")
-													.textValue());
-						}
-					}
-				}
-
-				// Program Title
-				if (oSPSectionInfo != null
-						&& oSPSectionInfo.has("ProgramTitle")) {
-					if (!proposalID.equals("0")) {
-						if (!existingProposal
-								.getOspSectionInfo()
-								.getProgramTitle()
-								.equals(oSPSectionInfo.get("ProgramTitle")
-										.textValue())) {
-							existingProposal.getOspSectionInfo()
-									.setProgramTitle(
-											oSPSectionInfo.get("ProgramTitle")
-													.textValue());
-						}
-					}
-				}
-
-				Recovery newRecovery = new Recovery();
-				if (oSPSectionInfo != null
-						&& oSPSectionInfo.has("FullRecovery")) {
-					newRecovery.setFullRecovery(oSPSectionInfo.get(
-							"FullRecovery").booleanValue());
-				}
-
-				if (oSPSectionInfo != null
-						&& oSPSectionInfo.has("NoRecoveryNormalSponsorPolicy")) {
-					newRecovery.setNoRecoveryNormalSponsorPolicy(oSPSectionInfo
-							.get("NoRecoveryNormalSponsorPolicy")
-							.booleanValue());
-				}
-
-				if (oSPSectionInfo != null
-						&& oSPSectionInfo.has("NoRecoveryInstitutionalWaiver")) {
-					newRecovery.setNoRecoveryInstitutionalWaiver(oSPSectionInfo
-							.get("NoRecoveryInstitutionalWaiver")
-							.booleanValue());
-				}
-
-				if (oSPSectionInfo != null
-						&& oSPSectionInfo
-								.has("LimitedRecoveryNormalSponsorPolicy")) {
-					newRecovery
-							.setLimitedRecoveryNormalSponsorPolicy(oSPSectionInfo
-									.get("LimitedRecoveryNormalSponsorPolicy")
-									.booleanValue());
-				}
-
-				if (oSPSectionInfo != null
-						&& oSPSectionInfo
-								.has("LimitedRecoveryInstitutionalWaiver")) {
-					newRecovery
-							.setLimitedRecoveryInstitutionalWaiver(oSPSectionInfo
-									.get("LimitedRecoveryInstitutionalWaiver")
-									.booleanValue());
-				}
-				// Recovery
-				if (!proposalID.equals("0")) {
-					if (!existingProposal.getOspSectionInfo().getRecovery()
-							.equals(newRecovery)) {
-						existingProposal.getOspSectionInfo().setRecovery(
-								newRecovery);
-					}
-				}
-
-				BaseInfo newBaseInfo = new BaseInfo();
-				if (oSPSectionInfo != null && oSPSectionInfo.has("MTDC")) {
-					newBaseInfo.setMtdc(oSPSectionInfo.get("MTDC")
-							.booleanValue());
-				}
-
-				if (oSPSectionInfo != null && oSPSectionInfo.has("TDC")) {
-					newBaseInfo
-							.setTdc(oSPSectionInfo.get("TDC").booleanValue());
-				}
-
-				if (oSPSectionInfo != null && oSPSectionInfo.has("TC")) {
-					newBaseInfo.setTc(oSPSectionInfo.get("TC").booleanValue());
-				}
-
-				if (oSPSectionInfo != null && oSPSectionInfo.has("Other")) {
-					newBaseInfo.setOther(oSPSectionInfo.get("Other")
-							.booleanValue());
-				}
-
-				if (oSPSectionInfo != null
-						&& oSPSectionInfo.has("NotApplicable")) {
-					newBaseInfo.setNotApplicable(oSPSectionInfo.get(
-							"NotApplicable").booleanValue());
-				}
-
-				// Base Info
-				if (!proposalID.equals("0")) {
-					if (!existingProposal.getOspSectionInfo().getBaseInfo()
-							.equals(newBaseInfo)) {
-						existingProposal.getOspSectionInfo().setBaseInfo(
-								newBaseInfo);
-					}
-				}
-
-				if (oSPSectionInfo != null
-						&& oSPSectionInfo.has("IsPISalaryIncluded")) {
-					switch (oSPSectionInfo.get("IsPISalaryIncluded")
-							.textValue()) {
-					case "1":
-						newOSPSectionInfo.setPiSalaryIncluded(true);
-						break;
-					case "2":
-						newOSPSectionInfo.setPiSalaryIncluded(false);
-						break;
-					default:
-						break;
-					}
-				}
-
-				// PI Salary Included
-				if (!proposalID.equals("0")) {
-					if (existingProposal.getOspSectionInfo()
-							.isPiSalaryIncluded() != newOSPSectionInfo
-							.isPiSalaryIncluded()) {
-						existingProposal.getOspSectionInfo()
-								.setPiSalaryIncluded(
-										newOSPSectionInfo.isPiSalaryIncluded());
-					}
-				}
-
-				if (oSPSectionInfo != null && oSPSectionInfo.has("PISalary")) {
-					// PI Salary
-					if (!proposalID.equals("0")) {
-						if (existingProposal.getOspSectionInfo().getPiSalary() != Double
-								.parseDouble(oSPSectionInfo.get("PISalary")
-										.textValue())) {
-							existingProposal.getOspSectionInfo().setPiSalary(
-									Double.parseDouble(oSPSectionInfo.get(
-											"PISalary").textValue()));
-						}
-					}
-				}
-
-				if (oSPSectionInfo != null && oSPSectionInfo.has("PIFringe")) {
-					// PI Fringe
-					if (!proposalID.equals("0")) {
-						if (existingProposal.getOspSectionInfo().getPiFringe() != Double
-								.parseDouble(oSPSectionInfo.get("PIFringe")
-										.textValue())) {
-							existingProposal.getOspSectionInfo().setPiFringe(
-									Double.parseDouble(oSPSectionInfo.get(
-											"PIFringe").textValue()));
-						}
-					}
-				}
-
-				if (oSPSectionInfo != null
-						&& oSPSectionInfo.has("DepartmentId")) {
-					// Department Id
-					if (!proposalID.equals("0")) {
-						if (!existingProposal
-								.getOspSectionInfo()
-								.getDepartmentId()
-								.equals(oSPSectionInfo.get("DepartmentId")
-										.textValue())) {
-							existingProposal.getOspSectionInfo()
-									.setDepartmentId(
-											oSPSectionInfo.get("DepartmentId")
-													.textValue());
-						}
-					}
-				}
-
-				BaseOptions newBaseOptions = new BaseOptions();
-
-				if (oSPSectionInfo != null
-						&& oSPSectionInfo.has("InstitutionalCostDocumented")) {
-					switch (oSPSectionInfo.get("InstitutionalCostDocumented")
-							.textValue()) {
-					case "1":
-						newBaseOptions.setYes(true);
-						break;
-					case "2":
-						newBaseOptions.setNo(true);
-						break;
-					case "3":
-						newBaseOptions.setNotApplicable(true);
-						break;
-					default:
-						break;
-					}
-				}
-				// Institutional Cost Documented
-				if (!proposalID.equals("0")) {
-					if (!existingProposal.getOspSectionInfo()
-							.getInstitutionalCostDocumented()
-							.equals(newBaseOptions)) {
-						existingProposal.getOspSectionInfo()
-								.setInstitutionalCostDocumented(newBaseOptions);
-					}
-				}
-
-				newBaseOptions = new BaseOptions();
-				if (oSPSectionInfo != null
-						&& oSPSectionInfo.has("ThirdPartyCostDocumented")) {
-					switch (oSPSectionInfo.get("ThirdPartyCostDocumented")
-							.textValue()) {
-					case "1":
-						newBaseOptions.setYes(true);
-						break;
-					case "2":
-						newBaseOptions.setNo(true);
-						break;
-					case "3":
-						newBaseOptions.setNotApplicable(true);
-						break;
-					default:
-						break;
-					}
-				}
-
-				// Third Party Cost Documented
-				if (!proposalID.equals("0")) {
-					if (!existingProposal.getOspSectionInfo()
-							.getThirdPartyCostDocumented()
-							.equals(newBaseOptions)) {
-						existingProposal.getOspSectionInfo()
-								.setThirdPartyCostDocumented(newBaseOptions);
-					}
-				}
-
-				if (oSPSectionInfo != null
-						&& oSPSectionInfo.has("IsAnticipatedSubRecipients")) {
-					switch (oSPSectionInfo.get("IsAnticipatedSubRecipients")
-							.textValue()) {
-					case "1":
-						newOSPSectionInfo.setAnticipatedSubRecipients(true);
-						if (oSPSectionInfo != null
-								&& oSPSectionInfo
-										.has("AnticipatedSubRecipientsNames")) {
-							newOSPSectionInfo
-									.setAnticipatedSubRecipientsNames(oSPSectionInfo
-											.get("AnticipatedSubRecipientsNames")
-											.textValue());
-						}
-						break;
-					case "2":
-						newOSPSectionInfo.setAnticipatedSubRecipients(false);
-						break;
-					default:
-						break;
-					}
-				}
-
-				// Is Anticipated SubRecipients
-				if (!proposalID.equals("0")) {
-					if (existingProposal.getOspSectionInfo()
-							.isAnticipatedSubRecipients() != newOSPSectionInfo
-							.isAnticipatedSubRecipients()) {
-						existingProposal.getOspSectionInfo()
-								.setAnticipatedSubRecipients(
-										newOSPSectionInfo
-												.isAnticipatedSubRecipients());
-					}
-
-					// Anticipated SubRecipients Names
-					if (existingProposal.getOspSectionInfo()
-							.getAnticipatedSubRecipientsNames() != null) {
-						if (!existingProposal
-								.getOspSectionInfo()
-								.getAnticipatedSubRecipientsNames()
-								.equals(newOSPSectionInfo
-										.getAnticipatedSubRecipientsNames())) {
-							existingProposal
-									.getOspSectionInfo()
-									.setAnticipatedSubRecipientsNames(
-											newOSPSectionInfo
-													.getAnticipatedSubRecipientsNames());
-						}
-					} else {
-						existingProposal
-								.getOspSectionInfo()
-								.setAnticipatedSubRecipientsNames(
-										newOSPSectionInfo
-												.getAnticipatedSubRecipientsNames());
-					}
-				}
-
-				BasePIEligibilityOptions newBasePIEligibilityOptions = new BasePIEligibilityOptions();
-				if (oSPSectionInfo != null
-						&& oSPSectionInfo.has("PIEligibilityWaiver")) {
-					switch (oSPSectionInfo.get("PIEligibilityWaiver")
-							.textValue()) {
-					case "1":
-						newBasePIEligibilityOptions.setYes(true);
-						break;
-					case "2":
-						newBasePIEligibilityOptions.setNo(true);
-						break;
-					case "3":
-						newBasePIEligibilityOptions.setNotApplicable(true);
-						break;
-					case "4":
-						newBasePIEligibilityOptions.setThisProposalOnly(true);
-						break;
-					case "5":
-						newBasePIEligibilityOptions.setBlanket(true);
-						break;
-					default:
-						break;
-					}
-				}
-
-				// Base PI Eligibility Options
-				if (!proposalID.equals("0")) {
-					if (!existingProposal.getOspSectionInfo()
-							.getPiEligibilityWaiver()
-							.equals(newBasePIEligibilityOptions)) {
-						existingProposal.getOspSectionInfo()
-								.setPiEligibilityWaiver(
-										newBasePIEligibilityOptions);
-					}
-				}
-
-				newBaseOptions = new BaseOptions();
-				if (oSPSectionInfo != null
-						&& oSPSectionInfo.has("ConflictOfInterestForms")) {
-					switch (oSPSectionInfo.get("ConflictOfInterestForms")
-							.textValue()) {
-					case "1":
-						newBaseOptions.setYes(true);
-						break;
-					case "2":
-						newBaseOptions.setNo(true);
-						break;
-					case "3":
-						newBaseOptions.setNotApplicable(true);
-						break;
-					default:
-						break;
-					}
-				}
-
-				// Conflict Of Interest Forms
-				if (!proposalID.equals("0")) {
-					if (!existingProposal.getOspSectionInfo()
-							.getConflictOfInterestForms()
-							.equals(newBaseOptions)) {
-						existingProposal.getOspSectionInfo()
-								.setConflictOfInterestForms(newBaseOptions);
-					}
-				}
-
-				newBaseOptions = new BaseOptions();
-				if (oSPSectionInfo != null
-						&& oSPSectionInfo.has("ExcludedPartyListChecked")) {
-					switch (oSPSectionInfo.get("ExcludedPartyListChecked")
-							.textValue()) {
-					case "1":
-						newBaseOptions.setYes(true);
-						break;
-					case "2":
-						newBaseOptions.setNo(true);
-						break;
-					case "3":
-						newBaseOptions.setNotApplicable(true);
-						break;
-					default:
-						break;
-					}
-				}
-
-				// Excluded Party List Checked
-				if (!proposalID.equals("0")) {
-					if (!existingProposal.getOspSectionInfo()
-							.getExcludedPartyListChecked()
-							.equals(newBaseOptions)) {
-						existingProposal.getOspSectionInfo()
-								.setExcludedPartyListChecked(newBaseOptions);
-					}
-				}
-			}
-
 			// Appendix Info
 			if (proposalInfo != null && proposalInfo.has("AppendixInfo")) {
 				List<Appendix> appendixInfo = Arrays.asList(mapper.readValue(
@@ -6919,8 +6450,10 @@ public class ProposalService {
 									+ authorUserName + ".";
 
 							if (existingProposal.getChairApproval() == ApprovalType.READYFORAPPROVAL
-									&& proposalUserTitle.textValue().equals(
-											"Department Chair")) {
+									&& (proposalUserTitle.textValue().equals(
+											"Department Chair") || proposalUserTitle
+											.textValue().equals(
+													"Associate Chair"))) {
 								if (signByAllUsersInfo.isSignedByAllChairs()) {
 									// Ready for Review by Business
 									// Manager
@@ -7054,8 +6587,10 @@ public class ProposalService {
 								}
 							} else if (existingProposal
 									.getBusinessManagerApproval() == ApprovalType.READYFORAPPROVAL
-									&& proposalUserTitle.textValue().equals(
-											"Business Manager")) {
+									&& (proposalUserTitle.textValue().equals(
+											"Business Manager") || proposalUserTitle
+											.textValue()
+											.equals("Department Administrative Assistant"))) {
 								if (signByAllUsersInfo
 										.isSignedByAllBusinessManagers()) {
 									// Reviewed by Business Manager
@@ -7136,8 +6671,10 @@ public class ProposalService {
 									}
 								}
 							} else if (existingProposal.getDeanApproval() == ApprovalType.READYFORAPPROVAL
-									&& proposalUserTitle.textValue().equals(
-											"Dean")) {
+									&& (proposalUserTitle.textValue().equals(
+											"Dean") || proposalUserTitle
+											.textValue().equals(
+													"Associate Dean"))) {
 								if (signByAllUsersInfo.isSignedByAllDeans()) {
 									// Approved by Dean
 									existingProposal
@@ -8427,6 +7964,549 @@ public class ProposalService {
 				}
 			}
 			// END
+
+			if (proposalUserTitle.textValue().equals(
+					"University Research Administrator")
+					|| proposalUserTitle.textValue().equals(
+							"University Research Director")) {
+				// OSP Section Info Only for University Research Administrator
+				// or University Research Director
+				OSPSectionInfo newOSPSectionInfo = new OSPSectionInfo();
+				if (proposalInfo != null && proposalInfo.has("OSPSectionInfo")) {
+					JsonNode oSPSectionInfo = proposalInfo
+							.get("OSPSectionInfo");
+
+					// List Agency
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo.has("ListAgency")) {
+						if (!proposalID.equals("0")) {
+							if (!existingProposal
+									.getOspSectionInfo()
+									.getListAgency()
+									.equals(oSPSectionInfo.get("ListAgency")
+											.textValue())) {
+								existingProposal.getOspSectionInfo()
+										.setListAgency(
+												oSPSectionInfo
+														.get("ListAgency")
+														.textValue());
+							}
+						}
+					}
+
+					FundingSource newFundingSource = new FundingSource();
+					if (oSPSectionInfo != null && oSPSectionInfo.has("Federal")) {
+						newFundingSource.setFederal(oSPSectionInfo.get(
+								"Federal").booleanValue());
+					}
+
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo.has("FederalFlowThrough")) {
+						newFundingSource.setFederalFlowThrough(oSPSectionInfo
+								.get("FederalFlowThrough").booleanValue());
+					}
+
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo.has("StateOfIdahoEntity")) {
+						newFundingSource.setStateOfIdahoEntity(oSPSectionInfo
+								.get("StateOfIdahoEntity").booleanValue());
+					}
+
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo.has("PrivateForProfit")) {
+						newFundingSource.setPrivateForProfit(oSPSectionInfo
+								.get("PrivateForProfit").booleanValue());
+					}
+
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo.has("NonProfitOrganization")) {
+						newFundingSource
+								.setNonProfitOrganization(oSPSectionInfo.get(
+										"NonProfitOrganization").booleanValue());
+					}
+
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo.has("NonIdahoStateEntity")) {
+						newFundingSource.setNonIdahoStateEntity(oSPSectionInfo
+								.get("NonIdahoStateEntity").booleanValue());
+					}
+
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo.has("CollegeOrUniversity")) {
+						newFundingSource.setCollegeOrUniversity(oSPSectionInfo
+								.get("CollegeOrUniversity").booleanValue());
+					}
+
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo.has("LocalEntity")) {
+						newFundingSource.setLocalEntity(oSPSectionInfo.get(
+								"LocalEntity").booleanValue());
+					}
+
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo.has("NonIdahoLocalEntity")) {
+						newFundingSource.setNonIdahoLocalEntity(oSPSectionInfo
+								.get("NonIdahoLocalEntity").booleanValue());
+					}
+
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo.has("TirbalGovernment")) {
+						newFundingSource.setTirbalGovernment(oSPSectionInfo
+								.get("TirbalGovernment").booleanValue());
+					}
+
+					if (oSPSectionInfo != null && oSPSectionInfo.has("Foreign")) {
+						newFundingSource.setForeign(oSPSectionInfo.get(
+								"Foreign").booleanValue());
+					}
+
+					// Funding Source
+					if (!proposalID.equals("0")) {
+						if (!existingProposal.getOspSectionInfo()
+								.getFundingSource().equals(newFundingSource)) {
+							existingProposal.getOspSectionInfo()
+									.setFundingSource(newFundingSource);
+						}
+					}
+
+					// CFDA No
+					if (oSPSectionInfo != null && oSPSectionInfo.has("CFDANo")) {
+						if (!proposalID.equals("0")) {
+							if (!existingProposal
+									.getOspSectionInfo()
+									.getCfdaNo()
+									.equals(oSPSectionInfo.get("CFDANo")
+											.textValue())) {
+								existingProposal.getOspSectionInfo().setCfdaNo(
+										oSPSectionInfo.get("CFDANo")
+												.textValue());
+							}
+						}
+					}
+
+					// Program No
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo.has("ProgramNo")) {
+						if (!proposalID.equals("0")) {
+							if (!existingProposal
+									.getOspSectionInfo()
+									.getProgramNo()
+									.equals(oSPSectionInfo.get("ProgramNo")
+											.textValue())) {
+								existingProposal.getOspSectionInfo()
+										.setProgramNo(
+												oSPSectionInfo.get("ProgramNo")
+														.textValue());
+							}
+						}
+					}
+
+					// Program Title
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo.has("ProgramTitle")) {
+						if (!proposalID.equals("0")) {
+							if (!existingProposal
+									.getOspSectionInfo()
+									.getProgramTitle()
+									.equals(oSPSectionInfo.get("ProgramTitle")
+											.textValue())) {
+								existingProposal.getOspSectionInfo()
+										.setProgramTitle(
+												oSPSectionInfo.get(
+														"ProgramTitle")
+														.textValue());
+							}
+						}
+					}
+
+					Recovery newRecovery = new Recovery();
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo.has("FullRecovery")) {
+						newRecovery.setFullRecovery(oSPSectionInfo.get(
+								"FullRecovery").booleanValue());
+					}
+
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo
+									.has("NoRecoveryNormalSponsorPolicy")) {
+						newRecovery
+								.setNoRecoveryNormalSponsorPolicy(oSPSectionInfo
+										.get("NoRecoveryNormalSponsorPolicy")
+										.booleanValue());
+					}
+
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo
+									.has("NoRecoveryInstitutionalWaiver")) {
+						newRecovery
+								.setNoRecoveryInstitutionalWaiver(oSPSectionInfo
+										.get("NoRecoveryInstitutionalWaiver")
+										.booleanValue());
+					}
+
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo
+									.has("LimitedRecoveryNormalSponsorPolicy")) {
+						newRecovery
+								.setLimitedRecoveryNormalSponsorPolicy(oSPSectionInfo
+										.get("LimitedRecoveryNormalSponsorPolicy")
+										.booleanValue());
+					}
+
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo
+									.has("LimitedRecoveryInstitutionalWaiver")) {
+						newRecovery
+								.setLimitedRecoveryInstitutionalWaiver(oSPSectionInfo
+										.get("LimitedRecoveryInstitutionalWaiver")
+										.booleanValue());
+					}
+					// Recovery
+					if (!proposalID.equals("0")) {
+						if (!existingProposal.getOspSectionInfo().getRecovery()
+								.equals(newRecovery)) {
+							existingProposal.getOspSectionInfo().setRecovery(
+									newRecovery);
+						}
+					}
+
+					BaseInfo newBaseInfo = new BaseInfo();
+					if (oSPSectionInfo != null && oSPSectionInfo.has("MTDC")) {
+						newBaseInfo.setMtdc(oSPSectionInfo.get("MTDC")
+								.booleanValue());
+					}
+
+					if (oSPSectionInfo != null && oSPSectionInfo.has("TDC")) {
+						newBaseInfo.setTdc(oSPSectionInfo.get("TDC")
+								.booleanValue());
+					}
+
+					if (oSPSectionInfo != null && oSPSectionInfo.has("TC")) {
+						newBaseInfo.setTc(oSPSectionInfo.get("TC")
+								.booleanValue());
+					}
+
+					if (oSPSectionInfo != null && oSPSectionInfo.has("Other")) {
+						newBaseInfo.setOther(oSPSectionInfo.get("Other")
+								.booleanValue());
+					}
+
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo.has("NotApplicable")) {
+						newBaseInfo.setNotApplicable(oSPSectionInfo.get(
+								"NotApplicable").booleanValue());
+					}
+
+					// Base Info
+					if (!proposalID.equals("0")) {
+						if (!existingProposal.getOspSectionInfo().getBaseInfo()
+								.equals(newBaseInfo)) {
+							existingProposal.getOspSectionInfo().setBaseInfo(
+									newBaseInfo);
+						}
+					}
+
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo.has("IsPISalaryIncluded")) {
+						switch (oSPSectionInfo.get("IsPISalaryIncluded")
+								.textValue()) {
+						case "1":
+							newOSPSectionInfo.setPiSalaryIncluded(true);
+							break;
+						case "2":
+							newOSPSectionInfo.setPiSalaryIncluded(false);
+							break;
+						default:
+							break;
+						}
+					}
+
+					// PI Salary Included
+					if (!proposalID.equals("0")) {
+						if (existingProposal.getOspSectionInfo()
+								.isPiSalaryIncluded() != newOSPSectionInfo
+								.isPiSalaryIncluded()) {
+							existingProposal.getOspSectionInfo()
+									.setPiSalaryIncluded(
+											newOSPSectionInfo
+													.isPiSalaryIncluded());
+						}
+					}
+
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo.has("PISalary")) {
+						// PI Salary
+						if (!proposalID.equals("0")) {
+							if (existingProposal.getOspSectionInfo()
+									.getPiSalary() != Double
+									.parseDouble(oSPSectionInfo.get("PISalary")
+											.textValue())) {
+								existingProposal
+										.getOspSectionInfo()
+										.setPiSalary(
+												Double.parseDouble(oSPSectionInfo
+														.get("PISalary")
+														.textValue()));
+							}
+						}
+					}
+
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo.has("PIFringe")) {
+						// PI Fringe
+						if (!proposalID.equals("0")) {
+							if (existingProposal.getOspSectionInfo()
+									.getPiFringe() != Double
+									.parseDouble(oSPSectionInfo.get("PIFringe")
+											.textValue())) {
+								existingProposal
+										.getOspSectionInfo()
+										.setPiFringe(
+												Double.parseDouble(oSPSectionInfo
+														.get("PIFringe")
+														.textValue()));
+							}
+						}
+					}
+
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo.has("DepartmentId")) {
+						// Department Id
+						if (!proposalID.equals("0")) {
+							if (!existingProposal
+									.getOspSectionInfo()
+									.getDepartmentId()
+									.equals(oSPSectionInfo.get("DepartmentId")
+											.textValue())) {
+								existingProposal.getOspSectionInfo()
+										.setDepartmentId(
+												oSPSectionInfo.get(
+														"DepartmentId")
+														.textValue());
+							}
+						}
+					}
+
+					BaseOptions newBaseOptions = new BaseOptions();
+
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo
+									.has("InstitutionalCostDocumented")) {
+						switch (oSPSectionInfo.get(
+								"InstitutionalCostDocumented").textValue()) {
+						case "1":
+							newBaseOptions.setYes(true);
+							break;
+						case "2":
+							newBaseOptions.setNo(true);
+							break;
+						case "3":
+							newBaseOptions.setNotApplicable(true);
+							break;
+						default:
+							break;
+						}
+					}
+					// Institutional Cost Documented
+					if (!proposalID.equals("0")) {
+						if (!existingProposal.getOspSectionInfo()
+								.getInstitutionalCostDocumented()
+								.equals(newBaseOptions)) {
+							existingProposal.getOspSectionInfo()
+									.setInstitutionalCostDocumented(
+											newBaseOptions);
+						}
+					}
+
+					newBaseOptions = new BaseOptions();
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo.has("ThirdPartyCostDocumented")) {
+						switch (oSPSectionInfo.get("ThirdPartyCostDocumented")
+								.textValue()) {
+						case "1":
+							newBaseOptions.setYes(true);
+							break;
+						case "2":
+							newBaseOptions.setNo(true);
+							break;
+						case "3":
+							newBaseOptions.setNotApplicable(true);
+							break;
+						default:
+							break;
+						}
+					}
+
+					// Third Party Cost Documented
+					if (!proposalID.equals("0")) {
+						if (!existingProposal.getOspSectionInfo()
+								.getThirdPartyCostDocumented()
+								.equals(newBaseOptions)) {
+							existingProposal
+									.getOspSectionInfo()
+									.setThirdPartyCostDocumented(newBaseOptions);
+						}
+					}
+
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo.has("IsAnticipatedSubRecipients")) {
+						switch (oSPSectionInfo
+								.get("IsAnticipatedSubRecipients").textValue()) {
+						case "1":
+							newOSPSectionInfo.setAnticipatedSubRecipients(true);
+							if (oSPSectionInfo != null
+									&& oSPSectionInfo
+											.has("AnticipatedSubRecipientsNames")) {
+								newOSPSectionInfo
+										.setAnticipatedSubRecipientsNames(oSPSectionInfo
+												.get("AnticipatedSubRecipientsNames")
+												.textValue());
+							}
+							break;
+						case "2":
+							newOSPSectionInfo
+									.setAnticipatedSubRecipients(false);
+							break;
+						default:
+							break;
+						}
+					}
+
+					// Is Anticipated SubRecipients
+					if (!proposalID.equals("0")) {
+						if (existingProposal.getOspSectionInfo()
+								.isAnticipatedSubRecipients() != newOSPSectionInfo
+								.isAnticipatedSubRecipients()) {
+							existingProposal
+									.getOspSectionInfo()
+									.setAnticipatedSubRecipients(
+											newOSPSectionInfo
+													.isAnticipatedSubRecipients());
+						}
+
+						// Anticipated SubRecipients Names
+						if (existingProposal.getOspSectionInfo()
+								.getAnticipatedSubRecipientsNames() != null) {
+							if (!existingProposal
+									.getOspSectionInfo()
+									.getAnticipatedSubRecipientsNames()
+									.equals(newOSPSectionInfo
+											.getAnticipatedSubRecipientsNames())) {
+								existingProposal
+										.getOspSectionInfo()
+										.setAnticipatedSubRecipientsNames(
+												newOSPSectionInfo
+														.getAnticipatedSubRecipientsNames());
+							}
+						} else {
+							existingProposal
+									.getOspSectionInfo()
+									.setAnticipatedSubRecipientsNames(
+											newOSPSectionInfo
+													.getAnticipatedSubRecipientsNames());
+						}
+					}
+
+					BasePIEligibilityOptions newBasePIEligibilityOptions = new BasePIEligibilityOptions();
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo.has("PIEligibilityWaiver")) {
+						switch (oSPSectionInfo.get("PIEligibilityWaiver")
+								.textValue()) {
+						case "1":
+							newBasePIEligibilityOptions.setYes(true);
+							break;
+						case "2":
+							newBasePIEligibilityOptions.setNo(true);
+							break;
+						case "3":
+							newBasePIEligibilityOptions.setNotApplicable(true);
+							break;
+						case "4":
+							newBasePIEligibilityOptions
+									.setThisProposalOnly(true);
+							break;
+						case "5":
+							newBasePIEligibilityOptions.setBlanket(true);
+							break;
+						default:
+							break;
+						}
+					}
+
+					// Base PI Eligibility Options
+					if (!proposalID.equals("0")) {
+						if (!existingProposal.getOspSectionInfo()
+								.getPiEligibilityWaiver()
+								.equals(newBasePIEligibilityOptions)) {
+							existingProposal.getOspSectionInfo()
+									.setPiEligibilityWaiver(
+											newBasePIEligibilityOptions);
+						}
+					}
+
+					newBaseOptions = new BaseOptions();
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo.has("ConflictOfInterestForms")) {
+						switch (oSPSectionInfo.get("ConflictOfInterestForms")
+								.textValue()) {
+						case "1":
+							newBaseOptions.setYes(true);
+							break;
+						case "2":
+							newBaseOptions.setNo(true);
+							break;
+						case "3":
+							newBaseOptions.setNotApplicable(true);
+							break;
+						default:
+							break;
+						}
+					}
+
+					// Conflict Of Interest Forms
+					if (!proposalID.equals("0")) {
+						if (!existingProposal.getOspSectionInfo()
+								.getConflictOfInterestForms()
+								.equals(newBaseOptions)) {
+							existingProposal.getOspSectionInfo()
+									.setConflictOfInterestForms(newBaseOptions);
+						}
+					}
+
+					newBaseOptions = new BaseOptions();
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo.has("ExcludedPartyListChecked")) {
+						switch (oSPSectionInfo.get("ExcludedPartyListChecked")
+								.textValue()) {
+						case "1":
+							newBaseOptions.setYes(true);
+							break;
+						case "2":
+							newBaseOptions.setNo(true);
+							break;
+						case "3":
+							newBaseOptions.setNotApplicable(true);
+							break;
+						default:
+							break;
+						}
+					}
+
+					// Excluded Party List Checked
+					if (!proposalID.equals("0")) {
+						if (!existingProposal.getOspSectionInfo()
+								.getExcludedPartyListChecked()
+								.equals(newBaseOptions)) {
+							existingProposal
+									.getOspSectionInfo()
+									.setExcludedPartyListChecked(newBaseOptions);
+						}
+					}
+				}
+			} else {
+				existingProposal.setOspSectionInfo(oldProposal
+						.getOspSectionInfo());
+			}
 
 			if (!proposalID.equals("0")) {
 				if (!existingProposal.equals(oldProposal)) {
