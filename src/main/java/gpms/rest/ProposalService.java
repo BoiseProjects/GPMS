@@ -2988,6 +2988,119 @@ public class ProposalService {
 					}
 				}
 
+				// Appendix Info
+				if (proposalInfo != null && proposalInfo.has("AppendixInfo")) {
+					List<Appendix> appendixInfo = Arrays.asList(mapper
+							.readValue(proposalInfo.get("AppendixInfo")
+									.toString(), Appendix[].class));
+					if (appendixInfo.size() != 0) {
+
+						String UPLOAD_PATH = new String();
+						try {
+							UPLOAD_PATH = this.getClass()
+									.getResource("/uploads").toURI().getPath();
+						} catch (URISyntaxException e) {
+							e.printStackTrace();
+						}
+
+						List<String> existingFiles = new ArrayList<String>();
+						if (!proposalID.equals("0")) {
+							boolean alreadyExist = false;
+							for (Appendix appendix : oldProposal
+									.getAppendices()) {
+								for (Appendix appendixObj : appendixInfo) {
+									if (appendix.getFilename().equals(
+											appendixObj.getFilename())) {
+										alreadyExist = true;
+										existingFiles.add(appendixObj
+												.getFilename());
+										break;
+									}
+								}
+								if (!alreadyExist) {
+									existingProposal.getAppendices().remove(
+											appendix);
+								}
+							}
+
+							for (Appendix uploadFile : appendixInfo) {
+								String fileName = uploadFile.getFilename();
+								if (!existingFiles.contains(fileName)) {
+									File file = new File(UPLOAD_PATH + fileName);
+
+									String extension = "";
+									int i = fileName.lastIndexOf('.');
+									if (i > 0) {
+										extension = fileName.substring(i + 1);
+
+										if (verifyValidFileExtension(extension)) {
+											uploadFile.setExtension(extension);
+										} else {
+											return Response
+													.status(403)
+													.entity("{\"error\": extension + \" is not allowed. Allowed extensions: jpg,png,gif,jpeg,bmp,png,pdf,doc,docx,xls,xlsx,txt\", \"status\": \"FAIL\"}")
+													.build();
+										}
+									}
+
+									long fileSize = file.length();
+									if (verifyValidFileSize(fileSize)) {
+										uploadFile.setFilesize(fileSize);
+									} else {
+										return Response
+												.status(403)
+												.entity("{\"error\": \"The uploaded file is larger than 5MB\", \"status\": \"FAIL\"}")
+												.build();
+									}
+									uploadFile.setFilepath("/uploads/"
+											+ fileName);
+									uploadFile.setTitle(uploadFile.getTitle()
+											.replaceAll("\\<[^>]*>", ""));
+
+									existingProposal.getAppendices().add(
+											uploadFile);
+								}
+							}
+						} else {
+							for (Appendix uploadFile : appendixInfo) {
+								String fileName = uploadFile.getFilename();
+								File file = new File(UPLOAD_PATH + fileName);
+
+								String extension = "";
+								int i = fileName.lastIndexOf('.');
+								if (i > 0) {
+									extension = fileName.substring(i + 1);
+									if (verifyValidFileExtension(extension)) {
+										uploadFile.setExtension(extension);
+									} else {
+										return Response
+												.status(403)
+												.entity("{\"error\": extension + \" is not allowed. Allowed extensions: jpg,png,gif,jpeg,bmp,png,pdf,doc,docx,xls,xlsx,txt\", \"status\": \"FAIL\"}")
+												.build();
+									}
+								}
+
+								long fileSize = file.length();
+								if (verifyValidFileSize(fileSize)) {
+									uploadFile.setFilesize(fileSize);
+								} else {
+									return Response
+											.status(403)
+											.entity("{\"error\": \"The uploaded file is larger than 5MB\", \"status\": \"FAIL\"}")
+											.build();
+								}
+								uploadFile.setFilesize(fileSize);
+								uploadFile.setFilepath("/uploads/" + fileName);
+								uploadFile.setTitle(uploadFile.getTitle()
+										.replaceAll("\\<[^>]*>", ""));
+
+								existingProposal.getAppendices()
+										.add(uploadFile);
+							}
+						}
+					}
+				}
+
 				// InvestigatorInfo
 				// To hold all new Investigators list to get notified
 				InvestigatorInfo addedInvestigators = new InvestigatorInfo();
@@ -3872,119 +3985,6 @@ public class ProposalService {
 							.setIrbApprovalRequired(irbApprovalRequired);
 				}
 
-				// Appendix Info
-				if (proposalInfo != null && proposalInfo.has("AppendixInfo")) {
-					List<Appendix> appendixInfo = Arrays.asList(mapper
-							.readValue(proposalInfo.get("AppendixInfo")
-									.toString(), Appendix[].class));
-					if (appendixInfo.size() != 0) {
-
-						String UPLOAD_PATH = new String();
-						try {
-							UPLOAD_PATH = this.getClass()
-									.getResource("/uploads").toURI().getPath();
-						} catch (URISyntaxException e) {
-							e.printStackTrace();
-						}
-
-						List<String> existingFiles = new ArrayList<String>();
-						if (!proposalID.equals("0")) {
-							boolean alreadyExist = false;
-							for (Appendix appendix : oldProposal
-									.getAppendices()) {
-								for (Appendix appendixObj : appendixInfo) {
-									if (appendix.getFilename().equals(
-											appendixObj.getFilename())) {
-										alreadyExist = true;
-										existingFiles.add(appendixObj
-												.getFilename());
-										break;
-									}
-								}
-								if (!alreadyExist) {
-									existingProposal.getAppendices().remove(
-											appendix);
-								}
-							}
-
-							for (Appendix uploadFile : appendixInfo) {
-								String fileName = uploadFile.getFilename();
-								if (!existingFiles.contains(fileName)) {
-									File file = new File(UPLOAD_PATH + fileName);
-
-									String extension = "";
-									int i = fileName.lastIndexOf('.');
-									if (i > 0) {
-										extension = fileName.substring(i + 1);
-
-										if (verifyValidFileExtension(extension)) {
-											uploadFile.setExtension(extension);
-										} else {
-											return Response
-													.status(403)
-													.entity("{\"error\": extension + \" is not allowed. Allowed extensions: jpg,png,gif,jpeg,bmp,png,pdf,doc,docx,xls,xlsx,txt\", \"status\": \"FAIL\"}")
-													.build();
-										}
-									}
-
-									long fileSize = file.length();
-									if (verifyValidFileSize(fileSize)) {
-										uploadFile.setFilesize(fileSize);
-									} else {
-										return Response
-												.status(403)
-												.entity("{\"error\": \"The uploaded file is larger than 5MB\", \"status\": \"FAIL\"}")
-												.build();
-									}
-									uploadFile.setFilepath("/uploads/"
-											+ fileName);
-									uploadFile.setTitle(uploadFile.getTitle()
-											.replaceAll("\\<[^>]*>", ""));
-
-									existingProposal.getAppendices().add(
-											uploadFile);
-								}
-							}
-						} else {
-							for (Appendix uploadFile : appendixInfo) {
-								String fileName = uploadFile.getFilename();
-								File file = new File(UPLOAD_PATH + fileName);
-
-								String extension = "";
-								int i = fileName.lastIndexOf('.');
-								if (i > 0) {
-									extension = fileName.substring(i + 1);
-									if (verifyValidFileExtension(extension)) {
-										uploadFile.setExtension(extension);
-									} else {
-										return Response
-												.status(403)
-												.entity("{\"error\": extension + \" is not allowed. Allowed extensions: jpg,png,gif,jpeg,bmp,png,pdf,doc,docx,xls,xlsx,txt\", \"status\": \"FAIL\"}")
-												.build();
-									}
-								}
-
-								long fileSize = file.length();
-								if (verifyValidFileSize(fileSize)) {
-									uploadFile.setFilesize(fileSize);
-								} else {
-									return Response
-											.status(403)
-											.entity("{\"error\": \"The uploaded file is larger than 5MB\", \"status\": \"FAIL\"}")
-											.build();
-								}
-								uploadFile.setFilesize(fileSize);
-								uploadFile.setFilepath("/uploads/" + fileName);
-								uploadFile.setTitle(uploadFile.getTitle()
-										.replaceAll("\\<[^>]*>", ""));
-
-								existingProposal.getAppendices()
-										.add(uploadFile);
-							}
-						}
-					}
-				}
-
 				String notificationMessage = new String();
 
 				JsonNode buttonType = root.get("buttonType");
@@ -4186,6 +4186,119 @@ public class ProposalService {
 						// using our serializable method for cloning
 						oldProposal = SerializationHelper
 								.cloneThroughSerialize(existingProposal);
+					}
+				}
+
+				// Appendix Info
+				if (proposalInfo != null && proposalInfo.has("AppendixInfo")) {
+					List<Appendix> appendixInfo = Arrays.asList(mapper
+							.readValue(proposalInfo.get("AppendixInfo")
+									.toString(), Appendix[].class));
+					if (appendixInfo.size() != 0) {
+
+						String UPLOAD_PATH = new String();
+						try {
+							UPLOAD_PATH = this.getClass()
+									.getResource("/uploads").toURI().getPath();
+						} catch (URISyntaxException e) {
+							e.printStackTrace();
+						}
+
+						List<String> existingFiles = new ArrayList<String>();
+						if (!proposalID.equals("0")) {
+							boolean alreadyExist = false;
+							for (Appendix appendix : oldProposal
+									.getAppendices()) {
+								for (Appendix appendixObj : appendixInfo) {
+									if (appendix.getFilename().equals(
+											appendixObj.getFilename())) {
+										alreadyExist = true;
+										existingFiles.add(appendixObj
+												.getFilename());
+										break;
+									}
+								}
+								if (!alreadyExist) {
+									existingProposal.getAppendices().remove(
+											appendix);
+								}
+							}
+
+							for (Appendix uploadFile : appendixInfo) {
+								String fileName = uploadFile.getFilename();
+								if (!existingFiles.contains(fileName)) {
+									File file = new File(UPLOAD_PATH + fileName);
+
+									String extension = "";
+									int i = fileName.lastIndexOf('.');
+									if (i > 0) {
+										extension = fileName.substring(i + 1);
+
+										if (verifyValidFileExtension(extension)) {
+											uploadFile.setExtension(extension);
+										} else {
+											return Response
+													.status(403)
+													.entity("{\"error\": extension + \" is not allowed. Allowed extensions: jpg,png,gif,jpeg,bmp,png,pdf,doc,docx,xls,xlsx,txt\", \"status\": \"FAIL\"}")
+													.build();
+										}
+									}
+
+									long fileSize = file.length();
+									if (verifyValidFileSize(fileSize)) {
+										uploadFile.setFilesize(fileSize);
+									} else {
+										return Response
+												.status(403)
+												.entity("{\"error\": \"The uploaded file is larger than 5MB\", \"status\": \"FAIL\"}")
+												.build();
+									}
+									uploadFile.setFilepath("/uploads/"
+											+ fileName);
+									uploadFile.setTitle(uploadFile.getTitle()
+											.replaceAll("\\<[^>]*>", ""));
+
+									existingProposal.getAppendices().add(
+											uploadFile);
+								}
+							}
+						} else {
+							for (Appendix uploadFile : appendixInfo) {
+								String fileName = uploadFile.getFilename();
+								File file = new File(UPLOAD_PATH + fileName);
+
+								String extension = "";
+								int i = fileName.lastIndexOf('.');
+								if (i > 0) {
+									extension = fileName.substring(i + 1);
+									if (verifyValidFileExtension(extension)) {
+										uploadFile.setExtension(extension);
+									} else {
+										return Response
+												.status(403)
+												.entity("{\"error\": extension + \" is not allowed. Allowed extensions: jpg,png,gif,jpeg,bmp,png,pdf,doc,docx,xls,xlsx,txt\", \"status\": \"FAIL\"}")
+												.build();
+									}
+								}
+
+								long fileSize = file.length();
+								if (verifyValidFileSize(fileSize)) {
+									uploadFile.setFilesize(fileSize);
+								} else {
+									return Response
+											.status(403)
+											.entity("{\"error\": \"The uploaded file is larger than 5MB\", \"status\": \"FAIL\"}")
+											.build();
+								}
+								uploadFile.setFilesize(fileSize);
+								uploadFile.setFilepath("/uploads/" + fileName);
+								uploadFile.setTitle(uploadFile.getTitle()
+										.replaceAll("\\<[^>]*>", ""));
+
+								existingProposal.getAppendices()
+										.add(uploadFile);
+							}
+						}
 					}
 				}
 
@@ -6145,106 +6258,493 @@ public class ProposalService {
 				existingProposal.setConfidentialInfo(newConfidentialInfo);
 			}
 
-			// Appendix Info
-			if (proposalInfo != null && proposalInfo.has("AppendixInfo")) {
-				List<Appendix> appendixInfo = Arrays.asList(mapper.readValue(
-						proposalInfo.get("AppendixInfo").toString(),
-						Appendix[].class));
-				if (appendixInfo.size() != 0) {
+			// For Proposal User Title : for Dean, Chair and Manager
+			JsonNode proposalUserTitle = root.get("proposalUserTitle");
 
-					String UPLOAD_PATH = new String();
-					try {
-						UPLOAD_PATH = this.getClass().getResource("/uploads")
-								.toURI().getPath();
-					} catch (URISyntaxException e) {
-						e.printStackTrace();
+			if ((proposalUserTitle.textValue().equals(
+					"University Research Administrator") || proposalUserTitle
+					.textValue().equals("University Research Director"))
+					&& !proposalID.equals("0")) {
+				// OSP Section Info Only for University Research Administrator
+				// or University Research Director
+				OSPSectionInfo newOSPSectionInfo = new OSPSectionInfo();
+				if (proposalInfo != null && proposalInfo.has("OSPSectionInfo")) {
+					JsonNode oSPSectionInfo = proposalInfo
+							.get("OSPSectionInfo");
+
+					// List Agency
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo.has("ListAgency")) {
+						String agencies = oSPSectionInfo.get("ListAgency")
+								.textValue().replaceAll("\\<[^>]*>", "");
+						if (!existingProposal.getOspSectionInfo()
+								.getListAgency().equals(agencies)) {
+							existingProposal.getOspSectionInfo().setListAgency(
+									agencies);
+						}
 					}
 
-					List<String> existingFiles = new ArrayList<String>();
-					if (!proposalID.equals("0")) {
-						boolean alreadyExist = false;
-						for (Appendix appendix : oldProposal.getAppendices()) {
-							for (Appendix appendixObj : appendixInfo) {
-								if (appendix.getFilename().equals(
-										appendixObj.getFilename())) {
-									alreadyExist = true;
-									existingFiles
-											.add(appendixObj.getFilename());
-									break;
-								}
-							}
-							if (!alreadyExist) {
-								existingProposal.getAppendices().remove(
-										appendix);
-							}
+					FundingSource newFundingSource = new FundingSource();
+					if (oSPSectionInfo != null && oSPSectionInfo.has("Federal")) {
+						newFundingSource.setFederal(oSPSectionInfo.get(
+								"Federal").booleanValue());
+					}
+
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo.has("FederalFlowThrough")) {
+						newFundingSource.setFederalFlowThrough(oSPSectionInfo
+								.get("FederalFlowThrough").booleanValue());
+					}
+
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo.has("StateOfIdahoEntity")) {
+						newFundingSource.setStateOfIdahoEntity(oSPSectionInfo
+								.get("StateOfIdahoEntity").booleanValue());
+					}
+
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo.has("PrivateForProfit")) {
+						newFundingSource.setPrivateForProfit(oSPSectionInfo
+								.get("PrivateForProfit").booleanValue());
+					}
+
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo.has("NonProfitOrganization")) {
+						newFundingSource
+								.setNonProfitOrganization(oSPSectionInfo.get(
+										"NonProfitOrganization").booleanValue());
+					}
+
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo.has("NonIdahoStateEntity")) {
+						newFundingSource.setNonIdahoStateEntity(oSPSectionInfo
+								.get("NonIdahoStateEntity").booleanValue());
+					}
+
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo.has("CollegeOrUniversity")) {
+						newFundingSource.setCollegeOrUniversity(oSPSectionInfo
+								.get("CollegeOrUniversity").booleanValue());
+					}
+
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo.has("LocalEntity")) {
+						newFundingSource.setLocalEntity(oSPSectionInfo.get(
+								"LocalEntity").booleanValue());
+					}
+
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo.has("NonIdahoLocalEntity")) {
+						newFundingSource.setNonIdahoLocalEntity(oSPSectionInfo
+								.get("NonIdahoLocalEntity").booleanValue());
+					}
+
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo.has("TirbalGovernment")) {
+						newFundingSource.setTirbalGovernment(oSPSectionInfo
+								.get("TirbalGovernment").booleanValue());
+					}
+
+					if (oSPSectionInfo != null && oSPSectionInfo.has("Foreign")) {
+						newFundingSource.setForeign(oSPSectionInfo.get(
+								"Foreign").booleanValue());
+					}
+
+					// Funding Source
+					if (!existingProposal.getOspSectionInfo()
+							.getFundingSource().equals(newFundingSource)) {
+						existingProposal.getOspSectionInfo().setFundingSource(
+								newFundingSource);
+					}
+
+					// CFDA No
+					if (oSPSectionInfo != null && oSPSectionInfo.has("CFDANo")) {
+						String CFDANo = oSPSectionInfo.get("CFDANo")
+								.textValue().replaceAll("\\<[^>]*>", "");
+						if (!existingProposal.getOspSectionInfo().getCfdaNo()
+								.equals(CFDANo)) {
+							existingProposal.getOspSectionInfo().setCfdaNo(
+									CFDANo);
 						}
+					}
 
-						for (Appendix uploadFile : appendixInfo) {
-							String fileName = uploadFile.getFilename();
-							if (!existingFiles.contains(fileName)) {
-								File file = new File(UPLOAD_PATH + fileName);
+					// Program No
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo.has("ProgramNo")) {
+						String programNo = oSPSectionInfo.get("ProgramNo")
+								.textValue().replaceAll("\\<[^>]*>", "");
+						if (!existingProposal.getOspSectionInfo()
+								.getProgramNo().equals(programNo)) {
+							existingProposal.getOspSectionInfo().setProgramNo(
+									programNo);
+						}
+					}
 
-								String extension = "";
-								int i = fileName.lastIndexOf('.');
-								if (i > 0) {
-									extension = fileName.substring(i + 1);
+					// Program Title
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo.has("ProgramTitle")) {
+						String programTitle = oSPSectionInfo
+								.get("ProgramTitle").textValue()
+								.replaceAll("\\<[^>]*>", "");
+						if (!existingProposal.getOspSectionInfo()
+								.getProgramTitle().equals(programTitle)) {
+							existingProposal.getOspSectionInfo()
+									.setProgramTitle(programTitle);
+						}
+					}
 
-									if (verifyValidFileExtension(extension)) {
-										uploadFile.setExtension(extension);
-									} else {
-										return false;
-									}
-								}
+					Recovery newRecovery = new Recovery();
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo.has("FullRecovery")) {
+						newRecovery.setFullRecovery(oSPSectionInfo.get(
+								"FullRecovery").booleanValue());
+					}
 
-								long fileSize = file.length();
-								if (verifyValidFileSize(fileSize)) {
-									uploadFile.setFilesize(fileSize);
-								} else {
-									return false;
-								}
-								uploadFile.setFilepath("/uploads/" + fileName);
-								uploadFile.setTitle(uploadFile.getTitle()
-										.replaceAll("\\<[^>]*>", ""));
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo
+									.has("NoRecoveryNormalSponsorPolicy")) {
+						newRecovery
+								.setNoRecoveryNormalSponsorPolicy(oSPSectionInfo
+										.get("NoRecoveryNormalSponsorPolicy")
+										.booleanValue());
+					}
 
-								existingProposal.getAppendices()
-										.add(uploadFile);
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo
+									.has("NoRecoveryInstitutionalWaiver")) {
+						newRecovery
+								.setNoRecoveryInstitutionalWaiver(oSPSectionInfo
+										.get("NoRecoveryInstitutionalWaiver")
+										.booleanValue());
+					}
+
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo
+									.has("LimitedRecoveryNormalSponsorPolicy")) {
+						newRecovery
+								.setLimitedRecoveryNormalSponsorPolicy(oSPSectionInfo
+										.get("LimitedRecoveryNormalSponsorPolicy")
+										.booleanValue());
+					}
+
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo
+									.has("LimitedRecoveryInstitutionalWaiver")) {
+						newRecovery
+								.setLimitedRecoveryInstitutionalWaiver(oSPSectionInfo
+										.get("LimitedRecoveryInstitutionalWaiver")
+										.booleanValue());
+					}
+					// Recovery
+					if (!existingProposal.getOspSectionInfo().getRecovery()
+							.equals(newRecovery)) {
+						existingProposal.getOspSectionInfo().setRecovery(
+								newRecovery);
+					}
+
+					BaseInfo newBaseInfo = new BaseInfo();
+					if (oSPSectionInfo != null && oSPSectionInfo.has("MTDC")) {
+						newBaseInfo.setMtdc(oSPSectionInfo.get("MTDC")
+								.booleanValue());
+					}
+
+					if (oSPSectionInfo != null && oSPSectionInfo.has("TDC")) {
+						newBaseInfo.setTdc(oSPSectionInfo.get("TDC")
+								.booleanValue());
+					}
+
+					if (oSPSectionInfo != null && oSPSectionInfo.has("TC")) {
+						newBaseInfo.setTc(oSPSectionInfo.get("TC")
+								.booleanValue());
+					}
+
+					if (oSPSectionInfo != null && oSPSectionInfo.has("Other")) {
+						newBaseInfo.setOther(oSPSectionInfo.get("Other")
+								.booleanValue());
+					}
+
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo.has("NotApplicable")) {
+						newBaseInfo.setNotApplicable(oSPSectionInfo.get(
+								"NotApplicable").booleanValue());
+					}
+
+					// Base Info
+					if (!existingProposal.getOspSectionInfo().getBaseInfo()
+							.equals(newBaseInfo)) {
+						existingProposal.getOspSectionInfo().setBaseInfo(
+								newBaseInfo);
+					}
+
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo.has("IsPISalaryIncluded")) {
+						switch (oSPSectionInfo.get("IsPISalaryIncluded")
+								.textValue()) {
+						case "1":
+							newOSPSectionInfo.setPiSalaryIncluded(true);
+							break;
+						case "2":
+							newOSPSectionInfo.setPiSalaryIncluded(false);
+							break;
+						default:
+							break;
+						}
+					}
+
+					// PI Salary Included
+					if (existingProposal.getOspSectionInfo()
+							.isPiSalaryIncluded() != newOSPSectionInfo
+							.isPiSalaryIncluded()) {
+						existingProposal.getOspSectionInfo()
+								.setPiSalaryIncluded(
+										newOSPSectionInfo.isPiSalaryIncluded());
+					}
+
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo.has("PISalary")) {
+						// PI Salary
+						String PISalary = oSPSectionInfo.get("PISalary")
+								.textValue().replaceAll("\\<[^>]*>", "");
+						if (existingProposal.getOspSectionInfo().getPiSalary() != Double
+								.parseDouble(PISalary)) {
+							existingProposal.getOspSectionInfo().setPiSalary(
+									Double.parseDouble(PISalary));
+						}
+					}
+
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo.has("PIFringe")) {
+						// PI Fringe
+						String PiFringe = oSPSectionInfo.get("PIFringe")
+								.textValue().replaceAll("\\<[^>]*>", "");
+						if (existingProposal.getOspSectionInfo().getPiFringe() != Double
+								.parseDouble(PiFringe)) {
+							existingProposal.getOspSectionInfo().setPiFringe(
+									Double.parseDouble(PiFringe));
+						}
+					}
+
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo.has("DepartmentId")) {
+						// Department Id
+						String departmentId = oSPSectionInfo
+								.get("DepartmentId").textValue()
+								.replaceAll("\\<[^>]*>", "");
+						if (!existingProposal.getOspSectionInfo()
+								.getDepartmentId().equals(departmentId)) {
+							existingProposal.getOspSectionInfo()
+									.setDepartmentId(departmentId);
+						}
+					}
+
+					BaseOptions newBaseOptions = new BaseOptions();
+
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo
+									.has("InstitutionalCostDocumented")) {
+						switch (oSPSectionInfo.get(
+								"InstitutionalCostDocumented").textValue()) {
+						case "1":
+							newBaseOptions.setYes(true);
+							break;
+						case "2":
+							newBaseOptions.setNo(true);
+							break;
+						case "3":
+							newBaseOptions.setNotApplicable(true);
+							break;
+						default:
+							break;
+						}
+					}
+					// Institutional Cost Documented
+					if (!existingProposal.getOspSectionInfo()
+							.getInstitutionalCostDocumented()
+							.equals(newBaseOptions)) {
+						existingProposal.getOspSectionInfo()
+								.setInstitutionalCostDocumented(newBaseOptions);
+					}
+
+					newBaseOptions = new BaseOptions();
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo.has("ThirdPartyCostDocumented")) {
+						switch (oSPSectionInfo.get("ThirdPartyCostDocumented")
+								.textValue()) {
+						case "1":
+							newBaseOptions.setYes(true);
+							break;
+						case "2":
+							newBaseOptions.setNo(true);
+							break;
+						case "3":
+							newBaseOptions.setNotApplicable(true);
+							break;
+						default:
+							break;
+						}
+					}
+
+					// Third Party Cost Documented
+					if (!existingProposal.getOspSectionInfo()
+							.getThirdPartyCostDocumented()
+							.equals(newBaseOptions)) {
+						existingProposal.getOspSectionInfo()
+								.setThirdPartyCostDocumented(newBaseOptions);
+					}
+
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo.has("IsAnticipatedSubRecipients")) {
+						switch (oSPSectionInfo
+								.get("IsAnticipatedSubRecipients").textValue()) {
+						case "1":
+							newOSPSectionInfo.setAnticipatedSubRecipients(true);
+							if (oSPSectionInfo != null
+									&& oSPSectionInfo
+											.has("AnticipatedSubRecipientsNames")) {
+								newOSPSectionInfo
+										.setAnticipatedSubRecipientsNames(oSPSectionInfo
+												.get("AnticipatedSubRecipientsNames")
+												.textValue()
+												.replaceAll("\\<[^>]*>", ""));
 							}
+							break;
+						case "2":
+							newOSPSectionInfo
+									.setAnticipatedSubRecipients(false);
+							break;
+						default:
+							break;
+						}
+					}
+
+					// Is Anticipated SubRecipients
+					if (existingProposal.getOspSectionInfo()
+							.isAnticipatedSubRecipients() != newOSPSectionInfo
+							.isAnticipatedSubRecipients()) {
+						existingProposal.getOspSectionInfo()
+								.setAnticipatedSubRecipients(
+										newOSPSectionInfo
+												.isAnticipatedSubRecipients());
+					}
+
+					// Anticipated SubRecipients Names
+					if (existingProposal.getOspSectionInfo()
+							.getAnticipatedSubRecipientsNames() != null) {
+						if (!existingProposal
+								.getOspSectionInfo()
+								.getAnticipatedSubRecipientsNames()
+								.equals(newOSPSectionInfo
+										.getAnticipatedSubRecipientsNames())) {
+							existingProposal
+									.getOspSectionInfo()
+									.setAnticipatedSubRecipientsNames(
+											newOSPSectionInfo
+													.getAnticipatedSubRecipientsNames());
 						}
 					} else {
-						for (Appendix uploadFile : appendixInfo) {
-							String fileName = uploadFile.getFilename();
-							File file = new File(UPLOAD_PATH + fileName);
+						existingProposal
+								.getOspSectionInfo()
+								.setAnticipatedSubRecipientsNames(
+										newOSPSectionInfo
+												.getAnticipatedSubRecipientsNames());
+					}
 
-							String extension = "";
-							int i = fileName.lastIndexOf('.');
-							if (i > 0) {
-								extension = fileName.substring(i + 1);
-								if (verifyValidFileExtension(extension)) {
-									uploadFile.setExtension(extension);
-								} else {
-									return false;
-								}
-							}
-
-							long fileSize = file.length();
-							if (verifyValidFileSize(fileSize)) {
-								uploadFile.setFilesize(fileSize);
-							} else {
-								return false;
-							}
-							uploadFile.setFilesize(fileSize);
-							uploadFile.setFilepath("/uploads/" + fileName);
-							uploadFile.setTitle(uploadFile.getTitle()
-									.replaceAll("\\<[^>]*>", ""));
-
-							existingProposal.getAppendices().add(uploadFile);
+					BasePIEligibilityOptions newBasePIEligibilityOptions = new BasePIEligibilityOptions();
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo.has("PIEligibilityWaiver")) {
+						switch (oSPSectionInfo.get("PIEligibilityWaiver")
+								.textValue()) {
+						case "1":
+							newBasePIEligibilityOptions.setYes(true);
+							break;
+						case "2":
+							newBasePIEligibilityOptions.setNo(true);
+							break;
+						case "3":
+							newBasePIEligibilityOptions.setNotApplicable(true);
+							break;
+						case "4":
+							newBasePIEligibilityOptions
+									.setThisProposalOnly(true);
+							break;
+						case "5":
+							newBasePIEligibilityOptions.setBlanket(true);
+							break;
+						default:
+							break;
 						}
 					}
+
+					// Base PI Eligibility Options
+					if (!existingProposal.getOspSectionInfo()
+							.getPiEligibilityWaiver()
+							.equals(newBasePIEligibilityOptions)) {
+						existingProposal.getOspSectionInfo()
+								.setPiEligibilityWaiver(
+										newBasePIEligibilityOptions);
+					}
+
+					newBaseOptions = new BaseOptions();
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo.has("ConflictOfInterestForms")) {
+						switch (oSPSectionInfo.get("ConflictOfInterestForms")
+								.textValue()) {
+						case "1":
+							newBaseOptions.setYes(true);
+							break;
+						case "2":
+							newBaseOptions.setNo(true);
+							break;
+						case "3":
+							newBaseOptions.setNotApplicable(true);
+							break;
+						default:
+							break;
+						}
+					}
+
+					// Conflict Of Interest Forms
+					if (!existingProposal.getOspSectionInfo()
+							.getConflictOfInterestForms()
+							.equals(newBaseOptions)) {
+						existingProposal.getOspSectionInfo()
+								.setConflictOfInterestForms(newBaseOptions);
+					}
+
+					newBaseOptions = new BaseOptions();
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo.has("ExcludedPartyListChecked")) {
+						switch (oSPSectionInfo.get("ExcludedPartyListChecked")
+								.textValue()) {
+						case "1":
+							newBaseOptions.setYes(true);
+							break;
+						case "2":
+							newBaseOptions.setNo(true);
+							break;
+						case "3":
+							newBaseOptions.setNotApplicable(true);
+							break;
+						default:
+							break;
+						}
+					}
+
+					// Excluded Party List Checked
+					if (!existingProposal.getOspSectionInfo()
+							.getExcludedPartyListChecked()
+							.equals(newBaseOptions)) {
+						existingProposal.getOspSectionInfo()
+								.setExcludedPartyListChecked(newBaseOptions);
+					}
+				}
+			} else {
+				if (!proposalID.equals("0")) {
+					existingProposal.setOspSectionInfo(oldProposal
+							.getOspSectionInfo());
 				}
 			}
 
-			// For Proposal User Title : for Dean, Chair and Manager
-			JsonNode proposalUserTitle = root.get("proposalUserTitle");
 			String notificationMessage = new String();
 			boolean isCritical = false;
 			if (proposalUserTitle != null) {
@@ -7970,490 +8470,6 @@ public class ProposalService {
 				}
 			}
 
-			if ((proposalUserTitle.textValue().equals(
-					"University Research Administrator") || proposalUserTitle
-					.textValue().equals("University Research Director"))
-					&& !proposalID.equals("0")) {
-				// OSP Section Info Only for University Research Administrator
-				// or University Research Director
-				OSPSectionInfo newOSPSectionInfo = new OSPSectionInfo();
-				if (proposalInfo != null && proposalInfo.has("OSPSectionInfo")) {
-					JsonNode oSPSectionInfo = proposalInfo
-							.get("OSPSectionInfo");
-
-					// List Agency
-					if (oSPSectionInfo != null
-							&& oSPSectionInfo.has("ListAgency")) {
-						String agencies = oSPSectionInfo.get("ListAgency")
-								.textValue().replaceAll("\\<[^>]*>", "");
-						if (!existingProposal.getOspSectionInfo()
-								.getListAgency().equals(agencies)) {
-							existingProposal.getOspSectionInfo().setListAgency(
-									agencies);
-						}
-					}
-
-					FundingSource newFundingSource = new FundingSource();
-					if (oSPSectionInfo != null && oSPSectionInfo.has("Federal")) {
-						newFundingSource.setFederal(oSPSectionInfo.get(
-								"Federal").booleanValue());
-					}
-
-					if (oSPSectionInfo != null
-							&& oSPSectionInfo.has("FederalFlowThrough")) {
-						newFundingSource.setFederalFlowThrough(oSPSectionInfo
-								.get("FederalFlowThrough").booleanValue());
-					}
-
-					if (oSPSectionInfo != null
-							&& oSPSectionInfo.has("StateOfIdahoEntity")) {
-						newFundingSource.setStateOfIdahoEntity(oSPSectionInfo
-								.get("StateOfIdahoEntity").booleanValue());
-					}
-
-					if (oSPSectionInfo != null
-							&& oSPSectionInfo.has("PrivateForProfit")) {
-						newFundingSource.setPrivateForProfit(oSPSectionInfo
-								.get("PrivateForProfit").booleanValue());
-					}
-
-					if (oSPSectionInfo != null
-							&& oSPSectionInfo.has("NonProfitOrganization")) {
-						newFundingSource
-								.setNonProfitOrganization(oSPSectionInfo.get(
-										"NonProfitOrganization").booleanValue());
-					}
-
-					if (oSPSectionInfo != null
-							&& oSPSectionInfo.has("NonIdahoStateEntity")) {
-						newFundingSource.setNonIdahoStateEntity(oSPSectionInfo
-								.get("NonIdahoStateEntity").booleanValue());
-					}
-
-					if (oSPSectionInfo != null
-							&& oSPSectionInfo.has("CollegeOrUniversity")) {
-						newFundingSource.setCollegeOrUniversity(oSPSectionInfo
-								.get("CollegeOrUniversity").booleanValue());
-					}
-
-					if (oSPSectionInfo != null
-							&& oSPSectionInfo.has("LocalEntity")) {
-						newFundingSource.setLocalEntity(oSPSectionInfo.get(
-								"LocalEntity").booleanValue());
-					}
-
-					if (oSPSectionInfo != null
-							&& oSPSectionInfo.has("NonIdahoLocalEntity")) {
-						newFundingSource.setNonIdahoLocalEntity(oSPSectionInfo
-								.get("NonIdahoLocalEntity").booleanValue());
-					}
-
-					if (oSPSectionInfo != null
-							&& oSPSectionInfo.has("TirbalGovernment")) {
-						newFundingSource.setTirbalGovernment(oSPSectionInfo
-								.get("TirbalGovernment").booleanValue());
-					}
-
-					if (oSPSectionInfo != null && oSPSectionInfo.has("Foreign")) {
-						newFundingSource.setForeign(oSPSectionInfo.get(
-								"Foreign").booleanValue());
-					}
-
-					// Funding Source
-					if (!existingProposal.getOspSectionInfo()
-							.getFundingSource().equals(newFundingSource)) {
-						existingProposal.getOspSectionInfo().setFundingSource(
-								newFundingSource);
-					}
-
-					// CFDA No
-					if (oSPSectionInfo != null && oSPSectionInfo.has("CFDANo")) {
-						String CFDANo = oSPSectionInfo.get("CFDANo")
-								.textValue().replaceAll("\\<[^>]*>", "");
-						if (!existingProposal.getOspSectionInfo().getCfdaNo()
-								.equals(CFDANo)) {
-							existingProposal.getOspSectionInfo().setCfdaNo(
-									CFDANo);
-						}
-					}
-
-					// Program No
-					if (oSPSectionInfo != null
-							&& oSPSectionInfo.has("ProgramNo")) {
-						String programNo = oSPSectionInfo.get("ProgramNo")
-								.textValue().replaceAll("\\<[^>]*>", "");
-						if (!existingProposal.getOspSectionInfo()
-								.getProgramNo().equals(programNo)) {
-							existingProposal.getOspSectionInfo().setProgramNo(
-									programNo);
-						}
-					}
-
-					// Program Title
-					if (oSPSectionInfo != null
-							&& oSPSectionInfo.has("ProgramTitle")) {
-						String programTitle = oSPSectionInfo
-								.get("ProgramTitle").textValue()
-								.replaceAll("\\<[^>]*>", "");
-						if (!existingProposal.getOspSectionInfo()
-								.getProgramTitle().equals(programTitle)) {
-							existingProposal.getOspSectionInfo()
-									.setProgramTitle(programTitle);
-						}
-					}
-
-					Recovery newRecovery = new Recovery();
-					if (oSPSectionInfo != null
-							&& oSPSectionInfo.has("FullRecovery")) {
-						newRecovery.setFullRecovery(oSPSectionInfo.get(
-								"FullRecovery").booleanValue());
-					}
-
-					if (oSPSectionInfo != null
-							&& oSPSectionInfo
-									.has("NoRecoveryNormalSponsorPolicy")) {
-						newRecovery
-								.setNoRecoveryNormalSponsorPolicy(oSPSectionInfo
-										.get("NoRecoveryNormalSponsorPolicy")
-										.booleanValue());
-					}
-
-					if (oSPSectionInfo != null
-							&& oSPSectionInfo
-									.has("NoRecoveryInstitutionalWaiver")) {
-						newRecovery
-								.setNoRecoveryInstitutionalWaiver(oSPSectionInfo
-										.get("NoRecoveryInstitutionalWaiver")
-										.booleanValue());
-					}
-
-					if (oSPSectionInfo != null
-							&& oSPSectionInfo
-									.has("LimitedRecoveryNormalSponsorPolicy")) {
-						newRecovery
-								.setLimitedRecoveryNormalSponsorPolicy(oSPSectionInfo
-										.get("LimitedRecoveryNormalSponsorPolicy")
-										.booleanValue());
-					}
-
-					if (oSPSectionInfo != null
-							&& oSPSectionInfo
-									.has("LimitedRecoveryInstitutionalWaiver")) {
-						newRecovery
-								.setLimitedRecoveryInstitutionalWaiver(oSPSectionInfo
-										.get("LimitedRecoveryInstitutionalWaiver")
-										.booleanValue());
-					}
-					// Recovery
-					if (!existingProposal.getOspSectionInfo().getRecovery()
-							.equals(newRecovery)) {
-						existingProposal.getOspSectionInfo().setRecovery(
-								newRecovery);
-					}
-
-					BaseInfo newBaseInfo = new BaseInfo();
-					if (oSPSectionInfo != null && oSPSectionInfo.has("MTDC")) {
-						newBaseInfo.setMtdc(oSPSectionInfo.get("MTDC")
-								.booleanValue());
-					}
-
-					if (oSPSectionInfo != null && oSPSectionInfo.has("TDC")) {
-						newBaseInfo.setTdc(oSPSectionInfo.get("TDC")
-								.booleanValue());
-					}
-
-					if (oSPSectionInfo != null && oSPSectionInfo.has("TC")) {
-						newBaseInfo.setTc(oSPSectionInfo.get("TC")
-								.booleanValue());
-					}
-
-					if (oSPSectionInfo != null && oSPSectionInfo.has("Other")) {
-						newBaseInfo.setOther(oSPSectionInfo.get("Other")
-								.booleanValue());
-					}
-
-					if (oSPSectionInfo != null
-							&& oSPSectionInfo.has("NotApplicable")) {
-						newBaseInfo.setNotApplicable(oSPSectionInfo.get(
-								"NotApplicable").booleanValue());
-					}
-
-					// Base Info
-					if (!existingProposal.getOspSectionInfo().getBaseInfo()
-							.equals(newBaseInfo)) {
-						existingProposal.getOspSectionInfo().setBaseInfo(
-								newBaseInfo);
-					}
-
-					if (oSPSectionInfo != null
-							&& oSPSectionInfo.has("IsPISalaryIncluded")) {
-						switch (oSPSectionInfo.get("IsPISalaryIncluded")
-								.textValue()) {
-						case "1":
-							newOSPSectionInfo.setPiSalaryIncluded(true);
-							break;
-						case "2":
-							newOSPSectionInfo.setPiSalaryIncluded(false);
-							break;
-						default:
-							break;
-						}
-					}
-
-					// PI Salary Included
-					if (existingProposal.getOspSectionInfo()
-							.isPiSalaryIncluded() != newOSPSectionInfo
-							.isPiSalaryIncluded()) {
-						existingProposal.getOspSectionInfo()
-								.setPiSalaryIncluded(
-										newOSPSectionInfo.isPiSalaryIncluded());
-					}
-
-					if (oSPSectionInfo != null
-							&& oSPSectionInfo.has("PISalary")) {
-						// PI Salary
-						String PISalary = oSPSectionInfo.get("PISalary")
-								.textValue().replaceAll("\\<[^>]*>", "");
-						if (existingProposal.getOspSectionInfo().getPiSalary() != Double
-								.parseDouble(PISalary)) {
-							existingProposal.getOspSectionInfo().setPiSalary(
-									Double.parseDouble(PISalary));
-						}
-					}
-
-					if (oSPSectionInfo != null
-							&& oSPSectionInfo.has("PIFringe")) {
-						// PI Fringe
-						String PiFringe = oSPSectionInfo.get("PIFringe")
-								.textValue().replaceAll("\\<[^>]*>", "");
-						if (existingProposal.getOspSectionInfo().getPiFringe() != Double
-								.parseDouble(PiFringe)) {
-							existingProposal.getOspSectionInfo().setPiFringe(
-									Double.parseDouble(PiFringe));
-						}
-					}
-
-					if (oSPSectionInfo != null
-							&& oSPSectionInfo.has("DepartmentId")) {
-						// Department Id
-						String departmentId = oSPSectionInfo
-								.get("DepartmentId").textValue()
-								.replaceAll("\\<[^>]*>", "");
-						if (!existingProposal.getOspSectionInfo()
-								.getDepartmentId().equals(departmentId)) {
-							existingProposal.getOspSectionInfo()
-									.setDepartmentId(departmentId);
-						}
-					}
-
-					BaseOptions newBaseOptions = new BaseOptions();
-
-					if (oSPSectionInfo != null
-							&& oSPSectionInfo
-									.has("InstitutionalCostDocumented")) {
-						switch (oSPSectionInfo.get(
-								"InstitutionalCostDocumented").textValue()) {
-						case "1":
-							newBaseOptions.setYes(true);
-							break;
-						case "2":
-							newBaseOptions.setNo(true);
-							break;
-						case "3":
-							newBaseOptions.setNotApplicable(true);
-							break;
-						default:
-							break;
-						}
-					}
-					// Institutional Cost Documented
-					if (!existingProposal.getOspSectionInfo()
-							.getInstitutionalCostDocumented()
-							.equals(newBaseOptions)) {
-						existingProposal.getOspSectionInfo()
-								.setInstitutionalCostDocumented(newBaseOptions);
-					}
-
-					newBaseOptions = new BaseOptions();
-					if (oSPSectionInfo != null
-							&& oSPSectionInfo.has("ThirdPartyCostDocumented")) {
-						switch (oSPSectionInfo.get("ThirdPartyCostDocumented")
-								.textValue()) {
-						case "1":
-							newBaseOptions.setYes(true);
-							break;
-						case "2":
-							newBaseOptions.setNo(true);
-							break;
-						case "3":
-							newBaseOptions.setNotApplicable(true);
-							break;
-						default:
-							break;
-						}
-					}
-
-					// Third Party Cost Documented
-					if (!existingProposal.getOspSectionInfo()
-							.getThirdPartyCostDocumented()
-							.equals(newBaseOptions)) {
-						existingProposal.getOspSectionInfo()
-								.setThirdPartyCostDocumented(newBaseOptions);
-					}
-
-					if (oSPSectionInfo != null
-							&& oSPSectionInfo.has("IsAnticipatedSubRecipients")) {
-						switch (oSPSectionInfo
-								.get("IsAnticipatedSubRecipients").textValue()) {
-						case "1":
-							newOSPSectionInfo.setAnticipatedSubRecipients(true);
-							if (oSPSectionInfo != null
-									&& oSPSectionInfo
-											.has("AnticipatedSubRecipientsNames")) {
-								newOSPSectionInfo
-										.setAnticipatedSubRecipientsNames(oSPSectionInfo
-												.get("AnticipatedSubRecipientsNames")
-												.textValue()
-												.replaceAll("\\<[^>]*>", ""));
-							}
-							break;
-						case "2":
-							newOSPSectionInfo
-									.setAnticipatedSubRecipients(false);
-							break;
-						default:
-							break;
-						}
-					}
-
-					// Is Anticipated SubRecipients
-					if (existingProposal.getOspSectionInfo()
-							.isAnticipatedSubRecipients() != newOSPSectionInfo
-							.isAnticipatedSubRecipients()) {
-						existingProposal.getOspSectionInfo()
-								.setAnticipatedSubRecipients(
-										newOSPSectionInfo
-												.isAnticipatedSubRecipients());
-					}
-
-					// Anticipated SubRecipients Names
-					if (existingProposal.getOspSectionInfo()
-							.getAnticipatedSubRecipientsNames() != null) {
-						if (!existingProposal
-								.getOspSectionInfo()
-								.getAnticipatedSubRecipientsNames()
-								.equals(newOSPSectionInfo
-										.getAnticipatedSubRecipientsNames())) {
-							existingProposal
-									.getOspSectionInfo()
-									.setAnticipatedSubRecipientsNames(
-											newOSPSectionInfo
-													.getAnticipatedSubRecipientsNames());
-						}
-					} else {
-						existingProposal
-								.getOspSectionInfo()
-								.setAnticipatedSubRecipientsNames(
-										newOSPSectionInfo
-												.getAnticipatedSubRecipientsNames());
-					}
-
-					BasePIEligibilityOptions newBasePIEligibilityOptions = new BasePIEligibilityOptions();
-					if (oSPSectionInfo != null
-							&& oSPSectionInfo.has("PIEligibilityWaiver")) {
-						switch (oSPSectionInfo.get("PIEligibilityWaiver")
-								.textValue()) {
-						case "1":
-							newBasePIEligibilityOptions.setYes(true);
-							break;
-						case "2":
-							newBasePIEligibilityOptions.setNo(true);
-							break;
-						case "3":
-							newBasePIEligibilityOptions.setNotApplicable(true);
-							break;
-						case "4":
-							newBasePIEligibilityOptions
-									.setThisProposalOnly(true);
-							break;
-						case "5":
-							newBasePIEligibilityOptions.setBlanket(true);
-							break;
-						default:
-							break;
-						}
-					}
-
-					// Base PI Eligibility Options
-					if (!existingProposal.getOspSectionInfo()
-							.getPiEligibilityWaiver()
-							.equals(newBasePIEligibilityOptions)) {
-						existingProposal.getOspSectionInfo()
-								.setPiEligibilityWaiver(
-										newBasePIEligibilityOptions);
-					}
-
-					newBaseOptions = new BaseOptions();
-					if (oSPSectionInfo != null
-							&& oSPSectionInfo.has("ConflictOfInterestForms")) {
-						switch (oSPSectionInfo.get("ConflictOfInterestForms")
-								.textValue()) {
-						case "1":
-							newBaseOptions.setYes(true);
-							break;
-						case "2":
-							newBaseOptions.setNo(true);
-							break;
-						case "3":
-							newBaseOptions.setNotApplicable(true);
-							break;
-						default:
-							break;
-						}
-					}
-
-					// Conflict Of Interest Forms
-					if (!existingProposal.getOspSectionInfo()
-							.getConflictOfInterestForms()
-							.equals(newBaseOptions)) {
-						existingProposal.getOspSectionInfo()
-								.setConflictOfInterestForms(newBaseOptions);
-					}
-
-					newBaseOptions = new BaseOptions();
-					if (oSPSectionInfo != null
-							&& oSPSectionInfo.has("ExcludedPartyListChecked")) {
-						switch (oSPSectionInfo.get("ExcludedPartyListChecked")
-								.textValue()) {
-						case "1":
-							newBaseOptions.setYes(true);
-							break;
-						case "2":
-							newBaseOptions.setNo(true);
-							break;
-						case "3":
-							newBaseOptions.setNotApplicable(true);
-							break;
-						default:
-							break;
-						}
-					}
-
-					// Excluded Party List Checked
-					if (!existingProposal.getOspSectionInfo()
-							.getExcludedPartyListChecked()
-							.equals(newBaseOptions)) {
-						existingProposal.getOspSectionInfo()
-								.setExcludedPartyListChecked(newBaseOptions);
-					}
-				}
-			} else {
-				if (!proposalID.equals("0")) {
-					existingProposal.setOspSectionInfo(oldProposal
-							.getOspSectionInfo());
-				}
-			}
-
 			if (!proposalID.equals("0")) {
 				if (!existingProposal.equals(oldProposal)) {
 					proposalDAO.updateProposal(existingProposal, authorProfile);
@@ -8483,6 +8499,7 @@ public class ProposalService {
 		}
 	}
 
+	// Allowed extensions: jpg,png,gif,jpeg,bmp,png,pdf,doc,docx,xls,xlsx,txt
 	private boolean verifyValidFileExtension(String extension) {
 		List<String> list = Arrays.asList("jpg", "png", "gif", "jpeg", "bmp",
 				"png", "pdf", "doc", "docx", "xls", "xlsx", "txt");
