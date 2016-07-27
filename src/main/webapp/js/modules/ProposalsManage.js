@@ -2,7 +2,7 @@ var proposalsManage = '';
 
 $(function() {
 
-	if (isAdmin == false) {
+	if (isAdmin == "false") {
 		if (userProfileId == "null") {
 			window.location = 'Login.jsp';
 		} else {

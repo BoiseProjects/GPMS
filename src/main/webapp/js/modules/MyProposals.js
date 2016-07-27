@@ -2,10 +2,18 @@
 
 $(function() {
 
-	if (userProfileId == "null") {
-		window.location = 'Login.jsp';
+	if (isAdmin == "false") {
+		if (userProfileId == "null") {
+			window.location = 'Login.jsp';
+		}
+	} else {
+		if (userProfileId == "null") {
+			window.location = 'Login.jsp';
+		} else {
+			window.location = 'Dashboard.jsp';
+		}
 	}
-
+	
 	jQuery.fn.exists = function() {
 		return this.length > 0;
 	}

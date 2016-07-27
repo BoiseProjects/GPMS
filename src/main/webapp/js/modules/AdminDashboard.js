@@ -1,6 +1,18 @@
 var adminDashboard = '';
 $(function() {
 
+	if (isAdmin == "false") {
+		if (userProfileId == "null") {
+			window.location = 'Login.jsp';
+		} else {
+			window.location = 'Home.jsp';
+		}
+	} else {
+		if (userProfileId == "null") {
+			window.location = 'Login.jsp';
+		}
+	}
+
 	var gpmsCommonObj = function() {
 		var gpmsCommonInfo = {
 			UserProfileID : GPMS.utils.GetUserProfileID(),
@@ -16,16 +28,6 @@ $(function() {
 	};
 
 	// $("#welcome").text("Welcome " + gpmsCommonObj().UserName);
-	gpmsCommonObj();
-	if (isAdmin == false) {
-		if (userProfileId == "null") {
-			window.location = 'Login.jsp';
-		} else {
-			window.location = 'Home.jsp';
-		}
-	} else {
-		if (userProfileId == "null") {
-			window.location = 'Login.jsp';
-		}
-	}
+	// gpmsCommonObj();
+
 });

@@ -2,8 +2,16 @@ var delegation = '';
 
 $(function() {
 
-	if (userProfileId == "null") {
-		window.location = 'Login.jsp';
+	if (isAdmin == "false") {
+		if (userProfileId == "null") {
+			window.location = 'Login.jsp';
+		}
+	} else {
+		if (userProfileId == "null") {
+			window.location = 'Login.jsp';
+		} else {
+			window.location = 'Dashboard.jsp';
+		}
 	}
 
 	jQuery.fn.exists = function() {
@@ -525,8 +533,9 @@ $(function() {
 					totalCostsTo, proposalStatus);
 		},
 
-		BindDelegationGrid : function(projectTitle, usernameBy, submittedOnFrom,
-				submittedOnTo, totalCostsFrom, totalCostsTo, proposalStatus) {
+		BindDelegationGrid : function(projectTitle, usernameBy,
+				submittedOnFrom, submittedOnTo, totalCostsFrom, totalCostsTo,
+				proposalStatus) {
 			this.config.url = this.config.baseURL;
 			this.config.method = "GetDelegationsList";
 			var offset_ = 1;
@@ -1043,8 +1052,9 @@ $(function() {
 				}
 
 				$('#ddlDelegationStatus option').length = 0;
-				$('#ddlDelegationStatus').append(new Option(argus[6], argus[6]))
-						.prop('disabled', true);
+				$('#ddlDelegationStatus')
+						.append(new Option(argus[6], argus[6])).prop(
+								'disabled', true);
 
 				delegation.config.proposalStatus = argus[6];
 
@@ -1937,7 +1947,8 @@ $(function() {
 			var offset_ = 1;
 			var current_ = 1;
 			var perpage = ($("#gdvDelegationsAuditLog_pagesize").length > 0) ? $(
-					"#gdvDelegationsAuditLog_pagesize :selected").text() : 10;
+					"#gdvDelegationsAuditLog_pagesize :selected").text()
+					: 10;
 
 			var auditLogBindObj = {
 				Action : action,
@@ -2586,7 +2597,8 @@ $(function() {
 		AddDelegationInfo : function(buttonType, config, info) {
 			alert(buttonType);
 
-			this.config.url = this.config.baseURL + "SaveUpdateDelegationByAdmin";
+			this.config.url = this.config.baseURL
+					+ "SaveUpdateDelegationByAdmin";
 			this.config.data = JSON2.stringify({
 				buttonType : buttonType,
 				proposalInfo : info,
@@ -2948,8 +2960,8 @@ $(function() {
 				break;
 
 			case 2: // Single Delegation Delete
-				delegation.BindDelegationGrid(null, null, null, null, null, null,
-						null);
+				delegation.BindDelegationGrid(null, null, null, null, null,
+						null, null);
 				csscody.info("<h2>" + 'Successful Message' + "</h2><p>"
 						+ 'Delegation has been deleted successfully.' + "</p>");
 
@@ -3464,7 +3476,8 @@ $(function() {
 				gpmsCommonObj : gpmsCommonObj()
 			});
 
-			this.config.url = this.config.baseURL + "AllDelegationsExportToExcel";
+			this.config.url = this.config.baseURL
+					+ "AllDelegationsExportToExcel";
 			this.config.ajaxCallMode = 17;
 			this.ajaxCall(this.config);
 			return false;
@@ -3483,7 +3496,8 @@ $(function() {
 				auditLogBindObj : auditLogBindObj
 			});
 
-			this.config.url = this.config.baseURL + "DelegationLogsExportToExcel";
+			this.config.url = this.config.baseURL
+					+ "DelegationLogsExportToExcel";
 			this.config.ajaxCallMode = 17;
 			this.ajaxCall(this.config);
 			return false;
@@ -3750,8 +3764,10 @@ $(function() {
 
 								var proposalStatus = $.trim($(
 										'#ddlSearchDelegationStatus').val()) == "" ? null
-										: $.trim($('#ddlSearchDelegationStatus')
-												.val()) == "0" ? null
+										: $
+												.trim($(
+														'#ddlSearchDelegationStatus')
+														.val()) == "0" ? null
 												: $
 														.trim($(
 																'#ddlSearchDelegationStatus')
