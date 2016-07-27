@@ -1093,9 +1093,10 @@ $(function() {
 				// "name" : "Milson",
 				// "age" : 29
 				// },uploadObj
+				allowedTypes : "jpg,png,gif,jpeg,bmp,png,pdf,doc,docx,xls,xlsx,txt",
 				// acceptFiles : "image/*",
 				maxFileCount : 5,
-				// maxFileSize : 5*100 * 1024, //5MB
+				maxFileSize : 5 * 1024 * 1024, //5MB
 				returnType : "json",
 				showDelete : true,
 				confirmDelete : true,

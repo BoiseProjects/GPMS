@@ -4287,18 +4287,6 @@ public class ProposalService {
 						existingInvestigators = oldProposal
 								.getInvestigatorInfo();
 
-						// THIS IS HACK NO ONE CAN DELETE PI
-						// if (!existingProposal.getInvestigatorInfo().getPi()
-						// .equals(existingInvestigators.getPi())) {
-						// if (!deletedInvestigators.getPi().equals(
-						// existingInvestigators.getPi())) {
-						// deletedInvestigators.setPi(existingInvestigators
-						// .getPi());
-						// existingProposal.getInvestigatorInfo().getPi()
-						// .remove(existingInvestigators.getPi());
-						// }
-						// }
-
 						for (InvestigatorRefAndPosition coPI : existingInvestigators
 								.getCo_pi()) {
 							if (!existingProposal.getInvestigatorInfo()
@@ -4333,19 +4321,6 @@ public class ProposalService {
 						}
 
 						// Remove Signatures FOR Deleted Investigators
-
-						// THIS IS HACK PI CANNOT BE DELETED FROM PROPOSAL
-						// if (deletedInvestigators.getPi() != null) {
-						// for (SignatureInfo sign : oldProposal
-						// .getSignatureInfo()) {
-						// if (deletedInvestigators.getPi().getUserProfileId()
-						// .equalsIgnoreCase(sign.getUserProfileId())) {
-						// existingProposal.getSignatureInfo()
-						// .remove(sign);
-						// }
-						// }
-						// }
-
 						for (InvestigatorRefAndPosition coPI : deletedInvestigators
 								.getCo_pi()) {
 							for (SignatureInfo sign : oldProposal
@@ -4362,9 +4337,6 @@ public class ProposalService {
 
 				// Signature
 				// To hold all new Investigators list to get notified
-				// List<SignatureInfo> addedSignatures = new
-				// ArrayList<SignatureInfo>();
-
 				if (proposalInfo != null && proposalInfo.has("SignatureInfo")) {
 					String[] rows = proposalInfo.get("SignatureInfo")
 							.textValue().split("#!#");
@@ -4380,9 +4352,12 @@ public class ProposalService {
 						String[] cols = col.split("!#!");
 						SignatureInfo signatureInfo = new SignatureInfo();
 						signatureInfo.setUserProfileId(cols[0]);
-						signatureInfo.setSignature(cols[1]);
-						signatureInfo.setSignedDate(format.parse(cols[2]));
-						signatureInfo.setNote(cols[3]);
+						signatureInfo.setSignature(cols[1].replaceAll(
+								"\\<[^>]*>", ""));
+						signatureInfo.setSignedDate(format.parse(cols[2]
+								.replaceAll("\\<[^>]*>", "")));
+						signatureInfo.setNote(cols[3].replaceAll("\\<[^>]*>",
+								""));
 						signatureInfo.setFullName(cols[4]);
 						signatureInfo.setPositionTitle(cols[5]);
 						signatureInfo.setDelegated(Boolean
@@ -4405,13 +4380,6 @@ public class ProposalService {
 								}
 							}
 							if (!alreadyExist) {
-								// else {
-								// if (sign.getUserProfileId().equals(
-								// userProfileID)) {
-								// existingProposal.getSignatureInfo().remove(
-								// sign);
-								// }
-								// }
 								newSignatureInfo.add(signatureInfo);
 							}
 						}
@@ -4467,7 +4435,8 @@ public class ProposalService {
 									if (complianceInfo != null
 											&& complianceInfo.has("IRB")) {
 										newComplianceInfo.setIrb(complianceInfo
-												.get("IRB").textValue());
+												.get("IRB").textValue()
+												.replaceAll("\\<[^>]*>", ""));
 									}
 									break;
 								case "2":
@@ -4505,8 +4474,11 @@ public class ProposalService {
 									if (complianceInfo != null
 											&& complianceInfo.has("IACUC")) {
 										newComplianceInfo
-												.setIacuc(complianceInfo.get(
-														"IACUC").textValue());
+												.setIacuc(complianceInfo
+														.get("IACUC")
+														.textValue()
+														.replaceAll(
+																"\\<[^>]*>", ""));
 									}
 									break;
 								case "2":
@@ -4542,7 +4514,8 @@ public class ProposalService {
 									if (complianceInfo != null
 											&& complianceInfo.has("IBC")) {
 										newComplianceInfo.setIbc(complianceInfo
-												.get("IBC").textValue());
+												.get("IBC").textValue()
+												.replaceAll("\\<[^>]*>", ""));
 									}
 									break;
 								case "2":
@@ -4639,22 +4612,7 @@ public class ProposalService {
 							}
 						}
 
-						// // TODO only check this for required not all XACML
-						// call
-						// if (root != null && root.has("proposalId")) {
-						// String proposalId = new String();
-						// JsonNode proposal_Id = root.get("proposalId");
-						// proposalId = proposal_Id.textValue();
-						// if (!proposalId.equals("")) {
-						// ObjectId id = new ObjectId(proposalId);
-						// Proposal proposal = proposalDAO
-						// .findProposalByProposalID(id);
-						// resourceMap.put("status",
-						// proposal.getProposalStatus()
-						// .toString());
-						// attrMap.put("Resource", resourceMap);
-						// }
-						// }
+						// TODO only check this for required not all XACML
 
 						// Need to add Environment to detect the Campus or
 						// outside
@@ -5732,7 +5690,7 @@ public class ProposalService {
 
 				if (projectInfo != null && projectInfo.has("DueDate")) {
 					Date dueDate = formatter.parse(projectInfo.get("DueDate")
-							.textValue());
+							.textValue().replaceAll("\\<[^>]*>", ""));
 					if (!proposalID.equals("0")) {
 						if (!existingProposal.getProjectInfo().getDueDate()
 								.equals(dueDate)) {
@@ -5747,14 +5705,16 @@ public class ProposalService {
 				ProjectPeriod projectPeriod = new ProjectPeriod();
 
 				if (projectInfo != null && projectInfo.has("ProjectPeriodFrom")) {
-					Date periodFrom = formatter.parse(projectInfo.get(
-							"ProjectPeriodFrom").textValue());
+					Date periodFrom = formatter.parse(projectInfo
+							.get("ProjectPeriodFrom").textValue()
+							.replaceAll("\\<[^>]*>", ""));
 					projectPeriod.setFrom(periodFrom);
 				}
 
 				if (projectInfo != null && projectInfo.has("ProjectPeriodTo")) {
-					Date periodTo = formatter.parse(projectInfo.get(
-							"ProjectPeriodTo").textValue());
+					Date periodTo = formatter.parse(projectInfo
+							.get("ProjectPeriodTo").textValue()
+							.replaceAll("\\<[^>]*>", ""));
 					projectPeriod.setTo(periodTo);
 				}
 				if (!proposalID.equals("0")) {
@@ -5781,7 +5741,8 @@ public class ProposalService {
 				if (sponsorAndBudgetInfo != null
 						&& sponsorAndBudgetInfo.has("GrantingAgency")) {
 					for (String grantingAgency : sponsorAndBudgetInfo
-							.get("GrantingAgency").textValue().split(", ")) {
+							.get("GrantingAgency").textValue()
+							.replaceAll("\\<[^>]*>", "").split(", ")) {
 						newSponsorAndBudgetInfo.getGrantingAgency().add(
 								grantingAgency);
 					}
@@ -5791,28 +5752,29 @@ public class ProposalService {
 						&& sponsorAndBudgetInfo.has("DirectCosts")) {
 					newSponsorAndBudgetInfo.setDirectCosts(Double
 							.parseDouble(sponsorAndBudgetInfo
-									.get("DirectCosts").textValue()));
+									.get("DirectCosts").textValue()
+									.replaceAll("\\<[^>]*>", "")));
 				}
 
 				if (sponsorAndBudgetInfo != null
 						&& sponsorAndBudgetInfo.has("FACosts")) {
 					newSponsorAndBudgetInfo.setFaCosts(Double
 							.parseDouble(sponsorAndBudgetInfo.get("FACosts")
-									.textValue()));
+									.textValue().replaceAll("\\<[^>]*>", "")));
 				}
 
 				if (sponsorAndBudgetInfo != null
 						&& sponsorAndBudgetInfo.has("TotalCosts")) {
 					newSponsorAndBudgetInfo.setTotalCosts(Double
 							.parseDouble(sponsorAndBudgetInfo.get("TotalCosts")
-									.textValue()));
+									.textValue().replaceAll("\\<[^>]*>", "")));
 				}
 
 				if (sponsorAndBudgetInfo != null
 						&& sponsorAndBudgetInfo.has("FARate")) {
 					newSponsorAndBudgetInfo.setFaRate(Double
 							.parseDouble(sponsorAndBudgetInfo.get("FARate")
-									.textValue()));
+									.textValue().replaceAll("\\<[^>]*>", "")));
 				}
 			}
 
@@ -6077,7 +6039,8 @@ public class ProposalService {
 								&& collaborationInfo.has("Collaborators")) {
 							newCollaborationInfo
 									.setInvolvedCollaborators(collaborationInfo
-											.get("Collaborators").textValue());
+											.get("Collaborators").textValue()
+											.replaceAll("\\<[^>]*>", ""));
 						}
 						break;
 					case "2":
@@ -6113,7 +6076,8 @@ public class ProposalService {
 						if (confidentialInfo != null
 								&& confidentialInfo.has("OnPages")) {
 							newConfidentialInfo.setOnPages(confidentialInfo
-									.get("OnPages").textValue());
+									.get("OnPages").textValue()
+									.replaceAll("\\<[^>]*>", ""));
 						}
 						if (confidentialInfo != null
 								&& confidentialInfo.has("Patentable")) {
@@ -6206,10 +6170,23 @@ public class ProposalService {
 								int i = fileName.lastIndexOf('.');
 								if (i > 0) {
 									extension = fileName.substring(i + 1);
-									uploadFile.setExtension(extension);
+
+									if (verifyValidFileExtension(extension)) {
+										uploadFile.setExtension(extension);
+									} else {
+										return false;
+									}
 								}
-								uploadFile.setFilesize(file.length());
+
+								long fileSize = file.length();
+								if (verifyValidFileSize(fileSize)) {
+									uploadFile.setFilesize(fileSize);
+								} else {
+									return false;
+								}
 								uploadFile.setFilepath("/uploads/" + fileName);
+								uploadFile.setTitle(uploadFile.getTitle()
+										.replaceAll("\\<[^>]*>", ""));
 
 								existingProposal.getAppendices()
 										.add(uploadFile);
@@ -6224,9 +6201,20 @@ public class ProposalService {
 							int i = fileName.lastIndexOf('.');
 							if (i > 0) {
 								extension = fileName.substring(i + 1);
-								uploadFile.setExtension(extension);
+								if (verifyValidFileExtension(extension)) {
+									uploadFile.setExtension(extension);
+								} else {
+									return false;
+								}
 							}
-							uploadFile.setFilesize(file.length());
+
+							long fileSize = file.length();
+							if (verifyValidFileSize(fileSize)) {
+								uploadFile.setFilesize(fileSize);
+							} else {
+								return false;
+							}
+							uploadFile.setFilesize(fileSize);
 							uploadFile.setFilepath("/uploads/" + fileName);
 
 							existingProposal.getAppendices().add(uploadFile);
@@ -6234,8 +6222,6 @@ public class ProposalService {
 					}
 				}
 			}
-
-			// START
 
 			// For Proposal User Title : for Dean, Chair and Manager
 			JsonNode proposalUserTitle = root.get("proposalUserTitle");
@@ -7110,6 +7096,7 @@ public class ProposalService {
 								// You are not allowed to APPROVE
 								// the
 								// Proposal
+								return false;
 							}
 						}
 
@@ -7962,12 +7949,11 @@ public class ProposalService {
 					}
 				}
 			}
-			// END
 
-			if (proposalUserTitle.textValue().equals(
-					"University Research Administrator")
-					|| proposalUserTitle.textValue().equals(
-							"University Research Director")) {
+			if ((proposalUserTitle.textValue().equals(
+					"University Research Administrator") || proposalUserTitle
+					.textValue().equals("University Research Director"))
+					&& !proposalID.equals("0")) {
 				// OSP Section Info Only for University Research Administrator
 				// or University Research Director
 				OSPSectionInfo newOSPSectionInfo = new OSPSectionInfo();
@@ -7978,18 +7964,12 @@ public class ProposalService {
 					// List Agency
 					if (oSPSectionInfo != null
 							&& oSPSectionInfo.has("ListAgency")) {
-						if (!proposalID.equals("0")) {
-							if (!existingProposal
-									.getOspSectionInfo()
-									.getListAgency()
-									.equals(oSPSectionInfo.get("ListAgency")
-											.textValue())) {
-								existingProposal.getOspSectionInfo()
-										.setListAgency(
-												oSPSectionInfo
-														.get("ListAgency")
-														.textValue());
-							}
+						String agencies = oSPSectionInfo.get("ListAgency")
+								.textValue().replaceAll("\\<[^>]*>", "");
+						if (!existingProposal.getOspSectionInfo()
+								.getListAgency().equals(agencies)) {
+							existingProposal.getOspSectionInfo().setListAgency(
+									agencies);
 						}
 					}
 
@@ -8060,61 +8040,45 @@ public class ProposalService {
 					}
 
 					// Funding Source
-					if (!proposalID.equals("0")) {
-						if (!existingProposal.getOspSectionInfo()
-								.getFundingSource().equals(newFundingSource)) {
-							existingProposal.getOspSectionInfo()
-									.setFundingSource(newFundingSource);
-						}
+					if (!existingProposal.getOspSectionInfo()
+							.getFundingSource().equals(newFundingSource)) {
+						existingProposal.getOspSectionInfo().setFundingSource(
+								newFundingSource);
 					}
 
 					// CFDA No
 					if (oSPSectionInfo != null && oSPSectionInfo.has("CFDANo")) {
-						if (!proposalID.equals("0")) {
-							if (!existingProposal
-									.getOspSectionInfo()
-									.getCfdaNo()
-									.equals(oSPSectionInfo.get("CFDANo")
-											.textValue())) {
-								existingProposal.getOspSectionInfo().setCfdaNo(
-										oSPSectionInfo.get("CFDANo")
-												.textValue());
-							}
+						String CFDANo = oSPSectionInfo.get("CFDANo")
+								.textValue().replaceAll("\\<[^>]*>", "");
+						if (!existingProposal.getOspSectionInfo().getCfdaNo()
+								.equals(CFDANo)) {
+							existingProposal.getOspSectionInfo().setCfdaNo(
+									CFDANo);
 						}
 					}
 
 					// Program No
 					if (oSPSectionInfo != null
 							&& oSPSectionInfo.has("ProgramNo")) {
-						if (!proposalID.equals("0")) {
-							if (!existingProposal
-									.getOspSectionInfo()
-									.getProgramNo()
-									.equals(oSPSectionInfo.get("ProgramNo")
-											.textValue())) {
-								existingProposal.getOspSectionInfo()
-										.setProgramNo(
-												oSPSectionInfo.get("ProgramNo")
-														.textValue());
-							}
+						String programNo = oSPSectionInfo.get("ProgramNo")
+								.textValue().replaceAll("\\<[^>]*>", "");
+						if (!existingProposal.getOspSectionInfo()
+								.getProgramNo().equals(programNo)) {
+							existingProposal.getOspSectionInfo().setProgramNo(
+									programNo);
 						}
 					}
 
 					// Program Title
 					if (oSPSectionInfo != null
 							&& oSPSectionInfo.has("ProgramTitle")) {
-						if (!proposalID.equals("0")) {
-							if (!existingProposal
-									.getOspSectionInfo()
-									.getProgramTitle()
-									.equals(oSPSectionInfo.get("ProgramTitle")
-											.textValue())) {
-								existingProposal.getOspSectionInfo()
-										.setProgramTitle(
-												oSPSectionInfo.get(
-														"ProgramTitle")
-														.textValue());
-							}
+						String programTitle = oSPSectionInfo
+								.get("ProgramTitle").textValue()
+								.replaceAll("\\<[^>]*>", "");
+						if (!existingProposal.getOspSectionInfo()
+								.getProgramTitle().equals(programTitle)) {
+							existingProposal.getOspSectionInfo()
+									.setProgramTitle(programTitle);
 						}
 					}
 
@@ -8161,12 +8125,10 @@ public class ProposalService {
 										.booleanValue());
 					}
 					// Recovery
-					if (!proposalID.equals("0")) {
-						if (!existingProposal.getOspSectionInfo().getRecovery()
-								.equals(newRecovery)) {
-							existingProposal.getOspSectionInfo().setRecovery(
-									newRecovery);
-						}
+					if (!existingProposal.getOspSectionInfo().getRecovery()
+							.equals(newRecovery)) {
+						existingProposal.getOspSectionInfo().setRecovery(
+								newRecovery);
 					}
 
 					BaseInfo newBaseInfo = new BaseInfo();
@@ -8197,12 +8159,10 @@ public class ProposalService {
 					}
 
 					// Base Info
-					if (!proposalID.equals("0")) {
-						if (!existingProposal.getOspSectionInfo().getBaseInfo()
-								.equals(newBaseInfo)) {
-							existingProposal.getOspSectionInfo().setBaseInfo(
-									newBaseInfo);
-						}
+					if (!existingProposal.getOspSectionInfo().getBaseInfo()
+							.equals(newBaseInfo)) {
+						existingProposal.getOspSectionInfo().setBaseInfo(
+								newBaseInfo);
 					}
 
 					if (oSPSectionInfo != null
@@ -8221,68 +8181,48 @@ public class ProposalService {
 					}
 
 					// PI Salary Included
-					if (!proposalID.equals("0")) {
-						if (existingProposal.getOspSectionInfo()
-								.isPiSalaryIncluded() != newOSPSectionInfo
-								.isPiSalaryIncluded()) {
-							existingProposal.getOspSectionInfo()
-									.setPiSalaryIncluded(
-											newOSPSectionInfo
-													.isPiSalaryIncluded());
-						}
+					if (existingProposal.getOspSectionInfo()
+							.isPiSalaryIncluded() != newOSPSectionInfo
+							.isPiSalaryIncluded()) {
+						existingProposal.getOspSectionInfo()
+								.setPiSalaryIncluded(
+										newOSPSectionInfo.isPiSalaryIncluded());
 					}
 
 					if (oSPSectionInfo != null
 							&& oSPSectionInfo.has("PISalary")) {
 						// PI Salary
-						if (!proposalID.equals("0")) {
-							if (existingProposal.getOspSectionInfo()
-									.getPiSalary() != Double
-									.parseDouble(oSPSectionInfo.get("PISalary")
-											.textValue())) {
-								existingProposal
-										.getOspSectionInfo()
-										.setPiSalary(
-												Double.parseDouble(oSPSectionInfo
-														.get("PISalary")
-														.textValue()));
-							}
+						String PISalary = oSPSectionInfo.get("PISalary")
+								.textValue().replaceAll("\\<[^>]*>", "");
+						if (existingProposal.getOspSectionInfo().getPiSalary() != Double
+								.parseDouble(PISalary)) {
+							existingProposal.getOspSectionInfo().setPiSalary(
+									Double.parseDouble(PISalary));
 						}
 					}
 
 					if (oSPSectionInfo != null
 							&& oSPSectionInfo.has("PIFringe")) {
 						// PI Fringe
-						if (!proposalID.equals("0")) {
-							if (existingProposal.getOspSectionInfo()
-									.getPiFringe() != Double
-									.parseDouble(oSPSectionInfo.get("PIFringe")
-											.textValue())) {
-								existingProposal
-										.getOspSectionInfo()
-										.setPiFringe(
-												Double.parseDouble(oSPSectionInfo
-														.get("PIFringe")
-														.textValue()));
-							}
+						String PiFringe = oSPSectionInfo.get("PIFringe")
+								.textValue().replaceAll("\\<[^>]*>", "");
+						if (existingProposal.getOspSectionInfo().getPiFringe() != Double
+								.parseDouble(PiFringe)) {
+							existingProposal.getOspSectionInfo().setPiFringe(
+									Double.parseDouble(PiFringe));
 						}
 					}
 
 					if (oSPSectionInfo != null
 							&& oSPSectionInfo.has("DepartmentId")) {
 						// Department Id
-						if (!proposalID.equals("0")) {
-							if (!existingProposal
-									.getOspSectionInfo()
-									.getDepartmentId()
-									.equals(oSPSectionInfo.get("DepartmentId")
-											.textValue())) {
-								existingProposal.getOspSectionInfo()
-										.setDepartmentId(
-												oSPSectionInfo.get(
-														"DepartmentId")
-														.textValue());
-							}
+						String departmentId = oSPSectionInfo
+								.get("DepartmentId").textValue()
+								.replaceAll("\\<[^>]*>", "");
+						if (!existingProposal.getOspSectionInfo()
+								.getDepartmentId().equals(departmentId)) {
+							existingProposal.getOspSectionInfo()
+									.setDepartmentId(departmentId);
 						}
 					}
 
@@ -8307,14 +8247,11 @@ public class ProposalService {
 						}
 					}
 					// Institutional Cost Documented
-					if (!proposalID.equals("0")) {
-						if (!existingProposal.getOspSectionInfo()
-								.getInstitutionalCostDocumented()
-								.equals(newBaseOptions)) {
-							existingProposal.getOspSectionInfo()
-									.setInstitutionalCostDocumented(
-											newBaseOptions);
-						}
+					if (!existingProposal.getOspSectionInfo()
+							.getInstitutionalCostDocumented()
+							.equals(newBaseOptions)) {
+						existingProposal.getOspSectionInfo()
+								.setInstitutionalCostDocumented(newBaseOptions);
 					}
 
 					newBaseOptions = new BaseOptions();
@@ -8337,14 +8274,11 @@ public class ProposalService {
 					}
 
 					// Third Party Cost Documented
-					if (!proposalID.equals("0")) {
-						if (!existingProposal.getOspSectionInfo()
-								.getThirdPartyCostDocumented()
-								.equals(newBaseOptions)) {
-							existingProposal
-									.getOspSectionInfo()
-									.setThirdPartyCostDocumented(newBaseOptions);
-						}
+					if (!existingProposal.getOspSectionInfo()
+							.getThirdPartyCostDocumented()
+							.equals(newBaseOptions)) {
+						existingProposal.getOspSectionInfo()
+								.setThirdPartyCostDocumented(newBaseOptions);
 					}
 
 					if (oSPSectionInfo != null
@@ -8359,7 +8293,8 @@ public class ProposalService {
 								newOSPSectionInfo
 										.setAnticipatedSubRecipientsNames(oSPSectionInfo
 												.get("AnticipatedSubRecipientsNames")
-												.textValue());
+												.textValue()
+												.replaceAll("\\<[^>]*>", ""));
 							}
 							break;
 						case "2":
@@ -8372,38 +8307,35 @@ public class ProposalService {
 					}
 
 					// Is Anticipated SubRecipients
-					if (!proposalID.equals("0")) {
-						if (existingProposal.getOspSectionInfo()
-								.isAnticipatedSubRecipients() != newOSPSectionInfo
-								.isAnticipatedSubRecipients()) {
-							existingProposal
-									.getOspSectionInfo()
-									.setAnticipatedSubRecipients(
-											newOSPSectionInfo
-													.isAnticipatedSubRecipients());
-						}
+					if (existingProposal.getOspSectionInfo()
+							.isAnticipatedSubRecipients() != newOSPSectionInfo
+							.isAnticipatedSubRecipients()) {
+						existingProposal.getOspSectionInfo()
+								.setAnticipatedSubRecipients(
+										newOSPSectionInfo
+												.isAnticipatedSubRecipients());
+					}
 
-						// Anticipated SubRecipients Names
-						if (existingProposal.getOspSectionInfo()
-								.getAnticipatedSubRecipientsNames() != null) {
-							if (!existingProposal
-									.getOspSectionInfo()
-									.getAnticipatedSubRecipientsNames()
-									.equals(newOSPSectionInfo
-											.getAnticipatedSubRecipientsNames())) {
-								existingProposal
-										.getOspSectionInfo()
-										.setAnticipatedSubRecipientsNames(
-												newOSPSectionInfo
-														.getAnticipatedSubRecipientsNames());
-							}
-						} else {
+					// Anticipated SubRecipients Names
+					if (existingProposal.getOspSectionInfo()
+							.getAnticipatedSubRecipientsNames() != null) {
+						if (!existingProposal
+								.getOspSectionInfo()
+								.getAnticipatedSubRecipientsNames()
+								.equals(newOSPSectionInfo
+										.getAnticipatedSubRecipientsNames())) {
 							existingProposal
 									.getOspSectionInfo()
 									.setAnticipatedSubRecipientsNames(
 											newOSPSectionInfo
 													.getAnticipatedSubRecipientsNames());
 						}
+					} else {
+						existingProposal
+								.getOspSectionInfo()
+								.setAnticipatedSubRecipientsNames(
+										newOSPSectionInfo
+												.getAnticipatedSubRecipientsNames());
 					}
 
 					BasePIEligibilityOptions newBasePIEligibilityOptions = new BasePIEligibilityOptions();
@@ -8433,14 +8365,12 @@ public class ProposalService {
 					}
 
 					// Base PI Eligibility Options
-					if (!proposalID.equals("0")) {
-						if (!existingProposal.getOspSectionInfo()
-								.getPiEligibilityWaiver()
-								.equals(newBasePIEligibilityOptions)) {
-							existingProposal.getOspSectionInfo()
-									.setPiEligibilityWaiver(
-											newBasePIEligibilityOptions);
-						}
+					if (!existingProposal.getOspSectionInfo()
+							.getPiEligibilityWaiver()
+							.equals(newBasePIEligibilityOptions)) {
+						existingProposal.getOspSectionInfo()
+								.setPiEligibilityWaiver(
+										newBasePIEligibilityOptions);
 					}
 
 					newBaseOptions = new BaseOptions();
@@ -8463,13 +8393,11 @@ public class ProposalService {
 					}
 
 					// Conflict Of Interest Forms
-					if (!proposalID.equals("0")) {
-						if (!existingProposal.getOspSectionInfo()
-								.getConflictOfInterestForms()
-								.equals(newBaseOptions)) {
-							existingProposal.getOspSectionInfo()
-									.setConflictOfInterestForms(newBaseOptions);
-						}
+					if (!existingProposal.getOspSectionInfo()
+							.getConflictOfInterestForms()
+							.equals(newBaseOptions)) {
+						existingProposal.getOspSectionInfo()
+								.setConflictOfInterestForms(newBaseOptions);
 					}
 
 					newBaseOptions = new BaseOptions();
@@ -8492,21 +8420,16 @@ public class ProposalService {
 					}
 
 					// Excluded Party List Checked
-					if (!proposalID.equals("0")) {
-						if (!existingProposal.getOspSectionInfo()
-								.getExcludedPartyListChecked()
-								.equals(newBaseOptions)) {
-							existingProposal
-									.getOspSectionInfo()
-									.setExcludedPartyListChecked(newBaseOptions);
-						}
+					if (!existingProposal.getOspSectionInfo()
+							.getExcludedPartyListChecked()
+							.equals(newBaseOptions)) {
+						existingProposal.getOspSectionInfo()
+								.setExcludedPartyListChecked(newBaseOptions);
 					}
 				}
 			} else {
-				if (!proposalID.equals("0")) {
-					existingProposal.setOspSectionInfo(oldProposal
-							.getOspSectionInfo());
-				}
+				existingProposal.setOspSectionInfo(oldProposal
+						.getOspSectionInfo());
 			}
 
 			if (!proposalID.equals("0")) {
@@ -8527,6 +8450,25 @@ public class ProposalService {
 			}
 		}
 		return proposalIsChanged;
+	}
+
+	// Only 5MB is allowed from client to upload
+	private boolean verifyValidFileSize(long fileSize) {
+		if (fileSize <= 5 * 1024 * 1024) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	private boolean verifyValidFileExtension(String extension) {
+		List<String> list = Arrays.asList("jpg", "png", "gif", "jpeg", "bmp",
+				"png", "pdf", "doc", "docx", "xls", "xlsx", "txt");
+		if (list.contains(extension)) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	private void NotifyAllExistingInvestigators(String proposalID,
