@@ -6216,6 +6216,8 @@ public class ProposalService {
 							}
 							uploadFile.setFilesize(fileSize);
 							uploadFile.setFilepath("/uploads/" + fileName);
+							uploadFile.setTitle(uploadFile.getTitle()
+									.replaceAll("\\<[^>]*>", ""));
 
 							existingProposal.getAppendices().add(uploadFile);
 						}
@@ -8428,8 +8430,10 @@ public class ProposalService {
 					}
 				}
 			} else {
-				existingProposal.setOspSectionInfo(oldProposal
-						.getOspSectionInfo());
+				if (!proposalID.equals("0")) {
+					existingProposal.setOspSectionInfo(oldProposal
+							.getOspSectionInfo());
+				}
 			}
 
 			if (!proposalID.equals("0")) {

@@ -865,8 +865,8 @@
 				titleVal = title;
 			}
 			bar.extraHTML = $(
-					"<div class='extrahtml'><b>Title: </b><input type='text' value='"
-							+ titleVal + "' name='tile_"
+					"<div class='extrahtml'><b>Title: </b><input type='text' value="
+							+ titleVal + " name='tile_"
 							+ $('.ajax-file-upload-statusbar').size()
 							+ "' required='true' /></div>").insertAfter(
 					bar.filename);
