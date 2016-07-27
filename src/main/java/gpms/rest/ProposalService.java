@@ -46,6 +46,7 @@ import gpms.model.UserAccount;
 import gpms.model.UserProfile;
 import gpms.model.WithdrawType;
 import gpms.utils.EmailUtil;
+import gpms.utils.HTMLUtil;
 import gpms.utils.SerializationHelper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -77,6 +78,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.log4j.Logger;
 import org.bson.types.ObjectId;
 import org.glassfish.jersey.media.sse.OutboundEvent;
@@ -5629,20 +5631,17 @@ public class ProposalService {
 			if (proposalInfo != null && proposalInfo.has("ProjectInfo")) {
 				JsonNode projectInfo = proposalInfo.get("ProjectInfo");
 				if (projectInfo != null && projectInfo.has("ProjectTitle")) {
+					final String proposalTitle = projectInfo
+							.get("ProjectTitle").textValue()
+							.replaceAll("\\<[^>]*>", "");
 					if (!proposalID.equals("0")) {
-						if (!existingProposal
-								.getProjectInfo()
-								.getProjectTitle()
-								.equals(projectInfo.get("ProjectTitle")
-										.textValue())) {
-							existingProposal.getProjectInfo()
-									.setProjectTitle(
-											projectInfo.get("ProjectTitle")
-													.textValue());
+						if (!existingProposal.getProjectInfo()
+								.getProjectTitle().equals(proposalTitle)) {
+							existingProposal.getProjectInfo().setProjectTitle(
+									proposalTitle);
 						}
 					} else {
-						newProjectInfo.setProjectTitle(projectInfo.get(
-								"ProjectTitle").textValue());
+						newProjectInfo.setProjectTitle(proposalTitle);
 					}
 				}
 
@@ -8504,8 +8503,10 @@ public class ProposalService {
 					}
 				}
 			} else {
-				existingProposal.setOspSectionInfo(oldProposal
-						.getOspSectionInfo());
+				if (!proposalID.equals("0")) {
+					existingProposal.setOspSectionInfo(oldProposal
+							.getOspSectionInfo());
+				}
 			}
 
 			if (!proposalID.equals("0")) {
