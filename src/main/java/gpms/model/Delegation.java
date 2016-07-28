@@ -16,22 +16,25 @@ public class Delegation extends BaseEntity implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	@Reference(value = "user profile"/* , lazy = true */)
+	@Reference(value = "delegater user profile"/* , lazy = true */)
 	private UserProfile userProfile = new UserProfile();
 
-	@Property("assigned user id")
-	private String assignedId = new String();
+	@Property("delegatee user id")
+	private String delegateeId = new String();
 
-	@Property("college")
+	@Property("delegatee full name")
+	private String delegateeFullName = new String();
+
+	@Property("delegated college")
 	private String college = new String();
 
-	@Property("department")
+	@Property("delegated department")
 	private String department = new String();
 
-	@Property("position type")
+	@Property("delegated position type")
 	private String positionType = new String();
 
-	@Property("position title")
+	@Property("delegated position title")
 	private String positionTitle = new String();
 
 	@Property("proposal id")
@@ -42,6 +45,18 @@ public class Delegation extends BaseEntity implements Serializable {
 
 	@Property("to")
 	private Date to = new Date();
+
+	@Property("action")
+	private String action = new String();
+
+	@Property("delegation file name")
+	private String delegationFileName = new String();
+
+	@Property("created on")
+	private Date createdOn = new Date();
+
+	@Property("revoked")
+	private boolean revoked = false;
 
 	public Delegation() {
 
@@ -55,12 +70,20 @@ public class Delegation extends BaseEntity implements Serializable {
 		this.userProfile = userProfile;
 	}
 
-	public String getAssignedId() {
-		return assignedId;
+	public String getDelegateeId() {
+		return delegateeId;
 	}
 
-	public void setAssignedId(String assignedId) {
-		this.assignedId = assignedId;
+	public void setDelegateeId(String delegateeId) {
+		this.delegateeId = delegateeId;
+	}
+
+	public String getDelegateeFullName() {
+		return delegateeFullName;
+	}
+
+	public void setDelegateeFullName(String delegateeFullName) {
+		this.delegateeFullName = delegateeFullName;
 	}
 
 	public String getCollege() {
@@ -119,22 +142,68 @@ public class Delegation extends BaseEntity implements Serializable {
 		this.to = to;
 	}
 
+	public String getAction() {
+		return action;
+	}
+
+	public void setAction(String action) {
+		this.action = action;
+	}
+
+	public String getDelegationFileName() {
+		return delegationFileName;
+	}
+
+	public void setDelegationFileName(String delegationFileName) {
+		this.delegationFileName = delegationFileName;
+	}
+
+	public Date getCreatedOn() {
+		return createdOn;
+	}
+
+	public void setCreatedOn(Date createdOn) {
+		this.createdOn = createdOn;
+	}
+
+	public boolean isRevoked() {
+		return revoked;
+	}
+
+	public void setRevoked(boolean revoked) {
+		this.revoked = revoked;
+	}
+
 	@Override
 	public String toString() {
-		return "Delegation [userProfile=" + userProfile + ", assignedId="
-				+ assignedId + ", college=" + college + ", department="
-				+ department + ", positionType=" + positionType
-				+ ", positionTitle=" + positionTitle + ", proposalId="
-				+ proposalId + ", from=" + from + ", to=" + to + "]";
+		return "Delegation [userProfile=" + userProfile + ", delegateeId="
+				+ delegateeId + ", delegateeFullName=" + delegateeFullName
+				+ ", college=" + college + ", department=" + department
+				+ ", positionType=" + positionType + ", positionTitle="
+				+ positionTitle + ", proposalId=" + proposalId + ", from="
+				+ from + ", to=" + to + ", action=" + action
+				+ ", delegationFileName=" + delegationFileName + ", createdOn="
+				+ createdOn + ", revoked=" + revoked + "]";
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		int result = super.hashCode();
-		result = prime * result
-				+ ((assignedId == null) ? 0 : assignedId.hashCode());
+		int result = 1;
+		result = prime * result + ((action == null) ? 0 : action.hashCode());
 		result = prime * result + ((college == null) ? 0 : college.hashCode());
+		result = prime * result
+				+ ((createdOn == null) ? 0 : createdOn.hashCode());
+		result = prime
+				* result
+				+ ((delegateeFullName == null) ? 0 : delegateeFullName
+						.hashCode());
+		result = prime * result
+				+ ((delegateeId == null) ? 0 : delegateeId.hashCode());
+		result = prime
+				* result
+				+ ((delegationFileName == null) ? 0 : delegationFileName
+						.hashCode());
 		result = prime * result
 				+ ((department == null) ? 0 : department.hashCode());
 		result = prime * result + ((from == null) ? 0 : from.hashCode());
@@ -144,6 +213,7 @@ public class Delegation extends BaseEntity implements Serializable {
 				+ ((positionType == null) ? 0 : positionType.hashCode());
 		result = prime * result
 				+ ((proposalId == null) ? 0 : proposalId.hashCode());
+		result = prime * result + (revoked ? 1231 : 1237);
 		result = prime * result + ((to == null) ? 0 : to.hashCode());
 		result = prime * result
 				+ ((userProfile == null) ? 0 : userProfile.hashCode());
@@ -154,20 +224,40 @@ public class Delegation extends BaseEntity implements Serializable {
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (!super.equals(obj))
+		if (obj == null)
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
 		Delegation other = (Delegation) obj;
-		if (assignedId == null) {
-			if (other.assignedId != null)
+		if (action == null) {
+			if (other.action != null)
 				return false;
-		} else if (!assignedId.equals(other.assignedId))
+		} else if (!action.equals(other.action))
 			return false;
 		if (college == null) {
 			if (other.college != null)
 				return false;
 		} else if (!college.equals(other.college))
+			return false;
+		if (createdOn == null) {
+			if (other.createdOn != null)
+				return false;
+		} else if (!createdOn.equals(other.createdOn))
+			return false;
+		if (delegateeFullName == null) {
+			if (other.delegateeFullName != null)
+				return false;
+		} else if (!delegateeFullName.equals(other.delegateeFullName))
+			return false;
+		if (delegateeId == null) {
+			if (other.delegateeId != null)
+				return false;
+		} else if (!delegateeId.equals(other.delegateeId))
+			return false;
+		if (delegationFileName == null) {
+			if (other.delegationFileName != null)
+				return false;
+		} else if (!delegationFileName.equals(other.delegationFileName))
 			return false;
 		if (department == null) {
 			if (other.department != null)
@@ -193,6 +283,8 @@ public class Delegation extends BaseEntity implements Serializable {
 			if (other.proposalId != null)
 				return false;
 		} else if (!proposalId.equals(other.proposalId))
+			return false;
+		if (revoked != other.revoked)
 			return false;
 		if (to == null) {
 			if (other.to != null)

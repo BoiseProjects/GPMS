@@ -1,0 +1,17 @@
+{ 
+    "_id" : ObjectId("5796615246edfa49d60e87ae"), 
+    "delegater user profile" : DBRef("userprofile", ObjectId("5745f29ebcbb29192ce0d42f")), 
+    "delegatee user id" : "578918b9bcbb29090c4278e7", 
+    "delegatee full name" : "Associate Chemistry Chair", 
+    "delegated college" : "Science", 
+    "delegated department" : "Chemistry", 
+    "delegated position type" : "Administrator", 
+    "delegated position title" : "Department Chair", 
+    "proposal id" : "", 
+    "from" : ISODate("2016-06-02T19:37:36.859+0000"), 
+    "to" : ISODate("2017-07-02T19:37:36.859+0000"), 
+    "action" : "Approve", 
+    "delegation file name" : "chairdelegation.xml", 
+    "created on" : ISODate("2016-07-26T19:37:36.859+0000"), 
+    "revoked" : false
+}

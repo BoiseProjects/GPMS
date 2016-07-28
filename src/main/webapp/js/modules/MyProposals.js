@@ -2,8 +2,16 @@
 
 $(function() {
 
-	if (userProfileId == "null") {
-		window.location = 'Login.jsp';
+	if (isAdmin == "false") {
+		if (userProfileId == "null") {
+			window.location = 'Login.jsp';
+		}
+	} else {
+		if (userProfileId == "null") {
+			window.location = 'Login.jsp';
+		} else {
+			window.location = 'Dashboard.jsp';
+		}
 	}
 
 	jQuery.fn.exists = function() {
@@ -77,7 +85,8 @@ $(function() {
 							},
 							projectTitle : {
 								required : true,
-								minlength : 5
+								minlength : 5,
+								maxlength : 250
 							},
 							projectType : {
 								required : true
@@ -87,24 +96,28 @@ $(function() {
 							},
 							dueDate : {
 								required : true,
-								dpDate : true
+								dpDate : true,
+								maxlength : 10
 							},
 							locationOfProject : {
 								required : true
 							},
 							projectPeriodFrom : {
 								required : true,
-								dpDate : true
+								dpDate : true,
+								maxlength : 10
 							},
 							projectPeriodTo : {
 								required : true,
-								dpDate : true
+								dpDate : true,
+								maxlength : 10
 							},
 							proposalStatus : {
 								required : true
 							},
 							nameOfGrantingAgency : {
-								required : true
+								required : true,
+								maxlength : 50
 							},
 							directCosts : {
 								required : true
@@ -149,7 +162,8 @@ $(function() {
 								required : true
 							},
 							IRB : {
-								required : true
+								required : true,
+								maxlength : 15
 							},
 							useVertebrateAnimals : {
 								required : true
@@ -158,7 +172,8 @@ $(function() {
 								required : true
 							},
 							IACUC : {
-								required : true
+								required : true,
+								maxlength : 15
 							},
 							invovleBioSafety : {
 								required : true
@@ -167,7 +182,8 @@ $(function() {
 								required : true
 							},
 							IBC : {
-								required : true
+								required : true,
+								maxlength : 15
 							},
 							environmentalConcerns : {
 								required : true
@@ -185,27 +201,32 @@ $(function() {
 								required : true
 							},
 							collaborators : {
-								required : true
+								required : true,
+								maxlength : 50
 							},
 							proprietaryInformation : {
 								required : true
 							},
 							pagesWithProprietaryInfo : {
-								required : true
+								required : true,
+								maxlength : 50
 							},
 							ownIntellectualProperty : {
 								required : true
 							},
 							agencyList : {
-								required : true
+								required : true,
+								maxlength : 50
 							},
 							CFDANo : {
 								required : true,
-								number : true
+								number : true,
+								maxlength : 15
 							},
 							programNo : {
 								required : true,
-								number : true
+								number : true,
+								maxlength : 15
 							},
 							programTitle : {
 								required : true
@@ -221,7 +242,8 @@ $(function() {
 							},
 							departmentID : {
 								required : true,
-								number : true
+								number : true,
+								maxlength : 15
 							},
 							institutionalCostDocumented : {
 								required : true
@@ -233,7 +255,8 @@ $(function() {
 								required : true
 							},
 							namesSubrecipients : {
-								required : true
+								required : true,
+								maxlength : 50
 							},
 							PIEligibilityWaiver : {
 								required : true
@@ -252,7 +275,8 @@ $(function() {
 							},
 							projectTitle : {
 								required : "Please enter project title.",
-								minlength : "Your project title must be at least 5 characters long"
+								minlength : "Your project title must be at least 5 characters long",
+								maxlength : "Your project title must be at most 250 characters long"
 							},
 							projectType : {
 								required : "Please select your project type"
@@ -262,24 +286,28 @@ $(function() {
 							},
 							dueDate : {
 								required : "Please enter due date",
-								dpDate : "Please enter valid date"
+								dpDate : "Please enter valid date",
+								maxlength : "This is not a valid Date"
 							},
 							locationOfProject : {
 								required : "Please enter location of project"
 							},
 							projectPeriodFrom : {
 								required : "Please enter project period from date",
-								dpDate : "Please enter valid date"
+								dpDate : "Please enter valid date",
+								maxlength : "This is not a valid Date"
 							},
 							projectPeriodTo : {
 								required : "Please enter project period to date",
-								dpDate : "Please enter valid date"
+								dpDate : "Please enter valid date",
+								maxlength : "This is not a valid Date"
 							},
 							proposalStatus : {
 								required : "Please select project status"
 							},
 							nameOfGrantingAgency : {
-								required : "Please enter names of granting agencies"
+								required : "Please enter names of granting agencies",
+								maxlength : "Granting agencies names must be at most 50 characters long"
 							},
 							directCosts : {
 								required : "Please enter direct costs for your project"
@@ -324,7 +352,8 @@ $(function() {
 								required : "Please select IRB # or indicate pending"
 							},
 							IRB : {
-								required : "Please enter IRB #"
+								required : "Please enter IRB #",
+								maxlength : "IRB # must be at most 15 characters long"
 							},
 							useVertebrateAnimals : {
 								required : "Please select this project involves the use of Vertebrate Animals"
@@ -333,7 +362,8 @@ $(function() {
 								required : "Please select IACUC # or indicate pending"
 							},
 							IACUC : {
-								required : "Please enter IACUC #"
+								required : "Please enter IACUC #",
+								maxlength : "IACUC # must be at most 15 characters long"
 							},
 							invovleBioSafety : {
 								required : "Please select this project involves Biosafety concerns"
@@ -342,7 +372,8 @@ $(function() {
 								required : "Please select IBC # or indicate pending"
 							},
 							IBC : {
-								required : "Please enter IBC #"
+								required : "Please enter IBC #",
+								maxlength : "IBC # must be at most 15 characters long"
 							},
 							environmentalConcerns : {
 								required : "Please select this project involves Environmental Health & Safety concerns"
@@ -360,25 +391,30 @@ $(function() {
 								required : "Please select this project involves non-funded collaborations"
 							},
 							collaborators : {
-								required : "Please enter list collaborating institutions/organizations"
+								required : "Please enter list collaborating institutions/organizations",
+								maxlength : "Collaborators list must be at most 50 characters long"
 							},
 							proprietaryInformation : {
 								required : "Please select this proposal contains any confidential information which is Proprietary that should not be publicly released"
 							},
 							pagesWithProprietaryInfo : {
-								required : "Please enter pages numbers where Proprietary/Confidential Information are"
+								required : "Please enter pages numbers where Proprietary/Confidential Information are",
+								maxlength : "Pages numbers must be at most 50 characters long"
 							},
 							ownIntellectualProperty : {
 								required : "Please select this project involves intellectual property in which the University may own or have an interest"
 							},
 							agencyList : {
-								required : "Please enter Flow-Through, List Agency"
+								required : "Please enter Flow-Through, List Agency",
+								maxlength : "Agency List must be at most 50 characters long"
 							},
 							CFDANo : {
-								required : "Please enter CFDA No."
+								required : "Please enter CFDA No.",
+								maxlength : "CFDA No. must be at most 15 characters long"
 							},
 							programNo : {
-								required : "Please enter Program No."
+								required : "Please enter Program No.",
+								maxlength : "Program No. must be at most 15 characters long"
 							},
 							programTitle : {
 								required : "Please enter Program/Solicitation title"
@@ -393,7 +429,8 @@ $(function() {
 								required : "Please enter PI Fringe"
 							},
 							departmentID : {
-								required : "Please enter Department ID"
+								required : "Please enter Department ID",
+								maxlength : "Department ID must be at most 15 characters long"
 							},
 							institutionalCostDocumented : {
 								required : "Please select if Institutional Cost Share documented"
@@ -405,7 +442,8 @@ $(function() {
 								required : "Please select if subrecipients (subcontracts/subawards) anticipated"
 							},
 							namesSubrecipients : {
-								required : "Please enter names of subrecipients"
+								required : "Please enter names of subrecipients",
+								maxlength : "Subrecipients names must be at most 50 characters long"
 							},
 							PIEligibilityWaiver : {
 								required : "Please select if PI Eligibility Waiver on file"
@@ -634,6 +672,8 @@ $(function() {
 
 				switch (currentPositionTitle) {
 				case "Department Chair":
+					// Delegation
+				case "Associate Chair":
 					attributeArray.push({
 						attributeType : "Resource",
 						attributeName : "ApprovedByDepartmentChair",
@@ -641,6 +681,7 @@ $(function() {
 					});
 					break;
 				case "Business Manager":
+				case "Department Administrative Assistant":
 					attributeArray.push({
 						attributeType : "Resource",
 						attributeName : "ApprovedByBusinessManager",
@@ -655,6 +696,7 @@ $(function() {
 					});
 					break;
 				case "Dean":
+				case "Associate Dean":
 					attributeArray.push({
 						attributeType : "Resource",
 						attributeName : "ApprovedByDean",
@@ -1320,9 +1362,12 @@ $(function() {
 
 			if (proposalStatus != ""
 					&& ((currentPositionTitle == "Department Chair" && config.chairApproval == "READYFORAPPROVAL")
+							|| (currentPositionTitle == "Associate Chair" && config.chairApproval == "READYFORAPPROVAL")
 							|| (currentPositionTitle == "Business Manager" && config.businessManagerApproval == "READYFORAPPROVAL")
+							|| (currentPositionTitle == "Department Administrative Assistant" && config.businessManagerApproval == "READYFORAPPROVAL")
 							|| (currentPositionTitle == "IRB" && config.irbapproval == "READYFORAPPROVAL")
 							|| (currentPositionTitle == "Dean" && config.deanApproval == "READYFORAPPROVAL")
+							|| (currentPositionTitle == "Associate Dean" && config.deanApproval == "READYFORAPPROVAL")
 							|| (currentPositionTitle == "University Research Administrator" && config.researchAdministratorApproval == "READYFORAPPROVAL") || (currentPositionTitle == "University Research Director" && config.researchDirectorApproval == "READYFORAPPROVAL"))) {
 				$("#btnApproveProposal").show();
 				$("#btnDisapproveProposal").show();
@@ -1423,9 +1468,7 @@ $(function() {
 
 				myProposal.BindProposalDetailsByProposalId(argus[0]);
 
-				$('.sfButtonwrapper>p>button').show();
-
-				// myProposal.ButtonHideShow(myProposal.config);
+				myProposal.ButtonHideShow(myProposal.config);
 
 				// Certification/ Signatures Info
 				myProposal.BindAllSignatureForAProposal(argus[0], argus[20]);
@@ -1476,9 +1519,10 @@ $(function() {
 				// "name" : "Milson",
 				// "age" : 29
 				// },uploadObj
+				allowedTypes : "jpg,png,gif,jpeg,bmp,png,pdf,doc,docx,xls,xlsx,txt",
 				// acceptFiles : "image/*",
 				maxFileCount : 5,
-				// maxFileSize : 5*100 * 1024, //5MB
+				maxFileSize : 5 * 1024 * 1024, // 5MB
 				returnType : "json",
 				showDelete : true,
 				confirmDelete : true,
@@ -2676,14 +2720,14 @@ $(function() {
 					+ fullName
 					+ '</span></td><td><input id="pi_signature" data-for="signature" data-value="'
 					+ $('select[name="ddlName"]').eq(0).val()
-					+ '" title="PI\'s Signature" class="sfInputbox" placeholder="PI\'s Signature" type="text" required="true" name="'
+					+ '" title="PI\'s Signature" class="sfInputbox" placeholder="PI\'s Signature" type="text" required="true" maxlength="45" name="'
 					+ $('select[name="ddlName"]').eq(0).val()
 					+ 'PI">'
 					+ '</td><td><input id="pi_signaturedate" data-for="signaturedate" name="signaturedate'
 					+ $('select[name="ddlName"]').eq(0).val()
-					+ 'PI" title="Signed Date" class="sfInputbox" placeholder="Signed Date" type="text" required="true" readonly="true" onfocus="myProposal.BindCurrentDateTime(this);"></td><td><textarea rows="2" cols="26" name="proposalNotes'
+					+ 'PI" title="Signed Date" class="sfInputbox" placeholder="Signed Date" type="text" required="true" maxlength="22" readonly="true" onfocus="myProposal.BindCurrentDateTime(this);"></td><td><textarea rows="2" cols="26" name="proposalNotes'
 					+ $('select[name="ddlName"]').eq(0).val()
-					+ 'PI" required="true" title="Proposal Notes" class="cssClassTextArea"></textarea></td></tr>';
+					+ 'PI" required="true" maxlength="180" title="Proposal Notes" class="cssClassTextArea"></textarea></td></tr>';
 			$(cloneRow).appendTo("#trSignPICOPI tbody");
 
 			$('#trSignPICOPI tbody tr:last').data("allowchange", "true").data(
@@ -3147,8 +3191,6 @@ $(function() {
 
 		AddProposalInfo : function(buttonType, proposalSection, config, info,
 				flag) {
-			alert(buttonType);
-
 			var attributeArray = [];
 			var currentPositionTitle = GPMS.utils.GetUserPositionTitle();
 
@@ -3256,6 +3298,8 @@ $(function() {
 
 					switch (currentPositionTitle) {
 					case "Department Chair":
+						// Delegation
+					case "Associate Chair":
 						attributeArray.push({
 							attributeType : "Resource",
 							attributeName : "ApprovedByDepartmentChair",
@@ -3263,6 +3307,7 @@ $(function() {
 						});
 						break;
 					case "Business Manager":
+					case "Department Administrative Assistant":
 						attributeArray.push({
 							attributeType : "Resource",
 							attributeName : "ApprovedByBusinessManager",
@@ -3277,6 +3322,7 @@ $(function() {
 						});
 						break;
 					case "Dean":
+					case "Associate Dean":
 						attributeArray.push({
 							attributeType : "Resource",
 							attributeName : "ApprovedByDean",
@@ -3325,7 +3371,7 @@ $(function() {
 					attributeArray.push({
 						attributeType : "Subject",
 						attributeName : "position.type",
-						attributeValue : GPMS.utils.GetUserPositionType()
+						attributeValue : gpmsCommonObj().UserPositionType
 					});
 
 					attributeArray.push({
@@ -3362,7 +3408,6 @@ $(function() {
 		},
 
 		UpdateProposalStatus : function(buttonType, proposalSection, config) {
-			alert(buttonType);
 			var attributeArray = [];
 
 			var currentPositionTitle = GPMS.utils.GetUserPositionTitle();
@@ -3906,17 +3951,17 @@ $(function() {
 										+ '" name="'
 										+ item.userProfileId
 										+ userPositionTitle
-										+ '" readonly="true">'
+										+ '" readonly="true" maxlength="45">'
 										+ '</td><td><input data-for="signaturedate" name="signaturedate'
 										+ item.userProfileId
 										+ userPositionTitle
-										+ '" title="Signed Date" class="sfInputbox" placeholder="Signed Date" type="text" readonly="true" value="'
+										+ '" title="Signed Date" class="sfInputbox" placeholder="Signed Date" type="text" readonly="true" maxlength="22" value="'
 										+ $.format.date(signedDate,
 												'yyyy/MM/dd hh:mm:ss a')
 										+ '"></td><td><textarea rows="2" cols="26" name="proposalNotes'
 										+ item.userProfileId
 										+ userPositionTitle
-										+ '" readonly="true" title="Proposal Notes" class="cssClassTextArea" >'
+										+ '" readonly="true" maxlength="180" title="Proposal Notes" class="cssClassTextArea" >'
 										+ item.note + '</textarea></td></tr>';
 
 								// $('#trSignChair').hide();
@@ -3972,12 +4017,15 @@ $(function() {
 			} else {
 				switch (GPMS.utils.GetUserPositionTitle()) {
 				case "Department Chair":
+				case "Associate Chair":
 					signTable = "#trSignChair";
 					break;
 				case "Dean":
+				case "Associate Dean":
 					signTable = "#trSignDean";
 					break;
 				case "Business Manager":
+				case "Department Administrative Assistant":
 					signTable = "#trSignBusinessManager";
 					break;
 				case "IRB":
@@ -3999,7 +4047,6 @@ $(function() {
 						.find('input:eq(0)')
 						.each(
 								function(index) {
-
 									if (GPMS.utils.GetUserProfileID() == $(this)
 											.attr("data-value")) {
 										// if (item.signedDate == null) {
@@ -4151,8 +4198,6 @@ $(function() {
 				$('#divProposalForm').show();
 				$('#divProposalAuditGrid').hide();
 				$("#accordion").accordion("option", "active", 0);
-				
-				$('.sfButtonwrapper>p>button').show();
 			}
 			break;
 

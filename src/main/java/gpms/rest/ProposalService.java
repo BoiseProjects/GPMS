@@ -1052,6 +1052,11 @@ public class ProposalService {
 					contentProfile.append("<ak:fullname>");
 					contentProfile.append(authorFullName);
 					contentProfile.append("</ak:fullname>");
+
+					contentProfile.append("<ak:userid>");
+					contentProfile.append(authorProfile.getId().toString());
+					contentProfile.append("</ak:userid>");
+
 					contentProfile.append("</ak:authorprofile>");
 
 					contentProfile.append("<ak:pi>");
@@ -1962,8 +1967,16 @@ public class ProposalService {
 
 				if (proposalUniqueObj != null
 						&& proposalUniqueObj.has("NewProjectTitle")) {
-					newProjectTitle = proposalUniqueObj.get("NewProjectTitle")
-							.textValue();
+					String projectTitle = proposalUniqueObj
+							.get("NewProjectTitle").textValue().trim()
+							.replaceAll("\\<[^>]*>", "");
+					if (validateNotEmptyValue(projectTitle)) {
+						newProjectTitle = projectTitle;
+					} else {
+						return Response.status(403)
+								.entity("The Project Title can not be Empty")
+								.build();
+					}
 				}
 			}
 
@@ -2323,6 +2336,11 @@ public class ProposalService {
 					contentProfile.append("<ak:fullname>");
 					contentProfile.append(authorFullName);
 					contentProfile.append("</ak:fullname>");
+
+					contentProfile.append("<ak:userid>");
+					contentProfile.append(authorProfile.getId().toString());
+					contentProfile.append("</ak:userid>");
+
 					contentProfile.append("</ak:authorprofile>");
 
 					contentProfile.append("<ak:pi>");
@@ -2978,6 +2996,150 @@ public class ProposalService {
 					}
 				}
 
+				// Appendix Info
+				if (proposalInfo != null && proposalInfo.has("AppendixInfo")) {
+					List<Appendix> appendixInfo = Arrays.asList(mapper
+							.readValue(proposalInfo.get("AppendixInfo")
+									.toString(), Appendix[].class));
+					if (appendixInfo.size() != 0) {
+
+						String UPLOAD_PATH = new String();
+						try {
+							UPLOAD_PATH = this.getClass()
+									.getResource("/uploads").toURI().getPath();
+						} catch (URISyntaxException e) {
+							e.printStackTrace();
+						}
+
+						List<String> existingFiles = new ArrayList<String>();
+						if (!proposalID.equals("0")) {
+							boolean alreadyExist = false;
+							for (Appendix appendix : oldProposal
+									.getAppendices()) {
+								for (Appendix appendixObj : appendixInfo) {
+									if (appendix.getFilename()
+											.equalsIgnoreCase(
+													appendixObj.getFilename())
+											&& appendix
+													.getTitle()
+													.equalsIgnoreCase(
+															appendixObj
+																	.getTitle()
+																	.trim()
+																	.replaceAll(
+																			"\\<[^>]*>",
+																			""))) {
+										alreadyExist = true;
+										existingFiles.add(appendixObj
+												.getFilename());
+										break;
+									}
+								}
+								if (!alreadyExist) {
+									existingProposal.getAppendices().remove(
+											appendix);
+								}
+							}
+
+							for (Appendix uploadFile : appendixInfo) {
+								String fileName = uploadFile.getFilename();
+								if (!existingFiles.contains(fileName)) {
+									File file = new File(UPLOAD_PATH + fileName);
+
+									String extension = "";
+									int i = fileName.lastIndexOf('.');
+									if (i > 0) {
+										extension = fileName.substring(i + 1);
+
+										if (verifyValidFileExtension(extension)) {
+											uploadFile.setExtension(extension);
+										} else {
+											return Response
+													.status(403)
+													.entity(extension
+															+ " is not allowed. Allowed extensions: jpg,png,gif,jpeg,bmp,png,pdf,doc,docx,xls,xlsx,txt")
+													.build();
+										}
+									}
+
+									long fileSize = file.length();
+									if (verifyValidFileSize(fileSize)) {
+										uploadFile.setFilesize(fileSize);
+									} else {
+										return Response
+												.status(403)
+												.entity("The uploaded file is larger than 5MB")
+												.build();
+									}
+									uploadFile.setFilepath("/uploads/"
+											+ fileName);
+
+									String fileTitle = uploadFile.getTitle()
+											.trim().replaceAll("\\<[^>]*>", "");
+
+									if (validateNotEmptyValue(fileTitle)) {
+										uploadFile.setTitle(fileTitle);
+									} else {
+										return Response
+												.status(403)
+												.entity("The Uploaded File's Title can not be Empty")
+												.build();
+									}
+
+									existingProposal.getAppendices().add(
+											uploadFile);
+								}
+							}
+						} else {
+							for (Appendix uploadFile : appendixInfo) {
+								String fileName = uploadFile.getFilename();
+								File file = new File(UPLOAD_PATH + fileName);
+
+								String extension = "";
+								int i = fileName.lastIndexOf('.');
+								if (i > 0) {
+									extension = fileName.substring(i + 1);
+									if (verifyValidFileExtension(extension)) {
+										uploadFile.setExtension(extension);
+									} else {
+										return Response
+												.status(403)
+												.entity(extension
+														+ " is not allowed. Allowed extensions: jpg,png,gif,jpeg,bmp,png,pdf,doc,docx,xls,xlsx,txt")
+												.build();
+									}
+								}
+
+								long fileSize = file.length();
+								if (verifyValidFileSize(fileSize)) {
+									uploadFile.setFilesize(fileSize);
+								} else {
+									return Response
+											.status(403)
+											.entity("The uploaded file is larger than 5MB")
+											.build();
+								}
+								uploadFile.setFilesize(fileSize);
+								uploadFile.setFilepath("/uploads/" + fileName);
+
+								String fileTitle = uploadFile.getTitle().trim()
+										.replaceAll("\\<[^>]*>", "");
+								if (validateNotEmptyValue(fileTitle)) {
+									uploadFile.setTitle(fileTitle);
+								} else {
+									return Response
+											.status(403)
+											.entity("The Uploaded File's Title can not be Empty")
+											.build();
+								}
+
+								existingProposal.getAppendices()
+										.add(uploadFile);
+							}
+						}
+					}
+				}
+
 				// InvestigatorInfo
 				// To hold all new Investigators list to get notified
 				InvestigatorInfo addedInvestigators = new InvestigatorInfo();
@@ -3094,18 +3256,6 @@ public class ProposalService {
 						existingInvestigators = oldProposal
 								.getInvestigatorInfo();
 
-						// THIS IS HACK NO ONE CAN DELETE PI
-						// if (!existingProposal.getInvestigatorInfo().getPi()
-						// .equals(existingInvestigators.getPi())) {
-						// if (!deletedInvestigators.getPi().equals(
-						// existingInvestigators.getPi())) {
-						// deletedInvestigators.setPi(existingInvestigators
-						// .getPi());
-						// existingProposal.getInvestigatorInfo().getPi()
-						// .remove(existingInvestigators.getPi());
-						// }
-						// }
-
 						for (InvestigatorRefAndPosition coPI : existingInvestigators
 								.getCo_pi()) {
 							if (!existingProposal.getInvestigatorInfo()
@@ -3140,19 +3290,6 @@ public class ProposalService {
 						}
 
 						// Remove Signatures FOR Deleted Investigators
-
-						// THIS IS HACK PI CANNOT BE DELETED FROM PROPOSAL
-						// if (deletedInvestigators.getPi() != null) {
-						// for (SignatureInfo sign : oldProposal
-						// .getSignatureInfo()) {
-						// if (deletedInvestigators.getPi().getUserProfileId()
-						// .equalsIgnoreCase(sign.getUserProfileId())) {
-						// existingProposal.getSignatureInfo()
-						// .remove(sign);
-						// }
-						// }
-						// }
-
 						for (InvestigatorRefAndPosition coPI : deletedInvestigators
 								.getCo_pi()) {
 							for (SignatureInfo sign : oldProposal
@@ -3172,22 +3309,28 @@ public class ProposalService {
 				if (proposalInfo != null && proposalInfo.has("ProjectInfo")) {
 					JsonNode projectInfo = proposalInfo.get("ProjectInfo");
 					if (projectInfo != null && projectInfo.has("ProjectTitle")) {
-						if (!proposalID.equals("0")) {
-							if (!existingProposal
-									.getProjectInfo()
-									.getProjectTitle()
-									.equals(projectInfo.get("ProjectTitle")
-											.textValue())) {
-								existingProposal.getProjectInfo()
-										.setProjectTitle(
-												projectInfo.get("ProjectTitle")
-														.textValue());
+						final String proposalTitle = projectInfo
+								.get("ProjectTitle").textValue().trim()
+								.replaceAll("\\<[^>]*>", "");
+						if (validateNotEmptyValue(proposalTitle)) {
+							if (!proposalID.equals("0")) {
+								if (!existingProposal.getProjectInfo()
+										.getProjectTitle()
+										.equals(proposalTitle)) {
+									existingProposal.getProjectInfo()
+											.setProjectTitle(proposalTitle);
+								}
+							} else {
+								newProjectInfo.setProjectTitle(proposalTitle);
 							}
 						} else {
-							newProjectInfo.setProjectTitle(projectInfo.get(
-									"ProjectTitle").textValue());
+							return Response
+									.status(403)
+									.entity("The Proposal Title can not be Empty")
+									.build();
 						}
 					}
+
 					if (projectInfo != null && projectInfo.has("ProjectType")) {
 						ProjectType projectType = new ProjectType();
 						switch (projectInfo.get("ProjectType").textValue()) {
@@ -3276,16 +3419,24 @@ public class ProposalService {
 					}
 
 					if (projectInfo != null && projectInfo.has("DueDate")) {
-						Date dueDate = formatter.parse(projectInfo.get(
-								"DueDate").textValue());
-						if (!proposalID.equals("0")) {
-							if (!existingProposal.getProjectInfo().getDueDate()
-									.equals(dueDate)) {
-								existingProposal.getProjectInfo().setDueDate(
-										dueDate);
+						Date dueDate = formatter.parse(projectInfo
+								.get("DueDate").textValue().trim()
+								.replaceAll("\\<[^>]*>", ""));
+
+						if (validateNotEmptyValue(dueDate.toString())) {
+							if (!proposalID.equals("0")) {
+								if (!existingProposal.getProjectInfo()
+										.getDueDate().equals(dueDate)) {
+									existingProposal.getProjectInfo()
+											.setDueDate(dueDate);
+								}
+							} else {
+								newProjectInfo.setDueDate(dueDate);
 							}
 						} else {
-							newProjectInfo.setDueDate(dueDate);
+							return Response.status(403)
+									.entity("The Due Date can not be Empty")
+									.build();
 						}
 					}
 
@@ -3293,16 +3444,32 @@ public class ProposalService {
 
 					if (projectInfo != null
 							&& projectInfo.has("ProjectPeriodFrom")) {
-						Date periodFrom = formatter.parse(projectInfo.get(
-								"ProjectPeriodFrom").textValue());
-						projectPeriod.setFrom(periodFrom);
+						Date periodFrom = formatter.parse(projectInfo
+								.get("ProjectPeriodFrom").textValue().trim()
+								.replaceAll("\\<[^>]*>", ""));
+						if (validateNotEmptyValue(periodFrom.toString())) {
+							projectPeriod.setFrom(periodFrom);
+						} else {
+							return Response
+									.status(403)
+									.entity("The Project Period From can not be Empty")
+									.build();
+						}
 					}
 
 					if (projectInfo != null
 							&& projectInfo.has("ProjectPeriodTo")) {
-						Date periodTo = formatter.parse(projectInfo.get(
-								"ProjectPeriodTo").textValue());
-						projectPeriod.setTo(periodTo);
+						Date periodTo = formatter.parse(projectInfo
+								.get("ProjectPeriodTo").textValue().trim()
+								.replaceAll("\\<[^>]*>", ""));
+						if (validateNotEmptyValue(periodTo.toString())) {
+							projectPeriod.setTo(periodTo);
+						} else {
+							return Response
+									.status(403)
+									.entity("The Project Period To can not be Empty")
+									.build();
+						}
 					}
 					if (!proposalID.equals("0")) {
 						if (!existingProposal.getProjectInfo()
@@ -3328,38 +3495,77 @@ public class ProposalService {
 					if (sponsorAndBudgetInfo != null
 							&& sponsorAndBudgetInfo.has("GrantingAgency")) {
 						for (String grantingAgency : sponsorAndBudgetInfo
-								.get("GrantingAgency").textValue().split(", ")) {
-							newSponsorAndBudgetInfo.getGrantingAgency().add(
-									grantingAgency);
+								.get("GrantingAgency").textValue().trim()
+								.replaceAll("\\<[^>]*>", "").split(", ")) {
+							if (validateNotEmptyValue(grantingAgency)) {
+								newSponsorAndBudgetInfo.getGrantingAgency()
+										.add(grantingAgency);
+							} else {
+								return Response
+										.status(403)
+										.entity("The Granting Agency can not be Empty")
+										.build();
+							}
 						}
 					}
 
 					if (sponsorAndBudgetInfo != null
 							&& sponsorAndBudgetInfo.has("DirectCosts")) {
-						newSponsorAndBudgetInfo.setDirectCosts(Double
-								.parseDouble(sponsorAndBudgetInfo.get(
-										"DirectCosts").textValue()));
+						final String directCost = sponsorAndBudgetInfo
+								.get("DirectCosts").textValue().trim()
+								.replaceAll("\\<[^>]*>", "");
+						if (validateNotEmptyValue(directCost)) {
+							newSponsorAndBudgetInfo.setDirectCosts(Double
+									.parseDouble(directCost));
+						} else {
+							return Response
+									.status(403)
+									.entity("The Direct Costs can not be Empty")
+									.build();
+						}
 					}
 
 					if (sponsorAndBudgetInfo != null
 							&& sponsorAndBudgetInfo.has("FACosts")) {
-						newSponsorAndBudgetInfo.setFaCosts(Double
-								.parseDouble(sponsorAndBudgetInfo
-										.get("FACosts").textValue()));
+						final String FACosts = sponsorAndBudgetInfo
+								.get("FACosts").textValue().trim()
+								.replaceAll("\\<[^>]*>", "");
+						if (validateNotEmptyValue(FACosts)) {
+							newSponsorAndBudgetInfo.setFaCosts(Double
+									.parseDouble(FACosts));
+						} else {
+							return Response.status(403)
+									.entity("The FA Costs can not be Empty")
+									.build();
+						}
 					}
 
 					if (sponsorAndBudgetInfo != null
 							&& sponsorAndBudgetInfo.has("TotalCosts")) {
-						newSponsorAndBudgetInfo.setTotalCosts(Double
-								.parseDouble(sponsorAndBudgetInfo.get(
-										"TotalCosts").textValue()));
+						final String totalCosts = sponsorAndBudgetInfo
+								.get("TotalCosts").textValue().trim()
+								.replaceAll("\\<[^>]*>", "");
+						if (validateNotEmptyValue(totalCosts)) {
+							newSponsorAndBudgetInfo.setTotalCosts(Double
+									.parseDouble(totalCosts));
+						} else {
+							return Response.status(403)
+									.entity("The Total Costs can not be Empty")
+									.build();
+						}
 					}
 
 					if (sponsorAndBudgetInfo != null
 							&& sponsorAndBudgetInfo.has("FARate")) {
-						newSponsorAndBudgetInfo.setFaRate(Double
-								.parseDouble(sponsorAndBudgetInfo.get("FARate")
-										.textValue()));
+						final String FARate = sponsorAndBudgetInfo
+								.get("FARate").textValue().trim()
+								.replaceAll("\\<[^>]*>", "");
+						if (validateNotEmptyValue(FARate)) {
+							newSponsorAndBudgetInfo.setFaRate(Double
+									.parseDouble(FARate));
+						} else {
+							throw new Exception("The FA Rate can not be Empty");
+						}
 					}
 				}
 
@@ -3633,10 +3839,18 @@ public class ProposalService {
 									.setInvolveNonFundedCollab(true);
 							if (collaborationInfo != null
 									&& collaborationInfo.has("Collaborators")) {
-								newCollaborationInfo
-										.setInvolvedCollaborators(collaborationInfo
-												.get("Collaborators")
-												.textValue());
+								final String collabarationName = collaborationInfo
+										.get("Collaborators").textValue()
+										.trim().replaceAll("\\<[^>]*>", "");
+								if (validateNotEmptyValue(collabarationName)) {
+									newCollaborationInfo
+											.setInvolvedCollaborators(collabarationName);
+								} else {
+									return Response
+											.status(403)
+											.entity("Collaborators can not be Empty")
+											.build();
+								}
 							}
 							break;
 						case "2":
@@ -3674,8 +3888,17 @@ public class ProposalService {
 									.setContainConfidentialInformation(true);
 							if (confidentialInfo != null
 									&& confidentialInfo.has("OnPages")) {
-								newConfidentialInfo.setOnPages(confidentialInfo
-										.get("OnPages").textValue());
+								final String onPages = confidentialInfo
+										.get("OnPages").textValue().trim()
+										.replaceAll("\\<[^>]*>", "");
+								if (validateNotEmptyValue(onPages)) {
+									newConfidentialInfo.setOnPages(onPages);
+								} else {
+									return Response
+											.status(403)
+											.entity("The Pages can not be Empty")
+											.build();
+								}
 							}
 							if (confidentialInfo != null
 									&& confidentialInfo.has("Patentable")) {
@@ -3749,8 +3972,17 @@ public class ProposalService {
 									newComplianceInfo.setIrbPending(false);
 									if (complianceInfo != null
 											&& complianceInfo.has("IRB")) {
-										newComplianceInfo.setIrb(complianceInfo
-												.get("IRB").textValue());
+										final String IRBNo = complianceInfo
+												.get("IRB").textValue().trim()
+												.replaceAll("\\<[^>]*>", "");
+										if (validateNotEmptyValue(IRBNo)) {
+											newComplianceInfo.setIrb(IRBNo);
+										} else {
+											return Response
+													.status(403)
+													.entity("The IRB # can not be Empty")
+													.build();
+										}
 									}
 									break;
 								case "2":
@@ -3787,9 +4019,18 @@ public class ProposalService {
 									newComplianceInfo.setIacucPending(false);
 									if (complianceInfo != null
 											&& complianceInfo.has("IACUC")) {
-										newComplianceInfo
-												.setIacuc(complianceInfo.get(
-														"IACUC").textValue());
+										final String IACUCNo = complianceInfo
+												.get("IACUC").textValue()
+												.trim()
+												.replaceAll("\\<[^>]*>", "");
+										if (validateNotEmptyValue(IACUCNo)) {
+											newComplianceInfo.setIacuc(IACUCNo);
+										} else {
+											return Response
+													.status(403)
+													.entity("The IACUC # can not be Empty")
+													.build();
+										}
 									}
 									break;
 								case "2":
@@ -3824,8 +4065,18 @@ public class ProposalService {
 									newComplianceInfo.setIbcPending(false);
 									if (complianceInfo != null
 											&& complianceInfo.has("IBC")) {
-										newComplianceInfo.setIbc(complianceInfo
-												.get("IBC").textValue());
+										final String IBCNo = complianceInfo
+												.get("IBC").textValue().trim()
+												.replaceAll("\\<[^>]*>", "");
+
+										if (validateNotEmptyValue(IBCNo)) {
+											newComplianceInfo.setIbc(IBCNo);
+										} else {
+											return Response
+													.status(403)
+													.entity("The IBC # can not be Empty")
+													.build();
+										}
 									}
 									break;
 								case "2":
@@ -3877,81 +4128,6 @@ public class ProposalService {
 					existingProposal.setComplianceInfo(newComplianceInfo);
 					existingProposal
 							.setIrbApprovalRequired(irbApprovalRequired);
-				}
-
-				// Appendix Info
-				if (proposalInfo != null && proposalInfo.has("AppendixInfo")) {
-					List<Appendix> appendixInfo = Arrays.asList(mapper
-							.readValue(proposalInfo.get("AppendixInfo")
-									.toString(), Appendix[].class));
-					if (appendixInfo.size() != 0) {
-
-						String UPLOAD_PATH = new String();
-						try {
-							UPLOAD_PATH = this.getClass()
-									.getResource("/uploads").toURI().getPath();
-						} catch (URISyntaxException e) {
-							e.printStackTrace();
-						}
-
-						List<String> existingFiles = new ArrayList<String>();
-						if (!proposalID.equals("0")) {
-							boolean alreadyExist = false;
-							for (Appendix appendix : oldProposal
-									.getAppendices()) {
-								for (Appendix appendixObj : appendixInfo) {
-									if (appendix.getFilename().equals(
-											appendixObj.getFilename())) {
-										alreadyExist = true;
-										existingFiles.add(appendixObj
-												.getFilename());
-										break;
-									}
-								}
-								if (!alreadyExist) {
-									existingProposal.getAppendices().remove(
-											appendix);
-								}
-							}
-
-							for (Appendix uploadFile : appendixInfo) {
-								String fileName = uploadFile.getFilename();
-								if (!existingFiles.contains(fileName)) {
-									File file = new File(UPLOAD_PATH + fileName);
-
-									String extension = "";
-									int i = fileName.lastIndexOf('.');
-									if (i > 0) {
-										extension = fileName.substring(i + 1);
-										uploadFile.setExtension(extension);
-									}
-									uploadFile.setFilesize(file.length());
-									uploadFile.setFilepath("/uploads/"
-											+ fileName);
-
-									existingProposal.getAppendices().add(
-											uploadFile);
-								}
-							}
-						} else {
-							for (Appendix uploadFile : appendixInfo) {
-								String fileName = uploadFile.getFilename();
-								File file = new File(UPLOAD_PATH + fileName);
-
-								String extension = "";
-								int i = fileName.lastIndexOf('.');
-								if (i > 0) {
-									extension = fileName.substring(i + 1);
-									uploadFile.setExtension(extension);
-								}
-								uploadFile.setFilesize(file.length());
-								uploadFile.setFilepath("/uploads/" + fileName);
-
-								existingProposal.getAppendices()
-										.add(uploadFile);
-							}
-						}
-					}
 				}
 
 				String notificationMessage = new String();
@@ -4158,6 +4334,148 @@ public class ProposalService {
 					}
 				}
 
+				// Appendix Info
+				if (proposalInfo != null && proposalInfo.has("AppendixInfo")) {
+					List<Appendix> appendixInfo = Arrays.asList(mapper
+							.readValue(proposalInfo.get("AppendixInfo")
+									.toString(), Appendix[].class));
+					if (appendixInfo.size() != 0) {
+
+						String UPLOAD_PATH = new String();
+						try {
+							UPLOAD_PATH = this.getClass()
+									.getResource("/uploads").toURI().getPath();
+						} catch (URISyntaxException e) {
+							e.printStackTrace();
+						}
+
+						List<String> existingFiles = new ArrayList<String>();
+						if (!proposalID.equals("0")) {
+							boolean alreadyExist = false;
+							for (Appendix appendix : oldProposal
+									.getAppendices()) {
+								for (Appendix appendixObj : appendixInfo) {
+									if (appendix.getFilename()
+											.equalsIgnoreCase(
+													appendixObj.getFilename())
+											&& appendix
+													.getTitle()
+													.equalsIgnoreCase(
+															appendixObj
+																	.getTitle()
+																	.trim()
+																	.replaceAll(
+																			"\\<[^>]*>",
+																			""))) {
+										alreadyExist = true;
+										existingFiles.add(appendixObj
+												.getFilename());
+										break;
+									}
+								}
+								if (!alreadyExist) {
+									existingProposal.getAppendices().remove(
+											appendix);
+								}
+							}
+
+							for (Appendix uploadFile : appendixInfo) {
+								String fileName = uploadFile.getFilename();
+								if (!existingFiles.contains(fileName)) {
+									File file = new File(UPLOAD_PATH + fileName);
+
+									String extension = "";
+									int i = fileName.lastIndexOf('.');
+									if (i > 0) {
+										extension = fileName.substring(i + 1);
+
+										if (verifyValidFileExtension(extension)) {
+											uploadFile.setExtension(extension);
+										} else {
+											return Response
+													.status(403)
+													.entity(extension
+															+ " is not allowed. Allowed extensions: jpg,png,gif,jpeg,bmp,png,pdf,doc,docx,xls,xlsx,txt")
+													.build();
+										}
+									}
+
+									long fileSize = file.length();
+									if (verifyValidFileSize(fileSize)) {
+										uploadFile.setFilesize(fileSize);
+									} else {
+										return Response
+												.status(403)
+												.entity("The uploaded file is larger than 5MB")
+												.build();
+									}
+									uploadFile.setFilepath("/uploads/"
+											+ fileName);
+									String fileTitle = uploadFile.getTitle()
+											.trim().replaceAll("\\<[^>]*>", "");
+
+									if (validateNotEmptyValue(fileTitle)) {
+										uploadFile.setTitle(fileTitle);
+									} else {
+										return Response
+												.status(403)
+												.entity("The Uploaded File's Title can not be Empty")
+												.build();
+									}
+
+									existingProposal.getAppendices().add(
+											uploadFile);
+								}
+							}
+						} else {
+							for (Appendix uploadFile : appendixInfo) {
+								String fileName = uploadFile.getFilename();
+								File file = new File(UPLOAD_PATH + fileName);
+
+								String extension = "";
+								int i = fileName.lastIndexOf('.');
+								if (i > 0) {
+									extension = fileName.substring(i + 1);
+									if (verifyValidFileExtension(extension)) {
+										uploadFile.setExtension(extension);
+									} else {
+										return Response
+												.status(403)
+												.entity(extension
+														+ " is not allowed. Allowed extensions: jpg,png,gif,jpeg,bmp,png,pdf,doc,docx,xls,xlsx,txt")
+												.build();
+									}
+								}
+
+								long fileSize = file.length();
+								if (verifyValidFileSize(fileSize)) {
+									uploadFile.setFilesize(fileSize);
+								} else {
+									return Response
+											.status(403)
+											.entity("The uploaded file is larger than 5MB")
+											.build();
+								}
+								uploadFile.setFilesize(fileSize);
+								uploadFile.setFilepath("/uploads/" + fileName);
+								String fileTitle = uploadFile.getTitle().trim()
+										.replaceAll("\\<[^>]*>", "");
+								if (validateNotEmptyValue(fileTitle)) {
+									uploadFile.setTitle(fileTitle);
+								} else {
+									return Response
+											.status(403)
+											.entity("The Uploaded File's Title can not be Empty")
+											.build();
+								}
+
+								existingProposal.getAppendices()
+										.add(uploadFile);
+							}
+						}
+					}
+				}
+
 				// InvestigatorInfo
 				// To hold all new Investigators list to get notified
 				InvestigatorInfo addedInvestigators = new InvestigatorInfo();
@@ -4274,18 +4592,6 @@ public class ProposalService {
 						existingInvestigators = oldProposal
 								.getInvestigatorInfo();
 
-						// THIS IS HACK NO ONE CAN DELETE PI
-						// if (!existingProposal.getInvestigatorInfo().getPi()
-						// .equals(existingInvestigators.getPi())) {
-						// if (!deletedInvestigators.getPi().equals(
-						// existingInvestigators.getPi())) {
-						// deletedInvestigators.setPi(existingInvestigators
-						// .getPi());
-						// existingProposal.getInvestigatorInfo().getPi()
-						// .remove(existingInvestigators.getPi());
-						// }
-						// }
-
 						for (InvestigatorRefAndPosition coPI : existingInvestigators
 								.getCo_pi()) {
 							if (!existingProposal.getInvestigatorInfo()
@@ -4320,19 +4626,6 @@ public class ProposalService {
 						}
 
 						// Remove Signatures FOR Deleted Investigators
-
-						// THIS IS HACK PI CANNOT BE DELETED FROM PROPOSAL
-						// if (deletedInvestigators.getPi() != null) {
-						// for (SignatureInfo sign : oldProposal
-						// .getSignatureInfo()) {
-						// if (deletedInvestigators.getPi().getUserProfileId()
-						// .equalsIgnoreCase(sign.getUserProfileId())) {
-						// existingProposal.getSignatureInfo()
-						// .remove(sign);
-						// }
-						// }
-						// }
-
 						for (InvestigatorRefAndPosition coPI : deletedInvestigators
 								.getCo_pi()) {
 							for (SignatureInfo sign : oldProposal
@@ -4349,9 +4642,6 @@ public class ProposalService {
 
 				// Signature
 				// To hold all new Investigators list to get notified
-				// List<SignatureInfo> addedSignatures = new
-				// ArrayList<SignatureInfo>();
-
 				if (proposalInfo != null && proposalInfo.has("SignatureInfo")) {
 					String[] rows = proposalInfo.get("SignatureInfo")
 							.textValue().split("#!#");
@@ -4367,9 +4657,37 @@ public class ProposalService {
 						String[] cols = col.split("!#!");
 						SignatureInfo signatureInfo = new SignatureInfo();
 						signatureInfo.setUserProfileId(cols[0]);
-						signatureInfo.setSignature(cols[1]);
-						signatureInfo.setSignedDate(format.parse(cols[2]));
-						signatureInfo.setNote(cols[3]);
+						final String signatureText = cols[1].replaceAll(
+								"\\<[^>]*>", "");
+						if (validateNotEmptyValue(signatureText)) {
+							signatureInfo.setSignature(signatureText);
+						} else {
+							return Response.status(403)
+									.entity("The Signature can not be Empty")
+									.build();
+						}
+
+						final String signedDate = cols[2].trim().replaceAll(
+								"\\<[^>]*>", "");
+						if (validateNotEmptyValue(signedDate)) {
+							signatureInfo.setSignedDate(format
+									.parse(signedDate));
+						} else {
+							return Response.status(403)
+									.entity("The Signed Date can not be Empty")
+									.build();
+						}
+
+						final String noteText = cols[3].replaceAll("\\<[^>]*>",
+								"");
+						if (validateNotEmptyValue(noteText)) {
+							signatureInfo.setNote(noteText);
+						} else {
+							return Response.status(403)
+									.entity("The Note can not be Empty")
+									.build();
+						}
+
 						signatureInfo.setFullName(cols[4]);
 						signatureInfo.setPositionTitle(cols[5]);
 						signatureInfo.setDelegated(Boolean
@@ -4392,13 +4710,6 @@ public class ProposalService {
 								}
 							}
 							if (!alreadyExist) {
-								// else {
-								// if (sign.getUserProfileId().equals(
-								// userProfileID)) {
-								// existingProposal.getSignatureInfo().remove(
-								// sign);
-								// }
-								// }
 								newSignatureInfo.add(signatureInfo);
 							}
 						}
@@ -4453,8 +4764,17 @@ public class ProposalService {
 									newComplianceInfo.setIrbPending(false);
 									if (complianceInfo != null
 											&& complianceInfo.has("IRB")) {
-										newComplianceInfo.setIrb(complianceInfo
-												.get("IRB").textValue());
+										final String IRBNo = complianceInfo
+												.get("IRB").textValue().trim()
+												.replaceAll("\\<[^>]*>", "");
+										if (validateNotEmptyValue(IRBNo)) {
+											newComplianceInfo.setIrb(IRBNo);
+										} else {
+											return Response
+													.status(403)
+													.entity("The IRB # can not be Empty")
+													.build();
+										}
 									}
 									break;
 								case "2":
@@ -4491,9 +4811,18 @@ public class ProposalService {
 									newComplianceInfo.setIacucPending(false);
 									if (complianceInfo != null
 											&& complianceInfo.has("IACUC")) {
-										newComplianceInfo
-												.setIacuc(complianceInfo.get(
-														"IACUC").textValue());
+										final String IACUCNo = complianceInfo
+												.get("IACUC").textValue()
+												.trim()
+												.replaceAll("\\<[^>]*>", "");
+										if (validateNotEmptyValue(IACUCNo)) {
+											newComplianceInfo.setIacuc(IACUCNo);
+										} else {
+											return Response
+													.status(403)
+													.entity("The IACUC # can not be Empty")
+													.build();
+										}
 									}
 									break;
 								case "2":
@@ -4528,8 +4857,18 @@ public class ProposalService {
 									newComplianceInfo.setIbcPending(false);
 									if (complianceInfo != null
 											&& complianceInfo.has("IBC")) {
-										newComplianceInfo.setIbc(complianceInfo
-												.get("IBC").textValue());
+										final String IBCNo = complianceInfo
+												.get("IBC").textValue().trim()
+												.replaceAll("\\<[^>]*>", "");
+
+										if (validateNotEmptyValue(IBCNo)) {
+											newComplianceInfo.setIbc(IBCNo);
+										} else {
+											return Response
+													.status(403)
+													.entity("The IBC # can not be Empty")
+													.build();
+										}
 									}
 									break;
 								case "2":
@@ -4626,22 +4965,7 @@ public class ProposalService {
 							}
 						}
 
-						// // TODO only check this for required not all XACML
-						// call
-						// if (root != null && root.has("proposalId")) {
-						// String proposalId = new String();
-						// JsonNode proposal_Id = root.get("proposalId");
-						// proposalId = proposal_Id.textValue();
-						// if (!proposalId.equals("")) {
-						// ObjectId id = new ObjectId(proposalId);
-						// Proposal proposal = proposalDAO
-						// .findProposalByProposalID(id);
-						// resourceMap.put("status",
-						// proposal.getProposalStatus()
-						// .toString());
-						// attrMap.put("Resource", resourceMap);
-						// }
-						// }
+						// TODO only check this for required not all XACML
 
 						// Need to add Environment to detect the Campus or
 						// outside
@@ -4780,7 +5104,21 @@ public class ProposalService {
 							contentProfile.append("<ak:fullname>");
 							contentProfile.append(authorFullName);
 							contentProfile.append("</ak:fullname>");
+
+							contentProfile.append("<ak:userid>");
+							contentProfile.append(authorProfile.getId()
+									.toString());
+							contentProfile.append("</ak:userid>");
+
 							contentProfile.append("</ak:authorprofile>");
+
+							DateFormat dateFormat = new SimpleDateFormat(
+									"yyyy-MM-dd'T'HH:mm:ssXXX");
+
+							contentProfile.append("<ak:currentdatetime>");
+							contentProfile
+									.append(dateFormat.format(new Date()));
+							contentProfile.append("</ak:currentdatetime>");
 
 							boolean signedByPI = false;
 							boolean signedByAllCoPIs = false;
@@ -5195,6 +5533,12 @@ public class ProposalService {
 							contentProfile.append("<ak:fullname>");
 							contentProfile.append(authorFullName);
 							contentProfile.append("</ak:fullname>");
+
+							contentProfile.append("<ak:userid>");
+							contentProfile.append(authorProfile.getId()
+									.toString());
+							contentProfile.append("</ak:userid>");
+
 							contentProfile.append("</ak:authorprofile>");
 
 							contentProfile.append("<ak:pi>");
@@ -5491,17 +5835,26 @@ public class ProposalService {
 								}
 
 								boolean proposalIsChanged = false;
-								if (proposalID.equals("0")) {
-									proposalIsChanged = saveProposal(message,
-											existingProposal, null,
-											authorProfile, proposalID, null,
-											irbApprovalRequired, null);
-								} else {
-									proposalIsChanged = saveProposal(message,
-											existingProposal, oldProposal,
-											authorProfile, proposalID,
-											signatures, irbApprovalRequired,
-											signByAllUsersInfo);
+								try {
+									if (proposalID.equals("0")) {
+										proposalIsChanged = saveProposal(
+												message, existingProposal,
+												null, authorProfile,
+												proposalID, null,
+												irbApprovalRequired, null);
+
+									} else {
+										proposalIsChanged = saveProposal(
+												message, existingProposal,
+												oldProposal, authorProfile,
+												proposalID, signatures,
+												irbApprovalRequired,
+												signByAllUsersInfo);
+									}
+								} catch (Exception e) {
+									return Response.status(403)
+											.type(MediaType.APPLICATION_JSON)
+											.entity(e.getMessage()).build();
 								}
 
 								if (proposalIsChanged) {
@@ -5597,20 +5950,22 @@ public class ProposalService {
 			if (proposalInfo != null && proposalInfo.has("ProjectInfo")) {
 				JsonNode projectInfo = proposalInfo.get("ProjectInfo");
 				if (projectInfo != null && projectInfo.has("ProjectTitle")) {
-					if (!proposalID.equals("0")) {
-						if (!existingProposal
-								.getProjectInfo()
-								.getProjectTitle()
-								.equals(projectInfo.get("ProjectTitle")
-										.textValue())) {
-							existingProposal.getProjectInfo()
-									.setProjectTitle(
-											projectInfo.get("ProjectTitle")
-													.textValue());
+					final String proposalTitle = projectInfo
+							.get("ProjectTitle").textValue().trim()
+							.replaceAll("\\<[^>]*>", "");
+					if (validateNotEmptyValue(proposalTitle)) {
+						if (!proposalID.equals("0")) {
+							if (!existingProposal.getProjectInfo()
+									.getProjectTitle().equals(proposalTitle)) {
+								existingProposal.getProjectInfo()
+										.setProjectTitle(proposalTitle);
+							}
+						} else {
+							newProjectInfo.setProjectTitle(proposalTitle);
 						}
 					} else {
-						newProjectInfo.setProjectTitle(projectInfo.get(
-								"ProjectTitle").textValue());
+						throw new Exception(
+								"The Proposal Title can not be Empty");
 					}
 				}
 
@@ -5701,30 +6056,46 @@ public class ProposalService {
 
 				if (projectInfo != null && projectInfo.has("DueDate")) {
 					Date dueDate = formatter.parse(projectInfo.get("DueDate")
-							.textValue());
-					if (!proposalID.equals("0")) {
-						if (!existingProposal.getProjectInfo().getDueDate()
-								.equals(dueDate)) {
-							existingProposal.getProjectInfo().setDueDate(
-									dueDate);
+							.textValue().trim().replaceAll("\\<[^>]*>", ""));
+					if (validateNotEmptyValue(dueDate.toString())) {
+						if (!proposalID.equals("0")) {
+							if (!existingProposal.getProjectInfo().getDueDate()
+									.equals(dueDate)) {
+								existingProposal.getProjectInfo().setDueDate(
+										dueDate);
+							}
+						} else {
+							newProjectInfo.setDueDate(dueDate);
 						}
 					} else {
-						newProjectInfo.setDueDate(dueDate);
+						throw new Exception("The Due Date can not be Empty");
 					}
 				}
 
 				ProjectPeriod projectPeriod = new ProjectPeriod();
 
 				if (projectInfo != null && projectInfo.has("ProjectPeriodFrom")) {
-					Date periodFrom = formatter.parse(projectInfo.get(
-							"ProjectPeriodFrom").textValue());
-					projectPeriod.setFrom(periodFrom);
+					Date periodFrom = formatter.parse(projectInfo
+							.get("ProjectPeriodFrom").textValue().trim()
+							.replaceAll("\\<[^>]*>", ""));
+					if (validateNotEmptyValue(periodFrom.toString())) {
+						projectPeriod.setFrom(periodFrom);
+					} else {
+						throw new Exception(
+								"The Project Period From can not be Empty");
+					}
 				}
 
 				if (projectInfo != null && projectInfo.has("ProjectPeriodTo")) {
-					Date periodTo = formatter.parse(projectInfo.get(
-							"ProjectPeriodTo").textValue());
-					projectPeriod.setTo(periodTo);
+					Date periodTo = formatter.parse(projectInfo
+							.get("ProjectPeriodTo").textValue().trim()
+							.replaceAll("\\<[^>]*>", ""));
+					if (validateNotEmptyValue(periodTo.toString())) {
+						projectPeriod.setTo(periodTo);
+					} else {
+						throw new Exception(
+								"The Project Period To can not be Empty");
+					}
 				}
 				if (!proposalID.equals("0")) {
 					if (!existingProposal.getProjectInfo().getProjectPeriod()
@@ -5750,38 +6121,66 @@ public class ProposalService {
 				if (sponsorAndBudgetInfo != null
 						&& sponsorAndBudgetInfo.has("GrantingAgency")) {
 					for (String grantingAgency : sponsorAndBudgetInfo
-							.get("GrantingAgency").textValue().split(", ")) {
-						newSponsorAndBudgetInfo.getGrantingAgency().add(
-								grantingAgency);
+							.get("GrantingAgency").textValue().trim()
+							.replaceAll("\\<[^>]*>", "").split(", ")) {
+						if (validateNotEmptyValue(grantingAgency)) {
+							newSponsorAndBudgetInfo.getGrantingAgency().add(
+									grantingAgency);
+						} else {
+							throw new Exception(
+									"The Granting Agency can not be Empty");
+						}
 					}
 				}
 
 				if (sponsorAndBudgetInfo != null
 						&& sponsorAndBudgetInfo.has("DirectCosts")) {
-					newSponsorAndBudgetInfo.setDirectCosts(Double
-							.parseDouble(sponsorAndBudgetInfo
-									.get("DirectCosts").textValue()));
+					final String directCost = sponsorAndBudgetInfo
+							.get("DirectCosts").textValue().trim()
+							.replaceAll("\\<[^>]*>", "");
+					if (validateNotEmptyValue(directCost)) {
+						newSponsorAndBudgetInfo.setDirectCosts(Double
+								.parseDouble(directCost));
+					} else {
+						throw new Exception("The Direct Costs can not be Empty");
+					}
 				}
 
 				if (sponsorAndBudgetInfo != null
 						&& sponsorAndBudgetInfo.has("FACosts")) {
-					newSponsorAndBudgetInfo.setFaCosts(Double
-							.parseDouble(sponsorAndBudgetInfo.get("FACosts")
-									.textValue()));
+					final String FACosts = sponsorAndBudgetInfo.get("FACosts")
+							.textValue().trim().replaceAll("\\<[^>]*>", "");
+					if (validateNotEmptyValue(FACosts)) {
+						newSponsorAndBudgetInfo.setFaCosts(Double
+								.parseDouble(FACosts));
+					} else {
+						throw new Exception("The FA Costs can not be Empty");
+					}
 				}
 
 				if (sponsorAndBudgetInfo != null
 						&& sponsorAndBudgetInfo.has("TotalCosts")) {
-					newSponsorAndBudgetInfo.setTotalCosts(Double
-							.parseDouble(sponsorAndBudgetInfo.get("TotalCosts")
-									.textValue()));
+					final String totalCosts = sponsorAndBudgetInfo
+							.get("TotalCosts").textValue().trim()
+							.replaceAll("\\<[^>]*>", "");
+					if (validateNotEmptyValue(totalCosts)) {
+						newSponsorAndBudgetInfo.setTotalCosts(Double
+								.parseDouble(totalCosts));
+					} else {
+						throw new Exception("The Total Costs can not be Empty");
+					}
 				}
 
 				if (sponsorAndBudgetInfo != null
 						&& sponsorAndBudgetInfo.has("FARate")) {
-					newSponsorAndBudgetInfo.setFaRate(Double
-							.parseDouble(sponsorAndBudgetInfo.get("FARate")
-									.textValue()));
+					final String FARate = sponsorAndBudgetInfo.get("FARate")
+							.textValue().trim().replaceAll("\\<[^>]*>", "");
+					if (validateNotEmptyValue(FARate)) {
+						newSponsorAndBudgetInfo.setFaRate(Double
+								.parseDouble(FARate));
+					} else {
+						throw new Exception("The FA Rate can not be Empty");
+					}
 				}
 			}
 
@@ -6044,9 +6443,16 @@ public class ProposalService {
 						newCollaborationInfo.setInvolveNonFundedCollab(true);
 						if (collaborationInfo != null
 								&& collaborationInfo.has("Collaborators")) {
-							newCollaborationInfo
-									.setInvolvedCollaborators(collaborationInfo
-											.get("Collaborators").textValue());
+							final String collabarationName = collaborationInfo
+									.get("Collaborators").textValue().trim()
+									.replaceAll("\\<[^>]*>", "");
+							if (validateNotEmptyValue(collabarationName)) {
+								newCollaborationInfo
+										.setInvolvedCollaborators(collabarationName);
+							} else {
+								throw new Exception(
+										"Collaborators can not be Empty");
+							}
 						}
 						break;
 					case "2":
@@ -6081,8 +6487,15 @@ public class ProposalService {
 								.setContainConfidentialInformation(true);
 						if (confidentialInfo != null
 								&& confidentialInfo.has("OnPages")) {
-							newConfidentialInfo.setOnPages(confidentialInfo
-									.get("OnPages").textValue());
+							final String onPages = confidentialInfo
+									.get("OnPages").textValue().trim()
+									.replaceAll("\\<[^>]*>", "");
+							if (validateNotEmptyValue(onPages)) {
+								newConfidentialInfo.setOnPages(onPages);
+							} else {
+								throw new Exception(
+										"The Pages can not be Empty");
+							}
 						}
 						if (confidentialInfo != null
 								&& confidentialInfo.has("Patentable")) {
@@ -6132,245 +6545,259 @@ public class ProposalService {
 				existingProposal.setConfidentialInfo(newConfidentialInfo);
 			}
 
-			// OSP Section Info
-			OSPSectionInfo newOSPSectionInfo = new OSPSectionInfo();
-			if (proposalInfo != null && proposalInfo.has("OSPSectionInfo")) {
-				JsonNode oSPSectionInfo = proposalInfo.get("OSPSectionInfo");
+			// For Proposal User Title : for Dean, Chair and Manager
+			JsonNode proposalUserTitle = root.get("proposalUserTitle");
 
-				// List Agency
-				if (oSPSectionInfo != null && oSPSectionInfo.has("ListAgency")) {
-					if (!proposalID.equals("0")) {
-						if (!existingProposal
-								.getOspSectionInfo()
-								.getListAgency()
-								.equals(oSPSectionInfo.get("ListAgency")
-										.textValue())) {
-							existingProposal.getOspSectionInfo().setListAgency(
-									oSPSectionInfo.get("ListAgency")
-											.textValue());
+			if ((proposalUserTitle.textValue().equals(
+					"University Research Administrator") || proposalUserTitle
+					.textValue().equals("University Research Director"))
+					&& !proposalID.equals("0")) {
+				// OSP Section Info Only for University Research Administrator
+				// or University Research Director
+				OSPSectionInfo newOSPSectionInfo = new OSPSectionInfo();
+				if (proposalInfo != null && proposalInfo.has("OSPSectionInfo")) {
+					JsonNode oSPSectionInfo = proposalInfo
+							.get("OSPSectionInfo");
+
+					// List Agency
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo.has("ListAgency")) {
+						String agencies = oSPSectionInfo.get("ListAgency")
+								.textValue().trim().replaceAll("\\<[^>]*>", "");
+						if (validateNotEmptyValue(agencies)) {
+							if (!existingProposal.getOspSectionInfo()
+									.getListAgency().equals(agencies)) {
+								existingProposal.getOspSectionInfo()
+										.setListAgency(agencies);
+							}
+						} else {
+							throw new Exception(
+									"The Agency List can not be Empty");
 						}
 					}
-				}
 
-				FundingSource newFundingSource = new FundingSource();
-				if (oSPSectionInfo != null && oSPSectionInfo.has("Federal")) {
-					newFundingSource.setFederal(oSPSectionInfo.get("Federal")
-							.booleanValue());
-				}
+					FundingSource newFundingSource = new FundingSource();
+					if (oSPSectionInfo != null && oSPSectionInfo.has("Federal")) {
+						newFundingSource.setFederal(oSPSectionInfo.get(
+								"Federal").booleanValue());
+					}
 
-				if (oSPSectionInfo != null
-						&& oSPSectionInfo.has("FederalFlowThrough")) {
-					newFundingSource.setFederalFlowThrough(oSPSectionInfo.get(
-							"FederalFlowThrough").booleanValue());
-				}
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo.has("FederalFlowThrough")) {
+						newFundingSource.setFederalFlowThrough(oSPSectionInfo
+								.get("FederalFlowThrough").booleanValue());
+					}
 
-				if (oSPSectionInfo != null
-						&& oSPSectionInfo.has("StateOfIdahoEntity")) {
-					newFundingSource.setStateOfIdahoEntity(oSPSectionInfo.get(
-							"StateOfIdahoEntity").booleanValue());
-				}
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo.has("StateOfIdahoEntity")) {
+						newFundingSource.setStateOfIdahoEntity(oSPSectionInfo
+								.get("StateOfIdahoEntity").booleanValue());
+					}
 
-				if (oSPSectionInfo != null
-						&& oSPSectionInfo.has("PrivateForProfit")) {
-					newFundingSource.setPrivateForProfit(oSPSectionInfo.get(
-							"PrivateForProfit").booleanValue());
-				}
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo.has("PrivateForProfit")) {
+						newFundingSource.setPrivateForProfit(oSPSectionInfo
+								.get("PrivateForProfit").booleanValue());
+					}
 
-				if (oSPSectionInfo != null
-						&& oSPSectionInfo.has("NonProfitOrganization")) {
-					newFundingSource.setNonProfitOrganization(oSPSectionInfo
-							.get("NonProfitOrganization").booleanValue());
-				}
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo.has("NonProfitOrganization")) {
+						newFundingSource
+								.setNonProfitOrganization(oSPSectionInfo.get(
+										"NonProfitOrganization").booleanValue());
+					}
 
-				if (oSPSectionInfo != null
-						&& oSPSectionInfo.has("NonIdahoStateEntity")) {
-					newFundingSource.setNonIdahoStateEntity(oSPSectionInfo.get(
-							"NonIdahoStateEntity").booleanValue());
-				}
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo.has("NonIdahoStateEntity")) {
+						newFundingSource.setNonIdahoStateEntity(oSPSectionInfo
+								.get("NonIdahoStateEntity").booleanValue());
+					}
 
-				if (oSPSectionInfo != null
-						&& oSPSectionInfo.has("CollegeOrUniversity")) {
-					newFundingSource.setCollegeOrUniversity(oSPSectionInfo.get(
-							"CollegeOrUniversity").booleanValue());
-				}
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo.has("CollegeOrUniversity")) {
+						newFundingSource.setCollegeOrUniversity(oSPSectionInfo
+								.get("CollegeOrUniversity").booleanValue());
+					}
 
-				if (oSPSectionInfo != null && oSPSectionInfo.has("LocalEntity")) {
-					newFundingSource.setLocalEntity(oSPSectionInfo.get(
-							"LocalEntity").booleanValue());
-				}
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo.has("LocalEntity")) {
+						newFundingSource.setLocalEntity(oSPSectionInfo.get(
+								"LocalEntity").booleanValue());
+					}
 
-				if (oSPSectionInfo != null
-						&& oSPSectionInfo.has("NonIdahoLocalEntity")) {
-					newFundingSource.setNonIdahoLocalEntity(oSPSectionInfo.get(
-							"NonIdahoLocalEntity").booleanValue());
-				}
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo.has("NonIdahoLocalEntity")) {
+						newFundingSource.setNonIdahoLocalEntity(oSPSectionInfo
+								.get("NonIdahoLocalEntity").booleanValue());
+					}
 
-				if (oSPSectionInfo != null
-						&& oSPSectionInfo.has("TirbalGovernment")) {
-					newFundingSource.setTirbalGovernment(oSPSectionInfo.get(
-							"TirbalGovernment").booleanValue());
-				}
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo.has("TirbalGovernment")) {
+						newFundingSource.setTirbalGovernment(oSPSectionInfo
+								.get("TirbalGovernment").booleanValue());
+					}
 
-				if (oSPSectionInfo != null && oSPSectionInfo.has("Foreign")) {
-					newFundingSource.setForeign(oSPSectionInfo.get("Foreign")
-							.booleanValue());
-				}
+					if (oSPSectionInfo != null && oSPSectionInfo.has("Foreign")) {
+						newFundingSource.setForeign(oSPSectionInfo.get(
+								"Foreign").booleanValue());
+					}
 
-				// Funding Source
-				if (!proposalID.equals("0")) {
+					// Funding Source
 					if (!existingProposal.getOspSectionInfo()
 							.getFundingSource().equals(newFundingSource)) {
 						existingProposal.getOspSectionInfo().setFundingSource(
 								newFundingSource);
 					}
-				}
 
-				// CFDA No
-				if (oSPSectionInfo != null && oSPSectionInfo.has("CFDANo")) {
-					if (!proposalID.equals("0")) {
-						if (!existingProposal
-								.getOspSectionInfo()
-								.getCfdaNo()
-								.equals(oSPSectionInfo.get("CFDANo")
-										.textValue())) {
-							existingProposal.getOspSectionInfo().setCfdaNo(
-									oSPSectionInfo.get("CFDANo").textValue());
+					// CFDA No
+					if (oSPSectionInfo != null && oSPSectionInfo.has("CFDANo")) {
+						String CFDANo = oSPSectionInfo.get("CFDANo")
+								.textValue().trim().replaceAll("\\<[^>]*>", "");
+						if (validateNotEmptyValue(CFDANo)) {
+							if (!existingProposal.getOspSectionInfo()
+									.getCfdaNo().equals(CFDANo)) {
+								existingProposal.getOspSectionInfo().setCfdaNo(
+										CFDANo);
+							}
+						} else {
+							throw new Exception("The CFDA No can not be Empty");
 						}
 					}
-				}
 
-				// Program No
-				if (oSPSectionInfo != null && oSPSectionInfo.has("ProgramNo")) {
-					if (!proposalID.equals("0")) {
-						if (!existingProposal
-								.getOspSectionInfo()
-								.getProgramNo()
-								.equals(oSPSectionInfo.get("ProgramNo")
-										.textValue())) {
-							existingProposal.getOspSectionInfo()
-									.setProgramNo(
-											oSPSectionInfo.get("ProgramNo")
-													.textValue());
+					// Program No
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo.has("ProgramNo")) {
+						String programNo = oSPSectionInfo.get("ProgramNo")
+								.textValue().trim().replaceAll("\\<[^>]*>", "");
+						if (validateNotEmptyValue(programNo)) {
+							if (!existingProposal.getOspSectionInfo()
+									.getProgramNo().equals(programNo)) {
+								existingProposal.getOspSectionInfo()
+										.setProgramNo(programNo);
+							}
+						} else {
+							throw new Exception(
+									"The Program No can not be Empty");
 						}
 					}
-				}
 
-				// Program Title
-				if (oSPSectionInfo != null
-						&& oSPSectionInfo.has("ProgramTitle")) {
-					if (!proposalID.equals("0")) {
-						if (!existingProposal
-								.getOspSectionInfo()
-								.getProgramTitle()
-								.equals(oSPSectionInfo.get("ProgramTitle")
-										.textValue())) {
-							existingProposal.getOspSectionInfo()
-									.setProgramTitle(
-											oSPSectionInfo.get("ProgramTitle")
-													.textValue());
+					// Program Title
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo.has("ProgramTitle")) {
+						String programTitle = oSPSectionInfo
+								.get("ProgramTitle").textValue().trim()
+								.replaceAll("\\<[^>]*>", "");
+						if (validateNotEmptyValue(programTitle)) {
+							if (!existingProposal.getOspSectionInfo()
+									.getProgramTitle().equals(programTitle)) {
+								existingProposal.getOspSectionInfo()
+										.setProgramTitle(programTitle);
+							}
+						} else {
+							throw new Exception(
+									"The Program Title can not be Empty");
 						}
 					}
-				}
 
-				Recovery newRecovery = new Recovery();
-				if (oSPSectionInfo != null
-						&& oSPSectionInfo.has("FullRecovery")) {
-					newRecovery.setFullRecovery(oSPSectionInfo.get(
-							"FullRecovery").booleanValue());
-				}
+					Recovery newRecovery = new Recovery();
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo.has("FullRecovery")) {
+						newRecovery.setFullRecovery(oSPSectionInfo.get(
+								"FullRecovery").booleanValue());
+					}
 
-				if (oSPSectionInfo != null
-						&& oSPSectionInfo.has("NoRecoveryNormalSponsorPolicy")) {
-					newRecovery.setNoRecoveryNormalSponsorPolicy(oSPSectionInfo
-							.get("NoRecoveryNormalSponsorPolicy")
-							.booleanValue());
-				}
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo
+									.has("NoRecoveryNormalSponsorPolicy")) {
+						newRecovery
+								.setNoRecoveryNormalSponsorPolicy(oSPSectionInfo
+										.get("NoRecoveryNormalSponsorPolicy")
+										.booleanValue());
+					}
 
-				if (oSPSectionInfo != null
-						&& oSPSectionInfo.has("NoRecoveryInstitutionalWaiver")) {
-					newRecovery.setNoRecoveryInstitutionalWaiver(oSPSectionInfo
-							.get("NoRecoveryInstitutionalWaiver")
-							.booleanValue());
-				}
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo
+									.has("NoRecoveryInstitutionalWaiver")) {
+						newRecovery
+								.setNoRecoveryInstitutionalWaiver(oSPSectionInfo
+										.get("NoRecoveryInstitutionalWaiver")
+										.booleanValue());
+					}
 
-				if (oSPSectionInfo != null
-						&& oSPSectionInfo
-								.has("LimitedRecoveryNormalSponsorPolicy")) {
-					newRecovery
-							.setLimitedRecoveryNormalSponsorPolicy(oSPSectionInfo
-									.get("LimitedRecoveryNormalSponsorPolicy")
-									.booleanValue());
-				}
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo
+									.has("LimitedRecoveryNormalSponsorPolicy")) {
+						newRecovery
+								.setLimitedRecoveryNormalSponsorPolicy(oSPSectionInfo
+										.get("LimitedRecoveryNormalSponsorPolicy")
+										.booleanValue());
+					}
 
-				if (oSPSectionInfo != null
-						&& oSPSectionInfo
-								.has("LimitedRecoveryInstitutionalWaiver")) {
-					newRecovery
-							.setLimitedRecoveryInstitutionalWaiver(oSPSectionInfo
-									.get("LimitedRecoveryInstitutionalWaiver")
-									.booleanValue());
-				}
-				// Recovery
-				if (!proposalID.equals("0")) {
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo
+									.has("LimitedRecoveryInstitutionalWaiver")) {
+						newRecovery
+								.setLimitedRecoveryInstitutionalWaiver(oSPSectionInfo
+										.get("LimitedRecoveryInstitutionalWaiver")
+										.booleanValue());
+					}
+					// Recovery
 					if (!existingProposal.getOspSectionInfo().getRecovery()
 							.equals(newRecovery)) {
 						existingProposal.getOspSectionInfo().setRecovery(
 								newRecovery);
 					}
-				}
 
-				BaseInfo newBaseInfo = new BaseInfo();
-				if (oSPSectionInfo != null && oSPSectionInfo.has("MTDC")) {
-					newBaseInfo.setMtdc(oSPSectionInfo.get("MTDC")
-							.booleanValue());
-				}
+					BaseInfo newBaseInfo = new BaseInfo();
+					if (oSPSectionInfo != null && oSPSectionInfo.has("MTDC")) {
+						newBaseInfo.setMtdc(oSPSectionInfo.get("MTDC")
+								.booleanValue());
+					}
 
-				if (oSPSectionInfo != null && oSPSectionInfo.has("TDC")) {
-					newBaseInfo
-							.setTdc(oSPSectionInfo.get("TDC").booleanValue());
-				}
+					if (oSPSectionInfo != null && oSPSectionInfo.has("TDC")) {
+						newBaseInfo.setTdc(oSPSectionInfo.get("TDC")
+								.booleanValue());
+					}
 
-				if (oSPSectionInfo != null && oSPSectionInfo.has("TC")) {
-					newBaseInfo.setTc(oSPSectionInfo.get("TC").booleanValue());
-				}
+					if (oSPSectionInfo != null && oSPSectionInfo.has("TC")) {
+						newBaseInfo.setTc(oSPSectionInfo.get("TC")
+								.booleanValue());
+					}
 
-				if (oSPSectionInfo != null && oSPSectionInfo.has("Other")) {
-					newBaseInfo.setOther(oSPSectionInfo.get("Other")
-							.booleanValue());
-				}
+					if (oSPSectionInfo != null && oSPSectionInfo.has("Other")) {
+						newBaseInfo.setOther(oSPSectionInfo.get("Other")
+								.booleanValue());
+					}
 
-				if (oSPSectionInfo != null
-						&& oSPSectionInfo.has("NotApplicable")) {
-					newBaseInfo.setNotApplicable(oSPSectionInfo.get(
-							"NotApplicable").booleanValue());
-				}
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo.has("NotApplicable")) {
+						newBaseInfo.setNotApplicable(oSPSectionInfo.get(
+								"NotApplicable").booleanValue());
+					}
 
-				// Base Info
-				if (!proposalID.equals("0")) {
+					// Base Info
 					if (!existingProposal.getOspSectionInfo().getBaseInfo()
 							.equals(newBaseInfo)) {
 						existingProposal.getOspSectionInfo().setBaseInfo(
 								newBaseInfo);
 					}
-				}
 
-				if (oSPSectionInfo != null
-						&& oSPSectionInfo.has("IsPISalaryIncluded")) {
-					switch (oSPSectionInfo.get("IsPISalaryIncluded")
-							.textValue()) {
-					case "1":
-						newOSPSectionInfo.setPiSalaryIncluded(true);
-						break;
-					case "2":
-						newOSPSectionInfo.setPiSalaryIncluded(false);
-						break;
-					default:
-						break;
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo.has("IsPISalaryIncluded")) {
+						switch (oSPSectionInfo.get("IsPISalaryIncluded")
+								.textValue()) {
+						case "1":
+							newOSPSectionInfo.setPiSalaryIncluded(true);
+							break;
+						case "2":
+							newOSPSectionInfo.setPiSalaryIncluded(false);
+							break;
+						default:
+							break;
+						}
 					}
-				}
 
-				// PI Salary Included
-				if (!proposalID.equals("0")) {
+					// PI Salary Included
 					if (existingProposal.getOspSectionInfo()
 							.isPiSalaryIncluded() != newOSPSectionInfo
 							.isPiSalaryIncluded()) {
@@ -6378,134 +6805,150 @@ public class ProposalService {
 								.setPiSalaryIncluded(
 										newOSPSectionInfo.isPiSalaryIncluded());
 					}
-				}
 
-				if (oSPSectionInfo != null && oSPSectionInfo.has("PISalary")) {
-					// PI Salary
-					if (!proposalID.equals("0")) {
-						if (existingProposal.getOspSectionInfo().getPiSalary() != Double
-								.parseDouble(oSPSectionInfo.get("PISalary")
-										.textValue())) {
-							existingProposal.getOspSectionInfo().setPiSalary(
-									Double.parseDouble(oSPSectionInfo.get(
-											"PISalary").textValue()));
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo.has("PISalary")) {
+						// PI Salary
+						String PISalary = oSPSectionInfo.get("PISalary")
+								.textValue().trim().replaceAll("\\<[^>]*>", "");
+						if (validateNotEmptyValue(PISalary)) {
+							if (existingProposal.getOspSectionInfo()
+									.getPiSalary() != Double
+									.parseDouble(PISalary)) {
+								existingProposal.getOspSectionInfo()
+										.setPiSalary(
+												Double.parseDouble(PISalary));
+							}
+						} else {
+							throw new Exception(
+									"The PI Salary can not be Empty");
 						}
 					}
-				}
 
-				if (oSPSectionInfo != null && oSPSectionInfo.has("PIFringe")) {
-					// PI Fringe
-					if (!proposalID.equals("0")) {
-						if (existingProposal.getOspSectionInfo().getPiFringe() != Double
-								.parseDouble(oSPSectionInfo.get("PIFringe")
-										.textValue())) {
-							existingProposal.getOspSectionInfo().setPiFringe(
-									Double.parseDouble(oSPSectionInfo.get(
-											"PIFringe").textValue()));
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo.has("PIFringe")) {
+						// PI Fringe
+						String PiFringe = oSPSectionInfo.get("PIFringe")
+								.textValue().trim().replaceAll("\\<[^>]*>", "");
+						if (validateNotEmptyValue(PiFringe)) {
+							if (existingProposal.getOspSectionInfo()
+									.getPiFringe() != Double
+									.parseDouble(PiFringe)) {
+								existingProposal.getOspSectionInfo()
+										.setPiFringe(
+												Double.parseDouble(PiFringe));
+							}
+						} else {
+							throw new Exception(
+									"The PI Fringe can not be Empty");
 						}
 					}
-				}
 
-				if (oSPSectionInfo != null
-						&& oSPSectionInfo.has("DepartmentId")) {
-					// Department Id
-					if (!proposalID.equals("0")) {
-						if (!existingProposal
-								.getOspSectionInfo()
-								.getDepartmentId()
-								.equals(oSPSectionInfo.get("DepartmentId")
-										.textValue())) {
-							existingProposal.getOspSectionInfo()
-									.setDepartmentId(
-											oSPSectionInfo.get("DepartmentId")
-													.textValue());
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo.has("DepartmentId")) {
+						// Department Id
+						String departmentId = oSPSectionInfo
+								.get("DepartmentId").textValue().trim()
+								.replaceAll("\\<[^>]*>", "");
+						if (validateNotEmptyValue(departmentId)) {
+							if (!existingProposal.getOspSectionInfo()
+									.getDepartmentId().equals(departmentId)) {
+								existingProposal.getOspSectionInfo()
+										.setDepartmentId(departmentId);
+							}
+						} else {
+							throw new Exception(
+									"The Department Id can not be Empty");
 						}
 					}
-				}
 
-				BaseOptions newBaseOptions = new BaseOptions();
+					BaseOptions newBaseOptions = new BaseOptions();
 
-				if (oSPSectionInfo != null
-						&& oSPSectionInfo.has("InstitutionalCostDocumented")) {
-					switch (oSPSectionInfo.get("InstitutionalCostDocumented")
-							.textValue()) {
-					case "1":
-						newBaseOptions.setYes(true);
-						break;
-					case "2":
-						newBaseOptions.setNo(true);
-						break;
-					case "3":
-						newBaseOptions.setNotApplicable(true);
-						break;
-					default:
-						break;
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo
+									.has("InstitutionalCostDocumented")) {
+						switch (oSPSectionInfo.get(
+								"InstitutionalCostDocumented").textValue()) {
+						case "1":
+							newBaseOptions.setYes(true);
+							break;
+						case "2":
+							newBaseOptions.setNo(true);
+							break;
+						case "3":
+							newBaseOptions.setNotApplicable(true);
+							break;
+						default:
+							break;
+						}
 					}
-				}
-				// Institutional Cost Documented
-				if (!proposalID.equals("0")) {
+					// Institutional Cost Documented
 					if (!existingProposal.getOspSectionInfo()
 							.getInstitutionalCostDocumented()
 							.equals(newBaseOptions)) {
 						existingProposal.getOspSectionInfo()
 								.setInstitutionalCostDocumented(newBaseOptions);
 					}
-				}
 
-				newBaseOptions = new BaseOptions();
-				if (oSPSectionInfo != null
-						&& oSPSectionInfo.has("ThirdPartyCostDocumented")) {
-					switch (oSPSectionInfo.get("ThirdPartyCostDocumented")
-							.textValue()) {
-					case "1":
-						newBaseOptions.setYes(true);
-						break;
-					case "2":
-						newBaseOptions.setNo(true);
-						break;
-					case "3":
-						newBaseOptions.setNotApplicable(true);
-						break;
-					default:
-						break;
+					newBaseOptions = new BaseOptions();
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo.has("ThirdPartyCostDocumented")) {
+						switch (oSPSectionInfo.get("ThirdPartyCostDocumented")
+								.textValue()) {
+						case "1":
+							newBaseOptions.setYes(true);
+							break;
+						case "2":
+							newBaseOptions.setNo(true);
+							break;
+						case "3":
+							newBaseOptions.setNotApplicable(true);
+							break;
+						default:
+							break;
+						}
 					}
-				}
 
-				// Third Party Cost Documented
-				if (!proposalID.equals("0")) {
+					// Third Party Cost Documented
 					if (!existingProposal.getOspSectionInfo()
 							.getThirdPartyCostDocumented()
 							.equals(newBaseOptions)) {
 						existingProposal.getOspSectionInfo()
 								.setThirdPartyCostDocumented(newBaseOptions);
 					}
-				}
 
-				if (oSPSectionInfo != null
-						&& oSPSectionInfo.has("IsAnticipatedSubRecipients")) {
-					switch (oSPSectionInfo.get("IsAnticipatedSubRecipients")
-							.textValue()) {
-					case "1":
-						newOSPSectionInfo.setAnticipatedSubRecipients(true);
-						if (oSPSectionInfo != null
-								&& oSPSectionInfo
-										.has("AnticipatedSubRecipientsNames")) {
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo.has("IsAnticipatedSubRecipients")) {
+						switch (oSPSectionInfo
+								.get("IsAnticipatedSubRecipients").textValue()) {
+						case "1":
+							newOSPSectionInfo.setAnticipatedSubRecipients(true);
+							if (oSPSectionInfo != null
+									&& oSPSectionInfo
+											.has("AnticipatedSubRecipientsNames")) {
+								final String anticipatedSubRecipients = oSPSectionInfo
+										.get("AnticipatedSubRecipientsNames")
+										.textValue().trim()
+										.replaceAll("\\<[^>]*>", "");
+								if (validateNotEmptyValue(anticipatedSubRecipients)) {
+									newOSPSectionInfo
+											.setAnticipatedSubRecipientsNames(anticipatedSubRecipients);
+								} else {
+									throw new Exception(
+											"The Anticipated SubRecipients Names can not be Empty");
+								}
+							}
+							break;
+						case "2":
 							newOSPSectionInfo
-									.setAnticipatedSubRecipientsNames(oSPSectionInfo
-											.get("AnticipatedSubRecipientsNames")
-											.textValue());
+									.setAnticipatedSubRecipients(false);
+							break;
+						default:
+							break;
 						}
-						break;
-					case "2":
-						newOSPSectionInfo.setAnticipatedSubRecipients(false);
-						break;
-					default:
-						break;
 					}
-				}
 
-				// Is Anticipated SubRecipients
-				if (!proposalID.equals("0")) {
+					// Is Anticipated SubRecipients
 					if (existingProposal.getOspSectionInfo()
 							.isAnticipatedSubRecipients() != newOSPSectionInfo
 							.isAnticipatedSubRecipients()) {
@@ -6536,35 +6979,34 @@ public class ProposalService {
 										newOSPSectionInfo
 												.getAnticipatedSubRecipientsNames());
 					}
-				}
 
-				BasePIEligibilityOptions newBasePIEligibilityOptions = new BasePIEligibilityOptions();
-				if (oSPSectionInfo != null
-						&& oSPSectionInfo.has("PIEligibilityWaiver")) {
-					switch (oSPSectionInfo.get("PIEligibilityWaiver")
-							.textValue()) {
-					case "1":
-						newBasePIEligibilityOptions.setYes(true);
-						break;
-					case "2":
-						newBasePIEligibilityOptions.setNo(true);
-						break;
-					case "3":
-						newBasePIEligibilityOptions.setNotApplicable(true);
-						break;
-					case "4":
-						newBasePIEligibilityOptions.setThisProposalOnly(true);
-						break;
-					case "5":
-						newBasePIEligibilityOptions.setBlanket(true);
-						break;
-					default:
-						break;
+					BasePIEligibilityOptions newBasePIEligibilityOptions = new BasePIEligibilityOptions();
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo.has("PIEligibilityWaiver")) {
+						switch (oSPSectionInfo.get("PIEligibilityWaiver")
+								.textValue()) {
+						case "1":
+							newBasePIEligibilityOptions.setYes(true);
+							break;
+						case "2":
+							newBasePIEligibilityOptions.setNo(true);
+							break;
+						case "3":
+							newBasePIEligibilityOptions.setNotApplicable(true);
+							break;
+						case "4":
+							newBasePIEligibilityOptions
+									.setThisProposalOnly(true);
+							break;
+						case "5":
+							newBasePIEligibilityOptions.setBlanket(true);
+							break;
+						default:
+							break;
+						}
 					}
-				}
 
-				// Base PI Eligibility Options
-				if (!proposalID.equals("0")) {
+					// Base PI Eligibility Options
 					if (!existingProposal.getOspSectionInfo()
 							.getPiEligibilityWaiver()
 							.equals(newBasePIEligibilityOptions)) {
@@ -6572,58 +7014,54 @@ public class ProposalService {
 								.setPiEligibilityWaiver(
 										newBasePIEligibilityOptions);
 					}
-				}
 
-				newBaseOptions = new BaseOptions();
-				if (oSPSectionInfo != null
-						&& oSPSectionInfo.has("ConflictOfInterestForms")) {
-					switch (oSPSectionInfo.get("ConflictOfInterestForms")
-							.textValue()) {
-					case "1":
-						newBaseOptions.setYes(true);
-						break;
-					case "2":
-						newBaseOptions.setNo(true);
-						break;
-					case "3":
-						newBaseOptions.setNotApplicable(true);
-						break;
-					default:
-						break;
+					newBaseOptions = new BaseOptions();
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo.has("ConflictOfInterestForms")) {
+						switch (oSPSectionInfo.get("ConflictOfInterestForms")
+								.textValue()) {
+						case "1":
+							newBaseOptions.setYes(true);
+							break;
+						case "2":
+							newBaseOptions.setNo(true);
+							break;
+						case "3":
+							newBaseOptions.setNotApplicable(true);
+							break;
+						default:
+							break;
+						}
 					}
-				}
 
-				// Conflict Of Interest Forms
-				if (!proposalID.equals("0")) {
+					// Conflict Of Interest Forms
 					if (!existingProposal.getOspSectionInfo()
 							.getConflictOfInterestForms()
 							.equals(newBaseOptions)) {
 						existingProposal.getOspSectionInfo()
 								.setConflictOfInterestForms(newBaseOptions);
 					}
-				}
 
-				newBaseOptions = new BaseOptions();
-				if (oSPSectionInfo != null
-						&& oSPSectionInfo.has("ExcludedPartyListChecked")) {
-					switch (oSPSectionInfo.get("ExcludedPartyListChecked")
-							.textValue()) {
-					case "1":
-						newBaseOptions.setYes(true);
-						break;
-					case "2":
-						newBaseOptions.setNo(true);
-						break;
-					case "3":
-						newBaseOptions.setNotApplicable(true);
-						break;
-					default:
-						break;
+					newBaseOptions = new BaseOptions();
+					if (oSPSectionInfo != null
+							&& oSPSectionInfo.has("ExcludedPartyListChecked")) {
+						switch (oSPSectionInfo.get("ExcludedPartyListChecked")
+								.textValue()) {
+						case "1":
+							newBaseOptions.setYes(true);
+							break;
+						case "2":
+							newBaseOptions.setNo(true);
+							break;
+						case "3":
+							newBaseOptions.setNotApplicable(true);
+							break;
+						default:
+							break;
+						}
 					}
-				}
 
-				// Excluded Party List Checked
-				if (!proposalID.equals("0")) {
+					// Excluded Party List Checked
 					if (!existingProposal.getOspSectionInfo()
 							.getExcludedPartyListChecked()
 							.equals(newBaseOptions)) {
@@ -6631,84 +7069,13 @@ public class ProposalService {
 								.setExcludedPartyListChecked(newBaseOptions);
 					}
 				}
-			}
-
-			// Appendix Info
-			if (proposalInfo != null && proposalInfo.has("AppendixInfo")) {
-				List<Appendix> appendixInfo = Arrays.asList(mapper.readValue(
-						proposalInfo.get("AppendixInfo").toString(),
-						Appendix[].class));
-				if (appendixInfo.size() != 0) {
-
-					String UPLOAD_PATH = new String();
-					try {
-						UPLOAD_PATH = this.getClass().getResource("/uploads")
-								.toURI().getPath();
-					} catch (URISyntaxException e) {
-						e.printStackTrace();
-					}
-
-					List<String> existingFiles = new ArrayList<String>();
-					if (!proposalID.equals("0")) {
-						boolean alreadyExist = false;
-						for (Appendix appendix : oldProposal.getAppendices()) {
-							for (Appendix appendixObj : appendixInfo) {
-								if (appendix.getFilename().equals(
-										appendixObj.getFilename())) {
-									alreadyExist = true;
-									existingFiles
-											.add(appendixObj.getFilename());
-									break;
-								}
-							}
-							if (!alreadyExist) {
-								existingProposal.getAppendices().remove(
-										appendix);
-							}
-						}
-
-						for (Appendix uploadFile : appendixInfo) {
-							String fileName = uploadFile.getFilename();
-							if (!existingFiles.contains(fileName)) {
-								File file = new File(UPLOAD_PATH + fileName);
-
-								String extension = "";
-								int i = fileName.lastIndexOf('.');
-								if (i > 0) {
-									extension = fileName.substring(i + 1);
-									uploadFile.setExtension(extension);
-								}
-								uploadFile.setFilesize(file.length());
-								uploadFile.setFilepath("/uploads/" + fileName);
-
-								existingProposal.getAppendices()
-										.add(uploadFile);
-							}
-						}
-					} else {
-						for (Appendix uploadFile : appendixInfo) {
-							String fileName = uploadFile.getFilename();
-							File file = new File(UPLOAD_PATH + fileName);
-
-							String extension = "";
-							int i = fileName.lastIndexOf('.');
-							if (i > 0) {
-								extension = fileName.substring(i + 1);
-								uploadFile.setExtension(extension);
-							}
-							uploadFile.setFilesize(file.length());
-							uploadFile.setFilepath("/uploads/" + fileName);
-
-							existingProposal.getAppendices().add(uploadFile);
-						}
-					}
+			} else {
+				if (!proposalID.equals("0")) {
+					existingProposal.setOspSectionInfo(oldProposal
+							.getOspSectionInfo());
 				}
 			}
 
-			// START
-
-			// For Proposal User Title : for Dean, Chair and Manager
-			JsonNode proposalUserTitle = root.get("proposalUserTitle");
 			String notificationMessage = new String();
 			boolean isCritical = false;
 			if (proposalUserTitle != null) {
@@ -6919,8 +7286,10 @@ public class ProposalService {
 									+ authorUserName + ".";
 
 							if (existingProposal.getChairApproval() == ApprovalType.READYFORAPPROVAL
-									&& proposalUserTitle.textValue().equals(
-											"Department Chair")) {
+									&& (proposalUserTitle.textValue().equals(
+											"Department Chair") || proposalUserTitle
+											.textValue().equals(
+													"Associate Chair"))) {
 								if (signByAllUsersInfo.isSignedByAllChairs()) {
 									// Ready for Review by Business
 									// Manager
@@ -7054,8 +7423,10 @@ public class ProposalService {
 								}
 							} else if (existingProposal
 									.getBusinessManagerApproval() == ApprovalType.READYFORAPPROVAL
-									&& proposalUserTitle.textValue().equals(
-											"Business Manager")) {
+									&& (proposalUserTitle.textValue().equals(
+											"Business Manager") || proposalUserTitle
+											.textValue()
+											.equals("Department Administrative Assistant"))) {
 								if (signByAllUsersInfo
 										.isSignedByAllBusinessManagers()) {
 									// Reviewed by Business Manager
@@ -7136,8 +7507,10 @@ public class ProposalService {
 									}
 								}
 							} else if (existingProposal.getDeanApproval() == ApprovalType.READYFORAPPROVAL
-									&& proposalUserTitle.textValue().equals(
-											"Dean")) {
+									&& (proposalUserTitle.textValue().equals(
+											"Dean") || proposalUserTitle
+											.textValue().equals(
+													"Associate Dean"))) {
 								if (signByAllUsersInfo.isSignedByAllDeans()) {
 									// Approved by Dean
 									existingProposal
@@ -7574,6 +7947,7 @@ public class ProposalService {
 								// You are not allowed to APPROVE
 								// the
 								// Proposal
+								return false;
 							}
 						}
 
@@ -8426,7 +8800,6 @@ public class ProposalService {
 					}
 				}
 			}
-			// END
 
 			if (!proposalID.equals("0")) {
 				if (!existingProposal.equals(oldProposal)) {
@@ -8446,6 +8819,26 @@ public class ProposalService {
 			}
 		}
 		return proposalIsChanged;
+	}
+
+	// Only 5MB is allowed from client to upload
+	private boolean verifyValidFileSize(long fileSize) {
+		if (fileSize <= 5 * 1024 * 1024) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	// Allowed extensions: jpg,png,gif,jpeg,bmp,png,pdf,doc,docx,xls,xlsx,txt
+	private boolean verifyValidFileExtension(String extension) {
+		List<String> list = Arrays.asList("jpg", "png", "gif", "jpeg", "bmp",
+				"png", "pdf", "doc", "docx", "xls", "xlsx", "txt");
+		if (list.contains(extension)) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	private void NotifyAllExistingInvestigators(String proposalID,
@@ -8899,6 +9292,14 @@ public class ProposalService {
 		}
 
 		return allCoPiSigned;
+	}
+
+	private boolean validateNotEmptyValue(String value) {
+		if (!value.equalsIgnoreCase("")) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 }

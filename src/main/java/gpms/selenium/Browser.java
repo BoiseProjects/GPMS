@@ -1,5 +1,6 @@
 package gpms.selenium;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
@@ -145,13 +146,28 @@ public class Browser {
 	 * Purpose: wait for a particular element to load
 	 * Requires ID of element input parameters
 	 */
-	public void waitForElementLoad(WebDriver driver, String currentElement)
+	public void waitForElementLoad(WebDriver driver, String currentElement, String type)
 	{
 		FluentWait<WebDriver> wait = new FluentWait<WebDriver>(driver)
-				.withTimeout(30, TimeUnit.SECONDS)
-				.pollingEvery(5, TimeUnit.SECONDS)
+				.withTimeout(20, TimeUnit.SECONDS)
+				.pollingEvery(1, TimeUnit.SECONDS)
 				.ignoring(NoSuchElementException.class);
-		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(currentElement)));
+		if (type.equals("id"))
+		{
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(currentElement)));			
+		}
+		else if (type.equals("css"))
+		{
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(currentElement)));			
+		}
+		else if(type.equals("xpath"))
+		{
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(currentElement)));
+		}
+		else if (type.equals("class"))
+		{
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.className(currentElement)));
+		}
 	}
 	
 	/*
@@ -181,6 +197,13 @@ public class Browser {
 		js.executeScript("arguments[0].click();", element);
 	}
 	
+	public void changeElementName(WebDriver driver, String nameOriginal, String nameNew)
+	{
+		WebElement element = driver.findElement(By.name(nameOriginal));
+		JavascriptExecutor js = (JavascriptExecutor)driver;
+		js.executeScript("arguments[0].setAttribute('name'," + nameNew + ")", element);
+	}
+	
 	// Alert boxes for ERROR messages have the tag
 	// <div id="alert-BoxContenedor" class="BoxError">
 	public void errorConfirm(WebDriver driver) {
@@ -203,12 +226,16 @@ public class Browser {
 	/* 
 	 * Purpose: Hover over an icon to present a hidden dropdown menu and
 	 * select an item from the list
-	 * Currently works exclusively on the first proposal in the manage proposals list
+	 * Currently works exclusively on the random proposal in the manage proposals list
 	 */
 	public void hoverClick(WebDriver driver) 
 	{
+		int proposal;
+		List<WebElement> rows = driver.findElements(By.tagName("tr"));
+		int allProposal = rows.size();
+		proposal = (int) Math.floor(Math.random() * allProposal);
 		((JavascriptExecutor) driver)
-        .executeScript("var s=document.getElementById('edit0');s.click();");
+        .executeScript("var s=document.getElementById('edit" + proposal + "');s.click();");
 	}
 	
 	//Not working... aiming to get userID from Session

@@ -114,7 +114,8 @@ public class WriteXMLUtil {
 			Element rootTarget = doc.createElement("Target");
 			rootElement.appendChild(rootTarget);
 
-			// START Rule ApproveProposalByDepartmentChair-Rule13a HERE
+			// START Rule for Editing Signature Part:
+			// EditProposalSectionByDepartmentChair-Rule40 HERE
 			// Rule elements
 			Element rule = doc.createElement("Rule");
 			rootElement.appendChild(rule);
@@ -125,12 +126,12 @@ public class WriteXMLUtil {
 			rule.setAttributeNode(attr);
 
 			rule.setAttribute("RuleId",
-					"ApproveProposalByDepartmentChair-DelegationRule13a");
+					"EditProposalSectionByDepartmentChair-DelegationRule40");
 
 			// Description elements
 			Element desc = doc.createElement("Description");
 			desc.appendChild(doc
-					.createTextNode("\"Associate Chair\" can \"Approve\" a \"Whole Proposal\" when Delegated by \"Department Chair\" ApprovedByDepartmentChair = READYFORAPPROVAL and where condition check all department chairs are not approved."));
+					.createTextNode("\"Associate Chair\" can \"Edit\" \"Certification/Signatures\" when Delegated by \"Department Chair\" ApprovedByDepartmentChair = READYFORAPPROVAL"));
 			rule.appendChild(desc);
 
 			// Target elements
@@ -147,7 +148,7 @@ public class WriteXMLUtil {
 					"urn:oasis:names:tc:xacml:1.0:subject:position.title",
 					"urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"));
 
-			allOf.appendChild(getMatch(doc, "Whole Proposal",
+			allOf.appendChild(getMatch(doc, "Certification/Signatures",
 					"urn:oasis:names:tc:xacml:1.0:resource:proposal.section",
 					"urn:oasis:names:tc:xacml:3.0:attribute-category:resource"));
 
@@ -157,33 +158,82 @@ public class WriteXMLUtil {
 					"urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDepartmentChair",
 					"urn:oasis:names:tc:xacml:3.0:attribute-category:resource"));
 
-			allOf.appendChild(getMatch(doc, "Approve",
+			allOf.appendChild(getMatch(doc, "Edit",
+					"urn:oasis:names:tc:xacml:1.0:action:proposal.action",
+					"urn:oasis:names:tc:xacml:3.0:attribute-category:action"));
+
+			// END Rule EditProposalSectionByDepartmentChair-Rule40 HERE
+
+			// START Rule ApproveProposalByDepartmentChair-Rule13a HERE
+			// Rule elements
+			Element rule1 = doc.createElement("Rule");
+			rootElement.appendChild(rule1);
+
+			// set Effect attribute to Rule element
+			attr = doc.createAttribute("Effect");
+			attr.setValue("Permit");
+			rule1.setAttributeNode(attr);
+
+			rule1.setAttribute("RuleId",
+					"ApproveProposalByDepartmentChair-DelegationRule13a");
+
+			// Description elements
+			Element desc1 = doc.createElement("Description");
+			desc1.appendChild(doc
+					.createTextNode("\"Associate Chair\" can \"Approve\" a \"Whole Proposal\" when Delegated by \"Department Chair\" ApprovedByDepartmentChair = READYFORAPPROVAL and where condition check all department chairs are not approved."));
+			rule1.appendChild(desc1);
+
+			// Target elements
+			Element target1 = doc.createElement("Target");
+			rule1.appendChild(target1);
+
+			Element anyOf1 = doc.createElement("AnyOf");
+			target1.appendChild(anyOf1);
+
+			Element allOf1 = doc.createElement("AllOf");
+			anyOf1.appendChild(allOf1);
+
+			allOf1.appendChild(getMatch(doc, "Associate Chair",
+					"urn:oasis:names:tc:xacml:1.0:subject:position.title",
+					"urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"));
+
+			allOf1.appendChild(getMatch(doc, "Whole Proposal",
+					"urn:oasis:names:tc:xacml:1.0:resource:proposal.section",
+					"urn:oasis:names:tc:xacml:3.0:attribute-category:resource"));
+
+			allOf1.appendChild(getMatch(
+					doc,
+					"READYFORAPPROVAL",
+					"urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDepartmentChair",
+					"urn:oasis:names:tc:xacml:3.0:attribute-category:resource"));
+
+			allOf1.appendChild(getMatch(doc, "Approve",
 					"urn:oasis:names:tc:xacml:1.0:action:proposal.action",
 					"urn:oasis:names:tc:xacml:3.0:attribute-category:action"));
 
 			// Condition elements
-			Element condition = doc.createElement("Condition");
-			rule.appendChild(condition);
+			Element condition1 = doc.createElement("Condition");
+			rule1.appendChild(condition1);
 
-			Element conditionRootApply = doc.createElement("Apply");
-			condition.appendChild(conditionRootApply);
-			conditionRootApply.setAttribute("FunctionId",
+			Element conditionRootApply1 = doc.createElement("Apply");
+			condition1.appendChild(conditionRootApply1);
+			conditionRootApply1.setAttribute("FunctionId",
 					"urn:oasis:names:tc:xacml:1.0:function:and");
 
-			conditionRootApply.appendChild(getConditionApplyBoolean(doc,
+			conditionRootApply1.appendChild(getConditionApplyBoolean(doc,
 					"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
 					"//ak:signedByAllChairs/text()", "false"));
 
 			// user.id, proposal.id current.datetime TODO
-			conditionRootApply.appendChild(getConditionApplyString(doc,
+			conditionRootApply1.appendChild(getConditionApplyString(doc,
 					"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
 					"//ak:authorprofile/ak:userid/text()", userProfileId));
 
-			// conditionRootApply.appendChild(getConditionApplyString(doc,
+			// conditionRootApply1.appendChild(getConditionApplyString(doc,
 			// "urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
 			// "//ak:proposalid/text()", "5787dbcb65dbb3f1874190dc"));
 
-			conditionRootApply
+			conditionRootApply1
 					.appendChild(getConditionApplyDateTime(
 							doc,
 							"urn:oasis:names:tc:xacml:1.0:function:dateTime-greater-than-or-equal",
@@ -191,7 +241,7 @@ public class WriteXMLUtil {
 							"//ak:currentdatetime/text()",
 							dateFormat.format(fromDate)));
 
-			conditionRootApply
+			conditionRootApply1
 					.appendChild(getConditionApplyDateTime(
 							doc,
 							"urn:oasis:names:tc:xacml:1.0:function:dateTime-less-than-or-equal",
@@ -201,7 +251,7 @@ public class WriteXMLUtil {
 			// ObligationExpressions
 			Element obligationExpressions = doc
 					.createElement("ObligationExpressions");
-			rule.appendChild(obligationExpressions);
+			rule1.appendChild(obligationExpressions);
 
 			obligationExpressions.appendChild(getObligationExpressionAlert(doc,
 					"sendAlert", "Permit"));
@@ -601,7 +651,7 @@ public class WriteXMLUtil {
 		attributeAssignmentExpressionSelector2.setAttribute("Path",
 				attrSelectorPath);
 		attributeAssignmentExpressionSelector2.setAttribute("DataType",
-				"http://www.w3.org/2001/XMLSchema#boolean");
+				"http://www.w3.org/2001/XMLSchema#string");
 		attributeAssignmentExpression
 				.appendChild(attributeAssignmentExpressionSelector2);
 		// AttributeAssignmentExpression ENDS here

@@ -8,7 +8,7 @@ import org.openqa.selenium.WebElement;
 
 /*
  * Created by: Liliana Acevedo
- * last modified: 7/14/16
+ * last modified: 7/26/16
  */
 
 public class TestGPMS {
