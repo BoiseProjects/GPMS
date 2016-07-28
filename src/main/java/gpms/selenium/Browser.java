@@ -230,13 +230,18 @@ public class Browser {
 	 */
 	public void hoverClick(WebDriver driver) 
 	{
-		int proposal;
+/*		Intention: select a random proposal from displayed list to edit
+ * 
+ * 		int proposal;
 		List<WebElement> rows = driver.findElements(By.tagName("tr"));
 		int allProposal = rows.size();
 		proposal = (int) Math.floor(Math.random() * allProposal);
 		((JavascriptExecutor) driver)
         .executeScript("var s=document.getElementById('edit" + proposal + "');s.click();");
-	}
+*/
+		((JavascriptExecutor) driver)
+        .executeScript("var s=document.getElementById('edit0');s.click();");
+		}
 	
 	//Not working... aiming to get userID from Session
 	//String ASPNET_SessionId = driver.manage().getCookieNamed("ASP.NET_SessionId").toString();
