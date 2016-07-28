@@ -54,13 +54,18 @@ public class BusinessManagerApprovalFail {
 		driver.findElement(By.cssSelector("i.sidebarExpand")).click();
 		Thread.sleep(1000);
 		driver.findElement(By.id("lblSection2")).click();
+		Thread.sleep(1000);
 		driver.findElement(By.id("txtProjectTitle")).click();
+		Thread.sleep(1000);
 		driver.findElement(By.id("txtProjectTitle")).clear();
-		driver.findElement(By.id("txtProjectTitle")).sendKeys(
-				"Chair approval fail test4");
+		
+		int randTest = (int) (Math.random() * 9999);
+		
+		driver.findElement(By.id("txtProjectTitle")).sendKeys("Chair approval fail test" + randTest);
+		Thread.sleep(1000);
 		driver.findElement(By.cssSelector("td.cssClassTableRightCol")).click();
-		new Select(driver.findElement(By.id("ddlProjectType")))
-				.selectByVisibleText("Research-Applied");
+		Thread.sleep(1000);
+		new Select(driver.findElement(By.id("ddlProjectType"))).selectByVisibleText("Research-Applied");
 		Thread.sleep(1000);
 		driver.findElement(By.id("txtDueDate")).click();
 		Thread.sleep(1000);
