@@ -2,10 +2,10 @@ package gpms.selenium;
 
 /* ResearchAdminApprovalFailure
  * Made By: Nick
- * Research admin attempts to approve a proposal that has not been submitted by PI yet.
+ * Research admin attempts to approve a proposal that has not been submitted by PI yet.Program will close and throw an invalid element state
+ * Exception if test is successful.
  */
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -46,8 +46,6 @@ public class ResearchAdminApprovalFail {
 		Thread.sleep(1000);
 		driver.findElement(By.name("commit")).click();
 
-		
-
 		assertTrue(driver.findElement(By.cssSelector("BODY")).getText()
 				.matches("^[\\s\\S]*$"));
 		driver.findElement(By.cssSelector("li.sfLevel1 > a > span")).click();
@@ -59,7 +57,7 @@ public class ResearchAdminApprovalFail {
 		driver.findElement(By.id("txtProjectTitle")).click();
 		driver.findElement(By.id("txtProjectTitle")).clear();
 		driver.findElement(By.id("txtProjectTitle")).sendKeys(
-				"Dean approval Fail222");
+				"Dean approval Fail232");
 		driver.findElement(By.cssSelector("td.cssClassTableRightCol")).click();
 		new Select(driver.findElement(By.id("ddlProjectType")))
 				.selectByVisibleText("Research-Applied");
@@ -279,7 +277,7 @@ public class ResearchAdminApprovalFail {
 		Thread.sleep(1000);
 		driver.findElement(By.name("commit")).click();
 		Thread.sleep(1000);
-		
+
 		assertTrue(driver.findElement(By.cssSelector("BODY")).getText()
 				.matches("^[\\s\\S]*$"));
 		Thread.sleep(1000);
@@ -325,7 +323,7 @@ public class ResearchAdminApprovalFail {
 		driver.findElement(By.id("BoxConfirmBtnOk")).click();
 		Thread.sleep(1000);
 		driver.findElement(By.cssSelector("h2")).click();
-		
+
 		assertTrue(driver.findElement(By.cssSelector("BODY")).getText()
 				.matches("^[\\s\\S]*$"));
 		Thread.sleep(1000);

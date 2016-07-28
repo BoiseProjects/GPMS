@@ -6,7 +6,6 @@ package gpms.selenium;
  * The Dean will log in and attempt to delete an attachment.
  */
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import java.util.concurrent.TimeUnit;

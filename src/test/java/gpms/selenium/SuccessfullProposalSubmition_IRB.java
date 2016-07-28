@@ -1,5 +1,9 @@
 package gpms.selenium;
 
+/*Made by: Nick
+ * Creates a new proposal which will go through every faculty member, including the IRB, to be signed an successfuly submited.
+ */
+
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -18,13 +22,12 @@ import org.openqa.selenium.support.ui.Select;
 public class SuccessfullProposalSubmition_IRB {
 	private WebDriver driver;
 	private String baseUrl;
-	private boolean acceptNextAlert = true;
 	private StringBuffer verificationErrors = new StringBuffer();
 
 	@Before
 	public void setUp() throws Exception {
 		System.setProperty("webdriver.chrome.driver",
-				"D:/chromedriver_win32/chromedriver.exe");
+				"E:/REU Internship/Selenium/chromedriver.exe");
 		driver = new ChromeDriver();
 		baseUrl = "http://seal.boisestate.edu:8080/";
 		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
@@ -262,9 +265,7 @@ public class SuccessfullProposalSubmition_IRB {
 		driver.findElement(By.id("btnSaveProposal")).click();
 		Thread.sleep(500);
 		driver.findElement(By.id("BoxConfirmBtnOk")).click();
-
-		// Thread.sleep(500);
-		// assertEquals("Save", closeAlertAndGetItsText());
+		Thread.sleep(500);
 
 		Thread.sleep(500);
 		assertTrue(driver.findElement(By.cssSelector("BODY")).getText()
@@ -280,9 +281,8 @@ public class SuccessfullProposalSubmition_IRB {
 		driver.findElement(By.id("btnSubmitProposal")).click();
 		Thread.sleep(500);
 		driver.findElement(By.id("BoxConfirmBtnOk")).click();
-		// Thread.sleep(500);
+		Thread.sleep(500);
 		// assertEquals("Submit", closeAlertAndGetItsText());
-
 		Thread.sleep(500);
 
 		assertTrue(driver.findElement(By.cssSelector("BODY")).getText()
@@ -356,9 +356,8 @@ public class SuccessfullProposalSubmition_IRB {
 		driver.findElement(By.id("btnApproveProposal")).click();
 		Thread.sleep(1000);
 		driver.findElement(By.id("BoxConfirmBtnOk")).click();
-		// Thread.sleep(1000);
+		Thread.sleep(1000);
 		// assertEquals("Approve", closeAlertAndGetItsText());
-
 		Thread.sleep(1000);
 		driver.findElement(By.cssSelector("h2")).click();
 		Thread.sleep(1000);
@@ -425,9 +424,6 @@ public class SuccessfullProposalSubmition_IRB {
 		driver.findElement(By.id("btnApproveProposal")).click();
 		Thread.sleep(1000);
 		driver.findElement(By.id("BoxConfirmBtnOk")).click();
-		// Thread.sleep(1000);
-		// assertEquals("Approve", closeAlertAndGetItsText());
-
 		Thread.sleep(1000);
 		driver.findElement(By.cssSelector("h2")).click();
 		Thread.sleep(1000);
@@ -482,9 +478,6 @@ public class SuccessfullProposalSubmition_IRB {
 		driver.findElement(By.id("btnApproveProposal")).click();
 		Thread.sleep(1000);
 		driver.findElement(By.id("BoxConfirmBtnOk")).click();
-		// Thread.sleep(1000);
-		// assertEquals("Approve", closeAlertAndGetItsText());
-
 		Thread.sleep(1000);
 		driver.findElement(By.id("BoxAlertBtnOk")).click();
 		Thread.sleep(1000);
@@ -529,9 +522,6 @@ public class SuccessfullProposalSubmition_IRB {
 		driver.findElement(By.id("btnApproveProposal")).click();
 		Thread.sleep(1000);
 		driver.findElement(By.id("BoxConfirmBtnOk")).click();
-		// Thread.sleep(1000);
-		// assertEquals("Approve", closeAlertAndGetItsText());
-
 		Thread.sleep(1000);
 		driver.findElement(By.id("BoxAlertBtnOk")).click();
 		Thread.sleep(1000);
@@ -584,10 +574,6 @@ public class SuccessfullProposalSubmition_IRB {
 		driver.findElement(By.id("btnApproveProposal")).click();
 		Thread.sleep(1000);
 		driver.findElement(By.id("BoxConfirmBtnOk")).click();
-
-		// Thread.sleep(1000);
-		// assertEquals("Approve", closeAlertAndGetItsText());
-
 		Thread.sleep(1000);
 		driver.findElement(By.cssSelector("h2")).click();
 		Thread.sleep(1000);
@@ -759,10 +745,6 @@ public class SuccessfullProposalSubmition_IRB {
 		driver.findElement(By.id("btnApproveProposal")).click();
 		Thread.sleep(1000);
 		driver.findElement(By.id("BoxConfirmBtnOk")).click();
-
-		// Thread.sleep(1000);
-		// assertEquals("Approve", closeAlertAndGetItsText());
-
 		Thread.sleep(1000);
 		driver.findElement(By.cssSelector("h2")).click();
 		Thread.sleep(1000);
@@ -874,10 +856,6 @@ public class SuccessfullProposalSubmition_IRB {
 		driver.findElement(By.id("btnApproveProposal")).click();
 		Thread.sleep(1000);
 		driver.findElement(By.id("BoxConfirmBtnOk")).click();
-
-		// Thread.sleep(1000);
-		// assertEquals("Approve", closeAlertAndGetItsText());
-
 		Thread.sleep(1000);
 		driver.findElement(By.cssSelector("h2")).click();
 		Thread.sleep(1000);
@@ -917,12 +895,7 @@ public class SuccessfullProposalSubmition_IRB {
 		driver.findElement(By.id("btnSubmitProposal")).click();
 		Thread.sleep(1000);
 		driver.findElement(By.id("BoxConfirmBtnOk")).click();
-
-		// Thread.sleep(1000);
-		// assertEquals("Submit", closeAlertAndGetItsText());
-
 		Thread.sleep(1000);
-
 		assertTrue(driver.findElement(By.cssSelector("BODY")).getText()
 				.matches("^[\\s\\S]*$"));
 		Thread.sleep(1000);
@@ -953,19 +926,4 @@ public class SuccessfullProposalSubmition_IRB {
 		}
 	}
 
-	// Warning: assertTextPresent may require manual changes
-	// private String closeAlertAndGetItsText() {
-	// try {
-	// Alert alert = driver.switchTo().alert();
-	// String alertText = alert.getText();
-	// if (acceptNextAlert) {
-	// alert.accept();
-	// } else {
-	// alert.dismiss();
-	// }
-	// return alertText;
-	// } finally {
-	// acceptNextAlert = true;
-	// }
-	// }
 }

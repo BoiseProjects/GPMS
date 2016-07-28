@@ -1,6 +1,9 @@
 package gpms.selenium;
 
-import static org.junit.Assert.assertEquals;
+/*Made by: Nick
+ * PI logs in and adds a Co-PI to the proposal.
+ */
+
 import static org.junit.Assert.fail;
 
 import java.util.concurrent.TimeUnit;

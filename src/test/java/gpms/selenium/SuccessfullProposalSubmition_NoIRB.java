@@ -1,5 +1,9 @@
 package gpms.selenium;
 
+/*Made by: Nick
+ * Creates a new proposal which will go through every faculty member, except for the IRB, to be signed an successfuly submited.
+ */
+
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -23,7 +27,7 @@ public class SuccessfullProposalSubmition_NoIRB {
 	@Before
 	public void setUp() throws Exception {
 		System.setProperty("webdriver.chrome.driver",
-				"D:/chromedriver_win32/chromedriver.exe");
+				"E:/REU Internship/Selenium/chromedriver.exe");
 		driver = new ChromeDriver();
 		baseUrl = "http://seal.boisestate.edu:8080/";
 		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
@@ -39,8 +43,6 @@ public class SuccessfullProposalSubmition_NoIRB {
 		driver.findElement(By.id("user_password")).sendKeys("Nickman5030");
 		Thread.sleep(1000);
 		driver.findElement(By.name("commit")).click();
-
-		
 
 		assertTrue(driver.findElement(By.cssSelector("BODY")).getText()
 				.matches("^[\\s\\S]*$"));
@@ -292,7 +294,7 @@ public class SuccessfullProposalSubmition_NoIRB {
 		Thread.sleep(1000);
 		driver.findElement(By.name("commit")).click();
 		Thread.sleep(1000);
-		
+
 		assertTrue(driver.findElement(By.cssSelector("BODY")).getText()
 				.matches("^[\\s\\S]*$"));
 		Thread.sleep(1000);
@@ -333,6 +335,7 @@ public class SuccessfullProposalSubmition_NoIRB {
 		Thread.sleep(1500);
 		driver.findElement(By.cssSelector("h2")).click();
 		Thread.sleep(1500);
+
 		assertTrue(driver.findElement(By.cssSelector("BODY")).getText()
 				.matches("^[\\s\\S]*$"));
 		Thread.sleep(1500);
@@ -354,7 +357,7 @@ public class SuccessfullProposalSubmition_NoIRB {
 		driver.findElement(By.id("user_password")).sendKeys("gpmspassword");
 		Thread.sleep(1000);
 		driver.findElement(By.name("commit")).click();
-		
+
 		Thread.sleep(1000);
 		assertTrue(driver.findElement(By.cssSelector("BODY")).getText()
 				.matches("^[\\s\\S]*$"));
@@ -398,6 +401,7 @@ public class SuccessfullProposalSubmition_NoIRB {
 		Thread.sleep(1000);
 		driver.findElement(By.cssSelector("h2")).click();
 		Thread.sleep(1000);
+
 		assertTrue(driver.findElement(By.cssSelector("BODY")).getText()
 				.matches("^[\\s\\S]*$"));
 		Thread.sleep(1000);
@@ -476,7 +480,7 @@ public class SuccessfullProposalSubmition_NoIRB {
 		Thread.sleep(1000);
 		driver.findElement(By.linkText("My Proposals")).click();
 		Thread.sleep(1000);
-		
+
 		assertTrue(driver.findElement(By.cssSelector("BODY")).getText()
 				.matches("^[\\s\\S]*$"));
 		Thread.sleep(1000);
@@ -622,7 +626,6 @@ public class SuccessfullProposalSubmition_NoIRB {
 		Thread.sleep(1000);
 		driver.findElement(By.cssSelector("h2")).click();
 		Thread.sleep(1000);
-		
 		assertTrue(driver.findElement(By.cssSelector("BODY")).getText()
 				.matches("^[\\s\\S]*$"));
 		Thread.sleep(1000);
@@ -665,7 +668,8 @@ public class SuccessfullProposalSubmition_NoIRB {
 		 * driver.findElement(By.id("btnApproveProposal")).click();
 		 * Thread.sleep(1000);
 		 * driver.findElement(By.id("BoxConfirmBtnOk")).click();
-		 * Thread.sleep(1000);
+		 * Thread.sleep(1000); assertEquals("Approve",
+		 * closeAlertAndGetItsText()); Thread.sleep(1000);
 		 * driver.findElement(By.id("BoxAlertBtnOk")).click();
 		 * Thread.sleep(1000);
 		 * driver.findElement(By.cssSelector("span.myProfile.icon-arrow-s"
@@ -684,7 +688,7 @@ public class SuccessfullProposalSubmition_NoIRB {
 		Thread.sleep(1000);
 		driver.findElement(By.name("commit")).click();
 		Thread.sleep(1000);
-		
+
 		assertTrue(driver.findElement(By.cssSelector("BODY")).getText()
 				.matches("^[\\s\\S]*$"));
 		Thread.sleep(1000);
@@ -729,7 +733,6 @@ public class SuccessfullProposalSubmition_NoIRB {
 		Thread.sleep(1000);
 		driver.findElement(By.cssSelector("h2")).click();
 		Thread.sleep(1000);
-		
 		assertTrue(driver.findElement(By.cssSelector("BODY")).getText()
 				.matches("^[\\s\\S]*$"));
 		Thread.sleep(1000);
@@ -751,7 +754,7 @@ public class SuccessfullProposalSubmition_NoIRB {
 		Thread.sleep(1000);
 		driver.findElement(By.name("commit")).click();
 		Thread.sleep(1000);
-		
+
 		assertTrue(driver.findElement(By.cssSelector("BODY")).getText()
 				.matches("^[\\s\\S]*$"));
 		Thread.sleep(1000);
@@ -793,4 +796,5 @@ public class SuccessfullProposalSubmition_NoIRB {
 			return false;
 		}
 	}
+
 }

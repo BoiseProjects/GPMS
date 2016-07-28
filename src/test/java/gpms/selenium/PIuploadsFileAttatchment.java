@@ -5,23 +5,19 @@ package gpms.selenium;
  * The PI opens the "upload file" screen then saves the proposal.
  */
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import java.util.concurrent.TimeUnit;
-
-import javax.swing.JOptionPane;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.interactions.Actions;
 
 public class PIuploadsFileAttatchment {
 	private WebDriver driver;
@@ -50,20 +46,10 @@ public class PIuploadsFileAttatchment {
 		Thread.sleep(1000);
 		driver.findElement(By.linkText("My Proposals")).click();
 		Thread.sleep(1000);
-		if (isElementPresent(By.id("edit0"))) {
-			Actions actions = new Actions(driver);
-			WebElement mainMenu = driver.findElement(By
-					.className("cssClassActionOnClick"));
-			actions.moveToElement(mainMenu);
 
-			WebElement subMenu = driver.findElement(By.linkText("Edit"));
-			actions.moveToElement(subMenu);
-			actions.click().build().perform();
-		} else {
-			Thread.sleep(2000);
-			JOptionPane.showMessageDialog(null, "Element not found");
-			Thread.sleep(2000);
-		}
+		((JavascriptExecutor) driver)
+				.executeScript("var s=document.getElementById('edit0');s.click();");
+
 		Thread.sleep(1000);
 		driver.findElement(By.id("lblSection13")).click();
 		Thread.sleep(1000);

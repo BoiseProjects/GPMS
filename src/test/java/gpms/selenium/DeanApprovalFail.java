@@ -2,7 +2,8 @@ package gpms.selenium;
 
 /* DeanApprovalFailure
  * Made By: Nick
- * Dean attempts to approve a proposal that has not been submitted by PI yet.
+ * Dean attempts to approve a proposal that has not been submitted by PI yet.Program will close and throw an invalid element state
+ * Exception if test is successful.
  */
 
 import static org.junit.Assert.assertTrue;
@@ -44,8 +45,6 @@ public class DeanApprovalFail {
 		driver.findElement(By.id("user_password")).sendKeys("Nickman5030");
 		Thread.sleep(1000);
 		driver.findElement(By.name("commit")).click();
-
-		
 
 		assertTrue(driver.findElement(By.cssSelector("BODY")).getText()
 				.matches("^[\\s\\S]*$"));
@@ -278,7 +277,7 @@ public class DeanApprovalFail {
 		Thread.sleep(1000);
 		driver.findElement(By.name("commit")).click();
 		Thread.sleep(1000);
-		
+
 		assertTrue(driver.findElement(By.cssSelector("BODY")).getText()
 				.matches("^[\\s\\S]*$"));
 		Thread.sleep(1000);
@@ -315,7 +314,7 @@ public class DeanApprovalFail {
 		driver.findElement(By.id("BoxConfirmBtnOk")).click();
 		Thread.sleep(1000);
 		driver.findElement(By.cssSelector("h2")).click();
-		
+
 		assertTrue(driver.findElement(By.cssSelector("BODY")).getText()
 				.matches("^[\\s\\S]*$"));
 		Thread.sleep(1000);

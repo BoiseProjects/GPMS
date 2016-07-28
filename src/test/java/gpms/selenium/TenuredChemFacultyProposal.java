@@ -49,8 +49,6 @@ public class TenuredChemFacultyProposal {
 		Thread.sleep(1000);
 		driver.findElement(By.name("commit")).click();
 
-		
-
 		assertTrue(driver.findElement(By.cssSelector("BODY")).getText()
 				.matches("^[\\s\\S]*$"));
 		driver.findElement(By.cssSelector("li.sfLevel1 > a > span")).click();
@@ -311,4 +309,5 @@ public class TenuredChemFacultyProposal {
 			return false;
 		}
 	}
+
 }

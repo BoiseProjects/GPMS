@@ -2,7 +2,8 @@ package gpms.selenium;
 
 /*BusinessManagerApprovalFailure
  * Made By: Nick
- * Business Manager attempts to approve a proposal that has not been submitted by PI yet.
+ * Business Manager attempts to approve a proposal that has not been submitted by PI yet.Program will close and throw an invalid element state
+ * Exception if test is successful.
  */
 
 import static org.junit.Assert.assertTrue;
@@ -276,6 +277,7 @@ public class BusinessManagerApprovalFail {
 		Thread.sleep(1000);
 		driver.findElement(By.name("commit")).click();
 		Thread.sleep(1000);
+
 		assertTrue(driver.findElement(By.cssSelector("BODY")).getText()
 				.matches("^[\\s\\S]*$"));
 		Thread.sleep(1000);
@@ -318,6 +320,7 @@ public class BusinessManagerApprovalFail {
 		driver.findElement(By.id("BoxConfirmBtnOk")).click();
 		Thread.sleep(1000);
 		driver.findElement(By.cssSelector("h2")).click();
+
 		assertTrue(driver.findElement(By.cssSelector("BODY")).getText()
 				.matches("^[\\s\\S]*$"));
 		Thread.sleep(1000);
@@ -348,4 +351,5 @@ public class BusinessManagerApprovalFail {
 			return false;
 		}
 	}
+
 }

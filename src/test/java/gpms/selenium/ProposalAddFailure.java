@@ -1,5 +1,9 @@
 package gpms.selenium;
 
+/*Made by: Nick
+ * Dean logs in and attempts to add a proposal. Fails as dean is not permited to add proposal.
+ */
+
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -37,8 +41,6 @@ public class ProposalAddFailure {
 		driver.findElement(By.id("user_password")).sendKeys("gpmspassword");
 		Thread.sleep(1000);
 		driver.findElement(By.name("commit")).click();
-
-		
 
 		assertTrue(driver.findElement(By.cssSelector("BODY")).getText()
 				.matches("^[\\s\\S]*$"));

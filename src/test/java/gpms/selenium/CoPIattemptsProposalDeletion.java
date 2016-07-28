@@ -1,5 +1,9 @@
 package gpms.selenium;
 
+/*Made by: Nick
+ * Co - PI will attempt to delete proposal, website error messege will appear preventing this action.
+ */
+
 import static org.junit.Assert.fail;
 
 import java.util.concurrent.TimeUnit;

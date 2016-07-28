@@ -3,10 +3,7 @@ package gpms.selenium;
 /*TenuredChemFacultyProposal.java
  * Made by: Nicholas Chapa
  * REU software security
- * Creates a new proposal by a tenured chemistry clinical professor then submits the proposal to the
- * department chair.
- * NOTE: Selenium has no mouse control capabilities so you must manually hover the mouse over the proposal
- * options symbol to move on to submitting the proposal.
+ * Creates a new proposal, Senior personal is added, senior personal then logs in and attempts to delete proposal.
  */
 
 import static org.junit.Assert.assertTrue;
@@ -48,8 +45,6 @@ public class SeniorPersonalProposalDeleteFail {
 		driver.findElement(By.id("user_password")).sendKeys("Nickman5030");
 		Thread.sleep(1000);
 		driver.findElement(By.name("commit")).click();
-
-		
 
 		assertTrue(driver.findElement(By.cssSelector("BODY")).getText()
 				.matches("^[\\s\\S]*$"));
@@ -312,7 +307,7 @@ public class SeniorPersonalProposalDeleteFail {
 		driver.findElement(By.id("btnDeleteProposal")).click();
 		Thread.sleep(1000);
 		driver.findElement(By.id("BoxConfirmBtnOk")).click();
-		
+
 		assertTrue(driver.findElement(By.cssSelector("BODY")).getText()
 				.matches("^[\\s\\S]*$"));
 		Thread.sleep(1000);
@@ -342,4 +337,5 @@ public class SeniorPersonalProposalDeleteFail {
 			return false;
 		}
 	}
+
 }

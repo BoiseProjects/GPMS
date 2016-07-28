@@ -2,7 +2,7 @@ package gpms.selenium;
 
 /*CoPIattemptsToDeleteCoPI
  * Made by: Nick chapa
- * The Co PI attempts to delete another Co PI
+ * The Co PI attempts to delete another Co PI. Program will exit with element not visible exception if test is successful.
  */
 
 import static org.junit.Assert.fail;
@@ -22,7 +22,6 @@ import org.openqa.selenium.chrome.ChromeDriver;
 public class CoPIattemptsToDeleteCoPI {
 	private WebDriver driver;
 	private String baseUrl;
-
 	private StringBuffer verificationErrors = new StringBuffer();
 
 	@Before
@@ -132,4 +131,5 @@ public class CoPIattemptsToDeleteCoPI {
 			return false;
 		}
 	}
+
 }

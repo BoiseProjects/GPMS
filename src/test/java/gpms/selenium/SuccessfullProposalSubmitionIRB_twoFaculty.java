@@ -1,5 +1,9 @@
 package gpms.selenium;
 
+/*Made by: Nick
+ * Creates a new proposal which will go through two of *every faculty member, including the IRB, to be signed an successfuly submited.
+ */
+
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -18,6 +22,7 @@ import org.openqa.selenium.support.ui.Select;
 public class SuccessfullProposalSubmitionIRB_twoFaculty {
 	private WebDriver driver;
 	private String baseUrl;
+	private boolean acceptNextAlert = true;
 	private StringBuffer verificationErrors = new StringBuffer();
 
 	@Before
@@ -39,8 +44,6 @@ public class SuccessfullProposalSubmitionIRB_twoFaculty {
 		driver.findElement(By.id("user_password")).sendKeys("Nickman5030");
 		Thread.sleep(1000);
 		driver.findElement(By.name("commit")).click();
-
-		
 
 		assertTrue(driver.findElement(By.cssSelector("BODY")).getText()
 				.matches("^[\\s\\S]*$"));
@@ -335,7 +338,7 @@ public class SuccessfullProposalSubmitionIRB_twoFaculty {
 		driver.findElement(By.id("user_password")).sendKeys("Nickman5030");
 		Thread.sleep(1000);
 		driver.findElement(By.name("commit")).click();
-		
+
 		assertTrue(driver.findElement(By.cssSelector("BODY")).getText()
 				.matches("^[\\s\\S]*$"));
 		Thread.sleep(500);
@@ -371,7 +374,7 @@ public class SuccessfullProposalSubmitionIRB_twoFaculty {
 		Thread.sleep(1000);
 		driver.findElement(By.name("commit")).click();
 		Thread.sleep(1000);
-		
+
 		assertTrue(driver.findElement(By.cssSelector("BODY")).getText()
 				.matches("^[\\s\\S]*$"));
 		Thread.sleep(1000);
@@ -414,6 +417,7 @@ public class SuccessfullProposalSubmitionIRB_twoFaculty {
 		Thread.sleep(1000);
 		driver.findElement(By.cssSelector("h2")).click();
 		Thread.sleep(1000);
+
 		assertTrue(driver.findElement(By.cssSelector("BODY")).getText()
 				.matches("^[\\s\\S]*$"));
 		Thread.sleep(1000);
@@ -436,7 +440,7 @@ public class SuccessfullProposalSubmitionIRB_twoFaculty {
 		Thread.sleep(1000);
 		driver.findElement(By.name("commit")).click();
 		Thread.sleep(1000);
-		
+
 		assertTrue(driver.findElement(By.cssSelector("BODY")).getText()
 				.matches("^[\\s\\S]*$"));
 		Thread.sleep(1000);
@@ -480,7 +484,7 @@ public class SuccessfullProposalSubmitionIRB_twoFaculty {
 		Thread.sleep(1000);
 		driver.findElement(By.cssSelector("h2")).click();
 		Thread.sleep(1000);
-		
+
 		assertTrue(driver.findElement(By.cssSelector("BODY")).getText()
 				.matches("^[\\s\\S]*$"));
 		Thread.sleep(1000);
@@ -502,7 +506,7 @@ public class SuccessfullProposalSubmitionIRB_twoFaculty {
 		driver.findElement(By.id("user_password")).sendKeys("gpmspassword");
 		Thread.sleep(1000);
 		driver.findElement(By.name("commit")).click();
-		
+
 		Thread.sleep(1000);
 		assertTrue(driver.findElement(By.cssSelector("BODY")).getText()
 				.matches("^[\\s\\S]*$"));
@@ -546,7 +550,7 @@ public class SuccessfullProposalSubmitionIRB_twoFaculty {
 		Thread.sleep(1000);
 		driver.findElement(By.cssSelector("h2")).click();
 		Thread.sleep(1000);
-		
+
 		assertTrue(driver.findElement(By.cssSelector("BODY")).getText()
 				.matches("^[\\s\\S]*$"));
 		Thread.sleep(1000);
@@ -567,7 +571,7 @@ public class SuccessfullProposalSubmitionIRB_twoFaculty {
 		driver.findElement(By.id("user_password")).sendKeys("gpmspassword");
 		Thread.sleep(1000);
 		driver.findElement(By.name("commit")).click();
-		
+
 		Thread.sleep(1000);
 		assertTrue(driver.findElement(By.cssSelector("BODY")).getText()
 				.matches("^[\\s\\S]*$"));
@@ -611,7 +615,7 @@ public class SuccessfullProposalSubmitionIRB_twoFaculty {
 		Thread.sleep(1000);
 		driver.findElement(By.cssSelector("h2")).click();
 		Thread.sleep(1000);
-		
+
 		assertTrue(driver.findElement(By.cssSelector("BODY")).getText()
 				.matches("^[\\s\\S]*$"));
 		Thread.sleep(1000);
@@ -837,7 +841,7 @@ public class SuccessfullProposalSubmitionIRB_twoFaculty {
 		Thread.sleep(1000);
 		driver.findElement(By.linkText("My Proposals")).click();
 		Thread.sleep(1000);
-		
+
 		assertTrue(driver.findElement(By.cssSelector("BODY")).getText()
 				.matches("^[\\s\\S]*$"));
 		Thread.sleep(1000);
@@ -985,7 +989,7 @@ public class SuccessfullProposalSubmitionIRB_twoFaculty {
 		Thread.sleep(1000);
 		driver.findElement(By.cssSelector("h2")).click();
 		Thread.sleep(1000);
-		
+
 		assertTrue(driver.findElement(By.cssSelector("BODY")).getText()
 				.matches("^[\\s\\S]*$"));
 		Thread.sleep(1000);
@@ -1007,7 +1011,7 @@ public class SuccessfullProposalSubmitionIRB_twoFaculty {
 		Thread.sleep(1000);
 		driver.findElement(By.name("commit")).click();
 		Thread.sleep(1000);
-		
+
 		assertTrue(driver.findElement(By.cssSelector("BODY")).getText()
 				.matches("^[\\s\\S]*$"));
 		Thread.sleep(1000);
@@ -1052,7 +1056,7 @@ public class SuccessfullProposalSubmitionIRB_twoFaculty {
 		Thread.sleep(1000);
 		driver.findElement(By.cssSelector("h2")).click();
 		Thread.sleep(1000);
-		
+
 		assertTrue(driver.findElement(By.cssSelector("BODY")).getText()
 				.matches("^[\\s\\S]*$"));
 		Thread.sleep(1000);
@@ -1074,7 +1078,7 @@ public class SuccessfullProposalSubmitionIRB_twoFaculty {
 		Thread.sleep(1000);
 		driver.findElement(By.name("commit")).click();
 		Thread.sleep(1000);
-		
+
 		assertTrue(driver.findElement(By.cssSelector("BODY")).getText()
 				.matches("^[\\s\\S]*$"));
 		Thread.sleep(1000);
@@ -1089,7 +1093,6 @@ public class SuccessfullProposalSubmitionIRB_twoFaculty {
 		Thread.sleep(1000);
 		driver.findElement(By.id("BoxConfirmBtnOk")).click();
 		Thread.sleep(1000);
-		
 		assertTrue(driver.findElement(By.cssSelector("BODY")).getText()
 				.matches("^[\\s\\S]*$"));
 		Thread.sleep(1000);

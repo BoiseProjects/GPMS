@@ -2,7 +2,7 @@ package gpms.selenium;
 
 /*ChairAttatchmentFail
  * Made by: Nick
- * Program will close if test is successful, Chair is not permited to add an attatchment.
+ * Program will close with element not visible exception if test is successful, Chair is not permited to add an attatchment.
  */
 
 import static org.junit.Assert.fail;

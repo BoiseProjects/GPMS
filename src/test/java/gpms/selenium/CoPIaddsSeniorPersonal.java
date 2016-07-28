@@ -1,5 +1,9 @@
 package gpms.selenium;
 
+/*Made by: Nick
+ * Co-PI will add a senior personal to the proposal.
+ */
+
 import static org.junit.Assert.fail;
 
 import java.util.concurrent.TimeUnit;

@@ -1,5 +1,9 @@
 package gpms.selenium;
 
+/*Made by: Nick
+ * Research Admin withdraws proposal once it reaches them.
+ */
+
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -39,8 +43,6 @@ public class ResearchAdminProposalWithdrawn {
 		driver.findElement(By.id("user_password")).sendKeys("Nickman5030");
 		Thread.sleep(1000);
 		driver.findElement(By.name("commit")).click();
-
-		
 
 		assertTrue(driver.findElement(By.cssSelector("BODY")).getText()
 				.matches("^[\\s\\S]*$"));
@@ -293,7 +295,7 @@ public class ResearchAdminProposalWithdrawn {
 		Thread.sleep(1000);
 		driver.findElement(By.name("commit")).click();
 		Thread.sleep(1000);
-		
+
 		assertTrue(driver.findElement(By.cssSelector("BODY")).getText()
 				.matches("^[\\s\\S]*$"));
 		Thread.sleep(1000);
@@ -334,7 +336,7 @@ public class ResearchAdminProposalWithdrawn {
 		Thread.sleep(1000);
 		driver.findElement(By.cssSelector("h2")).click();
 		Thread.sleep(1000);
-		
+
 		assertTrue(driver.findElement(By.cssSelector("BODY")).getText()
 				.matches("^[\\s\\S]*$"));
 		Thread.sleep(1000);
@@ -356,7 +358,7 @@ public class ResearchAdminProposalWithdrawn {
 		driver.findElement(By.id("user_password")).sendKeys("gpmspassword");
 		Thread.sleep(1000);
 		driver.findElement(By.name("commit")).click();
-		
+
 		Thread.sleep(1000);
 		assertTrue(driver.findElement(By.cssSelector("BODY")).getText()
 				.matches("^[\\s\\S]*$"));
@@ -400,6 +402,7 @@ public class ResearchAdminProposalWithdrawn {
 		Thread.sleep(1000);
 		driver.findElement(By.cssSelector("h2")).click();
 		Thread.sleep(1000);
+
 		assertTrue(driver.findElement(By.cssSelector("BODY")).getText()
 				.matches("^[\\s\\S]*$"));
 		Thread.sleep(1000);

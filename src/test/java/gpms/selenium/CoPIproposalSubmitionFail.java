@@ -1,5 +1,9 @@
 package gpms.selenium;
 
+/*Made by: Nick
+ * Co-PI will attempt to submit proposal, attempt fails as Co-PI does not have this permission.
+ */
+
 import static org.junit.Assert.fail;
 
 import java.util.concurrent.TimeUnit;
@@ -17,7 +21,6 @@ import org.openqa.selenium.chrome.ChromeDriver;
 public class CoPIproposalSubmitionFail {
 	private WebDriver driver;
 	private String baseUrl;
-
 	private StringBuffer verificationErrors = new StringBuffer();
 
 	@Before
