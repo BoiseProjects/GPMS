@@ -64,12 +64,12 @@ public class TestAccessControl {
 
 		Multimap<String, String> resourceMap = ArrayListMultimap.create();
 		//
-		// resourceMap.put("proposal.section", "Whole Proposal");
+		resourceMap.put("proposal.section", "Whole Proposal");
 		// resourceMap.put("SubmittedByPI", "NOTSUBMITTED");
 
-		resourceMap.put("proposal.section", "Certification/Signatures");
+		// resourceMap.put("proposal.section", "Certification/Signatures");
 		resourceMap.put("ApprovedByDepartmentChair", "READYFORAPPROVAL");
-		resourceMap.put("DeletedByPI", "NOTDELETED");
+		// resourceMap.put("DeletedByPI", "NOTDELETED");
 
 		attrMap.put("Resource", resourceMap);
 
@@ -77,7 +77,7 @@ public class TestAccessControl {
 		// actionMap.put("proposal.action", "Add");
 		// actionMap.put("proposal.action", "Save");
 
-		actionMap.put("proposal.action", "Edit");
+		actionMap.put("proposal.action", "Approve");
 
 		attrMap.put("Action", actionMap);
 
