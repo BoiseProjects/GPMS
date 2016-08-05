@@ -47,6 +47,22 @@ public class WriteXMLUtil {
 
 	private static void saveDelegationPolicy() {
 		try {
+			// Delegator
+			String delegatorName = "Computer Science Department Chair";
+
+			// Delegatee
+			String userProfileId = "578918b9bcbb29090c4278e7";
+			String delegateeName = "Computer Science Associate Chair";
+
+			String departmentName = "Computer Science";
+			// departmentName = departmentName.replace(" ", "-");
+			String positionTitle = "Associate Chair";
+			// positionTitle = positionTitle.replace(" ", "-");
+
+			String action = "Approve";
+
+			String id = new String();
+
 			DateFormat dateFormat = new SimpleDateFormat(
 					"yyyy-MM-dd'T'HH:mm:ssXXX");
 			Date fromDate = new Date();
@@ -57,8 +73,6 @@ public class WriteXMLUtil {
 			System.out.println(dateFormat.format(date.getTime()));
 			date.add(Calendar.YEAR, 1);
 			toDate = dateFormat.format(date.getTime());
-
-			String userProfileId = "578918b9bcbb29090c4278e7";
 
 			DocumentBuilderFactory docFactory = DocumentBuilderFactory
 					.newInstance();
@@ -82,7 +96,9 @@ public class WriteXMLUtil {
 			rootElement.setAttributeNode(attr);
 
 			attr = doc.createAttribute("PolicyId");
-			attr.setValue("Administrative-Proposal-Rules");
+			id = "Dynamic-Delegation-Policy-Rules-For-" + delegateeName
+					+ "-of-" + departmentName;
+			attr.setValue(id.replace(" ", "-"));
 			rootElement.setAttributeNode(attr);
 
 			attr = doc.createAttribute("RuleCombiningAlgId");
@@ -90,14 +106,17 @@ public class WriteXMLUtil {
 			rootElement.setAttributeNode(attr);
 
 			attr = doc.createAttribute("Version");
-			attr.setValue("3.0");
+			attr.setValue("1.0");
 			rootElement.setAttributeNode(attr);
 
 			doc.appendChild(rootElement);
 
 			Element rootDesc = doc.createElement("Description");
-			rootDesc.appendChild(doc
-					.createTextNode("Policy for any adminstrative policy for a proposal."));
+
+			rootDesc.appendChild(doc.createTextNode(delegateeName + " of "
+					+ departmentName + " with position title " + positionTitle
+					+ " is delegated to " + action + " proposal from "
+					+ fromDate + " to " + toDate + " by " + delegatorName));
 			rootElement.appendChild(rootDesc);
 
 			// PolicyDefaults elements
@@ -125,13 +144,22 @@ public class WriteXMLUtil {
 			attr.setValue("Permit");
 			rule.setAttributeNode(attr);
 
-			rule.setAttribute("RuleId",
-					"EditProposalSectionByDepartmentChair-DelegationRule40");
+			id = "DelegatedEditProposalSectionRuleFor-" + positionTitle
+					+ "-DelegatedBy-" + delegatorName;
+
+			rule.setAttribute("RuleId", id.replace(" ", "-"));
 
 			// Description elements
 			Element desc = doc.createElement("Description");
 			desc.appendChild(doc
-					.createTextNode("\"Associate Chair\" can \"Edit\" \"Certification/Signatures\" when Delegated by \"Department Chair\" ApprovedByDepartmentChair = READYFORAPPROVAL"));
+					.createTextNode(delegateeName
+							+ " of "
+							+ departmentName
+							+ " with position title "
+							+ positionTitle
+							+ " can \"Edit\" \"Certification/Signatures\" when Delegated by "
+							+ delegatorName
+							+ " with position title \"Department Chair\" and ApprovedByDepartmentChair = READYFORAPPROVAL"));
 			rule.appendChild(desc);
 
 			// Target elements
@@ -144,7 +172,7 @@ public class WriteXMLUtil {
 			Element allOf = doc.createElement("AllOf");
 			anyOf.appendChild(allOf);
 
-			allOf.appendChild(getMatch(doc, "Associate Chair",
+			allOf.appendChild(getMatch(doc, positionTitle,
 					"urn:oasis:names:tc:xacml:1.0:subject:position.title",
 					"urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"));
 
@@ -174,13 +202,21 @@ public class WriteXMLUtil {
 			attr.setValue("Permit");
 			rule1.setAttributeNode(attr);
 
-			rule1.setAttribute("RuleId",
-					"ApproveProposalByDepartmentChair-DelegationRule13a");
+			id = "DelegatedApproveProposalRule1For-" + positionTitle
+					+ "-DelegatedBy-" + delegatorName;
+			rule1.setAttribute("RuleId", id.replace(" ", "-"));
 
 			// Description elements
 			Element desc1 = doc.createElement("Description");
 			desc1.appendChild(doc
-					.createTextNode("\"Associate Chair\" can \"Approve\" a \"Whole Proposal\" when Delegated by \"Department Chair\" ApprovedByDepartmentChair = READYFORAPPROVAL and where condition check all department chairs are not approved."));
+					.createTextNode(delegateeName
+							+ " of "
+							+ departmentName
+							+ " with position title "
+							+ positionTitle
+							+ " can \"Approve\" a \"Whole Proposal\" when Delegated by "
+							+ delegatorName
+							+ " with position title \"Department Chair\" and ApprovedByDepartmentChair = READYFORAPPROVAL and where condition check all department chairs are not approved."));
 			rule1.appendChild(desc1);
 
 			// Target elements
@@ -193,7 +229,7 @@ public class WriteXMLUtil {
 			Element allOf1 = doc.createElement("AllOf");
 			anyOf1.appendChild(allOf1);
 
-			allOf1.appendChild(getMatch(doc, "Associate Chair",
+			allOf1.appendChild(getMatch(doc, positionTitle,
 					"urn:oasis:names:tc:xacml:1.0:subject:position.title",
 					"urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"));
 
@@ -207,7 +243,7 @@ public class WriteXMLUtil {
 					"urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDepartmentChair",
 					"urn:oasis:names:tc:xacml:3.0:attribute-category:resource"));
 
-			allOf1.appendChild(getMatch(doc, "Approve",
+			allOf1.appendChild(getMatch(doc, action,
 					"urn:oasis:names:tc:xacml:1.0:action:proposal.action",
 					"urn:oasis:names:tc:xacml:3.0:attribute-category:action"));
 
@@ -275,13 +311,21 @@ public class WriteXMLUtil {
 			attr.setValue("Permit");
 			rule2.setAttributeNode(attr);
 
-			rule2.setAttribute("RuleId",
-					"ApproveProposalByDepartmentChair-DelegationRule13b");
+			id = "DelegatedApproveProposalRule2For-" + positionTitle
+					+ "-DelegatedBy-" + delegatorName;
+			rule2.setAttribute("RuleId", id.replace(" ", "-"));
 
 			// Description elements
 			Element desc2 = doc.createElement("Description");
 			desc2.appendChild(doc
-					.createTextNode("\"Associate Chair\" can \"Approve\" a \"Whole Proposal\" when Delegated by \"Department Chair\" ApprovedByDepartmentChair = READYFORAPPROVAL and where condition check all department chairs are approved and no IRB is required."));
+					.createTextNode(delegateeName
+							+ " of "
+							+ departmentName
+							+ " with position title "
+							+ positionTitle
+							+ " can \"Approve\" a \"Whole Proposal\" when Delegated by "
+							+ delegatorName
+							+ " with position title \"Department Chair\" and ApprovedByDepartmentChair = READYFORAPPROVAL and where condition check all department chairs are not approved and no IRB is required."));
 			rule2.appendChild(desc2);
 
 			// Target elements
@@ -294,7 +338,7 @@ public class WriteXMLUtil {
 			Element allOf2 = doc.createElement("AllOf");
 			anyOf2.appendChild(allOf2);
 
-			allOf2.appendChild(getMatch(doc, "Associate Chair",
+			allOf2.appendChild(getMatch(doc, positionTitle,
 					"urn:oasis:names:tc:xacml:1.0:subject:position.title",
 					"urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"));
 
@@ -308,7 +352,7 @@ public class WriteXMLUtil {
 					"urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDepartmentChair",
 					"urn:oasis:names:tc:xacml:3.0:attribute-category:resource"));
 
-			allOf2.appendChild(getMatch(doc, "Approve",
+			allOf2.appendChild(getMatch(doc, action,
 					"urn:oasis:names:tc:xacml:1.0:action:proposal.action",
 					"urn:oasis:names:tc:xacml:3.0:attribute-category:action"));
 
@@ -380,13 +424,21 @@ public class WriteXMLUtil {
 			attr.setValue("Permit");
 			rule3.setAttributeNode(attr);
 
-			rule3.setAttribute("RuleId",
-					"ApproveProposalByDepartmentChair-DelegationRule13b");
+			id = "DelegatedApproveProposalRule3For-" + positionTitle
+					+ "-DelegatedBy-" + delegatorName;
+			rule3.setAttribute("RuleId", id.replace(" ", "-"));
 
 			// Description elements
 			Element desc3 = doc.createElement("Description");
 			desc3.appendChild(doc
-					.createTextNode("\"Associate Chair\" can \"Approve\" a \"Whole Proposal\" when Delegated by \"Department Chair\" ApprovedByDepartmentChair = READYFORAPPROVAL and where condition check all department chairs are approved and IRB is required."));
+					.createTextNode(delegateeName
+							+ " of "
+							+ departmentName
+							+ " with position title "
+							+ positionTitle
+							+ " can \"Approve\" a \"Whole Proposal\" when Delegated by "
+							+ delegatorName
+							+ " with position title \"Department Chair\" ApprovedByDepartmentChair = READYFORAPPROVAL and where condition check all department chairs are approved and IRB is required."));
 			rule3.appendChild(desc3);
 
 			// Target elements
@@ -399,7 +451,7 @@ public class WriteXMLUtil {
 			Element allOf3 = doc.createElement("AllOf");
 			anyOf3.appendChild(allOf3);
 
-			allOf3.appendChild(getMatch(doc, "Associate Chair",
+			allOf3.appendChild(getMatch(doc, positionTitle,
 					"urn:oasis:names:tc:xacml:1.0:subject:position.title",
 					"urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"));
 
@@ -413,7 +465,7 @@ public class WriteXMLUtil {
 					"urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDepartmentChair",
 					"urn:oasis:names:tc:xacml:3.0:attribute-category:resource"));
 
-			allOf3.appendChild(getMatch(doc, "Approve",
+			allOf3.appendChild(getMatch(doc, action,
 					"urn:oasis:names:tc:xacml:1.0:action:proposal.action",
 					"urn:oasis:names:tc:xacml:3.0:attribute-category:action"));
 

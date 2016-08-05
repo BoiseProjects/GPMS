@@ -70,8 +70,8 @@ public class TestDelegationAccessControl {
 		HashMap<String, Multimap<String, String>> attrMap = new HashMap<String, Multimap<String, String>>();
 
 		Multimap<String, String> subjectMap = ArrayListMultimap.create();
-		subjectMap.put("position.title", "Department Chair");
-		subjectMap.put("group", "Computer Science");
+		subjectMap.put("position.title", "Associate Chair");
+		//subjectMap.put("group", "Computer Science");
 		// subjectMap.put("group", "Computer Engineering");
 
 		attrMap.put("Subject", subjectMap);
