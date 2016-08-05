@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Policy xmlns:xacml="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" PolicyId="Dynamic-Delegation-Policy-Rules-For-Computer-Science-Associate-Chair-of-Computer-Science" RuleCombiningAlgId="urn:oasis:names:tc:xacml:3.0:rule-combining-algorithm:deny-overrides" Version="1.0" xsi:schemaLocation="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17 http://docs.oasis-open.org/xacml/3.0/xacml-core-v3-schema-wd-17.xsd" xmlns="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17">
-  <Description>Computer Science Associate Chair of Computer Science with position title Associate Chair is delegated to Approve proposal from Fri Aug 05 00:21:56 MDT 2016 to 2017-08-05T00:21:56-06:00 by Computer Science Department Chair</Description>
+  <Description>Computer Science Associate Chair of Computer Science with position title Associate Chair is delegated to Approve proposal from Fri Aug 05 00:14:58 MDT 2016 to 2017-08-05T00:14:58-06:00 by Computer Science Department Chair</Description>
   <PolicyDefaults>
     <XPathVersion>http://www.w3.org/TR/1999/REC-xpath-19991116</XPathVersion>
   </PolicyDefaults>
@@ -72,13 +72,13 @@
           <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:dateTime-one-and-only">
             <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="http://www.w3.org/2001/XMLSchema#dateTime" MustBePresent="false" Path="//ak:currentdatetime/text()"/>
           </Apply>
-          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#dateTime">2016-08-05T00:21:56-06:00</AttributeValue>
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#dateTime">2016-08-05T00:14:58-06:00</AttributeValue>
         </Apply>
         <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:dateTime-less-than-or-equal">
           <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:dateTime-one-and-only">
             <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="http://www.w3.org/2001/XMLSchema#dateTime" MustBePresent="false" Path="//ak:currentdatetime/text()"/>
           </Apply>
-          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#dateTime">2017-08-05T00:21:56-06:00</AttributeValue>
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#dateTime">2017-08-05T00:14:58-06:00</AttributeValue>
         </Apply>
       </Apply>
     </Condition>
@@ -176,13 +176,13 @@
           <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:dateTime-one-and-only">
             <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="http://www.w3.org/2001/XMLSchema#dateTime" MustBePresent="false" Path="//ak:currentdatetime/text()"/>
           </Apply>
-          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#dateTime">2016-08-05T00:21:56-06:00</AttributeValue>
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#dateTime">2016-08-05T00:14:58-06:00</AttributeValue>
         </Apply>
         <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:dateTime-less-than-or-equal">
           <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:dateTime-one-and-only">
             <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="http://www.w3.org/2001/XMLSchema#dateTime" MustBePresent="false" Path="//ak:currentdatetime/text()"/>
           </Apply>
-          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#dateTime">2017-08-05T00:21:56-06:00</AttributeValue>
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#dateTime">2017-08-05T00:14:58-06:00</AttributeValue>
         </Apply>
       </Apply>
     </Condition>
@@ -280,13 +280,13 @@
           <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:dateTime-one-and-only">
             <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="http://www.w3.org/2001/XMLSchema#dateTime" MustBePresent="false" Path="//ak:currentdatetime/text()"/>
           </Apply>
-          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#dateTime">2016-08-05T00:21:56-06:00</AttributeValue>
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#dateTime">2016-08-05T00:14:58-06:00</AttributeValue>
         </Apply>
         <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:dateTime-less-than-or-equal">
           <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:dateTime-one-and-only">
             <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="http://www.w3.org/2001/XMLSchema#dateTime" MustBePresent="false" Path="//ak:currentdatetime/text()"/>
           </Apply>
-          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#dateTime">2017-08-05T00:21:56-06:00</AttributeValue>
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#dateTime">2017-08-05T00:14:58-06:00</AttributeValue>
         </Apply>
       </Apply>
     </Condition>

@@ -1,0 +1,46 @@
+<Response xmlns="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17">
+	<Result>
+		<Decision>Permit</Decision>
+		<Status>
+			<StatusCode Value="urn:oasis:names:tc:xacml:1.0:status:ok" />
+		</Status>
+		<Attributes Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action">
+			<Attribute AttributeId="urn:oasis:names:tc:xacml:1.0:action:action-id" IncludeInResult="true">
+				<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">read</AttributeValue>
+			</Attribute>
+		</Attributes>
+	</Result>
+	<Result>
+		<Decision>Deny</Decision>
+		<Status>
+			<StatusCode Value="urn:oasis:names:tc:xacml:1.0:status:ok" />
+		</Status>
+		<Attributes Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action">
+			<Attribute AttributeId="urn:oasis:names:tc:xacml:1.0:action:action-id" IncludeInResult="true">
+				<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">delete</AttributeValue>
+			</Attribute>
+		</Attributes>
+	</Result>
+	<Result>
+		<Decision>Deny</Decision>
+		<Status>
+			<StatusCode Value="urn:oasis:names:tc:xacml:1.0:status:ok" />
+		</Status>
+		<Attributes Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action">
+			<Attribute AttributeId="urn:oasis:names:tc:xacml:1.0:action:action-id" IncludeInResult="true">
+				<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">update</AttributeValue>
+			</Attribute>
+		</Attributes>
+	</Result>
+	<Result>
+		<Decision>Permit</Decision>
+		<Status>
+			<StatusCode Value="urn:oasis:names:tc:xacml:1.0:status:ok" />
+		</Status>
+		<Attributes Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action">
+			<Attribute AttributeId="urn:oasis:names:tc:xacml:1.0:action:action-id" IncludeInResult="true">
+				<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">create</AttributeValue>
+			</Attribute>
+		</Attributes>
+	</Result>
+</Response>

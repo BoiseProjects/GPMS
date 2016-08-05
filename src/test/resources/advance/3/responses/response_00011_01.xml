@@ -1,0 +1,51 @@
+<Response 
+	xmlns="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17">
+	<Result>
+		<Decision>Permit</Decision>
+		<Status>
+			<StatusCode Value="urn:oasis:names:tc:xacml:1.0:status:ok"/>
+		</Status>
+		<Obligations>
+			<Obligation ObligationId="sendAlert">
+				<AttributeAssignment AttributeId="obligationType" DataType="http://www.w3.org/2001/XMLSchema#string">preobligation</AttributeAssignment>
+				<AttributeAssignment AttributeId="urn:oasis:names:tc:xacml:2.0:example:attribute:text" DataType="http://www.w3.org/2001/XMLSchema#string">p444</AttributeAssignment>
+				<AttributeAssignment AttributeId="patientId" DataType="http://www.w3.org/2001/XMLSchema#string">p444</AttributeAssignment>
+			</Obligation>
+		</Obligations>
+		<AssociatedAdvice>
+			<Advice AdviceId="patientId">
+				<AttributeAssignment AttributeId="urn:oasis:names:tc:xacml:2.0:example:attribute:text" DataType="http://www.w3.org/2001/XMLSchema#string">p444</AttributeAssignment>
+			</Advice>
+		</AssociatedAdvice>
+	</Result>
+	<Result>
+		<Decision>Deny</Decision>
+		<Status>
+			<StatusCode Value="urn:oasis:names:tc:xacml:1.0:status:ok"/>
+		</Status>
+	</Result>
+	<Result>
+		<Decision>Permit</Decision>
+		<Status>
+			<StatusCode Value="urn:oasis:names:tc:xacml:1.0:status:ok"/>
+		</Status>
+		<Obligations>
+			<Obligation ObligationId="sendAlert">
+				<AttributeAssignment AttributeId="obligationType" DataType="http://www.w3.org/2001/XMLSchema#string">preobligation</AttributeAssignment>
+				<AttributeAssignment AttributeId="urn:oasis:names:tc:xacml:2.0:example:attribute:text" DataType="http://www.w3.org/2001/XMLSchema#string">p111</AttributeAssignment>
+				<AttributeAssignment AttributeId="patientId" DataType="http://www.w3.org/2001/XMLSchema#string">p111</AttributeAssignment>
+			</Obligation>
+		</Obligations>
+		<AssociatedAdvice>
+			<Advice AdviceId="patientId">
+				<AttributeAssignment AttributeId="urn:oasis:names:tc:xacml:2.0:example:attribute:text" DataType="http://www.w3.org/2001/XMLSchema#string">p111</AttributeAssignment>
+			</Advice>
+		</AssociatedAdvice>
+	</Result>
+	<Result>
+		<Decision>Deny</Decision>
+		<Status>
+			<StatusCode Value="urn:oasis:names:tc:xacml:1.0:status:ok"/>
+		</Status>
+	</Result>
+</Response>

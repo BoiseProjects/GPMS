@@ -35,12 +35,24 @@
 
 package gpms.utils;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.w3c.dom.Document;
 import org.wso2.balana.ObligationResult;
 import org.wso2.balana.PDP;
 import org.wso2.balana.ParsingException;
@@ -299,89 +311,95 @@ public class PolicyTestUtil {
 	// }
 	// }
 
-	// /**
-	// * This creates the XACML request from a file
-	// *
-	// * @param rootDirectory root directory of the request files
-	// * @param versionDirectory version directory of the request files
-	// * @param requestId request file name
-	// * @return String or null if any error
-	// */
-	// public static String createRequest(String rootDirectory, String
-	// versionDirectory,
-	// String requestId){
-	//
-	// File file = new File(".");
-	// StringWriter writer = null;
-	// try{
-	// String filePath = file.getCanonicalPath() + File.separator +
-	// TestConstants.RESOURCE_PATH +
-	// File.separator + rootDirectory + File.separator + versionDirectory +
-	// File.separator + TestConstants.REQUEST_DIRECTORY + File.separator +
-	// requestId;
-	//
-	// DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-	// factory.setIgnoringComments(true);
-	// factory.setNamespaceAware(true);
-	// DocumentBuilder db = factory.newDocumentBuilder();
-	// Document doc = db.parse(new FileInputStream(filePath));
-	// DOMSource domSource = new DOMSource(doc);
-	// writer = new StringWriter();
-	// StreamResult result = new StreamResult(writer);
-	// TransformerFactory tf = TransformerFactory.newInstance();
-	// Transformer transformer = tf.newTransformer();
-	// transformer.transform(domSource, result);
-	// return writer.toString();
-	// } catch (Exception e){
-	// log.error("Error while reading expected response from file ", e);
-	// //ignore any exception and return null
-	// } finally {
-	// if(writer != null){
-	// try {
-	// writer.close();
-	// } catch (IOException e) {
-	// log.error("Error closing stream ", e);
-	// //ignore any exception and return null
-	// }
-	// }
-	// }
-	// return null;
-	// }
-	//
-	// /**
-	// * This creates the expected XACML response from a file
-	// *
-	// * @param rootDirectory root directory of the response files
-	// * @param versionDirectory version directory of the response files
-	// * @param responseId response file name
-	// * @return ResponseCtx or null if any error
-	// */
-	// public static ResponseCtx createResponse(String rootDirectory, String
-	// versionDirectory,
-	// String responseId) {
-	//
-	// File file = new File(".");
-	// try{
-	// String filePath = file.getCanonicalPath() + File.separator +
-	// TestConstants.RESOURCE_PATH +
-	// File.separator + rootDirectory + File.separator + versionDirectory +
-	// File.separator + TestConstants.RESPONSE_DIRECTORY + File.separator +
-	// responseId;
-	//
-	// DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-	// factory.setIgnoringComments(true);
-	// factory.setNamespaceAware(true);
-	// factory.setValidating(false);
-	// DocumentBuilder db = factory.newDocumentBuilder();
-	// Document doc = db.parse(new FileInputStream(filePath));
-	// return ResponseCtx.getInstance(doc.getDocumentElement());
-	// } catch (Exception e){
-	// log.error("Error while reading expected response from file ", e);
-	// //ignore any exception and return null
-	// }
-	//
-	// return null;
-	// }
+	/**
+	 * This creates the XACML request from a file
+	 *
+	 * @param rootDirectory
+	 *            root directory of the request files
+	 * @param versionDirectory
+	 *            version directory of the request files
+	 * @param requestId
+	 *            request file name
+	 * @return String or null if any error
+	 */
+	public static String createRequest(String rootDirectory,
+			String versionDirectory, String requestId) {
+
+		File file = new File(".");
+		StringWriter writer = null;
+		try {
+			String filePath = file.getCanonicalPath() + File.separator
+					+ TestConstants.RESOURCE_PATH + File.separator
+					+ rootDirectory + File.separator + versionDirectory
+					+ File.separator + TestConstants.REQUEST_DIRECTORY
+					+ File.separator + requestId;
+
+			DocumentBuilderFactory factory = DocumentBuilderFactory
+					.newInstance();
+			factory.setIgnoringComments(true);
+			factory.setNamespaceAware(true);
+			DocumentBuilder db = factory.newDocumentBuilder();
+			Document doc = db.parse(new FileInputStream(filePath));
+			DOMSource domSource = new DOMSource(doc);
+			writer = new StringWriter();
+			StreamResult result = new StreamResult(writer);
+			TransformerFactory tf = TransformerFactory.newInstance();
+			Transformer transformer = tf.newTransformer();
+			transformer.transform(domSource, result);
+			return writer.toString();
+		} catch (Exception e) {
+			log.error("Error while reading expected response from file ", e);
+			// ignore any exception and return null
+		} finally {
+			if (writer != null) {
+				try {
+					writer.close();
+				} catch (IOException e) {
+					log.error("Error closing stream ", e);
+					// ignore any exception and return null
+				}
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * This creates the expected XACML response from a file
+	 *
+	 * @param rootDirectory
+	 *            root directory of the response files
+	 * @param versionDirectory
+	 *            version directory of the response files
+	 * @param responseId
+	 *            response file name
+	 * @return ResponseCtx or null if any error
+	 */
+	public static ResponseCtx createResponse(String rootDirectory,
+			String versionDirectory, String responseId) {
+
+		File file = new File(".");
+		try {
+			String filePath = file.getCanonicalPath() + File.separator
+					+ TestConstants.RESOURCE_PATH + File.separator
+					+ rootDirectory + File.separator + versionDirectory
+					+ File.separator + TestConstants.RESPONSE_DIRECTORY
+					+ File.separator + responseId;
+
+			DocumentBuilderFactory factory = DocumentBuilderFactory
+					.newInstance();
+			factory.setIgnoringComments(true);
+			factory.setNamespaceAware(true);
+			factory.setValidating(false);
+			DocumentBuilder db = factory.newDocumentBuilder();
+			Document doc = db.parse(new FileInputStream(filePath));
+			return ResponseCtx.getInstance(doc.getDocumentElement());
+		} catch (Exception e) {
+			log.error("Error while reading expected response from file ", e);
+			// ignore any exception and return null
+		}
+
+		return null;
+	}
 
 	/**
 	 * This would remove the StatusMessage from the response. Because

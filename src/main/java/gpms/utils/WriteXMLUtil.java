@@ -61,6 +61,11 @@ public class WriteXMLUtil {
 
 			String action = "Approve";
 
+			// For Revocation
+			String delegationFileName = "chairdelegation.xml";
+			String delegationId = "5796615246edfa49d60e87ae";
+			String delegatorId = "5745f29ebcbb29192ce0d42f";
+
 			String id = new String();
 
 			DateFormat dateFormat = new SimpleDateFormat(
@@ -527,6 +532,69 @@ public class WriteXMLUtil {
 
 			// END Rule ApproveProposalByDepartmentChair-Rule13c HERE
 
+			// Add Revocation Rule HERE
+			Element rule4 = doc.createElement("Rule");
+			rootElement.appendChild(rule4);
+
+			// set Effect attribute to Rule element
+			attr = doc.createAttribute("Effect");
+			attr.setValue("Permit");
+			rule4.setAttributeNode(attr);
+
+			id = "Revoke " + delegationFileName + " by Department Chair";
+			rule4.setAttribute("RuleId", id.replace(" ", "-"));
+
+			// Description elements
+			Element desc4 = doc.createElement("Description");
+			desc4.appendChild(doc
+					.createTextNode("\"Department Chair\" can \"Revoke\" delegation from "
+							+ delegateeName
+							+ " of "
+							+ departmentName
+							+ " with position title " + positionTitle));
+			rule4.appendChild(desc4);
+
+			// Target elements
+			Element target4 = doc.createElement("Target");
+			rule4.appendChild(target4);
+
+			Element anyOf4 = doc.createElement("AnyOf");
+			target4.appendChild(anyOf4);
+
+			Element allOf4 = doc.createElement("AllOf");
+			anyOf4.appendChild(allOf4);
+
+			allOf4.appendChild(getMatch(doc, "Revoke",
+					"urn:oasis:names:tc:xacml:1.0:action:proposal.action",
+					"urn:oasis:names:tc:xacml:3.0:attribute-category:action"));
+
+			// Condition elements
+			Element condition4 = doc.createElement("Condition");
+			rule4.appendChild(condition4);
+
+			Element conditionRootApply4 = doc.createElement("Apply");
+			condition4.appendChild(conditionRootApply4);
+			conditionRootApply4.setAttribute("FunctionId",
+					"urn:oasis:names:tc:xacml:1.0:function:and");		
+
+			conditionRootApply4.appendChild(getConditionApplyString(doc,
+					"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
+					"//ak:delegationid/text()", delegationId));
+
+			conditionRootApply4.appendChild(getConditionApplyString(doc,
+					"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
+					"//ak:delegatorid/text()", delegatorId));
+
+			conditionRootApply4.appendChild(getConditionApplyString(doc,
+					"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
+					"//ak:delegationfilename/text()", delegationFileName));
+			
+			conditionRootApply4.appendChild(getConditionApplyBoolean(doc,
+					"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
+					"//ak:revoked/text()", "false"));
+
+			// END Rule Revocation HERE
+
 			// write the content into xml file
 			TransformerFactory transformerFactory = TransformerFactory
 					.newInstance();
@@ -537,8 +605,8 @@ public class WriteXMLUtil {
 
 			DOMSource source = new DOMSource(doc);
 
-			StreamResult result = new StreamResult(new File(getFilePath()
-					+ "/chairdelegation.xml"));
+			StreamResult result = new StreamResult(new File(getFilePath() + "/"
+					+ delegationFileName));
 
 			// Output to console for testing
 			// StreamResult result = new StreamResult(System.out);

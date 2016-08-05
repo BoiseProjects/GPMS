@@ -1,0 +1,25 @@
+<Request 
+    xmlns="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17" ReturnPolicyIdList="false" CombinedDecision="false">
+    <Attributes Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"/>
+    <Attributes Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource">
+        <Content>
+            <ak:record 
+                xmlns:ak="http://akpower.org">
+                <ak:delegation>
+                    <ak:delegationid>5796615246edfa49d60e87ae</ak:delegationid>
+                    <ak:delegatorid>5745f29ebcbb29192ce0d42f</ak:delegatorid>
+                    <ak:delegationfilename>chairdelegation.xml</ak:delegationfilename>
+                    <ak:revoked>false</ak:revoked>
+                </ak:delegation>                
+            </ak:record>
+        </Content>
+        <Attribute IncludeInResult="false" AttributeId="urn:oasis:names:tc:xacml:3.0:content-selector">
+            <AttributeValue XPathCategory="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression">//ak:record//ak:delegation</AttributeValue>
+        </Attribute>
+    </Attributes>
+    <Attributes Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action">
+        <Attribute IncludeInResult="false" AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Revoke</AttributeValue>
+        </Attribute>
+    </Attributes>
+</Request>
