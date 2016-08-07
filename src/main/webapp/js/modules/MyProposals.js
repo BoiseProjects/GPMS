@@ -888,7 +888,8 @@ $(function() {
 											checkFor : '23',
 											elemClass : 'attrChkbox',
 											elemDefault : false,
-											controlclass : 'attribHeaderChkbox'
+											controlclass : 'attribHeaderChkbox',
+											hide : true
 										},
 										{
 											display : 'Project Title',

@@ -53,7 +53,8 @@
 	var userPositionType = '<%=session.getAttribute("userPositionType")%>';
 	var	userPositionTitle = '<%=session.getAttribute("userPositionTitle")%>';
 	var userDepartment = '<%=session.getAttribute("userDepartment")%>';
-	var userCollege = '<%=session.getAttribute("userCollege")%>';
+	var userCollege = '<%=session.getAttribute("userCollege")%>
+	';
 
 	var gpmsServicePath = "REST/";
 	var gpmsRootPath = "http://localhost:8181/GPMS/";
@@ -180,50 +181,39 @@
 															border="0">
 															<tbody>
 																<tr>
-																	<td><label class="cssClassLabel">Project
-																			Title:</label> <input title="Project Title" type="text"
-																		class="sfTextBoxFix" id="txtSearchProjectTitle"
-																		placeholder="Project Title" /></td>
-																	<td><label class="cssClassLabel"> Proposed
-																			By:</label> <input title="Proposed By"
-																		id="txtSearchProposedBy" class="sfTextBoxFix"
-																		type="text" placeholder="Proposed By" /></td>
+																	<td><label class="cssClassLabel">Delegated
+																			To:</label> <input title="Delegated To" type="text"
+																		class="sfTextBoxFix" id="txtSearchDelegatee"
+																		placeholder="Delegated To" /></td>
 																	<td style="width: 180px; float: left;"><label
-																		class="cssClassLabel">Received On:</label>
+																		class="cssClassLabel">Delegation Starts:</label>
 																		<div>
 																			<span class="cssClassLabel">From:</span> <input
-																				type="text" title="Received On From"
-																				id="txtSearchReceivedOnFrom" class="sfTextBoxFix"
+																				type="text" title="Delegated From"
+																				id="txtSearchDelegatedFrom" class="sfTextBoxFix"
 																				placeholder="From">
 																		</div>
 																		<div>
 																			<span class="cssClassLabel">To:</span> <input
-																				type="text" title="Received On To"
-																				id="txtSearchReceivedOnTo" class="sfTextBoxFix"
+																				type="text" title="Delegated To"
+																				id="txtSearchDelegatedTo" class="sfTextBoxFix"
 																				placeholder="To">
 																		</div></td>
-
-																	<td style="width: 180px;"><label
-																		class="cssClassLabel">Total Costs:</label>
-																		<div>
-																			<span class="cssClassLabel">From:</span> <input
-																				type="text" title="Total Costs From"
-																				id="txtSearchTotalCostsFrom"
-																				name="searchTotalCostsFrom" class="sfTextBoxFix"
-																				placeholder="From">
-																		</div>
-																		<div>
-																			<span class="cssClassLabel">To:</span> <input
-																				type="text" title="Total Costs To"
-																				id="txtSearchTotalCostsTo" name="searchTotalCostsTo"
-																				class="sfTextBoxFix" placeholder="To">
-																		</div></td>
-
-																	<td><label class="cssClassLabel">Delegation
-																			Status:</label> <select title="Choose Delegation Status"
-																		id="ddlSearchDelegationstatus" class="sfListmenu"
+																	<td><label class="cssClassLabel">Delegated
+																			Action:</label> <select title="Choose Delegated Action"
+																		id="ddlSearchDelegatedAction" class="sfListmenu"
 																		style="width: 80px;">
 																			<option value="0">--All--</option>
+																			<option value="Approve">Approve</option>
+																			<option value="Disapprove">Disapprove</option>
+																	</select></td>
+																	<td><label class="cssClassLabel">Is
+																			Revoked?</label> <select title="Choose Is Revoked?"
+																		id="ddlSearchIsRevoked" class="sfListmenu"
+																		style="width: 80px;">
+																			<option value="0">--All--</option>
+																			<option value="Approve">Yes</option>
+																			<option value="Disapprove">No</option>
 																	</select></td>
 																	<td><label class="cssClassLabel">&nbsp;</label>
 																		<button title="Search Delegation" class="sfBtn"
@@ -263,46 +253,45 @@
 												<table cellspacing="0" cellpadding="0" border="0">
 													<tbody>
 														<tr>
-															<td><span class="cssClassLabel" id="lblUserName">User
-																	Name:</span> <span class="cssClassRequired">*</span></td>
-															<td><select title="Choose Full Name"
-																class="sfListmenu" name="ddlName" style="width: 140px;"
-																required="true">
+															<td><span class="cssClassLabel"
+																id="lblDelegateAction">Delegate Action:</span> <span
+																class="cssClassRequired">*</span></td>
+															<td><select title="Choose Delegate Action"
+																class="sfListmenu" name="ddlDelegateAction"
+																style="width: 140px;" required="true">
+																	<option value="Approve">Approve</option>
+																	<option value="Disapprove">Disapprove</option>
 															</select></td>
 														</tr>
 														<tr>
-															<td><span class="cssClassLabel" id="lblProposal">Proposal:</span>
-																<span class="cssClassRequired">*</span></td>
-															<td><select title="Choose Proposal" id="ddlProposal"
-																class="sfListmenu">
-																	<option value="0">--All--</option>
+															<td><span class="cssClassLabel" id="lblDelegateTo">Delegate
+																	To:</span> <span class="cssClassRequired">*</span></td>
+															<td><select title="Choose Delegate To"
+																class="sfListmenu" name="ddlDelegateTo"
+																style="width: 140px;" required="true">
 															</select></td>
 														</tr>
 														<tr>
-															<td><span id="lblDOB" class="cssClassLabel">Start
-																	From:</span> <span class="cssClassRequired">*</span></td>
+															<td><span id="lblDOB" class="cssClassLabel">Delegation
+																	Start From:</span> <span class="cssClassRequired">*</span></td>
 															<td class="cssClassTableRightCol"><input
 																title="Delegation Start From" type="text"
-																id="txtdelegationFrom" class="sfInputbox"
+																id="txtDelegationFrom" class="sfInputbox"
 																name="delegationFrom"
 																placeholder="Delegation Start From" /></td>
-															<td><span id="lblDOB" class="cssClassLabel">Start
-																	To:</span> <span class="cssClassRequired">*</span></td>
+															<td><span id="lblDOB" class="cssClassLabel">Delegation
+																	Start To:</span> <span class="cssClassRequired">*</span></td>
 															<td class="cssClassTableRightCol"><input
 																title="Delegation Start To" type="text"
-																id="txtdelegationTo" class="sfInputbox"
+																id="txtDelegationTo" class="sfInputbox"
 																name="delegationTo" placeholder="Delegation Start To" /></td>
 														</tr>
 														<tr>
-															<td><span id="lblGender" class="cssClassLabel">Gender:</span>
+															<td><span class="cssClassLabel" id="lblReason">Reason:</span>
 																<span class="cssClassRequired">*</span></td>
-															<td class="cssClassTableRightCol"><select
-																title="Choose Gender" id="ddlGender" name="gender"
-																class="sfListmenu">
-																	<option value="">Choose Gender</option>
-																	<option value="Male">Male</option>
-																	<option value="Female">Female</option>
-															</select></td>
+															<td><textarea class="cssClassTextArea"
+																	title="Delegation Reason" id="txtDelegationReason"
+																	name="delegationReason" cols="26" rows="2"></textarea></td>
 														</tr>
 													</tbody>
 												</table>
@@ -328,15 +317,118 @@
 													</button>
 												</p>
 												<p>
-													<button class="sfBtn" id="btnDeleteDelegation"
-														type="button" title="Delete Delegation">
-														<span class="icon-delete">Delete</span>
+													<button class="sfBtn" id="btnRevokeDelegation"
+														type="button" title="Revoke Delegation">
+														<span class="icon-delete">Revoke</span>
 													</button>
 												</p>
 											</div>
 										</div>
 									</div>
 									<!-- End form -->
+
+									<!-- Start Change Log Grid -->
+									<div id="divDelegationAuditGrid" style="display: none">
+										<div class="cssClassCommonBox Curve">
+											<div class="cssClassHeader">
+												<h1>
+													<span id="lblLogsHeading"></span>
+												</h1>
+												<div class="cssClassHeaderRight">
+													<div class="sfButtonwrapper">
+														<p>
+															<button title="Export to Excel" type="button"
+																id="btnLogsExportToExcel" class="sfBtn">
+																<span class="icon-excel">Export to Excel</span>
+															</button>
+														</p>
+														<!-- <p>
+															<button title="Export to CSV" type="button"
+																id="btnExportToCSV" class="sfBtn">
+																<span class="icon-excel">Export to CSV</span>
+															</button>
+														</p> -->
+
+														<div class="cssClassClear"></div>
+													</div>
+													<div class="cssClassClear"></div>
+												</div>
+												<div class="cssClassClear"></div>
+											</div>
+											<div class="sfGridwrapper">
+												<div class="sfGridWrapperContent">
+													<div class="sfFormwrapper sfTableOption">
+														<table width="100%" cellspacing="0" cellpadding="0"
+															border="0">
+															<tbody>
+																<tr>
+																	<td><label class="cssClassLabel"> Action:</label>
+																		<input title="Action" type="text" class="sfInputbox"
+																		id="txtSearchAction" placeholder="Action" /></td>
+																	<td><label class="cssClassLabel"> Audited
+																			By:</label> <input title="Audited By" type="text"
+																		class="sfInputbox" id="txtSearchAuditedBy"
+																		placeholder="Audited By" /></td>
+																	<td><label class="cssClassLabel"> Activity
+																			On From:</label> <input title="Activity On From" type="text"
+																		class="sfTextBoxSmall" id="txtSearchActivityOnFrom"
+																		placeholder="From" /></td>
+																	<td><label class="cssClassLabel"> Activity
+																			On To:</label> <input title="Activity On To" type="text"
+																		class="sfTextBoxSmall" id="txtSearchActivityOnTo"
+																		placeholder="To" /></td>
+																	<td><label class="cssClassLabel"> </label>
+																		<button title="Search Audit Log" class="sfBtn"
+																			id="btnSearchDelegationAuditLog" type="button">
+																			<span class="icon-search">Search</span>
+																		</button></td>
+																</tr>
+															</tbody>
+														</table>
+													</div>
+													<div class="loading">
+														<img id="ajaxLoader" src="" alt="Loading..."
+															title="Loading..." />
+													</div>
+													<div class="log"></div>
+													<table id="gdvDelegationsAuditLog" cellspacing="0"
+														cellpadding="0" border="0" width="100%"></table>
+												</div>
+											</div>
+										</div>
+										<table id="tblLastAuditedInfo" cellspacing="0" cellpadding="0"
+											border="0">
+											<tbody>
+												<tr>
+													<td><span class="cssClassLabelTitle">Last
+															Audited On:&nbsp;</span></td>
+													<td class="cssClassTableRightCol"><span
+														id="lblLastUpdatedOn" class="cssClassLabel"></span></td>
+												</tr>
+												<tr>
+													<td><span class="cssClassLabelTitle">Last
+															Audited By:&nbsp;</span></td>
+													<td class="cssClassTableRightCol"><span
+														id="lblLastUpdatedBy" class="cssClassLabel"></span></td>
+												</tr>
+												<tr>
+													<td><span class="cssClassLabelTitle">Last
+															Activity:&nbsp;</span></td>
+													<td class="cssClassTableRightCol"><span
+														id="lblActivity" class="cssClassLabel"></span></td>
+												</tr>
+											</tbody>
+										</table>
+										<div class="sfButtonwrapper">
+											<p>
+												<button class="sfBtn" id="btnLogsBack" type="button"
+													title="Go Back">
+													<span class="icon-arrow-slim-w">Back</span>
+												</button>
+											</p>
+										</div>
+									</div>
+									<!-- End Change Log Grid-->
 								</div>
 							</div>
 							<!-- END sfMaincontent -->

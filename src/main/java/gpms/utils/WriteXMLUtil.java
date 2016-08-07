@@ -1,5 +1,7 @@
 package gpms.utils;
 
+import gpms.model.Delegation;
+
 import java.io.File;
 import java.net.URISyntaxException;
 import java.text.DateFormat;
@@ -18,6 +20,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -41,43 +44,41 @@ public class WriteXMLUtil {
 				.getPath());
 	}
 
-	public static void main(String[] args) {
-		saveDelegationPolicy();
-	}
+	public static String saveDelegationPolicy(String userProfileID,
+			String delegatorName, String policyLocation,
+			Delegation existingDelegation) {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy_MM_dd");
+		String delegationFileName = String.format(
+				"%s.%s",
+				RandomStringUtils.randomAlphanumeric(8) + "_"
+						+ dateFormat.format(new Date()), "xml");
 
-	private static void saveDelegationPolicy() {
 		try {
-			// Delegator
-			String delegatorName = "Computer Science Department Chair";
 
 			// Delegatee
-			String userProfileId = "578918b9bcbb29090c4278e7";
-			String delegateeName = "Computer Science Associate Chair";
+			String delegateeId = existingDelegation.getDelegateeId();
+			String delegateeName = existingDelegation.getDelegateeFullName();
 
-			String departmentName = "Computer Science";
-			// departmentName = departmentName.replace(" ", "-");
-			String positionTitle = "Associate Chair";
-			// positionTitle = positionTitle.replace(" ", "-");
+			String departmentName = existingDelegation.getDepartment();
+			// departmentName = existingDelegation.getDepartment().replaceAll(" ",
+			// "-");
+			String positionTitle = existingDelegation.getPositionTitle();
+			// positionTitle =
+			// existingDelegation.getPositionTitle().replaceAll(" ", "-");
 
-			String action = "Approve";
+			String action = existingDelegation.getAction();
 
 			// For Revocation
-			String delegationFileName = "chairdelegation.xml";
-			String delegationId = "5796615246edfa49d60e87ae";
-			String delegatorId = "5745f29ebcbb29192ce0d42f";
+			String delegationId = existingDelegation.getId().toString();
 
 			String id = new String();
 
-			DateFormat dateFormat = new SimpleDateFormat(
+			DateFormat policyDateFormat = new SimpleDateFormat(
 					"yyyy-MM-dd'T'HH:mm:ssXXX");
-			Date fromDate = new Date();
-			String toDate = new String();
-
-			Calendar date = Calendar.getInstance();
-			date.setTime(new Date());
-			System.out.println(dateFormat.format(date.getTime()));
-			date.add(Calendar.YEAR, 1);
-			toDate = dateFormat.format(date.getTime());
+			final String fromDate = policyDateFormat.format(existingDelegation
+					.getFrom());
+			final String toDate = policyDateFormat.format(existingDelegation
+					.getTo());
 
 			DocumentBuilderFactory docFactory = DocumentBuilderFactory
 					.newInstance();
@@ -103,7 +104,7 @@ public class WriteXMLUtil {
 			attr = doc.createAttribute("PolicyId");
 			id = "Dynamic-Delegation-Policy-Rules-For-" + delegateeName
 					+ "-of-" + departmentName;
-			attr.setValue(id.replace(" ", "-"));
+			attr.setValue(id.replaceAll(" ", "-"));
 			rootElement.setAttributeNode(attr);
 
 			attr = doc.createAttribute("RuleCombiningAlgId");
@@ -152,7 +153,7 @@ public class WriteXMLUtil {
 			id = "DelegatedEditProposalSectionRuleFor-" + positionTitle
 					+ "-DelegatedBy-" + delegatorName;
 
-			rule.setAttribute("RuleId", id.replace(" ", "-"));
+			rule.setAttribute("RuleId", id.replaceAll(" ", "-"));
 
 			// Description elements
 			Element desc = doc.createElement("Description");
@@ -209,7 +210,7 @@ public class WriteXMLUtil {
 
 			id = "DelegatedApproveProposalRule1For-" + positionTitle
 					+ "-DelegatedBy-" + delegatorName;
-			rule1.setAttribute("RuleId", id.replace(" ", "-"));
+			rule1.setAttribute("RuleId", id.replaceAll(" ", "-"));
 
 			// Description elements
 			Element desc1 = doc.createElement("Description");
@@ -265,14 +266,9 @@ public class WriteXMLUtil {
 					"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
 					"//ak:signedByAllChairs/text()", "false"));
 
-			// user.id, proposal.id current.datetime TODO
 			conditionRootApply1.appendChild(getConditionApplyString(doc,
 					"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
-					"//ak:authorprofile/ak:userid/text()", userProfileId));
-
-			// conditionRootApply1.appendChild(getConditionApplyString(doc,
-			// "urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
-			// "//ak:proposalid/text()", "5787dbcb65dbb3f1874190dc"));
+					"//ak:authorprofile/ak:userid/text()", delegateeId));
 
 			conditionRootApply1
 					.appendChild(getConditionApplyDateTime(
@@ -318,7 +314,7 @@ public class WriteXMLUtil {
 
 			id = "DelegatedApproveProposalRule2For-" + positionTitle
 					+ "-DelegatedBy-" + delegatorName;
-			rule2.setAttribute("RuleId", id.replace(" ", "-"));
+			rule2.setAttribute("RuleId", id.replaceAll(" ", "-"));
 
 			// Description elements
 			Element desc2 = doc.createElement("Description");
@@ -378,14 +374,9 @@ public class WriteXMLUtil {
 					"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
 					"//ak:irbApprovalRequired/text()", "false"));
 
-			// user.id, proposal.id current.datetime TODO
 			conditionRootApply2.appendChild(getConditionApplyString(doc,
 					"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
-					"//ak:authorprofile/ak:userid/text()", userProfileId));
-
-			// conditionRootApply.appendChild(getConditionApplyString(doc,
-			// "urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
-			// "//ak:proposalid/text()", "5787dbcb65dbb3f1874190dc"));
+					"//ak:authorprofile/ak:userid/text()", delegateeId));
 
 			conditionRootApply2
 					.appendChild(getConditionApplyDateTime(
@@ -431,7 +422,7 @@ public class WriteXMLUtil {
 
 			id = "DelegatedApproveProposalRule3For-" + positionTitle
 					+ "-DelegatedBy-" + delegatorName;
-			rule3.setAttribute("RuleId", id.replace(" ", "-"));
+			rule3.setAttribute("RuleId", id.replaceAll(" ", "-"));
 
 			// Description elements
 			Element desc3 = doc.createElement("Description");
@@ -491,14 +482,9 @@ public class WriteXMLUtil {
 					"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
 					"//ak:irbApprovalRequired/text()", "true"));
 
-			// user.id, proposal.id current.datetime TODO
 			conditionRootApply3.appendChild(getConditionApplyString(doc,
 					"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
-					"//ak:authorprofile/ak:userid/text()", userProfileId));
-
-			// conditionRootApply.appendChild(getConditionApplyString(doc,
-			// "urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
-			// "//ak:proposalid/text()", "5787dbcb65dbb3f1874190dc"));
+					"//ak:authorprofile/ak:userid/text()", delegateeId));
 
 			conditionRootApply3
 					.appendChild(getConditionApplyDateTime(
@@ -542,7 +528,7 @@ public class WriteXMLUtil {
 			rule4.setAttributeNode(attr);
 
 			id = "Revoke " + delegationFileName + " by Department Chair";
-			rule4.setAttribute("RuleId", id.replace(" ", "-"));
+			rule4.setAttribute("RuleId", id.replaceAll(" ", "-"));
 
 			// Description elements
 			Element desc4 = doc.createElement("Description");
@@ -575,7 +561,7 @@ public class WriteXMLUtil {
 			Element conditionRootApply4 = doc.createElement("Apply");
 			condition4.appendChild(conditionRootApply4);
 			conditionRootApply4.setAttribute("FunctionId",
-					"urn:oasis:names:tc:xacml:1.0:function:and");		
+					"urn:oasis:names:tc:xacml:1.0:function:and");
 
 			conditionRootApply4.appendChild(getConditionApplyString(doc,
 					"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
@@ -583,15 +569,30 @@ public class WriteXMLUtil {
 
 			conditionRootApply4.appendChild(getConditionApplyString(doc,
 					"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
-					"//ak:delegatorid/text()", delegatorId));
+					"//ak:delegatorid/text()", userProfileID));
 
 			conditionRootApply4.appendChild(getConditionApplyString(doc,
 					"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
 					"//ak:delegationfilename/text()", delegationFileName));
-			
+
 			conditionRootApply4.appendChild(getConditionApplyBoolean(doc,
 					"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
 					"//ak:revoked/text()", "false"));
+
+			// ObligationExpressions
+			Element obligationExpressions4 = doc
+					.createElement("ObligationExpressions");
+			rule3.appendChild(obligationExpressions4);
+
+			obligationExpressions4.appendChild(getObligationExpressionAlert(
+					doc, "sendAlert", "Permit"));
+
+			obligationExpressions4
+					.appendChild(getObligationExpressionForRevokeSendEmail(
+							doc,
+							"sendEmail",
+							"Permit",
+							"Hello User,&lt;br/&gt;&lt;br/&gt;You have been revoked from your delegation. &lt;br/&gt;&lt;br/&gt;Thank you, &lt;br/&gt; GPMS Team"));
 
 			// END Rule Revocation HERE
 
@@ -621,6 +622,50 @@ public class WriteXMLUtil {
 			tfe.printStackTrace();
 		}
 
+		return delegationFileName;
+
+	}
+
+	// For Delegation Obligation
+	private static Node getObligationExpressionForRevokeSendEmail(Document doc,
+			String obligationId, String fullFillOn, String emailBody) {
+		// ObligationExpression STARTS here
+		Element obligationExpression = doc
+				.createElement("ObligationExpression");
+
+		obligationExpression.setAttribute("ObligationId", obligationId);
+		obligationExpression.setAttribute("FulfillOn", fullFillOn);
+
+		obligationExpression.appendChild(getObligationAssignmentAttrValue(doc,
+				"obligationType", "postobligation"));
+
+		obligationExpression.appendChild(getObligationAssignmentAttrValue(doc,
+				"emailBody", emailBody));
+
+		obligationExpression.appendChild(getObligationAssignmentAttrValue(doc,
+				"emailSubject", "Your delegation is revoked by: "));
+
+		obligationExpression.appendChild(getObligationAssignmentAttrSelector(
+				doc, "delegatorName",
+				"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
+				"//ak:delegator/ak:fullname/text()"));
+
+		obligationExpression.appendChild(getObligationAssignmentAttrSelector(
+				doc, "delegatorEmail",
+				"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
+				"//ak:delegator/ak:email/text()"));
+
+		obligationExpression.appendChild(getObligationAssignmentAttrSelector(
+				doc, "delegateeName",
+				"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
+				"//ak:delegatee/ak:fullname/text()"));
+
+		obligationExpression.appendChild(getObligationAssignmentAttrSelector(
+				doc, "delegateeEmail",
+				"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
+				"//ak:delegatee/ak:email/text()"));
+
+		return obligationExpression;
 	}
 
 	private static Node getConditionApplyDateTime(Document doc,

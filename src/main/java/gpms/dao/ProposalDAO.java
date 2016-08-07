@@ -2001,7 +2001,7 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 						}
 
 						if (!departmentChairAlreadySigned) {
-							if (!user.isDelegater()
+							if (!user.isDelegator()
 									&& proposal.getChairApproval() == ApprovalType.READYFORAPPROVAL) {
 								signDeptChair.setUserProfileId(user.getId()
 										.toString());
@@ -2014,7 +2014,7 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 								if (!signatures.contains(signDeptChair)) {
 									signatures.add(signDeptChair);
 								}
-							} else if (user.isDelegater()) {
+							} else if (user.isDelegator()) {
 								// TODO :: here I used Transfer mode of
 								// Delegation to unable the User
 								// with is delegator = true to sign the proposal
@@ -2122,7 +2122,7 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 						}
 
 						if (!businessManagerAlreadySigned) {
-							if (!user.isDelegater()
+							if (!user.isDelegator()
 									&& proposal.getBusinessManagerApproval() == ApprovalType.READYFORAPPROVAL) {
 								signBusinessMgr.setUserProfileId(user.getId()
 										.toString());
@@ -2135,7 +2135,7 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 								if (!signatures.contains(signBusinessMgr)) {
 									signatures.add(signBusinessMgr);
 								}
-							} else if (user.isDelegater()) {
+							} else if (user.isDelegator()) {
 								List<SignatureInfo> delegatedBusinessManager = findDelegatedUsersForAUser(
 										user.getId(), id.toString(),
 										posDetails.getCollege(),
@@ -2232,7 +2232,7 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 						}
 
 						if (!deanAlreadySigned) {
-							if (!user.isDelegater()
+							if (!user.isDelegator()
 									&& proposal.getDeanApproval() == ApprovalType.READYFORAPPROVAL) {
 								signDean.setUserProfileId(user.getId()
 										.toString());
@@ -2244,7 +2244,7 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 								if (!signatures.contains(signDean)) {
 									signatures.add(signDean);
 								}
-							} else if (user.isDelegater()) {
+							} else if (user.isDelegator()) {
 								List<SignatureInfo> delegatedDean = findDelegatedUsersForAUser(
 										user.getId(), id.toString(),
 										posDetails.getCollege(),
@@ -2683,7 +2683,7 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 									"Department Chair")) {
 						SignatureUserInfo signDeptChair = new SignatureUserInfo();
 
-						if (!user.isDelegater()) {
+						if (!user.isDelegator()) {
 
 							signDeptChair.setUserProfileId(user.getId()
 									.toString());
@@ -2726,7 +2726,7 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 							&& posDetails.getPositionTitle().equalsIgnoreCase(
 									"Business Manager")) {
 						SignatureUserInfo signBusinessMgr = new SignatureUserInfo();
-						if (!user.isDelegater()) {
+						if (!user.isDelegator()) {
 							signBusinessMgr.setUserProfileId(user.getId()
 									.toString());
 							signBusinessMgr.setFullName(user.getFullName());
@@ -2770,7 +2770,7 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 							&& posDetails.getPositionTitle().equalsIgnoreCase(
 									"Dean")) {
 						SignatureUserInfo signDean = new SignatureUserInfo();
-						if (!user.isDelegater()) {
+						if (!user.isDelegator()) {
 							signDean.setUserProfileId(user.getId().toString());
 							signDean.setFullName(user.getFullName());
 							signDean.setUserName(user.getUserAccount()

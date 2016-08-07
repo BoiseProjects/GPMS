@@ -4,6 +4,9 @@
         <Attribute AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title" IncludeInResult="false">
             <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Department Chair</AttributeValue>
         </Attribute>
+        <Attribute AttributeId="urn:oasis:names:tc:xacml:1.0:subject:department" IncludeInResult="false">
+			<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Computer Science</AttributeValue>
+		</Attribute>
     </Attributes>
     <Attributes Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource">
         <Content>
@@ -12,35 +15,35 @@
                 <ak:user>
                     <ak:userid>578918b9bcbb29090c4278e7</ak:userid>
                     <ak:fullname>Computer Science Associate Chair</ak:fullname>
-                    <ak:workemail>csassociatechair@gmail.com</ak:workemail>
+                    <ak:email>csassociatechair@gmail.com</ak:email>
                     <ak:department>Computer Science</ak:department>
                     <ak:positiontitle>Associate Chair</ak:positiontitle>
                 </ak:user>
                 <ak:user>
                     <ak:userid>578918b9bcbb29090c4278e1</ak:userid>
                     <ak:fullname>Computer Engineering Associate Chair</ak:fullname>
-                    <ak:workemail>ceassociatechair@gmail.com</ak:workemail>
+                    <ak:email>ceassociatechair@gmail.com</ak:email>
                     <ak:department>Computer Engineering</ak:department>
                     <ak:positiontitle>Associate Chair</ak:positiontitle>
                 </ak:user>
                 <ak:user>
                     <ak:userid>578918b9bcbb29090c4278e2</ak:userid>
                     <ak:fullname>Computer Science Department Administrative Assistant</ak:fullname>
-                    <ak:workemail>csdeptadminasst@gmail.com</ak:workemail>
+                    <ak:email>csdeptadminasst@gmail.com</ak:email>
                     <ak:department>Computer Science</ak:department>
                     <ak:positiontitle>Department Administrative Assistant</ak:positiontitle>
                 </ak:user>
                 <ak:user>
                     <ak:userid>578918b9bcbb29090c4278e3</ak:userid>
                     <ak:fullname>Computer Science Dean</ak:fullname>
-                    <ak:workemail>cedean@gmail.com</ak:workemail>
+                    <ak:email>cedean@gmail.com</ak:email>
                     <ak:department>Computer Engineering</ak:department>
                     <ak:positiontitle>Dean</ak:positiontitle>
                 </ak:user>
                 <ak:user>
                     <ak:userid>578918b9bcbb29090c4278e4</ak:userid>
                     <ak:fullname>Computer Science Associate Dean</ak:fullname>
-                    <ak:workemail>csassociatedean@gmail.com</ak:workemail>
+                    <ak:email>csassociatedean@gmail.com</ak:email>
                     <ak:department>Computer Science</ak:department>
                     <ak:positiontitle>Associate Dean</ak:positiontitle>
                 </ak:user>
@@ -48,9 +51,6 @@
         </Content>
         <Attribute IncludeInResult="false" AttributeId="urn:oasis:names:tc:xacml:3.0:profile:multiple:content-selector">
             <AttributeValue XPathCategory="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression">//ak:record//ak:user</AttributeValue>
-        </Attribute>
-        <Attribute AttributeId="urn:oasis:names:tc:xacml:1.0:resource:deparment" IncludeInResult="false">
-            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Computer Engineering</AttributeValue>
         </Attribute>
     </Attributes>
     <Attributes Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action">

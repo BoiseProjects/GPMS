@@ -49,6 +49,9 @@ public class Delegation extends BaseEntity implements Serializable {
 	@Property("action")
 	private String action = new String();
 
+	@Property("delegation reason")
+	private String reason = new String();
+
 	@Property("delegation file name")
 	private String delegationFileName = new String();
 
@@ -150,6 +153,14 @@ public class Delegation extends BaseEntity implements Serializable {
 		this.action = action;
 	}
 
+	public String getReason() {
+		return reason;
+	}
+
+	public void setReason(String reason) {
+		this.reason = reason;
+	}
+
 	public String getDelegationFileName() {
 		return delegationFileName;
 	}
@@ -181,9 +192,9 @@ public class Delegation extends BaseEntity implements Serializable {
 				+ ", college=" + college + ", department=" + department
 				+ ", positionType=" + positionType + ", positionTitle="
 				+ positionTitle + ", proposalId=" + proposalId + ", from="
-				+ from + ", to=" + to + ", action=" + action
-				+ ", delegationFileName=" + delegationFileName + ", createdOn="
-				+ createdOn + ", revoked=" + revoked + "]";
+				+ from + ", to=" + to + ", action=" + action + ", reason="
+				+ reason + ", delegationFileName=" + delegationFileName
+				+ ", createdOn=" + createdOn + ", revoked=" + revoked + "]";
 	}
 
 	@Override
@@ -213,6 +224,7 @@ public class Delegation extends BaseEntity implements Serializable {
 				+ ((positionType == null) ? 0 : positionType.hashCode());
 		result = prime * result
 				+ ((proposalId == null) ? 0 : proposalId.hashCode());
+		result = prime * result + ((reason == null) ? 0 : reason.hashCode());
 		result = prime * result + (revoked ? 1231 : 1237);
 		result = prime * result + ((to == null) ? 0 : to.hashCode());
 		result = prime * result
@@ -283,6 +295,11 @@ public class Delegation extends BaseEntity implements Serializable {
 			if (other.proposalId != null)
 				return false;
 		} else if (!proposalId.equals(other.proposalId))
+			return false;
+		if (reason == null) {
+			if (other.reason != null)
+				return false;
+		} else if (!reason.equals(other.reason))
 			return false;
 		if (revoked != other.revoked)
 			return false;

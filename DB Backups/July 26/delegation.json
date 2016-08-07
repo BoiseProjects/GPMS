@@ -11,7 +11,16 @@
     "from" : ISODate("2016-06-02T19:37:36.859+0000"), 
     "to" : ISODate("2017-07-02T19:37:36.859+0000"), 
     "action" : "Approve", 
+    "delegation reason" : "sick leave", 
     "delegation file name" : "chairdelegation.xml", 
     "created on" : ISODate("2016-07-26T19:37:36.859+0000"), 
-    "revoked" : false
+    "revoked" : false, 
+    "version" : NumberLong(1), 
+    "audit log" : [
+        {
+            "author info" : DBRef("userprofile", ObjectId("5745f29ebcbb29192ce0d42f")), 
+            "action" : "Created delegation by milson", 
+            "activity on" : ISODate("2016-07-25T20:38:28.023+0000")
+        }
+    ]
 }

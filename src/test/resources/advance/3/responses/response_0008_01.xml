@@ -5,5 +5,15 @@
 		<Status>
 			<StatusCode Value="urn:oasis:names:tc:xacml:1.0:status:ok"/>
 		</Status>
+		<Obligations>
+			<Obligation ObligationId="sendEmail" ObligationType="">
+				<AttributeAssignment AttributeId="emailBody" DataType="http://www.w3.org/2001/XMLSchema#string">Hello User,&lt;br/&gt;&lt;br/&gt;You have been revoked from your delegation. &lt;br/&gt;&lt;br/&gt;Thank you, &lt;br/&gt; GPMS Team</AttributeAssignment>
+				<AttributeAssignment AttributeId="emailSubject" DataType="http://www.w3.org/2001/XMLSchema#string">Your delegation is revoked by: </AttributeAssignment>
+				<AttributeAssignment AttributeId="delegatorName" DataType="http://www.w3.org/2001/XMLSchema#string">Department Chemistry Chair</AttributeAssignment>
+				<AttributeAssignment AttributeId="delegatorEmail" DataType="http://www.w3.org/2001/XMLSchema#string">5745f29ebcbb29192ce0d42f</AttributeAssignment>
+				<AttributeAssignment AttributeId="delegateeName" DataType="http://www.w3.org/2001/XMLSchema#string">Associate Chemistry Chair</AttributeAssignment>
+				<AttributeAssignment AttributeId="delegateeEmail" DataType="http://www.w3.org/2001/XMLSchema#string">5745f29ebcbb29192ce0d42f</AttributeAssignment>
+			</Obligation>
+		</Obligations>
 	</Result>
 </Response>

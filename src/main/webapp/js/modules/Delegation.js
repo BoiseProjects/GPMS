@@ -18,8 +18,9 @@ $(function() {
 		return this.length > 0;
 	}
 
+	// $.validator.unobtrusive.parse(#form1);
 	$.validator.setDefaults({
-		ignore : ".ignore"
+		ignore : []
 	});
 
 	var gpmsCommonObj = function() {
@@ -35,403 +36,45 @@ $(function() {
 		return gpmsCommonInfo;
 	};
 
-	$.validator
-			.addMethod(
-					'greaterthan',
-					function(value, element, params) {
-						if ($(params).autoNumeric('get') != ''
-								&& $(element).autoNumeric('get') != '') {
-							return isNaN($(element).autoNumeric('get'))
-									&& isNaN($(params).autoNumeric('get'))
-									|| parseFloat($(element).autoNumeric('get')) > parseFloat($(
-											params).autoNumeric('get'));
-						}
-						return true;
-					}, 'Must be greater than Total Costs From');
-
-	$("#txtSearchTotalCostsFrom").keyup(function() {
-		$("#txtSearchTotalCostsTo").val('');
-		$("#txtSearchTotalCostsTo").removeClass('error');
-		$("#txtSearchTotalCostsTo-error").remove();
-	});
-
-	/** * Expand all ** */
-	$(".expandAll").click(
-			function(event) {
-				$('#accordion .ui-accordion-header:not(.ui-state-active)')
-						.next().slideDown();
-
-				return false;
-			});
-
-	/** * Collapse all ** */
-	$(".collapseAll").click(function(event) {
-		$('#accordion').accordion({
-			collapsible : true,
-			active : false
-		});
-
-		$('#accordion .ui-accordion-header').next().slideUp();
-
-		return false;
-	});
-
 	var validator = $("#form1")
 			.validate(
 					{
 						rules : {
-							searchTotalCostsTo : {
-								greaterthan : "#txtSearchTotalCostsFrom"
-							},
-							projectTitle : {
+							delegationFrom : {
 								required : true,
-								minlength : 5
+								dpDate : true,
+								maxlength : 10
 							},
-							projectType : {
-								required : true
-							},
-							typeOfRequest : {
-								required : true
-							},
-							dueDate : {
+							delegationTo : {
 								required : true,
-								dpDate : true
+								dpDate : true,
+								maxlength : 10
 							},
-							locationOfProject : {
-								required : true
-							},
-							projectPeriodFrom : {
+							delegationReason : {
 								required : true,
-								dpDate : true
-							},
-							projectPeriodTo : {
-								required : true,
-								dpDate : true
-							},
-							proposalStatus : {
-								required : true
-							},
-							nameOfGrantingAgency : {
-								required : true
-							},
-							directCosts : {
-								required : true
-							},
-							FACosts : {
-								required : true
-							},
-							totalCosts : {
-								required : true
-							},
-							FARate : {
-								required : true
-							},
-							institutionalCommitmentCost : {
-								required : true
-							},
-							thirdPartyCommitmentCost : {
-								required : true
-							},
-							newSpaceRequired : {
-								required : true
-							},
-							rentalSpaceRequired : {
-								required : true
-							},
-							institutionalCommitmentsRequired : {
-								required : true
-							},
-							financialCOI : {
-								required : true
-							},
-							disclosedFinancialCOI : {
-								required : true
-							},
-							materialChanged : {
-								required : true
-							},
-							useHumanSubjects : {
-								required : true
-							},
-							IRBOptions : {
-								required : true
-							},
-							IRB : {
-								required : true
-							},
-							useVertebrateAnimals : {
-								required : true
-							},
-							IACUCOptions : {
-								required : true
-							},
-							IACUC : {
-								required : true
-							},
-							invovleBioSafety : {
-								required : true
-							},
-							IBCOptions : {
-								required : true
-							},
-							IBC : {
-								required : true
-							},
-							environmentalConcerns : {
-								required : true
-							},
-							anticipateForeignNationals : {
-								required : true
-							},
-							anticipateReleaseTime : {
-								required : true
-							},
-							relatedToEnergyStudies : {
-								required : true
-							},
-							involveNonFundedCollabs : {
-								required : true
-							},
-							collaborators : {
-								required : true
-							},
-							proprietaryInformation : {
-								required : true
-							},
-							pagesWithProprietaryInfo : {
-								required : true
-							},
-							ownIntellectualProperty : {
-								required : true
-							},
-							agencyList : {
-								required : true
-							},
-							CFDANo : {
-								required : true,
-								number : true
-							},
-							programNo : {
-								required : true,
-								number : true
-							},
-							programTitle : {
-								required : true
-							},
-							PISalaryIncluded : {
-								required : true
-							},
-							PISalary : {
-								required : true
-							},
-							PIFringe : {
-								required : true
-							},
-							departmentID : {
-								required : true,
-								number : true
-							},
-							institutionalCostDocumented : {
-								required : true
-							},
-							thirdPartyCostDocumented : {
-								required : true
-							},
-							subrecipients : {
-								required : true
-							},
-							namesSubrecipients : {
-								required : true
-							},
-							PIEligibilityWaiver : {
-								required : true
-							},
-							COIForms : {
-								required : true
-							},
-							checkedExcludedPartyList : {
-								required : true
+								minlength : 5,
+								maxlength : 250
 							}
 						},
 						errorElement : "span",
 						messages : {
-							searchTotalCostsTo : {
-								greaterthan : "Must be greater than From"
+							delegationFrom : {
+								required : "Please enter delegation period from date",
+								dpDate : "Please enter valid date",
+								maxlength : "This is not a valid Date"
 							},
-							projectTitle : {
-								required : "Please enter project title.",
-								minlength : "Your project title must be at least 5 characters long"
+							delegationTo : {
+								required : "Please enter delegation period to date",
+								dpDate : "Please enter valid date",
+								maxlength : "This is not a valid Date"
 							},
-							projectType : {
-								required : "Please select your project type"
-							},
-							typeOfRequest : {
-								required : "Please select project type of request"
-							},
-							dueDate : {
-								required : "Please enter due date",
-								dpDate : "Please enter valid date"
-							},
-							locationOfProject : {
-								required : "Please enter location of project"
-							},
-							projectPeriodFrom : {
-								required : "Please enter project period from date",
-								dpDate : "Please enter valid date"
-							},
-							projectPeriodTo : {
-								required : "Please enter project period to date",
-								dpDate : "Please enter valid date"
-							},
-							proposalStatus : {
-								required : "Please select project status"
-							},
-							nameOfGrantingAgency : {
-								required : "Please enter names of granting agencies"
-							},
-							directCosts : {
-								required : "Please enter direct costs for your project"
-							},
-							FACosts : {
-								required : "Please enter F&A costs for your project"
-							},
-							totalCosts : {
-								required : "Please enter total costs for your project"
-							},
-							FARate : {
-								required : "Please enter F&A rate for your project"
-							},
-							institutionalCommitmentCost : {
-								required : "Please select institutional committed cost share included in the proposal"
-							},
-							thirdPartyCommitmentCost : {
-								required : "Please select third party committed committed cost share included in the proposal"
-							},
-							newSpaceRequired : {
-								required : "Please select new or renovated space/facilities required"
-							},
-							rentalSpaceRequired : {
-								required : "Please select rental space be required"
-							},
-							institutionalCommitmentsRequired : {
-								required : "Please select this project require institutional commitments beyond the end date"
-							},
-							financialCOI : {
-								required : "Please select this project has financial conflict of interest"
-							},
-							disclosedFinancialCOI : {
-								required : "Please select this project has disclosed financial conflict of interest"
-							},
-							materialChanged : {
-								required : "Please select this project has a material change to your annual disclosure form"
-							},
-							useHumanSubjects : {
-								required : "Please select this project involves the use of Human Subjects"
-							},
-							IRBOptions : {
-								required : "Please select IRB # or indicate pending"
-							},
-							IRB : {
-								required : "Please enter IRB #"
-							},
-							useVertebrateAnimals : {
-								required : "Please select this project involves the use of Vertebrate Animals"
-							},
-							IACUCOptions : {
-								required : "Please select IACUC # or indicate pending"
-							},
-							IACUC : {
-								required : "Please enter IACUC #"
-							},
-							invovleBioSafety : {
-								required : "Please select this project involves Biosafety concerns"
-							},
-							IBCOptions : {
-								required : "Please select IBC # or indicate pending"
-							},
-							IBC : {
-								required : "Please enter IBC #"
-							},
-							environmentalConcerns : {
-								required : "Please select this project involves Environmental Health & Safety concerns"
-							},
-							anticipateForeignNationals : {
-								required : "Please select if you anticipate payment(s) to foreign nationals or on behalf of foreign nationals"
-							},
-							anticipateReleaseTime : {
-								required : "Please select if you anticipate course release time"
-							},
-							relatedToEnergyStudies : {
-								required : "Please select your proposed activities are related to Center for Advanced Energy Studies"
-							},
-							involveNonFundedCollabs : {
-								required : "Please select this project involves non-funded collaborations"
-							},
-							collaborators : {
-								required : "Please enter list collaborating institutions/organizations"
-							},
-							proprietaryInformation : {
-								required : "Please select this proposal contains any confidential information which is Proprietary that should not be publicly released"
-							},
-							pagesWithProprietaryInfo : {
-								required : "Please enter pages numbers where Proprietary/Confidential Information are"
-							},
-							ownIntellectualProperty : {
-								required : "Please select this project involves intellectual property in which the University may own or have an interest"
-							},
-							agencyList : {
-								required : "Please enter Flow-Through, List Agency"
-							},
-							CFDANo : {
-								required : "Please enter CFDA No."
-							},
-							programNo : {
-								required : "Please enter Program No."
-							},
-							programTitle : {
-								required : "Please enter Program/Solicitation title"
-							},
-							PISalaryIncluded : {
-								required : "Please select this proposal includes PI salary"
-							},
-							PISalary : {
-								required : "Please enter PI salary"
-							},
-							PIFringe : {
-								required : "Please enter PI Fringe"
-							},
-							departmentID : {
-								required : "Please enter Department ID"
-							},
-							institutionalCostDocumented : {
-								required : "Please select if Institutional Cost Share documented"
-							},
-							thirdPartyCostDocumented : {
-								required : "Please select if Third Party Cost Share documented"
-							},
-							subrecipients : {
-								required : "Please select if subrecipients (subcontracts/subawards) anticipated"
-							},
-							namesSubrecipients : {
-								required : "Please enter names of subrecipients"
-							},
-							PIEligibilityWaiver : {
-								required : "Please select if PI Eligibility Waiver on file"
-							},
-							COIForms : {
-								required : "Please select if Conflict of Interest Forms on file"
-							},
-							checkedExcludedPartyList : {
-								required : "Please select if excluded party list has been checked"
+							delegationReason : {
+								required : "Please enter your delegation reason.",
+								minlength : "Your delegation reason must be at least 5 characters long",
+								maxlength : "Your delegation reason must be at most 250 characters long"
 							}
 						}
 					});
-
-	var rowIndex = 0;
-	var projectTitleIsUnique = false;
-	var signatureInfo = '';
-
-	var positionsDetails = [];
 
 	delegation = {
 		config : {
@@ -443,32 +86,11 @@ $(function() {
 			data : '{}',
 			dataType : 'json',
 			rootURL : GPMS.utils.GetGPMSServicePath(),
-			baseURL : GPMS.utils.GetGPMSServicePath() + "proposals/",
+			baseURL : GPMS.utils.GetGPMSServicePath() + "delegations/",
 			method : "",
 			url : "",
 			ajaxCallMode : 0,
-			proposalId : "0",
-			proposalRoles : "",
-			proposalStatus : "",
-			submittedByPI : "",
-			readyForSubmitionByPI : "",
-			deletedByPI : "",
-			chairApproval : "",
-			businessManagerApproval : "",
-			irbapproval : "",
-			deanApproval : "",
-			researchAdministratorApproval : "",
-			researchAdministratorWithdraw : "",
-			researchDirectorApproval : "",
-			researchDirectorDeletion : "",
-			researchAdministratorSubmission : "",
-			researchDirectorArchived : "",
-			buttonType : "",
-			arguments : [],
-			events : "",
-			content : "",
-			uploadObj : "",
-			investigatorButton : ""
+			delegationId : "0"
 		},
 
 		ajaxCall : function(config) {
@@ -496,46 +118,40 @@ $(function() {
 		},
 
 		SearchDelegations : function() {
-			var projectTitle = $.trim($("#txtSearchProjectTitle").val());
-			var usernameBy = $.trim($("#txtSearchUserName").val());
-			var submittedOnFrom = $.trim($("#txtSearchSubmittedOnFrom").val());
-			var submittedOnTo = $.trim($("#txtSearchSubmittedOnTo").val());
-			var totalCostsFrom = $.trim($("#txtSearchTotalCostsFrom")
-					.autoNumeric('get'));
-			var totalCostsTo = $.trim($("#txtSearchTotalCostsTo").autoNumeric(
-					'get'));
+			var delegatee = $.trim($("#txtSearchDelegatee").val());
+			var delegatedFrom = $.trim($("#txtSearchDelegatedFrom").val());
+			var delegatedTo = $.trim($("#txtSearchDelegatedTo").val());
 
-			var proposalStatus = $.trim($('#ddlSearchDelegationStatus').val()) == "" ? null
-					: $.trim($('#ddlSearchDelegationStatus').val()) == "0" ? null
-							: $.trim($('#ddlSearchDelegationStatus').val());
+			var delegatedAction = $.trim($('#ddlSearchDelegatedAction').val()) == "" ? null
+					: $.trim($('#ddlSearchDelegatedAction').val()) == "0" ? null
+							: $.trim($('#ddlSearchDelegatedAction').val());
 
-			if (projectTitle.length < 1) {
-				projectTitle = null;
+			var isRevoked = $.trim($('#ddlSearchIsRevoked').val()) == "" ? null
+					: $.trim($('#ddlSearchIsRevoked').val()) == "0" ? null : $
+							.trim($('#ddlSearchIsRevoked').val());
+
+			if (delegatee.length < 1) {
+				delegatee = null;
 			}
-			if (usernameBy.length < 1) {
-				usernameBy = null;
+			if (delegatedFrom.length < 1) {
+				delegatedFrom = null;
 			}
-			if (totalCostsFrom.length < 1) {
-				totalCostsFrom = null;
+			if (delegatedTo.length < 1) {
+				delegatedTo = null;
 			}
-			if (totalCostsTo.length < 1) {
-				totalCostsTo = null;
+			if (delegatedAction.length < 1) {
+				delegatedAction = null;
 			}
-			if (submittedOnFrom.length < 1) {
-				submittedOnFrom = null;
-			}
-			if (submittedOnTo.length < 1) {
-				submittedOnTo = null;
+			if (isRevoked.length < 1) {
+				isRevoked = null;
 			}
 
-			delegation.BindDelegationGrid(projectTitle, usernameBy,
-					submittedOnFrom, submittedOnTo, totalCostsFrom,
-					totalCostsTo, proposalStatus);
+			delegation.BindDelegationGrid(delegatee, delegatedFrom,
+					delegatedTo, delegatedAction, isRevoked);
 		},
 
-		BindDelegationGrid : function(projectTitle, usernameBy,
-				submittedOnFrom, submittedOnTo, totalCostsFrom, totalCostsTo,
-				proposalStatus) {
+		BindDelegationGrid : function(delegatee, delegatedFrom, delegatedTo,
+				delegatedAction, isRevoked) {
 			this.config.url = this.config.baseURL;
 			this.config.method = "GetDelegationsList";
 			var offset_ = 1;
@@ -543,449 +159,172 @@ $(function() {
 			var perpage = ($("#gdvDelegations_pagesize").length > 0) ? $(
 					"#gdvDelegations_pagesize :selected").text() : 10;
 
-			var proposalBindObj = {
-				ProjectTitle : projectTitle,
-				UsernameBy : usernameBy,
-				SubmittedOnFrom : submittedOnFrom,
-				SubmittedOnTo : submittedOnTo,
-				TotalCostsFrom : totalCostsFrom,
-				TotalCostsTo : totalCostsTo,
-				DelegationStatus : proposalStatus
+			var delegationBindObj = {
+				delegatee : delegatee,
+				delegatedFrom : delegatedFrom,
+				delegatedTo : delegatedTo,
+				delegatedAction : delegatedAction,
+				isRevoked : isRevoked
 			};
 
 			this.config.data = {
-				proposalBindObj : proposalBindObj
+				delegationBindObj : delegationBindObj
 			};
 			var data = this.config.data;
 
-			$("#gdvDelegations")
-					.sagegrid(
-							{
-								url : this.config.url,
-								functionMethod : this.config.method,
-								colModel : [
-										{
-											display : 'Delegation ID',
-											cssclass : 'cssClassHeadCheckBox',
-											coltype : 'checkbox',
-											align : 'center',
-											checkFor : '23',
-											elemClass : 'attrChkbox',
-											elemDefault : false,
-											controlclass : 'attribHeaderChkbox'
-										},
-										{
-											display : 'Project Title',
-											name : 'project_title',
-											cssclass : '',
-											controlclass : '',
-											coltype : 'label',
-											align : 'left'
-										},
-										{
-											display : 'Project Type',
-											name : 'project_type',
-											cssclass : '',
-											controlclass : '',
-											coltype : 'label',
-											align : 'left',
-											hide : true
-										},
-										{
-											display : 'Type of Request',
-											name : 'type_of_request',
-											cssclass : '',
-											controlclass : '',
-											coltype : 'label',
-											align : 'left',
-											type : 'array',
-											hide : true
-										},
-										{
-											display : 'Project Location',
-											name : 'project_location',
-											cssclass : '',
-											controlclass : '',
-											coltype : 'label',
-											align : 'left',
-											hide : true
-										},
-										{
-											display : 'Granting Agencies',
-											name : 'granting_agencies',
-											cssclass : '',
-											controlclass : '',
-											coltype : 'label',
-											align : 'left',
-											type : 'array'
-										},
-										{
-											display : 'Direct Costs',
-											name : 'directCosts',
-											cssclass : '',
-											controlclass : '',
-											coltype : 'label',
-											align : 'left',
-											type : 'currency',
-											hide : true
-										},
-										{
-											display : 'FA Costs',
-											name : 'FA_costs',
-											cssclass : '',
-											controlclass : '',
-											coltype : 'label',
-											align : 'left',
-											type : 'currency',
-											hide : true
-										},
-										{
-											display : 'Total Costs',
-											name : 'total_costs',
-											cssclass : '',
-											controlclass : '',
-											coltype : 'label',
-											align : 'left',
-											type : 'currency'
-										},
-										{
-											display : 'FA Rate',
-											name : 'FA_rate',
-											cssclass : '',
-											controlclass : '',
-											coltype : 'label',
-											align : 'left',
-											type : 'percent',
-											hide : true
-										},
-										{
-											display : 'Date Created',
-											name : 'date_created',
-											cssclass : '',
-											controlclass : '',
-											coltype : 'label',
-											align : 'left',
-											type : 'date',
-											format : 'yyyy/MM/dd hh:mm:ss a',
-											hide : true
-										},
-										{
-											display : 'Date Submitted',
-											name : 'date_submitted',
-											cssclass : '',
-											controlclass : '',
-											coltype : 'label',
-											align : 'left',
-											type : 'date',
-											format : 'yyyy/MM/dd hh:mm:ss a'
-										},
-										{
-											display : 'Due Date',
-											name : 'due_date',
-											cssclass : 'cssClassHeadDate',
-											controlclass : '',
-											coltype : 'label',
-											align : 'left',
-											type : 'date',
-											format : 'yyyy/MM/dd hh:mm:ss a'
-										},
-										{
-											display : 'Project Period From',
-											name : 'project_period_from',
-											cssclass : 'cssClassHeadDate',
-											controlclass : '',
-											coltype : 'label',
-											align : 'left',
-											type : 'date',
-											format : 'yyyy/MM/dd hh:mm:ss a',
-											hide : true
-										},
-										{
-											display : 'Project Period To',
-											name : 'project_period_to',
-											cssclass : 'cssClassHeadDate',
-											controlclass : '',
-											coltype : 'label',
-											align : 'left',
-											type : 'date',
-											format : 'yyyy/MM/dd hh:mm:ss a',
-											hide : true
-										},
-										{
-											display : 'Last Audited',
-											name : 'last_audited',
-											cssclass : 'cssClassHeadDate',
-											controlclass : '',
-											coltype : 'label',
-											align : 'left',
-											type : 'date',
-											format : 'yyyy/MM/dd hh:mm:ss a',
-											hide : true
-										},
-										{
-											display : 'Last Audited By',
-											name : 'last_audited_by',
-											cssclass : '',
-											controlclass : '',
-											coltype : 'label',
-											align : 'left',
-											hide : true
-										},
-										{
-											display : 'Last Audited Action',
-											name : 'last_audited_action',
-											cssclass : '',
-											controlclass : '',
-											coltype : 'label',
-											align : 'left',
-											hide : true
-										},
-										{
-											display : 'PI User',
-											name : 'pi_user',
-											cssclass : '',
-											controlclass : '',
-											coltype : 'label',
-											align : 'left',
-											hide : true
-										},
-										{
-											display : 'Co-PI Users',
-											name : 'co_pi_users',
-											cssclass : '',
-											controlclass : '',
-											coltype : 'label',
-											align : 'left',
-											type : 'array',
-											hide : true
-										},
-										{
-											display : 'Senior Personnel Users',
-											name : 'senior_personnel_users',
-											cssclass : '',
-											controlclass : '',
-											coltype : 'label',
-											align : 'left',
-											type : 'array',
-											hide : true
-										},
-										{
-											display : 'All Involved Users',
-											name : 'all_users',
-											cssclass : '',
-											controlclass : '',
-											coltype : 'label',
-											align : 'left',
-											type : 'array',
-											hide : true
-										},
-										{
-											display : 'Your Role',
-											name : 'proposal_roles',
-											cssclass : '',
-											controlclass : '',
-											coltype : 'label',
-											align : 'left',
-											type : 'array',
-											hide : true
-										},
-										{
-											display : 'Is Deleted?',
-											name : 'is_deleted',
-											cssclass : 'cssClassHeadBoolean',
-											controlclass : '',
-											coltype : 'label',
-											align : 'left',
-											type : 'boolean',
-											format : 'Yes/No'
-										},
-										{
-											display : 'Status',
-											name : 'proposal_status',
-											cssclass : '',
-											controlclass : '',
-											coltype : 'label',
-											align : 'left',
-											type : 'array'
-										},
-										{
-											display : 'Submitted by PI',
-											name : 'submitted_by_PI',
-											cssclass : '',
-											controlclass : '',
-											coltype : 'label',
-											align : 'left',
-											hide : true
-										},
-										{
-											display : 'Ready for Submission by PI',
-											name : 'ready_for_submission_by_PI',
-											cssclass : '',
-											controlclass : '',
-											coltype : 'label',
-											align : 'left',
-											type : 'boolean',
-											format : 'True/False',
-											hide : true
-										},
-										{
-											display : 'Deleted by PI',
-											name : 'deleted_by_PI',
-											cssclass : '',
-											controlclass : '',
-											coltype : 'label',
-											align : 'left',
-											hide : true
-										},
-										{
-											display : 'Chair Approval',
-											name : 'chair_approval',
-											cssclass : '',
-											controlclass : '',
-											coltype : 'label',
-											align : 'left',
-											hide : true
-										},
-										{
-											display : 'Business Manager Approval',
-											name : 'business_manager_approval',
-											cssclass : '',
-											controlclass : '',
-											coltype : 'label',
-											align : 'left',
-											hide : true
-										},
-										{
-											display : 'IRB Approval',
-											name : 'IRB_approval',
-											cssclass : '',
-											controlclass : '',
-											coltype : 'label',
-											align : 'left',
-											hide : true
-										},
-										{
-											display : 'Dean Approval',
-											name : 'dean_approval',
-											cssclass : '',
-											controlclass : '',
-											coltype : 'label',
-											align : 'left',
-											hide : true
-										},
-										{
-											display : 'Research Administrator Approval',
-											name : 'research_administrator_approval',
-											cssclass : '',
-											controlclass : '',
-											coltype : 'label',
-											align : 'left',
-											hide : true
-										},
-										{
-											display : 'Withdrawn by Research Administrator',
-											name : 'withdrawn_by_research_administrator',
-											cssclass : '',
-											controlclass : '',
-											coltype : 'label',
-											align : 'left',
-											hide : true
-										},
-										{
-											display : 'Research Director Approval',
-											name : 'research_director_approval',
-											cssclass : '',
-											controlclass : '',
-											coltype : 'label',
-											align : 'left',
-											hide : true
-										},
-										{
-											display : 'Deleted by Research Director',
-											name : 'deleted_by_research_director',
-											cssclass : '',
-											controlclass : '',
-											coltype : 'label',
-											align : 'left',
-											hide : true
-										},
-										{
-											display : 'Submitted by Research Administrator',
-											name : 'submitted_by_research_administrator',
-											cssclass : 'cssClassHeadBoolean',
-											controlclass : '',
-											coltype : 'label',
-											align : 'left',
-											hide : true
-										},
-										{
-											display : 'Archived by Research Director',
-											name : 'archived_by_research_director',
-											cssclass : '',
-											controlclass : '',
-											coltype : 'label',
-											align : 'left',
-											hide : true
-										}, {
-											display : 'IRB Approval Required?',
-											name : 'irb_approval_required',
-											cssclass : 'cssClassHeadBoolean',
-											controlclass : '',
-											coltype : 'label',
-											align : 'left',
-											type : 'boolean',
-											format : 'True/False',
-											hide : true
-										}, {
-											display : 'Actions',
-											name : 'action',
-											cssclass : 'cssClassAction',
-											coltype : 'label',
-											align : 'center'
-										} ],
+			$("#gdvDelegations").sagegrid({
+				url : this.config.url,
+				functionMethod : this.config.method,
+				colModel : [ {
+					display : 'Delegation ID',
+					cssclass : 'cssClassHeadCheckBox',
+					coltype : 'checkbox',
+					align : 'center',
+					checkFor : '12',
+					elemClass : 'attrChkbox',
+					elemDefault : false,
+					controlclass : 'attribHeaderChkbox'
+				}, {
+					display : 'Delegatee',
+					name : 'delegatee',
+					cssclass : '',
+					controlclass : '',
+					coltype : 'label',
+					align : 'left'
+				}, {
+					display : 'Delegatee Department',
+					name : 'delegatee_department',
+					cssclass : '',
+					controlclass : '',
+					coltype : 'label',
+					align : 'left'
+				}, {
+					display : 'Delegatee PositionType',
+					name : 'delegatee_position_type',
+					cssclass : '',
+					controlclass : '',
+					coltype : 'label',
+					align : 'left'
+				}, {
+					display : 'Delegated Action',
+					name : 'delegated_action',
+					cssclass : '',
+					controlclass : '',
+					coltype : 'label',
+					align : 'left'
+				}, {
+					display : 'Delegation Reason',
+					name : 'delegation_reason',
+					cssclass : '',
+					controlclass : '',
+					coltype : 'label',
+					align : 'left'
+				}, {
+					display : 'Date Created',
+					name : 'date_created',
+					cssclass : '',
+					controlclass : '',
+					coltype : 'label',
+					align : 'left',
+					type : 'date',
+					format : 'yyyy/MM/dd hh:mm:ss a'
+				}, {
+					display : 'Delegated From',
+					name : 'delegated_from',
+					cssclass : '',
+					controlclass : '',
+					coltype : 'label',
+					align : 'left',
+					type : 'date',
+					format : 'yyyy/MM/dd hh:mm:ss a'
+				}, {
+					display : 'Delegated To',
+					name : 'delegated_to',
+					cssclass : '',
+					controlclass : '',
+					coltype : 'label',
+					align : 'left',
+					type : 'date',
+					format : 'yyyy/MM/dd hh:mm:ss a'
+				}, {
+					display : 'Last Audited',
+					name : 'last_audited',
+					cssclass : 'cssClassHeadDate',
+					controlclass : '',
+					coltype : 'label',
+					align : 'left',
+					type : 'date',
+					format : 'yyyy/MM/dd hh:mm:ss a'
+				}, {
+					display : 'Last Audited By',
+					name : 'last_audited_by',
+					cssclass : '',
+					controlclass : '',
+					coltype : 'label',
+					align : 'left'
+				}, {
+					display : 'Last Audited Action',
+					name : 'last_audited_action',
+					cssclass : '',
+					controlclass : '',
+					coltype : 'label',
+					align : 'left'
+				}, {
+					display : 'Is Revoked?',
+					name : 'is_revoked',
+					cssclass : 'cssClassHeadBoolean',
+					controlclass : '',
+					coltype : 'label',
+					align : 'left',
+					type : 'boolean',
+					format : 'Yes/No'
+				}, {
+					display : 'Actions',
+					name : 'action',
+					cssclass : 'cssClassAction',
+					coltype : 'label',
+					align : 'center'
+				} ],
 
-								buttons : [
-										{
-											display : 'Edit',
-											name : 'edit',
-											enable : true,
-											_event : 'click',
-											trigger : '1',
-											callMethod : 'delegation.EditDelegation',
-											arguments : '1, 5, 10, 21, 22, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38'
-										},
-										{
-											display : 'Delete',
-											name : 'delete',
-											enable : true,
-											_event : 'click',
-											trigger : '2',
-											callMethod : 'delegation.DeleteDelegation',
-											arguments : '22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37'
-										},
-										{
-											display : 'View Change Logs',
-											name : 'changelog',
-											enable : true,
-											_event : 'click',
-											trigger : '3',
-											callMethod : 'delegation.ViewChangeLogs',
-											arguments : '1, 15, 16, 17, 22'
-										} ],
-								rp : perpage,
-								nomsg : 'No Records Found!',
-								param : data,
-								current : current_,
-								pnew : offset_,
-								sortcol : {
-									0 : {
-										sorter : false
-									},
-									39 : {
-										sorter : false
-									}
-								}
-							});
+				buttons : [ {
+					display : 'Edit',
+					name : 'edit',
+					enable : true,
+					_event : 'click',
+					trigger : '1',
+					callMethod : 'delegation.EditDelegation',
+					arguments : '1'
+				}, {
+					display : 'Revoke',
+					name : 'revoke',
+					enable : true,
+					_event : 'click',
+					trigger : '2',
+					callMethod : 'delegation.RevokeDelegation',
+					arguments : '1'
+				}, {
+					display : 'View Change Logs',
+					name : 'changelog',
+					enable : true,
+					_event : 'click',
+					trigger : '3',
+					callMethod : 'delegation.ViewChangeLogs',
+					arguments : '1'
+				} ],
+				rp : perpage,
+				nomsg : 'No Records Found!',
+				param : data,
+				current : current_,
+				pnew : offset_,
+				sortcol : {
+					0 : {
+						sorter : false
+					},
+					13 : {
+						sorter : false
+					}
+				}
+			});
 		},
 
 		EditDelegation : function(tblID, argus) {
@@ -1002,7 +341,7 @@ $(function() {
 				delegation.ClearForm();
 
 				delegation.config.proposalRoles = $.trim(argus[5]);
-				delegation.config.proposalId = argus[0];
+				delegation.config.delegationId = argus[0];
 
 				delegation.config.submittedByPI = argus[7];
 				delegation.config.readyForSubmitionByPI = argus[8];
@@ -1079,78 +418,6 @@ $(function() {
 			}
 		},
 
-		InitializeUploader : function(appendices) {
-			// Uploader for Appendix
-			var globalSettings = {
-				url : GPMS.utils.GetGPMSServicePath() + "files/multiupload",
-				multiple : true,
-				dragDrop : true,
-				fileName : "myfile",
-				allowDuplicates : false,
-				duplicateStrict : true,
-				nestedForms : false,
-				fileCounterStyle : ") ",
-				// autoSubmit : true,
-				// sequential : true,
-				// sequentialCount : 1,
-				// autoSubmit : false,
-				// formData : {
-				// "name" : "Milson",
-				// "age" : 29
-				// },uploadObj
-				// acceptFiles : "image/*",
-				maxFileCount : 5,
-				// maxFileSize : 5*100 * 1024, //5MB
-				returnType : "json",
-				showDelete : true,
-				confirmDelete : true,
-				statusBarWidth : 600,
-				dragdropWidth : 600,
-				uploadQueueOrder : 'top',
-				deleteCallback : function(data, pd) {
-					pd.statusbar.hide(); // You choice.
-				}
-			}
-
-			var settings = {
-				showDownload : true,
-				// deleteCallback : function(data, pd) {
-				// $.post(GPMS.utils.GetGPMSServicePath() + "files/delete", {
-				// op : "delete",
-				// name : data
-				// }, function(resp, textStatus, jqXHR) {
-				// // Show Message
-				// alert("File Deleted");
-				// });
-				// pd.statusbar.hide(); // You choice.
-				// },
-				downloadCallback : function(filename, pd) {
-					// location.href =
-					// GPMS.utils.GetGPMSServicePath()
-					// + "download.php?fileName="
-					// + filename;
-					window.location.href = GPMS.utils.GetGPMSServicePath()
-							+ 'files/download?fileName=' + filename;
-				}
-			}
-
-			delegation.config.uploadObj = $("#fileuploader").uploadFile(
-					globalSettings);
-
-			if (appendices != "") {
-				delegation.config.uploadObj.update(settings);
-
-				$.each(appendices, function(index, value) {
-					delegation.config.uploadObj.createProgress(value.filename,
-							value.filepath, value.filesize, value.title);
-				});
-
-				delegation.config.uploadObj.update({
-					showDownload : false
-				});
-			}
-		},
-
 		BindUserPositionDetailsForADelegation : function(users) {
 			if (users != null) {
 				this.config.url = this.config.rootURL + "users/"
@@ -1176,743 +443,7 @@ $(function() {
 		},
 
 		FillForm : function(response) {
-			// Investigator Information
-			delegation.BindInvestigatorInfo(response.investigatorInfo);
 
-			// Project Extra Information
-			$("#lblHiddenDateReceived").text(response.dateReceived);
-
-			// Project Information
-			$("#txtProjectTitle").val(response.projectInfo.projectTitle);
-
-			if (response.projectInfo.projectType.researchBasic) {
-				$("#ddlProjectType").val(1);
-			} else if (response.projectInfo.projectType.researchApplied) {
-				$("#ddlProjectType").val(2);
-			} else if (response.projectInfo.projectType.researchDevelopment) {
-				$("#ddlProjectType").val(3);
-			} else if (response.projectInfo.projectType.instruction) {
-				$("#ddlProjectType").val(4);
-			} else if (response.projectInfo.projectType.otherSponsoredActivity) {
-				$("#ddlProjectType").val(5);
-			} else {
-				$("#ddlProjectType").prop("selectedIndex", 0);
-			}
-
-			if (response.projectInfo.typeOfRequest.preDelegation) {
-				$("#ddlTypeOfRequest").val(1);
-			} else if (response.projectInfo.typeOfRequest.newDelegation) {
-				$("#ddlTypeOfRequest").val(2);
-			} else if (response.projectInfo.typeOfRequest.continuation) {
-				$("#ddlTypeOfRequest").val(3);
-			} else if (response.projectInfo.typeOfRequest.supplement) {
-				$("#ddlTypeOfRequest").val(4);
-			} else {
-				$("#ddlTypeOfRequest").prop("selectedIndex", 0);
-			}
-
-			$("#txtDueDate").val(response.projectInfo.dueDate);
-
-			if (response.projectInfo.projectLocation.offCampus) {
-				$("#ddlLocationOfProject").val(1);
-			} else if (response.projectInfo.projectLocation.onCampus) {
-				$("#ddlLocationOfProject").val(2);
-			} else {
-				$("#ddlLocationOfProject").prop("selectedIndex", 0);
-			}
-
-			$("#txtProjectPeriodFrom").val(
-					response.projectInfo.projectPeriod.from);
-			$("#txtProjectPeriodTo").val(response.projectInfo.projectPeriod.to);
-
-			// Sponsor And Budget Information
-			// for (var int = 0; int <
-			// response.sponsorAndBudgetInfo.grantingAgency.length; int++) {
-			// var array_element = array[int];
-			//				
-			// }
-			// $("#txtNameOfGrantingAgency").val(
-			// response.sponsorAndBudgetInfo.grantingAgency);
-			$("#txtDirectCosts").autoNumeric('set',
-					response.sponsorAndBudgetInfo.directCosts);
-			$("#txtFACosts").autoNumeric('set',
-					response.sponsorAndBudgetInfo.faCosts);
-			$("#txtTotalCosts").autoNumeric('set',
-					response.sponsorAndBudgetInfo.totalCosts);
-			$("#txtFARate").autoNumeric('set',
-					response.sponsorAndBudgetInfo.faRate);
-
-			// Cost Share Information
-			if (response.costShareInfo.institutionalCommitted) {
-				$("#ddlInstitutionalCommitmentCost").val(1);
-				$("#lblConfirmCommitment").show();
-			} else if (!response.costShareInfo.institutionalCommitted) {
-				$("#ddlInstitutionalCommitmentCost").val(2);
-				$("#lblConfirmCommitment").hide();
-			} else {
-				$("#ddlInstitutionalCommitmentCost").prop("selectedIndex", 0);
-				$("#lblConfirmCommitment").hide();
-			}
-
-			if (response.costShareInfo.thirdPartyCommitted) {
-				$("#ddlThirdPartyCommitmentCost").val(1);
-			} else if (!response.costShareInfo.thirdPartyCommitted) {
-				$("#ddlThirdPartyCommitmentCost").val(2);
-			} else {
-				$("#ddlThirdPartyCommitmentCost").prop("selectedIndex", 0);
-			}
-
-			// University Commitments
-			if (response.universityCommitments.newRenovatedFacilitiesRequired) {
-				$("#ddlNewSpaceRequired").val(1);
-			} else if (!response.universityCommitments.newRenovatedFacilitiesRequired) {
-				$("#ddlNewSpaceRequired").val(2);
-			} else {
-				$("#ddlNewSpaceRequired").prop("selectedIndex", 0);
-			}
-
-			if (response.universityCommitments.rentalSpaceRequired) {
-				$("#ddlRentalSpaceRequired").val(1);
-			} else if (!response.universityCommitments.rentalSpaceRequired) {
-				$("#ddlRentalSpaceRequired").val(2);
-			} else {
-				$("#ddlRentalSpaceRequired").prop("selectedIndex", 0);
-			}
-
-			if (response.universityCommitments.institutionalCommitmentRequired) {
-				$("#ddlInstitutionalCommitmentsRequired").val(1);
-				$("#lblCommitmentsRequired").show();
-			} else if (!response.universityCommitments.institutionalCommitmentRequired) {
-				$("#ddlInstitutionalCommitmentsRequired").val(2);
-				$("#lblCommitmentsRequired").hide();
-			} else {
-				$("#ddlInstitutionalCommitmentsRequired").prop("selectedIndex",
-						0);
-				$("#lblCommitmentsRequired").hide();
-			}
-
-			// Conflict of Interest And Commitment Information
-			if (response.conflicOfInterest.financialCOI) {
-				$("#ddlFinancialCOI").val(1);
-			} else if (!response.conflicOfInterest.financialCOI) {
-				$("#ddlFinancialCOI").val(2);
-			} else {
-				$("#ddlFinancialCOI").prop("selectedIndex", 0);
-			}
-
-			if (response.conflicOfInterest.conflictDisclosed) {
-				$("#ddlDisclosedFinancialCOI").val(1);
-				$("#lblDisclosureRequired").show();
-			} else if (!response.conflicOfInterest.conflictDisclosed) {
-				$("#ddlDisclosedFinancialCOI").val(2);
-				$("#lblDisclosureRequired").hide();
-			} else {
-				$("#ddlDisclosedFinancialCOI").prop("selectedIndex", 0);
-				$("#lblDisclosureRequired").hide();
-			}
-
-			if (response.conflicOfInterest.disclosureFormChange) {
-				$("#ddlMaterialChanged").val(1);
-				$("#lblMaterialChanged").show();
-			} else if (!response.conflicOfInterest.disclosureFormChange) {
-				$("#ddlMaterialChanged").val(2);
-				$("#lblMaterialChanged").hide();
-			} else {
-				$("#ddlMaterialChanged").prop("selectedIndex", 0);
-				$("#lblMaterialChanged").hide();
-			}
-
-			// Compliance Information
-			if (response.complianceInfo.involveUseOfHumanSubjects) {
-				$("#ddlUseHumanSubjects").val(1);
-				$("#lblUseHumanSubjects").show();
-				$("#tdHumanSubjectsOption").show();
-				$("#tdIRBOption").show();
-				if (response.complianceInfo.irbPending) {
-					$("#ddlIRBOptions").val(2);
-					$("#tdIRBtxt").hide();
-				} else if (!response.complianceInfo.irbPending
-						&& response.complianceInfo.irb != "") {
-					$("#ddlIRBOptions").val(1);
-					$("#txtIRB").val(response.complianceInfo.irb);
-					$("#tdIRBtxt").show();
-				}
-			} else if (!response.complianceInfo.involveUseOfHumanSubjects) {
-				$("#ddlUseHumanSubjects").val(2);
-				$("#lblUseHumanSubjects").hide();
-				$("#tdHumanSubjectsOption").hide();
-				$("#tdIRBOption").hide();
-				$("#tdIRBtxt").hide();
-			} else {
-				$("#ddlUseHumanSubjects").prop("selectedIndex", 0);
-				$("#lblUseHumanSubjects").hide();
-				$("#tdHumanSubjectsOption").hide();
-				$("#tdIRBOption").hide();
-				$("#tdIRBtxt").hide();
-			}
-
-			if (response.complianceInfo.involveUseOfVertebrateAnimals) {
-				$("#ddlUseVertebrateAnimals").val(1);
-				$("#lblUseVertebrateAnimals").show();
-				$("#tdVertebrateAnimalsOption").show();
-				$("#tdIACUCOption").show();
-				if (response.complianceInfo.iacucPending) {
-					$("#ddlIACUCOptions").val(2);
-					$("#tdIACUCtxt").hide();
-				} else if (!response.complianceInfo.iacucPending
-						&& response.complianceInfo.iacuc != "") {
-					$("#ddlIACUCOptions").val(1);
-					$("#txtIACUC").val(response.complianceInfo.iacuc);
-					$("#tdIACUCtxt").show();
-				}
-			} else if (!response.complianceInfo.involveUseOfVertebrateAnimals) {
-				$("#ddlUseVertebrateAnimals").val(2);
-				$("#lblUseVertebrateAnimals").hide();
-				$("#tdVertebrateAnimalsOption").hide();
-				$("#tdIACUCOption").hide();
-				$("#tdIACUCtxt").hide();
-			} else {
-				$("#ddlUseVertebrateAnimals").prop("selectedIndex", 0);
-				$("#lblUseVertebrateAnimals").hide();
-				$("#tdVertebrateAnimalsOption").hide();
-				$("#tdIACUCOption").hide();
-				$("#tdIACUCtxt").hide();
-			}
-
-			if (response.complianceInfo.involveBiosafetyConcerns) {
-				$("#ddlInvovleBioSafety").val(1);
-				$("#lblHasBiosafetyConcerns").show();
-				$("#tdBiosafetyOption").show();
-				$("#tdIBCOption").show();
-				if (response.complianceInfo.ibcPending) {
-					$("#ddlIBCOptions").val(2);
-					$("#tdIBCtxt").hide();
-				} else if (!response.complianceInfo.ibcPending
-						&& response.complianceInfo.ibc != "") {
-					$("#ddlIBCOptions").val(1);
-					$("#txtIBC").val(response.complianceInfo.ibc);
-					$("#tdIBCtxt").show();
-				}
-			} else if (!response.complianceInfo.involveBiosafetyConcerns) {
-				$("#ddlInvovleBioSafety").val(2);
-				$("#lblHasBiosafetyConcerns").hide();
-				$("#tdBiosafetyOption").hide();
-				$("#tdIBCOption").hide();
-				$("#tdIBCtxt").hide();
-			} else {
-				$("#ddlInvovleBioSafety").prop("selectedIndex", 0);
-				$("#lblHasBiosafetyConcerns").hide();
-				$("#tdBiosafetyOption").hide();
-				$("#tdIBCOption").hide();
-				$("#tdIBCtxt").hide();
-			}
-
-			if (response.complianceInfo.involveEnvironmentalHealthAndSafetyConcerns) {
-				$("#ddlEnvironmentalConcerns").val(1);
-			} else if (!response.complianceInfo.involveEnvironmentalHealthAndSafetyConcerns) {
-				$("#ddlEnvironmentalConcerns").val(2);
-			} else {
-				$("#ddlEnvironmentalConcerns").prop("selectedIndex", 0);
-			}
-
-			// Additional Information
-			if (response.additionalInfo.anticipatesForeignNationalsPayment) {
-				$("#ddlAnticipateForeignNationals").val(1);
-			} else if (!response.additionalInfo.anticipatesForeignNationalsPayment) {
-				$("#ddlAnticipateForeignNationals").val(2);
-			} else {
-				$("#ddlAnticipateForeignNationals").prop("selectedIndex", 0);
-			}
-
-			if (response.additionalInfo.anticipatesCourseReleaseTime) {
-				$("#ddlAnticipateReleaseTime").val(1);
-			} else if (!response.additionalInfo.anticipatesCourseReleaseTime) {
-				$("#ddlAnticipateReleaseTime").val(2);
-			} else {
-				$("#ddlAnticipateReleaseTime").prop("selectedIndex", 0);
-			}
-
-			if (response.additionalInfo.relatedToCenterForAdvancedEnergyStudies) {
-				$("#ddlRelatedToEnergyStudies").val(1);
-			} else if (!response.additionalInfo.relatedToCenterForAdvancedEnergyStudies) {
-				$("#ddlRelatedToEnergyStudies").val(2);
-			} else {
-				$("#ddlRelatedToEnergyStudies").prop("selectedIndex", 0);
-			}
-
-			// Collaboration Information
-			if (response.collaborationInfo.involveNonFundedCollab) {
-				$("#ddlInvolveNonFundedCollabs").val(1);
-				$("#lblInvolveNonFundedCollabs").show();
-				$("#trInvolveNonFundedCollabs").show();
-				$("#txtCollaborators").val(
-						response.collaborationInfo.involvedCollaborators);
-
-			} else if (!response.collaborationInfo.involveNonFundedCollab) {
-				$("#ddlInvolveNonFundedCollabs").val(2);
-				$("#lblInvolveNonFundedCollabs").hide();
-				$("#trInvolveNonFundedCollabs").hide();
-				$("#txtCollaborators").val('');
-			} else {
-				$("#ddlInvolveNonFundedCollabs").prop("selectedIndex", 0);
-				$("#lblInvolveNonFundedCollabs").hide();
-				$("#trInvolveNonFundedCollabs").hide();
-				$("#txtCollaborators").val('');
-			}
-
-			// Proprietary/ Confidential Information
-			if (response.confidentialInfo.containConfidentialInformation) {
-				$("#ddlProprietaryInformation").val(1);
-				$("#txtPagesWithProprietaryInfo").val(
-						response.confidentialInfo.onPages);
-				$("#tdPagesWithProprietaryInfo").show();
-				$("#trTypeOfProprietaryInfo").show();
-				$("#chkPatentable").prop("checked",
-						response.confidentialInfo.patentable);
-				$("#chkCopyrightable").prop("checked",
-						response.confidentialInfo.copyrightable);
-			} else if (!response.confidentialInfo.containConfidentialInformation) {
-				$("#ddlProprietaryInformation").val(2);
-				$("#tdPagesWithProprietaryInfo").hide();
-				$("#trTypeOfProprietaryInfo").hide();
-				$("#txtPagesWithProprietaryInfo").val('');
-			} else {
-				$("#ddlProprietaryInformation").prop("selectedIndex", 0);
-				$("#tdPagesWithProprietaryInfo").hide();
-				$("#trTypeOfProprietaryInfo").hide();
-				$("#txtPagesWithProprietaryInfo").val('');
-			}
-
-			if (response.confidentialInfo.involveIntellectualProperty) {
-				$("#ddlOwnIntellectualProperty").val(1);
-			} else if (!response.confidentialInfo.involveIntellectualProperty) {
-				$("#ddlOwnIntellectualProperty").val(2);
-			} else {
-				$("#ddlOwnIntellectualProperty").prop("selectedIndex", 0);
-			}
-
-			// OSP Section
-			$("#txtAgencyList").val(response.ospSectionInfo.listAgency);
-
-			$("#chkFederal").prop("checked",
-					response.ospSectionInfo.fundingSource.federal);
-			$("#chkFederalFlowThrough").prop("checked",
-					response.ospSectionInfo.fundingSource.federalFlowThrough);
-			$("#chkStateOfIdahoEntity").prop("checked",
-					response.ospSectionInfo.fundingSource.stateOfIdahoEntity);
-			$("#chkPrivateForProfit").prop("checked",
-					response.ospSectionInfo.fundingSource.privateForProfit);
-			$("#chkNonProfitOrganization")
-					.prop(
-							"checked",
-							response.ospSectionInfo.fundingSource.nonProfitOrganization);
-			$("#chkNonIdahoStateEntity").prop("checked",
-					response.ospSectionInfo.fundingSource.nonIdahoStateEntity);
-			$("#chkCollegeUniversity").prop("checked",
-					response.ospSectionInfo.fundingSource.collegeOrUniversity);
-			$("#chkLocalEntity").prop("checked",
-					response.ospSectionInfo.fundingSource.localEntity);
-			$("#chkNonIdahoLocalEntity").prop("checked",
-					response.ospSectionInfo.fundingSource.nonIdahoLocalEntity);
-			$("#chkTribalGovernment").prop("checked",
-					response.ospSectionInfo.fundingSource.tirbalGovernment);
-			$("#chkForeign").prop("checked",
-					response.ospSectionInfo.fundingSource.foreign);
-
-			$("#txtCFDANo").val(response.ospSectionInfo.cfdaNo);
-			$("#txtProgramNo").val(response.ospSectionInfo.programNo);
-			$("#txtProgramTitle").val(response.ospSectionInfo.programTitle);
-
-			$("#chkFullRecovery").prop("checked",
-					response.ospSectionInfo.recovery.fullRecovery);
-			$("#chkNoRecoveryNormal")
-					.prop(
-							"checked",
-							response.ospSectionInfo.recovery.noRecoveryNormalSponsorPolicy);
-			$("#chkNoRecoveryInstitutional")
-					.prop(
-							"checked",
-							response.ospSectionInfo.recovery.noRecoveryInstitutionalWaiver);
-			$("#chkLimitedRecoveryNormal")
-					.prop(
-							"checked",
-							response.ospSectionInfo.recovery.limitedRecoveryNormalSponsorPolicy);
-			$("#chkLimitedRecoveryInstitutional")
-					.prop(
-							"checked",
-							response.ospSectionInfo.recovery.limitedRecoveryInstitutionalWaiver);
-
-			$("#chkMTDC")
-					.prop("checked", response.ospSectionInfo.baseInfo.mtdc);
-			$("#chkTDC").prop("checked", response.ospSectionInfo.baseInfo.tdc);
-			$("#chkTC").prop("checked", response.ospSectionInfo.baseInfo.tc);
-			$("#chkOther").prop("checked",
-					response.ospSectionInfo.baseInfo.other);
-			$("#chkNA").prop("checked",
-					response.ospSectionInfo.baseInfo.notApplicable);
-
-			if (response.ospSectionInfo.piSalaryIncluded) {
-				$("#ddlPISalaryIncluded").val(1);
-				$("#lblPISalaryIncluded").hide();
-			} else if (!response.ospSectionInfo.piSalaryIncluded) {
-				$("#ddlPISalaryIncluded").val(2);
-				$("#lblPISalaryIncluded").show();
-			} else {
-				$("#ddlPISalaryIncluded").prop("selectedIndex", 0);
-				$("#lblPISalaryIncluded").hide();
-			}
-
-			$("#txtPISalary").autoNumeric('set',
-					response.ospSectionInfo.piSalary);
-			$("#txtPIFringe").autoNumeric('set',
-					response.ospSectionInfo.piFringe);
-
-			$("#txtDepartmentID").val(response.ospSectionInfo.departmentId);
-
-			if (response.ospSectionInfo.institutionalCostDocumented.yes) {
-				$("#ddlInstitutionalCostDocumented").val(1);
-			} else if (response.ospSectionInfo.institutionalCostDocumented.no) {
-				$("#ddlInstitutionalCostDocumented").val(2);
-			} else if (response.ospSectionInfo.institutionalCostDocumented.notApplicable) {
-				$("#ddlInstitutionalCostDocumented").val(3);
-			} else {
-				$("#ddlInstitutionalCostDocumented").prop("selectedIndex", 0);
-			}
-
-			if (response.ospSectionInfo.thirdPartyCostDocumented.yes) {
-				$("#ddlThirdPartyCostDocumented").val(1);
-			} else if (response.ospSectionInfo.thirdPartyCostDocumented.no) {
-				$("#ddlThirdPartyCostDocumented").val(2);
-			} else if (response.ospSectionInfo.thirdPartyCostDocumented.notApplicable) {
-				$("#ddlThirdPartyCostDocumented").val(3);
-			} else {
-				$("#ddlThirdPartyCostDocumented").prop("selectedIndex", 0);
-			}
-
-			if (response.ospSectionInfo.anticipatedSubRecipients) {
-				$("#ddlSubrecipients").val(1);
-				$("#txtNamesSubrecipients").removeClass("ignore");
-				$("#txtNamesSubrecipients").val(
-						response.ospSectionInfo.anticipatedSubRecipientsNames);
-				$("#trSubrecipientsNames").show();
-			} else if (!response.ospSectionInfo.anticipatedSubRecipients) {
-				$("#ddlSubrecipients").val(2);
-				$("#txtNamesSubrecipients").addClass("ignore");
-				$("#trSubrecipientsNames").hide();
-				$("#txtNamesSubrecipients").val('');
-			} else {
-				$("#ddlSubrecipients").prop("selectedIndex", 0);
-				$("#txtNamesSubrecipients").addClass("ignore");
-				$("#trSubrecipientsNames").hide();
-				$("#txtNamesSubrecipients").val('');
-			}
-
-			if (response.ospSectionInfo.piEligibilityWaiver.yes) {
-				$("#ddlPIEligibilityWaiver").val(1);
-			} else if (response.ospSectionInfo.piEligibilityWaiver.no) {
-				$("#ddlPIEligibilityWaiver").val(2);
-			} else if (response.ospSectionInfo.piEligibilityWaiver.notApplicable) {
-				$("#ddlPIEligibilityWaiver").val(3);
-			} else if (response.ospSectionInfo.piEligibilityWaiver.thisDelegationOnly) {
-				$("#ddlPIEligibilityWaiver").val(4);
-			} else if (response.ospSectionInfo.piEligibilityWaiver.blanket) {
-				$("#ddlPIEligibilityWaiver").val(5);
-			} else {
-				$("#ddlPIEligibilityWaiver").prop("selectedIndex", 0);
-			}
-
-			if (response.ospSectionInfo.conflictOfInterestForms.yes) {
-				$("#ddlCOIForms").val(1);
-			} else if (response.ospSectionInfo.conflictOfInterestForms.no) {
-				$("#ddlCOIForms").val(2);
-			} else if (response.ospSectionInfo.conflictOfInterestForms.notApplicable) {
-				$("#ddlCOIForms").val(3);
-			} else {
-				$("#ddlCOIForms").prop("selectedIndex", 0);
-			}
-
-			if (response.ospSectionInfo.excludedPartyListChecked.yes) {
-				$("#ddlCheckedExcludedPartyList").val(1);
-			} else if (response.ospSectionInfo.excludedPartyListChecked.no) {
-				$("#ddlCheckedExcludedPartyList").val(2);
-			} else if (response.ospSectionInfo.excludedPartyListChecked.notApplicable) {
-				$("#ddlCheckedExcludedPartyList").val(3);
-			} else {
-				$("#ddlCheckedExcludedPartyList").prop("selectedIndex", 0);
-			}
-		},
-
-		BindInvestigatorInfo : function(investigatorInfo) {
-			rowIndex = 0;
-			delegation.BindUserToPositionDetails(investigatorInfo.pi, "PI");
-
-			$.each(investigatorInfo.co_pi, function(i, coPI) {
-				delegation.BindUserToPositionDetails(coPI, "Co-PI");
-			});
-
-			$.each(investigatorInfo.seniorPersonnel, function(j, senior) {
-				delegation
-						.BindUserToPositionDetails(senior, "Senior Personnel");
-			});
-
-			$("#dataTable>tbody select[name='ddlName']").each(function(index) {
-				if ($(this).find('option').length == 0) {
-					$(this).parents('tr').remove();
-				}
-			});
-
-			$('#dataTable>tbody tr:first').remove();
-		},
-
-		AddCoPIInvestigator : function(button) {
-			var cloneRow = button.closest('tr').clone(true)
-					.addClass("trStatic");
-			$(cloneRow).find("input").each(function(i) {
-				if ($(this).is(".AddCoPI")) {
-					$(this).prop("name", "DeleteOption");
-					$(this).prop("value", "Delete");
-					$(this).prop("title", "Delete");
-					$(this).show();
-				} else if ($(this).is(".AddSenior")) {
-					$(this).remove();
-				}
-			});
-
-			$(cloneRow).find("select").each(
-					function(j) {
-						$(this).removeProp("disabled");
-						$(this).removeProp("required");
-						// Remove PI
-						// option
-						// after first
-						// row
-						if (j == 0) {
-							$(this).find('option:first').remove();
-							$(this).find('option:last').remove();
-							$(this).prop("disabled", true);
-						} else if (j == 1) {
-							$(this).prop("disabled", false);
-							$('#ui-id-2').find("select[name='ddlName']").each(
-									function(k) {
-										$(cloneRow).find(
-												'option[value=' + $(this).val()
-														+ ']').remove();
-									});
-						}
-						$(this).find("option").removeProp("selected");
-					});
-
-			if ($(cloneRow).find("select[name='ddlName'] option").length > 0) {
-				$('#dataTable tr:last').find("select[name='ddlName']").prop(
-						"disabled", true);
-
-				$(cloneRow).appendTo("#dataTable").hide().fadeIn(1200);
-
-				rowIndex = $('#dataTable > tbody tr').size() - 1;
-				delegation.BindDefaultUserPosition(rowIndex);
-			} else {
-				csscody.alert('<h2>' + 'Error Message' + '</h2><p>'
-						+ 'There are no user available to be added!</p>');
-			}
-		},
-
-		AddSeniorPersonnelInvestigator : function(button) {
-			var cloneRow = button.closest('tr').clone(true)
-					.addClass("trStatic");
-			$(cloneRow).find("input").each(function(i) {
-				if ($(this).is(".AddCoPI")) {
-					$(this).prop("name", "DeleteOption");
-					$(this).prop("value", "Delete");
-					$(this).prop("title", "Delete");
-					$(this).show();
-				} else if ($(this).is(".AddSenior")) {
-					$(this).remove();
-				}
-			});
-
-			$(cloneRow).find("select").each(
-					function(j) {
-						$(this).removeProp("disabled");
-						$(this).removeProp("required");
-						// Remove PI
-						// option
-						// after first
-						// row
-						if (j == 0) {
-							$(this).find('option:lt(2)').remove();
-							$(this).prop("disabled", true);
-							;
-						} else if (j == 1) {
-							$(this).prop("disabled", false);
-							$('#ui-id-2').find("select[name='ddlName']").each(
-									function(k) {
-										$(cloneRow).find(
-												'option[value=' + $(this).val()
-														+ ']').remove();
-									});
-						}
-						$(this).find("option").removeProp("selected");
-					});
-
-			if ($(cloneRow).find("select[name='ddlName'] option").length > 0) {
-				$('#dataTable tr:last').find("select[name='ddlName']").prop(
-						"disabled", true);
-
-				$(cloneRow).appendTo("#dataTable").hide().fadeIn(1200);
-
-				rowIndex = $('#dataTable > tbody tr').size() - 1;
-				delegation.BindDefaultUserPosition(rowIndex);
-			} else {
-				csscody.alert('<h2>' + 'Error Message' + '</h2><p>'
-						+ 'There are no user available to be added!</p>');
-			}
-		},
-
-		SelectFirstAccordion : function() {
-			delegation.OpenAccordionTab($('#ui-id-2'));
-		},
-
-		focusTabWithErrors : function(tabPanelName) {
-			$(tabPanelName).find('div.ui-tabs-panel').each(function(index) {
-				if ($(this).find("span.error").text() != "") {
-					$(tabPanelName).accordion("option", "active", index);
-					return false;
-				}
-			});
-		},
-
-		OpenAccordionTab : function(tabContentDiv) {
-			var icons = $("#accordion").accordion("option", "icons");
-			$tabDiv = tabContentDiv.attr('aria-labelledby');
-			$('#' + $tabDiv).removeClass('ui-corner-all').addClass(
-					'ui-accordion-header-active ui-state-active ui-corner-top')
-					.attr({
-						'aria-selected' : 'true',
-						'aria-expanded' : 'true',
-						'tabindex' : '0'
-					});
-			$('#' + $tabDiv + ' > .ui-accordion-header-icon').removeClass(
-					icons.header).addClass(icons.activeHeader);
-			tabContentDiv.addClass('ui-accordion-content-active').attr({
-				'aria-hidden' : 'false'
-			}).show('blind');
-		},
-
-		BindUserToPositionDetails : function(userDetails, userType) {
-			if (userDetails != undefined || userDetails != null) {
-				var cloneRow = $('#dataTable tbody>tr:first').clone(true);
-				$(cloneRow).appendTo("#dataTable");
-
-				rowIndex += 1;
-				var btnOption = "Add Co-PI";
-				var btnTitle = "Add Co-PI"
-				var btnName = "AddCoPI";
-				if (rowIndex > 1) {
-					btnOption = "Delete";
-					btnTitle = "Delete";
-					btnName = "DeleteOption";
-				}
-
-				$('#dataTable tbody>tr:eq(' + rowIndex + ')')
-						.find("select")
-						.each(
-								function(k) {
-									if (this.name == "ddlRole") {
-										if (userType == "PI") {
-											$(this).val(0).prop('selected',
-													'selected').prop(
-													'disabled', true);
-										} else if (userType == "Co-PI") {
-											$(this).val(1).prop('selected',
-													'selected').prop(
-													'disabled', true);
-											$(this).find('option').not(
-													':selected').remove();
-										} else if (userType == "Senior Personnel") {
-											$(this).val(2).prop('selected',
-													'selected').prop(
-													'disabled', true);
-											$(this).find('option').not(
-													':selected').remove();
-										}
-									} else if (this.name == "ddlName") {
-										$(this).val(userDetails.userProfileId)
-												.prop('selected', 'selected')
-												.prop('disabled', true);
-
-										if (userType == "Co-PI") {
-											$(this).find('option').not(
-													':selected').remove();
-										} else if (userType == "Senior Personnel") {
-											$(this).find('option').not(
-													':selected').remove();
-										}
-
-										delegation.BindUserMobileNo($(
-												'select[name="ddlName"]').eq(
-												rowIndex).val());
-
-										delegation.BindCollegeDropDown($(
-												'select[name="ddlName"]').eq(
-												rowIndex).val());
-									} else if (this.name == "ddlCollege") {
-										$(this).val(userDetails.college).prop(
-												'selected', 'selected').prop(
-												'disabled', true);
-										delegation.BindDepartmentDropDown($(
-												'select[name="ddlName"]').eq(
-												rowIndex).val(), $(
-												'select[name="ddlCollege"]')
-												.eq(rowIndex).val());
-									} else if (this.name == "ddlDepartment") {
-										$(this).val(userDetails.department)
-												.prop('selected', 'selected')
-												.prop('disabled', true);
-										delegation.BindPositionTypeDropDown($(
-												'select[name="ddlName"]').eq(
-												rowIndex).val(), $(
-												'select[name="ddlCollege"]')
-												.eq(rowIndex).val(), $(
-												'select[name="ddlDepartment"]')
-												.eq(rowIndex).val());
-									} else if (this.name == "ddlPositionType") {
-										$(this).val(userDetails.positionType)
-												.prop('selected', 'selected')
-												.prop('disabled', true);
-										delegation
-												.BindPositionTitleDropDown(
-														$(
-																'select[name="ddlName"]')
-																.eq(rowIndex)
-																.val(),
-														$(
-																'select[name="ddlCollege"]')
-																.eq(rowIndex)
-																.val(),
-														$(
-																'select[name="ddlDepartment"]')
-																.eq(rowIndex)
-																.val(),
-														$(
-																'select[name="ddlPositionType"]')
-																.eq(rowIndex)
-																.val());
-									} else if (this.name == "ddlPositionTitle") {
-										$(this).val(userDetails.positionTitle)
-												.prop('selected', 'selected')
-												.prop('disabled', true);
-									}
-								});
-
-				$('#dataTable tbody>tr:eq(' + rowIndex + ')').find("input")
-						.each(function(l) {
-							if ($(this).is(".AddCoPI")) {
-								$(this).prop("name", btnName);
-								$(this).prop("value", btnOption);
-								$(this).prop("title", btnTitle);
-							}
-						});
-			}
 		},
 
 		SearchDelegationAuditLogs : function() {
@@ -1936,8 +467,9 @@ $(function() {
 				activityOnTo = null;
 			}
 
-			delegation.BindDelegationAuditLogGrid(delegation.config.proposalId,
-					action, auditedBy, activityOnFrom, activityOnTo);
+			delegation.BindDelegationAuditLogGrid(
+					delegation.config.delegationId, action, auditedBy,
+					activityOnFrom, activityOnTo);
 		},
 
 		BindDelegationAuditLogGrid : function(proposalId, action, auditedBy,
@@ -2012,7 +544,7 @@ $(function() {
 		ViewChangeLogs : function(tblID, argus) {
 			switch (tblID) {
 			case "gdvDelegations":
-				delegation.config.proposalId = argus[0];
+				delegation.config.delegationId = argus[0];
 				if (argus[0] != '0') {
 					$('#lblLogsHeading').html(
 							'View Audit Logs for: ' + argus[1]);
@@ -2041,7 +573,7 @@ $(function() {
 			}
 		},
 
-		DeleteDelegation : function(tblID, argus) {
+		RevokeDelegation : function(tblID, argus) {
 			switch (tblID) {
 			case "gdvDelegations":
 				var proposal_roles = $.trim(argus[1]);
@@ -2050,7 +582,7 @@ $(function() {
 						onComplete : function(e) {
 							if (e) {
 								delegation.config.proposalRoles = proposal_roles;
-								delegation.config.proposalId = argus[0];
+								delegation.config.delegationId = argus[0];
 								delegation.config.proposalStatus = argus[3];
 								delegation.config.submittedByPI = argus[4];
 								delegation.config.readyForSubmissionByPI = argus[5];
@@ -2066,7 +598,7 @@ $(function() {
 								delegation.config.researchAdministratorSubmission = argus[15];
 								delegation.config.researchDirectorArchived = argus[16];
 
-								delegation.DeleteSingleDelegation("Delete",
+								delegation.DeleteSingleDelegation("Revoke",
 										delegation.config);
 							}
 						}
@@ -2074,9 +606,9 @@ $(function() {
 					csscody
 							.confirm(
 									"<h2>"
-											+ 'Delete Confirmation'
+											+ 'Revoke Confirmation'
 											+ "</h2><p>"
-											+ 'Are you certain you want to delete this proposal?'
+											+ 'Are you certain you want to revoke this proposal?'
 											+ "</p>", properties);
 					return false;
 				} else {
@@ -2090,9 +622,9 @@ $(function() {
 			}
 		},
 
-		ConfirmDeleteMultiple : function(proposal_ids, event) {
+		ConfirmDeleteMultiple : function(delegation_ids, event) {
 			if (event) {
-				delegation.DeleteMultipleDelegations(proposal_ids);
+				delegation.DeleteMultipleDelegations(delegation_ids);
 			}
 		},
 
@@ -2110,7 +642,7 @@ $(function() {
 		},
 
 		DeleteSingleDelegation : function(buttonType, config) {
-			this.config.url = this.config.baseURL + "DeleteDelegationByAdmin";
+			this.config.url = this.config.baseURL + "RevokeDelegationByAdmin";
 			this.config.data = JSON2.stringify({
 				proposalId : config.proposalId,
 				gpmsCommonObj : gpmsCommonObj()
@@ -2129,13 +661,7 @@ $(function() {
 				this.config.uploadObj.reset(true);
 			}
 
-			delegation.config.proposalId = '0';
-			delegation.config.proposalRoles = "";
-			delegation.config.buttonType = "";
-			delegation.config.arguments = [];
-			delegation.config.events = "";
-			delegation.config.content = "";
-			delegation.config.investigatorButton = "";
+			delegation.config.delegationId = '0';
 
 			$('.cssClassRight').hide();
 			$('.cssClassError').hide();
@@ -2307,291 +833,23 @@ $(function() {
 			return false;
 		},
 
-		GetUserSignature : function(obj) {
-			var allowedChangeAttr = obj.data('allowchange');
-			var allowedSignAttr = obj.data('allowsign');
-
-			if (typeof allowedChangeAttr !== typeof undefined
-					&& allowedChangeAttr !== false
-					&& allowedChangeAttr == "true"
-					&& typeof allowedSignAttr !== typeof undefined
-					&& allowedSignAttr !== false && allowedSignAttr == "true") {
-				obj.find("input").each(function() {
-					var optionsText = $(this).val();
-					if ($(this).attr("data-for") != "signaturedate") {
-
-						signatureInfo += $(this).attr("data-value") + "!#!"; // UserProfileID
-
-						signatureInfo += optionsText + "!#!"; // Signature
-					} else {
-						signatureInfo += optionsText + "!#!"; // SignedDate
-					}
-				});
-				obj.find("textarea").each(function() {
-					signatureInfo += $(this).val() + "!#!"; // Note
-				});
-
-				signatureInfo += obj.find('span.cssClassLabel').text() + "!#!"; // FullName
-				signatureInfo += obj.find('span.cssClassLabel').attr("role")
-						+ "!#!";
-				// PositionTitle
-				signatureInfo += obj.find('span.cssClassLabel').attr(
-						"delegated")
-						+ "#!#";
-				// Delegated
-			}
-		},
-
-		checkUniqueProjectTitle : function(proposal_id, projectTitle,
-				textBoxProjectTitle) {
-			var errors = '';
-			if (!textBoxProjectTitle.hasClass('error')
-					&& projectTitle.length > 0) {
-				if (!delegation.isUniqueProjectTitle(proposal_id, projectTitle)) {
-					errors += "'" + 'Please enter unique Project Title.' + " '"
-							+ projectTitle.trim() + "' "
-							+ 'has already been taken.';
-					textBoxProjectTitle.addClass("error");
-					textBoxProjectTitle.siblings('.cssClassRight').hide();
-					if (textBoxProjectTitle.siblings('.error').exists()) {
-						textBoxProjectTitle.siblings('.error').html(errors);
-					} else {
-						$(
-								'<span id="txtProjectTitle-error" class="error" for="txtProjectTitle">'
-										+ errors + '</span>').insertAfter(
-								textBoxProjectTitle);
-					}
-
-					textBoxProjectTitle.siblings('.error').show();
-					textBoxProjectTitle.focus();
-				} else {
-					textBoxProjectTitle.removeClass("error");
-					textBoxProjectTitle.siblings('.cssClassRight').show();
-					textBoxProjectTitle.siblings('.error').hide();
-					textBoxProjectTitle.siblings('.error').html('');
-				}
-			}
-			return errors;
-		},
-
-		isUniqueProjectTitle : function(proposalId, newProjectTitle) {
-			var proposalUniqueObj = {
-				DelegationID : proposalId,
-				NewProjectTitle : newProjectTitle
-			};
-
-			this.config.url = this.config.baseURL + "CheckUniqueProjectTitle";
-			this.config.data = JSON2.stringify({
-				proposalUniqueObj : proposalUniqueObj
-			});
-			this.config.ajaxCallMode = 7;
-			this.ajaxCall(this.config);
-			return projectTitleIsUnique;
-		},
-
 		SaveDelegation : function(buttonType, config) {
 			// if (validator.form()) {
 
 			var $projectTitle = $('#txtProjectTitle');
 			var projectTitle = $.trim($projectTitle.val());
-			var validateErrorMessage = delegation.checkUniqueProjectTitle(
-					config.proposalId, projectTitle, $projectTitle);
 
-			if (validateErrorMessage == "") {
-				var investigatorInfo = '';
-				$('#dataTable > tbody  > tr')
-						.each(
-								function() {
-									$(this)
-											.find("select")
-											.each(
-													function() {
-														var optionsText = $(
-																this).val();
-														if (!optionsText
-																&& $(this)
-																		.prop(
-																				"name") != "ddlPositionTitle") {
-															validateErrorMessage = 'Please select all position details for this user.'
-																	+ "<br/>";
-															$(this).focus();
-														} else if (optionsText
-																&& $(this)
-																		.prop(
-																				"name") != "ddlPositionTitle") {
-															investigatorInfo += optionsText
-																	+ "!#!";
-														} else {
-															investigatorInfo += optionsText
-																	+ "!#!";
-														}
-													});
+			var projectInfo = {
+				ProjectTitle : $.trim($("#txtProjectTitle").val()),
+				ProjectType : $("#ddlProjectType").val(),
+				TypeOfRequest : $("#ddlTypeOfRequest").val(),
+				ProjectLocation : $("#ddlLocationOfProject").val(),
+				DueDate : $("#txtDueDate").val(),
+				ProjectPeriodFrom : $("#txtProjectPeriodFrom").val(),
+				ProjectPeriodTo : $("#txtProjectPeriodTo").val()
+			};
 
-									investigatorInfo += $(this).find(
-											'input[name="txtPhoneNo"]').mask()
-											+ "#!#";
-								});
-
-				investigatorInfo = investigatorInfo.substring(0,
-						investigatorInfo.length - 3);
-
-				signatureInfo = '';
-
-				$(
-						'#trSignPICOPI > tbody  > tr, #trSignChair > tbody  > tr, #trSignDean > tbody  > tr, #trSignBusinessManager > tbody  > tr, #trSignIRB > tbody  > tr, #trSignAdministrator > tbody  > tr, #trSignDirector > tbody  > tr')
-						.each(function() {
-							delegation.GetUserSignature($(this));
-						});
-
-				signatureInfo = signatureInfo.substring(0,
-						signatureInfo.length - 3);
-
-				var projectInfo = {
-					ProjectTitle : $.trim($("#txtProjectTitle").val()),
-					ProjectType : $("#ddlProjectType").val(),
-					TypeOfRequest : $("#ddlTypeOfRequest").val(),
-					ProjectLocation : $("#ddlLocationOfProject").val(),
-					DueDate : $("#txtDueDate").val(),
-					ProjectPeriodFrom : $("#txtProjectPeriodFrom").val(),
-					ProjectPeriodTo : $("#txtProjectPeriodTo").val()
-				};
-
-				var sponsorAndBudgetInfo = {
-					GrantingAgency : $
-							.trim($("#txtNameOfGrantingAgency").val()),
-					DirectCosts : $('#txtDirectCosts').autoNumeric('get'),
-					FACosts : $("#txtFACosts").autoNumeric('get'),
-					TotalCosts : $("#txtTotalCosts").autoNumeric('get'),
-					FARate : $("#txtFARate").autoNumeric('get')
-				};
-
-				var costShareInfo = {
-					InstitutionalCommitted : $(
-							"#ddlInstitutionalCommitmentCost").val(),
-					ThirdPartyCommitted : $("#ddlThirdPartyCommitmentCost")
-							.val()
-				};
-
-				var univCommitments = {
-					NewRenovatedFacilitiesRequired : $("#ddlNewSpaceRequired")
-							.val(),
-					RentalSpaceRequired : $("#ddlRentalSpaceRequired").val(),
-					InstitutionalCommitmentRequired : $(
-							"#ddlInstitutionalCommitmentsRequired").val()
-				};
-
-				var conflicOfInterestInfo = {
-					FinancialCOI : $("#ddlFinancialCOI").val(),
-					ConflictDisclosed : $("#ddlDisclosedFinancialCOI").val(),
-					DisclosureFormChange : $("#ddlMaterialChanged").val()
-				};
-
-				var complianceInfo = {
-					InvolveUseOfHumanSubjects : $("#ddlUseHumanSubjects").val(),
-					InvolveUseOfVertebrateAnimals : $(
-							"#ddlUseVertebrateAnimals").val(),
-					InvolveBiosafetyConcerns : $("#ddlInvovleBioSafety").val(),
-					InvolveEnvironmentalHealthAndSafetyConcerns : $(
-							"#ddlEnvironmentalConcerns").val()
-				};
-
-				if ($("#ddlUseHumanSubjects").val() == "1") {
-					complianceInfo.IRBPending = $("#ddlIRBOptions").val();
-				}
-
-				if ($("#ddlIRBOptions").val() == "1") {
-					complianceInfo.IRB = $("#txtIRB").val();
-				}
-
-				if ($("#ddlUseVertebrateAnimals").val() == "1") {
-					complianceInfo.IACUCPending = $("#ddlIACUCOptions").val();
-				}
-
-				if ($("#ddlIACUCOptions").val() == "1") {
-					complianceInfo.IACUC = $("#txtIACUC").val();
-				}
-
-				if ($("#ddlInvovleBioSafety").val() == "1") {
-					complianceInfo.IBCPending = $("#ddlIBCOptions").val();
-				}
-
-				if ($("#ddlIBCOptions").val() == "1") {
-					complianceInfo.IBC = $("#txtIBC").val();
-				}
-
-				var additionalInfo = {
-					AnticipatesForeignNationalsPayment : $(
-							"#ddlAnticipateForeignNationals").val(),
-					AnticipatesCourseReleaseTime : $(
-							"#ddlAnticipateReleaseTime").val(),
-					RelatedToCenterForAdvancedEnergyStudies : $(
-							"#ddlRelatedToEnergyStudies").val()
-				};
-
-				var collaborationInfo = {
-					InvolveNonFundedCollab : $("#ddlInvolveNonFundedCollabs")
-							.val()
-				};
-
-				if ($("#ddlInvolveNonFundedCollabs").val() == "1") {
-					collaborationInfo.Collaborators = $("#txtCollaborators")
-							.val();
-				}
-
-				var confidentialInfo = {
-					ContainConfidentialInformation : $(
-							"#ddlProprietaryInformation").val(),
-					InvolveIntellectualProperty : $(
-							"#ddlOwnIntellectualProperty").val()
-				};
-
-				if ($("#ddlProprietaryInformation").val() == "1") {
-					confidentialInfo.OnPages = $.trim($(
-							"#txtPagesWithProprietaryInfo").val());
-					confidentialInfo.Patentable = $("#chkPatentable").prop(
-							"checked");
-					confidentialInfo.Copyrightable = $("#chkCopyrightable")
-							.prop("checked");
-				}
-
-				var proposalInfo = {
-					DelegationID : config.proposalId,
-					InvestigatorInfo : investigatorInfo,
-					ProjectInfo : projectInfo,
-					SponsorAndBudgetInfo : sponsorAndBudgetInfo,
-					CostShareInfo : costShareInfo,
-					UnivCommitments : univCommitments,
-					ConflicOfInterestInfo : conflicOfInterestInfo,
-					ComplianceInfo : complianceInfo,
-					AdditionalInfo : additionalInfo,
-					CollaborationInfo : collaborationInfo,
-					ConfidentialInfo : confidentialInfo
-				};
-
-				$
-						.each(
-								this.config.uploadObj.getResponses().reverse(),
-								function(i, val) {
-									val['title'] = $(
-											delegation.config.uploadObj.container
-													.children(
-															".ajax-file-upload-statusbar")
-													.find('.extrahtml').find(
-															"input").get(i))
-											.val();
-								});
-
-				proposalInfo.AppendixInfo = this.config.uploadObj
-						.getResponses().reverse();
-
-				delegation.AddDelegationInfo(buttonType, config, proposalInfo);
-
-			} else {
-				delegation.focusTabWithErrors("#accordion");
-			}
-			// } else {
-			// delegation.focusTabWithErrors("#accordion");
-			// }
+			delegation.AddDelegationInfo(buttonType, config, proposalInfo);
 		},
 
 		AddDelegationInfo : function(buttonType, config, info) {
@@ -2606,14 +864,6 @@ $(function() {
 			});
 			this.config.ajaxCallMode = 9;
 			this.config.buttonType = buttonType;
-			this.ajaxCall(this.config);
-			return false;
-		},
-
-		BindDelegationStatus : function() {
-			this.config.url = this.config.baseURL + "GetDelegationStatusList";
-			this.config.data = "{}";
-			this.config.ajaxCallMode = 1;
 			this.ajaxCall(this.config);
 			return false;
 		},
@@ -2740,207 +990,6 @@ $(function() {
 			return false;
 		},
 
-		BindDepartmentDropDown : function(userId, collegeName) {
-			if (userId != null && collegeName != null) {
-				$('select[name="ddlDepartment"]').get(rowIndex).options.length = 0;
-				$('select[name="ddlPositionType"]').get(rowIndex).options.length = 0;
-				$('select[name="ddlPositionTitle"]').get(rowIndex).options.length = 0;
-				var arrDepartment = [];
-
-				$
-						.map(
-								positionsDetails,
-								function(item, value) {
-									if (item.id == userId) {
-										$
-												.map(
-														item.positions,
-														function(collegelist,
-																keyCollege) {
-															if (keyCollege == collegeName) {
-																$
-																		.map(
-																				collegelist,
-																				function(
-																						college,
-																						collegeCount) {
-																					$
-																							.map(
-																									college,
-																									function(
-																											departmentlist,
-																											keyDepartment) {
-																										if ($
-																												.inArray(
-																														keyDepartment,
-																														arrDepartment) !== -1) {
-																											return false;
-																										} else {
-																											arrDepartment
-																													.push(keyDepartment);
-																											$(
-																													'select[name="ddlDepartment"]')
-																													.get(
-																															rowIndex).options[$(
-																													'select[name="ddlDepartment"]')
-																													.get(
-																															rowIndex).options.length] = new Option(
-																													keyDepartment,
-																													keyDepartment);
-																										}
-																									});
-																				});
-															}
-														});
-										return false;
-									}
-								});
-			}
-			return false;
-		},
-
-		BindPositionTypeDropDown : function(userId, collegeName, departmentName) {
-			if (userId != null && collegeName != null && departmentName != null) {
-				$('select[name="ddlPositionType"]').get(rowIndex).options.length = 0;
-				$('select[name="ddlPositionTitle"]').get(rowIndex).options.length = 0;
-				var arrPositionType = [];
-
-				$
-						.map(
-								positionsDetails,
-								function(item, value) {
-									if (item.id == userId) {
-										$
-												.map(
-														item.positions,
-														function(collegelist,
-																keyCollege) {
-															if (keyCollege == collegeName) {
-																$
-																		.map(
-																				collegelist,
-																				function(
-																						college,
-																						collegeCount) {
-																					$
-																							.map(
-																									college,
-																									function(
-																											departmentlist,
-																											keyDepartment) {
-																										if (keyDepartment == departmentName) {
-																											$
-																													.map(
-																															departmentlist,
-																															function(
-																																	positionTypelist,
-																																	positionTypeCount) {
-																																$
-																																		.map(
-																																				positionTypelist,
-																																				function(
-																																						valuePositionTitle,
-																																						keyPositionType) {
-																																					if ($
-																																							.inArray(
-																																									keyPositionType,
-																																									arrPositionType) !== -1) {
-																																						return false;
-																																					} else {
-																																						arrPositionType
-																																								.push(keyPositionType);
-																																						$(
-																																								'select[name="ddlPositionType"]')
-																																								.get(
-																																										rowIndex).options[$(
-																																								'select[name="ddlPositionType"]')
-																																								.get(
-																																										rowIndex).options.length] = new Option(
-																																								keyPositionType,
-																																								keyPositionType);
-																																					}
-																																				});
-																															});
-																										}
-																									});
-																				});
-															}
-														});
-										return false;
-									}
-								});
-			}
-			return false;
-		},
-
-		BindPositionTitleDropDown : function(userId, collegeName,
-				departmentName, positionTypeName) {
-			if (userId != null && collegeName != null && departmentName != null
-					&& positionTypeName != null) {
-				$('select[name="ddlPositionTitle"]').get(rowIndex).options.length = 0;
-				$
-						.map(
-								positionsDetails,
-								function(item, value) {
-									if (item.id == userId) {
-										$
-												.map(
-														item.positions,
-														function(collegelist,
-																keyCollege) {
-															// (keyCollege.hasOwnProperty(collegeName))
-															if (keyCollege == collegeName) {
-																$
-																		.map(
-																				collegelist,
-																				function(
-																						college,
-																						collegeCount) {
-																					$
-																							.map(
-																									college,
-																									function(
-																											departmentlist,
-																											keyDepartment) {
-																										if (keyDepartment == departmentName) {
-																											$
-																													.map(
-																															departmentlist,
-																															function(
-																																	positionTypelist,
-																																	positionTypeCount) {
-																																$
-																																		.map(
-																																				positionTypelist,
-																																				function(
-																																						valuePositionTitle,
-																																						keyPositionType) {
-																																					if (keyPositionType == positionTypeName) {
-																																						$(
-																																								'select[name="ddlPositionTitle"]')
-																																								.get(
-																																										rowIndex).options[$(
-																																								'select[name="ddlPositionTitle"]')
-																																								.get(
-																																										rowIndex).options.length] = new Option(
-																																								valuePositionTitle,
-																																								valuePositionTitle);
-																																					}
-																																				});
-
-																															});
-																										}
-																									});
-																				});
-															}
-														});
-										return false;
-									}
-								});
-			}
-			return false;
-		},
-
 		ajaxSuccess : function(msg) {
 			switch (delegation.config.ajaxCallMode) {
 			case 0:
@@ -2959,7 +1008,7 @@ $(function() {
 				});
 				break;
 
-			case 2: // Single Delegation Delete
+			case 2: // Single Delegation Revoke
 				delegation.BindDelegationGrid(null, null, null, null, null,
 						null, null);
 				csscody.info("<h2>" + 'Successful Message' + "</h2><p>"
@@ -2967,7 +1016,7 @@ $(function() {
 
 				$('#divDelegationForm').hide();
 				$('#divDelegationGrid').show();
-				delegation.config.proposalId = '0';
+				delegation.config.delegationId = '0';
 				delegation.config.proposalRoles = "";
 				delegation.config.buttonType = "";
 				delegation.config.arguments = [];
@@ -2977,7 +1026,7 @@ $(function() {
 				break;
 			break;
 
-		case 3: // Multiple Delegation Delete
+		case 3: // Multiple Delegation Revoke
 			SageData.Get("gdvDelegations").Arr.length = 0;
 			delegation.BindDelegationGrid(null, null, null, null, null, null,
 					null);
@@ -2989,30 +1038,8 @@ $(function() {
 		case 4:// For Delegation Edit Action
 			delegation.FillForm(msg);
 
-			// Initialize Appendices content and Uploader
-			delegation.InitializeUploader(msg.appendices);
-
 			$('#divDelegationGrid').hide();
 			$('#divDelegationForm').show();
-			break;
-
-		case 5: // Bind User List for Investigator Info
-			$('select[name="ddlName"]').get(rowIndex).options.length = 0;
-			$('select[name="ddlCollege"]').get(rowIndex).options.length = 0;
-			$('select[name="ddlDepartment"]').get(rowIndex).options.length = 0;
-			$('select[name="ddlPositionType"]').get(rowIndex).options.length = 0;
-			$('select[name="ddlPositionTitle"]').get(rowIndex).options.length = 0;
-			$('input[name="txtPhoneNo"]').eq(rowIndex).val('');
-
-			$
-					.each(
-							msg,
-							function(item, value) {
-								$('select[name="ddlName"]').get(rowIndex).options[$(
-										'select[name="ddlName"]').get(rowIndex).options.length] = new Option(
-								// value.fullName, value.id);
-								value, item);
-							});
 			break;
 
 		case 6: // Bind User Position Details on dropdown selection change
@@ -3025,178 +1052,6 @@ $(function() {
 			$('input[name="txtPhoneNo"]').eq(rowIndex).val('');
 			break;
 
-		case 7:// Unique Project Title Check
-			projectTitleIsUnique = stringToBoolean(msg);
-			break;
-
-		case 8:
-			$
-					.each(
-							msg,
-							function(index, item) {
-								var signedDate = '';
-								var readOnly = '';
-								var focusMethod = '';
-								var allowedChange = false;
-								var allowedSign = false;
-								var userPositionTitle = item.positionTitle
-										.split(' ').join('_');
-
-								if (item.signedDate != null) {
-									signedDate = item.signedDate;
-								}
-
-								var cloneRow = '<tr><td><span class="cssClassLabel" name="fullname" role="'
-										+ item.positionTitle
-										+ '" delegated="'
-										+ item.delegated
-										+ '">'
-										+ item.fullName
-										+ '</span></td><td><input data-for="signature" data-value="'
-										+ item.userProfileId
-										+ '" title="'
-										+ item.positionTitle
-										+ '\'s Signature" class="sfInputbox" placeholder="'
-										+ item.positionTitle
-										+ '\'s Signature" type="text" value="'
-										+ item.signature
-										+ '" name="'
-										+ item.userProfileId
-										+ userPositionTitle
-										+ '" readonly="true">'
-										+ '</td><td><input data-for="signaturedate" name="signaturedate'
-										+ item.userProfileId
-										+ userPositionTitle
-										+ '" title="Signed Date" class="sfInputbox" placeholder="Signed Date" type="text" readonly="true" value="'
-										+ $.format.date(signedDate,
-												'yyyy/MM/dd hh:mm:ss a')
-										+ '"></td><td><textarea rows="2" cols="26" name="proposalNotes'
-										+ item.userProfileId
-										+ userPositionTitle
-										+ '" readonly="true" title="Delegation Notes" class="cssClassTextArea" >'
-										+ item.note + '</textarea></td></tr>';
-
-								// $('#trSignChair').hide();
-								// $('#trSignDean').hide();
-								// $('#trSignBusinessManager').hide();
-								// $('#trSignIRB').hide();
-								// $('#trSignAdministrator').hide();
-								// $('#trSignDirector').hide();
-
-								switch (item.positionTitle) {
-								case "PI":
-								case "Co-PI":
-									$(cloneRow).appendTo("#trSignPICOPI tbody");
-									break;
-								case "Department Chair":
-									$(cloneRow).appendTo("#trSignChair tbody");
-									$('#trSignChair').show();
-									break;
-								case "Dean":
-									$(cloneRow).appendTo("#trSignDean tbody");
-									$('#trSignDean').show();
-									break;
-								case "Business Manager":
-									$(cloneRow).appendTo(
-											"#trSignBusinessManager tbody");
-									$('#trSignBusinessManager').show();
-									break;
-								case "IRB":
-									$(cloneRow).appendTo("#trSignIRB tbody");
-									$('#trSignIRB').show();
-									break;
-								case "University Research Administrator":
-									$(cloneRow).appendTo(
-											"#trSignAdministrator tbody");
-									$('#trSignAdministrator').show();
-									break;
-								case "University Research Director":
-									$(cloneRow).appendTo(
-											"#trSignDirector tbody");
-									$('#trSignDirector').show();
-									break;
-								default:
-									break;
-								}
-							});
-
-			var signTable = '';
-			var currentDelegationRoles = delegation.config.proposalRoles
-					.split(', ');
-			if ($.inArray("PI", currentDelegationRoles) !== -1
-					|| $.inArray("Co-PI", currentDelegationRoles) !== -1) {
-				signTable = "#trSignPICOPI";
-			} else {
-				switch (GPMS.utils.GetUserPositionTitle()) {
-				case "Department Chair":
-					signTable = "#trSignChair";
-					break;
-				case "Dean":
-					signTable = "#trSignDean";
-					break;
-				case "Business Manager":
-					signTable = "#trSignBusinessManager";
-					break;
-				case "IRB":
-					signTable = "#trSignIRB";
-					break;
-				case "University Research Administrator":
-					signTable = "#trSignAdministrator";
-					break;
-				case "University Research Director":
-					signTable = "#trSignDirector";
-					break;
-				default:
-					break;
-				}
-			}
-
-			if (signTable !== "") {
-				$(signTable + " tbody tr")
-						.find('input:eq(0)')
-						.each(
-								function(index) {
-
-									if (GPMS.utils.GetUserProfileID() == $(this)
-											.attr("data-value")) {
-										// if (item.signedDate == null) {
-										$(this).parents('tr').data(
-												"allowchange", "true").data(
-												"allowsign", "true");
-										$(this)
-												.parents('tr')
-												.find('input, textarea')
-												.each(
-														function(index) {
-															$(this).removeProp(
-																	"readonly");
-
-															if (index == 1) {// Date
-																$(this)
-																		.click(
-																				function() {
-																					delegation
-																							.BindCurrentDateTime(this);
-																				});
-																$(this)
-																		.attr(
-																				"required",
-																				"true");
-															} else { // Signature,
-																// Note
-																$(this)
-																		.attr(
-																				"required",
-																				"true");
-															}
-														});
-										// }
-									}
-								});
-			}
-
-			break;
-
 		case 9:
 			delegation.BindDelegationGrid(null, null, null, null, null, null,
 					null);
@@ -3204,7 +1059,7 @@ $(function() {
 
 			// $("#accordion").accordion("option", "active", 0);
 
-			// if (delegation.config.proposalId != "0") {
+			// if (delegation.config.delegationId != "0") {
 			var changeMade = "Saved";
 			switch (delegation.config.buttonType) {
 			case "Submit":
@@ -3234,85 +1089,13 @@ $(function() {
 			// }
 			$('#divDelegationForm').hide();
 
-			delegation.config.proposalId = '0';
+			delegation.config.delegationId = '0';
 			delegation.config.proposalRoles = "";
 			delegation.config.buttonType = "";
 			delegation.config.arguments = [];
 			delegation.config.events = "";
 			delegation.config.content = "";
 			delegation.config.investigatorButton = "";
-			break;
-
-		case 10:
-			// delegation.DeleteSingleDelegation(delegation.config.proposalId,
-			// delegation.config.proposalRoles);
-			break;
-
-		case 11:
-			// if (delegation.config.proposalId != '0') {
-			// delegation.SaveDelegation(delegation.config.buttonType,
-			// delegation.config.proposalRoles,
-			// delegation.config.proposalId, false);
-			// }
-			break;
-
-		case 12:
-			// Removed
-			break;
-
-		// Withdraw/ Archive
-		case 13:
-			// if (delegation.config.proposalId != '0') {
-			// delegation.UpdateDelegationStatus(delegation.config.buttonType,
-			// delegation.config.proposalId);
-			// }
-
-			break;
-
-		case 14:
-			// if (delegation.config.proposalId != '0') {
-			// return false;
-			// }
-			break;
-
-		case 15:
-			// Removed
-			break;
-
-		case 16:
-			// Removed
-			break;
-
-		case 17:
-			if (msg != "No Record") {
-				window.location.href = GPMS.utils.GetGPMSServicePath()
-						+ 'files/download?fileName=' + msg;
-			} else {
-				csscody.alert("<h2>" + 'Information Message' + "</h2><p>"
-						+ 'No Record found!' + "</p>");
-			}
-			break;
-
-		case 18:
-			positionsDetails = [];
-			$.merge(positionsDetails, msg);
-			$('select[name="ddlCollege"]').get(0).options.length = 0;
-			$('select[name="ddlDepartment"]').get(0).options.length = 0;
-			$('select[name="ddlPositionType"]').get(0).options.length = 0;
-			$('select[name="ddlPositionTitle"]').get(0).options.length = 0;
-			$('input[name="txtPhoneNo"]').eq(0).val('');
-			break;
-
-		case 19:
-			// Removed
-			break;
-
-		case 20:
-			// Removed
-			break;
-
-		case 21:
-			// Removed
 			break;
 
 		}
@@ -3328,14 +1111,14 @@ $(function() {
 				break;
 			case 2:
 				// csscody.error('<h2>' + 'Error Message' + '</h2><p>'
-				// + 'Failed to delete the proposal.' + '</p>');
+				// + 'Failed to revoke the proposal.' + '</p>');
 				csscody.error('<h2>' + 'Error Message' + '</h2><p>'
 						+ 'You are not allowed to DELETE this proposal! '
 						+ msg.responseText + '</p>');
 				break;
 			case 3:
 				csscody.error('<h2>' + 'Error Message' + '</h2><p>'
-						+ 'Failed to delete multiple proposals.' + '</p>');
+						+ 'Failed to revoke multiple proposals.' + '</p>');
 				break;
 			case 4:
 				csscody.error('<h2>' + 'Error Message' + '</h2><p>'
@@ -3452,7 +1235,7 @@ $(function() {
 
 			case 21:
 				csscody.error("<h2>" + 'Error Message' + "</h2><p>"
-						+ 'Cannot delete Investigator! ' + msg.responseText
+						+ 'Cannot revoke Investigator! ' + msg.responseText
 						+ "</p>");
 				break;
 
@@ -3526,25 +1309,25 @@ $(function() {
 		},
 
 		init : function(config) {
-			$("#txtSearchSubmittedOnFrom").datepicker(
+			$("#txtSearchDelegatedFrom").datepicker(
 					{
 						dateFormat : 'yy-mm-dd',
 						changeMonth : true,
 						changeYear : true,
 						onSelect : function(selectedDate) {
-							$("#txtSearchSubmittedOnTo").datepicker("option",
+							$("#txtSearchDelegatedTo").datepicker("option",
 									"minDate", selectedDate);
 						}
 					}).mask("9999-99-99", {
 				placeholder : "yyyy-mm-dd"
 			});
-			$("#txtSearchSubmittedOnTo").datepicker(
+			$("#txtSearchDelegatedTo").datepicker(
 					{
 						dateFormat : 'yy-mm-dd',
 						changeMonth : true,
 						changeYear : true,
 						onSelect : function(selectedDate) {
-							$("#txtSearchSubmittedOnFrom").datepicker("option",
+							$("#txtSearchDelegatedFrom").datepicker("option",
 									"maxDate", selectedDate);
 						}
 					}).mask("9999-99-99", {
@@ -3556,161 +1339,34 @@ $(function() {
 			$('#divDelegationGrid').show();
 
 			// For Filling Form
-			$("#txtDueDate").datepicker({
-				dateFormat : 'yy-mm-dd',
-				changeMonth : true,
-				changeYear : true
-			}).mask("9999-99-99", {
-				placeholder : "yyyy-mm-dd"
-			});
-
-			$("#txtProjectPeriodFrom").datepicker(
+			$("#txtDelegationFrom").datepicker(
 					{
 						dateFormat : 'yy-mm-dd',
 						changeMonth : true,
 						changeYear : true,
 						onSelect : function(selectedDate) {
-							$("#txtProjectPeriodTo").datepicker("option",
+							$("#txtDelegationTo").datepicker("option",
 									"minDate", selectedDate);
 						}
 					}).mask("9999-99-99", {
 				placeholder : "yyyy-mm-dd"
 			});
-			$("#txtProjectPeriodTo").datepicker(
+			$("#txtDelegationTo").datepicker(
 					{
 						dateFormat : 'yy-mm-dd',
 						changeMonth : true,
 						changeYear : true,
 						onSelect : function(selectedDate) {
-							$("#txtProjectPeriodFrom").datepicker("option",
+							$("#txtDelegationFrom").datepicker("option",
 									"maxDate", selectedDate);
 						}
 					}).mask("9999-99-99", {
 				placeholder : "yyyy-mm-dd"
 			});
 
-			delegation.BindDelegationStatus();
-
 			// delegation.BindAllUsersAndPositions();
 
-			delegation.BindUserDropDown();
-
-			// Form Position details Drop downs
-			$('select[name="ddlName"]').on("change", function() {
-				rowIndex = $(this).closest('tr').prevAll("tr").length;
-				if ($(this).val() != "0") {
-					delegation.BindDefaultUserPosition(rowIndex);
-				} else {
-					$(this).find('option:gt(0)').remove();
-				}
-			});
-
-			$('select[name="ddlCollege"]').on(
-					"change",
-					function() {
-						rowIndex = $(this).closest('tr').prevAll("tr").length;
-						if ($(this).val() != "0") {
-							delegation.BindDepartmentDropDown($(
-									'select[name="ddlName"]').eq(rowIndex)
-									.val(), $(this).val());
-							delegation.BindPositionTypeDropDown($(
-									'select[name="ddlName"]').eq(rowIndex)
-									.val(), $(this).val(), $(
-									'select[name="ddlDepartment"]')
-									.eq(rowIndex).val());
-							delegation.BindPositionTitleDropDown($(
-									'select[name="ddlName"]').eq(rowIndex)
-									.val(), $(this).val(), $(
-									'select[name="ddlDepartment"]')
-									.eq(rowIndex).val(), $(
-									'select[name="ddlPositionType"]').eq(
-									rowIndex).val());
-						} else {
-							$(this).find('option:gt(0)').remove();
-						}
-					});
-
-			$('select[name="ddlDepartment"]')
-					.on(
-							"change",
-							function() {
-								rowIndex = $(this).closest('tr').prevAll("tr").length;
-								if ($('select[name="ddlCollege"]').eq(rowIndex)
-										.val() != "0"
-										&& $(this).val() != "0") {
-									delegation.BindPositionTypeDropDown($(
-											'select[name="ddlName"]').eq(
-											rowIndex).val(), $(
-											'select[name="ddlCollege"]').eq(
-											rowIndex).val(), $(this).val());
-									delegation.BindPositionTitleDropDown($(
-											'select[name="ddlName"]').eq(
-											rowIndex).val(), $(
-											'select[name="ddlCollege"]').eq(
-											rowIndex).val(), $(this).val(), $(
-											'select[name="ddlPositionType"]')
-											.eq(rowIndex).val());
-								} else {
-									$('select[name="ddlPositionType"]').find(
-											'option:gt(0)').remove();
-								}
-							});
-
-			$('select[name="ddlPositionType"]')
-					.on(
-							"change",
-							function() {
-								rowIndex = $(this).closest('tr').prevAll("tr").length;
-								if ($('select[name="ddlCollege"]').eq(rowIndex)
-										.val() != "0"
-										&& $('select[name="ddlDepartment"]')
-												.eq(rowIndex).val() != "0"
-										&& $(this).val() != "0") {
-									delegation.BindPositionTitleDropDown($(
-											'select[name="ddlName"]').eq(
-											rowIndex).val(), $(
-											'select[name="ddlCollege"]').eq(
-											rowIndex).val(), $(
-											'select[name="ddlDepartment"]').eq(
-											rowIndex).val(), $(this).val());
-								} else {
-									$('select[name="ddlPositionTitle"]').find(
-											'option:gt(0)').remove();
-								}
-
-							});
-
-			$('#btnDeleteSelected')
-					.click(
-							function() {
-								var proposal_ids = '';
-								proposal_ids = SageData.Get("gdvDelegations").Arr
-										.join(',');
-
-								if (proposal_ids.length > 10) {
-									var properties = {
-										onComplete : function(e) {
-											delegation.ConfirmDeleteMultiple(
-													proposal_ids, e);
-										}
-									};
-									csscody
-											.confirm(
-													"<h2>"
-															+ 'Delete Confirmation'
-															+ "</h2><p>"
-															+ 'Are you certain you want to delete selected proposal(s)?'
-															+ "</p>",
-													properties);
-								} else {
-									csscody
-											.alert('<h2>'
-													+ 'Information Alert'
-													+ '</h2><p>'
-													+ 'Please select at least one proposal before deleting.'
-													+ '</p>');
-								}
-							});
+			delegation.BindUserDropDown();		
 
 			$("#btnLogsExportToExcel").on(
 					"click",
@@ -3738,7 +1394,7 @@ $(function() {
 						}
 
 						delegation.LogsExportToExcel(
-								delegation.config.proposalId, action,
+								delegation.config.delegationId, action,
 								auditedBy, activityOnFrom, activityOnTo);
 					});
 
@@ -3801,7 +1457,7 @@ $(function() {
 			$('#btnBack').on("click", function() {
 				$('#divDelegationGrid').show();
 				$('#divDelegationForm').hide();
-				delegation.config.proposalId = '0';
+				delegation.config.delegationId = '0';
 				delegation.config.proposalRoles = "";
 				delegation.config.proposalStatus = "";
 				delegation.config.submittedByPI = "";
@@ -3826,40 +1482,22 @@ $(function() {
 				// 0);
 			});
 
-			$('#btnAddNew')
-					.on(
-							"click",
-							function() {
-								if (delegation.config.proposalId == '0') {
-									$('#lblFormHeading').html(
-											'New Delegation Details');
+			$('#btnAddNew').on("click", function() {
+				if (delegation.config.delegationId == '0') {
+					$('#lblFormHeading').html('New Delegation Details');
 
-									// Initialize Appendices content and
-									// Uploader
-									delegation.InitializeUploader("");
+					$("#btnReset").show();
+					$("#btnSaveDelegation").show();
+					$("#btnRevokeDelegation").hide();
 
-									$("#btnReset").show();
-									$("#btnSaveDelegation").show();
-									$("#btnDeleteDelegation").hide();
+					delegation.ClearForm();
 
-									$('#ui-id-23').hide();
-									$('#ui-id-24').find(
-											'input, select, textarea').each(
-											function() {
-												// $(this).addClass("ignore");
-												$(this).prop('disabled', true);
-											});
+					delegation.BindCurrentUserPosition(0);
 
-									delegation.ClearForm();
-
-									delegation.BindCurrentUserPosition(0);
-
-									// delegation.BindPICoPISignatures();
-
-									$('#divDelegationGrid').hide();
-									$('#divDelegationForm').show();
-								}
-							});
+					$('#divDelegationGrid').hide();
+					$('#divDelegationForm').show();
+				}
+			});
 
 			$('#btnReset')
 					.on(
@@ -3868,7 +1506,7 @@ $(function() {
 								var properties = {
 									onComplete : function(e) {
 										if (e) {
-											if (delegation.config.proposalId == "0") {
+											if (delegation.config.delegationId == "0") {
 												delegation.ClearForm();
 
 												delegation
@@ -3891,8 +1529,8 @@ $(function() {
 														+ "</p>", properties);
 							});
 
-			// Delete
-			$('#btnDeleteDelegation')
+			// Revoke
+			$('#btnRevokeDelegation')
 					.click(
 							function(event) {
 								$('#ui-id-24').find('input, select, textarea')
@@ -3906,12 +1544,12 @@ $(function() {
 										if (e) {
 											// if (validator.form()) {
 											var $buttonType = $.trim($(
-													'#btnDeleteDelegation')
+													'#btnRevokeDelegation')
 													.text());
-											$('#btnDeleteDelegation')
-													.disableWith('Deleting...');
+											$('#btnRevokeDelegation')
+													.disableWith('Revoking...');
 
-											if (delegation.config.proposalId != "0"
+											if (delegation.config.delegationId != "0"
 													&& delegation.config.proposalStatus != "") {
 												delegation
 														.DeleteSingleDelegation(
@@ -3919,7 +1557,7 @@ $(function() {
 																delegation.config);
 											}
 
-											$('#btnDeleteDelegation')
+											$('#btnRevokeDelegation')
 													.enableAgain();
 											event.preventDefault();
 											return false;
@@ -3932,9 +1570,9 @@ $(function() {
 								csscody
 										.confirm(
 												"<h2>"
-														+ 'Delete Confirmation'
+														+ 'Revoke Confirmation'
 														+ "</h2><p>"
-														+ 'Are you certain you want to delete this proposal?'
+														+ 'Are you certain you want to revoke this proposal?'
 														+ "</p>", properties);
 							});
 
@@ -3977,82 +1615,6 @@ $(function() {
 								}
 							});
 
-			$('#txtProjectTitle').on("focus", function() {
-				$(this).siblings('.cssClassRight').hide();
-			}), $('#txtProjectTitle').on(
-					"blur",
-					function() {
-						var projectTitle = $.trim($(this).val());
-
-						delegation.checkUniqueProjectTitle(
-								delegation.config.proposalId, projectTitle,
-								$(this));
-						return false;
-					});
-
-			$("input[type=button].AddCoPI")
-					.on(
-							"click",
-							function() {
-								if ($(this).prop("name") == "DeleteOption") {
-									var t = $(this).closest('tr');
-									var properties = {
-										onComplete : function(e) {
-											if (e) {
-												t
-														.find("td")
-														.wrapInner(
-																"<div style='display: block'/>")
-														.parent()
-														.find("td div")
-														.slideUp(300);
-												t.remove();
-
-												$('#dataTable tbody tr:last')
-														.find(
-																$('select[name=ddlName]'))
-														.prop('disabled', false);
-											}
-										}
-									};
-									csscody
-											.confirm(
-													"<h2>"
-															+ 'Delete Confirmation'
-															+ "</h2><p>"
-															+ 'Are you certain you want to delete this investigator?'
-															+ "</p>",
-													properties);
-
-								} else if ($(this).prop("name") == "AddCoPI") {
-									if (delegation.countCoPIs() < 4) {
-										delegation.AddCoPIInvestigator($(this));
-									} else {
-										csscody
-												.error('<h2>'
-														+ 'Error Message'
-														+ '</h2><p>'
-														+ 'Maximum of Co-PIs is 4!</p>');
-									}
-								}
-							});
-
-			$("input[type=button].AddSenior")
-					.on(
-							"click",
-							function() {
-								if (delegation.countSeniorPersonnels() < 10) {
-									delegation
-											.AddSeniorPersonnelInvestigator($(this));
-								} else {
-									csscody
-											.error('<h2>'
-													+ 'Error Message'
-													+ '</h2><p>'
-													+ 'Maximum of Senior Personnel is 10!</p>');
-								}
-							});
-
 			$("#btnSearchDelegation").on("click", function() {
 				// if ($("#form1").valid()) {
 				delegation.SearchDelegations();
@@ -4071,197 +1633,6 @@ $(function() {
 				} else {
 					$("#lblConfirmCommitment").hide();
 				}
-			});
-
-			$("#ddlInstitutionalCommitmentsRequired").on("change", function() {
-				if ($("#ddlInstitutionalCommitmentsRequired").val() == "1") {
-					$("#lblCommitmentsRequired").show();
-				} else {
-					$("#lblCommitmentsRequired").hide();
-				}
-			});
-
-			$("#ddlDisclosedFinancialCOI").on("change", function() {
-				if ($("#ddlDisclosedFinancialCOI").val() == "1") {
-					$("#lblDisclosureRequired").show();
-				} else {
-					$("#lblDisclosureRequired").hide();
-				}
-			});
-
-			$("#ddlMaterialChanged").on("change", function() {
-				if ($("#ddlMaterialChanged").val() == "1") {
-					$("#lblMaterialChanged").show();
-				} else {
-					$("#lblMaterialChanged").hide();
-				}
-			});
-
-			$("#ddlUseHumanSubjects").on("change", function() {
-				if ($("#ddlUseHumanSubjects").val() == "1") {
-					$("#ddlIRBOptions").removeClass("ignore");
-					$("#lblUseHumanSubjects").show();
-					// $("#ddlIRBOptions").prop("selectedIndex", 0);
-					$("#tdHumanSubjectsOption").show();
-					$("#tdIRBOption").show();
-					if ($("#ddlIRBOptions").val() == "1") {
-						// $("#txtIRB").val('');
-						$("#txtIRB").removeClass("ignore");
-						$("#tdIRBtxt").show();
-					} else {
-						// $("#txtIRB").val('');
-						$("#txtIRB").addClass("ignore");
-						$("#tdIRBtxt").hide();
-					}
-				} else {
-					$("#ddlIRBOptions").addClass("ignore");
-					$("#txtIRB").addClass("ignore");
-					$("#lblUseHumanSubjects").hide();
-					// $("#ddlIRBOptions").prop("selectedIndex", 0);
-					$("#tdHumanSubjectsOption").hide();
-					$("#tdIRBOption").hide();
-					$("#tdIRBtxt").hide();
-				}
-			});
-
-			$("#ddlIRBOptions").on("change", function() {
-				if ($("#ddlIRBOptions").val() == "1") {
-					// $("#txtIRB").val('');
-					$("#txtIRB").removeClass("ignore");
-					$("#tdIRBtxt").show();
-				} else {
-					// $("#txtIRB").val('');
-					$("#txtIRB").addClass("ignore");
-					$("#tdIRBtxt").hide();
-				}
-			});
-
-			$("#ddlUseVertebrateAnimals").on("change", function() {
-				if ($("#ddlUseVertebrateAnimals").val() == "1") {
-					$("#ddlIACUCOptions").removeClass("ignore");
-					$("#lblUseVertebrateAnimals").show();
-					// $("#ddlIACUCOptions").prop("selectedIndex", 0);
-					$("#tdVertebrateAnimalsOption").show();
-					$("#tdIACUCOption").show();
-					if ($("#ddlIACUCOptions").val() == "1") {
-						// $("#txtIACUC").val('');
-						$("#txtIACUC").removeClass("ignore");
-						$("#tdIACUCtxt").show();
-					} else {
-						// $("#txtIACUC").val('');
-						$("#txtIACUC").addClass("ignore");
-						$("#tdIACUCtxt").hide();
-					}
-				} else {
-					$("#ddlIACUCOptions").addClass("ignore");
-					$("#txtIACUC").addClass("ignore");
-					$("#lblUseVertebrateAnimals").hide();
-					// $("#ddlIACUCOptions").prop("selectedIndex", 0);
-					$("#tdVertebrateAnimalsOption").hide();
-					$("#tdIACUCOption").hide();
-					$("#tdIACUCtxt").hide();
-				}
-			});
-
-			$("#ddlIACUCOptions").on("change", function() {
-				if ($("#ddlIACUCOptions").val() == "1") {
-					// $("#txtIACUC").val('');
-					$("#txtIACUC").removeClass("ignore");
-					$("#tdIACUCtxt").show();
-				} else {
-					// $("#txtIACUC").val('');
-					$("#txtIACUC").addClass("ignore");
-					$("#tdIACUCtxt").hide();
-				}
-			});
-
-			$("#ddlInvovleBioSafety").on("change", function() {
-				if ($("#ddlInvovleBioSafety").val() == "1") {
-					$("#ddlIBCOptions").removeClass("ignore");
-					$("#lblHasBiosafetyConcerns").show();
-					// $("#ddlIBCOptions").prop("selectedIndex", 0);
-					$("#tdBiosafetyOption").show();
-					$("#tdIBCOption").show();
-					if ($("#ddlIBCOptions").val() == "1") {
-						// $("#txtIBC").val('');
-						$("#txtIBC").removeClass("ignore");
-						$("#tdIBCtxt").show();
-					} else {
-						// $("#txtIBC").val('');
-						$("#txtIBC").addClass("ignore");
-						$("#tdIBCtxt").hide();
-					}
-				} else {
-					$("#ddlIBCOptions").addClass("ignore");
-					$("#txtIBC").addClass("ignore");
-					$("#lblHasBiosafetyConcerns").hide();
-					// $("#ddlIBCOptions").prop("selectedIndex", 0);
-					$("#tdBiosafetyOption").hide();
-					$("#tdIBCOption").hide();
-					$("#tdIBCtxt").hide();
-				}
-			});
-
-			$("#ddlIBCOptions").on("change", function() {
-				if ($("#ddlIBCOptions").val() == "1") {
-					// $("#txtIBC").val('');
-					$("#txtIBC").removeClass("ignore");
-					$("#tdIBCtxt").show();
-				} else {
-					// $("#txtIBC").val('');
-					$("#txtIBC").addClass("ignore");
-					$("#tdIBCtxt").hide();
-				}
-			});
-
-			$("#ddlInvolveNonFundedCollabs").on("change", function() {
-				if ($("#ddlInvolveNonFundedCollabs").val() == "1") {
-					$("#txtCollaborators").removeClass("ignore");
-					$("#lblInvolveNonFundedCollabs").show();
-					$("#trInvolveNonFundedCollabs").show();
-				} else {
-					$("#txtCollaborators").addClass("ignore");
-					$("#lblInvolveNonFundedCollabs").hide();
-					$("#trInvolveNonFundedCollabs").hide();
-				}
-			});
-
-			$("#ddlProprietaryInformation").on("change", function() {
-				if ($("#ddlProprietaryInformation").val() == "1") {
-					$("#txtPagesWithProprietaryInfo").removeClass("ignore");
-					$("#tdPagesWithProprietaryInfo").show();
-					$("#trTypeOfProprietaryInfo").show();
-				} else {
-					$("#txtPagesWithProprietaryInfo").addClass("ignore");
-					$("#tdPagesWithProprietaryInfo").hide();
-					$("#trTypeOfProprietaryInfo").hide();
-				}
-			});
-
-			$("#ddlPISalaryIncluded").on("change", function() {
-				if ($("#ddlPISalaryIncluded").val() == "2") {
-					$("#lblPISalaryIncluded").show();
-				} else {
-					$("#lblPISalaryIncluded").hide();
-				}
-			});
-
-			$("#ddlSubrecipients").on("change", function() {
-				if ($("#ddlSubrecipients").val() == "1") {
-					$("#txtNamesSubrecipients").removeClass("ignore");
-					$("#trSubrecipientsNames").show();
-				} else {
-					$("#txtNamesSubrecipients").addClass("ignore");
-					$("#trSubrecipientsNames").hide();
-				}
-			});
-
-			$("#txtDOB").datepicker({
-				dateFormat : 'yy-mm-dd',
-				changeMonth : true,
-				changeYear : true
-			}).mask("9999-99-99", {
-				placeholder : "yyyy-mm-dd"
 			});
 
 			$("#txtSearchActivityOnFrom").datepicker(
@@ -4284,86 +1655,6 @@ $(function() {
 				maxDate : 0
 			}).mask("9999-99-99", {
 				placeholder : "yyyy-mm-dd"
-			});
-
-			$("#txtBusinesManagerDate").datepicker({
-				dateFormat : 'yy-mm-dd',
-				changeMonth : true,
-				changeYear : true
-			}).mask("9999-99-99", {
-				placeholder : "yyyy-mm-dd"
-			});
-
-			$("#txtSearchTotalCostsFrom").autoNumeric('init', {
-				aSep : ',',
-				dGroup : '3',
-				aDec : '.',
-				aSign : '$',
-				pSign : 'p',
-				aPad : true
-			// vMin : "1.00"
-			});
-
-			$("#txtSearchTotalCostsTo").autoNumeric('init', {
-				aSep : ',',
-				dGroup : '3',
-				aDec : '.',
-				aSign : '$',
-				pSign : 'p',
-				aPad : true
-			// vMin : "1.00"
-			});
-
-			$("#txtDirectCosts").autoNumeric('init', {
-				aSep : ',',
-				dGroup : '3',
-				aDec : '.',
-				aSign : '$',
-				pSign : 'p',
-				aPad : true
-			});
-			$("#txtFACosts").autoNumeric('init', {
-				aSep : ',',
-				dGroup : '3',
-				aDec : '.',
-				aSign : '$',
-				pSign : 'p',
-				aPad : true
-			});
-			$("#txtTotalCosts").autoNumeric('init', {
-				aSep : ',',
-				dGroup : '3',
-				aDec : '.',
-				aSign : '$',
-				pSign : 'p',
-				aPad : true
-			});
-
-			$("#txtFARate").autoNumeric('init', {
-				aDec : '.',
-				aSign : ' %',
-				pSign : 's',
-				aPad : true,
-				vMin : "0.00",
-				vMax : "99.99"
-			});
-
-			$("#txtPISalary").autoNumeric('init', {
-				aSep : ',',
-				dGroup : '3',
-				aDec : '.',
-				aSign : '$',
-				pSign : 'p',
-				aPad : true
-			});
-
-			$("#txtPIFringe").autoNumeric('init', {
-				aSep : ',',
-				dGroup : '3',
-				aDec : '.',
-				aSign : '$',
-				pSign : 'p',
-				aPad : true
 			});
 
 			$(

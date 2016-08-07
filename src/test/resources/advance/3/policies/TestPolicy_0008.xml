@@ -358,7 +358,7 @@
         </Apply>
         <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
           <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
-            <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" Path="//ak:delegatorid/text()"/>
+            <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" Path="//ak:delegator/ak:id/text()"/>
           </Apply>
           <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">5745f29ebcbb29192ce0d42f</AttributeValue>
         </Apply>
@@ -376,5 +376,27 @@
         </Apply>
       </Apply>
     </Condition>
+  	<ObligationExpressions>
+      <ObligationExpression ObligationId="sendEmail" FulfillOn="Permit">
+        <AttributeAssignmentExpression AttributeId="emailBody">
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Hello User,&lt;br/&gt;&lt;br/&gt;You have been revoked from your delegation. &lt;br/&gt;&lt;br/&gt;Thank you, &lt;br/&gt; GPMS Team</AttributeValue>
+        </AttributeAssignmentExpression>
+        <AttributeAssignmentExpression AttributeId="emailSubject">
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Your delegation is revoked by: </AttributeValue>
+        </AttributeAssignmentExpression>
+        <AttributeAssignmentExpression AttributeId="delegatorName">
+          <AttributeSelector MustBePresent="false" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" Path="//ak:delegator/ak:fullname/text()" DataType="http://www.w3.org/2001/XMLSchema#string"/>
+        </AttributeAssignmentExpression>
+        <AttributeAssignmentExpression AttributeId="delegatorEmail">
+          <AttributeSelector MustBePresent="false" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" Path="//ak:delegator/ak:email/text()" DataType="http://www.w3.org/2001/XMLSchema#string"/>
+        </AttributeAssignmentExpression>
+        <AttributeAssignmentExpression AttributeId="delegateeName">
+          <AttributeSelector MustBePresent="false" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" Path="//ak:delegatee/ak:fullname/text()" DataType="http://www.w3.org/2001/XMLSchema#string"/>
+        </AttributeAssignmentExpression>
+        <AttributeAssignmentExpression AttributeId="delegateeEmail">
+          <AttributeSelector MustBePresent="false" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" Path="//ak:delegatee/ak:email/text()" DataType="http://www.w3.org/2001/XMLSchema#string"/>
+        </AttributeAssignmentExpression>
+      </ObligationExpression>
+    </ObligationExpressions>
   </Rule>
 </Policy>

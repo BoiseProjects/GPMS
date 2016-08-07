@@ -6,11 +6,20 @@
             <ak:record 
                 xmlns:ak="http://akpower.org">
                 <ak:delegation>
-                    <ak:delegationid>5796615246edfa49d60e87ae</ak:delegationid>
-                    <ak:delegatorid>5745f29ebcbb29192ce0d42f</ak:delegatorid>
-                    <ak:delegationfilename>chairdelegation.xml</ak:delegationfilename>
-                    <ak:revoked>false</ak:revoked>
-                </ak:delegation>                
+					<ak:delegationid>5796615246edfa49d60e87ae</ak:delegationid>
+					<ak:delegationfilename>chairdelegation.xml</ak:delegationfilename>
+					<ak:revoked>false</ak:revoked>
+					<ak:delegator>
+						<ak:id>5745f29ebcbb29192ce0d42f</ak:id>
+						<ak:fullname>Department Chemistry Chair</ak:fullname>
+						<ak:email>5745f29ebcbb29192ce0d42f</ak:email>
+					</ak:delegator>
+					<ak:delegatee>
+						<ak:id>578918b9bcbb29090c4278e7</ak:id>
+						<ak:fullname>Associate Chemistry Chair</ak:fullname>
+						<ak:email>5745f29ebcbb29192ce0d42f</ak:email>
+					</ak:delegatee>
+				</ak:delegation>                
             </ak:record>
         </Content>
         <Attribute IncludeInResult="false" AttributeId="urn:oasis:names:tc:xacml:3.0:content-selector">

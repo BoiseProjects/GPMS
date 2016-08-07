@@ -1,6 +1,7 @@
 package gpms.accesscontrol;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -12,11 +13,14 @@ import org.wso2.balana.Balana;
 import org.wso2.balana.ObligationResult;
 import org.wso2.balana.PDP;
 import org.wso2.balana.PDPConfig;
+import org.wso2.balana.ParsingException;
 import org.wso2.balana.ctx.AbstractRequestCtx;
 import org.wso2.balana.ctx.AbstractResult;
 import org.wso2.balana.ctx.AttributeAssignment;
 import org.wso2.balana.ctx.RequestCtxFactory;
 import org.wso2.balana.ctx.ResponseCtx;
+import org.wso2.balana.ctx.Status;
+import org.wso2.balana.ctx.xacml3.Result;
 import org.wso2.balana.finder.impl.FileBasedPolicyFinderModule;
 import org.wso2.balana.xacml3.Advice;
 
@@ -30,15 +34,19 @@ public class Accesscontrol {
 	AttributeSpreadSheet attrSpreadSheet = null;
 	private static String policyLocation = new String();
 
-	public Accesscontrol() throws Exception {
-		String file = "/XACMLDatasheet.xls";
-		InputStream inputStream = this.getClass().getResourceAsStream(file);
+	public Accesscontrol() {
+		try {
+			String file = "/XACMLDatasheet.xls";
+			InputStream inputStream = this.getClass().getResourceAsStream(file);
 
-		String policyFolderName = "/policy";
-		policyLocation = this.getClass().getResource(policyFolderName).toURI()
-				.getPath();
+			String policyFolderName = "/policy";
+			policyLocation = this.getClass().getResource(policyFolderName)
+					.toURI().getPath();
 
-		this.attrSpreadSheet = new AttributeSpreadSheet(inputStream);
+			this.attrSpreadSheet = new AttributeSpreadSheet(inputStream);
+		} catch (Exception e) {
+			System.err.println("Can not locate policy repository");
+		}
 
 	}
 
@@ -47,15 +55,13 @@ public class Accesscontrol {
 		if (balana == null) {
 			synchronized (Accesscontrol.class) {
 				if (balana == null) {
-					try {
-						// String policyLocation = (new File("."))
-						// .getCanonicalPath() + File.separator +"policy";
-						System.setProperty(
-								FileBasedPolicyFinderModule.POLICY_DIR_PROPERTY,
-								policyLocation);
-					} catch (Exception e) {
-						System.err.println("Can not locate policy repository");
-					}
+
+					// String policyLocation = (new File("."))
+					// .getCanonicalPath() + File.separator +"policy";
+					System.setProperty(
+							FileBasedPolicyFinderModule.POLICY_DIR_PROPERTY,
+							policyLocation);
+
 					balana = Balana.getInstance();
 				}
 			}
@@ -124,7 +130,6 @@ public class Accesscontrol {
 	}
 
 	private ResponseCtx getResponse(String request) {
-		ResponseCtx rc = null;
 		initBalana();
 		PDP pdp = getPDPNewInstance();
 		System.out
@@ -132,15 +137,28 @@ public class Accesscontrol {
 		System.out.println(request);
 		System.out
 				.println("===========================================================");
-		try {
-			RequestCtxFactory rcf = RequestCtxFactory.getFactory();
-			AbstractRequestCtx arc = rcf.getRequestCtx(request);
-			rc = pdp.evaluate(arc);
 
-		} catch (Exception e) {
-			System.out.print("somethingwrong");
+		AbstractRequestCtx requestCtx;
+		ResponseCtx responseCtx;
+
+		try {
+			requestCtx = RequestCtxFactory.getFactory().getRequestCtx(
+					request.replaceAll(">\\s+<", "><"));
+			responseCtx = pdp.evaluate(requestCtx);
+		} catch (ParsingException e) {
+			String error = "Invalid request  : " + e.getMessage();
+			// there was something wrong with the request, so we return
+			// Indeterminate with a status of syntax error...though this
+			// may change if a more appropriate status type exists
+			ArrayList<String> code = new ArrayList<String>();
+			code.add(Status.STATUS_SYNTAX_ERROR);
+			Status status = new Status(code, error);
+			// As invalid request, by default XACML 3.0 response is created.
+			responseCtx = new ResponseCtx(new Result(
+					AbstractResult.DECISION_INDETERMINATE, status));
 		}
-		return rc;
+
+		return responseCtx;
 	}
 
 	public static void main(String[] args) throws Exception {
@@ -569,7 +587,7 @@ public class Accesscontrol {
 		// "<AttributeValue DataType=\"http://www.w3.org/2001/XMLSchema#string\">Add</AttributeValue>"
 		// + "</Attribute>" + "</Attributes>" + "</Request>";
 
-		ResponseCtx response = getResponse(request.replaceAll(">\\s+<", "><"));
+		ResponseCtx response = getResponse(request);
 
 		if (response != null) {
 			System.out
@@ -849,6 +867,14 @@ public class Accesscontrol {
 						}
 					}
 				}
+				if (keySet.isEmpty()) {
+					resourceAttr
+							.append("<Attributes Category=\"urn:oasis:names:tc:xacml:3.0:attribute-category:resource\">");
+
+					if (contentProfile.length() != 0) {
+						resourceAttr.append(contentProfile);
+					}
+				}
 				resourceAttr.append("</Attributes>");
 				break;
 			case "Action":
@@ -930,7 +956,7 @@ public class Accesscontrol {
 		StringBuffer finalRequest = new StringBuffer();
 
 		finalRequest
-				.append("<Request xmlns=\"urn:oasis:names:tc:xacml:3.0:core:schema:wd-17\" CombinedDecision=\"false\" ReturnPolicyIdList=\"false\">")
+				.append("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><Request xmlns=\"urn:oasis:names:tc:xacml:3.0:core:schema:wd-17\" CombinedDecision=\"false\" ReturnPolicyIdList=\"false\">")
 				.append(subjectAttr).append(resourceAttr).append(actionAttr)
 				.append(environmentAttr).append("</Request>");
 

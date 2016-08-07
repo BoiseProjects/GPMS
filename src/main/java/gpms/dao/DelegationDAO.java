@@ -1,20 +1,19 @@
 package gpms.dao;
 
 import gpms.DAL.MongoDBConnector;
+import gpms.model.AuditLogInfo;
 import gpms.model.Delegation;
-import gpms.model.SignatureInfo;
+import gpms.model.DelegationInfo;
 import gpms.model.UserAccount;
+import gpms.model.UserProfile;
 
 import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
 import org.mongodb.morphia.dao.BasicDAO;
-import org.mongodb.morphia.query.Query;
 
 import com.mongodb.MongoClient;
 import com.mongodb.MongoException;
@@ -52,4 +51,58 @@ public class DelegationDAO extends BasicDAO<Delegation, String> {
 	public DelegationDAO(MongoClient mongo, Morphia morphia, String dbName) {
 		super(mongo, morphia, dbName);
 	}
+
+	public boolean revokeDelegation(Delegation existingDelegation,
+			UserProfile authorProfile) {
+		return false;
+	}
+
+	public List<DelegationInfo> findAllForUserDelegationGrid(int offset,
+			int limit, String delegatee, String delegatedFrom,
+			String delegatedTo, String delegatedAction, String isRevoked,
+			String userProfileID, String userCollege, String userDepartment,
+			String userPositionType, String userPositionTitle) {
+		return null;
+	}
+
+	public List<DelegationInfo> findAllUserDelegations(String delegatee,
+			String delegatedFrom, String delegatedTo, String delegatedAction,
+			String isRevoked, String userProfileID, String userCollege,
+			String userDepartment, String userPositionType,
+			String userPositionTitle) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Delegation findDelegationByDelegationID(ObjectId id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List<AuditLogInfo> findAllForDelegationAuditLogGrid(int offset,
+			int limit, ObjectId id, String action, String auditedBy,
+			String activityOnFrom, String activityOnTo) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List<AuditLogInfo> findAllUserDelegationAuditLogs(ObjectId id,
+			String action, String auditedBy, String activityOnFrom,
+			String activityOnTo) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void saveDelegation(Delegation existingDelegation,
+			UserProfile authorProfile) {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void updateDelegation(Delegation existingDelegation,
+			UserProfile authorProfile) {
+		// TODO Auto-generated method stub
+
+	}
+
 }

@@ -7,10 +7,19 @@
 		</Status>
 	</Result>
 	<Result>
-		<Decision>NotApplicable</Decision>
+		<Decision>Permit</Decision>
 		<Status>
 			<StatusCode Value="urn:oasis:names:tc:xacml:1.0:status:ok"/>
 		</Status>
+		<AssociatedAdvice>
+			<Advice AdviceId="userDetails">
+				<AttributeAssignment AttributeId="userId" DataType="http://www.w3.org/2001/XMLSchema#string">578918b9bcbb29090c4278e3</AttributeAssignment>
+				<AttributeAssignment AttributeId="userfullName" DataType="http://www.w3.org/2001/XMLSchema#string">Computer Engineering Dean</AttributeAssignment>
+				<AttributeAssignment AttributeId="userEmail" DataType="http://www.w3.org/2001/XMLSchema#string">cedean@gmail.com</AttributeAssignment>
+				<AttributeAssignment AttributeId="userDepartment" DataType="http://www.w3.org/2001/XMLSchema#string">Computer Engineering</AttributeAssignment>
+				<AttributeAssignment AttributeId="userPositionTitle" DataType="http://www.w3.org/2001/XMLSchema#string">Dean</AttributeAssignment>
+			</Advice>
+		</AssociatedAdvice>
 	</Result>
 	<Result>
 		<Decision>NotApplicable</Decision>
@@ -25,10 +34,11 @@
 		</Status>
 		<AssociatedAdvice>
 			<Advice AdviceId="userDetails">
-				<AttributeAssignment AttributeId="userfullName" DataType="http://www.w3.org/2001/XMLSchema#string">Computer Science Associate Chair</AttributeAssignment>
-				<AttributeAssignment AttributeId="userId" DataType="http://www.w3.org/2001/XMLSchema#string">578918b9bcbb29090c4278e7</AttributeAssignment>
+				<AttributeAssignment AttributeId="userId" DataType="http://www.w3.org/2001/XMLSchema#string">578918b9bcbb29090c4278e1</AttributeAssignment>
+				<AttributeAssignment AttributeId="userfullName" DataType="http://www.w3.org/2001/XMLSchema#string">Computer Engineering Associate Chair</AttributeAssignment>
+				<AttributeAssignment AttributeId="userEmail" DataType="http://www.w3.org/2001/XMLSchema#string">ceassociatechair@gmail.com</AttributeAssignment>
+				<AttributeAssignment AttributeId="userDepartment" DataType="http://www.w3.org/2001/XMLSchema#string">Computer Engineering</AttributeAssignment>
 				<AttributeAssignment AttributeId="userPositionTitle" DataType="http://www.w3.org/2001/XMLSchema#string">Associate Chair</AttributeAssignment>
-				<AttributeAssignment AttributeId="userDepartment" DataType="http://www.w3.org/2001/XMLSchema#string">Computer Science</AttributeAssignment>
 			</Advice>
 		</AssociatedAdvice>
 	</Result>

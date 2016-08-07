@@ -4249,7 +4249,7 @@ public class ProposalService {
 	// Save Submit Approve Disapprove
 	@POST
 	@Path("/SaveUpdateProposal")
-	@ApiOperation(value = "Save a New User or Update an existing Proposal", notes = "This API saves a New User or updates an existing Proposal")
+	@ApiOperation(value = "Save a New Proposal or Update an existing Proposal", notes = "This API saves a New Proposal or updates an existing Proposal")
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Success: { True }"),
 			@ApiResponse(code = 403, message = "Failed: { \"error\":\"error description\", \"status\": \"FAIL\" }") })
@@ -5916,13 +5916,13 @@ public class ProposalService {
 					.entity("No User Permission Attributes are send!").build();
 		} catch (Exception e) {
 			log.error(
-					"Could not save a New User or update an existing Proposal error e=",
+					"Could not save a New Proposal or update an existing Proposal error e=",
 					e);
 		}
 
 		return Response
 				.status(403)
-				.entity("{\"error\": \"Could Not Save A New User OR Update AN Existing Proposal\", \"status\": \"FAIL\"}")
+				.entity("{\"error\": \"Could Not Save A New Proposal OR Update AN Existing Proposal\", \"status\": \"FAIL\"}")
 				.build();
 	}
 
