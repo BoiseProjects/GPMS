@@ -59,7 +59,7 @@
             	</md:record>
 	    </md:records>
         </Content>
-    <Attribute IncludeInResult="true" AttributeId="urn:oasis:names:tc:xacml:3.0:profile:multiple:content-selector">
+    <Attribute IncludeInResult="false" AttributeId="urn:oasis:names:tc:xacml:3.0:profile:multiple:content-selector">
       <AttributeValue DataType="urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression" 
       	XPathCategory="urn:oasis:names:tc:xacml:3.0:attribute-category:resource">//md:records/md:record</AttributeValue>
     </Attribute>    

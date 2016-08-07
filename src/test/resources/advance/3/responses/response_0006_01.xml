@@ -9,9 +9,9 @@
 			<Attribute AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resource-id" IncludeInResult="true">
 				<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#anyURI">http://medico.com/record/patient/BartSimpson</AttributeValue>
 			</Attribute>
-			<Attribute AttributeId="urn:oasis:names:tc:xacml:3.0:content-selector" IncludeInResult="true">
-				<AttributeValue DataType="urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression" XPathCategory="urn:oasis:names:tc:xacml:3.0:attribute-category:resource">(//md:records/md:record)[1]</AttributeValue>
-			</Attribute>
+<!-- 			<Attribute AttributeId="urn:oasis:names:tc:xacml:3.0:content-selector" IncludeInResult="true"> -->
+<!-- 				<AttributeValue DataType="urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression" XPathCategory="urn:oasis:names:tc:xacml:3.0:attribute-category:resource">(//md:records/md:record)[1]</AttributeValue> -->
+<!-- 			</Attribute> -->
 		</Attributes>
 	</Result>
 	<Result>
@@ -22,9 +22,6 @@
 		<Attributes Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource">
 			<Attribute AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resource-id" IncludeInResult="true">
 				<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#anyURI">http://medico.com/record/patient/BartSimpson</AttributeValue>
-			</Attribute>
-			<Attribute AttributeId="urn:oasis:names:tc:xacml:3.0:content-selector" IncludeInResult="true">
-				<AttributeValue DataType="urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression" XPathCategory="urn:oasis:names:tc:xacml:3.0:attribute-category:resource">(//md:records/md:record)[2]</AttributeValue>
 			</Attribute>
 		</Attributes>
 	</Result>
