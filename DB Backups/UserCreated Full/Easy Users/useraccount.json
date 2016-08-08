@@ -271,10 +271,10 @@
 { 
     "_id" : ObjectId("57505b9e65dbb34d173fc700"), 
     "username" : "edmund", 
-    "password" : "1000:2faa8aff6843ecd3f9151bd8cabe474a8b2a69420d0fabc2:a7fcab4ae91ca23b416ebceece0add491a1431db912eda51", 
+    "password" : "1000:71e81308615cfcd5d3f2121df769257c516bc070313a36ae:3b29f9d067b97456ce7479b6d305fd28d09440d7150b8e51", 
     "deleted" : false, 
     "active" : true, 
     "admin" : false, 
     "added on" : ISODate("2016-06-02T16:15:26.791+0000"), 
-    "version" : NumberLong(1)
+    "version" : NumberLong(2)
 }

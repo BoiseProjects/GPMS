@@ -53,8 +53,7 @@
 	var userPositionType = '<%=session.getAttribute("userPositionType")%>';
 	var	userPositionTitle = '<%=session.getAttribute("userPositionTitle")%>';
 	var userDepartment = '<%=session.getAttribute("userDepartment")%>';
-	var userCollege = '<%=session.getAttribute("userCollege")%>
-	';
+	var userCollege = '<%=session.getAttribute("userCollege")%>';
 
 	var gpmsServicePath = "REST/";
 	var gpmsRootPath = "http://localhost:8181/GPMS/";
@@ -212,8 +211,8 @@
 																		id="ddlSearchIsRevoked" class="sfListmenu"
 																		style="width: 80px;">
 																			<option value="0">--All--</option>
-																			<option value="Approve">Yes</option>
-																			<option value="Disapprove">No</option>
+																			<option value="True">True</option>
+																			<option value="False">False</option>
 																	</select></td>
 																	<td><label class="cssClassLabel">&nbsp;</label>
 																		<button title="Search Delegation" class="sfBtn"
@@ -250,15 +249,15 @@
 												</div>
 											</div>
 											<div class="sfFormwrapper">
-												<table cellspacing="0" cellpadding="0" border="0">
+												<table cellspacing="0" cellpadding="0" border="0" id="tblDeletationDetails">
 													<tbody>
 														<tr>
 															<td><span class="cssClassLabel"
 																id="lblDelegateAction">Delegate Action:</span> <span
 																class="cssClassRequired">*</span></td>
 															<td><select title="Choose Delegate Action"
-																class="sfListmenu" name="ddlDelegateAction"
-																style="width: 140px;" required="true">
+																class="sfListmenu" id="ddlDelegateAction"
+																name="ddlDelegateAction" required="true">
 																	<option value="Approve">Approve</option>
 																	<option value="Disapprove">Disapprove</option>
 															</select></td>
@@ -267,19 +266,20 @@
 															<td><span class="cssClassLabel" id="lblDelegateTo">Delegate
 																	To:</span> <span class="cssClassRequired">*</span></td>
 															<td><select title="Choose Delegate To"
-																class="sfListmenu" name="ddlDelegateTo"
-																style="width: 140px;" required="true">
+																class="sfListmenu" id="ddlDelegateTo"
+																name="ddlDelegateTo" required="true">
 															</select></td>
 														</tr>
 														<tr>
-															<td><span id="lblDOB" class="cssClassLabel">Delegation
-																	Start From:</span> <span class="cssClassRequired">*</span></td>
+															<td><span id="lblDelegationFrom"
+																class="cssClassLabel">Delegation Start From:</span> <span
+																class="cssClassRequired">*</span></td>
 															<td class="cssClassTableRightCol"><input
 																title="Delegation Start From" type="text"
 																id="txtDelegationFrom" class="sfInputbox"
 																name="delegationFrom"
 																placeholder="Delegation Start From" /></td>
-															<td><span id="lblDOB" class="cssClassLabel">Delegation
+															<td><span id="lblDelegationTo" class="cssClassLabel">Delegation
 																	Start To:</span> <span class="cssClassRequired">*</span></td>
 															<td class="cssClassTableRightCol"><input
 																title="Delegation Start To" type="text"
@@ -292,6 +292,11 @@
 															<td><textarea class="cssClassTextArea"
 																	title="Delegation Reason" id="txtDelegationReason"
 																	name="delegationReason" cols="26" rows="2"></textarea></td>
+														</tr>
+														<tr id="trAddedOn">
+															<td><span class="cssClassLabel">Added On:</span></td>
+															<td class="cssClassTableRightCol"><span
+																id="lblDelegationDateCreated"></span></td>
 														</tr>
 													</tbody>
 												</table>

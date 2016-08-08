@@ -2445,35 +2445,35 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 		Query<UserProfile> profileQuery = ds.createQuery(UserProfile.class)
 				.field("_id").equal(userId).retrievedFields(true, "_id");
 
-		// delegationQuery.criteria("delegater user profile")
+		// delegationQuery.criteria("delegator user profile")
 		// .in(profileQuery.asKeyList())
 		// .criteria("delegated position title")
 		// .equalIgnoreCase(positionTitle).criteria("proposal id")
 		// .equal("").criteria("to").greaterThanOrEq(new Date());
 
 		delegationQuery.or(
-				delegationQuery.criteria("delegater user profile")
+				delegationQuery.criteria("delegator user profile")
 						.in(profileQuery.asKeyList()).criteria("revoked")
 						.equal(false).criteria("delegated college")
-						.equalIgnoreCase(positionCollege)
+						.equal(positionCollege)
 						.criteria("delegated department")
-						.equalIgnoreCase(positionDeptartment)
+						.equal(positionDeptartment)
 						.criteria("delegated position type")
-						.equalIgnoreCase(positionType)
+						.equal(positionType)
 						.criteria("delegated position title")
-						.equalIgnoreCase(positionTitle).criteria("proposal id")
-						.equal("").criteria("from").lessThanOrEq(new Date())
+						.equal(positionTitle).criteria("proposal id").equal("")
+						.criteria("from").lessThanOrEq(new Date())
 						.criteria("to").greaterThanOrEq(new Date()),
-				delegationQuery.criteria("delegater user profile")
+				delegationQuery.criteria("delegator user profile")
 						.in(profileQuery.asKeyList()).criteria("revoked")
 						.equal(false).criteria("delegated college")
-						.equalIgnoreCase(positionCollege)
+						.equal(positionCollege)
 						.criteria("delegated department")
-						.equalIgnoreCase(positionDeptartment)
+						.equal(positionDeptartment)
 						.criteria("delegated position type")
-						.equalIgnoreCase(positionType)
+						.equal(positionType)
 						.criteria("delegated position title")
-						.equalIgnoreCase(positionTitle).criteria("proposal id")
+						.equal(positionTitle).criteria("proposal id")
 						.containsIgnoreCase(proposalId).criteria("from")
 						.lessThanOrEq(new Date()).criteria("to")
 						.greaterThanOrEq(new Date()));
@@ -2484,7 +2484,7 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 			SignatureInfo signature = new SignatureInfo();
 
 			signature.setUserProfileId(delegation.getDelegateeId());
-			signature.setFullName(delegation.getDelegateeFullName());
+			signature.setFullName(delegation.getDelegatee());
 
 			signature.setPositionTitle(positionTitle);
 
@@ -2516,7 +2516,7 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 
 		delegationQuery.or(
 				delegationQuery
-						.and(delegationQuery.criteria("delegater user profile")
+						.and(delegationQuery.criteria("delegator user profile")
 								.in(profileQuery.asKeyList()),
 								delegationQuery.criteria("revoked")
 										.equal(false),
@@ -2536,7 +2536,7 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 						.lessThanOrEq(new Date()).criteria("to")
 						.greaterThanOrEq(new Date()),
 				delegationQuery
-						.and(delegationQuery.criteria("delegater user profile")
+						.and(delegationQuery.criteria("delegator user profile")
 								.in(profileQuery.asKeyList()),
 								delegationQuery.criteria("revoked")
 										.equal(false),

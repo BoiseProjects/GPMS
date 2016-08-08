@@ -4446,12 +4446,12 @@ $(function() {
 			});
 
 			$(
-					'#txtSearchProjectTitle,#txtSearchUserName,#txtSearchSubmittedOnFrom,#txtSearchSubmittedOnTo,#txtSearchTotalCostsFrom,#txtSearchTotalCostsTo,#ddlSearchProposalStatus',
-					'#ddlSearchUserRole').keyup(function(event) {
-				if (event.keyCode == 13) {
-					$("#btnSearchProposal").click();
-				}
-			});
+					'#txtSearchProjectTitle,#txtSearchUserName,#txtSearchSubmittedOnFrom,#txtSearchSubmittedOnTo,#txtSearchTotalCostsFrom,#txtSearchTotalCostsTo,#ddlSearchProposalStatus,#ddlSearchUserRole')
+					.keyup(function(event) {
+						if (event.keyCode == 13) {
+							$("#btnSearchProposal").click();
+						}
+					});
 
 			$(
 					'#txtSearchAction, #txtSearchAuditedBy, #txtSearchActivityOnFrom, #txtSearchActivityOnTo')

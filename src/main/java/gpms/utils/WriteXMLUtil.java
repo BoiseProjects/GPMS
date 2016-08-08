@@ -5,9 +5,7 @@ import gpms.model.Delegation;
 import java.io.File;
 import java.net.URISyntaxException;
 import java.text.DateFormat;
-import java.text.Format;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -57,10 +55,11 @@ public class WriteXMLUtil {
 
 			// Delegatee
 			String delegateeId = existingDelegation.getDelegateeId();
-			String delegateeName = existingDelegation.getDelegateeFullName();
+			String delegateeName = existingDelegation.getDelegatee();
 
 			String departmentName = existingDelegation.getDepartment();
-			// departmentName = existingDelegation.getDepartment().replaceAll(" ",
+			// departmentName =
+			// existingDelegation.getDepartment().replaceAll(" ",
 			// "-");
 			String positionTitle = existingDelegation.getPositionTitle();
 			// positionTitle =

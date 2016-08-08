@@ -139,9 +139,19 @@
 						<AttributeSelector MustBePresent="false" ContextSelectorId="urn:oasis:names:tc:xacml:3.0:content-selector" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" Path="//ak:email/text()" DataType="http://www.w3.org/2001/XMLSchema#string" />
 					</Apply>
 				</AttributeAssignmentExpression>
+				<AttributeAssignmentExpression AttributeId="userCollege">
+					<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
+						<AttributeSelector MustBePresent="false" ContextSelectorId="urn:oasis:names:tc:xacml:3.0:content-selector" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" Path="//ak:college/text()" DataType="http://www.w3.org/2001/XMLSchema#string" />
+					</Apply>
+				</AttributeAssignmentExpression>
 				<AttributeAssignmentExpression AttributeId="userDepartment">
 					<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
 						<AttributeSelector MustBePresent="false" ContextSelectorId="urn:oasis:names:tc:xacml:3.0:content-selector" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" Path="//ak:department/text()" DataType="http://www.w3.org/2001/XMLSchema#string" />
+					</Apply>
+				</AttributeAssignmentExpression>
+				<AttributeAssignmentExpression AttributeId="userPositionType">
+					<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
+						<AttributeSelector MustBePresent="false" ContextSelectorId="urn:oasis:names:tc:xacml:3.0:content-selector" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" Path="//ak:positionType/text()" DataType="http://www.w3.org/2001/XMLSchema#string" />
 					</Apply>
 				</AttributeAssignmentExpression>
 				<AttributeAssignmentExpression AttributeId="userPositionTitle">

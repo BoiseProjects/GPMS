@@ -562,30 +562,31 @@ public class UserService {
 			// String userProfileID = commonObj.getString("UserProfileID");
 			// String cultureName = commonObj.getString("CultureName");
 
-			ObjectId id = new ObjectId(profileId);
+			if (profileId != null) {
+				ObjectId id = new ObjectId(profileId);
 
-			// System.out.println("Profile ID String: " + profileId
-			// + ", Profile ID with ObjectId: " + id + ", User Name: "
-			// + userName + ", User Profile ID: " + userProfileID
-			// + ", Culture Name: " + cultureName);
+				// System.out.println("Profile ID String: " + profileId
+				// + ", Profile ID with ObjectId: " + id + ", User Name: "
+				// + userName + ", User Profile ID: " + userProfileID
+				// + ", Culture Name: " + cultureName);
 
-			user = userProfileDAO.findUserDetailsByProfileID(id);
+				user = userProfileDAO.findUserDetailsByProfileID(id);
 
-			// Gson gson = new Gson();
-			// .setDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz").create();
-			// Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd")
-			// .excludeFieldsWithoutExposeAnnotation().setPrettyPrinting()
-			// .create();
-			// return gson.toJson(user, UserProfile.class);
+				// Gson gson = new Gson();
+				// .setDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz").create();
+				// Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd")
+				// .excludeFieldsWithoutExposeAnnotation().setPrettyPrinting()
+				// .create();
+				// return gson.toJson(user, UserProfile.class);
 
-			// response = gson.toJson(user);
+				// response = gson.toJson(user);
 
-			return Response
-					.status(Response.Status.OK)
-					.entity(mapper.setDateFormat(formatter)
-							.writerWithDefaultPrettyPrinter()
-							.writeValueAsString(user)).build();
-
+				return Response
+						.status(Response.Status.OK)
+						.entity(mapper.setDateFormat(formatter)
+								.writerWithDefaultPrettyPrinter()
+								.writeValueAsString(user)).build();
+			}
 		} catch (Exception e) {
 			log.error(
 					"Could not get User Detail Information by ProfileId error e=",
