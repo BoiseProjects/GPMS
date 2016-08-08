@@ -358,7 +358,7 @@
         </Apply>
         <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
           <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
-            <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" Path="//ak:delegatorid/text()"/>
+            <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" Path="//ak:delegator/ak:id/text()"/>
           </Apply>
           <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">5745f0f7bcbb29192ce0d405</AttributeValue>
         </Apply>
