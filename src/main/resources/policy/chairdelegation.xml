@@ -66,7 +66,7 @@
           <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
             <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" Path="//ak:authorprofile/ak:userid/text()"/>
           </Apply>
-          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">578918b9bcbb29090c4278e7</AttributeValue>
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">57505b9e65dbb34d173fc701</AttributeValue>
         </Apply>
         <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:dateTime-greater-than-or-equal">
           <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:dateTime-one-and-only">
@@ -170,7 +170,7 @@
           <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
             <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" Path="//ak:authorprofile/ak:userid/text()"/>
           </Apply>
-          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">578918b9bcbb29090c4278e7</AttributeValue>
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">57505b9e65dbb34d173fc701</AttributeValue>
         </Apply>
         <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:dateTime-greater-than-or-equal">
           <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:dateTime-one-and-only">
@@ -274,7 +274,7 @@
           <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
             <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" Path="//ak:authorprofile/ak:userid/text()"/>
           </Apply>
-          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">578918b9bcbb29090c4278e7</AttributeValue>
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">57505b9e65dbb34d173fc701</AttributeValue>
         </Apply>
         <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:dateTime-greater-than-or-equal">
           <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:dateTime-one-and-only">
@@ -360,7 +360,7 @@
           <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
             <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" Path="//ak:delegatorid/text()"/>
           </Apply>
-          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">5745f29ebcbb29192ce0d42f</AttributeValue>
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">5745f0f7bcbb29192ce0d405</AttributeValue>
         </Apply>
         <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
           <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
