@@ -794,17 +794,17 @@ public class DelegationService {
 					contentProfile.append("csassociatechair@gmail.com");
 					contentProfile.append("</ak:email>");
 
-					contentProfile.append("<ak:userCollege>");
+					contentProfile.append("<ak:college>");
 					contentProfile.append("Engineering");
-					contentProfile.append("</ak:userCollege>");
+					contentProfile.append("</ak:college>");
 
 					contentProfile.append("<ak:department>");
 					contentProfile.append("Computer Science");
 					contentProfile.append("</ak:department>");
 
-					contentProfile.append("<ak:userPositionType>");
+					contentProfile.append("<ak:positionType>");
 					contentProfile.append("Administrator");
-					contentProfile.append("</ak:userPositionType>");
+					contentProfile.append("</ak:positionType>");
 
 					contentProfile.append("<ak:positiontitle>");
 					contentProfile.append("Associate Chair");
@@ -827,17 +827,17 @@ public class DelegationService {
 					contentProfile.append("ceassociatechair@gmail.com");
 					contentProfile.append("</ak:email>");
 					
-					contentProfile.append("<ak:userCollege>");
+					contentProfile.append("<ak:college>");
 					contentProfile.append("Engineering");
-					contentProfile.append("</ak:userCollege>");
+					contentProfile.append("</ak:college>");
 
 					contentProfile.append("<ak:department>");
 					contentProfile.append("Computer Engineering");
 					contentProfile.append("</ak:department>");
 					
-					contentProfile.append("<ak:userPositionType>");
+					contentProfile.append("<ak:positionType>");
 					contentProfile.append("Administrator");
-					contentProfile.append("</ak:userPositionType>");
+					contentProfile.append("</ak:positionType>");
 
 					contentProfile.append("<ak:positiontitle>");
 					contentProfile.append("Associate Chair");
@@ -860,17 +860,17 @@ public class DelegationService {
 					contentProfile.append("csdeptadminasst@gmail.com");
 					contentProfile.append("</ak:email>");
 					
-					contentProfile.append("<ak:userCollege>");
+					contentProfile.append("<ak:college>");
 					contentProfile.append("Engineering");
-					contentProfile.append("</ak:userCollege>");
+					contentProfile.append("</ak:college>");
 
 					contentProfile.append("<ak:department>");
 					contentProfile.append("Computer Science");
 					contentProfile.append("</ak:department>");
 					
-					contentProfile.append("<ak:userPositionType>");
+					contentProfile.append("<ak:positionType>");
 					contentProfile.append("Administrator");
-					contentProfile.append("</ak:userPositionType>");
+					contentProfile.append("</ak:positionType>");
 
 					contentProfile.append("<ak:positiontitle>");
 					contentProfile
@@ -893,17 +893,17 @@ public class DelegationService {
 					contentProfile.append("cedean@gmail.com");
 					contentProfile.append("</ak:email>");
 					
-					contentProfile.append("<ak:userCollege>");
+					contentProfile.append("<ak:college>");
 					contentProfile.append("Engineering");
-					contentProfile.append("</ak:userCollege>");
+					contentProfile.append("</ak:college>");
 
 					contentProfile.append("<ak:department>");
 					contentProfile.append("Computer Science");
 					contentProfile.append("</ak:department>");
 					
-					contentProfile.append("<ak:userPositionType>");
+					contentProfile.append("<ak:positionType>");
 					contentProfile.append("Administrator");
-					contentProfile.append("</ak:userPositionType>");
+					contentProfile.append("</ak:positionType>");
 
 					contentProfile.append("<ak:positiontitle>");
 					contentProfile.append("Dean");
@@ -925,17 +925,17 @@ public class DelegationService {
 					contentProfile.append("csassociatedean@gmail.com");
 					contentProfile.append("</ak:email>");
 					
-					contentProfile.append("<ak:userCollege>");
+					contentProfile.append("<ak:college>");
 					contentProfile.append("Engineering");
-					contentProfile.append("</ak:userCollege>");
+					contentProfile.append("</ak:college>");
 
 					contentProfile.append("<ak:department>");
 					contentProfile.append("Computer Science");
 					contentProfile.append("</ak:department>");
 					
-					contentProfile.append("<ak:userPositionType>");
+					contentProfile.append("<ak:positionType>");
 					contentProfile.append("Administrator");
-					contentProfile.append("</ak:userPositionType>");
+					contentProfile.append("</ak:positionType>");
 
 					contentProfile.append("<ak:positiontitle>");
 					contentProfile.append("Associate Dean");
