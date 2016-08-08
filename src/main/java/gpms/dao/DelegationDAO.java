@@ -222,8 +222,8 @@ public class DelegationDAO extends BasicDAO<Delegation, String> {
 
 	public Delegation findDelegationByDelegationID(ObjectId id) {
 		Datastore ds = getDatastore();
-		return ds.createQuery(Delegation.class).field("_id").equal(id)
-				.retrievedFields(false, "userProfile").get();
+		return ds.createQuery(Delegation.class).field("_id").equal(id).get();
+		// .retrievedFields(false, "userProfile")
 	}
 
 	public List<AuditLogInfo> findAllForDelegationAuditLogGrid(int offset,
@@ -455,6 +455,18 @@ public class DelegationDAO extends BasicDAO<Delegation, String> {
 
 	public boolean revokeDelegation(Delegation existingDelegation,
 			UserProfile authorProfile) {
+		try {
+			Datastore ds = getDatastore();
+			audit = new AuditLog(authorProfile, "Revoked delegation by "
+					+ authorProfile.getUserAccount().getUserName(), new Date());
+			existingDelegation.getAuditLog().add(audit);
+			existingDelegation.setRevoked(true);
+			ds.save(existingDelegation);
+			return true;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return false;
 	}
 

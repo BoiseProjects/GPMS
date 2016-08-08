@@ -661,8 +661,6 @@ public class DelegationService {
 				.build();
 	}
 
-	// TODO::: Get all the Permit User List using XACML for Action
-
 	@POST
 	@Path("/GetDelegableUsersForAction")
 	@ApiOperation(value = "Get Delegable Multiple Response For supplied Action of a User", notes = "This API gets Delegable Multiple Response For supplied Action for a User")
@@ -1513,7 +1511,7 @@ public class DelegationService {
 			contentProfile.append("<ak:delegator>");
 			contentProfile.append("<ak:id>");
 			contentProfile.append(authorProfile.getId().toString());
-			contentProfile.append("</ak:id");
+			contentProfile.append("</ak:id>");
 			contentProfile.append("<ak:fullname>");
 			contentProfile.append(authorFullName);
 			contentProfile.append("</ak:fullname>");
@@ -1525,7 +1523,7 @@ public class DelegationService {
 			contentProfile.append("<ak:delegatee>");
 			contentProfile.append("<ak:id>");
 			contentProfile.append(existingDelegation.getDelegateeId());
-			contentProfile.append("</ak:id");
+			contentProfile.append("</ak:id>");
 			contentProfile.append("<ak:fullname>");
 			contentProfile.append(existingDelegation.getDelegatee());
 			contentProfile.append("</ak:fullname>");
@@ -1546,6 +1544,11 @@ public class DelegationService {
 
 			Accesscontrol ac = new Accesscontrol();
 			HashMap<String, Multimap<String, String>> attrMap = new HashMap<String, Multimap<String, String>>();
+			Multimap<String, String> resourceMap = ArrayListMultimap.create();
+
+			if (attrMap.get("Resource") == null) {
+				attrMap.put("Resource", resourceMap);
+			}
 
 			Multimap<String, String> actionMap = ArrayListMultimap.create();
 

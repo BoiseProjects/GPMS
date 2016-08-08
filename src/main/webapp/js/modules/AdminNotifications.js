@@ -239,6 +239,7 @@
 													+ ' </li>';
 											break;
 										case 'User':
+										case 'Delegation':
 											// userID =
 											// strEncrypt(value.userProfileId);
 											// userName =
