@@ -26,22 +26,6 @@ import org.w3c.dom.Node;
 
 public class WriteXMLUtil {
 
-	private static String filePath = new String();
-
-	public static String getFilePath() {
-		return filePath;
-	}
-
-	public void setFilePath(String filePath) {
-		WriteXMLUtil.filePath = filePath;
-	}
-
-	public WriteXMLUtil() throws URISyntaxException {
-		System.out.println("Init");
-		this.setFilePath(this.getClass().getResource("/policy").toURI()
-				.getPath());
-	}
-
 	public static String saveDelegationPolicy(String userProfileID,
 			String delegatorName, String policyLocation,
 			Delegation existingDelegation) {
@@ -120,8 +104,7 @@ public class WriteXMLUtil {
 
 			rootDesc.appendChild(doc.createTextNode(delegateeName + " of "
 					+ departmentName + " with position title " + positionTitle
-					+ " is delegated to " + action + " proposal from "
-					+ fromDate + " to " + toDate + " by " + delegatorName));
+					+ " is delegated to " + action + " by " + delegatorName));
 			rootElement.appendChild(rootDesc);
 
 			// PolicyDefaults elements
@@ -274,8 +257,7 @@ public class WriteXMLUtil {
 							doc,
 							"urn:oasis:names:tc:xacml:1.0:function:dateTime-greater-than-or-equal",
 							"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
-							"//ak:currentdatetime/text()",
-							dateFormat.format(fromDate)));
+							"//ak:currentdatetime/text()", fromDate));
 
 			conditionRootApply1
 					.appendChild(getConditionApplyDateTime(
@@ -382,8 +364,7 @@ public class WriteXMLUtil {
 							doc,
 							"urn:oasis:names:tc:xacml:1.0:function:dateTime-greater-than-or-equal",
 							"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
-							"//ak:currentdatetime/text()",
-							dateFormat.format(fromDate)));
+							"//ak:currentdatetime/text()",fromDate));
 
 			conditionRootApply2
 					.appendChild(getConditionApplyDateTime(
@@ -490,8 +471,7 @@ public class WriteXMLUtil {
 							doc,
 							"urn:oasis:names:tc:xacml:1.0:function:dateTime-greater-than-or-equal",
 							"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
-							"//ak:currentdatetime/text()",
-							dateFormat.format(fromDate)));
+							"//ak:currentdatetime/text()",fromDate));
 
 			conditionRootApply3
 					.appendChild(getConditionApplyDateTime(
@@ -605,8 +585,8 @@ public class WriteXMLUtil {
 
 			DOMSource source = new DOMSource(doc);
 
-			StreamResult result = new StreamResult(new File(getFilePath() + "/"
-					+ delegationFileName));
+			StreamResult result = new StreamResult(new File(policyLocation
+					+ "/" + delegationFileName));
 
 			// Output to console for testing
 			// StreamResult result = new StreamResult(System.out);

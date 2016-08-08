@@ -64,8 +64,8 @@ public class DelegationDAO extends BasicDAO<Delegation, String> {
 	}
 
 	public List<DelegationInfo> findAllForUserDelegationGrid(int offset,
-			int limit, String delegatee, String delegatedFrom,
-			String delegatedTo, String delegatedAction, Boolean isRevoked,
+			int limit, String delegatee, String createdFrom,
+			String createdTo, String delegatedAction, Boolean isRevoked,
 			String delegatorID) throws ParseException {
 		Datastore ds = getDatastore();
 		List<DelegationInfo> delegations = new ArrayList<DelegationInfo>();
@@ -80,14 +80,14 @@ public class DelegationDAO extends BasicDAO<Delegation, String> {
 			delegationQuery.criteria("delegatee").containsIgnoreCase(delegatee);
 		}
 
-		if (delegatedFrom != null && !delegatedFrom.isEmpty()) {
-			Date delegatedStartsFrom = formatter.parse(delegatedFrom);
-			delegationQuery.criteria("from").greaterThanOrEq(
+		if (createdFrom != null && !createdFrom.isEmpty()) {
+			Date delegatedStartsFrom = formatter.parse(createdFrom);
+			delegationQuery.criteria("created on").greaterThanOrEq(
 					delegatedStartsFrom);
 		}
-		if (delegatedTo != null && !delegatedTo.isEmpty()) {
-			Date delegatedStartsTo = formatter.parse(delegatedTo);
-			delegationQuery.criteria("to").lessThanOrEq(delegatedStartsTo);
+		if (createdTo != null && !createdTo.isEmpty()) {
+			Date delegatedStartsTo = formatter.parse(createdTo);
+			delegationQuery.criteria("created on").lessThanOrEq(delegatedStartsTo);
 		}
 
 		if (delegatedAction != null) {
@@ -143,7 +143,7 @@ public class DelegationDAO extends BasicDAO<Delegation, String> {
 	}
 
 	public List<DelegationInfo> findAllUserDelegations(String delegatee,
-			String delegatedFrom, String delegatedTo, String delegatedAction,
+			String createdFrom, String createdTo, String delegatedAction,
 			Boolean isRevoked, String delegatorID) throws ParseException {
 		Datastore ds = getDatastore();
 		List<DelegationInfo> delegations = new ArrayList<DelegationInfo>();
@@ -158,14 +158,14 @@ public class DelegationDAO extends BasicDAO<Delegation, String> {
 			delegationQuery.criteria("delegatee").containsIgnoreCase(delegatee);
 		}
 
-		if (delegatedFrom != null && !delegatedFrom.isEmpty()) {
-			Date delegatedStartsFrom = formatter.parse(delegatedFrom);
-			delegationQuery.criteria("from").greaterThanOrEq(
+		if (createdFrom != null && !createdFrom.isEmpty()) {
+			Date delegatedStartsFrom = formatter.parse(createdFrom);
+			delegationQuery.criteria("created on").greaterThanOrEq(
 					delegatedStartsFrom);
 		}
-		if (delegatedTo != null && !delegatedTo.isEmpty()) {
-			Date delegatedStartsTo = formatter.parse(delegatedTo);
-			delegationQuery.criteria("to").lessThanOrEq(delegatedStartsTo);
+		if (createdTo != null && !createdTo.isEmpty()) {
+			Date delegatedStartsTo = formatter.parse(createdTo);
+			delegationQuery.criteria("created on").lessThanOrEq(delegatedStartsTo);
 		}
 
 		if (delegatedAction != null) {
@@ -446,11 +446,16 @@ public class DelegationDAO extends BasicDAO<Delegation, String> {
 
 	public void updateDelegation(Delegation existingDelegation,
 			UserProfile authorProfile) {
-		Datastore ds = getDatastore();
-		audit = new AuditLog(authorProfile, "Updated delegation by "
-				+ authorProfile.getUserAccount().getUserName(), new Date());
-		existingDelegation.getAuditLog().add(audit);
-		ds.save(existingDelegation);
+		try {
+			Datastore ds = getDatastore();
+			audit = new AuditLog(authorProfile, "Updated delegation by "
+					+ authorProfile.getUserAccount().getUserName(), new Date());
+			existingDelegation.getAuditLog().add(audit);
+			ds.save(existingDelegation);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public boolean revokeDelegation(Delegation existingDelegation,

@@ -129,8 +129,8 @@ public class DelegationService {
 
 			int offset = 0, limit = 0;
 			String delegatee = new String();
-			String delegatedFrom = new String();
-			String delegatedTo = new String();
+			String createdFrom = new String();
+			String createdTo = new String();
 			String delegatedAction = new String();
 			Boolean isRevoked = null;
 
@@ -151,13 +151,12 @@ public class DelegationService {
 					delegatee = delegationObj.get("delegatee").textValue();
 				}
 
-				if (delegationObj != null && delegationObj.has("delegatedFrom")) {
-					delegatedFrom = delegationObj.get("delegatedFrom")
-							.textValue();
+				if (delegationObj != null && delegationObj.has("createdFrom")) {
+					createdFrom = delegationObj.get("createdFrom").textValue();
 				}
 
-				if (delegationObj != null && delegationObj.has("delegatedTo")) {
-					delegatedTo = delegationObj.get("delegatedTo").textValue();
+				if (delegationObj != null && delegationObj.has("createdTo")) {
+					createdTo = delegationObj.get("createdTo").textValue();
 				}
 
 				if (delegationObj != null
@@ -220,8 +219,8 @@ public class DelegationService {
 			}
 
 			delegations = delegationDAO.findAllForUserDelegationGrid(offset,
-					limit, delegatee, delegatedFrom, delegatedTo,
-					delegatedAction, isRevoked, userProfileID);
+					limit, delegatee, createdFrom, createdTo, delegatedAction,
+					isRevoked, userProfileID);
 
 			return Response
 					.status(Response.Status.OK)
@@ -254,8 +253,8 @@ public class DelegationService {
 			List<DelegationInfo> delegations = new ArrayList<DelegationInfo>();
 
 			String delegatee = new String();
-			String delegatedFrom = new String();
-			String delegatedTo = new String();
+			String createdFrom = new String();
+			String createdTo = new String();
 			String delegatedAction = new String();
 			Boolean isRevoked = null;
 
@@ -268,13 +267,12 @@ public class DelegationService {
 					delegatee = delegationObj.get("delegatee").textValue();
 				}
 
-				if (delegationObj != null && delegationObj.has("delegatedFrom")) {
-					delegatedFrom = delegationObj.get("delegatedFrom")
-							.textValue();
+				if (delegationObj != null && delegationObj.has("createdFrom")) {
+					createdFrom = delegationObj.get("createdFrom").textValue();
 				}
 
-				if (delegationObj != null && delegationObj.has("delegatedTo")) {
-					delegatedTo = delegationObj.get("delegatedTo").textValue();
+				if (delegationObj != null && delegationObj.has("createdTo")) {
+					createdTo = delegationObj.get("createdTo").textValue();
 				}
 
 				if (delegationObj != null
@@ -341,13 +339,12 @@ public class DelegationService {
 					delegatee = delegationObj.get("delegatee").textValue();
 				}
 
-				if (delegationObj != null && delegationObj.has("delegatedFrom")) {
-					delegatedFrom = delegationObj.get("delegatedFrom")
-							.textValue();
+				if (delegationObj != null && delegationObj.has("createdFrom")) {
+					createdFrom = delegationObj.get("createdFrom").textValue();
 				}
 
-				if (delegationObj != null && delegationObj.has("delegatedTo")) {
-					delegatedTo = delegationObj.get("delegatedTo").textValue();
+				if (delegationObj != null && delegationObj.has("createdTo")) {
+					createdTo = delegationObj.get("createdTo").textValue();
 				}
 
 				if (delegationObj != null
@@ -367,7 +364,7 @@ public class DelegationService {
 			}
 
 			delegations = delegationDAO.findAllUserDelegations(delegatee,
-					delegatedFrom, delegatedTo, delegatedAction, isRevoked,
+					createdFrom, createdTo, delegatedAction, isRevoked,
 					userProfileID);
 
 			String filename = new String();
@@ -1108,7 +1105,6 @@ public class DelegationService {
 			}
 
 			String policyFileName = new String();
-			boolean delegationIsChanged = false;
 
 			if (root != null && root.has("delegationInfo")) {
 				JsonNode delegationInfo = root.get("delegationInfo");
@@ -1124,12 +1120,10 @@ public class DelegationService {
 						// using our serializable method for cloning
 						oldDelegation = SerializationHelper
 								.cloneThroughSerialize(existingDelegation);
+					} else {
+						newDelegation.setUserProfile(authorProfile);
+						newDelegation.setDelegatorId(userProfileID);
 					}
-				}
-
-				if (delegationID.equals("0")) {
-					newDelegation.setUserProfile(authorProfile);
-					newDelegation.setDelegatorId(userProfileID);
 				}
 
 				if (delegationInfo != null
@@ -1152,8 +1146,8 @@ public class DelegationService {
 					}
 				}
 
-				if (delegationInfo != null && delegationInfo.has("Delegateee")) {
-					final String delegatee = delegationInfo.get("Delegateee")
+				if (delegationInfo != null && delegationInfo.has("Delegatee")) {
+					final String delegatee = delegationInfo.get("Delegatee")
 							.textValue().trim().replaceAll("\\<[^>]*>", "");
 					if (validateNotEmptyValue(delegatee)
 							&& delegationID.equals("0")) {
@@ -1165,33 +1159,45 @@ public class DelegationService {
 
 				if (delegationInfo != null
 						&& delegationInfo.has("DelegateeCollege")) {
-					if (delegationID.equals("0")) {
-						newDelegation.setCollege(delegationInfo.get(
-								"DelegateeCollege").textValue());
+					final String college = delegationInfo
+							.get("DelegateeCollege").textValue().trim()
+							.replaceAll("\\<[^>]*>", "");
+					if (validateNotEmptyValue(college)
+							&& delegationID.equals("0")) {
+						newDelegation.setCollege(college);
 					}
 				}
 
 				if (delegationInfo != null
 						&& delegationInfo.has("DelegateeDepartment")) {
-					if (delegationID.equals("0")) {
-						newDelegation.setDepartment(delegationInfo.get(
-								"DelegateeDepartment").textValue());
+					final String department = delegationInfo
+							.get("DelegateeDepartment").textValue().trim()
+							.replaceAll("\\<[^>]*>", "");
+					if (validateNotEmptyValue(department)
+							&& delegationID.equals("0")) {
+						newDelegation.setDepartment(department);
 					}
 				}
 
 				if (delegationInfo != null
 						&& delegationInfo.has("DelegateePositionType")) {
-					if (delegationID.equals("0")) {
-						newDelegation.setPositionType(delegationInfo.get(
-								"DelegateePositionType").textValue());
+					final String positionType = delegationInfo
+							.get("DelegateePositionType").textValue().trim()
+							.replaceAll("\\<[^>]*>", "");
+					if (validateNotEmptyValue(positionType)
+							&& delegationID.equals("0")) {
+						newDelegation.setPositionType(positionType);
 					}
 				}
 
 				if (delegationInfo != null
 						&& delegationInfo.has("DelegateePositionTitle")) {
-					if (delegationID.equals("0")) {
-						newDelegation.setPositionTitle(delegationInfo.get(
-								"DelegateePositionTitle").textValue());
+					final String positionTitle = delegationInfo
+							.get("DelegateePositionTitle").textValue().trim()
+							.replaceAll("\\<[^>]*>", "");
+					if (validateNotEmptyValue(positionTitle)
+							&& delegationID.equals("0")) {
+						newDelegation.setPositionTitle(positionTitle);
 					}
 				}
 
@@ -1282,9 +1288,28 @@ public class DelegationService {
 
 								delegationDAO.updateDelegation(
 										existingDelegation, authorProfile);
-								delegationIsChanged = true;
 								notificationMessage = "Delegation Updated by "
 										+ userName + ".";
+
+								// Update the current Delegator bit to true
+								authorProfile.setDelegator(true);
+								userProfileDAO.save(authorProfile);
+
+								sendNotification(existingDelegation,
+										delegateeProfile.getUserAccount()
+												.getUserName(), userProfileID,
+										userName, userCollege, userDepartment,
+										userPositionType, userPositionTitle,
+										notificationMessage, "Delegation",
+										false);
+
+								return Response
+										.status(200)
+										.type(MediaType.APPLICATION_JSON)
+										.entity(mapper
+												.writerWithDefaultPrettyPrinter()
+												.writeValueAsString(true))
+										.build();
 							} else {
 								return Response.status(403)
 										.type(MediaType.APPLICATION_JSON)
@@ -1302,27 +1327,33 @@ public class DelegationService {
 						}
 					}
 				} else {
-					policyFileName = createDynamicPolicy(userProfileID,
-							delegatorName, policyLocation, existingDelegation);
+					delegationDAO.save(newDelegation);
 
-					existingDelegation.setDelegationFileName(policyFileName);
-					delegationDAO.saveDelegation(existingDelegation,
-							authorProfile);
-					delegationIsChanged = true;
-					notificationMessage = "Delegation Added by " + userName
-							+ ".";
-				}
+					try {
+						policyFileName = createDynamicPolicy(userProfileID,
+								delegatorName, policyLocation, newDelegation);
 
-				if (delegationIsChanged) {
-					// Update the current Delegator bit to true
-					authorProfile.setDelegator(true);
-					userProfileDAO.save(authorProfile);
+						newDelegation.setDelegationFileName(policyFileName);
+						delegationDAO.saveDelegation(newDelegation,
+								authorProfile);
 
-					sendNotification(existingDelegation, delegateeProfile
-							.getUserAccount().getUserName(), userProfileID,
-							userName, userCollege, userDepartment,
-							userPositionType, userPositionTitle,
-							notificationMessage, "Delegation", false);
+						notificationMessage = "Delegation Added by " + userName
+								+ ".";
+
+						sendNotification(newDelegation, delegateeProfile
+								.getUserAccount().getUserName(), userProfileID,
+								userName, userCollege, userDepartment,
+								userPositionType, userPositionTitle,
+								notificationMessage, "Delegation", false);
+					} catch (Exception e) {
+						delegationDAO.delete(newDelegation);
+					}
+
+					return Response
+							.status(200)
+							.type(MediaType.APPLICATION_JSON)
+							.entity(mapper.writerWithDefaultPrettyPrinter()
+									.writeValueAsString(true)).build();
 				}
 			} else {
 				return Response.status(403).type(MediaType.APPLICATION_JSON)
@@ -1336,7 +1367,7 @@ public class DelegationService {
 
 		return Response
 				.status(403)
-				.entity("{\"error\": \"Could Not Save A New Delegation OR Update AN Existing Delegation\", \"status\": \"FAIL\"}")
+				.entity("{\"error\": \"Could Not Save A New Delegation OR Update an Existing Delegation\", \"status\": \"FAIL\"}")
 				.build();
 	}
 

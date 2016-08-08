@@ -185,17 +185,17 @@
 																		class="sfTextBox" id="txtSearchDelegatee"
 																		placeholder="Delegated To" /></td>
 																	<td style="width: 180px; float: left;"><label
-																		class="cssClassLabel">Delegation Starts:</label>
+																		class="cssClassLabel">Delegation Created:</label>
 																		<div>
 																			<span class="cssClassLabel">From:</span> <input
-																				type="text" title="Delegated From"
-																				id="txtSearchDelegatedFrom" class="sfTextBoxFix"
+																				type="text" title="Created From"
+																				id="txtSearchCreatedFrom" class="sfTextBoxFix"
 																				placeholder="From">
 																		</div>
 																		<div>
 																			<span class="cssClassLabel">To:</span> <input
-																				type="text" title="Delegated To"
-																				id="txtSearchDelegatedTo" class="sfTextBoxFix"
+																				type="text" title="Created To"
+																				id="txtSearchCreatedTo" class="sfTextBoxFix"
 																				placeholder="To">
 																		</div></td>
 																	<td><label class="cssClassLabel">Delegated
@@ -210,7 +210,7 @@
 																			Revoked?</label> <select title="Choose Is Revoked?"
 																		id="ddlSearchIsRevoked" class="sfListmenu"
 																		style="width: 80px;">
-																			<option value="0">--All--</option>
+																			<option value="">--All--</option>
 																			<option value="True">True</option>
 																			<option value="False">False</option>
 																	</select></td>

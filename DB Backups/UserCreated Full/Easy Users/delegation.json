@@ -1,0 +1,47 @@
+{ 
+    "_id" : ObjectId("5796615246edfa49d60e87ae"), 
+    "delegator user profile" : DBRef("userprofile", ObjectId("5745f0f7bcbb29192ce0d405")), 
+    "delegator user id" : "5745f0f7bcbb29192ce0d405", 
+    "delegatee user id" : "57505b9e65dbb34d173fc701", 
+    "delegatee" : "Associate Computer Science Chair", 
+    "delegated college" : "Engineering", 
+    "delegated department" : "Computer Science", 
+    "delegated position type" : "Administrator", 
+    "delegated position title" : "Department Chair", 
+    "proposal id" : "", 
+    "from" : ISODate("2016-06-02T19:37:36.859+0000"), 
+    "to" : ISODate("2018-07-02T19:37:36.859+0000"), 
+    "action" : "Approve", 
+    "delegation reason" : "sick leave", 
+    "delegation file name" : "chairdelegation.xml", 
+    "created on" : ISODate("2016-07-26T19:37:36.859+0000"), 
+    "revoked" : false, 
+    "version" : NumberLong(5), 
+    "audit log" : [
+        {
+            "author info" : DBRef("userprofile", ObjectId("5745f0f7bcbb29192ce0d405")), 
+            "action" : "Created delegation by Computer Science Department Chair", 
+            "activity on" : ISODate("2016-07-25T20:38:28.023+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("5745f0f7bcbb29192ce0d405")), 
+            "action" : "Revoked delegation by chaircomputerscience", 
+            "activity on" : ISODate("2016-08-08T07:12:24.633+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("5745f0f7bcbb29192ce0d405")), 
+            "action" : "Revoked delegation by chaircomputerscience", 
+            "activity on" : ISODate("2016-08-08T07:15:28.317+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("5745f0f7bcbb29192ce0d405")), 
+            "action" : "Revoked delegation by chaircomputerscience", 
+            "activity on" : ISODate("2016-08-08T07:21:51.089+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("5745f0f7bcbb29192ce0d405")), 
+            "action" : "Revoked delegation by chaircomputerscience", 
+            "activity on" : ISODate("2016-08-08T08:14:20.666+0000")
+        }
+    ]
+}
