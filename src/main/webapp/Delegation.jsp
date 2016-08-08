@@ -182,7 +182,7 @@
 																<tr>
 																	<td><label class="cssClassLabel">Delegated
 																			To:</label> <input title="Delegated To" type="text"
-																		class="sfTextBoxFix" id="txtSearchDelegatee"
+																		class="sfTextBox" id="txtSearchDelegatee"
 																		placeholder="Delegated To" /></td>
 																	<td style="width: 180px; float: left;"><label
 																		class="cssClassLabel">Delegation Starts:</label>
@@ -249,7 +249,8 @@
 												</div>
 											</div>
 											<div class="sfFormwrapper">
-												<table cellspacing="0" cellpadding="0" border="0" id="tblDeletationDetails">
+												<table cellspacing="0" cellpadding="0" border="0"
+													id="tblDeletationDetails">
 													<tbody>
 														<tr>
 															<td><span class="cssClassLabel"

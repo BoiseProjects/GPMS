@@ -7,6 +7,7 @@
 		</Status>
 		<Obligations>
 			<Obligation ObligationId="sendEmail" ObligationType="">
+				<AttributeAssignment AttributeId="obligationType" DataType="http://www.w3.org/2001/XMLSchema#string">postobligation</AttributeAssignment>
 				<AttributeAssignment AttributeId="emailBody" DataType="http://www.w3.org/2001/XMLSchema#string">Hello User,&lt;br/&gt;&lt;br/&gt;You have been revoked from your delegation. &lt;br/&gt;&lt;br/&gt;Thank you, &lt;br/&gt; GPMS Team</AttributeAssignment>
 				<AttributeAssignment AttributeId="emailSubject" DataType="http://www.w3.org/2001/XMLSchema#string">Your delegation is revoked by: </AttributeAssignment>
 				<AttributeAssignment AttributeId="delegatorName" DataType="http://www.w3.org/2001/XMLSchema#string">Department Chemistry Chair</AttributeAssignment>

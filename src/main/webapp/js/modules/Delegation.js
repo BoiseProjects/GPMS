@@ -200,14 +200,16 @@ $(function() {
 					cssclass : '',
 					controlclass : '',
 					coltype : 'label',
-					align : 'left'
+					align : 'left',
+					hide : true
 				}, {
 					display : 'Delegatee Position Title',
 					name : 'delegatee_position_title',
 					cssclass : '',
 					controlclass : '',
 					coltype : 'label',
-					align : 'left'
+					align : 'left',
+					hide : true
 				}, {
 					display : 'Delegated Action',
 					name : 'delegated_action',
@@ -257,21 +259,24 @@ $(function() {
 					coltype : 'label',
 					align : 'left',
 					type : 'date',
-					format : 'yyyy/MM/dd hh:mm:ss a'
+					format : 'yyyy/MM/dd hh:mm:ss a',
+					hide : true
 				}, {
 					display : 'Last Audited By',
 					name : 'last_audited_by',
 					cssclass : '',
 					controlclass : '',
 					coltype : 'label',
-					align : 'left'
+					align : 'left',
+					hide : true
 				}, {
 					display : 'Last Audited Action',
 					name : 'last_audited_action',
 					cssclass : '',
 					controlclass : '',
 					coltype : 'label',
-					align : 'left'
+					align : 'left',
+					hide : true
 				}, {
 					display : 'Is Revoked?',
 					name : 'is_revoked',
@@ -304,7 +309,7 @@ $(function() {
 					_event : 'click',
 					trigger : '2',
 					callMethod : 'delegation.RevokeDelegation',
-					arguments : '1'
+					arguments : '12'
 				}, {
 					display : 'View Change Logs',
 					name : 'changelog',
@@ -386,6 +391,7 @@ $(function() {
 				var regex = new RegExp('/', 'g');
 				$("#txtDelegationFrom").val(argus[5].replace(regex, '\-'));
 				$("#txtDelegationTo").val(argus[6].replace(regex, '\-'));
+
 				if (argus[7].toLowerCase() != "yes") {
 					$("#btnRevokeDelegation").show();
 				}
@@ -523,6 +529,7 @@ $(function() {
 
 					$('#divDelegationGrid').hide();
 					$('#divDelegationForm').hide();
+					$('#divDelegationAuditGrid').show();
 				}
 				break;
 			default:
@@ -533,7 +540,8 @@ $(function() {
 		RevokeDelegation : function(tblID, argus) {
 			switch (tblID) {
 			case "gdvDelegations":
-				if (argus[2].toLowerCase() != "yes") {
+				if (argus[1].toLowerCase() != "yes") {
+					delegation.config.delegationId = argus[0];
 					var properties = {
 						onComplete : function(e) {
 							if (e) {
@@ -562,12 +570,13 @@ $(function() {
 		},
 
 		RevokeSingleDelegation : function(buttonType, config) {
-			this.config.url = this.config.baseURL + "RevokeDelegationByAdmin";
+			this.config.url = this.config.baseURL
+					+ "RevokeDelegationByDelegationID";
 			this.config.data = JSON2.stringify({
 				delegationId : config.delegationId,
 				gpmsCommonObj : gpmsCommonObj()
 			});
-			this.config.ajaxCallMode = 2;
+			this.config.ajaxCallMode = 5;
 			this.config.buttonType = buttonType;
 			this.ajaxCall(this.config);
 			return false;
@@ -577,6 +586,14 @@ $(function() {
 			validator.resetForm();
 
 			delegation.config.delegationId = '0';
+			delegation.config.delegateeId = "";
+			delegation.config.delegateeEmail = "";
+			delegation.config.delegateeCollege = "";
+			delegation.config.delegateeDepartment = "";
+			delegation.config.delegateePositionType = "";
+			delegation.config.delegateePositionTitle = "";
+
+			$("#btnRevokeDelegation").hide();
 
 			$("#ddlDelegateTo").empty()
 
@@ -654,7 +671,7 @@ $(function() {
 				}
 				break;
 
-			case 3: // Save / Update Delgation
+			case 3: // Save / Update Delegation
 				delegation.BindDelegationGrid(null, null, null, null, null,
 						null, null);
 				$('#divDelegationGrid').show();
@@ -672,8 +689,15 @@ $(function() {
 						+ ' successfully.' + "</p>");
 
 				$('#divDelegationForm').hide();
+				$('#divDelegationAuditGrid').hide();
 
 				delegation.config.delegationId = '0';
+				delegation.config.delegateeId = "";
+				delegation.config.delegateeEmail = "";
+				delegation.config.delegateeCollege = "";
+				delegation.config.delegateeDepartment = "";
+				delegation.config.delegateePositionType = "";
+				delegation.config.delegateePositionTitle = "";
 				break;
 
 			case 4:
@@ -707,7 +731,15 @@ $(function() {
 
 				$('#divDelegationForm').hide();
 				$('#divDelegationGrid').show();
+				$('#divDelegationAuditGrid').hide();
+
 				delegation.config.delegationId = '0';
+				delegation.config.delegateeId = "";
+				delegation.config.delegateeEmail = "";
+				delegation.config.delegateeCollege = "";
+				delegation.config.delegateeDepartment = "";
+				delegation.config.delegateePositionType = "";
+				delegation.config.delegateePositionTitle = "";
 				break;
 
 			case 9:
@@ -923,8 +955,9 @@ $(function() {
 
 			delegation.BindDelegationGrid(null, null, null, null, null, null,
 					null);
-			$('#divDelegationForm').show();
+			$('#divDelegationForm').hide();
 			$('#divDelegationGrid').show();
+			$('#divDelegationAuditGrid').hide();
 
 			// For Filling Form
 			$("#txtDelegationFrom").datepicker(
@@ -1028,6 +1061,25 @@ $(function() {
 				$('#divDelegationGrid').show();
 				$('#divDelegationForm').hide();
 				delegation.config.delegationId = '0';
+				delegation.config.delegateeId = "";
+				delegation.config.delegateeEmail = "";
+				delegation.config.delegateeCollege = "";
+				delegation.config.delegateeDepartment = "";
+				delegation.config.delegateePositionType = "";
+				delegation.config.delegateePositionTitle = "";
+			});
+
+			$('#btnLogsBack').on("click", function() {
+				$('#divDelegationGrid').show();
+				$('#divDelegationForm').hide();
+				$('#divDelegationAuditGrid').hide();
+				delegation.config.delegationId = '0';
+				delegation.config.delegateeId = "";
+				delegation.config.delegateeEmail = "";
+				delegation.config.delegateeCollege = "";
+				delegation.config.delegateeDepartment = "";
+				delegation.config.delegateePositionType = "";
+				delegation.config.delegateePositionTitle = "";
 			});
 
 			$('#btnAddNew')
@@ -1054,6 +1106,7 @@ $(function() {
 
 									$('#divDelegationGrid').hide();
 									$('#divDelegationForm').show();
+									$('#divDelegationAuditGrid').hide();
 								}
 							});
 

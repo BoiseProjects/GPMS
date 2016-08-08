@@ -826,7 +826,7 @@ public class DelegationService {
 					contentProfile.append("<ak:email>");
 					contentProfile.append("ceassociatechair@gmail.com");
 					contentProfile.append("</ak:email>");
-					
+
 					contentProfile.append("<ak:college>");
 					contentProfile.append("Engineering");
 					contentProfile.append("</ak:college>");
@@ -834,7 +834,7 @@ public class DelegationService {
 					contentProfile.append("<ak:department>");
 					contentProfile.append("Computer Engineering");
 					contentProfile.append("</ak:department>");
-					
+
 					contentProfile.append("<ak:positionType>");
 					contentProfile.append("Administrator");
 					contentProfile.append("</ak:positionType>");
@@ -859,7 +859,7 @@ public class DelegationService {
 					contentProfile.append("<ak:email>");
 					contentProfile.append("csdeptadminasst@gmail.com");
 					contentProfile.append("</ak:email>");
-					
+
 					contentProfile.append("<ak:college>");
 					contentProfile.append("Engineering");
 					contentProfile.append("</ak:college>");
@@ -867,7 +867,7 @@ public class DelegationService {
 					contentProfile.append("<ak:department>");
 					contentProfile.append("Computer Science");
 					contentProfile.append("</ak:department>");
-					
+
 					contentProfile.append("<ak:positionType>");
 					contentProfile.append("Administrator");
 					contentProfile.append("</ak:positionType>");
@@ -892,7 +892,7 @@ public class DelegationService {
 					contentProfile.append("<ak:email>");
 					contentProfile.append("cedean@gmail.com");
 					contentProfile.append("</ak:email>");
-					
+
 					contentProfile.append("<ak:college>");
 					contentProfile.append("Engineering");
 					contentProfile.append("</ak:college>");
@@ -900,7 +900,7 @@ public class DelegationService {
 					contentProfile.append("<ak:department>");
 					contentProfile.append("Computer Science");
 					contentProfile.append("</ak:department>");
-					
+
 					contentProfile.append("<ak:positionType>");
 					contentProfile.append("Administrator");
 					contentProfile.append("</ak:positionType>");
@@ -924,7 +924,7 @@ public class DelegationService {
 					contentProfile.append("<ak:email>");
 					contentProfile.append("csassociatedean@gmail.com");
 					contentProfile.append("</ak:email>");
-					
+
 					contentProfile.append("<ak:college>");
 					contentProfile.append("Engineering");
 					contentProfile.append("</ak:college>");
@@ -932,7 +932,7 @@ public class DelegationService {
 					contentProfile.append("<ak:department>");
 					contentProfile.append("Computer Science");
 					contentProfile.append("</ak:department>");
-					
+
 					contentProfile.append("<ak:positionType>");
 					contentProfile.append("Administrator");
 					contentProfile.append("</ak:positionType>");
@@ -1549,7 +1549,7 @@ public class DelegationService {
 
 			Multimap<String, String> actionMap = ArrayListMultimap.create();
 
-			actionMap.put("delegation.action", "Revoke");
+			actionMap.put("proposal.action", "Revoke");
 			attrMap.put("Action", actionMap);
 
 			Set<AbstractResult> set = ac.getXACMLdecisionWithObligations(

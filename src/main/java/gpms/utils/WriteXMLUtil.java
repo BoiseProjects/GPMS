@@ -581,10 +581,10 @@ public class WriteXMLUtil {
 			// ObligationExpressions
 			Element obligationExpressions4 = doc
 					.createElement("ObligationExpressions");
-			rule3.appendChild(obligationExpressions4);
+			rule4.appendChild(obligationExpressions4);
 
-			obligationExpressions4.appendChild(getObligationExpressionAlert(
-					doc, "sendAlert", "Permit"));
+			// obligationExpressions4.appendChild(getObligationExpressionAlert(
+			// doc, "sendAlert", "Permit"));
 
 			obligationExpressions4
 					.appendChild(getObligationExpressionForRevokeSendEmail(
