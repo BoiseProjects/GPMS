@@ -378,6 +378,9 @@
     </Condition>
   	<ObligationExpressions>
       <ObligationExpression ObligationId="sendEmail" FulfillOn="Permit">
+      	<AttributeAssignmentExpression AttributeId="obligationType">
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">postobligation</AttributeValue>
+        </AttributeAssignmentExpression>
         <AttributeAssignmentExpression AttributeId="emailBody">
           <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Hello User,&lt;br/&gt;&lt;br/&gt;You have been revoked from your delegation. &lt;br/&gt;&lt;br/&gt;Thank you, &lt;br/&gt; GPMS Team</AttributeValue>
         </AttributeAssignmentExpression>
