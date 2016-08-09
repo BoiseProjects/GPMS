@@ -7,12 +7,13 @@ import com.ebay.xcelite.annotations.Row;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-@JsonPropertyOrder({ "rowTotal", "id", "delegatee", "delegatee_department",
-		"delegatee_position_title", "delegated_action", "delegation_reason",
-		"dateCreated", "delegatedFrom", "delegatedTo", "lastAudited",
-		"lastAuditedBy", "lastAuditAction", "revoked" })
-@Row(colsOrder = { "Delegatee", "Delegatee Department",
-		"Delegatee Position Title", "Delegated Action", "Delegation Reason",
+@JsonPropertyOrder({ "rowTotal", "id", "delegatee", "delegatee_email",
+		"delegatee_position_title", "delegated_position_title",
+		"delegated_action", "delegation_reason", "dateCreated",
+		"delegatedFrom", "delegatedTo", "lastAudited", "lastAuditedBy",
+		"lastAuditAction", "revoked" })
+@Row(colsOrder = { "Delegatee", "Delegatee Email", "Delegatee Position Title",
+		"Delegated Position Title", "Delegated Action", "Delegation Reason",
 		"Date Created", "Delegated From", "Delegated To", "Last Audited",
 		"Last Audited By", "Last Audit Action", "Is Revoked?" })
 public class DelegationInfo {
@@ -26,13 +27,17 @@ public class DelegationInfo {
 	@Column(name = "Delegatee")
 	private String delegatee = new String();
 
-	@JsonProperty("delegatee_department")
-	@Column(name = "Delegatee Department")
-	private String delegateeDepartment = new String();
+	@JsonProperty("delegatee_email")
+	@Column(name = "Delegatee Email")
+	private String delegateeEmail = new String();
 
 	@JsonProperty("delegatee_position_title")
 	@Column(name = "Delegatee Position Title")
 	private String delegateePositionTitle = new String();
+
+	@JsonProperty("delegated_position_title")
+	@Column(name = "Delegated Position Title")
+	private String positionTitle = new String();
 
 	@JsonProperty("delegated_action")
 	@Column(name = "Delegated Action")
@@ -98,12 +103,12 @@ public class DelegationInfo {
 		this.delegatee = delegatee;
 	}
 
-	public String getDelegateeDepartment() {
-		return delegateeDepartment;
+	public String getDelegateeEmail() {
+		return delegateeEmail;
 	}
 
-	public void setDelegateeDepartment(String delegateeDepartment) {
-		this.delegateeDepartment = delegateeDepartment;
+	public void setDelegateeEmail(String delegateeEmail) {
+		this.delegateeEmail = delegateeEmail;
 	}
 
 	public String getDelegateePositionTitle() {
@@ -112,6 +117,14 @@ public class DelegationInfo {
 
 	public void setDelegateePositionTitle(String delegateePositionTitle) {
 		this.delegateePositionTitle = delegateePositionTitle;
+	}
+
+	public String getPositionTitle() {
+		return positionTitle;
+	}
+
+	public void setPositionTitle(String positionTitle) {
+		this.positionTitle = positionTitle;
 	}
 
 	public String getDelegatedAction() {

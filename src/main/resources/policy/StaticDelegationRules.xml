@@ -60,6 +60,11 @@
 					<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
 						<AttributeSelector MustBePresent="false" ContextSelectorId="urn:oasis:names:tc:xacml:3.0:content-selector" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" Path="//ak:fullname/text()" DataType="http://www.w3.org/2001/XMLSchema#string" />
 					</Apply>
+				</AttributeAssignmentExpression>				
+				<AttributeAssignmentExpression AttributeId="userName">
+					<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
+						<AttributeSelector MustBePresent="false" ContextSelectorId="urn:oasis:names:tc:xacml:3.0:content-selector" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" Path="//ak:username/text()" DataType="http://www.w3.org/2001/XMLSchema#string" />
+					</Apply>
 				</AttributeAssignmentExpression>
 				<AttributeAssignmentExpression AttributeId="userEmail">
 					<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
@@ -142,6 +147,11 @@
 				<AttributeAssignmentExpression AttributeId="userfullName">
 					<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
 						<AttributeSelector MustBePresent="false" ContextSelectorId="urn:oasis:names:tc:xacml:3.0:content-selector" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" Path="//ak:fullname/text()" DataType="http://www.w3.org/2001/XMLSchema#string" />
+					</Apply>
+				</AttributeAssignmentExpression>
+				<AttributeAssignmentExpression AttributeId="userName">
+					<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
+						<AttributeSelector MustBePresent="false" ContextSelectorId="urn:oasis:names:tc:xacml:3.0:content-selector" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" Path="//ak:username/text()" DataType="http://www.w3.org/2001/XMLSchema#string" />
 					</Apply>
 				</AttributeAssignmentExpression>
 				<AttributeAssignmentExpression AttributeId="userEmail">

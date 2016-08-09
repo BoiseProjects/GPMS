@@ -532,15 +532,15 @@
     ], 
     "user id" : DBRef("useraccount", ObjectId("5745f0f7bcbb29192ce0d404")), 
     "deleted" : false, 
-    "is delegator" : true, 
+    "is delegator" : false, 
+    "version" : NumberLong(70), 
     "audit log" : [
         {
             "author info" : DBRef("userprofile", ObjectId("5745ed6fbcbb29192ce0d3c9")), 
             "action" : "Created user account and profile of chaircomputerscience", 
             "activity on" : ISODate("2016-05-25T18:37:43.462+0000")
         }
-    ], 
-    "version" : NumberLong(1)
+    ]
 }
 { 
     "_id" : ObjectId("5745f147bcbb29192ce0d40d"), 

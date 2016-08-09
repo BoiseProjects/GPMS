@@ -7,6 +7,7 @@ import gpms.model.InvestigatorUsersAndPositions;
 import gpms.model.PositionDetails;
 import gpms.model.Proposal;
 import gpms.model.UserAccount;
+import gpms.model.UserDetail;
 import gpms.model.UserInfo;
 import gpms.model.UserProfile;
 import gpms.model.UserProposalCount;
@@ -413,6 +414,48 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 			users.add(user);
 		}
 		// Collections.sort(users);
+		return users;
+	}
+
+	public List<UserDetail> findAllUsersForDelegation()
+			throws UnknownHostException {
+		Datastore ds = getDatastore();
+		List<UserDetail> users = new ArrayList<UserDetail>();
+
+		List<String> positionTypes = new ArrayList<String>();
+		positionTypes.add("Administrator");
+		positionTypes.add("Professional staff");
+
+		Query<UserProfile> profileQuery = ds.createQuery(UserProfile.class)
+				.retrievedFields(true, "_id", "first name", "middle name",
+						"last name", "work email", "details", "user id");
+
+		profileQuery.and(profileQuery.criteria("deleted").equal(false),
+				profileQuery.criteria("details.position type")
+						.in(positionTypes).criteria("is delegator")
+						.equal(false));
+
+		List<UserProfile> userProfiles = profileQuery.asList();
+
+		for (UserProfile userProfile : userProfiles) {
+			for (PositionDetails userPos : userProfile.getDetails()) {
+				UserDetail userDetail = new UserDetail();
+
+				userDetail.setUserProfileId(userProfile.getId().toString());
+				userDetail.setFullName(userProfile.getFullName());
+				userDetail.setUserName(userProfile.getUserAccount()
+						.getUserName());
+				userDetail.setEmail(userProfile.getWorkEmails().get(0));
+				userDetail.setCollege(userPos.getCollege());
+				userDetail.setDepartment(userPos.getDepartment());
+				userDetail.setPositionType(userPos.getPositionType());
+				userDetail.setPositionTitle(userPos.getPositionTitle());
+
+				users.add(userDetail);
+
+			}
+		}
+
 		return users;
 	}
 

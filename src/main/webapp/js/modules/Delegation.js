@@ -194,8 +194,8 @@ $(function() {
 					coltype : 'label',
 					align : 'left'
 				}, {
-					display : 'Delegatee Department',
-					name : 'delegatee_department',
+					display : 'Delegatee Email',
+					name : 'delegatee_email',
 					cssclass : '',
 					controlclass : '',
 					coltype : 'label',
@@ -204,6 +204,14 @@ $(function() {
 				}, {
 					display : 'Delegatee Position Title',
 					name : 'delegatee_position_title',
+					cssclass : '',
+					controlclass : '',
+					coltype : 'label',
+					align : 'left',
+					hide : true
+				}, {
+					display : 'Delegated Position Title',
+					name : 'delegated_position_title',
 					cssclass : '',
 					controlclass : '',
 					coltype : 'label',
@@ -300,7 +308,7 @@ $(function() {
 					_event : 'click',
 					trigger : '1',
 					callMethod : 'delegation.EditDelegation',
-					arguments : '1, 4, 5, 6, 7, 8, 12'
+					arguments : '1, 3, 5, 6, 7, 8, 9, 13'
 				}, {
 					display : 'Revoke',
 					name : 'revoke',
@@ -308,7 +316,7 @@ $(function() {
 					_event : 'click',
 					trigger : '2',
 					callMethod : 'delegation.RevokeDelegation',
-					arguments : '12'
+					arguments : '13'
 				}, {
 					display : 'View Change Logs',
 					name : 'changelog',
@@ -316,7 +324,7 @@ $(function() {
 					_event : 'click',
 					trigger : '3',
 					callMethod : 'delegation.ViewChangeLogs',
-					arguments : '1, 9, 10, 11'
+					arguments : '1, 11, 12, 13'
 				} ],
 				rp : perpage,
 				nomsg : 'No Records Found!',
@@ -327,7 +335,7 @@ $(function() {
 					0 : {
 						sorter : false
 					},
-					13 : {
+					14 : {
 						sorter : false
 					}
 				}
@@ -372,34 +380,41 @@ $(function() {
 		EditDelegation : function(tblID, argus) {
 			switch (tblID) {
 			case "gdvDelegations":
-				$('#lblFormHeading').html(
-						'Edit Delegation Details for: ' + argus[1]);
+				if (argus[8].toLowerCase() != "yes") {
+					$('#lblFormHeading').html(
+							'Edit Delegation Details for: ' + argus[1]);
 
-				delegation.ClearForm();
+					delegation.ClearForm();
 
-				delegation.config.delegationId = argus[0];
+					delegation.config.delegationId = argus[0];
+					delegation.config.delegateePositionTitle = argus[2];
 
-				$("#ddlDelegateAction").val(argus[2]).prop("disabled", true);
+					$("#ddlDelegateAction").val(argus[3])
+							.prop("disabled", true);
 
-				$('#ddlDelegateTo').empty().append(
-						new Option(argus[1], argus[1])).prop("disabled", true);
+					$('#ddlDelegateTo').empty().append(
+							new Option(argus[1], argus[1])).prop("disabled",
+							true);
 
-				$("#txtDelegationReason").val(argus[3]);
-				$("#lblDelegationDateCreated").text(argus[4]);
+					$("#txtDelegationReason").val(argus[4]);
+					$("#lblDelegationDateCreated").text(argus[5]);
 
-				var regex = new RegExp('/', 'g');
-				$("#txtDelegationFrom").val(argus[5].replace(regex, '\-'));
-				$("#txtDelegationTo").val(argus[6].replace(regex, '\-'));
+					var regex = new RegExp('/', 'g');
+					$("#txtDelegationFrom").val(argus[6].replace(regex, '\-'));
+					$("#txtDelegationTo").val(argus[7].replace(regex, '\-'));
 
-				if (argus[7].toLowerCase() != "yes") {
 					$("#btnRevokeDelegation").show();
-				}
-				$("#btnReset").hide();
-				$("#trAddedOn").show();
+					$("#btnReset").hide();
+					$("#trAddedOn").show();
 
-				$('#divDelegationGrid').hide();
-				$('#divDelegationForm').show();
-				$('#divDelegationAuditGrid').hide();
+					$('#divDelegationGrid').hide();
+					$('#divDelegationForm').show();
+					$('#divDelegationAuditGrid').hide();
+				} else {
+					csscody.alert('<h2>' + 'Information Alert' + '</h2><p>'
+							+ 'Sorry! this delegation is already revoked.'
+							+ '</p>');
+				}
 				break;
 			default:
 				break;
@@ -408,6 +423,7 @@ $(function() {
 
 		SaveDelegation : function(config) {
 			var delegationInfo = {
+				DelegationId : config.delegationId,
 				DelegationFrom : $("#txtDelegationFrom").val(),
 				DelegationTo : $("#txtDelegationTo").val(),
 				DelegationReason : $("#txtDelegationReason").val()
@@ -416,15 +432,12 @@ $(function() {
 			if (config.delegationId == "0") {
 				delegationInfo.DelegatedAction = $("#ddlDelegateAction").val();
 				delegationInfo.Delegatee = $("#ddlDelegateTo").val();
-				delegationInfo.DelegationId = config.delegationId;
 				delegationInfo.DelegateeId = config.delegateeId;
 				// delegation.config.delegateeEmail
 				delegationInfo.DelegateeCollege = config.delegateeCollege;
 				delegationInfo.DelegateeDepartment = config.delegateeDepartment;
 				delegationInfo.DelegateePositionType = config.delegateePositionType;
 				delegationInfo.DelegateePositionTitle = config.delegateePositionTitle;
-			} else {
-				delegationInfo.DelegationId = config.delegationId;
 			}
 
 			delegation.AddDelegationInfo(config, delegationInfo);
@@ -485,7 +498,7 @@ $(function() {
 					return false;
 				} else {
 					csscody.alert('<h2>' + 'Information Alert' + '</h2><p>'
-							+ 'Sorry! this delegation is already deleted.'
+							+ 'Sorry! this delegation is already revoked.'
 							+ '</p>');
 				}
 				break;
@@ -686,24 +699,35 @@ $(function() {
 
 			case 1:
 				// Get Delegable Users for a User with an Action
-				$('#ddlDelegateTo').empty();
+				$('#ddlDelegateTo option').remove();
 
-				$
-						.each(
-								msg,
-								function(index, item) {
-									$('#ddlDelegateTo').append(
-											new Option(item.fullName,
-													item.fullName));
+				$.each(msg, function(index, item) {
+					$('#ddlDelegateTo').append(
+							$('<option></option>').val(item.fullName).html(
+									item.fullName).data("delegateeId",
+									item.userProfileId).data(
+									"delegateeUserName", item.userName).data(
+									"delegateeEmail", item.email).data(
+									"delegateeCollege", item.college).data(
+									"delegateeDepartment", item.department)
+									.data("delegateePositionType",
+											item.positionType).data(
+											"delegateePositionTitle",
+											item.positionTitle));
+				});
 
-									delegation.config.delegateeId = item.userProfileId;
-									delegation.config.delegateeEmail = item.email;
-									delegation.config.delegateeCollege = item.college;
-									delegation.config.delegateeDepartment = item.department;
-									delegation.config.delegateePositionType = item.positionType;
-									delegation.config.delegateePositionTitle = item.positionTitle;
-
-								});
+				var element = $('#ddlDelegateTo').find('option:selected');
+				delegation.config.delegateeId = element.data("delegateeId");
+				delegation.config.delegateeEmail = element
+						.data("delegateeEmail");
+				delegation.config.delegateeCollege = element
+						.data("delegateeCollege");
+				delegation.config.delegateeDepartment = element
+						.data("delegateeDepartment");
+				delegation.config.delegateePositionType = element
+						.data("delegateePositionType");
+				delegation.config.delegateePositionTitle = element
+						.data("delegateePositionTitle");
 				break;
 
 			case 2: // Save / Update Delegation
@@ -1074,6 +1098,25 @@ $(function() {
 				delegation.GetDelegableUsers($(this).val());
 				return false;
 			});
+
+			$("#ddlDelegateTo").on(
+					"change",
+					function() {
+						var element = $(this).find('option:selected');
+						delegation.config.delegateeId = element
+								.data("delegateeId");
+						delegation.config.delegateeEmail = element
+								.data("delegateeEmail");
+						delegation.config.delegateeCollege = element
+								.data("delegateeCollege");
+						delegation.config.delegateeDepartment = element
+								.data("delegateeDepartment");
+						delegation.config.delegateePositionType = element
+								.data("delegateePositionType");
+						delegation.config.delegateePositionTitle = element
+								.data("delegateePositionTitle");
+						return false;
+					});
 
 			$("#txtSearchActivityOnFrom").datepicker(
 					{

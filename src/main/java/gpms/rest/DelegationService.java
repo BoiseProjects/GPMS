@@ -26,6 +26,7 @@ import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -775,168 +776,47 @@ public class DelegationService {
 					contentProfile
 							.append("<ak:record xmlns:ak=\"http://akpower.org\">");
 
-					contentProfile.append("<ak:user>");
+					// TO GET all admin users here for Content as Delegatee
+					List<UserDetail> delegableUsers = userProfileDAO
+							.findAllUsersForDelegation();
 
-					contentProfile.append("<ak:userid>");
-					contentProfile.append("578918b9bcbb29090c4278e7");
-					contentProfile.append("</ak:userid>");
+					for (UserDetail userDetail : delegableUsers) {
+						contentProfile.append("<ak:user>");
 
-					contentProfile.append("<ak:fullname>");
-					contentProfile.append("Computer Science Associate Chair");
-					contentProfile.append("</ak:fullname>");
+						contentProfile.append("<ak:userid>");
+						contentProfile.append(userDetail.getUserProfileId());
+						contentProfile.append("</ak:userid>");
 
-					contentProfile.append("<ak:email>");
-					contentProfile.append("csassociatechair@gmail.com");
-					contentProfile.append("</ak:email>");
+						contentProfile.append("<ak:fullname>");
+						contentProfile.append(userDetail.getFullName());
+						contentProfile.append("</ak:fullname>");
 
-					contentProfile.append("<ak:college>");
-					contentProfile.append("Engineering");
-					contentProfile.append("</ak:college>");
+						contentProfile.append("<ak:username>");
+						contentProfile.append(userDetail.getUserName());
+						contentProfile.append("</ak:username>");
 
-					contentProfile.append("<ak:department>");
-					contentProfile.append("Computer Science");
-					contentProfile.append("</ak:department>");
+						contentProfile.append("<ak:email>");
+						contentProfile.append(userDetail.getEmail());
+						contentProfile.append("</ak:email>");
 
-					contentProfile.append("<ak:positionType>");
-					contentProfile.append("Administrator");
-					contentProfile.append("</ak:positionType>");
+						contentProfile.append("<ak:college>");
+						contentProfile.append(userDetail.getCollege());
+						contentProfile.append("</ak:college>");
 
-					contentProfile.append("<ak:positiontitle>");
-					contentProfile.append("Associate Chair");
-					contentProfile.append("</ak:positiontitle>");
+						contentProfile.append("<ak:department>");
+						contentProfile.append(userDetail.getDepartment());
+						contentProfile.append("</ak:department>");
 
-					contentProfile.append("</ak:user>");
+						contentProfile.append("<ak:positionType>");
+						contentProfile.append(userDetail.getPositionType());
+						contentProfile.append("</ak:positionType>");
 
-					contentProfile.append("<ak:user>");
+						contentProfile.append("<ak:positiontitle>");
+						contentProfile.append(userDetail.getPositionTitle());
+						contentProfile.append("</ak:positiontitle>");
 
-					contentProfile.append("<ak:userid>");
-					contentProfile.append("578918b9bcbb29090c4278e1");
-					contentProfile.append("</ak:userid>");
-
-					contentProfile.append("<ak:fullname>");
-					contentProfile
-							.append("Computer Engineering Associate Chair");
-					contentProfile.append("</ak:fullname>");
-
-					contentProfile.append("<ak:email>");
-					contentProfile.append("ceassociatechair@gmail.com");
-					contentProfile.append("</ak:email>");
-
-					contentProfile.append("<ak:college>");
-					contentProfile.append("Engineering");
-					contentProfile.append("</ak:college>");
-
-					contentProfile.append("<ak:department>");
-					contentProfile.append("Computer Engineering");
-					contentProfile.append("</ak:department>");
-
-					contentProfile.append("<ak:positionType>");
-					contentProfile.append("Administrator");
-					contentProfile.append("</ak:positionType>");
-
-					contentProfile.append("<ak:positiontitle>");
-					contentProfile.append("Associate Chair");
-					contentProfile.append("</ak:positiontitle>");
-
-					contentProfile.append("</ak:user>");
-
-					contentProfile.append("<ak:user>");
-
-					contentProfile.append("<ak:userid>");
-					contentProfile.append("578918b9bcbb29090c4278e2");
-					contentProfile.append("</ak:userid>");
-
-					contentProfile.append("<ak:fullname>");
-					contentProfile
-							.append("Computer Science Department Administrative Assistant");
-					contentProfile.append("</ak:fullname>");
-
-					contentProfile.append("<ak:email>");
-					contentProfile.append("csdeptadminasst@gmail.com");
-					contentProfile.append("</ak:email>");
-
-					contentProfile.append("<ak:college>");
-					contentProfile.append("Engineering");
-					contentProfile.append("</ak:college>");
-
-					contentProfile.append("<ak:department>");
-					contentProfile.append("Computer Science");
-					contentProfile.append("</ak:department>");
-
-					contentProfile.append("<ak:positionType>");
-					contentProfile.append("Administrator");
-					contentProfile.append("</ak:positionType>");
-
-					contentProfile.append("<ak:positiontitle>");
-					contentProfile
-							.append("Department Administrative Assistant");
-					contentProfile.append("</ak:positiontitle>");
-
-					contentProfile.append("</ak:user>");
-
-					contentProfile.append("<ak:user>");
-
-					contentProfile.append("<ak:userid>");
-					contentProfile.append("578918b9bcbb29090c4278e3");
-					contentProfile.append("</ak:userid>");
-
-					contentProfile.append("<ak:fullname>");
-					contentProfile.append("Computer Science Dean");
-					contentProfile.append("</ak:fullname>");
-
-					contentProfile.append("<ak:email>");
-					contentProfile.append("cedean@gmail.com");
-					contentProfile.append("</ak:email>");
-
-					contentProfile.append("<ak:college>");
-					contentProfile.append("Engineering");
-					contentProfile.append("</ak:college>");
-
-					contentProfile.append("<ak:department>");
-					contentProfile.append("Computer Science");
-					contentProfile.append("</ak:department>");
-
-					contentProfile.append("<ak:positionType>");
-					contentProfile.append("Administrator");
-					contentProfile.append("</ak:positionType>");
-
-					contentProfile.append("<ak:positiontitle>");
-					contentProfile.append("Dean");
-					contentProfile.append("</ak:positiontitle>");
-
-					contentProfile.append("</ak:user>");
-
-					contentProfile.append("<ak:user>");
-
-					contentProfile.append("<ak:userid>");
-					contentProfile.append("578918b9bcbb29090c4278e4");
-					contentProfile.append("</ak:userid>");
-
-					contentProfile.append("<ak:fullname>");
-					contentProfile.append("Computer Science Associate Dean");
-					contentProfile.append("</ak:fullname>");
-
-					contentProfile.append("<ak:email>");
-					contentProfile.append("csassociatedean@gmail.com");
-					contentProfile.append("</ak:email>");
-
-					contentProfile.append("<ak:college>");
-					contentProfile.append("Engineering");
-					contentProfile.append("</ak:college>");
-
-					contentProfile.append("<ak:department>");
-					contentProfile.append("Computer Science");
-					contentProfile.append("</ak:department>");
-
-					contentProfile.append("<ak:positionType>");
-					contentProfile.append("Administrator");
-					contentProfile.append("</ak:positionType>");
-
-					contentProfile.append("<ak:positiontitle>");
-					contentProfile.append("Associate Dean");
-					contentProfile.append("</ak:positiontitle>");
-
-					contentProfile.append("</ak:user>");
+						contentProfile.append("</ak:user>");
+					}
 
 					contentProfile.append("</ak:record>");
 					contentProfile.append("</Content>");
@@ -978,6 +858,10 @@ public class DelegationService {
 											userDeatil.setFullName(assignment
 													.getContent());
 											break;
+										case "userName":
+											userDeatil.setUserName(assignment
+													.getContent());
+											break;
 										case "userEmail":
 											userDeatil.setEmail(assignment
 													.getContent());
@@ -1009,6 +893,7 @@ public class DelegationService {
 							}
 						}
 					}
+					Collections.sort(userDetails);
 					return Response
 							.status(Response.Status.OK)
 							.entity(mapper.setDateFormat(formatter)
@@ -1137,12 +1022,20 @@ public class DelegationService {
 				if (delegationInfo != null && delegationInfo.has("DelegateeId")) {
 					String delegateeId = delegationInfo.get("DelegateeId")
 							.textValue();
-					// ObjectId id = new ObjectId(delegateeId);
-					// delegateeProfile = userProfileDAO
-					// .findUserDetailsByProfileID(id);
-
 					if (delegationID.equals("0")) {
 						newDelegation.setDelegateeId(delegateeId);
+
+						ObjectId id = new ObjectId(delegateeId);
+						delegateeProfile = userProfileDAO
+								.findUserDetailsByProfileID(id);
+
+						newDelegation.setDelegateeUsername(delegateeProfile
+								.getUserAccount().getUserName());
+						newDelegation.setDelegateeEmail(delegateeProfile
+								.getWorkEmails().get(0));
+
+						// Delegated
+						newDelegation.setPositionTitle(userPositionTitle);
 					}
 				}
 
@@ -1164,7 +1057,7 @@ public class DelegationService {
 							.replaceAll("\\<[^>]*>", "");
 					if (validateNotEmptyValue(college)
 							&& delegationID.equals("0")) {
-						newDelegation.setCollege(college);
+						newDelegation.setDelegateeCollege(college);
 					}
 				}
 
@@ -1175,7 +1068,7 @@ public class DelegationService {
 							.replaceAll("\\<[^>]*>", "");
 					if (validateNotEmptyValue(department)
 							&& delegationID.equals("0")) {
-						newDelegation.setDepartment(department);
+						newDelegation.setDelegateeDepartment(department);
 					}
 				}
 
@@ -1186,7 +1079,7 @@ public class DelegationService {
 							.replaceAll("\\<[^>]*>", "");
 					if (validateNotEmptyValue(positionType)
 							&& delegationID.equals("0")) {
-						newDelegation.setPositionType(positionType);
+						newDelegation.setDelegateePositionType(positionType);
 					}
 				}
 
@@ -1195,9 +1088,11 @@ public class DelegationService {
 					final String positionTitle = delegationInfo
 							.get("DelegateePositionTitle").textValue().trim()
 							.replaceAll("\\<[^>]*>", "");
-					if (validateNotEmptyValue(positionTitle)
-							&& delegationID.equals("0")) {
-						newDelegation.setPositionTitle(positionTitle);
+					if (validateNotEmptyValue(positionTitle)) {
+						if (delegationID.equals("0")) {
+							newDelegation
+									.setDelegateePositionTitle(positionTitle);
+						}
 					}
 				}
 
@@ -1268,62 +1163,75 @@ public class DelegationService {
 
 				if (!delegationID.equals("0")) {
 					if (!existingDelegation.equals(oldDelegation)) {
-						// Delete the Delegation Dynamic Policy File here
 						try {
-							File file = new File(
-									policyLocation
-											+ "/"
-											+ existingDelegation
-													.getDelegationFileName());
-							if (file.delete()) {
-								System.out.println(file.getName()
-										+ " is deleted!");
+							// Create New policy File
+							// if (delegateePositionTitle.equals("")) {
+							// delegateePositionTitle = existingDelegation
+							// .getPositionTitle();
+							// }
+							policyFileName = createDynamicPolicy(userProfileID,
+									delegatorName, policyLocation,
+									existingDelegation);
 
-								// Create New policy File
-								policyFileName = createDynamicPolicy(
-										userProfileID, delegatorName,
-										policyLocation, existingDelegation);
-								existingDelegation
-										.setDelegationFileName(policyFileName);
+							existingDelegation
+									.setDelegationFileName(policyFileName);
 
-								delegationDAO.updateDelegation(
-										existingDelegation, authorProfile);
-								notificationMessage = "Delegation Updated by "
-										+ userName + ".";
+							delegationDAO.updateDelegation(existingDelegation,
+									authorProfile);
+							notificationMessage = "Delegation Updated by "
+									+ userName + ".";
 
-								// Update the current Delegator bit to true
-								authorProfile.setDelegator(true);
-								userProfileDAO.save(authorProfile);
+							// Update the current Delegator bit to true
+							authorProfile.setDelegator(true);
+							userProfileDAO.save(authorProfile);
 
-								sendNotification(existingDelegation,
-										delegateeProfile.getUserAccount()
-												.getUserName(), userProfileID,
-										userName, userCollege, userDepartment,
-										userPositionType, userPositionTitle,
-										notificationMessage, "Delegation",
-										false);
+							sendNotification(existingDelegation, userProfileID,
+									userName, userCollege, userDepartment,
+									userPositionType, userPositionTitle,
+									notificationMessage, "Delegation", false);
 
+							// Delete the Delegation Dynamic Policy File here
+							try {
+								final String oldDelegationFileName = oldDelegation
+										.getDelegationFileName();
+								File file = new File(policyLocation + "/"
+										+ oldDelegationFileName);
+								if (!file.exists()) {
+									return Response
+											.status(Response.Status.NOT_FOUND)
+											.entity("FILE NOT FOUND: "
+													+ oldDelegationFileName)
+											.type("text/plain").build();
+								}
+
+								if (!file.delete()) {
+									return Response
+											.status(403)
+											.type(MediaType.APPLICATION_JSON)
+											.entity("Delete operation is failed.")
+											.build();
+								} else {
+									return Response
+											.status(200)
+											.type(MediaType.APPLICATION_JSON)
+											.entity(mapper
+													.writerWithDefaultPrettyPrinter()
+													.writeValueAsString(true))
+											.build();
+								}
+							} catch (Exception e) {
 								return Response
-										.status(200)
+										.status(403)
 										.type(MediaType.APPLICATION_JSON)
-										.entity(mapper
-												.writerWithDefaultPrettyPrinter()
-												.writeValueAsString(true))
-										.build();
-							} else {
-								return Response.status(403)
-										.type(MediaType.APPLICATION_JSON)
-										.entity("Delete operation is failed.")
+										.entity("File delete permission is not enabled!")
 										.build();
 							}
-
 						} catch (Exception e) {
 							return Response
 									.status(403)
 									.type(MediaType.APPLICATION_JSON)
 									.entity("File delete permission is not enabled!")
 									.build();
-
 						}
 					}
 				} else {
@@ -1337,24 +1245,39 @@ public class DelegationService {
 						delegationDAO.saveDelegation(newDelegation,
 								authorProfile);
 
+						// Update the current Delegator bit to true
+						authorProfile.setDelegator(true);
+						userProfileDAO.save(authorProfile);
+
 						notificationMessage = "Delegation Added by " + userName
 								+ ".";
 
-						sendNotification(newDelegation, delegateeProfile
-								.getUserAccount().getUserName(), userProfileID,
+						sendNotification(newDelegation, userProfileID,
 								userName, userCollege, userDepartment,
 								userPositionType, userPositionTitle,
 								notificationMessage, "Delegation", false);
+
+						return Response
+								.status(200)
+								.type(MediaType.APPLICATION_JSON)
+								.entity(mapper.writerWithDefaultPrettyPrinter()
+										.writeValueAsString(true)).build();
 					} catch (Exception e) {
 						delegationDAO.delete(newDelegation);
-					}
 
-					return Response
-							.status(200)
-							.type(MediaType.APPLICATION_JSON)
-							.entity(mapper.writerWithDefaultPrettyPrinter()
-									.writeValueAsString(true)).build();
+						return Response
+								.status(403)
+								.type(MediaType.APPLICATION_JSON)
+								.entity("File create permission is not enabled!")
+								.build();
+					}
 				}
+
+				return Response
+						.status(200)
+						.type(MediaType.APPLICATION_JSON)
+						.entity(mapper.writerWithDefaultPrettyPrinter()
+								.writeValueAsString(true)).build();
 			} else {
 				return Response.status(403).type(MediaType.APPLICATION_JSON)
 						.entity("No Delegation Info is send!").build();
@@ -1379,8 +1302,8 @@ public class DelegationService {
 	}
 
 	private void sendNotification(Delegation existingDelegation,
-			String delegateeUserName, String userProfileID, String userName,
-			String userCollege, String userDepartment, String userPositionType,
+			String userProfileID, String userName, String userCollege,
+			String userDepartment, String userPositionType,
 			String userPositionTitle, String notificationMessage,
 			String notificationType, boolean isCritical) {
 
@@ -1390,7 +1313,7 @@ public class DelegationService {
 		notification.setType(notificationType);
 		notification.setAction(notificationMessage);
 		notification.setUserProfileId(existingDelegation.getDelegateeId());
-		notification.setUsername(delegateeUserName);
+		notification.setUsername(existingDelegation.getDelegateeUsername());
 		notification.setForAdmin(true);
 		notification.setCritical(isCritical);
 		// notification.isViewedByUser(true);
@@ -1415,11 +1338,12 @@ public class DelegationService {
 		notification.setType(notificationType);
 		notification.setAction(notificationMessage);
 		notification.setUserProfileId(existingDelegation.getDelegateeId());
-		notification.setUsername(delegateeUserName);
-		notification.setCollege(existingDelegation.getCollege());
-		notification.setDepartment(existingDelegation.getDepartment());
-		notification.setPositionType(existingDelegation.getPositionType());
-		notification.setPositionTitle(existingDelegation.getPositionTitle());
+		notification.setUsername(existingDelegation.getDelegateeUsername());
+		notification.setCollege(existingDelegation.getDelegateeCollege());
+		notification.setDepartment(existingDelegation.getDelegateeDepartment());
+		notification.setPositionType(existingDelegation
+				.getDelegateePositionType());
+		notification.setPositionTitle(userPositionTitle);
 		notification.setCritical(isCritical);
 		// notification.isViewedByUser(true);
 		notificationDAO.save(notification);
@@ -1516,9 +1440,10 @@ public class DelegationService {
 			ObjectId delegateeId = new ObjectId(delegateeIdStr);
 			UserProfile delegateeUserProfile = userProfileDAO
 					.findUserDetailsByProfileID(delegateeId);
-			String delegateeUserName = delegateeUserProfile.getUserAccount()
-					.getUserName();
-			String delegateeEmail = delegateeUserProfile.getWorkEmails().get(0);
+
+			String delegateeUserName = existingDelegation
+					.getDelegateeUsername();
+			String delegateeEmail = existingDelegation.getDelegateeEmail();
 
 			contentProfile.append("<Content>");
 			contentProfile
@@ -1612,150 +1537,40 @@ public class DelegationService {
 					List<String> emaillist = new ArrayList<String>();
 
 					if (obligations.size() > 0) {
-						List<ObligationResult> preObligations = new ArrayList<ObligationResult>();
-						List<ObligationResult> postObligations = new ArrayList<ObligationResult>();
-						List<ObligationResult> ongoingObligations = new ArrayList<ObligationResult>();
-
 						for (ObligationResult obligation : obligations) {
 							if (obligation instanceof org.wso2.balana.xacml3.Obligation) {
 								List<AttributeAssignment> assignments = ((org.wso2.balana.xacml3.Obligation) obligation)
 										.getAssignments();
 
-								String obligationType = "postobligation";
-
 								for (AttributeAssignment assignment : assignments) {
-									if (assignment.getAttributeId().toString()
-											.equalsIgnoreCase("obligationType")) {
-										obligationType = assignment
+									switch (assignment.getAttributeId()
+											.toString()) {
+									case "emailSubject":
+										emailSubject = assignment.getContent();
+										break;
+									case "emailBody":
+										emailBody = assignment.getContent();
+										break;
+									case "delegatorName":
+										delegatorName = assignment.getContent();
+										break;
+									case "delegatorEmail":
+										delegatorEmail = assignment
 												.getContent();
 										break;
-									}
-								}
-
-								if (obligationType.equals("preobligation")) {
-									preObligations.add(obligation);
-									System.out.println(obligationType
-											+ " is FOUND");
-								} else if (obligationType
-										.equals("postobligation")) {
-									postObligations.add(obligation);
-									System.out.println(obligationType
-											+ " is FOUND");
-								} else {
-									ongoingObligations.add(obligation);
-									System.out.println(obligationType
-											+ " is FOUND");
-								}
-
-							}
-						}
-
-						Boolean preCondition = true;
-						String alertMessage = new String();
-						if (preObligations.size() != 0) {
-							preCondition = false;
-
-							System.out
-									.println("\n======================== Printing Obligations ====================");
-
-							for (ObligationResult obligation : preObligations) {
-								if (obligation instanceof org.wso2.balana.xacml3.Obligation) {
-									List<AttributeAssignment> assignments = ((org.wso2.balana.xacml3.Obligation) obligation)
-											.getAssignments();
-
-									String obligationType = "preobligation";
-
-									for (AttributeAssignment assignment : assignments) {
-
-										// System.out.println("Obligation :  "
-										// + assignment.getContent() +
-										// "\n");
-
-										switch (assignment.getAttributeId()
-												.toString()) {
-										// case "obligationType":
-										// obligationType =
-										// assignment.getContent();
-										// break;
-
-										case "signedByCurrentUser":
-											preCondition = Boolean
-													.parseBoolean(assignment
-															.getContent());
-											break;
-										case "alertMessage":
-											alertMessage = assignment
-													.getContent();
-											break;
-
+									case "delegateeName":
+										delegateeName = assignment.getContent();
+										break;
+									case "delegateeEmail":
+										if (!assignment.getContent().equals("")) {
+											emaillist.add(assignment
+													.getContent());
 										}
-									}
-									System.out.println(obligationType
-											+ " is RUNNING");
-									if (!preCondition) {
 										break;
 									}
 								}
+
 							}
-						}
-
-						if (preCondition) {
-							for (ObligationResult obligation : postObligations) {
-								if (obligation instanceof org.wso2.balana.xacml3.Obligation) {
-									List<AttributeAssignment> assignments = ((org.wso2.balana.xacml3.Obligation) obligation)
-											.getAssignments();
-
-									String obligationType = "postobligation";
-
-									for (AttributeAssignment assignment : assignments) {
-
-										// System.out.println("Obligation :  "
-										// + assignment.getContent() +
-										// "\n");
-
-										switch (assignment.getAttributeId()
-												.toString()) {
-										// case "obligationType":
-										// obligationType =
-										// assignment.getContent();
-										// break;
-										case "emailSubject":
-											emailSubject = assignment
-													.getContent();
-											break;
-										case "emailBody":
-											emailBody = assignment.getContent();
-											break;
-										case "delegatorName":
-											delegatorName = assignment
-													.getContent();
-											break;
-										case "delegatorEmail":
-											delegatorEmail = assignment
-													.getContent();
-											break;
-										case "delegateeName":
-											delegateeName = assignment
-													.getContent();
-											break;
-										case "delegateeEmail":
-											if (!assignment.getContent()
-													.equals("")) {
-												emaillist.add(assignment
-														.getContent());
-											}
-											break;
-										}
-									}
-
-									System.out.println(obligationType
-											+ " is RUNNING");
-								}
-							}
-						} else {
-							return Response.status(403)
-									.type(MediaType.APPLICATION_JSON)
-									.entity(alertMessage).build();
 						}
 					}
 
@@ -1766,6 +1581,20 @@ public class DelegationService {
 						// Update the current Delegator bit to false
 						authorProfile.setDelegator(false);
 						userProfileDAO.save(authorProfile);
+
+						if (!emailSubject.equals("")) {
+							emailUtil.sendMailMultipleUsersWithoutAuth(
+									delegatorEmail, emaillist, emailSubject
+											+ delegatorName, emailBody);
+						}
+
+						String notificationMessage = "Delegation Revoked by "
+								+ authorUserName + ".";
+
+						sendNotification(existingDelegation, userProfileID,
+								userName, userCollege, userDepartment,
+								userPositionType, userPositionTitle,
+								notificationMessage, "Delegation", true);
 
 						// Delete the Delegation Dynamic Policy File here
 						try {
@@ -1780,10 +1609,7 @@ public class DelegationService {
 												+ delegationFileName)
 										.type("text/plain").build();
 							}
-							if (file.delete()) {
-								System.out.println(file.getName()
-										+ " is deleted!");
-							} else {
+							if (!file.delete()) {
 								return Response.status(403)
 										.type(MediaType.APPLICATION_JSON)
 										.entity("Delete operation is failed.")
@@ -1796,22 +1622,7 @@ public class DelegationService {
 									.type(MediaType.APPLICATION_JSON)
 									.entity("File delete permission is not enabled!")
 									.build();
-
 						}
-						if (!emailSubject.equals("")) {
-							emailUtil.sendMailMultipleUsersWithoutAuth(
-									delegatorEmail, emaillist, emailSubject
-											+ delegatorName, emailBody);
-						}
-
-						String notificationMessage = "Delegation Revoked by "
-								+ authorUserName + ".";
-
-						sendNotification(existingDelegation, delegateeUserName,
-								userProfileID, userName, userCollege,
-								userDepartment, userPositionType,
-								userPositionTitle, notificationMessage,
-								"Delegation", true);
 
 						return Response
 								.status(200)

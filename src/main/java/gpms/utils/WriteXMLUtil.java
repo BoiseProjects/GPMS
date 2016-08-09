@@ -3,7 +3,6 @@ package gpms.utils;
 import gpms.model.Delegation;
 
 import java.io.File;
-import java.net.URISyntaxException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -41,11 +40,12 @@ public class WriteXMLUtil {
 			String delegateeId = existingDelegation.getDelegateeId();
 			String delegateeName = existingDelegation.getDelegatee();
 
-			String departmentName = existingDelegation.getDepartment();
+			String departmentName = existingDelegation.getDelegateeDepartment();
 			// departmentName =
 			// existingDelegation.getDepartment().replaceAll(" ",
 			// "-");
-			String positionTitle = existingDelegation.getPositionTitle();
+			String positionTitle = existingDelegation
+					.getDelegateePositionTitle();
 			// positionTitle =
 			// existingDelegation.getPositionTitle().replaceAll(" ", "-");
 
@@ -91,7 +91,7 @@ public class WriteXMLUtil {
 			rootElement.setAttributeNode(attr);
 
 			attr = doc.createAttribute("RuleCombiningAlgId");
-			attr.setValue("urn:oasis:names:tc:xacml:3.0:rule-combining-algorithm:deny-overrides");
+			attr.setValue("urn:oasis:names:tc:xacml:3.0:rule-combining-algorithm:permit-overrides");
 			rootElement.setAttributeNode(attr);
 
 			attr = doc.createAttribute("Version");
@@ -364,7 +364,7 @@ public class WriteXMLUtil {
 							doc,
 							"urn:oasis:names:tc:xacml:1.0:function:dateTime-greater-than-or-equal",
 							"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
-							"//ak:currentdatetime/text()",fromDate));
+							"//ak:currentdatetime/text()", fromDate));
 
 			conditionRootApply2
 					.appendChild(getConditionApplyDateTime(
@@ -471,7 +471,7 @@ public class WriteXMLUtil {
 							doc,
 							"urn:oasis:names:tc:xacml:1.0:function:dateTime-greater-than-or-equal",
 							"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
-							"//ak:currentdatetime/text()",fromDate));
+							"//ak:currentdatetime/text()", fromDate));
 
 			conditionRootApply3
 					.appendChild(getConditionApplyDateTime(
@@ -548,7 +548,7 @@ public class WriteXMLUtil {
 
 			conditionRootApply4.appendChild(getConditionApplyString(doc,
 					"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
-					"//ak:delegatorid/text()", userProfileID));
+					"//ak:delegator/ak:id/text()", userProfileID));
 
 			conditionRootApply4.appendChild(getConditionApplyString(doc,
 					"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
@@ -615,8 +615,8 @@ public class WriteXMLUtil {
 		obligationExpression.setAttribute("ObligationId", obligationId);
 		obligationExpression.setAttribute("FulfillOn", fullFillOn);
 
-		obligationExpression.appendChild(getObligationAssignmentAttrValue(doc,
-				"obligationType", "postobligation"));
+		// obligationExpression.appendChild(getObligationAssignmentAttrValue(doc,
+		// "obligationType", "postobligation"));
 
 		obligationExpression.appendChild(getObligationAssignmentAttrValue(doc,
 				"emailBody", emailBody));

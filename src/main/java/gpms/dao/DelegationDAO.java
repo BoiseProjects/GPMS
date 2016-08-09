@@ -5,7 +5,6 @@ import gpms.model.AuditLog;
 import gpms.model.AuditLogInfo;
 import gpms.model.Delegation;
 import gpms.model.DelegationInfo;
-import gpms.model.Proposal;
 import gpms.model.UserAccount;
 import gpms.model.UserProfile;
 
@@ -23,6 +22,7 @@ import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
 import org.mongodb.morphia.dao.BasicDAO;
 import org.mongodb.morphia.query.Query;
+import org.mongodb.morphia.query.UpdateOperations;
 
 import com.mongodb.MongoClient;
 import com.mongodb.MongoException;
@@ -64,9 +64,9 @@ public class DelegationDAO extends BasicDAO<Delegation, String> {
 	}
 
 	public List<DelegationInfo> findAllForUserDelegationGrid(int offset,
-			int limit, String delegatee, String createdFrom,
-			String createdTo, String delegatedAction, Boolean isRevoked,
-			String delegatorID) throws ParseException {
+			int limit, String delegatee, String createdFrom, String createdTo,
+			String delegatedAction, Boolean isRevoked, String delegatorID)
+			throws ParseException {
 		Datastore ds = getDatastore();
 		List<DelegationInfo> delegations = new ArrayList<DelegationInfo>();
 
@@ -87,7 +87,8 @@ public class DelegationDAO extends BasicDAO<Delegation, String> {
 		}
 		if (createdTo != null && !createdTo.isEmpty()) {
 			Date delegatedStartsTo = formatter.parse(createdTo);
-			delegationQuery.criteria("created on").lessThanOrEq(delegatedStartsTo);
+			delegationQuery.criteria("created on").lessThanOrEq(
+					delegatedStartsTo);
 		}
 
 		if (delegatedAction != null) {
@@ -108,9 +109,10 @@ public class DelegationDAO extends BasicDAO<Delegation, String> {
 			delegation.setRowTotal(rowTotal);
 			delegation.setId(userDelegation.getId().toString());
 			delegation.setDelegatee(userDelegation.getDelegatee());
-			delegation.setDelegateeDepartment(userDelegation.getDepartment());
+			delegation.setDelegateeEmail(userDelegation.getDelegateeEmail());
 			delegation.setDelegateePositionTitle(userDelegation
-					.getPositionTitle());
+					.getDelegateePositionTitle());
+			delegation.setPositionTitle(userDelegation.getPositionTitle());
 			delegation.setDelegatedAction(userDelegation.getAction());
 			delegation.setDelegationReason(userDelegation.getReason());
 			delegation.setDateCreated(userDelegation.getCreatedOn());
@@ -165,7 +167,8 @@ public class DelegationDAO extends BasicDAO<Delegation, String> {
 		}
 		if (createdTo != null && !createdTo.isEmpty()) {
 			Date delegatedStartsTo = formatter.parse(createdTo);
-			delegationQuery.criteria("created on").lessThanOrEq(delegatedStartsTo);
+			delegationQuery.criteria("created on").lessThanOrEq(
+					delegatedStartsTo);
 		}
 
 		if (delegatedAction != null) {
@@ -186,9 +189,10 @@ public class DelegationDAO extends BasicDAO<Delegation, String> {
 			delegation.setRowTotal(rowTotal);
 			delegation.setId(userDelegation.getId().toString());
 			delegation.setDelegatee(userDelegation.getDelegatee());
-			delegation.setDelegateeDepartment(userDelegation.getDepartment());
+			delegation.setDelegateeEmail(userDelegation.getDelegateeEmail());
 			delegation.setDelegateePositionTitle(userDelegation
-					.getPositionTitle());
+					.getDelegateePositionTitle());
+			delegation.setPositionTitle(userDelegation.getPositionTitle());
 			delegation.setDelegatedAction(userDelegation.getAction());
 			delegation.setDelegationReason(userDelegation.getReason());
 			delegation.setDateCreated(userDelegation.getCreatedOn());
@@ -456,6 +460,33 @@ public class DelegationDAO extends BasicDAO<Delegation, String> {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	public void updateDelegation(ObjectId delegationID,
+			Date delegationFromDate, Date delegationToDate,
+			String delegationReason, String policyFileName,
+			UserProfile authorProfile) {
+		try {
+			Datastore ds = getDatastore();
+			audit = new AuditLog(authorProfile, "Updated delegation by "
+					+ authorProfile.getUserAccount().getUserName(), new Date());
+
+			Query<Delegation> query = ds.createQuery(Delegation.class)
+					.field("_id").equal(delegationID);
+			UpdateOperations<Delegation> ops = ds
+					.createUpdateOperations(Delegation.class)
+					.set("from", delegationFromDate)
+					.set("to", delegationToDate)
+					.set("delegation reason", delegationReason)
+					.set("delegation file name", policyFileName)
+					.add("audit log", audit);
+			ds.update(query, ops);
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 
 	public boolean revokeDelegation(Delegation existingDelegation,

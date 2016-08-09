@@ -1,10 +1,12 @@
 package gpms.model;
 
-public class UserDetail {
+public class UserDetail implements Comparable<UserDetail> {
 
 	private String userProfileId = new String();
 
 	private String fullName = new String();
+
+	private String userName = new String();
 
 	private String email = new String();
 
@@ -34,6 +36,14 @@ public class UserDetail {
 
 	public void setFullName(String fullName) {
 		this.fullName = fullName;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 
 	public String getEmail() {
@@ -79,9 +89,15 @@ public class UserDetail {
 	@Override
 	public String toString() {
 		return "UserDetail [userProfileId=" + userProfileId + ", fullName="
-				+ fullName + ", email=" + email + ", college=" + college
-				+ ", department=" + department + ", positionType="
-				+ positionType + ", positionTitle=" + positionTitle + "]";
+				+ fullName + ", userName=" + userName + ", email=" + email
+				+ ", college=" + college + ", department=" + department
+				+ ", positionType=" + positionType + ", positionTitle="
+				+ positionTitle + "]";
+	}
+
+	@Override
+	public int compareTo(UserDetail other) {
+		return fullName.compareTo(other.fullName);
 	}
 
 }

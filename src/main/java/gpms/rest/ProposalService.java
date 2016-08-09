@@ -7970,8 +7970,10 @@ public class ProposalService {
 							// .size();
 
 							if (existingProposal.getChairApproval() == ApprovalType.READYFORAPPROVAL
-									&& proposalUserTitle.textValue().equals(
-											"Department Chair")) {
+									&& (proposalUserTitle.textValue().equals(
+											"Department Chair") || proposalUserTitle
+											.textValue().equals(
+													"Associate Chair"))) {
 								// Returned by Chair
 								existingProposal
 										.setChairApproval(ApprovalType.DISAPPROVED);
@@ -8023,8 +8025,10 @@ public class ProposalService {
 								}
 							} else if (existingProposal
 									.getBusinessManagerApproval() == ApprovalType.READYFORAPPROVAL
-									&& proposalUserTitle.textValue().equals(
-											"Business Manager")) {
+									&& (proposalUserTitle.textValue().equals(
+											"Business Manager") || proposalUserTitle
+											.textValue()
+											.equals("Department Administrative Assistant"))) {
 								// Disapproved by Business Manager
 								existingProposal
 										.setBusinessManagerApproval(ApprovalType.DISAPPROVED);
@@ -8137,8 +8141,10 @@ public class ProposalService {
 									notificationDAO.save(notification);
 								}
 							} else if (existingProposal.getDeanApproval() == ApprovalType.READYFORAPPROVAL
-									&& proposalUserTitle.textValue().equals(
-											"Dean")) {
+									&& (proposalUserTitle.textValue().equals(
+											"Dean") || proposalUserTitle
+											.textValue().equals(
+													"Associate Dean"))) {
 								// Returned by Dean
 								existingProposal
 										.setDeanApproval(ApprovalType.DISAPPROVED);
