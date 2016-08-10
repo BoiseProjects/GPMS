@@ -65,7 +65,9 @@ public class DelegationDAO extends BasicDAO<Delegation, String> {
 
 	public List<DelegationInfo> findAllForUserDelegationGrid(int offset,
 			int limit, String delegatee, String createdFrom, String createdTo,
-			String delegatedAction, Boolean isRevoked, String delegatorID)
+			String delegatedAction, Boolean isRevoked, String delegatorID,
+			String delegatedCollege, String delegatedDepartment,
+			String delegatedPositionType, String delegatedPositionTitle)
 			throws ParseException {
 		Datastore ds = getDatastore();
 		List<DelegationInfo> delegations = new ArrayList<DelegationInfo>();
@@ -74,6 +76,26 @@ public class DelegationDAO extends BasicDAO<Delegation, String> {
 
 		if (delegatorID != null) {
 			delegationQuery.criteria("delegator user id").equal(delegatorID);
+		}
+
+		if (delegatedCollege != null) {
+			delegationQuery.criteria("delegated college").equal(
+					delegatedCollege);
+		}
+
+		if (delegatedDepartment != null) {
+			delegationQuery.criteria("delegated department").equal(
+					delegatedDepartment);
+		}
+
+		if (delegatedPositionType != null) {
+			delegationQuery.criteria("delegated position type").equal(
+					delegatedPositionType);
+		}
+
+		if (delegatedPositionTitle != null) {
+			delegationQuery.criteria("delegated position title").equal(
+					delegatedPositionTitle);
 		}
 
 		if (delegatee != null) {
@@ -112,7 +134,8 @@ public class DelegationDAO extends BasicDAO<Delegation, String> {
 			delegation.setDelegateeEmail(userDelegation.getDelegateeEmail());
 			delegation.setDelegateePositionTitle(userDelegation
 					.getDelegateePositionTitle());
-			delegation.setPositionTitle(userDelegation.getPositionTitle());
+			delegation.setPositionTitle(userDelegation
+					.getDelegatedPositionTitle());
 			delegation.setDelegatedAction(userDelegation.getAction());
 			delegation.setDelegationReason(userDelegation.getReason());
 			delegation.setDateCreated(userDelegation.getCreatedOn());
@@ -146,7 +169,9 @@ public class DelegationDAO extends BasicDAO<Delegation, String> {
 
 	public List<DelegationInfo> findAllUserDelegations(String delegatee,
 			String createdFrom, String createdTo, String delegatedAction,
-			Boolean isRevoked, String delegatorID) throws ParseException {
+			Boolean isRevoked, String delegatorID, String delegatedCollege,
+			String delegatedDepartment, String delegatedPositionType,
+			String delegatedPositionTitle) throws ParseException {
 		Datastore ds = getDatastore();
 		List<DelegationInfo> delegations = new ArrayList<DelegationInfo>();
 
@@ -154,6 +179,26 @@ public class DelegationDAO extends BasicDAO<Delegation, String> {
 
 		if (delegatorID != null) {
 			delegationQuery.criteria("delegator user id").equal(delegatorID);
+		}
+
+		if (delegatedCollege != null) {
+			delegationQuery.criteria("delegated college").equal(
+					delegatedCollege);
+		}
+
+		if (delegatedDepartment != null) {
+			delegationQuery.criteria("delegated department").equal(
+					delegatedDepartment);
+		}
+
+		if (delegatedPositionType != null) {
+			delegationQuery.criteria("delegated position type").equal(
+					delegatedPositionType);
+		}
+
+		if (delegatedPositionTitle != null) {
+			delegationQuery.criteria("delegated position title").equal(
+					delegatedPositionTitle);
 		}
 
 		if (delegatee != null) {
@@ -192,7 +237,8 @@ public class DelegationDAO extends BasicDAO<Delegation, String> {
 			delegation.setDelegateeEmail(userDelegation.getDelegateeEmail());
 			delegation.setDelegateePositionTitle(userDelegation
 					.getDelegateePositionTitle());
-			delegation.setPositionTitle(userDelegation.getPositionTitle());
+			delegation.setPositionTitle(userDelegation
+					.getDelegatedPositionTitle());
 			delegation.setDelegatedAction(userDelegation.getAction());
 			delegation.setDelegationReason(userDelegation.getReason());
 			delegation.setDateCreated(userDelegation.getCreatedOn());
@@ -462,6 +508,7 @@ public class DelegationDAO extends BasicDAO<Delegation, String> {
 		}
 	}
 
+	// Not Used
 	public void updateDelegation(ObjectId delegationID,
 			Date delegationFromDate, Date delegationToDate,
 			String delegationReason, String policyFileName,

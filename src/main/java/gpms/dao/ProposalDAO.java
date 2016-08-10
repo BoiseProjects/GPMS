@@ -1956,7 +1956,7 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 
 		Query<UserProfile> profileQuery = ds.createQuery(UserProfile.class)
 				.retrievedFields(true, "_id", "first name", "middle name",
-						"last name", "details", "is delegator");
+						"last name", "details");
 
 		profileQuery.and(profileQuery.criteria("deleted").equal(false),
 				profileQuery.criteria("details.position title").in(positions));
@@ -2001,7 +2001,8 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 						}
 
 						if (!departmentChairAlreadySigned) {
-							if (!user.isDelegator()
+							if (!isDelegator(user.getId().toString(),
+									posDetails)
 									&& proposal.getChairApproval() == ApprovalType.READYFORAPPROVAL) {
 								signDeptChair.setUserProfileId(user.getId()
 										.toString());
@@ -2014,10 +2015,12 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 								if (!signatures.contains(signDeptChair)) {
 									signatures.add(signDeptChair);
 								}
-							} else if (user.isDelegator()) {
+							} else if (isDelegator(user.getId().toString(),
+									posDetails)) {
 								// TODO :: here I used Transfer mode of
 								// Delegation to unable the User
-								// with is delegator = true to sign the proposal
+								// with isDelegator() = true to sign the
+								// proposal
 								// Find all delegation with delegatee =
 								// user.getId().toString()
 								// I only consider for Not Signed Case to show
@@ -2122,7 +2125,8 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 						}
 
 						if (!businessManagerAlreadySigned) {
-							if (!user.isDelegator()
+							if (!isDelegator(user.getId().toString(),
+									posDetails)
 									&& proposal.getBusinessManagerApproval() == ApprovalType.READYFORAPPROVAL) {
 								signBusinessMgr.setUserProfileId(user.getId()
 										.toString());
@@ -2135,7 +2139,8 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 								if (!signatures.contains(signBusinessMgr)) {
 									signatures.add(signBusinessMgr);
 								}
-							} else if (user.isDelegator()) {
+							} else if (isDelegator(user.getId().toString(),
+									posDetails)) {
 								List<SignatureInfo> delegatedBusinessManager = findDelegatedUsersForAUser(
 										user.getId(), id.toString(),
 										posDetails.getCollege(),
@@ -2232,7 +2237,8 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 						}
 
 						if (!deanAlreadySigned) {
-							if (!user.isDelegator()
+							if (!isDelegator(user.getId().toString(),
+									posDetails)
 									&& proposal.getDeanApproval() == ApprovalType.READYFORAPPROVAL) {
 								signDean.setUserProfileId(user.getId()
 										.toString());
@@ -2244,7 +2250,8 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 								if (!signatures.contains(signDean)) {
 									signatures.add(signDean);
 								}
-							} else if (user.isDelegator()) {
+							} else if (isDelegator(user.getId().toString(),
+									posDetails)) {
 								List<SignatureInfo> delegatedDean = findDelegatedUsersForAUser(
 										user.getId(), id.toString(),
 										posDetails.getCollege(),
@@ -2431,6 +2438,22 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 			}
 		}
 		return signatures;
+	}
+
+	private boolean isDelegator(String delegatorId, PositionDetails posDetails) {
+		long delegationCount = ds.createQuery(Delegation.class)
+				.field("revoked").equal(false).field("delegator user id")
+				.equal(delegatorId).field("delegated college")
+				.equal(posDetails.getCollege()).field("delegated department")
+				.equal(posDetails.getDepartment())
+				.field("delegated position type")
+				.equal(posDetails.getPositionType())
+				.field("delegated position title")
+				.equal(posDetails.getPositionTitle()).countAll();
+		if (delegationCount > 0) {
+			return true;
+		}
+		return false;
 	}
 
 	public List<SignatureInfo> findDelegatedUsersForAUser(ObjectId userId,
@@ -2667,7 +2690,7 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 
 		Query<UserProfile> profileQuery = ds.createQuery(UserProfile.class)
 				.retrievedFields(true, "_id", "first name", "middle name",
-						"last name", "details", "work email", "is delegator");
+						"last name", "details", "work email");
 
 		profileQuery.and(profileQuery.criteria("deleted").equal(false),
 				profileQuery.criteria("details.position title").in(positions));
@@ -2684,7 +2707,7 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 									"Department Chair")) {
 						SignatureUserInfo signDeptChair = new SignatureUserInfo();
 
-						if (!user.isDelegator()) {
+						if (!isDelegator(user.getId().toString(), posDetails)) {
 
 							signDeptChair.setUserProfileId(user.getId()
 									.toString());
@@ -2727,7 +2750,7 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 							&& posDetails.getPositionTitle().equalsIgnoreCase(
 									"Business Manager")) {
 						SignatureUserInfo signBusinessMgr = new SignatureUserInfo();
-						if (!user.isDelegator()) {
+						if (!isDelegator(user.getId().toString(), posDetails)) {
 							signBusinessMgr.setUserProfileId(user.getId()
 									.toString());
 							signBusinessMgr.setFullName(user.getFullName());
@@ -2771,7 +2794,7 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 							&& posDetails.getPositionTitle().equalsIgnoreCase(
 									"Dean")) {
 						SignatureUserInfo signDean = new SignatureUserInfo();
-						if (!user.isDelegator()) {
+						if (!isDelegator(user.getId().toString(), posDetails)) {
 							signDean.setUserProfileId(user.getId().toString());
 							signDean.setFullName(user.getFullName());
 							signDean.setUserName(user.getUserAccount()

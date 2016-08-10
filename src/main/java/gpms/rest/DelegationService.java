@@ -221,7 +221,8 @@ public class DelegationService {
 
 			delegations = delegationDAO.findAllForUserDelegationGrid(offset,
 					limit, delegatee, createdFrom, createdTo, delegatedAction,
-					isRevoked, userProfileID);
+					isRevoked, userProfileID, userCollege, userDepartment,
+					userPositionType, userPositionTitle);
 
 			return Response
 					.status(Response.Status.OK)
@@ -366,7 +367,8 @@ public class DelegationService {
 
 			delegations = delegationDAO.findAllUserDelegations(delegatee,
 					createdFrom, createdTo, delegatedAction, isRevoked,
-					userProfileID);
+					userProfileID, userCollege, userDepartment,
+					userPositionType, userPositionTitle);
 
 			String filename = new String();
 			if (delegations.size() > 0) {
@@ -1035,7 +1037,12 @@ public class DelegationService {
 								.getWorkEmails().get(0));
 
 						// Delegated
-						newDelegation.setPositionTitle(userPositionTitle);
+						newDelegation.setDelegatedCollege(userCollege);
+						newDelegation.setDelegatedDepartment(userDepartment);
+						newDelegation
+								.setDelegatedPositionType(userPositionType);
+						newDelegation
+								.setDelegatedPositionTitle(userPositionTitle);
 					}
 				}
 
@@ -1165,10 +1172,6 @@ public class DelegationService {
 					if (!existingDelegation.equals(oldDelegation)) {
 						try {
 							// Create New policy File
-							// if (delegateePositionTitle.equals("")) {
-							// delegateePositionTitle = existingDelegation
-							// .getPositionTitle();
-							// }
 							policyFileName = createDynamicPolicy(userProfileID,
 									delegatorName, policyLocation,
 									existingDelegation);
@@ -1180,10 +1183,6 @@ public class DelegationService {
 									authorProfile);
 							notificationMessage = "Delegation Updated by "
 									+ userName + ".";
-
-							// Update the current Delegator bit to true
-							authorProfile.setDelegator(true);
-							userProfileDAO.save(authorProfile);
 
 							sendNotification(existingDelegation, userProfileID,
 									userName, userCollege, userDepartment,
@@ -1244,10 +1243,6 @@ public class DelegationService {
 						newDelegation.setDelegationFileName(policyFileName);
 						delegationDAO.saveDelegation(newDelegation,
 								authorProfile);
-
-						// Update the current Delegator bit to true
-						authorProfile.setDelegator(true);
-						userProfileDAO.save(authorProfile);
 
 						notificationMessage = "Delegation Added by " + userName
 								+ ".";
@@ -1436,14 +1431,12 @@ public class DelegationService {
 			String authorUserName = authorProfile.getUserAccount()
 					.getUserName();
 
-			String delegateeIdStr = existingDelegation.getDelegateeId();
-			ObjectId delegateeId = new ObjectId(delegateeIdStr);
-			UserProfile delegateeUserProfile = userProfileDAO
-					.findUserDetailsByProfileID(delegateeId);
-
-			String delegateeUserName = existingDelegation
-					.getDelegateeUsername();
-			String delegateeEmail = existingDelegation.getDelegateeEmail();
+			// String delegateeIdStr = existingDelegation.getDelegateeId();
+			// ObjectId delegateeId = new ObjectId(delegateeIdStr);
+			// UserProfile delegateeUserProfile =
+			// existingDelegation.getUserProfile();
+			// String delegateeUserName = existingDelegation
+			// .getDelegateeUsername();
 
 			contentProfile.append("<Content>");
 			contentProfile
@@ -1484,7 +1477,7 @@ public class DelegationService {
 			contentProfile.append(existingDelegation.getDelegatee());
 			contentProfile.append("</ak:fullname>");
 			contentProfile.append("<ak:email>");
-			contentProfile.append(delegateeEmail);
+			contentProfile.append(existingDelegation.getDelegateeEmail());
 			contentProfile.append("</ak:email>");
 			contentProfile.append("</ak:delegatee>");
 
@@ -1578,10 +1571,6 @@ public class DelegationService {
 							existingDelegation, authorProfile);
 
 					if (isRevoked) {
-						// Update the current Delegator bit to false
-						authorProfile.setDelegator(false);
-						userProfileDAO.save(authorProfile);
-
 						if (!emailSubject.equals("")) {
 							emailUtil.sendMailMultipleUsersWithoutAuth(
 									delegatorEmail, emaillist, emailSubject

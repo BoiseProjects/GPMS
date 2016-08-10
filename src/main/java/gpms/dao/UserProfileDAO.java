@@ -3,6 +3,7 @@ package gpms.dao;
 import gpms.DAL.MongoDBConnector;
 import gpms.model.AuditLog;
 import gpms.model.AuditLogInfo;
+import gpms.model.Delegation;
 import gpms.model.InvestigatorUsersAndPositions;
 import gpms.model.PositionDetails;
 import gpms.model.Proposal;
@@ -430,15 +431,19 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 				.retrievedFields(true, "_id", "first name", "middle name",
 						"last name", "work email", "details", "user id");
 
+		// TODO refine this query to get only new not existing users with
+		//
 		profileQuery.and(profileQuery.criteria("deleted").equal(false),
 				profileQuery.criteria("details.position type")
-						.in(positionTypes).criteria("is delegator")
-						.equal(false));
+						.in(positionTypes));
 
 		List<UserProfile> userProfiles = profileQuery.asList();
 
 		for (UserProfile userProfile : userProfiles) {
 			for (PositionDetails userPos : userProfile.getDetails()) {
+				// if (!isAlreadyDelegatee(userProfile.getId().toString(),
+				// userPos)) {
+
 				UserDetail userDetail = new UserDetail();
 
 				userDetail.setUserProfileId(userProfile.getId().toString());
@@ -452,11 +457,29 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 				userDetail.setPositionTitle(userPos.getPositionTitle());
 
 				users.add(userDetail);
+				// }
 
 			}
 		}
 
 		return users;
+	}
+
+	private boolean isAlreadyDelegatee(String delegateeId,
+			PositionDetails posDetails) {
+		long delegationCount = ds.createQuery(Delegation.class)
+				.field("revoked").equal(false).field("delegatee user id")
+				.equal(delegateeId).field("delegatee college")
+				.equal(posDetails.getCollege()).field("delegatee department")
+				.equal(posDetails.getDepartment())
+				.field("delegatee position type")
+				.equal(posDetails.getPositionType())
+				.field("delegatee position title")
+				.equal(posDetails.getPositionTitle()).countAll();
+		if (delegationCount != 0) {
+			return true;
+		}
+		return false;
 	}
 
 	public List<UserInfo> findAllAdminUsers(String userName, String college,
