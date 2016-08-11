@@ -524,7 +524,7 @@
     </Condition>
   </Rule>
   <Rule Effect="Deny" RuleId="NotSubmitProposalByCoPI-Rule11">
-    <Description>"Co-PI" cannpt "Submit" a "Whole Proposal" when SubmittedByPI = NOTSUBMITTED and ReadyForSubmissionByPI = False and DeletedByPI = NOTDELETED</Description>
+    <Description>"Co-PI" cannot "Submit" a "Whole Proposal" when SubmittedByPI = NOTSUBMITTED and ReadyForSubmissionByPI = False and DeletedByPI = NOTDELETED</Description>
     <Target>
       <AnyOf>
         <AllOf>
@@ -2187,7 +2187,7 @@
     </ObligationExpressions>
   </Rule>
   <Rule Effect="Permit" RuleId="ApproveProposalByUniversityResearchDirector-Rule18a1">
-    <Description>"University Research Director" can "Approve" a "Whole Proposal" when ApprovedByUniversityResearchDirector=READYFORAPPROVAL where condition check all director are not signed.</Description>
+    <Description>"University Research Director" can "Approve" a "Whole Proposal" when ApprovedByUniversityResearchDirector = READYFORAPPROVAL where condition check all director are not signed.</Description>
     <Target>
       <AnyOf>
         <AllOf>
@@ -2259,7 +2259,7 @@
     </ObligationExpressions>
   </Rule>
   <Rule Effect="Permit" RuleId="ApproveProposalByUniversityResearchDirector-Rule18a2">
-    <Description>"University Research Director" can "Approve" a "Whole Proposal" when ApprovedByUniversityResearchDirector=READYFORAPPROVAL where condition check all director are signed.</Description>
+    <Description>"University Research Director" can "Approve" a "Whole Proposal" when ApprovedByUniversityResearchDirector = READYFORAPPROVAL where condition check all director are signed.</Description>
     <Target>
       <AnyOf>
         <AllOf>
@@ -6953,5 +6953,408 @@
         </AllOf>
       </AnyOf>
     </Target>
+  </Rule>
+  <Rule Effect="Permit" RuleId="SubmitButtonShowForPI-Rule100">
+    <Description>"PI" can see "Submit" button when SubmittedByPI = NOTSUBMITTED and ReadyForSubmissionByPI = True and  DeletedByPI = NOTDELETED</Description>
+    <Target>
+      <AnyOf>
+        <AllOf>
+          <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">PI</AttributeValue>
+            <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role" Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+          </Match>
+          <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Submit</AttributeValue>
+            <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+          </Match>
+        </AllOf>
+      </AnyOf>
+    </Target>
+    <Condition>
+      <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:and">
+        <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">NOTSUBMITTED</AttributeValue>
+          <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
+            <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" Path="//ak:submittedbypi/text()" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+          </Apply>
+        </Apply>
+        <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">NOTDELETED</AttributeValue>
+          <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
+            <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" Path="//ak:deletedbypi/text()" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+          </Apply>
+        </Apply>
+        <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:boolean-equal">
+          <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:boolean-one-and-only">
+            <AttributeSelector MustBePresent="false" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" Path="//ak:readyforsubmissionbypi/text()" DataType="http://www.w3.org/2001/XMLSchema#boolean"/>
+          </Apply>
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#boolean">true</AttributeValue>
+        </Apply>
+        <!--         <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-at-least-one-member-of"> -->
+        <!--           <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-bag"> -->
+        <!--             <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Submit</AttributeValue> -->
+        <!--           </Apply> -->
+        <!--           <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/> -->
+        <!--         </Apply> -->
+      </Apply>
+    </Condition>
+  </Rule>
+  <Rule Effect="Permit" RuleId="SubmitButtonShowForUniversityResearchAdministrator-Rule101">
+    <Description>"University Research Administrator" can see "Submit" button when SubmittedByUniversityResearchAdministrator = NOTSUBMITTED and ApprovedByUniversityResearchDirector = APPROVED where condition check no IRB is required.</Description>
+    <Target>
+      <AnyOf>
+        <AllOf>
+          <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">University Research Administrator</AttributeValue>
+            <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title" Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+          </Match>
+          <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Submit</AttributeValue>
+            <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+          </Match>
+        </AllOf>
+      </AnyOf>
+    </Target>
+    <Condition>
+      <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:and">
+        <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">NOTSUBMITTED</AttributeValue>
+          <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
+            <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" Path="//ak:submittedbyuniversityresearchadministrator/text()" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+          </Apply>
+        </Apply>
+        <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">APPROVED</AttributeValue>
+          <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
+            <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" Path="//ak:approvedbyuniversityresearchdirector/text()" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+          </Apply>
+        </Apply>
+      </Apply>
+    </Condition>
+  </Rule>
+  <Rule Effect="Permit" RuleId="SaveDeleteButtonShowForPI-Rule102">
+    <Description>"PI" can see "Save" and "Delete" button when SubmittedByPI = NOTSUBMITTED and  DeletedByPI = NOTDELETED</Description>
+    <Target>
+      <AnyOf>
+        <AllOf>
+          <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">PI</AttributeValue>
+            <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role" Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+          </Match>
+          <!-- 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal"> -->
+          <!-- 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Save</AttributeValue> -->
+          <!-- 						<AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/> -->
+          <!-- 					</Match> -->
+        </AllOf>
+      </AnyOf>
+    </Target>
+    <Condition>
+      <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:and">
+        <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">NOTSUBMITTED</AttributeValue>
+          <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
+            <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" Path="//ak:submittedbypi/text()" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+          </Apply>
+        </Apply>
+        <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">NOTDELETED</AttributeValue>
+          <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
+            <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" Path="//ak:deletedbypi/text()" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+          </Apply>
+        </Apply>
+        <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-at-least-one-member-of">
+          <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-bag">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Save</AttributeValue>
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Delete</AttributeValue>
+          </Apply>
+          <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+        </Apply>
+      </Apply>
+    </Condition>
+  </Rule>
+  <Rule Effect="Permit" RuleId="DeleteButtonShowForCo-PI-Rule103">
+    <Description>"University Research Director" can see "Delete" button when ApprovedByUniversityResearchDirector = READYFORAPPROVAL and DeletedByUniversityResearchDirector = NOTDELETED</Description>
+    <Target>
+      <AnyOf>
+        <AllOf>
+          <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">University Research Director</AttributeValue>
+            <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title" Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+          </Match>
+          <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Delete</AttributeValue>
+            <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+          </Match>
+        </AllOf>
+      </AnyOf>
+    </Target>
+    <Condition>
+      <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:and">
+        <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+          <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
+            <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" Path="//ak:approvedbyuniversityresearchdirector/text()" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+          </Apply>
+        </Apply>
+        <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">NOTDELETED</AttributeValue>
+          <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
+            <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" Path="//ak:deletedbyuniversityresearchdirector/text()" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+          </Apply>
+        </Apply>
+      </Apply>
+    </Condition>
+  </Rule>
+  <Rule Effect="Permit" RuleId="WithdrawButtonShowForUniversityResearchAdministrator-Rule104">
+    <Description>"University Research Administrator" can see "Withdraw" button when ApprovedByUniversityResearchAdministrator = READYFORAPPROVAL and WithdrawnByUniversityResearchAdministrator = NOTWITHDRAWN</Description>
+    <Target>
+      <AnyOf>
+        <AllOf>
+          <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">University Research Administrator</AttributeValue>
+            <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title" Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+          </Match>
+          <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Withdraw</AttributeValue>
+            <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+          </Match>
+        </AllOf>
+      </AnyOf>
+    </Target>
+    <Condition>
+      <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:and">
+        <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+          <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
+            <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" Path="//ak:approvedbyuniversityresearchadministrator/text()" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+          </Apply>
+        </Apply>
+        <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">NOTWITHDRAWN</AttributeValue>
+          <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
+            <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" Path="//ak:withdrawnbyuniversityresearchadministrator/text()" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+          </Apply>
+        </Apply>
+      </Apply>
+    </Condition>
+  </Rule>
+  <Rule Effect="Permit" RuleId="ApproveDisapproveButtonShowForDepartmentChair-Rule105">
+    <Description>"Department Chair" can see "Approve" and "Disapprove" button when ApprovedByDepartmentChair = READYFORAPPROVAL</Description>
+    <Target>
+      <AnyOf>
+        <AllOf>
+          <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Department Chair</AttributeValue>
+            <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title" Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+          </Match>
+        </AllOf>
+      </AnyOf>
+    </Target>
+    <Condition>
+      <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:and">
+        <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+          <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
+            <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" Path="//ak:approvedbydepartmentchair/text()" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+          </Apply>
+        </Apply>
+        <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-at-least-one-member-of">
+          <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-bag">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Approve</AttributeValue>
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Disapprove</AttributeValue>
+          </Apply>
+          <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+        </Apply>
+      </Apply>
+    </Condition>
+  </Rule>
+  <Rule Effect="Permit" RuleId="ApproveDisapproveButtonShowForBusinessManager-Rule106">
+    <Description>"Business Manager" can see "Approve" and "Disapprove" button when ApprovedByBusinessManager = READYFORAPPROVAL</Description>
+    <Target>
+      <AnyOf>
+        <AllOf>
+          <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Business Manager</AttributeValue>
+            <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title" Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+          </Match>
+        </AllOf>
+      </AnyOf>
+    </Target>
+    <Condition>
+      <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:and">
+        <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+          <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
+            <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" Path="//ak:approvedbybusinessmanager/text()" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+          </Apply>
+        </Apply>
+        <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-at-least-one-member-of">
+          <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-bag">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Approve</AttributeValue>
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Disapprove</AttributeValue>
+          </Apply>
+          <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+        </Apply>
+      </Apply>
+    </Condition>
+  </Rule>
+  <Rule Effect="Permit" RuleId="ApproveDisapproveButtonShowForIRB-Rule107">
+    <Description>"IRB" can see "Approve" and "Disapprove" button when ApprovedByIRB = READYFORAPPROVAL</Description>
+    <Target>
+      <AnyOf>
+        <AllOf>
+          <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">IRB</AttributeValue>
+            <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title" Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+          </Match>
+        </AllOf>
+      </AnyOf>
+    </Target>
+    <Condition>
+      <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:and">
+        <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+          <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
+            <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" Path="//ak:approvedbyirb/text()" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+          </Apply>
+        </Apply>
+        <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:boolean-equal">
+          <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:boolean-one-and-only">
+            <AttributeSelector MustBePresent="false" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" Path="//ak:irbApprovalRequired/text()" DataType="http://www.w3.org/2001/XMLSchema#boolean"/>
+          </Apply>
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#boolean">true</AttributeValue>
+        </Apply>
+        <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-at-least-one-member-of">
+          <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-bag">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Approve</AttributeValue>
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Disapprove</AttributeValue>
+          </Apply>
+          <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+        </Apply>
+      </Apply>
+    </Condition>
+  </Rule>
+  <Rule Effect="Permit" RuleId="ApproveDisapproveButtonShowForDean-Rule108">
+    <Description>"Dean" can see "Approve" and "Disapprove" button when ApprovedByDean = READYFORAPPROVAL</Description>
+    <Target>
+      <AnyOf>
+        <AllOf>
+          <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Dean</AttributeValue>
+            <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title" Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+          </Match>
+        </AllOf>
+      </AnyOf>
+    </Target>
+    <Condition>
+      <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:and">
+        <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+          <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
+            <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" Path="//ak:approvedbydean/text()" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+          </Apply>
+        </Apply>
+        <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-at-least-one-member-of">
+          <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-bag">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Approve</AttributeValue>
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Disapprove</AttributeValue>
+          </Apply>
+          <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+        </Apply>
+      </Apply>
+    </Condition>
+  </Rule>
+  <Rule Effect="Permit" RuleId="ApproveDisapproveButtonShowForUniversityResearchAdministrator-Rule109">
+    <Description>"University Research Administrator" can see "Approve" and "Disapprove" button when ApprovedByUniversityResearchAdministrator = READYFORAPPROVAL</Description>
+    <Target>
+      <AnyOf>
+        <AllOf>
+          <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">University Research Administrator</AttributeValue>
+            <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title" Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+          </Match>
+        </AllOf>
+      </AnyOf>
+    </Target>
+    <Condition>
+      <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:and">
+        <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+          <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
+            <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" Path="//ak:approvedbyuniversityresearchadministrator/text()" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+          </Apply>
+        </Apply>
+        <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-at-least-one-member-of">
+          <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-bag">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Approve</AttributeValue>
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Disapprove</AttributeValue>
+          </Apply>
+          <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+        </Apply>
+      </Apply>
+    </Condition>
+  </Rule>
+  <Rule Effect="Permit" RuleId="ApproveDisapproveButtonShowForUniversityResearchDirector-Rule110">
+    <Description>"University Research Director" can see "Approve" and "Disapprove" button when ApprovedByUniversityResearchDirector = READYFORAPPROVAL</Description>
+    <Target>
+      <AnyOf>
+        <AllOf>
+          <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">University Research Director</AttributeValue>
+            <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title" Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+          </Match>
+        </AllOf>
+      </AnyOf>
+    </Target>
+    <Condition>
+      <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:and">
+        <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+          <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
+            <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" Path="//ak:approvedbyuniversityresearchdirector/text()" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+          </Apply>
+        </Apply>
+        <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-at-least-one-member-of">
+          <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-bag">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Approve</AttributeValue>
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Disapprove</AttributeValue>
+          </Apply>
+          <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+        </Apply>
+      </Apply>
+    </Condition>
+  </Rule>
+  <Rule Effect="Permit" RuleId="ArchiveButtonShowForUniversityResearchDirector-Rule111">
+    <Description>"University Research Director" can see "Archive" button when ArchivedByUniversityResearchDirector = NOTARCHIVED and SubmittedByUniversityResearchAdministrator = SUBMITTED</Description>
+    <Target>
+      <AnyOf>
+        <AllOf>
+          <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">University Research Director</AttributeValue>
+            <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title" Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+          </Match>
+          <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Archive</AttributeValue>
+            <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+          </Match>
+        </AllOf>
+      </AnyOf>
+    </Target>
+    <Condition>
+      <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:and">
+        <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">NOTARCHIVED</AttributeValue>
+          <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
+            <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" Path="//ak:archivedbyuniversityresearchdirector/text()" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+          </Apply>
+        </Apply>
+        <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">SUBMITTED</AttributeValue>
+          <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
+            <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" Path="//ak:submittedbyuniversityresearchadministrator/text()" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+          </Apply>
+        </Apply>
+      </Apply>
+    </Condition>
   </Rule>
 </Policy>
