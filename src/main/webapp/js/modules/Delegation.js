@@ -792,11 +792,6 @@ $(function() {
 				break;
 
 			case 5: // Get all Delegable actions for a User
-				// ddlSearchDelegatedAction
-
-				// ddlDelegateAction
-
-				console.log(msg);
 				$('#ddlSearchDelegatedAction option').length = 0;
 				$('#ddlDelegateAction').empty();
 
