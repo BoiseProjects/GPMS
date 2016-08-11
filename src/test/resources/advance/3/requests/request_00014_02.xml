@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Request 
+	xmlns="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17" CombinedDecision="false" ReturnPolicyIdList="false">
+	<Attributes Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject">
+		<Attribute AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title" IncludeInResult="false">
+			<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Department Chair</AttributeValue>
+		</Attribute>
+	</Attributes>
+	<Attributes Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource">
+		<Content>
+			<ak:record 
+				xmlns:ak="http://akpower.org">
+				<ak:proposal>
+					<ak:proposalid>57a758bf91ed7339ec7fe2cb</ak:proposalid>
+					<ak:proposaltitle>Proposal 1</ak:proposaltitle>
+					<ak:irbApprovalRequired>false</ak:irbApprovalRequired>
+					<ak:submittedbypi>SUBMITTED</ak:submittedbypi>
+					<ak:readyforsubmissionbypi>true</ak:readyforsubmissionbypi>
+					<ak:deletedbypi>NOTDELETED</ak:deletedbypi>
+					<ak:approvedbydepartmentchair>READYFORAPPROVAL</ak:approvedbydepartmentchair>
+					<ak:approvedbybusinessmanager>NOTREADYFORAPPROVAL</ak:approvedbybusinessmanager>
+					<ak:approvedbyirb>NOTREADYFORAPPROVAL</ak:approvedbyirb>
+					<ak:approvedbydean>NOTREADYFORAPPROVAL</ak:approvedbydean>
+					<ak:approvedbyuniversityresearchadministrator>NOTREADYFORAPPROVAL</ak:approvedbyuniversityresearchadministrator>
+					<ak:withdrawnbyuniversityresearchadministrator>NOTWITHDRAWN</ak:withdrawnbyuniversityresearchadministrator>
+					<ak:submittedbyuniversityresearchadministrator>NOTSUBMITTED</ak:submittedbyuniversityresearchadministrator>
+					<ak:approvedbyuniversityresearchdirector>NOTDELETED</ak:approvedbyuniversityresearchdirector>
+					<ak:deletedbyuniversityresearchdirector>NOTDELETED</ak:deletedbyuniversityresearchdirector>
+					<ak:archivedbyuniversityresearchdirector>NOTARCHIVED</ak:archivedbyuniversityresearchdirector>
+				</ak:proposal>
+			</ak:record>
+		</Content>
+		<Attribute AttributeId="urn:oasis:names:tc:xacml:3.0:content-selector" IncludeInResult="false">
+			<AttributeValue XPathCategory="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression">//ak:record/ak:proposal</AttributeValue>
+		</Attribute>
+	</Attributes>
+	<Attributes Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action">
+		<Attribute IncludeInResult="true" AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action">
+			<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Save</AttributeValue>
+		</Attribute>
+	</Attributes>
+	<Attributes Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action">
+		<Attribute IncludeInResult="true" AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action">
+			<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Submit</AttributeValue>
+		</Attribute>
+	</Attributes>
+	<Attributes Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action">
+		<Attribute IncludeInResult="true" AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action">
+			<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Approve</AttributeValue>
+		</Attribute>
+	</Attributes>
+	<Attributes Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action">
+		<Attribute IncludeInResult="true" AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action">
+			<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Disapprove</AttributeValue>
+		</Attribute>
+	</Attributes>
+	<Attributes Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action">
+		<Attribute IncludeInResult="true" AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action">
+			<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Withdraw</AttributeValue>
+		</Attribute>
+	</Attributes>
+	<Attributes Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action">
+		<Attribute IncludeInResult="true" AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action">
+			<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Archive</AttributeValue>
+		</Attribute>
+	</Attributes>
+	<Attributes Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action">
+		<Attribute IncludeInResult="true" AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action">
+			<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Delete</AttributeValue>
+		</Attribute>
+	</Attributes>
+</Request>

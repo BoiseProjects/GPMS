@@ -1304,7 +1304,7 @@ $(function() {
 							});
 		},
 
-		ButtonHideShow : function(config) {
+		ButtonHideShow : function(proposalId, proposalStatus, proposalRoles) {
 			$("#btnReset").hide();
 			$("#btnSaveProposal").hide();
 			$("#btnDeleteProposal").hide();
@@ -1314,86 +1314,18 @@ $(function() {
 			$("#btnWithdrawProposal").hide();
 			$("#btnArchiveProposal").hide();
 
-			var currentPositionTitle = GPMS.utils.GetUserPositionTitle();
-
-			var proposalStatus = config.proposalStatus;
-
-			// if ($.inArray("NOTSUBMITTEDBYPI", proposalStatus) !== -1) {
-			// $("#btnSubmitProposal").show();
-			// } else {
-			// $("#btnSubmitProposal").hide();
-			// }
-
-			var currentProposalRoles = config.proposalRoles.split(', ');
-
-			if (proposalStatus != ""
-					&& (($.inArray("PI", currentProposalRoles) !== -1
-							&& config.submittedByPI == "NOTSUBMITTED"
-							&& config.readyForSubmitionByPI == "True" && config.deletedByPI == "NOTDELETED") || (currentPositionTitle == "University Research Administrator"
-							&& config.researchAdministratorSubmission == "NOTSUBMITTED" && config.researchDirectorApproval == "APPROVED"))) {
-				$("#btnSubmitProposal").show();
-			} else {
-				$("#btnSubmitProposal").hide();
+			if (proposalStatus != "") {
+				this.config.url = this.config.baseURL
+						+ "GetAvailableActionsByProposalId";
+				this.config.data = JSON2.stringify({
+					proposalId : proposalId,
+					proposalRoles : proposalRoles,
+					gpmsCommonObj : gpmsCommonObj()
+				});
+				this.config.ajaxCallMode = 22;
+				this.ajaxCall(this.config);
 			}
-
-			if (proposalStatus != ""
-					&& ($.inArray("PI", currentProposalRoles) !== -1 || ($
-							.inArray("Co-PI", currentProposalRoles) !== -1 && config.readyForSubmitionByPI == "False"))
-					&& config.submittedByPI == "NOTSUBMITTED"
-					&& config.deletedByPI == "NOTDELETED") {
-				$("#btnSaveProposal").show();
-			} else {
-				$("#btnSaveProposal").hide();
-			}
-
-			$
-					.each(
-							currentProposalRoles,
-							function(index, value) {
-								if (proposalStatus != ""
-										&& (($.inArray("PI",
-												currentProposalRoles) !== -1
-												&& config.submittedByPI == "NOTSUBMITTED" && config.deletedByPI == "NOTDELETED") || (currentPositionTitle == "University Research Director"
-												&& config.researchDirectorDeletion == "NOTDELETED" && config.researchDirectorApproval == "READYFORAPPROVAL"))) {
-									$("#btnDeleteProposal").show();
-								} else {
-									$("#btnDeleteProposal").hide();
-								}
-							});
-
-			if (proposalStatus != ""
-					&& ((currentPositionTitle == "Department Chair" && config.chairApproval == "READYFORAPPROVAL")
-							|| (currentPositionTitle == "Associate Chair" && config.chairApproval == "READYFORAPPROVAL")
-							|| (currentPositionTitle == "Business Manager" && config.businessManagerApproval == "READYFORAPPROVAL")
-							|| (currentPositionTitle == "Department Administrative Assistant" && config.businessManagerApproval == "READYFORAPPROVAL")
-							|| (currentPositionTitle == "IRB" && config.irbapproval == "READYFORAPPROVAL")
-							|| (currentPositionTitle == "Dean" && config.deanApproval == "READYFORAPPROVAL")
-							|| (currentPositionTitle == "Associate Dean" && config.deanApproval == "READYFORAPPROVAL")
-							|| (currentPositionTitle == "University Research Administrator" && config.researchAdministratorApproval == "READYFORAPPROVAL") || (currentPositionTitle == "University Research Director" && config.researchDirectorApproval == "READYFORAPPROVAL"))) {
-				$("#btnApproveProposal").show();
-				$("#btnDisapproveProposal").show();
-			} else {
-				$("#btnApproveProposal").hide();
-				$("#btnDisapproveProposal").hide();
-			}
-
-			if (proposalStatus != ""
-					&& config.researchAdministratorWithdraw == "NOTWITHDRAWN"
-					&& config.researchAdministratorApproval == "READYFORAPPROVAL"
-					&& currentPositionTitle == "University Research Administrator") {
-				$("#btnWithdrawProposal").show();
-			} else {
-				$("#btnWithdrawProposal").hide();
-			}
-
-			if (proposalStatus != ""
-					&& config.researchDirectorArchived == "NOTARCHIVED"
-					&& config.researchAdministratorSubmission == "SUBMITTED"
-					&& currentPositionTitle == "University Research Director") {
-				$("#btnArchiveProposal").show();
-			} else {
-				$("#btnArchiveProposal").hide();
-			}
+			return false;
 		},
 
 		EditProposal : function(tblID, argus) {
@@ -1469,7 +1401,7 @@ $(function() {
 
 				myProposal.BindProposalDetailsByProposalId(argus[0]);
 
-				myProposal.ButtonHideShow(myProposal.config);
+				myProposal.ButtonHideShow(argus[0], argus[6], $.trim(argus[5]));
 
 				// Certification/ Signatures Info
 				myProposal.BindAllSignatureForAProposal(argus[0], argus[20]);
@@ -4301,6 +4233,37 @@ $(function() {
 			t.remove();
 			break;
 
+		case 22:
+			$.each(msg, function(index, item) {
+				// Save, Submit, Approve, Disapprove, Withdraw, Archive, Delete
+				switch (item) {
+				case "Save":
+					$("#btnSaveProposal").show();
+					break;
+				case "Submit":
+					$("#btnSubmitProposal").show();
+					break;
+				case "Approve":
+					$("#btnApproveProposal").show();
+					break;
+				case "Disapprove":
+					$("#btnDisapproveProposal").show();
+					break;
+				case "Withdraw":
+					$("#btnWithdrawProposal").show();
+					break;
+				case "Archive":
+					$("#btnArchiveProposal").show();
+					break;
+				case "Delete":
+					$("#btnDeleteProposal").show();
+					break;
+				default:
+					break;
+				}
+			});
+			break;
+
 		}
 	},
 
@@ -4440,6 +4403,12 @@ $(function() {
 				csscody.error("<h2>" + 'Error Message' + "</h2><p>"
 						+ 'Cannot delete Investigator! ' + msg.responseText
 						+ "</p>");
+				break;
+
+			case 22:
+				csscody.error("<h2>" + 'Error Message' + "</h2><p>"
+						+ 'Cannot find policy rules for button! '
+						+ msg.responseText + "</p>");
 				break;
 
 			}

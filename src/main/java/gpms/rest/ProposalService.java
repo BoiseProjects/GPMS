@@ -83,8 +83,11 @@ import org.glassfish.jersey.media.sse.OutboundEvent;
 import org.mongodb.morphia.Morphia;
 import org.wso2.balana.ObligationResult;
 import org.wso2.balana.ctx.AbstractResult;
+import org.wso2.balana.ctx.Attribute;
 import org.wso2.balana.ctx.AttributeAssignment;
+import org.wso2.balana.ctx.xacml3.Result;
 import org.wso2.balana.xacml3.Advice;
+import org.wso2.balana.xacml3.Attributes;
 
 import com.ebay.xcelite.Xcelite;
 import com.ebay.xcelite.sheet.XceliteSheet;
@@ -1697,6 +1700,243 @@ public class ProposalService {
 				.entity("{\"error\": \"Could Not Delete Multiple Proposals\", \"status\": \"FAIL\"}")
 				.build();
 
+	}
+
+	@POST
+	@Path("/GetAvailableActionsByProposalId")
+	@ApiOperation(value = "Get Proposal Details by ProposalId", notes = "This API gets Proposal Details by ProposalId")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Success: { Proposal }"),
+			@ApiResponse(code = 400, message = "Failed: { \"error\":\"error description\", \"status\": \"FAIL\" }") })
+	public Response produceAvailableActionsByProposalId(
+			@ApiParam(value = "Message", required = true, defaultValue = "", allowableValues = "", allowMultiple = false) String message) {
+		try {
+			log.info("ProposalService::produceAvailableActionsByProposalId started");
+
+			String proposalId = new String();
+			String proposalRoles = new String();
+
+			HashMap<String, Multimap<String, String>> attrMap = new HashMap<String, Multimap<String, String>>();
+
+			Multimap<String, String> subjectMap = ArrayListMultimap.create();
+			Multimap<String, String> resourceMap = ArrayListMultimap.create();
+			Multimap<String, String> actionMap = ArrayListMultimap.create();
+
+			ObjectMapper mapper = new ObjectMapper();
+			JsonNode root = mapper.readTree(message);
+
+			if (root != null && root.has("proposalId")) {
+				proposalId = root.get("proposalId").textValue();
+			}
+
+			if (root != null && root.has("proposalRoles")) {
+				proposalRoles = root.get("proposalRoles").textValue();
+			}
+
+			@SuppressWarnings("unused")
+			String userProfileID = new String();
+			@SuppressWarnings("unused")
+			String userName = new String();
+			@SuppressWarnings("unused")
+			Boolean userIsAdmin = false;
+			@SuppressWarnings("unused")
+			String userCollege = new String();
+			@SuppressWarnings("unused")
+			String userDepartment = new String();
+			@SuppressWarnings("unused")
+			String userPositionType = new String();
+			String userPositionTitle = new String();
+
+			if (root != null && root.has("gpmsCommonObj")) {
+				JsonNode commonObj = root.get("gpmsCommonObj");
+				if (commonObj != null && commonObj.has("UserProfileID")) {
+					userProfileID = commonObj.get("UserProfileID").textValue();
+				}
+				if (commonObj != null && commonObj.has("UserName")) {
+					userName = commonObj.get("UserName").textValue();
+				}
+				if (commonObj != null && commonObj.has("UserIsAdmin")) {
+					userIsAdmin = Boolean.parseBoolean(commonObj.get(
+							"UserIsAdmin").textValue());
+				}
+				if (commonObj != null && commonObj.has("UserCollege")) {
+					userCollege = commonObj.get("UserCollege").textValue();
+				}
+				if (commonObj != null && commonObj.has("UserDepartment")) {
+					userDepartment = commonObj.get("UserDepartment")
+							.textValue();
+				}
+				if (commonObj != null && commonObj.has("UserPositionType")) {
+					userPositionType = commonObj.get("UserPositionType")
+							.textValue();
+				}
+				if (commonObj != null && commonObj.has("UserPositionTitle")) {
+					userPositionTitle = commonObj.get("UserPositionTitle")
+							.textValue();
+
+					if (proposalRoles.equals("") && proposalRoles.isEmpty()) {
+						subjectMap.put("position.title", userPositionTitle);
+						attrMap.put("Subject", subjectMap);
+					} else {
+						// String[] currentProposalRoles =
+						// proposalRoles.split(", ");
+						subjectMap.put("proposal.role", proposalRoles);
+						attrMap.put("Subject", subjectMap);
+					}
+				}
+			}
+
+			ObjectId id = new ObjectId(proposalId);
+			Proposal existingProposal = proposalDAO
+					.findProposalByProposalID(id);
+
+			StringBuffer contentProfile = new StringBuffer();
+
+			contentProfile.append("<Content>");
+			contentProfile
+					.append("<ak:record xmlns:ak=\"http://akpower.org\">");
+			contentProfile.append("<ak:proposal>");
+
+			contentProfile.append("<ak:proposalid>");
+			contentProfile.append(proposalId);
+			contentProfile.append("</ak:proposalid>");
+
+			contentProfile.append("<ak:proposaltitle>");
+			contentProfile.append(existingProposal.getProjectInfo()
+					.getProjectTitle());
+			contentProfile.append("</ak:proposaltitle>");
+
+			contentProfile.append("<ak:irbApprovalRequired>");
+			contentProfile.append(existingProposal.isIrbApprovalRequired());
+			contentProfile.append("</ak:irbApprovalRequired>");
+
+			contentProfile.append("<ak:submittedbypi>");
+			contentProfile.append(existingProposal.getSubmittedByPI().name());
+			contentProfile.append("</ak:submittedbypi>");
+
+			contentProfile.append("<ak:readyforsubmissionbypi>");
+			contentProfile.append(existingProposal.isReadyForSubmissionByPI());
+			contentProfile.append("</ak:readyforsubmissionbypi>");
+
+			contentProfile.append("<ak:deletedbypi>");
+			contentProfile.append(existingProposal.getDeletedByPI().name());
+			contentProfile.append("</ak:deletedbypi>");
+
+			contentProfile.append("<ak:approvedbydepartmentchair>");
+			contentProfile.append(existingProposal.getChairApproval().name());
+			contentProfile.append("</ak:approvedbydepartmentchair>");
+
+			contentProfile.append("<ak:approvedbybusinessmanager>");
+			contentProfile.append(existingProposal.getBusinessManagerApproval()
+					.name());
+			contentProfile.append("</ak:approvedbybusinessmanager>");
+
+			contentProfile.append("<ak:approvedbyirb>");
+			contentProfile.append(existingProposal.getIrbApproval().name());
+			contentProfile.append("</ak:approvedbyirb>");
+
+			contentProfile.append("<ak:approvedbydean>");
+			contentProfile.append(existingProposal.getDeanApproval().name());
+			contentProfile.append("</ak:approvedbydean>");
+
+			contentProfile
+					.append("<ak:approvedbyuniversityresearchadministrator>");
+			contentProfile.append(existingProposal
+					.getResearchAdministratorApproval().name());
+			contentProfile
+					.append("</ak:approvedbyuniversityresearchadministrator>");
+
+			contentProfile
+					.append("<ak:withdrawnbyuniversityresearchadministrator>");
+			contentProfile.append(existingProposal
+					.getResearchAdministratorWithdraw().name());
+			contentProfile
+					.append("</ak:withdrawnbyuniversityresearchadministrator>");
+
+			contentProfile
+					.append("<ak:submittedbyuniversityresearchadministrator>");
+			contentProfile.append(existingProposal
+					.getResearchAdministratorSubmission().name());
+			contentProfile
+					.append("</ak:submittedbyuniversityresearchadministrator>");
+
+			contentProfile.append("<ak:approvedbyuniversityresearchdirector>");
+			contentProfile.append(existingProposal
+					.getResearchDirectorDeletion().name());
+			contentProfile.append("</ak:approvedbyuniversityresearchdirector>");
+
+			contentProfile.append("<ak:deletedbyuniversityresearchdirector>");
+			contentProfile.append(existingProposal
+					.getResearchDirectorDeletion().name());
+			contentProfile.append("</ak:deletedbyuniversityresearchdirector>");
+
+			contentProfile.append("<ak:archivedbyuniversityresearchdirector>");
+			contentProfile.append(existingProposal
+					.getResearchDirectorArchived().name());
+			contentProfile.append("</ak:archivedbyuniversityresearchdirector>");
+
+			contentProfile.append("</ak:proposal>");
+			contentProfile.append("</ak:record>");
+			contentProfile.append("</Content>");
+
+			contentProfile
+					.append("<Attribute AttributeId=\"urn:oasis:names:tc:xacml:3.0:content-selector\" IncludeInResult=\"false\">");
+			contentProfile
+					.append("<AttributeValue XPathCategory=\"urn:oasis:names:tc:xacml:3.0:attribute-category:resource\" DataType=\"urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression\">//ak:record/ak:proposal</AttributeValue>");
+			contentProfile.append("</Attribute>");
+
+			if (attrMap.get("Resource") == null) {
+				attrMap.put("Resource", resourceMap);
+			}
+
+			Accesscontrol ac = new Accesscontrol();
+
+			// TODO :: Get these static actions from the Dictionary we setup in
+			// "XACMLDatasheet.xls" //Add, Add Co-PI, Add Senior Personnel,
+			// Save, Submit, Approve, Disapprove, Withdraw, Archive, Delete,
+			// View, Edit, Revoke
+
+			List<String> attributeValue = Arrays.asList("Save", "Submit",
+					"Approve", "Disapprove", "Withdraw", "Archive", "Delete");
+
+			for (String action : attributeValue) {
+				actionMap.put("proposal.action", action);
+				attrMap.put("Action", actionMap);
+			}
+
+			Set<AbstractResult> results = ac.getXACMLdecisionForMDPWithProfile(
+					attrMap, contentProfile);
+
+			List<String> actions = new ArrayList<String>();
+			for (AbstractResult result : results) {
+				if (AbstractResult.DECISION_PERMIT == result.getDecision()) {
+					Set<Attributes> attributesSet = ((Result) result)
+							.getAttributes();
+					for (Attributes attributes : attributesSet) {
+						for (Attribute attribute : attributes.getAttributes()) {
+							actions.add(attribute.getValue().encode());
+						}
+					}
+				}
+			}
+
+			// Collections.sort(actions);
+
+			return Response
+					.status(Response.Status.OK)
+					.entity(mapper.setDateFormat(formatter)
+							.writerWithDefaultPrettyPrinter()
+							.writeValueAsString(actions)).build();
+
+		} catch (Exception e) {
+			log.error("Could not find Proposal Details by ProposalId error e=",
+					e);
+		}
+
+		return Response
+				.status(Response.Status.BAD_REQUEST)
+				.entity("{\"error\": \"Could Not Find Proposal Details By ProposalId\", \"status\": \"FAIL\"}")
+				.build();
 	}
 
 	@POST

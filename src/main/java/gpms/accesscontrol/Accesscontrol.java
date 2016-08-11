@@ -1156,4 +1156,211 @@ public class Accesscontrol {
 		return finalRequest.toString();
 	}
 
+	public Set<AbstractResult> getXACMLdecisionForMDPWithProfile(
+			HashMap<String, Multimap<String, String>> attrMap,
+			StringBuffer contentProfile) {
+		String request = createXACMLRequestForMDPWithProfile(attrMap,
+				contentProfile);
+
+		ResponseCtx response = getResponse(request);
+
+		if (response != null) {
+			System.out
+					.println("\n======================== XACML Response ====================");
+			System.out.println(response.encode());
+			System.out
+					.println("===========================================================");
+
+			Set<AbstractResult> set = response.getResults();
+			return set;
+		} else {
+			System.out.println("Response received PDP is Null");
+		}
+		return null;
+	}
+
+	private String createXACMLRequestForMDPWithProfile(
+			HashMap<String, Multimap<String, String>> attributesMap,
+			StringBuffer contentProfile) {
+		System.out.println("Attribute Policy Request List\n"
+				+ this.attrSpreadSheet.getAllAttributeRecords());
+
+		StringBuffer subjectAttr = new StringBuffer();
+		StringBuffer resourceAttr = new StringBuffer();
+		StringBuffer actionAttr = new StringBuffer();
+		StringBuffer environmentAttr = new StringBuffer();
+
+		for (Entry<String, Multimap<String, String>> entry : attributesMap
+				.entrySet()) {
+
+			Set<String> keySet = entry.getValue().keySet();
+			Iterator<String> keyIterator = keySet.iterator();
+
+			switch (entry.getKey()) {
+			case "Subject":
+				boolean isFirstSubject = true;
+				while (keyIterator.hasNext()) {
+					String key = (String) keyIterator.next();
+					Collection<String> values = entry.getValue().get(key);
+					AttributeRecord attrRecord = this.attrSpreadSheet
+							.findAttributeRecord(key);
+					if (attrRecord != null) {
+						for (String value : values) {
+							if (attrRecord.getValues().contains(value)) {
+								System.out.println(key + " :::::: " + value);
+								if (isFirstSubject) {
+									subjectAttr
+											.append("<Attributes Category=\""
+													+ attrRecord.getCategory()
+															.toString() + "\">");
+								}
+								subjectAttr.append("<Attribute AttributeId=\""
+										+ attrRecord.getFullAttributeName()
+												.toString()
+										+ "\" IncludeInResult=\"false\">"
+										+ "<AttributeValue DataType=\""
+										+ attrRecord.getDataType().toString()
+										+ "\">" + value
+										+ "</AttributeValue></Attribute>");
+								isFirstSubject = false;
+							}
+						}
+					}
+				}
+				subjectAttr.append("</Attributes>");
+				break;
+			case "Resource":
+				boolean isFirstResource = true;
+				while (keyIterator.hasNext()) {
+					String key = (String) keyIterator.next();
+					Collection<String> values = entry.getValue().get(key);
+					AttributeRecord attrRecord = this.attrSpreadSheet
+							.findAttributeRecord(key);
+					if (attrRecord != null) {
+						for (String value : values) {
+							if (attrRecord.getValues().contains(value)) {
+								System.out.println(key + " :::::: " + value);
+								if (isFirstResource) {
+									resourceAttr
+											.append("<Attributes Category=\""
+													+ attrRecord.getCategory()
+															.toString() + "\">");
+
+									if (contentProfile.length() != 0) {
+										resourceAttr.append(contentProfile);
+									}
+								}
+
+								resourceAttr.append("<Attribute AttributeId=\""
+										+ attrRecord.getFullAttributeName()
+												.toString()
+										+ "\" IncludeInResult=\"false\">"
+										+ "<AttributeValue DataType=\""
+										+ attrRecord.getDataType().toString()
+										+ "\">" + value
+										+ "</AttributeValue></Attribute>");
+
+								isFirstResource = false;
+							}
+						}
+					}
+				}
+				if (keySet.isEmpty()) {
+					resourceAttr
+							.append("<Attributes Category=\"urn:oasis:names:tc:xacml:3.0:attribute-category:resource\">");
+
+					if (contentProfile.length() != 0) {
+						resourceAttr.append(contentProfile);
+					}
+				}
+				resourceAttr.append("</Attributes>");
+				break;
+			case "Action":
+				// boolean isFirstAction = true;
+				while (keyIterator.hasNext()) {
+					String key = (String) keyIterator.next();
+					Collection<String> values = entry.getValue().get(key);
+					AttributeRecord attrRecord = this.attrSpreadSheet
+							.findAttributeRecord(key);
+					if (attrRecord != null) {
+						for (String value : values) {
+							if (attrRecord.getValues().contains(value)) {
+								System.out.println(key + " :::::: " + value);
+								// if (isFirstAction) {
+								actionAttr.append("<Attributes Category=\""
+										+ attrRecord.getCategory().toString()
+										+ "\">");
+								// }
+
+								actionAttr.append("<Attribute AttributeId=\""
+										+ attrRecord.getFullAttributeName()
+												.toString()
+										+ "\" IncludeInResult=\"true\">"
+										+ "<AttributeValue DataType=\""
+										+ attrRecord.getDataType().toString()
+										+ "\">" + value
+										+ "</AttributeValue></Attribute>");
+								// isFirstAction = false;
+
+								actionAttr.append("</Attributes>");
+							}
+						}
+					}
+				}
+				// actionAttr.append("</Attributes>");
+				break;
+			case "Environment":
+				boolean isFirstEnvironment = true;
+				while (keyIterator.hasNext()) {
+					String key = (String) keyIterator.next();
+					Collection<String> values = entry.getValue().get(key);
+					AttributeRecord attrRecord = this.attrSpreadSheet
+							.findAttributeRecord(key);
+					if (attrRecord != null) {
+						for (String value : values) {
+							if (attrRecord.getValues().contains(value)) {
+								System.out.println(key + " :::::: " + value);
+								if (isFirstEnvironment) {
+									environmentAttr
+											.append("<Attributes Category=\""
+													+ attrRecord.getCategory()
+															.toString() + "\">");
+								}
+
+								environmentAttr
+										.append("<Attribute AttributeId=\""
+												+ attrRecord
+														.getFullAttributeName()
+														.toString()
+												+ "\" IncludeInResult=\"false\">"
+												+ "<AttributeValue DataType=\""
+												+ attrRecord.getDataType()
+														.toString()
+												+ "\">"
+												+ value
+												+ "</AttributeValue></Attribute>");
+
+								isFirstEnvironment = false;
+							}
+						}
+					}
+				}
+				environmentAttr.append("</Attributes>");
+				break;
+
+			default:
+				break;
+			}
+		}
+
+		StringBuffer finalRequest = new StringBuffer();
+
+		finalRequest
+				.append("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><Request xmlns=\"urn:oasis:names:tc:xacml:3.0:core:schema:wd-17\" CombinedDecision=\"false\" ReturnPolicyIdList=\"false\">")
+				.append(subjectAttr).append(resourceAttr).append(actionAttr)
+				.append(environmentAttr).append("</Request>");
+
+		return finalRequest.toString();
+	}
+
 }

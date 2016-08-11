@@ -760,7 +760,7 @@ public class DelegationService {
 			}
 
 			Collections.sort(actions);
-			
+
 			return Response
 					.status(Response.Status.OK)
 					.entity(mapper.setDateFormat(formatter)
@@ -835,10 +835,6 @@ public class DelegationService {
 						default:
 							break;
 						}
-					}
-
-					if (attrMap.get("Resource") == null) {
-						attrMap.put("Resource", resourceMap);
 					}
 
 					@SuppressWarnings("unused")
@@ -946,6 +942,10 @@ public class DelegationService {
 					contentProfile
 							.append("<AttributeValue DataType=\"urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression\" XPathCategory=\"urn:oasis:names:tc:xacml:3.0:attribute-category:resource\">//ak:record//ak:user</AttributeValue>");
 					contentProfile.append("</Attribute>");
+
+					if (attrMap.get("Resource") == null) {
+						attrMap.put("Resource", resourceMap);
+					}
 
 					Set<AbstractResult> results = ac
 							.getXACMLdecisionWithObligations(attrMap,
