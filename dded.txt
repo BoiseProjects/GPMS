@@ -1,0 +1,45 @@
+public void testAdvanceTest00014() throws Exception {
+
+		String reqResNo;
+		Set<String> policies = new HashSet<String>();
+
+		policies.add("TestPolicy_00014.xml");
+
+		log.info("Advance Test 00014 is started. This test is for Jira COMMONS-97");
+
+		for (int i = 1; i < 3; i++) {
+
+			if (i < 10) {
+				reqResNo = "0" + i;
+			} else {
+				reqResNo = Integer.toString(i);
+			}
+
+			String request = PolicyTestUtil.createRequest(ROOT_DIRECTORY,
+					VERSION_DIRECTORY, "request_00014_" + reqResNo + ".xml");
+			if (request != null) {
+				log.info("Request that is sent to the PDP :  " + request);
+				ResponseCtx response = PolicyTestUtil.evaluate(
+						getPDPNewInstance(policies), request);
+				if (response != null) {
+					log.info("Response that is received from the PDP :  "
+							+ response.encode());
+					ResponseCtx expectedResponseCtx = PolicyTestUtil
+							.createResponse(ROOT_DIRECTORY, VERSION_DIRECTORY,
+									"response_00014_" + reqResNo + ".xml");
+					if (expectedResponseCtx != null) {
+						assertTrue(PolicyTestUtil.isMatching(response,
+								expectedResponseCtx));
+					} else {
+						assertTrue("Response read from file is Null", false);
+					}
+				} else {
+					assertFalse("Response received PDP is Null", false);
+				}
+			} else {
+				assertTrue("Request read from file is Null", false);
+			}
+
+			log.info("Advance Test 00014 is finished");
+		}
+	}
