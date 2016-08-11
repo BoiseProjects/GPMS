@@ -203,8 +203,8 @@
 																		id="ddlSearchDelegatedAction" class="sfListmenu"
 																		style="width: 80px;">
 																			<option value="0">--All--</option>
-																			<option value="Approve">Approve</option>
-																			<option value="Disapprove">Disapprove</option>
+<!-- 																			<option value="Approve">Approve</option> -->
+<!-- 																			<option value="Disapprove">Disapprove</option> -->
 																	</select></td>
 																	<td><label class="cssClassLabel">Is
 																			Revoked?</label> <select title="Choose Is Revoked?"
@@ -259,8 +259,8 @@
 															<td><select title="Choose Delegate Action"
 																class="sfListmenu" id="ddlDelegateAction"
 																name="ddlDelegateAction" required="true">
-																	<option value="Approve">Approve</option>
-																	<option value="Disapprove">Disapprove</option>
+<!-- 																	<option value="Approve">Approve</option> -->
+<!-- 																	<option value="Disapprove">Disapprove</option> -->
 															</select></td>
 														</tr>
 														<tr>

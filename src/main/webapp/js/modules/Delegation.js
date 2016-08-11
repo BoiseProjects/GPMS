@@ -342,6 +342,17 @@ $(function() {
 			});
 		},
 
+		GetDelegableActions : function() {
+			this.config.url = this.config.baseURL
+					+ "GetDelegableActionsForAUser";
+			this.config.data = JSON2.stringify({
+				gpmsCommonObj : gpmsCommonObj()
+			});
+			this.config.ajaxCallMode = 5;
+			this.ajaxCall(this.config);
+			return false;
+		},
+
 		GetDelegableUsers : function(delegateAction) {
 			var attributeArray = [];
 
@@ -780,6 +791,24 @@ $(function() {
 				delegation.config.delegateePositionTitle = "";
 				break;
 
+			case 5: // Get all Delegable actions for a User
+				// ddlSearchDelegatedAction
+
+				// ddlDelegateAction
+
+				console.log(msg);
+				$('#ddlSearchDelegatedAction option').length = 0;
+				$('#ddlDelegateAction').empty();
+
+				$.each(msg, function(index, item) {
+					$('#ddlSearchDelegatedAction').append(
+							new Option(item, item));
+
+					$('#ddlDelegateAction').append(new Option(item, item));
+				});
+
+				break;
+
 			}
 		},
 
@@ -807,10 +836,19 @@ $(function() {
 						+ msg.responseText + '</p>');
 				break;
 
+			case 5:
+				csscody.error('<h2>' + 'Error Message' + '</h2><p>'
+						+ 'You are not allowed to delegate any actions yet! '
+						+ msg.responseText + '</p>');
+
+				break;
+
 			}
 		},
 
 		init : function(config) {
+			delegation.GetDelegableActions();
+
 			$("#txtSearchCreatedFrom").datepicker(
 					{
 						dateFormat : 'yy-mm-dd',

@@ -26,6 +26,7 @@ import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -48,8 +49,11 @@ import org.glassfish.jersey.media.sse.OutboundEvent;
 import org.mongodb.morphia.Morphia;
 import org.wso2.balana.ObligationResult;
 import org.wso2.balana.ctx.AbstractResult;
+import org.wso2.balana.ctx.Attribute;
 import org.wso2.balana.ctx.AttributeAssignment;
+import org.wso2.balana.ctx.xacml3.Result;
 import org.wso2.balana.xacml3.Advice;
+import org.wso2.balana.xacml3.Attributes;
 
 import com.ebay.xcelite.Xcelite;
 import com.ebay.xcelite.sheet.XceliteSheet;
@@ -662,6 +666,120 @@ public class DelegationService {
 	}
 
 	@POST
+	@Path("/GetDelegableActionsForAUser")
+	@ApiOperation(value = "Get Delegable Actions For a logged in User", notes = "This API gets Delegable Multiple Response with Action for a given User")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Success: { Actions for Dropdown }"),
+			@ApiResponse(code = 400, message = "Failed: { \"error\":\"error description\", \"status\": \"FAIL\" }") })
+	public Response produceDelegableActionsForAUser(
+			@ApiParam(value = "Message", required = true, defaultValue = "", allowableValues = "", allowMultiple = false) String message) {
+		try {
+			log.info("DelegationService::produceDelegableActionsForAUser started");
+
+			ObjectMapper mapper = new ObjectMapper();
+			JsonNode root = mapper.readTree(message);
+
+			Accesscontrol ac = new Accesscontrol();
+			HashMap<String, Multimap<String, String>> attrMap = new HashMap<String, Multimap<String, String>>();
+
+			Multimap<String, String> subjectMap = ArrayListMultimap.create();
+			Multimap<String, String> actionMap = ArrayListMultimap.create();
+
+			@SuppressWarnings("unused")
+			String userProfileID = new String();
+			@SuppressWarnings("unused")
+			String userName = new String();
+			@SuppressWarnings("unused")
+			Boolean userIsAdmin = false;
+			@SuppressWarnings("unused")
+			String userCollege = new String();
+			String userDepartment = new String();
+			@SuppressWarnings("unused")
+			String userPositionType = new String();
+			String userPositionTitle = new String();
+
+			if (root != null && root.has("gpmsCommonObj")) {
+				JsonNode commonObj = root.get("gpmsCommonObj");
+				if (commonObj != null && commonObj.has("UserProfileID")) {
+					userProfileID = commonObj.get("UserProfileID").textValue();
+				}
+				if (commonObj != null && commonObj.has("UserName")) {
+					userName = commonObj.get("UserName").textValue();
+				}
+				if (commonObj != null && commonObj.has("UserIsAdmin")) {
+					userIsAdmin = Boolean.parseBoolean(commonObj.get(
+							"UserIsAdmin").textValue());
+				}
+				if (commonObj != null && commonObj.has("UserCollege")) {
+					userCollege = commonObj.get("UserCollege").textValue();
+				}
+				if (commonObj != null && commonObj.has("UserDepartment")) {
+					userDepartment = commonObj.get("UserDepartment")
+							.textValue();
+
+					subjectMap.put("department", userDepartment);
+					attrMap.put("Subject", subjectMap);
+				}
+				if (commonObj != null && commonObj.has("UserPositionType")) {
+					userPositionType = commonObj.get("UserPositionType")
+							.textValue();
+				}
+				if (commonObj != null && commonObj.has("UserPositionTitle")) {
+					userPositionTitle = commonObj.get("UserPositionTitle")
+							.textValue();
+
+					subjectMap.put("position.title", userPositionTitle);
+					attrMap.put("Subject", subjectMap);
+				}
+			}
+
+			// TODO :: Get these static actions from the Dictionary we setup in
+			// "XACMLDatasheet.xls"
+
+			List<String> attributeValue = Arrays.asList("Approve",
+					"Disapprove", "Withdraw");
+
+			for (String action : attributeValue) {
+				actionMap.put("proposal.action", action);
+				attrMap.put("Action", actionMap);
+			}
+
+			Set<AbstractResult> results = ac.getXACMLdecisionForMDP(attrMap);
+
+			List<String> actions = new ArrayList<String>();
+			for (AbstractResult result : results) {
+				if (AbstractResult.DECISION_PERMIT == result.getDecision()) {
+					Set<Attributes> attributesSet = ((Result) result)
+							.getAttributes();
+					for (Attributes attributes : attributesSet) {
+						for (Attribute attribute : attributes.getAttributes()) {
+							actions.add(attribute.getValue().encode());
+						}
+					}
+				}
+			}
+
+			Collections.sort(actions);
+			
+			return Response
+					.status(Response.Status.OK)
+					.entity(mapper.setDateFormat(formatter)
+							.writerWithDefaultPrettyPrinter()
+							.writeValueAsString(actions)).build();
+
+		} catch (Exception e) {
+			log.error(
+					"Could not find Delegable Actions for supplied User error e=",
+					e);
+		}
+
+		return Response
+				.status(Response.Status.BAD_REQUEST)
+				.entity("{\"error\": \"Could Not Find Delegable Actions for the given User\", \"status\": \"FAIL\"}")
+				.build();
+	}
+
+	@POST
 	@Path("/GetDelegableUsersForAction")
 	@ApiOperation(value = "Get Delegable Multiple Response For supplied Action of a User", notes = "This API gets Delegable Multiple Response For supplied Action for a User")
 	@ApiResponses(value = {
@@ -837,10 +955,6 @@ public class DelegationService {
 					for (AbstractResult result : results) {
 						if (AbstractResult.DECISION_PERMIT == result
 								.getDecision()) {
-							System.out
-									.println("===========================================================");
-							System.out
-									.println("\n======================== Printing Advices ====================");
 							List<Advice> advices = result.getAdvices();
 							for (Advice advice : advices) {
 								if (advice instanceof org.wso2.balana.xacml3.Advice) {
