@@ -185,13 +185,9 @@ public class DelegationService {
 			String userName = new String();
 			@SuppressWarnings("unused")
 			Boolean userIsAdmin = false;
-			@SuppressWarnings("unused")
 			String userCollege = new String();
-			@SuppressWarnings("unused")
 			String userDepartment = new String();
-			@SuppressWarnings("unused")
 			String userPositionType = new String();
-			@SuppressWarnings("unused")
 			String userPositionTitle = new String();
 
 			if (root != null && root.has("gpmsCommonObj")) {
@@ -302,13 +298,9 @@ public class DelegationService {
 			String userName = new String();
 			@SuppressWarnings("unused")
 			Boolean userIsAdmin = false;
-			@SuppressWarnings("unused")
 			String userCollege = new String();
-			@SuppressWarnings("unused")
 			String userDepartment = new String();
-			@SuppressWarnings("unused")
 			String userPositionType = new String();
-			@SuppressWarnings("unused")
 			String userPositionTitle = new String();
 
 			if (root != null && root.has("gpmsCommonObj")) {

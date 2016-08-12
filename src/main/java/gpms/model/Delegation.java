@@ -76,6 +76,9 @@ public class Delegation extends BaseEntity implements Serializable {
 	@Property("delegation file name")
 	private String delegationFileName = new String();
 
+	@Property("delegation policy id")
+	private String delegationPolicyId = new String();
+
 	@Property("created on")
 	private Date createdOn = new Date();
 
@@ -246,6 +249,14 @@ public class Delegation extends BaseEntity implements Serializable {
 		this.delegationFileName = delegationFileName;
 	}
 
+	public String getDelegationPolicyId() {
+		return delegationPolicyId;
+	}
+
+	public void setDelegationPolicyId(String delegationPolicyId) {
+		this.delegationPolicyId = delegationPolicyId;
+	}
+
 	public Date getCreatedOn() {
 		return createdOn;
 	}
@@ -278,7 +289,8 @@ public class Delegation extends BaseEntity implements Serializable {
 				+ delegatedPositionTitle + ", proposalId=" + proposalId
 				+ ", from=" + from + ", to=" + to + ", action=" + action
 				+ ", reason=" + reason + ", delegationFileName="
-				+ delegationFileName + ", createdOn=" + createdOn
+				+ delegationFileName + ", delegationPolicyId="
+				+ delegationPolicyId + ", createdOn=" + createdOn
 				+ ", revoked=" + revoked + "]";
 	}
 
@@ -332,6 +344,10 @@ public class Delegation extends BaseEntity implements Serializable {
 		result = prime
 				* result
 				+ ((delegationFileName == null) ? 0 : delegationFileName
+						.hashCode());
+		result = prime
+				* result
+				+ ((delegationPolicyId == null) ? 0 : delegationPolicyId
 						.hashCode());
 		result = prime * result
 				+ ((delegatorId == null) ? 0 : delegatorId.hashCode());
@@ -429,6 +445,11 @@ public class Delegation extends BaseEntity implements Serializable {
 			if (other.delegationFileName != null)
 				return false;
 		} else if (!delegationFileName.equals(other.delegationFileName))
+			return false;
+		if (delegationPolicyId == null) {
+			if (other.delegationPolicyId != null)
+				return false;
+		} else if (!delegationPolicyId.equals(other.delegationPolicyId))
 			return false;
 		if (delegatorId == null) {
 			if (other.delegatorId != null)
