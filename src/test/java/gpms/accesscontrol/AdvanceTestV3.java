@@ -604,11 +604,14 @@ public class AdvanceTestV3 extends TestCase {
 		String reqResNo;
 		Set<String> policies = new HashSet<String>();
 
-		policies.add("TestPolicy_00014.xml");
+		// policies.add("L5emlk1s_2016_08_12.xml");
+		// policies.add("Hy9sttB7_2016_08_12.xml");
+
+		policies.add("delegatedRules.xml");
 
 		log.info("Advance Test 00014 is started. This test is for Jira COMMONS-97");
 
-		for (int i = 1; i < 3; i++) {
+		for (int i = 2; i < 3; i++) {
 
 			if (i < 10) {
 				reqResNo = "0" + i;

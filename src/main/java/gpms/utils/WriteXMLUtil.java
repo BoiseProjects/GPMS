@@ -6,6 +6,7 @@ import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -23,16 +24,25 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
+import com.google.common.collect.Multimap;
+
 public class WriteXMLUtil {
 
-	public static String saveDelegationPolicy(String userProfileID,
-			String delegatorName, String policyLocation,
+	public static HashMap<String, String> saveDelegationPolicy(
+			String userProfileID, String delegatorName, String policyLocation,
 			Delegation existingDelegation) {
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy_MM_dd");
-		String delegationFileName = String.format(
-				"%s.%s",
-				RandomStringUtils.randomAlphanumeric(8) + "_"
-						+ dateFormat.format(new Date()), "xml");
+
+		String delegationFileName = existingDelegation.getDelegationFileName();
+
+		if (delegationFileName != null && !delegationFileName.isEmpty()) {
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy_MM_dd");
+			delegationFileName = String.format(
+					"%s.%s",
+					RandomStringUtils.randomAlphanumeric(8) + "_"
+							+ dateFormat.format(new Date()), "xml");
+		}
+
+		HashMap<String, String> policyMap = new HashMap<String, String>();
 
 		try {
 
@@ -54,6 +64,7 @@ public class WriteXMLUtil {
 			// For Revocation
 			String delegationId = existingDelegation.getId().toString();
 
+			String policyId = new String();
 			String id = new String();
 
 			DateFormat policyDateFormat = new SimpleDateFormat(
@@ -72,21 +83,22 @@ public class WriteXMLUtil {
 			Element rootElement = doc.createElementNS(
 					"urn:oasis:names:tc:xacml:3.0:core:schema:wd-17", "Policy");
 
-			Attr attr = doc.createAttribute("xmlns:xacml");
-			attr.setValue("urn:oasis:names:tc:xacml:3.0:core:schema:wd-17");
-			rootElement.setAttributeNode(attr);
+			// Attr attr = doc.createAttribute("xmlns:xacml");
+			// attr.setValue("urn:oasis:names:tc:xacml:3.0:core:schema:wd-17");
+			// rootElement.setAttributeNode(attr);
 
-			attr = doc.createAttribute("xmlns:xsi");
-			attr.setValue("http://www.w3.org/2001/XMLSchema-instance");
-			rootElement.setAttributeNode(attr);
+			// attr = doc.createAttribute("xmlns:xsi");
+			// attr.setValue("http://www.w3.org/2001/XMLSchema-instance");
+			// rootElement.setAttributeNode(attr);
+			//
+			// attr = doc.createAttribute("xsi:schemaLocation");
+			// attr.setValue("urn:oasis:names:tc:xacml:3.0:core:schema:wd-17 http://docs.oasis-open.org/xacml/3.0/xacml-core-v3-schema-wd-17.xsd");
+			// rootElement.setAttributeNode(attr);
 
-			attr = doc.createAttribute("xsi:schemaLocation");
-			attr.setValue("urn:oasis:names:tc:xacml:3.0:core:schema:wd-17 http://docs.oasis-open.org/xacml/3.0/xacml-core-v3-schema-wd-17.xsd");
-			rootElement.setAttributeNode(attr);
-
-			attr = doc.createAttribute("PolicyId");
-			id = "Dynamic-Delegation-Policy-Rules-For-" + delegateeName
-					+ "-of-" + departmentName;
+			Attr attr = doc.createAttribute("PolicyId");
+			policyId = "Dynamic-Delegation-Policy-Rules-For-" + delegateeName
+					+ "-of-" + departmentName + "-"
+					+ RandomStringUtils.randomAlphanumeric(8);
 			attr.setValue(id.replaceAll(" ", "-"));
 			rootElement.setAttributeNode(attr);
 
@@ -631,7 +643,28 @@ public class WriteXMLUtil {
 							"//ak:approvedbydepartmentchair/text()",
 							"READYFORAPPROVAL"));
 
+			conditionRootApply5.appendChild(getConditionApplyString(doc,
+					"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
+					"//ak:authorprofile/ak:userid/text()", delegateeId));
+
+			conditionRootApply5
+					.appendChild(getConditionApplyDateTime(
+							doc,
+							"urn:oasis:names:tc:xacml:1.0:function:dateTime-greater-than-or-equal",
+							"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
+							"//ak:currentdatetime/text()", fromDate));
+
+			conditionRootApply5
+					.appendChild(getConditionApplyDateTime(
+							doc,
+							"urn:oasis:names:tc:xacml:1.0:function:dateTime-less-than-or-equal",
+							"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
+							"//ak:currentdatetime/text()", toDate));
+
 			// END Action Button Show Rule HERE
+
+			policyMap.put("PolicyFileName", delegationFileName);
+			policyMap.put("PolicyId", policyId);
 
 			// write the content into xml file
 			TransformerFactory transformerFactory = TransformerFactory
@@ -659,7 +692,7 @@ public class WriteXMLUtil {
 			tfe.printStackTrace();
 		}
 
-		return delegationFileName;
+		return policyMap;
 
 	}
 

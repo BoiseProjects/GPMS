@@ -3,7 +3,7 @@
 	xmlns="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17" CombinedDecision="false" ReturnPolicyIdList="false">
 	<Attributes Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject">
 		<Attribute AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title" IncludeInResult="false">
-			<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Department Chair</AttributeValue>
+			<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Associate Chair</AttributeValue>
 		</Attribute>
 	</Attributes>
 	<Attributes Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource">
@@ -27,6 +27,10 @@
 					<ak:approvedbyuniversityresearchdirector>NOTDELETED</ak:approvedbyuniversityresearchdirector>
 					<ak:deletedbyuniversityresearchdirector>NOTDELETED</ak:deletedbyuniversityresearchdirector>
 					<ak:archivedbyuniversityresearchdirector>NOTARCHIVED</ak:archivedbyuniversityresearchdirector>
+					<ak:authorprofile>
+						<ak:userid>57505b9e65dbb34d173fc701</ak:userid>
+					</ak:authorprofile>
+					<ak:currentdatetime>2016-08-12T07:55:00-06:00</ak:currentdatetime>
 				</ak:proposal>
 			</ak:record>
 		</Content>
@@ -35,37 +39,37 @@
 		</Attribute>
 	</Attributes>
 	<Attributes Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action">
-		<Attribute IncludeInResult="true" AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action">
+		<Attribute AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action" IncludeInResult="true">
 			<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Save</AttributeValue>
 		</Attribute>
 	</Attributes>
 	<Attributes Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action">
-		<Attribute IncludeInResult="true" AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action">
+		<Attribute AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action" IncludeInResult="true">
 			<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Submit</AttributeValue>
 		</Attribute>
 	</Attributes>
 	<Attributes Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action">
-		<Attribute IncludeInResult="true" AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action">
+		<Attribute AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action" IncludeInResult="true">
 			<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Approve</AttributeValue>
 		</Attribute>
 	</Attributes>
 	<Attributes Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action">
-		<Attribute IncludeInResult="true" AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action">
+		<Attribute AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action" IncludeInResult="true">
 			<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Disapprove</AttributeValue>
 		</Attribute>
 	</Attributes>
 	<Attributes Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action">
-		<Attribute IncludeInResult="true" AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action">
+		<Attribute AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action" IncludeInResult="true">
 			<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Withdraw</AttributeValue>
 		</Attribute>
 	</Attributes>
 	<Attributes Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action">
-		<Attribute IncludeInResult="true" AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action">
+		<Attribute AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action" IncludeInResult="true">
 			<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Archive</AttributeValue>
 		</Attribute>
 	</Attributes>
 	<Attributes Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action">
-		<Attribute IncludeInResult="true" AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action">
+		<Attribute AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action" IncludeInResult="true">
 			<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Delete</AttributeValue>
 		</Attribute>
 	</Attributes>

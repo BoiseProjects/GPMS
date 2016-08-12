@@ -1276,14 +1276,18 @@ public class DelegationService {
 				}
 
 				String notificationMessage = new String();
-
+				String policyId = new String();
 				if (!delegationID.equals("0")) {
 					if (!existingDelegation.equals(oldDelegation)) {
 						try {
 							// Create New policy File
-							policyFileName = createDynamicPolicy(userProfileID,
-									delegatorName, policyLocation,
-									existingDelegation);
+							HashMap<String, String> policyDetails = createDynamicPolicy(
+									userProfileID, delegatorName,
+									policyLocation, existingDelegation);
+
+							policyFileName = policyDetails
+									.get("PolicyFileName");
+							policyId = policyDetails.get("PolicyId");
 
 							existingDelegation
 									.setDelegationFileName(policyFileName);
@@ -1346,10 +1350,16 @@ public class DelegationService {
 					delegationDAO.save(newDelegation);
 
 					try {
-						policyFileName = createDynamicPolicy(userProfileID,
-								delegatorName, policyLocation, newDelegation);
+						HashMap<String, String> policyDetails = createDynamicPolicy(
+								userProfileID, delegatorName, policyLocation,
+								newDelegation);
+
+						policyFileName = policyDetails.get("PolicyFileName");
+						policyId = policyDetails.get("PolicyId");
 
 						newDelegation.setDelegationFileName(policyFileName);
+						newDelegation.setDelegationPolicyId(policyId);
+
 						delegationDAO.saveDelegation(newDelegation,
 								authorProfile);
 
@@ -1398,7 +1408,7 @@ public class DelegationService {
 				.build();
 	}
 
-	private String createDynamicPolicy(String delegatorId,
+	private HashMap<String, String> createDynamicPolicy(String delegatorId,
 			String delegatorName, String policyLocation,
 			Delegation existingDelegation) {
 		return WriteXMLUtil.saveDelegationPolicy(delegatorId, delegatorName,

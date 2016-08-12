@@ -1875,6 +1875,19 @@ public class ProposalService {
 					.getResearchDirectorArchived().name());
 			contentProfile.append("</ak:archivedbyuniversityresearchdirector>");
 
+			contentProfile.append("<ak:authorprofile>");
+			contentProfile.append("<ak:userid>");
+			contentProfile.append(userProfileID);
+			contentProfile.append("</ak:userid>");
+			contentProfile.append("</ak:authorprofile>");
+
+			DateFormat dateFormat = new SimpleDateFormat(
+					"yyyy-MM-dd'T'HH:mm:ssXXX");
+
+			contentProfile.append("<ak:currentdatetime>");
+			contentProfile.append(dateFormat.format(new Date()));
+			contentProfile.append("</ak:currentdatetime>");
+
 			contentProfile.append("</ak:proposal>");
 			contentProfile.append("</ak:record>");
 			contentProfile.append("</Content>");

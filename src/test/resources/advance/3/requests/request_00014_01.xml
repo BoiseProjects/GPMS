@@ -26,6 +26,10 @@
 					<ak:approvedbyuniversityresearchdirector>NOTDELETED</ak:approvedbyuniversityresearchdirector>
 					<ak:deletedbyuniversityresearchdirector>NOTDELETED</ak:deletedbyuniversityresearchdirector>
 					<ak:archivedbyuniversityresearchdirector>NOTARCHIVED</ak:archivedbyuniversityresearchdirector>
+					<ak:authorprofile>
+						<ak:userid>57505b9e65dbb34d173fc701</ak:userid>
+					</ak:authorprofile>
+					<ak:currentdatetime>2016-08-12T07:55:00-06:00</ak:currentdatetime>
 				</ak:proposal>
 			</ak:record>
 		</Content>
