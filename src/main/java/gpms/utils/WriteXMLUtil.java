@@ -315,7 +315,7 @@ public class WriteXMLUtil {
 							"urn:oasis:names:tc:xacml:1.0:function:boolean-one-and-only",
 							"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
 							"http://www.w3.org/2001/XMLSchema#boolean",
-							"//ak:signedByAllChairs/text()", "true"));
+							"//ak:irbApprovalRequired/text()", "false"));
 			condition2
 					.addContent(getCondition(
 							"urn:oasis:names:tc:xacml:1.0:function:string-equal",
@@ -341,18 +341,18 @@ public class WriteXMLUtil {
 			rule3.addContent(condition2);
 
 			// ObligationExpressions
-			Element ObligationExpression1 = new Element("ObligationExpressions");
+			Element obligationExpression2 = new Element("ObligationExpressions");
 
-			ObligationExpression1.addContent(getObligationExpressionAlert(
+			obligationExpression2.addContent(getObligationExpressionAlert(
 					"sendAlert", "Permit"));
 
-			ObligationExpression1
+			obligationExpression2
 					.addContent(getObligationExpressionSendEmail(
 							"sendEmail",
 							"Permit",
-							"Hello User,&amp;lt;br/&amp;gt;&amp;lt;br/&amp;gt;The proposal has been approved by Department Chair. Now it is waiting for another Department Chair approval. &amp;lt;br/&amp;gt;&amp;lt;br/&amp;gt;Thank you, &amp;lt;br/&amp;gt; GPMS Team"));
+							"Hello User,&lt;br/&gt;&lt;br/&gt;The proposal has been approved by all Department Chairs.&lt;br/&gt;&lt;br/&gt;Thank you, &lt;br/&gt; GPMS Team"));
 
-			rule3.addContent(ObligationExpression1);
+			rule3.addContent(obligationExpression2);
 
 			// END Rule ApproveProposalByDepartmentChair-Rule13a HERE
 			policy.addContent(rule3);
