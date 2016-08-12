@@ -575,6 +575,64 @@ public class WriteXMLUtil {
 
 			// END Rule Revocation HERE
 
+			// Add Action Button Show Rule HERE
+			Element rule5 = doc.createElement("Rule");
+			rootElement.appendChild(rule5);
+
+			// set Effect attribute to Rule element
+			attr = doc.createAttribute("Effect");
+			attr.setValue("Permit");
+			rule5.setAttributeNode(attr);
+
+			id = action + "ShowFor" + positionTitle;
+			rule5.setAttribute("RuleId", id.replaceAll(" ", "-"));
+
+			// Description elements
+			Element desc5 = doc.createElement("Description");
+			desc5.appendChild(doc
+					.createTextNode("'"
+							+ positionTitle
+							+ "' can see '"
+							+ action
+							+ "' button when ApprovedByDepartmentChair = READYFORAPPROVAL"));
+			rule5.appendChild(desc5);
+
+			// Target elements
+			Element target5 = doc.createElement("Target");
+			rule5.appendChild(target5);
+
+			Element anyOf5 = doc.createElement("AnyOf");
+			target5.appendChild(anyOf5);
+
+			Element allOf5 = doc.createElement("AllOf");
+			anyOf5.appendChild(allOf5);
+
+			allOf5.appendChild(getMatch(doc, positionTitle,
+					"urn:oasis:names:tc:xacml:1.0:subject:position.title",
+					"urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"));
+
+			allOf5.appendChild(getMatch(doc, action,
+					"urn:oasis:names:tc:xacml:1.0:action:proposal.action",
+					"urn:oasis:names:tc:xacml:3.0:attribute-category:action"));
+
+			// Condition elements
+			Element condition5 = doc.createElement("Condition");
+			rule5.appendChild(condition5);
+
+			Element conditionRootApply5 = doc.createElement("Apply");
+			condition5.appendChild(conditionRootApply5);
+			conditionRootApply5.setAttribute("FunctionId",
+					"urn:oasis:names:tc:xacml:1.0:function:and");
+
+			conditionRootApply5
+					.appendChild(getConditionApplyString(
+							doc,
+							"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
+							"//ak:approvedbydepartmentchair/text()",
+							"READYFORAPPROVAL"));
+
+			// END Action Button Show Rule HERE
+
 			// write the content into xml file
 			TransformerFactory transformerFactory = TransformerFactory
 					.newInstance();

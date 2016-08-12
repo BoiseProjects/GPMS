@@ -808,6 +808,8 @@ public class DelegationService {
 							.create();
 					Multimap<String, String> environmentMap = ArrayListMultimap
 							.create();
+					String deleagableAction = new String();
+
 					for (JsonNode node : policyInfo) {
 						String attributeName = node.path("attributeName")
 								.asText();
@@ -825,6 +827,7 @@ public class DelegationService {
 							attrMap.put("Resource", resourceMap);
 							break;
 						case "Action":
+							deleagableAction = attributeValue;
 							actionMap.put(attributeName, attributeValue);
 							attrMap.put("Action", actionMap);
 							break;
@@ -894,7 +897,7 @@ public class DelegationService {
 
 					// TO GET all admin users here for Content as Delegatee
 					List<UserDetail> delegableUsers = userProfileDAO
-							.findAllUsersForDelegation();
+							.findAllUsersForDelegation(deleagableAction);
 
 					for (UserDetail userDetail : delegableUsers) {
 						contentProfile.append("<ak:user>");

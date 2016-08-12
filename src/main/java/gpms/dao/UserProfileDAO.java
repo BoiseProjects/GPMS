@@ -418,7 +418,7 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 		return users;
 	}
 
-	public List<UserDetail> findAllUsersForDelegation()
+	public List<UserDetail> findAllUsersForDelegation(String action)
 			throws UnknownHostException {
 		Datastore ds = getDatastore();
 		List<UserDetail> users = new ArrayList<UserDetail>();
@@ -441,23 +441,23 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 
 		for (UserProfile userProfile : userProfiles) {
 			for (PositionDetails userPos : userProfile.getDetails()) {
-				// if (!isAlreadyDelegatee(userProfile.getId().toString(),
-				// userPos)) {
+				if (!isAlreadyDelegatee(userProfile.getId().toString(),
+						userPos, action)) {
 
-				UserDetail userDetail = new UserDetail();
+					UserDetail userDetail = new UserDetail();
 
-				userDetail.setUserProfileId(userProfile.getId().toString());
-				userDetail.setFullName(userProfile.getFullName());
-				userDetail.setUserName(userProfile.getUserAccount()
-						.getUserName());
-				userDetail.setEmail(userProfile.getWorkEmails().get(0));
-				userDetail.setCollege(userPos.getCollege());
-				userDetail.setDepartment(userPos.getDepartment());
-				userDetail.setPositionType(userPos.getPositionType());
-				userDetail.setPositionTitle(userPos.getPositionTitle());
+					userDetail.setUserProfileId(userProfile.getId().toString());
+					userDetail.setFullName(userProfile.getFullName());
+					userDetail.setUserName(userProfile.getUserAccount()
+							.getUserName());
+					userDetail.setEmail(userProfile.getWorkEmails().get(0));
+					userDetail.setCollege(userPos.getCollege());
+					userDetail.setDepartment(userPos.getDepartment());
+					userDetail.setPositionType(userPos.getPositionType());
+					userDetail.setPositionTitle(userPos.getPositionTitle());
 
-				users.add(userDetail);
-				// }
+					users.add(userDetail);
+				}
 
 			}
 		}
@@ -466,11 +466,12 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 	}
 
 	private boolean isAlreadyDelegatee(String delegateeId,
-			PositionDetails posDetails) {
-		long delegationCount = ds.createQuery(Delegation.class)
-				.field("revoked").equal(false).field("delegatee user id")
-				.equal(delegateeId).field("delegatee college")
-				.equal(posDetails.getCollege()).field("delegatee department")
+			PositionDetails posDetails, String action) {
+		long delegationCount = ds.createQuery(Delegation.class).field("action")
+				.equal(action).field("revoked").equal(false)
+				.field("delegatee user id").equal(delegateeId)
+				.field("delegatee college").equal(posDetails.getCollege())
+				.field("delegatee department")
 				.equal(posDetails.getDepartment())
 				.field("delegatee position type")
 				.equal(posDetails.getPositionType())
