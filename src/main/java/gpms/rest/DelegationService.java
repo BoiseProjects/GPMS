@@ -23,6 +23,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -54,6 +55,7 @@ import org.wso2.balana.ctx.AttributeAssignment;
 import org.wso2.balana.ctx.xacml3.Result;
 import org.wso2.balana.xacml3.Advice;
 import org.wso2.balana.xacml3.Attributes;
+import org.xml.sax.SAXException;
 
 import com.ebay.xcelite.Xcelite;
 import com.ebay.xcelite.sheet.XceliteSheet;
@@ -1101,6 +1103,7 @@ public class DelegationService {
 			}
 
 			String policyFileName = new String();
+			String policyId = new String();
 
 			if (root != null && root.has("delegationInfo")) {
 				JsonNode delegationInfo = root.get("delegationInfo");
@@ -1276,7 +1279,7 @@ public class DelegationService {
 				}
 
 				String notificationMessage = new String();
-				String policyId = new String();
+
 				if (!delegationID.equals("0")) {
 					if (!existingDelegation.equals(oldDelegation)) {
 						try {
@@ -1410,7 +1413,7 @@ public class DelegationService {
 
 	private HashMap<String, String> createDynamicPolicy(String delegatorId,
 			String delegatorName, String policyLocation,
-			Delegation existingDelegation) {
+			Delegation existingDelegation) throws SAXException, IOException {
 		return WriteXMLUtil.saveDelegationPolicy(delegatorId, delegatorName,
 				policyLocation, existingDelegation);
 	}

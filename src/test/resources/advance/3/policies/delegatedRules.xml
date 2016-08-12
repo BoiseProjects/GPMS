@@ -1,12 +1,10 @@
 <PolicySet PolicySetId="PolicySet1" Version="1.0" PolicyCombiningAlgId="urn:oasis:names:tc:xacml:1.0:policy-combining-algorithm:permit-overrides" 
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-	xmlns="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17" xsi:schemaLocation="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17 http://docs.oasis-open.org/xacml/3.0/xacml-core-v3-schema-wd-17.xsd">
+	xmlns="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17" 
+	xmlns:xacml="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17 http://docs.oasis-open.org/xacml/3.0/xacml-core-v3-schema-wd-17.xsd">
 	<Description>PolicySet for 'Edmund O. Schweitzer III'.</Description>
 	<Target />
-	<Policy 
-		xmlns:xacml="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17" 
-		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" PolicyId="Dynamic-Delegation-Policy-Rules-For-Edmund-O.-Schweitzer-III-of-Computer-Science1" RuleCombiningAlgId="urn:oasis:names:tc:xacml:3.0:rule-combining-algorithm:permit-overrides" Version="1.0" xsi:schemaLocation="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17 http://docs.oasis-open.org/xacml/3.0/xacml-core-v3-schema-wd-17.xsd" 
-		xmlns="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17">
+	<Policy PolicyId="Dynamic-Delegation-Policy-Rules-For-Edmund-O.-Schweitzer-III-of-Computer-Science1" RuleCombiningAlgId="urn:oasis:names:tc:xacml:3.0:rule-combining-algorithm:permit-overrides" Version="1.0">
 		<Description>Edmund O. Schweitzer III of Computer Science with position title Associate Chair is delegated to Disapprove by Computer Science Department Chair</Description>
 		<PolicyDefaults>
 			<XPathVersion>http://www.w3.org/TR/1999/REC-xpath-19991116</XPathVersion>
@@ -452,10 +450,7 @@
 			</Condition>
 		</Rule>
 	</Policy>
-	<Policy 
-		xmlns:xacml="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17" 
-		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" PolicyId="Dynamic-Delegation-Policy-Rules-For-Edmund-O.-Schweitzer-III-of-Computer-Science2" RuleCombiningAlgId="urn:oasis:names:tc:xacml:3.0:rule-combining-algorithm:permit-overrides" Version="1.0" xsi:schemaLocation="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17 http://docs.oasis-open.org/xacml/3.0/xacml-core-v3-schema-wd-17.xsd" 
-		xmlns="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17">
+	<Policy PolicyId="Dynamic-Delegation-Policy-Rules-For-Edmund-O.-Schweitzer-III-of-Computer-Science2" RuleCombiningAlgId="urn:oasis:names:tc:xacml:3.0:rule-combining-algorithm:permit-overrides" Version="1.0">
 		<Description>Edmund O. Schweitzer III of Computer Science with position title Associate Chair is delegated to Approve by Computer Science Department Chair</Description>
 		<PolicyDefaults>
 			<XPathVersion>http://www.w3.org/TR/1999/REC-xpath-19991116</XPathVersion>
