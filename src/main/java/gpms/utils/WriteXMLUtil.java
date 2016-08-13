@@ -2,27 +2,33 @@ package gpms.utils;
 
 import gpms.model.Delegation;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
+import java.util.List;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.jdom2.Attribute;
 import org.jdom2.Document;
 import org.jdom2.Element;
+import org.jdom2.JDOMException;
 import org.jdom2.Namespace;
+import org.jdom2.input.SAXBuilder;
 import org.jdom2.output.Format;
 
 public class WriteXMLUtil {
 
-	public static HashMap<String, String> saveDelegationPolicy(
-			String userProfileID, String delegatorName, String policyLocation,
+	private static String delegationXMLFileName = File.separator
+			+ "DelegationPolicy.xml";
+
+	public static String saveDelegationPolicy(String userProfileID,
+			String delegatorName, String policyLocation,
 			Delegation existingDelegation) {
 
-		String delegationFileName = existingDelegation.getDelegationFileName();
+		String delegationPolicyId = existingDelegation.getDelegationPolicyId();
 
 		// Delegatee
 		String delegateeId = existingDelegation.getDelegateeId();
@@ -43,15 +49,9 @@ public class WriteXMLUtil {
 		final String toDate = policyDateFormat.format(existingDelegation
 				.getTo());
 
-		HashMap<String, String> policyMap = new HashMap<String, String>();
-
-		if (delegationFileName == null || delegationFileName.isEmpty()) {
-			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy_MM_dd");
-			delegationFileName = String.format(
-					"%s.%s",
-					RandomStringUtils.randomAlphanumeric(8) + "_"
-							+ dateFormat.format(new Date()), "xml");
-
+		SAXBuilder builder = new SAXBuilder();
+		File xmlFile = new File(policyLocation + delegationXMLFileName);
+		if (!xmlFile.exists()) {
 			// PolicySet
 			Namespace ns = Namespace
 					.getNamespace("urn:oasis:names:tc:xacml:3.0:core:schema:wd-17");
@@ -75,7 +75,7 @@ public class WriteXMLUtil {
 					.replaceAll(" ", "-")));
 
 			policySet
-					.setAttribute(new Attribute("RuleCombiningAlgId",
+					.setAttribute(new Attribute("PolicyCombiningAlgId",
 							"urn:oasis:names:tc:xacml:3.0:rule-combining-algorithm:permit-overrides"));
 
 			policySet.setAttribute(new Attribute("Version", "1.0"));
@@ -88,293 +88,655 @@ public class WriteXMLUtil {
 			policySet.addContent(new Element("Target"));
 
 			Document doc = new Document(policySet);
-			// doc.addContent(policySet);
-
-			// Policy Goes here
-			Element policy = new Element("Policy");
-
-			String policyId = "Dynamic-Delegation-Policy-Rules-For-"
-					+ delegateeName + "-of-" + departmentName + "-"
-					+ RandomStringUtils.randomAlphanumeric(8);
-			policyId = policyId.replaceAll(" ", "-");
-			policy.setAttribute(new Attribute("PolicyId", policyId));
-
-			policy.setAttribute(new Attribute("RuleCombiningAlgId",
-					"urn:oasis:names:tc:xacml:3.0:rule-combining-algorithm:permit-overrides"));
-
-			policy.setAttribute(new Attribute("Version", "1.0"));
-
-			policy.addContent(new Element("Description").setText(delegateeName
-					+ " of " + departmentName + " with position title "
-					+ positionTitle + " is delegated to " + action + " by "
-					+ delegatorName));
-
-			policy.addContent(new Element("PolicyDefaults").setContent(new Element(
-					"XPathVersion")
-					.setText("http://www.w3.org/TR/1999/REC-xpath-19991116")));
-
-			policy.addContent(new Element("Target"));
-
-			// TODO Add Rules here need condition for different Users Delegation
-			// cause it need to generate different Policy Rules based on
-			// Position Title
-			// Here done for Department Chair Delegation
-			// START Rule for Editing Signature Part:
-			// EditProposalSectionByDepartmentChair-Rule40 HERE
-			// Rule elements
-			Element rule1 = new Element("Rule");
-			rule1.setAttribute(new Attribute("Effect", "Permit"));
-			String ruleId = "DelegatedEditProposalSectionRuleFor-"
-					+ positionTitle + "-DelegatedBy-" + delegatorName;
-			rule1.setAttribute(new Attribute("RuleId", ruleId.replaceAll(" ",
-					"-")));
-			rule1.addContent(new Element("Description")
-					.setText(delegateeName
-							+ " of "
-							+ departmentName
-							+ " with position title "
-							+ positionTitle
-							+ " can \"Edit\" \"Certification/Signatures\" when Delegated by "
-							+ delegatorName
-							+ " with position title \"Department Chair\" and ApprovedByDepartmentChair = READYFORAPPROVAL"));
-
-			Element allOf1 = new Element("Target").addContent(new Element(
-					"AnyOf").addContent(new Element("AllOf")));
-
-			allOf1.addContent(getMatch(positionTitle,
-					"urn:oasis:names:tc:xacml:1.0:subject:position.title",
-					"urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"));
-
-			allOf1.addContent(getMatch("Certification/Signatures",
-					"urn:oasis:names:tc:xacml:1.0:resource:proposal.section",
-					"urn:oasis:names:tc:xacml:3.0:attribute-category:resource"));
-
-			allOf1.addContent(getMatch(
-					"READYFORAPPROVAL",
-					"urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDepartmentChair",
-					"urn:oasis:names:tc:xacml:3.0:attribute-category:resource"));
-
-			allOf1.addContent(getMatch("Edit",
-					"urn:oasis:names:tc:xacml:1.0:action:proposal.action",
-					"urn:oasis:names:tc:xacml:3.0:attribute-category:action"));
-
-			rule1.addContent(allOf1);
-			// END Rule EditProposalSectionByDepartmentChair-Rule40 HERE
-
-			policy.addContent(rule1);
-
-			// START Rule ApproveProposalByDepartmentChair-Rule13a HERE
-			// Rule elements
-			Element rule2 = new Element("Rule");
-			rule2.setAttribute(new Attribute("Effect", "Permit"));
-			ruleId = "DelegatedApproveProposalRule1For-" + positionTitle
-					+ "-DelegatedBy-" + delegatorName;
-			rule2.setAttribute(new Attribute("RuleId", ruleId.replaceAll(" ",
-					"-")));
-			rule2.addContent(new Element("Description")
-					.setText(delegateeName
-							+ " of "
-							+ departmentName
-							+ " with position title "
-							+ positionTitle
-							+ " can \"Approve\" a \"Whole Proposal\" when Delegated by "
-							+ delegatorName
-							+ " with position title \"Department Chair\" and ApprovedByDepartmentChair = READYFORAPPROVAL and where condition check all department chairs are not approved."));
-
-			Element allOf2 = new Element("Target").addContent(new Element(
-					"AnyOf").addContent(new Element("AllOf")));
-
-			allOf2.addContent(getMatch(positionTitle,
-					"urn:oasis:names:tc:xacml:1.0:subject:position.title",
-					"urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"));
-
-			allOf2.addContent(getMatch("Whole Proposal",
-					"urn:oasis:names:tc:xacml:1.0:resource:proposal.section",
-					"urn:oasis:names:tc:xacml:3.0:attribute-category:resource"));
-
-			allOf2.addContent(getMatch(
-					"READYFORAPPROVAL",
-					"urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDepartmentChair",
-					"urn:oasis:names:tc:xacml:3.0:attribute-category:resource"));
-
-			allOf2.addContent(getMatch(action,
-					"urn:oasis:names:tc:xacml:1.0:action:proposal.action",
-					"urn:oasis:names:tc:xacml:3.0:attribute-category:action"));
-
-			rule2.addContent(allOf2);
-			// Condition elements
-
-			Element condition1 = new Element("Condition")
-					.addContent(new Element("Apply").setAttribute("FunctionId",
-							"urn:oasis:names:tc:xacml:1.0:function:and"));
-
-			condition1
-					.addContent(getCondition(
-							"urn:oasis:names:tc:xacml:1.0:function:boolean-equal",
-							"urn:oasis:names:tc:xacml:1.0:function:boolean-one-and-only",
-							"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
-							"http://www.w3.org/2001/XMLSchema#boolean",
-							"//ak:signedByAllChairs/text()", "false"));
-			condition1
-					.addContent(getCondition(
-							"urn:oasis:names:tc:xacml:1.0:function:string-equal",
-							"urn:oasis:names:tc:xacml:1.0:function:string-one-and-only",
-							"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
-							"http://www.w3.org/2001/XMLSchema#string",
-							"//ak:authorprofile/ak:userid/text()", delegateeId));
-			condition1
-					.addContent(getCondition(
-							"urn:oasis:names:tc:xacml:1.0:function:dateTime-greater-than-or-equal",
-							"urn:oasis:names:tc:xacml:1.0:function:dateTime-one-and-only",
-							"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
-							"http://www.w3.org/2001/XMLSchema#dateTime",
-							"//ak:currentdatetime/text()", fromDate));
-			condition1
-					.addContent(getCondition(
-							"urn:oasis:names:tc:xacml:1.0:function:dateTime-less-than-or-equal",
-							"urn:oasis:names:tc:xacml:1.0:function:dateTime-one-and-onlyy",
-							"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
-							"http://www.w3.org/2001/XMLSchema#dateTime",
-							"//ak:currentdatetime/text()", toDate));
-
-			rule2.addContent(condition1);
-
-			// ObligationExpressions
-			Element ObligationExpression1 = new Element("ObligationExpressions");
-
-			ObligationExpression1.addContent(getObligationExpressionAlert(
-					"sendAlert", "Permit"));
-
-			ObligationExpression1
-					.addContent(getObligationExpressionSendEmail(
-							"sendEmail",
-							"Permit",
-							"Hello User,&amp;lt;br/&amp;gt;&amp;lt;br/&amp;gt;The proposal has been approved by Department Chair. Now it is waiting for another Department Chair approval. &amp;lt;br/&amp;gt;&amp;lt;br/&amp;gt;Thank you, &amp;lt;br/&amp;gt; GPMS Team"));
-
-			rule2.addContent(ObligationExpression1);
-
-			// END Rule ApproveProposalByDepartmentChair-Rule13a HERE
-			policy.addContent(rule2);
-
-			// START Rule ApproveProposalByDepartmentChair-Rule13b HERE
-			// Rule elements
-			Element rule3 = new Element("Rule");
-			rule3.setAttribute(new Attribute("Effect", "Permit"));
-			ruleId = "DelegatedApproveProposalRule2For-" + positionTitle
-					+ "-DelegatedBy-" + delegatorName;
-			rule3.setAttribute(new Attribute("RuleId", ruleId.replaceAll(" ",
-					"-")));
-			rule3.addContent(new Element("Description")
-					.setText(delegateeName
-							+ " of "
-							+ departmentName
-							+ " with position title "
-							+ positionTitle
-							+ " can \"Approve\" a \"Whole Proposal\" when Delegated by "
-							+ delegatorName
-							+ " with position title \"Department Chair\" and ApprovedByDepartmentChair = READYFORAPPROVAL and where condition check all department chairs are not approved and no IRB is required."));
-
-			Element allOf3 = new Element("Target").addContent(new Element(
-					"AnyOf").addContent(new Element("AllOf")));
-
-			allOf3.addContent(getMatch(positionTitle,
-					"urn:oasis:names:tc:xacml:1.0:subject:position.title",
-					"urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"));
-
-			allOf3.addContent(getMatch("Whole Proposal",
-					"urn:oasis:names:tc:xacml:1.0:resource:proposal.section",
-					"urn:oasis:names:tc:xacml:3.0:attribute-category:resource"));
-
-			allOf3.addContent(getMatch(
-					"READYFORAPPROVAL",
-					"urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDepartmentChair",
-					"urn:oasis:names:tc:xacml:3.0:attribute-category:resource"));
-
-			allOf3.addContent(getMatch(action,
-					"urn:oasis:names:tc:xacml:1.0:action:proposal.action",
-					"urn:oasis:names:tc:xacml:3.0:attribute-category:action"));
-
-			rule3.addContent(allOf3);
-			// Condition elements
-
-			Element condition2 = new Element("Condition")
-					.addContent(new Element("Apply").setAttribute("FunctionId",
-							"urn:oasis:names:tc:xacml:1.0:function:and"));
-
-			condition2
-					.addContent(getCondition(
-							"urn:oasis:names:tc:xacml:1.0:function:boolean-equal",
-							"urn:oasis:names:tc:xacml:1.0:function:boolean-one-and-only",
-							"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
-							"http://www.w3.org/2001/XMLSchema#boolean",
-							"//ak:signedByAllChairs/text()", "true"));
-
-			condition2
-					.addContent(getCondition(
-							"urn:oasis:names:tc:xacml:1.0:function:boolean-equal",
-							"urn:oasis:names:tc:xacml:1.0:function:boolean-one-and-only",
-							"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
-							"http://www.w3.org/2001/XMLSchema#boolean",
-							"//ak:irbApprovalRequired/text()", "false"));
-			condition2
-					.addContent(getCondition(
-							"urn:oasis:names:tc:xacml:1.0:function:string-equal",
-							"urn:oasis:names:tc:xacml:1.0:function:string-one-and-only",
-							"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
-							"http://www.w3.org/2001/XMLSchema#string",
-							"//ak:authorprofile/ak:userid/text()", delegateeId));
-			condition2
-					.addContent(getCondition(
-							"urn:oasis:names:tc:xacml:1.0:function:dateTime-greater-than-or-equal",
-							"urn:oasis:names:tc:xacml:1.0:function:dateTime-one-and-only",
-							"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
-							"http://www.w3.org/2001/XMLSchema#dateTime",
-							"//ak:currentdatetime/text()", fromDate));
-			condition2
-					.addContent(getCondition(
-							"urn:oasis:names:tc:xacml:1.0:function:dateTime-less-than-or-equal",
-							"urn:oasis:names:tc:xacml:1.0:function:dateTime-one-and-onlyy",
-							"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
-							"http://www.w3.org/2001/XMLSchema#dateTime",
-							"//ak:currentdatetime/text()", toDate));
-
-			rule3.addContent(condition2);
-
-			// ObligationExpressions
-			Element obligationExpression2 = new Element("ObligationExpressions");
-
-			obligationExpression2.addContent(getObligationExpressionAlert(
-					"sendAlert", "Permit"));
-
-			obligationExpression2
-					.addContent(getObligationExpressionSendEmail(
-							"sendEmail",
-							"Permit",
-							"Hello User,&lt;br/&gt;&lt;br/&gt;The proposal has been approved by all Department Chairs.&lt;br/&gt;&lt;br/&gt;Thank you, &lt;br/&gt; GPMS Team"));
-
-			rule3.addContent(obligationExpression2);
-
-			// END Rule ApproveProposalByDepartmentChair-Rule13a HERE
-			policy.addContent(rule3);
-
-			// Append Policy to the Root PolicySet
-			policySet.addContent(policy);
 
 			// display nice nice
 			CustomXMLOutputProcessor output = new CustomXMLOutputProcessor();
 			try {
-				output.process(new FileWriter(policyLocation + "/"
-						+ delegationFileName), Format.getPrettyFormat(), doc);
+				output.process(new FileWriter(policyLocation
+						+ delegationXMLFileName), Format.getPrettyFormat(), doc);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-
-			System.out.println("File Saved!");
 		}
 
-		return policyMap;
+		Document doc = null;
+		try {
+			doc = (Document) builder.build(xmlFile);
+		} catch (JDOMException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
+		if (doc != null) {
+			Element policySet = doc.getRootElement();
+
+			if (delegationPolicyId == null || delegationPolicyId.isEmpty()) {
+				SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy_MM_dd");
+				delegationPolicyId = String.format("%s.%s",
+						RandomStringUtils.randomAlphanumeric(8) + "_"
+								+ dateFormat.format(new Date()), "xml");
+
+				return createPolicyNode(userProfileID, delegatorName,
+						policyLocation, delegationPolicyId, delegateeId,
+						delegateeName, departmentName, positionTitle, action,
+						delegationId, fromDate, toDate, policySet, doc);
+			} else {
+				Namespace ns = Namespace
+						.getNamespace("urn:oasis:names:tc:xacml:3.0:core:schema:wd-17");
+				List<Element> policyElements = doc.getRootElement()
+						.getChildren("Policy", ns);
+
+				for (Element policy : policyElements) {
+					String policyId = policy.getAttributeValue("PolicyId");
+
+					if (policyId.equals(existingDelegation
+							.getDelegationPolicyId())) {
+						policy.getParent().removeContent(policy);
+
+						return createPolicyNode(userProfileID, delegatorName,
+								policyLocation, delegationPolicyId,
+								delegateeId, delegateeName, departmentName,
+								positionTitle, action, delegationId, fromDate,
+								toDate, policySet, doc);
+					}
+				}
+
+			}
+		}
+		return "";
+	}
+
+	/**
+	 * @param userProfileID
+	 * @param delegatorName
+	 * @param policyLocation
+	 * @param delegationPolicyId
+	 * @param delegateeId
+	 * @param delegateeName
+	 * @param departmentName
+	 * @param positionTitle
+	 * @param action
+	 * @param delegationId
+	 * @param fromDate
+	 * @param toDate
+	 * @param policyMap
+	 * @param policySet
+	 * @param doc
+	 * @return
+	 */
+	private static String createPolicyNode(String userProfileID,
+			String delegatorName, String policyLocation,
+			String delegationPolicyId, String delegateeId,
+			String delegateeName, String departmentName, String positionTitle,
+			String action, String delegationId, final String fromDate,
+			final String toDate, Element policySet, Document doc) {
+		// Policy Goes here
+		Element policy = new Element("Policy");
+
+		String policyId = "Dynamic-Delegation-Policy-Rules-For-"
+				+ delegateeName + "-of-" + departmentName + "-"
+				+ RandomStringUtils.randomAlphanumeric(8);
+		policyId = policyId.replaceAll(" ", "-");
+		policy.setAttribute(new Attribute("PolicyId", policyId));
+
+		policy.setAttribute(new Attribute("RuleCombiningAlgId",
+				"urn:oasis:names:tc:xacml:3.0:rule-combining-algorithm:permit-overrides"));
+
+		policy.setAttribute(new Attribute("Version", "1.0"));
+
+		policy.addContent(new Element("Description").setText(delegateeName
+				+ " of " + departmentName + " with position title "
+				+ positionTitle + " is delegated to " + action + " by "
+				+ delegatorName));
+
+		policy.addContent(new Element("PolicyDefaults").setContent(new Element(
+				"XPathVersion")
+				.setText("http://www.w3.org/TR/1999/REC-xpath-19991116")));
+
+		policy.addContent(new Element("Target"));
+
+		// TODO Add Rules here need condition for different Users Delegation
+		// cause it need to generate different Policy Rules based on
+		// Position Title
+		// Here done for Department Chair Delegation
+		// START Rule for Editing Signature Part:
+		// EditProposalSectionByDepartmentChair-Rule40 HERE
+		// Rule elements
+		Element rule1 = new Element("Rule");
+		rule1.setAttribute(new Attribute("Effect", "Permit"));
+		String ruleId = "DelegatedEditProposalSectionRuleFor-" + positionTitle
+				+ "-DelegatedBy-" + delegatorName;
+		rule1.setAttribute(new Attribute("RuleId", ruleId.replaceAll(" ", "-")));
+		rule1.addContent(new Element("Description")
+				.setText(delegateeName
+						+ " of "
+						+ departmentName
+						+ " with position title "
+						+ positionTitle
+						+ " can \"Edit\" \"Certification/Signatures\" when Delegated by "
+						+ delegatorName
+						+ " with position title \"Department Chair\" and ApprovedByDepartmentChair = READYFORAPPROVAL"));
+
+		Element allOf1 = new Element("AllOf");
+		allOf1.addContent(getMatch(positionTitle,
+				"urn:oasis:names:tc:xacml:1.0:subject:position.title",
+				"urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"));
+
+		allOf1.addContent(getMatch("Certification/Signatures",
+				"urn:oasis:names:tc:xacml:1.0:resource:proposal.section",
+				"urn:oasis:names:tc:xacml:3.0:attribute-category:resource"));
+
+		allOf1.addContent(getMatch(
+				"READYFORAPPROVAL",
+				"urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDepartmentChair",
+				"urn:oasis:names:tc:xacml:3.0:attribute-category:resource"));
+
+		allOf1.addContent(getMatch("Edit",
+				"urn:oasis:names:tc:xacml:1.0:action:proposal.action",
+				"urn:oasis:names:tc:xacml:3.0:attribute-category:action"));
+
+		Element target1 = new Element("Target").addContent(new Element("AnyOf")
+				.addContent(allOf1));
+
+		rule1.addContent(target1);
+		// END Rule EditProposalSectionByDepartmentChair-Rule40 HERE
+
+		policy.addContent(rule1);
+
+		// START Rule ApproveProposalByDepartmentChair-Rule13a HERE
+		// Rule elements
+		Element rule2 = new Element("Rule");
+		rule2.setAttribute(new Attribute("Effect", "Permit"));
+		ruleId = "DelegatedApproveProposalRule1For-" + positionTitle
+				+ "-DelegatedBy-" + delegatorName;
+		rule2.setAttribute(new Attribute("RuleId", ruleId.replaceAll(" ", "-")));
+		rule2.addContent(new Element("Description")
+				.setText(delegateeName
+						+ " of "
+						+ departmentName
+						+ " with position title "
+						+ positionTitle
+						+ " can \"Approve\" a \"Whole Proposal\" when Delegated by "
+						+ delegatorName
+						+ " with position title \"Department Chair\" and ApprovedByDepartmentChair = READYFORAPPROVAL and where condition check all department chairs are not approved."));
+
+		Element allOf2 = new Element("AllOf");
+
+		allOf2.addContent(getMatch(positionTitle,
+				"urn:oasis:names:tc:xacml:1.0:subject:position.title",
+				"urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"));
+
+		allOf2.addContent(getMatch("Whole Proposal",
+				"urn:oasis:names:tc:xacml:1.0:resource:proposal.section",
+				"urn:oasis:names:tc:xacml:3.0:attribute-category:resource"));
+
+		allOf2.addContent(getMatch(
+				"READYFORAPPROVAL",
+				"urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDepartmentChair",
+				"urn:oasis:names:tc:xacml:3.0:attribute-category:resource"));
+
+		allOf2.addContent(getMatch(action,
+				"urn:oasis:names:tc:xacml:1.0:action:proposal.action",
+				"urn:oasis:names:tc:xacml:3.0:attribute-category:action"));
+
+		Element target2 = new Element("Target").addContent(new Element("AnyOf")
+				.addContent(allOf2));
+
+		rule2.addContent(target2);
+
+		// Condition elements
+		Element function1 = new Element("Apply").setAttribute("FunctionId",
+				"urn:oasis:names:tc:xacml:1.0:function:and");
+
+		Element condition1 = new Element("Condition");
+		function1.addContent(getCondition(
+				"urn:oasis:names:tc:xacml:1.0:function:boolean-equal",
+				"urn:oasis:names:tc:xacml:1.0:function:boolean-one-and-only",
+				"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
+				"http://www.w3.org/2001/XMLSchema#boolean",
+				"//ak:signedByAllChairs/text()", "false"));
+		function1.addContent(getCondition(
+				"urn:oasis:names:tc:xacml:1.0:function:string-equal",
+				"urn:oasis:names:tc:xacml:1.0:function:string-one-and-only",
+				"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
+				"http://www.w3.org/2001/XMLSchema#string",
+				"//ak:authorprofile/ak:userid/text()", delegateeId));
+		function1
+				.addContent(getCondition(
+						"urn:oasis:names:tc:xacml:1.0:function:dateTime-greater-than-or-equal",
+						"urn:oasis:names:tc:xacml:1.0:function:dateTime-one-and-only",
+						"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
+						"http://www.w3.org/2001/XMLSchema#dateTime",
+						"//ak:currentdatetime/text()", fromDate));
+		function1
+				.addContent(getCondition(
+						"urn:oasis:names:tc:xacml:1.0:function:dateTime-less-than-or-equal",
+						"urn:oasis:names:tc:xacml:1.0:function:dateTime-one-and-onlyy",
+						"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
+						"http://www.w3.org/2001/XMLSchema#dateTime",
+						"//ak:currentdatetime/text()", toDate));
+
+		condition1.addContent(function1);
+
+		rule2.addContent(condition1);
+
+		// ObligationExpressions
+		Element ObligationExpression1 = new Element("ObligationExpressions");
+
+		ObligationExpression1.addContent(getObligationExpressionAlert(
+				"sendAlert", "Permit"));
+
+		ObligationExpression1
+				.addContent(getObligationExpressionSendEmail(
+						"sendEmail",
+						"Permit",
+						"Hello User,&amp;lt;br/&amp;gt;&amp;lt;br/&amp;gt;The proposal has been approved by Department Chair. Now it is waiting for another Department Chair approval. &amp;lt;br/&amp;gt;&amp;lt;br/&amp;gt;Thank you, &amp;lt;br/&amp;gt; GPMS Team"));
+
+		rule2.addContent(ObligationExpression1);
+
+		// END Rule ApproveProposalByDepartmentChair-Rule13a HERE
+		policy.addContent(rule2);
+
+		// START Rule ApproveProposalByDepartmentChair-Rule13b HERE
+		// Rule elements
+		Element rule3 = new Element("Rule");
+		rule3.setAttribute(new Attribute("Effect", "Permit"));
+		ruleId = "DelegatedApproveProposalRule2For-" + positionTitle
+				+ "-DelegatedBy-" + delegatorName;
+		rule3.setAttribute(new Attribute("RuleId", ruleId.replaceAll(" ", "-")));
+		rule3.addContent(new Element("Description")
+				.setText(delegateeName
+						+ " of "
+						+ departmentName
+						+ " with position title "
+						+ positionTitle
+						+ " can \"Approve\" a \"Whole Proposal\" when Delegated by "
+						+ delegatorName
+						+ " with position title \"Department Chair\" and ApprovedByDepartmentChair = READYFORAPPROVAL and where condition check all department chairs are not approved and no IRB is required."));
+
+		Element allOf3 = new Element("AllOf");
+		allOf3.addContent(getMatch(positionTitle,
+				"urn:oasis:names:tc:xacml:1.0:subject:position.title",
+				"urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"));
+
+		allOf3.addContent(getMatch("Whole Proposal",
+				"urn:oasis:names:tc:xacml:1.0:resource:proposal.section",
+				"urn:oasis:names:tc:xacml:3.0:attribute-category:resource"));
+
+		allOf3.addContent(getMatch(
+				"READYFORAPPROVAL",
+				"urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDepartmentChair",
+				"urn:oasis:names:tc:xacml:3.0:attribute-category:resource"));
+
+		allOf3.addContent(getMatch(action,
+				"urn:oasis:names:tc:xacml:1.0:action:proposal.action",
+				"urn:oasis:names:tc:xacml:3.0:attribute-category:action"));
+
+		Element target3 = new Element("Target").addContent(new Element("AnyOf")
+				.addContent(allOf3));
+
+		rule3.addContent(target3);
+
+		// Condition elements
+		Element function2 = new Element("Apply").setAttribute("FunctionId",
+				"urn:oasis:names:tc:xacml:1.0:function:and");
+
+		Element condition2 = new Element("Condition");
+
+		function2.addContent(getCondition(
+				"urn:oasis:names:tc:xacml:1.0:function:boolean-equal",
+				"urn:oasis:names:tc:xacml:1.0:function:boolean-one-and-only",
+				"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
+				"http://www.w3.org/2001/XMLSchema#boolean",
+				"//ak:signedByAllChairs/text()", "true"));
+
+		function2.addContent(getCondition(
+				"urn:oasis:names:tc:xacml:1.0:function:boolean-equal",
+				"urn:oasis:names:tc:xacml:1.0:function:boolean-one-and-only",
+				"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
+				"http://www.w3.org/2001/XMLSchema#boolean",
+				"//ak:irbApprovalRequired/text()", "false"));
+		function2.addContent(getCondition(
+				"urn:oasis:names:tc:xacml:1.0:function:string-equal",
+				"urn:oasis:names:tc:xacml:1.0:function:string-one-and-only",
+				"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
+				"http://www.w3.org/2001/XMLSchema#string",
+				"//ak:authorprofile/ak:userid/text()", delegateeId));
+		function2
+				.addContent(getCondition(
+						"urn:oasis:names:tc:xacml:1.0:function:dateTime-greater-than-or-equal",
+						"urn:oasis:names:tc:xacml:1.0:function:dateTime-one-and-only",
+						"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
+						"http://www.w3.org/2001/XMLSchema#dateTime",
+						"//ak:currentdatetime/text()", fromDate));
+		function2
+				.addContent(getCondition(
+						"urn:oasis:names:tc:xacml:1.0:function:dateTime-less-than-or-equal",
+						"urn:oasis:names:tc:xacml:1.0:function:dateTime-one-and-onlyy",
+						"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
+						"http://www.w3.org/2001/XMLSchema#dateTime",
+						"//ak:currentdatetime/text()", toDate));
+
+		condition2.addContent(function2);
+
+		rule3.addContent(condition2);
+
+		// ObligationExpressions
+		Element obligationExpression2 = new Element("ObligationExpressions");
+
+		obligationExpression2.addContent(getObligationExpressionAlert(
+				"sendAlert", "Permit"));
+
+		obligationExpression2
+				.addContent(getObligationExpressionSendEmail(
+						"sendEmail",
+						"Permit",
+						"Hello User,&lt;br/&gt;&lt;br/&gt;The proposal has been approved by all Department Chairs.&lt;br/&gt;&lt;br/&gt;Thank you, &lt;br/&gt; GPMS Team"));
+
+		rule3.addContent(obligationExpression2);
+
+		// END Rule ApproveProposalByDepartmentChair-Rule13b HERE
+		policy.addContent(rule3);
+
+		// START Rule ApproveProposalByDepartmentChair-Rule13c HERE
+		// Rule elements
+		Element rule4 = new Element("Rule");
+		rule4.setAttribute(new Attribute("Effect", "Permit"));
+		ruleId = "DelegatedApproveProposalRule3For-" + positionTitle
+				+ "-DelegatedBy-" + delegatorName;
+		rule4.setAttribute(new Attribute("RuleId", ruleId.replaceAll(" ", "-")));
+		rule4.addContent(new Element("Description")
+				.setText(delegateeName
+						+ " of "
+						+ departmentName
+						+ " with position title "
+						+ positionTitle
+						+ " can \"Approve\" a \"Whole Proposal\" when Delegated by "
+						+ delegatorName
+						+ " with position title \"Department Chair\" ApprovedByDepartmentChair = READYFORAPPROVAL and where condition check all department chairs are approved and IRB is required."));
+
+		Element allOf4 = new Element("AllOf");
+
+		allOf4.addContent(getMatch(positionTitle,
+				"urn:oasis:names:tc:xacml:1.0:subject:position.title",
+				"urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"));
+
+		allOf4.addContent(getMatch("Whole Proposal",
+				"urn:oasis:names:tc:xacml:1.0:resource:proposal.section",
+				"urn:oasis:names:tc:xacml:3.0:attribute-category:resource"));
+
+		allOf4.addContent(getMatch(
+				"READYFORAPPROVAL",
+				"urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDepartmentChair",
+				"urn:oasis:names:tc:xacml:3.0:attribute-category:resource"));
+
+		allOf4.addContent(getMatch(action,
+				"urn:oasis:names:tc:xacml:1.0:action:proposal.action",
+				"urn:oasis:names:tc:xacml:3.0:attribute-category:action"));
+
+		Element target4 = new Element("Target").addContent(new Element("AnyOf")
+				.addContent(allOf4));
+
+		rule4.addContent(target4);
+
+		// Condition elements
+		Element function3 = new Element("Apply").setAttribute("FunctionId",
+				"urn:oasis:names:tc:xacml:1.0:function:and");
+
+		Element condition3 = new Element("Condition");
+
+		function3.addContent(getCondition(
+				"urn:oasis:names:tc:xacml:1.0:function:boolean-equal",
+				"urn:oasis:names:tc:xacml:1.0:function:boolean-one-and-only",
+				"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
+				"http://www.w3.org/2001/XMLSchema#boolean",
+				"//ak:signedByAllChairs/text()", "true"));
+
+		function3.addContent(getCondition(
+				"urn:oasis:names:tc:xacml:1.0:function:boolean-equal",
+				"urn:oasis:names:tc:xacml:1.0:function:boolean-one-and-only",
+				"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
+				"http://www.w3.org/2001/XMLSchema#boolean",
+				"//ak:irbApprovalRequired/text()", "true"));
+		function3.addContent(getCondition(
+				"urn:oasis:names:tc:xacml:1.0:function:string-equal",
+				"urn:oasis:names:tc:xacml:1.0:function:string-one-and-only",
+				"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
+				"http://www.w3.org/2001/XMLSchema#string",
+				"//ak:authorprofile/ak:userid/text()", delegateeId));
+		function3
+				.addContent(getCondition(
+						"urn:oasis:names:tc:xacml:1.0:function:dateTime-greater-than-or-equal",
+						"urn:oasis:names:tc:xacml:1.0:function:dateTime-one-and-only",
+						"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
+						"http://www.w3.org/2001/XMLSchema#dateTime",
+						"//ak:currentdatetime/text()", fromDate));
+		function3
+				.addContent(getCondition(
+						"urn:oasis:names:tc:xacml:1.0:function:dateTime-less-than-or-equal",
+						"urn:oasis:names:tc:xacml:1.0:function:dateTime-one-and-onlyy",
+						"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
+						"http://www.w3.org/2001/XMLSchema#dateTime",
+						"//ak:currentdatetime/text()", toDate));
+
+		condition3.addContent(function3);
+
+		rule4.addContent(condition3);
+
+		// ObligationExpressions
+		Element obligationExpression3 = new Element("ObligationExpressions");
+
+		obligationExpression3.addContent(getObligationExpressionAlert(
+				"sendAlert", "Permit"));
+
+		obligationExpression3
+				.addContent(getObligationExpressionSendEmail(
+						"sendEmail",
+						"Permit",
+						"Hello User,&lt;br/&gt;&lt;br/&gt;The proposal has been approved by all Department Chairs.&lt;br/&gt;&lt;br/&gt;Thank you, &lt;br/&gt; GPMS Team"));
+
+		rule4.addContent(obligationExpression3);
+
+		// END Rule ApproveProposalByDepartmentChair-Rule13c HERE
+		policy.addContent(rule4);
+
+		// Add Revocation Rule HERE
+		Element rule5 = new Element("Rule");
+		rule5.setAttribute(new Attribute("Effect", "Permit"));
+		ruleId = "Revoke " + delegationPolicyId + " by Department Chair";
+		rule5.setAttribute(new Attribute("RuleId", ruleId.replaceAll(" ", "-")));
+		rule5.addContent(new Element("Description")
+				.setText("\"Department Chair\" can \"Revoke\" delegation from "
+						+ delegateeName + " of " + departmentName
+						+ " with position title " + positionTitle));
+
+		Element allOf5 = new Element("AllOf");
+
+		allOf5.addContent(getMatch("Revoke",
+				"urn:oasis:names:tc:xacml:1.0:action:proposal.action",
+				"urn:oasis:names:tc:xacml:3.0:attribute-category:action"));
+
+		Element target5 = new Element("Target").addContent(new Element("AnyOf")
+				.addContent(allOf5));
+
+		rule5.addContent(target5);
+
+		// Condition elements
+		Element function4 = new Element("Apply").setAttribute("FunctionId",
+				"urn:oasis:names:tc:xacml:1.0:function:and");
+
+		Element condition4 = new Element("Condition");
+
+		function4.addContent(getCondition(
+				"urn:oasis:names:tc:xacml:1.0:function:string-equal",
+				"urn:oasis:names:tc:xacml:1.0:function:string-one-and-only",
+				"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
+				"http://www.w3.org/2001/XMLSchema#string",
+				"//ak:delegationid/text()", delegationId));
+
+		function4.addContent(getCondition(
+				"urn:oasis:names:tc:xacml:1.0:function:string-equal",
+				"urn:oasis:names:tc:xacml:1.0:function:string-one-and-only",
+				"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
+				"http://www.w3.org/2001/XMLSchema#string",
+				"//ak:delegator/ak:id/text()", userProfileID));
+
+		function4.addContent(getCondition(
+				"urn:oasis:names:tc:xacml:1.0:function:string-equal",
+				"urn:oasis:names:tc:xacml:1.0:function:string-one-and-only",
+				"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
+				"http://www.w3.org/2001/XMLSchema#string",
+				"//ak:delegationpolicyid/text()", delegationPolicyId));
+
+		function4.addContent(getCondition(
+				"urn:oasis:names:tc:xacml:1.0:function:boolean-equal",
+				"urn:oasis:names:tc:xacml:1.0:function:boolean-one-and-only",
+				"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
+				"http://www.w3.org/2001/XMLSchema#boolean",
+				"//ak:revoked/text()", "false"));
+
+		condition4.addContent(function4);
+
+		rule5.addContent(condition4);
+
+		// ObligationExpressions
+		Element obligationExpression4 = new Element("ObligationExpressions");
+
+		obligationExpression4
+				.addContent(getObligationExpressionForRevokeSendEmail(
+						"sendEmail",
+						"Permit",
+						"Hello User,&lt;br/&gt;&lt;br/&gt;You have been revoked from your delegation. &lt;br/&gt;&lt;br/&gt;Thank you, &lt;br/&gt; GPMS Team"));
+
+		rule5.addContent(obligationExpression4);
+
+		// END Rule Revocation HERE
+		policy.addContent(rule5);
+
+		// Add Action Button Show Rule HERE
+		Element rule6 = new Element("Rule");
+		rule6.setAttribute(new Attribute("Effect", "Permit"));
+		ruleId = action + "ShowFor" + positionTitle;
+		rule6.setAttribute(new Attribute("RuleId", ruleId.replaceAll(" ", "-")));
+		rule6.addContent(new Element("Description").setText("'" + positionTitle
+				+ "' can see '" + action
+				+ "' button when ApprovedByDepartmentChair = READYFORAPPROVAL"));
+
+		Element allOf6 = new Element("AllOf");
+
+		allOf6.addContent(getMatch(positionTitle,
+				"urn:oasis:names:tc:xacml:1.0:subject:position.title",
+				"urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"));
+
+		allOf6.addContent(getMatch(action,
+				"urn:oasis:names:tc:xacml:1.0:action:proposal.action",
+				"urn:oasis:names:tc:xacml:3.0:attribute-category:action"));
+
+		Element target6 = new Element("Target").addContent(new Element("AnyOf")
+				.addContent(allOf6));
+
+		rule6.addContent(target6);
+
+		// Condition elements
+		Element function5 = new Element("Apply").setAttribute("FunctionId",
+				"urn:oasis:names:tc:xacml:1.0:function:and");
+
+		Element condition5 = new Element("Condition");
+
+		function5.addContent(getCondition(
+				"urn:oasis:names:tc:xacml:1.0:function:string-equal",
+				"urn:oasis:names:tc:xacml:1.0:function:string-one-and-only",
+				"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
+				"http://www.w3.org/2001/XMLSchema#string",
+				"//ak:approvedbydepartmentchair/text()", "READYFORAPPROVAL"));
+
+		function5.addContent(getCondition(
+				"urn:oasis:names:tc:xacml:1.0:function:string-equal",
+				"urn:oasis:names:tc:xacml:1.0:function:string-one-and-only",
+				"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
+				"http://www.w3.org/2001/XMLSchema#string",
+				"//ak:authorprofile/ak:userid/text()", delegateeId));
+		function5
+				.addContent(getCondition(
+						"urn:oasis:names:tc:xacml:1.0:function:dateTime-greater-than-or-equal",
+						"urn:oasis:names:tc:xacml:1.0:function:dateTime-one-and-only",
+						"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
+						"http://www.w3.org/2001/XMLSchema#dateTime",
+						"//ak:currentdatetime/text()", fromDate));
+		function5
+				.addContent(getCondition(
+						"urn:oasis:names:tc:xacml:1.0:function:dateTime-less-than-or-equal",
+						"urn:oasis:names:tc:xacml:1.0:function:dateTime-one-and-onlyy",
+						"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
+						"http://www.w3.org/2001/XMLSchema#dateTime",
+						"//ak:currentdatetime/text()", toDate));
+
+		condition5.addContent(function5);
+
+		rule6.addContent(condition5);
+
+		// END Action Button Show Rule HERE
+		policy.addContent(rule6);
+
+		// Append Policy to the Root PolicySet
+		policySet.addContent(policy);
+
+		// display nice nice
+		CustomXMLOutputProcessor output = new CustomXMLOutputProcessor();
+		try {
+			output.process(new FileWriter(policyLocation
+					+ delegationXMLFileName), Format.getPrettyFormat(), doc);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		System.out.println("File Saved!");
+		return policyId;
+	}
+
+	private static Element getObligationExpressionForRevokeSendEmail(
+			String obligationId, String fullFillOn, String emailBody) {
+		// ObligationExpression STARTS here
+		Element obligationExpression = new Element("ObligationExpression")
+				.setAttribute("ObligationId", obligationId).setAttribute(
+						"FulfillOn", fullFillOn);
+
+		// obligationExpression.addContent(getObligationAssignmentAttrValue(
+		// "obligationType", "postobligation"));
+
+		obligationExpression.addContent(getObligationAssignmentAttrValue(
+				"emailBody", emailBody));
+
+		obligationExpression.addContent(getObligationAssignmentAttrValue(
+				"emailSubject", "Your delegation is revoked by: "));
+
+		obligationExpression.addContent(getObligationAssignmentAttrSelector(
+				"delegatorName",
+				"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
+				"http://www.w3.org/2001/XMLSchema#string",
+				"//ak:delegator/ak:fullname/text()"));
+
+		obligationExpression.addContent(getObligationAssignmentAttrSelector(
+				"delegatorEmail",
+				"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
+				"http://www.w3.org/2001/XMLSchema#string",
+				"//ak:delegator/ak:email/text()"));
+
+		obligationExpression.addContent(getObligationAssignmentAttrSelector(
+				"delegateeName",
+				"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
+				"http://www.w3.org/2001/XMLSchema#string",
+				"//ak:delegatee/ak:fullname/text()"));
+
+		obligationExpression.addContent(getObligationAssignmentAttrSelector(
+				"delegateeEmail",
+				"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
+				"http://www.w3.org/2001/XMLSchema#string",
+				"//ak:delegatee/ak:email/text()"));
+
+		return obligationExpression;
 	}
 
 	private static Element getObligationExpressionSendEmail(
@@ -438,18 +800,16 @@ public class WriteXMLUtil {
 		return obligationExpression;
 	}
 
-	private static Element getMatch(String positionTitle, String string,
-			String string2) {
+	private static Element getMatch(String positionTitle, String attrId,
+			String attrCategory) {
 		Element match = new Element("Match").setAttribute("MatchId",
 				"urn:oasis:names:tc:xacml:1.0:function:string-equal");
 		match.addContent(new Element("AttributeValue").setAttribute("DataType",
 				"http://www.w3.org/2001/XMLSchema#string").setText(
 				positionTitle));
 		match.addContent(new Element("AttributeDesignator")
-				.setAttribute("AttributeId",
-						"urn:oasis:names:tc:xacml:1.0:subject:position.title")
-				.setAttribute("Category",
-						"urn:oasis:names:tc:xacml:1.0:subject-category:access-subject")
+				.setAttribute("AttributeId", attrId)
+				.setAttribute("Category", attrCategory)
 				.setAttribute("DataType",
 						"http://www.w3.org/2001/XMLSchema#string")
 				.setAttribute("MustBePresent", "false"));
@@ -462,11 +822,11 @@ public class WriteXMLUtil {
 			String attrSelectorDataType, String attrSelectorPath,
 			String attrValue) {
 
-		Element conditionApply = new Element("Apply").setAttribute(
-				"FunctionId", functionId)
+		Element conditionApply = new Element("Apply")
+				.setAttribute("FunctionId", functionId)
 				.addContent(
-						new Element("Apply")
-								.setAttribute("FunctionId", compareFunctionId)
+						new Element("Apply").setAttribute("FunctionId",
+								compareFunctionId)
 								.addContent(
 										new Element("AttributeSelector")
 												.setAttribute("Category",
@@ -476,10 +836,10 @@ public class WriteXMLUtil {
 												.setAttribute("Path",
 														attrSelectorPath)
 												.setAttribute("MustBePresent",
-														"false"))
-								.addContent("AttributeValue")
-								.setAttribute("DataType", attrSelectorDataType)
-								.setText(attrValue));
+														"false")))
+				.addContent(
+						new Element("AttributeValue").setAttribute("DataType",
+								attrSelectorDataType).setText(attrValue));
 
 		return conditionApply;
 	}
@@ -535,5 +895,45 @@ public class WriteXMLUtil {
 		// AttributeAssignmentExpression ENDS here
 
 		return attributeAssignmentExpression;
+	}
+
+	public static void deletePolicyIdFromXML(String policyLocation,
+			String policyId) {
+
+		SAXBuilder builder = new SAXBuilder();
+		File xmlFile = new File(policyLocation + delegationXMLFileName);
+
+		if (xmlFile.exists()) {
+			Document doc = null;
+			try {
+				doc = (Document) builder.build(xmlFile);
+			} catch (JDOMException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			List<Element> policyElements = doc.getRootElement().getChildren(
+					"Policy");
+
+			for (Element policy : policyElements) {
+				String existingPolicyId = policy.getAttributeValue("PolicyId");
+
+				if (existingPolicyId.equals(policyId)) {
+					doc.removeContent(policy);
+					// display nice nice
+					CustomXMLOutputProcessor output = new CustomXMLOutputProcessor();
+					try {
+						output.process(new FileWriter(policyLocation
+								+ delegationXMLFileName),
+								Format.getPrettyFormat(), doc);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+
+					System.out.println("File Saved Using revocation!");
+					break;
+				}
+			}
+		}
 	}
 }

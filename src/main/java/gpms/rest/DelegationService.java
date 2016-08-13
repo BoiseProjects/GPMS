@@ -1102,7 +1102,6 @@ public class DelegationService {
 				throw new Exception("The Policy folder can not be Found!");
 			}
 
-			String policyFileName = new String();
 			String policyId = new String();
 
 			if (root != null && root.has("delegationInfo")) {
@@ -1283,17 +1282,12 @@ public class DelegationService {
 				if (!delegationID.equals("0")) {
 					if (!existingDelegation.equals(oldDelegation)) {
 						try {
-							// Create New policy File
-							HashMap<String, String> policyDetails = createDynamicPolicy(
-									userProfileID, delegatorName,
-									policyLocation, existingDelegation);
+							// Create New policy Id
+							policyId = createDynamicPolicy(userProfileID,
+									delegatorName, policyLocation,
+									existingDelegation);
 
-							policyFileName = policyDetails
-									.get("PolicyFileName");
-							policyId = policyDetails.get("PolicyId");
-
-							existingDelegation
-									.setDelegationFileName(policyFileName);
+							existingDelegation.setDelegationPolicyId(policyId);
 
 							delegationDAO.updateDelegation(existingDelegation,
 									authorProfile);
@@ -1304,43 +1298,6 @@ public class DelegationService {
 									userName, userCollege, userDepartment,
 									userPositionType, userPositionTitle,
 									notificationMessage, "Delegation", false);
-
-							// Delete the Delegation Dynamic Policy File here
-							try {
-								final String oldDelegationFileName = oldDelegation
-										.getDelegationFileName();
-								File file = new File(policyLocation + "/"
-										+ oldDelegationFileName);
-								if (!file.exists()) {
-									return Response
-											.status(Response.Status.NOT_FOUND)
-											.entity("FILE NOT FOUND: "
-													+ oldDelegationFileName)
-											.type("text/plain").build();
-								}
-
-								if (!file.delete()) {
-									return Response
-											.status(403)
-											.type(MediaType.APPLICATION_JSON)
-											.entity("Delete operation is failed.")
-											.build();
-								} else {
-									return Response
-											.status(200)
-											.type(MediaType.APPLICATION_JSON)
-											.entity(mapper
-													.writerWithDefaultPrettyPrinter()
-													.writeValueAsString(true))
-											.build();
-								}
-							} catch (Exception e) {
-								return Response
-										.status(403)
-										.type(MediaType.APPLICATION_JSON)
-										.entity("File delete permission is not enabled!")
-										.build();
-							}
 						} catch (Exception e) {
 							return Response
 									.status(403)
@@ -1353,14 +1310,9 @@ public class DelegationService {
 					delegationDAO.save(newDelegation);
 
 					try {
-						HashMap<String, String> policyDetails = createDynamicPolicy(
-								userProfileID, delegatorName, policyLocation,
-								newDelegation);
+						policyId = createDynamicPolicy(userProfileID,
+								delegatorName, policyLocation, newDelegation);
 
-						policyFileName = policyDetails.get("PolicyFileName");
-						policyId = policyDetails.get("PolicyId");
-
-						newDelegation.setDelegationFileName(policyFileName);
 						newDelegation.setDelegationPolicyId(policyId);
 
 						delegationDAO.saveDelegation(newDelegation,
@@ -1411,7 +1363,7 @@ public class DelegationService {
 				.build();
 	}
 
-	private HashMap<String, String> createDynamicPolicy(String delegatorId,
+	private String createDynamicPolicy(String delegatorId,
 			String delegatorName, String policyLocation,
 			Delegation existingDelegation) throws SAXException, IOException {
 		return WriteXMLUtil.saveDelegationPolicy(delegatorId, delegatorName,
@@ -1569,11 +1521,9 @@ public class DelegationService {
 			contentProfile.append(delegationId);
 			contentProfile.append("</ak:delegationid>");
 
-			contentProfile.append("<ak:delegationfilename>");
-			final String delegationFileName = existingDelegation
-					.getDelegationFileName();
-			contentProfile.append(delegationFileName);
-			contentProfile.append("</ak:delegationfilename>");
+			contentProfile.append("<ak:delegationpolicyid>");
+			contentProfile.append(existingDelegation.getDelegationPolicyId());
+			contentProfile.append("</ak:delegationpolicyid>");
 
 			contentProfile.append("<ak:revoked>");
 			contentProfile.append(existingDelegation.isRevoked());
@@ -1711,21 +1661,9 @@ public class DelegationService {
 						try {
 							policyLocation = this.getClass()
 									.getResource("/policy").toURI().getPath();
-							File file = new File(policyLocation + "/"
-									+ delegationFileName);
-							if (!file.exists()) {
-								return Response
-										.status(Response.Status.NOT_FOUND)
-										.entity("FILE NOT FOUND: "
-												+ delegationFileName)
-										.type("text/plain").build();
-							}
-							if (!file.delete()) {
-								return Response.status(403)
-										.type(MediaType.APPLICATION_JSON)
-										.entity("Delete operation is failed.")
-										.build();
-							}
+
+							WriteXMLUtil.deletePolicyIdFromXML(policyLocation,
+									existingDelegation.getDelegationPolicyId());
 
 						} catch (Exception e) {
 							return Response
@@ -1767,5 +1705,4 @@ public class DelegationService {
 				.entity("{\"error\": \"Could not revoke the selected Delegation\", \"status\": \"FAIL\"}")
 				.build();
 	}
-
 }
