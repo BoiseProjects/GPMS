@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PolicySet 
+    xmlns="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17" 
+    xmlns:xacml="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17 http://docs.oasis-open.org/xacml/3.0/xacml-core-v3-schema-wd-17.xsd" PolicySetId="Dynamic-Delegation-Policy-Rules-For-Edmund-O.-Schweitzer-III-of-Computer-Science-MEmOPo2p" PolicyCombiningAlgId="urn:oasis:names:tc:xacml:3.0:rule-combining-algorithm:permit-overrides" Version="1.0">
+    <Description>PolicySet to hold Delegation based Dynamic Policies.</Description>
+    <Target />
+</PolicySet>
