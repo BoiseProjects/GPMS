@@ -7,7 +7,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.RandomStringUtils;
@@ -112,15 +111,11 @@ public class WriteXMLUtil {
 			Element policySet = doc.getRootElement();
 
 			if (delegationPolicyId == null || delegationPolicyId.isEmpty()) {
-				SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy_MM_dd");
-				delegationPolicyId = String.format("%s.%s",
-						RandomStringUtils.randomAlphanumeric(8) + "_"
-								+ dateFormat.format(new Date()), "xml");
 
 				return createPolicyNode(userProfileID, delegatorName,
-						policyLocation, delegationPolicyId, delegateeId,
-						delegateeName, departmentName, positionTitle, action,
-						delegationId, fromDate, toDate, policySet, doc);
+						policyLocation, delegateeId, delegateeName,
+						departmentName, positionTitle, action, delegationId,
+						fromDate, toDate, policySet, doc);
 			} else {
 				Namespace ns = Namespace
 						.getNamespace("urn:oasis:names:tc:xacml:3.0:core:schema:wd-17");
@@ -135,10 +130,9 @@ public class WriteXMLUtil {
 						policy.getParent().removeContent(policy);
 
 						return createPolicyNode(userProfileID, delegatorName,
-								policyLocation, delegationPolicyId,
-								delegateeId, delegateeName, departmentName,
-								positionTitle, action, delegationId, fromDate,
-								toDate, policySet, doc);
+								policyLocation, delegateeId, delegateeName,
+								departmentName, positionTitle, action,
+								delegationId, fromDate, toDate, policySet, doc);
 					}
 				}
 
@@ -151,7 +145,6 @@ public class WriteXMLUtil {
 	 * @param userProfileID
 	 * @param delegatorName
 	 * @param policyLocation
-	 * @param delegationPolicyId
 	 * @param delegateeId
 	 * @param delegateeName
 	 * @param departmentName
@@ -166,8 +159,7 @@ public class WriteXMLUtil {
 	 * @return
 	 */
 	private static String createPolicyNode(String userProfileID,
-			String delegatorName, String policyLocation,
-			String delegationPolicyId, String delegateeId,
+			String delegatorName, String policyLocation, String delegateeId,
 			String delegateeName, String departmentName, String positionTitle,
 			String action, String delegationId, final String fromDate,
 			final String toDate, Element policySet, Document doc) {
@@ -312,7 +304,7 @@ public class WriteXMLUtil {
 		function1
 				.addContent(getCondition(
 						"urn:oasis:names:tc:xacml:1.0:function:dateTime-less-than-or-equal",
-						"urn:oasis:names:tc:xacml:1.0:function:dateTime-one-and-onlyy",
+						"urn:oasis:names:tc:xacml:1.0:function:dateTime-one-and-only",
 						"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
 						"http://www.w3.org/2001/XMLSchema#dateTime",
 						"//ak:currentdatetime/text()", toDate));
@@ -413,7 +405,7 @@ public class WriteXMLUtil {
 		function2
 				.addContent(getCondition(
 						"urn:oasis:names:tc:xacml:1.0:function:dateTime-less-than-or-equal",
-						"urn:oasis:names:tc:xacml:1.0:function:dateTime-one-and-onlyy",
+						"urn:oasis:names:tc:xacml:1.0:function:dateTime-one-and-only",
 						"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
 						"http://www.w3.org/2001/XMLSchema#dateTime",
 						"//ak:currentdatetime/text()", toDate));
@@ -515,7 +507,7 @@ public class WriteXMLUtil {
 		function3
 				.addContent(getCondition(
 						"urn:oasis:names:tc:xacml:1.0:function:dateTime-less-than-or-equal",
-						"urn:oasis:names:tc:xacml:1.0:function:dateTime-one-and-onlyy",
+						"urn:oasis:names:tc:xacml:1.0:function:dateTime-one-and-only",
 						"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
 						"http://www.w3.org/2001/XMLSchema#dateTime",
 						"//ak:currentdatetime/text()", toDate));
@@ -544,7 +536,7 @@ public class WriteXMLUtil {
 		// Add Revocation Rule HERE
 		Element rule5 = new Element("Rule");
 		rule5.setAttribute(new Attribute("Effect", "Permit"));
-		ruleId = "Revoke " + delegationPolicyId + " by Department Chair";
+		ruleId = "Revoke " + policyId + " by Department Chair";
 		rule5.setAttribute(new Attribute("RuleId", ruleId.replaceAll(" ", "-")));
 		rule5.addContent(new Element("Description")
 				.setText("\"Department Chair\" can \"Revoke\" delegation from "
@@ -587,7 +579,7 @@ public class WriteXMLUtil {
 				"urn:oasis:names:tc:xacml:1.0:function:string-one-and-only",
 				"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
 				"http://www.w3.org/2001/XMLSchema#string",
-				"//ak:delegationpolicyid/text()", delegationPolicyId));
+				"//ak:delegationpolicyid/text()", policyId));
 
 		function4.addContent(getCondition(
 				"urn:oasis:names:tc:xacml:1.0:function:boolean-equal",
@@ -667,7 +659,7 @@ public class WriteXMLUtil {
 		function5
 				.addContent(getCondition(
 						"urn:oasis:names:tc:xacml:1.0:function:dateTime-less-than-or-equal",
-						"urn:oasis:names:tc:xacml:1.0:function:dateTime-one-and-onlyy",
+						"urn:oasis:names:tc:xacml:1.0:function:dateTime-one-and-only",
 						"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
 						"http://www.w3.org/2001/XMLSchema#dateTime",
 						"//ak:currentdatetime/text()", toDate));
@@ -692,7 +684,7 @@ public class WriteXMLUtil {
 			e.printStackTrace();
 		}
 
-		System.out.println("File Saved!");
+		System.out.println("File Saved!" + policyId);
 		return policyId;
 	}
 
@@ -911,14 +903,17 @@ public class WriteXMLUtil {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			Namespace ns = Namespace
+					.getNamespace("urn:oasis:names:tc:xacml:3.0:core:schema:wd-17");
 			List<Element> policyElements = doc.getRootElement().getChildren(
-					"Policy");
+					"Policy", ns);
 
 			for (Element policy : policyElements) {
 				String existingPolicyId = policy.getAttributeValue("PolicyId");
 
 				if (existingPolicyId.equals(policyId)) {
-					doc.removeContent(policy);
+					policy.getParent().removeContent(policy);
+
 					// display nice nice
 					CustomXMLOutputProcessor output = new CustomXMLOutputProcessor();
 					try {
