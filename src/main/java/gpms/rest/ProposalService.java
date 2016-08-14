@@ -426,7 +426,7 @@ public class ProposalService {
 	@POST
 	@Path("/AllProposalsExportToExcel")
 	@Produces(MediaType.TEXT_HTML)
-	@ApiOperation(value = "Export all Proposals in a grid", notes = "This API exports all Proposals shown in a grid")
+	@ApiOperation(value = "Export all Proposals in a grid", notes = "This API exports all Proposals shown in a grid For Admin")
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Success: { Excel Filename/ No Record}"),
 			@ApiResponse(code = 400, message = "Failed: { \"error\":\"error description\", \"status\": \"FAIL\" }") })
