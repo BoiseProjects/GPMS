@@ -4,9 +4,10 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
-@Suite.SuiteClasses({ SuccessfullProposalSubmition_IRB.class,
-		SuccessfullProposalSubmition_NoIRB.class,
-		SuccessfullProposalSubmitionIRB_twoFaculty.class,
+@Suite.SuiteClasses({
+		// SuccessfullProposalSubmition_IRB.class,
+		// SuccessfullProposalSubmition_NoIRB.class,
+		// SuccessfullProposalSubmitionIRB_twoFaculty.class,
 		BusinessManagerApprovalFail.class,
 		BusinessManagerAttatchmentFail.class, ChairApprovalFail.class,
 		ChairAttatchmentFail.class, CoPIaddsSeniorPersonal.class,

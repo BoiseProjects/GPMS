@@ -25,6 +25,8 @@ public class CoPIattemptsProposalDeletion {
 
 	@Before
 	public void setUp() throws Exception {
+		System.setProperty("webdriver.chrome.driver",
+				"D:/chromedriver_win32/chromedriver.exe");
 		driver = new ChromeDriver();
 		baseUrl = "http://seal.boisestate.edu:8080/";
 		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
@@ -32,7 +34,7 @@ public class CoPIattemptsProposalDeletion {
 
 	@Test
 	public void testCoPIattemptsProposalDeletion() throws Exception {
-		driver.get(baseUrl + "/GPMS/Login.jsp");
+		driver.get(baseUrl + "/GPMS/");
 		driver.findElement(By.id("user_password")).clear();
 		driver.findElement(By.id("user_password")).sendKeys("gpmspassword");
 		driver.findElement(By.id("user_email")).clear();

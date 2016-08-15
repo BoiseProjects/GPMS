@@ -29,7 +29,7 @@ public class BusinessManagerApprovalFail {
 	@Before
 	public void setUp() throws Exception {
 		System.setProperty("webdriver.chrome.driver",
-				"E:/REU Internship/Selenium/chromedriver.exe");
+				"D:/chromedriver_win32/chromedriver.exe");
 		driver = new ChromeDriver();
 		baseUrl = "http://seal.boisestate.edu:8080/";
 		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
@@ -58,14 +58,16 @@ public class BusinessManagerApprovalFail {
 		driver.findElement(By.id("txtProjectTitle")).click();
 		Thread.sleep(1000);
 		driver.findElement(By.id("txtProjectTitle")).clear();
-		
+
 		int randTest = (int) (Math.random() * 9999);
-		
-		driver.findElement(By.id("txtProjectTitle")).sendKeys("Chair approval fail test" + randTest);
+
+		driver.findElement(By.id("txtProjectTitle")).sendKeys(
+				"Chair approval fail test" + randTest);
 		Thread.sleep(1000);
 		driver.findElement(By.cssSelector("td.cssClassTableRightCol")).click();
 		Thread.sleep(1000);
-		new Select(driver.findElement(By.id("ddlProjectType"))).selectByVisibleText("Research-Applied");
+		new Select(driver.findElement(By.id("ddlProjectType")))
+				.selectByVisibleText("Research-Applied");
 		Thread.sleep(1000);
 		driver.findElement(By.id("txtDueDate")).click();
 		Thread.sleep(1000);
@@ -320,7 +322,8 @@ public class BusinessManagerApprovalFail {
 				By.name("proposalNotes574620c6bcbb29150487642aBusiness_Manager"))
 				.sendKeys("Test");
 		Thread.sleep(1000);
-		driver.findElement(By.id("btnApproveProposal")).click();
+		((JavascriptExecutor) driver)
+		.executeScript("var s=document.getElementById('btnApproveProposal');s.click();");
 		Thread.sleep(1000);
 		driver.findElement(By.id("BoxConfirmBtnOk")).click();
 		Thread.sleep(1000);

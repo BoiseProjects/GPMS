@@ -26,7 +26,7 @@ public class CoPIproposalSubmitionFail {
 	@Before
 	public void setUp() throws Exception {
 		System.setProperty("webdriver.chrome.driver",
-				"E:/REU Internship/Selenium/chromedriver.exe");
+				"D:/chromedriver_win32/chromedriver.exe");
 		driver = new ChromeDriver();
 		baseUrl = "http://seal.boisestate.edu:8080/";
 		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
@@ -68,7 +68,8 @@ public class CoPIproposalSubmitionFail {
 				By.xpath("//table[@id='trSignPICOPI']/tbody/tr[3]/td[3]"))
 				.click();
 		Thread.sleep(1000);
-		driver.findElement(By.id("btnSubmitProposal")).click();
+		((JavascriptExecutor) driver)
+				.executeScript("var s=document.getElementById('btnSubmitProposal');s.click();");
 		Thread.sleep(1000);
 		driver.findElement(By.id("BoxConfirmBtnOk")).click();
 		Thread.sleep(1000);

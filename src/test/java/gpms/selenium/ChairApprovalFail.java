@@ -29,7 +29,7 @@ public class ChairApprovalFail {
 	@Before
 	public void setUp() throws Exception {
 		System.setProperty("webdriver.chrome.driver",
-				"E:/REU Internship/Selenium/chromedriver.exe");
+				"D:/chromedriver_win32/chromedriver.exe");
 		driver = new ChromeDriver();
 		baseUrl = "http://seal.boisestate.edu:8080/";
 		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
@@ -314,7 +314,8 @@ public class ChairApprovalFail {
 				By.name("proposalNotes5745f29ebcbb29192ce0d42fDepartment_Chair"))
 				.sendKeys("Test");
 		Thread.sleep(1000);
-		driver.findElement(By.id("btnApproveProposal")).click();
+		((JavascriptExecutor) driver)
+				.executeScript("var s=document.getElementById('btnApproveProposal');s.click();");
 		Thread.sleep(1000);
 		driver.findElement(By.id("BoxConfirmBtnOk")).click();
 		Thread.sleep(1000);
