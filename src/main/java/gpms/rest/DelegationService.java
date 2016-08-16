@@ -1126,9 +1126,29 @@ public class DelegationService {
 
 				if (delegationInfo != null
 						&& delegationInfo.has("DelegatedAction")) {
-					if (delegationID.equals("0")) {
-						newDelegation.setAction(delegationInfo.get(
-								"DelegatedAction").textValue());
+					final JsonNode delegatedActions = delegationInfo
+							.get("DelegatedAction");
+
+					if (delegatedActions.isArray()) {
+						if (delegatedActions.size() > 0) {
+							if (delegationID.equals("0")) {
+								for (final JsonNode action : delegatedActions) {
+									System.out.println(action);
+									newDelegation.getActions().add(
+											action.textValue());
+								}
+							} else {
+								existingDelegation.getActions().clear();
+
+								for (final JsonNode action : delegatedActions) {
+									existingDelegation.getActions().add(
+											action.textValue());
+								}
+							}
+						} else {
+							throw new Exception(
+									"The Delegation Action can not be Empty");
+						}
 					}
 				}
 

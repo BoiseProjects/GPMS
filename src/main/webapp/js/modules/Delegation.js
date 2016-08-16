@@ -54,6 +54,10 @@ $(function() {
 								required : true,
 								minlength : 5,
 								maxlength : 250
+							},
+							actions : {
+								required : true,
+								minlength : 1
 							}
 						},
 						errorElement : "span",
@@ -72,6 +76,10 @@ $(function() {
 								required : "Please enter your delegation reason.",
 								minlength : "Your delegation reason must be at least 5 characters long",
 								maxlength : "Your delegation reason must be at most 250 characters long"
+							},
+							actions : {
+								required : "*",
+								minlength : "*"
 							}
 						}
 					});
@@ -218,12 +226,13 @@ $(function() {
 					align : 'left',
 					hide : true
 				}, {
-					display : 'Delegated Action',
-					name : 'delegated_action',
+					display : 'Delegated Actions',
+					name : 'delegated_actions',
 					cssclass : '',
 					controlclass : '',
 					coltype : 'label',
-					align : 'left'
+					align : 'left',
+					type : 'array'
 				}, {
 					display : 'Delegation Reason',
 					name : 'delegation_reason',
@@ -353,7 +362,7 @@ $(function() {
 			return false;
 		},
 
-		GetDelegableUsers : function(delegateAction) {
+		GetDelegableUsers : function() {
 			var attributeArray = [];
 
 			var currentPositionTitle = GPMS.utils.GetUserPositionTitle();
@@ -369,12 +378,6 @@ $(function() {
 				attributeType : "Subject",
 				attributeName : "department",
 				attributeValue : currentDepartment
-			});
-
-			attributeArray.push({
-				attributeType : "Action",
-				attributeName : "proposal.action",
-				attributeValue : delegateAction
 			});
 
 			this.config.url = this.config.baseURL
@@ -400,8 +403,11 @@ $(function() {
 					delegation.config.delegationId = argus[0];
 					delegation.config.delegateePositionTitle = argus[2];
 
-					$("#ddlDelegateAction").val(argus[3])
-							.prop("disabled", true);
+					$.each(argus[3].split(", "), function(index, item) {
+						$(
+								"#tdDelegableActions input:checkbox[value='"
+										+ item + "']").prop("checked", true);
+					});
 
 					$('#ddlDelegateTo').empty().append(
 							new Option(argus[1], argus[1])).prop("disabled",
@@ -440,9 +446,16 @@ $(function() {
 				DelegationReason : $("#txtDelegationReason").val()
 			};
 
+			var checkedValues = $('#tdDelegableActions input:checkbox:checked')
+					.map(function() {
+						return this.value;
+					}).get();
+
+			delegationInfo.DelegatedAction = checkedValues;
+
 			if (config.delegationId == "0") {
-				delegationInfo.DelegatedAction = $("#ddlDelegateAction").val();
 				delegationInfo.Delegatee = $("#ddlDelegateTo").val();
+
 				delegationInfo.DelegateeId = config.delegateeId;
 				// delegation.config.delegateeEmail
 				delegationInfo.DelegateeCollege = config.delegateeCollege;
@@ -694,11 +707,15 @@ $(function() {
 			$("#ddlDelegateTo").empty()
 
 			var container = $("#tblDeletationDetails");
-			var inputs = container.find('INPUT, SELECT, TEXTAREA');
+			var inputs = container
+					.find('INPUT:not(:checkbox), SELECT, TEXTAREA');
 			$.each(inputs, function(i, item) {
 				$(this).val('');
 				$(this).val($(this).find('option').first().val());
 			});
+
+			$('#tdDelegableActions input:checkbox:checked').prop('checked',
+					false);
 
 			return false;
 		},
@@ -793,14 +810,28 @@ $(function() {
 
 			case 5: // Get all Delegable actions for a User
 				$('#ddlSearchDelegatedAction option').length = 0;
-				$('#ddlDelegateAction').empty();
+				// $('#ddlDelegateAction').empty();
 
-				$.each(msg, function(index, item) {
-					$('#ddlSearchDelegatedAction').append(
-							new Option(item, item));
+				$
+						.each(
+								msg,
+								function(index, item) {
+									$('#ddlSearchDelegatedAction').append(
+											new Option(item, item));
 
-					$('#ddlDelegateAction').append(new Option(item, item));
-				});
+									$("#tdDelegableActions")
+											.append(
+													"<input class='cssClassCheckBox' name='actions' id='chkAction_"
+															+ index
+															+ "' title='"
+															+ item
+															+ "' type='checkbox' value='"
+															+ item
+															+ "'><label class='cssClassLabel' for='chkAction_"
+															+ index + "'>"
+															+ item
+															+ "</label><br />");
+								});
 
 				break;
 
@@ -998,33 +1029,26 @@ $(function() {
 				delegation.config.delegateePositionTitle = "";
 			});
 
-			$('#btnAddNew')
-					.on(
-							"click",
-							function() {
-								if (delegation.config.delegationId == '0') {
-									$('#lblFormHeading').html(
-											'New Delegation Details');
+			$('#btnAddNew').on("click", function() {
+				if (delegation.config.delegationId == '0') {
+					$('#lblFormHeading').html('New Delegation Details');
 
-									$("#trAddedOn").hide();
-									$("#btnReset").show();
-									$("#btnSaveDelegation").show();
-									$("#btnRevokeDelegation").hide();
+					$("#trAddedOn").hide();
+					$("#btnReset").show();
+					$("#btnSaveDelegation").show();
+					$("#btnRevokeDelegation").hide();
 
-									$("#ddlDelegateAction").prop("disabled",
-											false);
-									$("#ddlDelegateTo").prop("disabled", false);
+					$("#ddlDelegateTo").prop("disabled", false);
 
-									delegation.ClearForm();
+					delegation.ClearForm();
 
-									delegation.GetDelegableUsers($(
-											"#ddlDelegateAction").val());
+					delegation.GetDelegableUsers();
 
-									$('#divDelegationGrid').hide();
-									$('#divDelegationForm').show();
-									$('#divDelegationAuditGrid').hide();
-								}
-							});
+					$('#divDelegationGrid').hide();
+					$('#divDelegationForm').show();
+					$('#divDelegationAuditGrid').hide();
+				}
+			});
 
 			$('#btnReset')
 					.on(
@@ -1035,9 +1059,7 @@ $(function() {
 										if (e) {
 											if (delegation.config.delegationId == "0") {
 												delegation.ClearForm();
-												delegation.GetDelegableUsers($(
-														"#ddlDelegateAction")
-														.val());
+												delegation.GetDelegableUsers();
 											}
 										}
 									}
@@ -1124,11 +1146,6 @@ $(function() {
 
 			$("#btnSearchDelegationAuditLog").on("click", function() {
 				delegation.SearchDelegationAuditLogs();
-				return false;
-			});
-
-			$("#ddlDelegateAction").on("change", function() {
-				delegation.GetDelegableUsers($(this).val());
 				return false;
 			});
 

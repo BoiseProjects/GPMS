@@ -467,9 +467,9 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 
 	private boolean isAlreadyDelegatee(String delegateeId,
 			PositionDetails posDetails, String action) {
-		long delegationCount = ds.createQuery(Delegation.class).field("action")
-				.equal(action).field("revoked").equal(false)
-				.field("delegatee user id").equal(delegateeId)
+		long delegationCount = ds.createQuery(Delegation.class)
+				.field("actions").contains(action).field("revoked")
+				.equal(false).field("delegatee user id").equal(delegateeId)
 				.field("delegatee college").equal(posDetails.getCollege())
 				.field("delegatee department")
 				.equal(posDetails.getDepartment())

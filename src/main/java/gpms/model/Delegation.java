@@ -3,7 +3,9 @@ package gpms.model;
 import gpms.dao.DelegationDAO;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Property;
@@ -67,8 +69,8 @@ public class Delegation extends BaseEntity implements Serializable {
 	@Property("to")
 	private Date to = new Date();
 
-	@Property("action")
-	private String action = new String();
+	@Property("actions")
+	private List<String> actions = new ArrayList<String>();
 
 	@Property("delegation reason")
 	private String reason = new String();
@@ -222,12 +224,12 @@ public class Delegation extends BaseEntity implements Serializable {
 		this.to = to;
 	}
 
-	public String getAction() {
-		return action;
+	public List<String> getActions() {
+		return actions;
 	}
 
-	public void setAction(String action) {
-		this.action = action;
+	public void setActions(List<String> actions) {
+		this.actions = actions;
 	}
 
 	public String getReason() {
@@ -276,7 +278,7 @@ public class Delegation extends BaseEntity implements Serializable {
 				+ delegatedDepartment + ", delegatedPositionType="
 				+ delegatedPositionType + ", delegatedPositionTitle="
 				+ delegatedPositionTitle + ", proposalId=" + proposalId
-				+ ", from=" + from + ", to=" + to + ", action=" + action
+				+ ", from=" + from + ", to=" + to + ", actions=" + actions
 				+ ", reason=" + reason + ", delegationPolicyId="
 				+ delegationPolicyId + ", createdOn=" + createdOn
 				+ ", revoked=" + revoked + "]";
@@ -286,7 +288,7 @@ public class Delegation extends BaseEntity implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((action == null) ? 0 : action.hashCode());
+		result = prime * result + ((actions == null) ? 0 : actions.hashCode());
 		result = prime * result
 				+ ((createdOn == null) ? 0 : createdOn.hashCode());
 		result = prime
@@ -355,10 +357,10 @@ public class Delegation extends BaseEntity implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Delegation other = (Delegation) obj;
-		if (action == null) {
-			if (other.action != null)
+		if (actions == null) {
+			if (other.actions != null)
 				return false;
-		} else if (!action.equals(other.action))
+		} else if (!actions.equals(other.actions))
 			return false;
 		if (createdOn == null) {
 			if (other.createdOn != null)

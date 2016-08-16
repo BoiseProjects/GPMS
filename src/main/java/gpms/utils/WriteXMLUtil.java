@@ -36,7 +36,7 @@ public class WriteXMLUtil {
 		String departmentName = existingDelegation.getDelegateeDepartment();
 		String positionTitle = existingDelegation.getDelegateePositionTitle();
 
-		String action = existingDelegation.getAction();
+		List<String> actions = existingDelegation.getActions();
 
 		// For Revocation
 		String delegationId = existingDelegation.getId().toString();
@@ -71,7 +71,7 @@ public class WriteXMLUtil {
 					+ delegateeName + "-of-" + departmentName + "-"
 					+ RandomStringUtils.randomAlphanumeric(8);
 			policySet.setAttribute(new Attribute("PolicySetId", policySetId
-					.replaceAll(" ", "-")));
+					.replaceAll("\\s", "-")));
 
 			policySet
 					.setAttribute(new Attribute("PolicyCombiningAlgId",
@@ -82,7 +82,7 @@ public class WriteXMLUtil {
 			policySet.addContent(new Element("Description")
 					.setText("PolicySet for" + delegateeName + " of "
 							+ departmentName + " with position title "
-							+ positionTitle + " is delegated to " + action
+							+ positionTitle + " is delegated to " + actions
 							+ " by " + delegatorName));
 			policySet.addContent(new Element("Target"));
 
@@ -114,7 +114,7 @@ public class WriteXMLUtil {
 
 				return createPolicyNode(userProfileID, delegatorName,
 						policyLocation, delegateeId, delegateeName,
-						departmentName, positionTitle, action, delegationId,
+						departmentName, positionTitle, actions, delegationId,
 						fromDate, toDate, policySet, doc);
 			} else {
 				Namespace ns = Namespace
@@ -131,7 +131,7 @@ public class WriteXMLUtil {
 
 						return createPolicyNode(userProfileID, delegatorName,
 								policyLocation, delegateeId, delegateeName,
-								departmentName, positionTitle, action,
+								departmentName, positionTitle, actions,
 								delegationId, fromDate, toDate, policySet, doc);
 					}
 				}
@@ -161,7 +161,7 @@ public class WriteXMLUtil {
 	private static String createPolicyNode(String userProfileID,
 			String delegatorName, String policyLocation, String delegateeId,
 			String delegateeName, String departmentName, String positionTitle,
-			String action, String delegationId, final String fromDate,
+			List<String> actions, String delegationId, final String fromDate,
 			final String toDate, Element policySet, Document doc) {
 		// Policy Goes here
 		Element policy = new Element("Policy");
@@ -169,7 +169,7 @@ public class WriteXMLUtil {
 		String policyId = "Dynamic-Delegation-Policy-Rules-For-"
 				+ delegateeName + "-of-" + departmentName + "-"
 				+ RandomStringUtils.randomAlphanumeric(8);
-		policyId = policyId.replaceAll(" ", "-");
+		policyId = policyId.replaceAll("\\s", "-");
 		policy.setAttribute(new Attribute("PolicyId", policyId));
 
 		policy.setAttribute(new Attribute("RuleCombiningAlgId",
@@ -179,7 +179,7 @@ public class WriteXMLUtil {
 
 		policy.addContent(new Element("Description").setText(delegateeName
 				+ " of " + departmentName + " with position title "
-				+ positionTitle + " is delegated to " + action + " by "
+				+ positionTitle + " is delegated to " + actions + " by "
 				+ delegatorName));
 
 		policy.addContent(new Element("PolicyDefaults").setContent(new Element(
@@ -199,7 +199,8 @@ public class WriteXMLUtil {
 		rule1.setAttribute(new Attribute("Effect", "Permit"));
 		String ruleId = "DelegatedEditProposalSectionRuleFor-" + positionTitle
 				+ "-DelegatedBy-" + delegatorName;
-		rule1.setAttribute(new Attribute("RuleId", ruleId.replaceAll(" ", "-")));
+		rule1.setAttribute(new Attribute("RuleId", ruleId
+				.replaceAll("\\s", "-")));
 		rule1.addContent(new Element("Description")
 				.setText(delegateeName
 						+ " of "
@@ -242,7 +243,8 @@ public class WriteXMLUtil {
 		rule2.setAttribute(new Attribute("Effect", "Permit"));
 		ruleId = "DelegatedApproveProposalRule1For-" + positionTitle
 				+ "-DelegatedBy-" + delegatorName;
-		rule2.setAttribute(new Attribute("RuleId", ruleId.replaceAll(" ", "-")));
+		rule2.setAttribute(new Attribute("RuleId", ruleId
+				.replaceAll("\\s", "-")));
 		rule2.addContent(new Element("Description")
 				.setText(delegateeName
 						+ " of "
@@ -268,10 +270,6 @@ public class WriteXMLUtil {
 				"urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDepartmentChair",
 				"urn:oasis:names:tc:xacml:3.0:attribute-category:resource"));
 
-		allOf2.addContent(getMatch(action,
-				"urn:oasis:names:tc:xacml:1.0:action:proposal.action",
-				"urn:oasis:names:tc:xacml:3.0:attribute-category:action"));
-
 		Element target2 = new Element("Target").addContent(new Element("AnyOf")
 				.addContent(allOf2));
 
@@ -282,6 +280,14 @@ public class WriteXMLUtil {
 				"urn:oasis:names:tc:xacml:1.0:function:and");
 
 		Element condition1 = new Element("Condition");
+
+		function1
+				.addContent(getConditionActionBag(
+						"urn:oasis:names:tc:xacml:1.0:function:string-at-least-one-member-of",
+						"urn:oasis:names:tc:xacml:1.0:function:string-bag",
+						"urn:oasis:names:tc:xacml:3.0:attribute-category:action",
+						"urn:oasis:names:tc:xacml:1.0:action:proposal.action",
+						"http://www.w3.org/2001/XMLSchema#string", actions));
 		function1.addContent(getCondition(
 				"urn:oasis:names:tc:xacml:1.0:function:boolean-equal",
 				"urn:oasis:names:tc:xacml:1.0:function:boolean-one-and-only",
@@ -336,7 +342,8 @@ public class WriteXMLUtil {
 		rule3.setAttribute(new Attribute("Effect", "Permit"));
 		ruleId = "DelegatedApproveProposalRule2For-" + positionTitle
 				+ "-DelegatedBy-" + delegatorName;
-		rule3.setAttribute(new Attribute("RuleId", ruleId.replaceAll(" ", "-")));
+		rule3.setAttribute(new Attribute("RuleId", ruleId
+				.replaceAll("\\s", "-")));
 		rule3.addContent(new Element("Description")
 				.setText(delegateeName
 						+ " of "
@@ -361,10 +368,6 @@ public class WriteXMLUtil {
 				"urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDepartmentChair",
 				"urn:oasis:names:tc:xacml:3.0:attribute-category:resource"));
 
-		allOf3.addContent(getMatch(action,
-				"urn:oasis:names:tc:xacml:1.0:action:proposal.action",
-				"urn:oasis:names:tc:xacml:3.0:attribute-category:action"));
-
 		Element target3 = new Element("Target").addContent(new Element("AnyOf")
 				.addContent(allOf3));
 
@@ -375,6 +378,14 @@ public class WriteXMLUtil {
 				"urn:oasis:names:tc:xacml:1.0:function:and");
 
 		Element condition2 = new Element("Condition");
+
+		function2
+				.addContent(getConditionActionBag(
+						"urn:oasis:names:tc:xacml:1.0:function:string-at-least-one-member-of",
+						"urn:oasis:names:tc:xacml:1.0:function:string-bag",
+						"urn:oasis:names:tc:xacml:3.0:attribute-category:action",
+						"urn:oasis:names:tc:xacml:1.0:action:proposal.action",
+						"http://www.w3.org/2001/XMLSchema#string", actions));
 
 		function2.addContent(getCondition(
 				"urn:oasis:names:tc:xacml:1.0:function:boolean-equal",
@@ -437,7 +448,8 @@ public class WriteXMLUtil {
 		rule4.setAttribute(new Attribute("Effect", "Permit"));
 		ruleId = "DelegatedApproveProposalRule3For-" + positionTitle
 				+ "-DelegatedBy-" + delegatorName;
-		rule4.setAttribute(new Attribute("RuleId", ruleId.replaceAll(" ", "-")));
+		rule4.setAttribute(new Attribute("RuleId", ruleId
+				.replaceAll("\\s", "-")));
 		rule4.addContent(new Element("Description")
 				.setText(delegateeName
 						+ " of "
@@ -463,10 +475,6 @@ public class WriteXMLUtil {
 				"urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDepartmentChair",
 				"urn:oasis:names:tc:xacml:3.0:attribute-category:resource"));
 
-		allOf4.addContent(getMatch(action,
-				"urn:oasis:names:tc:xacml:1.0:action:proposal.action",
-				"urn:oasis:names:tc:xacml:3.0:attribute-category:action"));
-
 		Element target4 = new Element("Target").addContent(new Element("AnyOf")
 				.addContent(allOf4));
 
@@ -477,6 +485,14 @@ public class WriteXMLUtil {
 				"urn:oasis:names:tc:xacml:1.0:function:and");
 
 		Element condition3 = new Element("Condition");
+
+		function3
+				.addContent(getConditionActionBag(
+						"urn:oasis:names:tc:xacml:1.0:function:string-at-least-one-member-of",
+						"urn:oasis:names:tc:xacml:1.0:function:string-bag",
+						"urn:oasis:names:tc:xacml:3.0:attribute-category:action",
+						"urn:oasis:names:tc:xacml:1.0:action:proposal.action",
+						"http://www.w3.org/2001/XMLSchema#string", actions));
 
 		function3.addContent(getCondition(
 				"urn:oasis:names:tc:xacml:1.0:function:boolean-equal",
@@ -537,7 +553,8 @@ public class WriteXMLUtil {
 		Element rule5 = new Element("Rule");
 		rule5.setAttribute(new Attribute("Effect", "Permit"));
 		ruleId = "Revoke " + policyId + " by Department Chair";
-		rule5.setAttribute(new Attribute("RuleId", ruleId.replaceAll(" ", "-")));
+		rule5.setAttribute(new Attribute("RuleId", ruleId
+				.replaceAll("\\s", "-")));
 		rule5.addContent(new Element("Description")
 				.setText("\"Department Chair\" can \"Revoke\" delegation from "
 						+ delegateeName + " of " + departmentName
@@ -609,10 +626,11 @@ public class WriteXMLUtil {
 		// Add Action Button Show Rule HERE
 		Element rule6 = new Element("Rule");
 		rule6.setAttribute(new Attribute("Effect", "Permit"));
-		ruleId = action + "ShowFor" + positionTitle;
-		rule6.setAttribute(new Attribute("RuleId", ruleId.replaceAll(" ", "-")));
+		ruleId = actions + "ShowFor" + positionTitle;
+		rule6.setAttribute(new Attribute("RuleId", ruleId.replaceAll(
+				"[\\[\\]\\s\\,]", "")));
 		rule6.addContent(new Element("Description").setText("'" + positionTitle
-				+ "' can see '" + action
+				+ "' can see '" + actions
 				+ "' button when ApprovedByDepartmentChair = READYFORAPPROVAL"));
 
 		Element allOf6 = new Element("AllOf");
@@ -620,10 +638,6 @@ public class WriteXMLUtil {
 		allOf6.addContent(getMatch(positionTitle,
 				"urn:oasis:names:tc:xacml:1.0:subject:position.title",
 				"urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"));
-
-		allOf6.addContent(getMatch(action,
-				"urn:oasis:names:tc:xacml:1.0:action:proposal.action",
-				"urn:oasis:names:tc:xacml:3.0:attribute-category:action"));
 
 		Element target6 = new Element("Target").addContent(new Element("AnyOf")
 				.addContent(allOf6));
@@ -635,6 +649,14 @@ public class WriteXMLUtil {
 				"urn:oasis:names:tc:xacml:1.0:function:and");
 
 		Element condition5 = new Element("Condition");
+
+		function5
+				.addContent(getConditionActionBag(
+						"urn:oasis:names:tc:xacml:1.0:function:string-at-least-one-member-of",
+						"urn:oasis:names:tc:xacml:1.0:function:string-bag",
+						"urn:oasis:names:tc:xacml:3.0:attribute-category:action",
+						"urn:oasis:names:tc:xacml:1.0:action:proposal.action",
+						"http://www.w3.org/2001/XMLSchema#string", actions));
 
 		function5.addContent(getCondition(
 				"urn:oasis:names:tc:xacml:1.0:function:string-equal",
@@ -792,13 +814,12 @@ public class WriteXMLUtil {
 		return obligationExpression;
 	}
 
-	private static Element getMatch(String positionTitle, String attrId,
+	private static Element getMatch(String attrVal, String attrId,
 			String attrCategory) {
 		Element match = new Element("Match").setAttribute("MatchId",
 				"urn:oasis:names:tc:xacml:1.0:function:string-equal");
 		match.addContent(new Element("AttributeValue").setAttribute("DataType",
-				"http://www.w3.org/2001/XMLSchema#string").setText(
-				positionTitle));
+				"http://www.w3.org/2001/XMLSchema#string").setText(attrVal));
 		match.addContent(new Element("AttributeDesignator")
 				.setAttribute("AttributeId", attrId)
 				.setAttribute("Category", attrCategory)
@@ -832,6 +853,35 @@ public class WriteXMLUtil {
 				.addContent(
 						new Element("AttributeValue").setAttribute("DataType",
 								attrSelectorDataType).setText(attrValue));
+
+		return conditionApply;
+	}
+
+	private static Element getConditionActionBag(String functionId,
+			String compareFunctionId, String attrDesignatorCategory,
+			String attrDesignatorAttrId, String attrDataType,
+			List<String> actions) {
+
+		Element apply = new Element("Apply").setAttribute("FunctionId",
+				compareFunctionId);
+
+		for (String action : actions) {
+			Element attributVal = new Element("AttributeValue").setAttribute(
+					"DataType", attrDataType).setText(action);
+			apply.addContent(attributVal);
+
+		}
+		Element conditionApply = new Element("Apply")
+				.setAttribute("FunctionId", functionId)
+				.addContent(apply)
+				.addContent(
+						new Element("AttributeDesignator")
+								.setAttribute("Category",
+										attrDesignatorCategory)
+								.setAttribute("DataType", attrDataType)
+								.setAttribute("AttributeId",
+										attrDesignatorAttrId)
+								.setAttribute("MustBePresent", "false"));
 
 		return conditionApply;
 	}

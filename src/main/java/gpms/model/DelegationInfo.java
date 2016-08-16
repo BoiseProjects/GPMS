@@ -1,6 +1,8 @@
 package gpms.model;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import com.ebay.xcelite.annotations.Column;
 import com.ebay.xcelite.annotations.Row;
@@ -9,11 +11,11 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonPropertyOrder({ "rowTotal", "id", "delegatee", "delegatee_email",
 		"delegatee_position_title", "delegated_position_title",
-		"delegated_action", "delegation_reason", "dateCreated",
+		"delegated_actions", "delegation_reason", "dateCreated",
 		"delegatedFrom", "delegatedTo", "lastAudited", "lastAuditedBy",
 		"lastAuditAction", "revoked" })
 @Row(colsOrder = { "Delegatee", "Delegatee Email", "Delegatee Position Title",
-		"Delegated Position Title", "Delegated Action", "Delegation Reason",
+		"Delegated Position Title", "Delegated Actions", "Delegation Reason",
 		"Date Created", "Delegated From", "Delegated To", "Last Audited",
 		"Last Audited By", "Last Audit Action", "Is Revoked?" })
 public class DelegationInfo {
@@ -39,9 +41,9 @@ public class DelegationInfo {
 	@Column(name = "Delegated Position Title")
 	private String positionTitle = new String();
 
-	@JsonProperty("delegated_action")
-	@Column(name = "Delegated Action")
-	private String delegatedAction = new String();
+	@JsonProperty("delegated_actions")
+	@Column(name = "Delegated Actions")
+	private List<String> delegatedActions = new ArrayList<String>();
 
 	@JsonProperty("delegation_reason")
 	@Column(name = "Delegation Reason")
@@ -127,12 +129,12 @@ public class DelegationInfo {
 		this.positionTitle = positionTitle;
 	}
 
-	public String getDelegatedAction() {
-		return delegatedAction;
+	public List<String> getDelegatedActions() {
+		return delegatedActions;
 	}
 
-	public void setDelegatedAction(String delegatedAction) {
-		this.delegatedAction = delegatedAction;
+	public void setDelegatedActions(List<String> delegatedActions) {
+		this.delegatedActions = delegatedActions;
 	}
 
 	public String getDelegationReason() {

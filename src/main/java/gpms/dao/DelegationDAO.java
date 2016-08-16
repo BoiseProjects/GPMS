@@ -114,7 +114,7 @@ public class DelegationDAO extends BasicDAO<Delegation, String> {
 		}
 
 		if (delegatedAction != null) {
-			delegationQuery.criteria("action").equal(delegatedAction);
+			delegationQuery.criteria("actions").contains(delegatedAction);
 		}
 
 		if (isRevoked != null) {
@@ -136,7 +136,7 @@ public class DelegationDAO extends BasicDAO<Delegation, String> {
 					.getDelegateePositionTitle());
 			delegation.setPositionTitle(userDelegation
 					.getDelegatedPositionTitle());
-			delegation.setDelegatedAction(userDelegation.getAction());
+			delegation.setDelegatedActions(userDelegation.getActions());
 			delegation.setDelegationReason(userDelegation.getReason());
 			delegation.setDateCreated(userDelegation.getCreatedOn());
 			delegation.setDelegatedFrom(userDelegation.getFrom());
@@ -217,7 +217,7 @@ public class DelegationDAO extends BasicDAO<Delegation, String> {
 		}
 
 		if (delegatedAction != null) {
-			delegationQuery.criteria("action").equal(delegatedAction);
+			delegationQuery.criteria("actions").contains(delegatedAction);
 		}
 
 		if (isRevoked != null) {
@@ -239,7 +239,7 @@ public class DelegationDAO extends BasicDAO<Delegation, String> {
 					.getDelegateePositionTitle());
 			delegation.setPositionTitle(userDelegation
 					.getDelegatedPositionTitle());
-			delegation.setDelegatedAction(userDelegation.getAction());
+			delegation.setDelegatedActions(userDelegation.getActions());
 			delegation.setDelegationReason(userDelegation.getReason());
 			delegation.setDateCreated(userDelegation.getCreatedOn());
 			delegation.setDelegatedFrom(userDelegation.getFrom());

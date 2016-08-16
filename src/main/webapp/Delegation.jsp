@@ -203,8 +203,8 @@
 																		id="ddlSearchDelegatedAction" class="sfListmenu"
 																		style="width: 80px;">
 																			<option value="0">--All--</option>
-<!-- 																			<option value="Approve">Approve</option> -->
-<!-- 																			<option value="Disapprove">Disapprove</option> -->
+																			<!-- 																			<option value="Approve">Approve</option> -->
+																			<!-- 																			<option value="Disapprove">Disapprove</option> -->
 																	</select></td>
 																	<td><label class="cssClassLabel">Is
 																			Revoked?</label> <select title="Choose Is Revoked?"
@@ -253,23 +253,25 @@
 													id="tblDeletationDetails">
 													<tbody>
 														<tr>
-															<td><span class="cssClassLabel"
-																id="lblDelegateAction">Delegate Action:</span> <span
-																class="cssClassRequired">*</span></td>
-															<td><select title="Choose Delegate Action"
-																class="sfListmenu" id="ddlDelegateAction"
-																name="ddlDelegateAction" required="true">
-<!-- 																	<option value="Approve">Approve</option> -->
-<!-- 																	<option value="Disapprove">Disapprove</option> -->
-															</select></td>
-														</tr>
-														<tr>
 															<td><span class="cssClassLabel" id="lblDelegateTo">Delegate
 																	To:</span> <span class="cssClassRequired">*</span></td>
 															<td><select title="Choose Delegate To"
 																class="sfListmenu" id="ddlDelegateTo"
 																name="ddlDelegateTo" required="true">
 															</select></td>
+														</tr>
+														<tr>
+															<td><span class="cssClassLabel"
+																id="lblDelegateAction">Delegate Actions:</span> <span
+																class="cssClassRequired">*</span></td>
+															<td id="tdDelegableActions">
+																<!-- 															<select title="Choose Delegate Action" -->
+																<!-- 																class="sfListmenu" id="ddlDelegateAction" -->
+																<!-- 																name="ddlDelegateAction" required="true"> -->
+																<!-- 																																		<option value="Approve">Approve</option> -->
+																<!-- 																																		<option value="Disapprove">Disapprove</option> -->
+																<!-- 															</select> -->
+															</td>
 														</tr>
 														<tr>
 															<td><span id="lblDelegationFrom"
