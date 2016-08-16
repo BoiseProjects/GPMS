@@ -730,8 +730,8 @@ public class DelegationService {
 			// TODO :: Get these static actions from the Dictionary we setup in
 			// "XACMLDatasheet.xls"
 
-			List<String> attributeValue = Arrays.asList("Approve",
-					"Disapprove", "Withdraw");
+			List<String> attributeValue = Arrays.asList("Save", "Submit",
+					"Approve", "Disapprove", "Withdraw", "Archive", "Delete");
 
 			for (String action : attributeValue) {
 				actionMap.put("proposal.action", action);
@@ -787,7 +787,6 @@ public class DelegationService {
 			ObjectMapper mapper = new ObjectMapper();
 			JsonNode root = mapper.readTree(message);
 
-			@SuppressWarnings("unused")
 			String userProfileID = new String();
 			@SuppressWarnings("unused")
 			String userName = new String();

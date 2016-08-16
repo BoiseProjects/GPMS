@@ -14,6 +14,12 @@ $(function() {
 		}
 	}
 
+	// Put similar dependencies in this Object
+	var actionDependency = {
+		"Approve" : [ "Disapprove" ],
+		"Disapprove" : [ "Approve" ]
+	};
+
 	jQuery.fn.exists = function() {
 		return this.length > 0;
 	}
@@ -791,7 +797,6 @@ $(function() {
 
 			case 5: // Get all Delegable actions for a User
 				$('#ddlSearchDelegatedAction option').length = 0;
-				// $('#ddlDelegateAction').empty();
 
 				$
 						.each(
@@ -813,6 +818,26 @@ $(function() {
 															+ item
 															+ "</label><br />");
 								});
+
+				$("#tdDelegableActions input:checkbox").on(
+						"change",
+						function() {
+							var prop = ($(this).is(':checked')) ? true : false;
+
+							var value = $(this).val();
+
+							$.grep(Object.keys(actionDependency), function(k) {
+								if (k === value) {
+									$.each(actionDependency[k], function(i, e) {
+										$(
+												"#tdDelegableActions input:checkbox[value='"
+														+ e + "']").prop(
+												"checked", prop);
+									});
+								}
+
+							});
+						});
 
 				break;
 

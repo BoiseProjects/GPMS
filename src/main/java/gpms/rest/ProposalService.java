@@ -1733,7 +1733,6 @@ public class ProposalService {
 				proposalRoles = root.get("proposalRoles").textValue();
 			}
 
-			@SuppressWarnings("unused")
 			String userProfileID = new String();
 			@SuppressWarnings("unused")
 			String userName = new String();

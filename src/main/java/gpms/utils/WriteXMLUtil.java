@@ -88,13 +88,11 @@ public class WriteXMLUtil {
 
 			Document doc = new Document(policySet);
 
-			// display nice nice
 			CustomXMLOutputProcessor output = new CustomXMLOutputProcessor();
 			try {
 				output.process(new FileWriter(policyLocation
 						+ delegationXMLFileName), Format.getPrettyFormat(), doc);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -103,7 +101,6 @@ public class WriteXMLUtil {
 		try {
 			doc = (Document) builder.build(xmlFile);
 		} catch (JDOMException | IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -690,8 +687,80 @@ public class WriteXMLUtil {
 
 		rule6.addContent(condition5);
 
-		// END Action Button Show Rule HERE
+		// END Action Button Show Rule for Delegatee HERE
 		policy.addContent(rule6);
+
+		// Add Action Button Hide Rule for Delegator HERE
+		Element rule7 = new Element("Rule");
+		rule7.setAttribute(new Attribute("Effect", "Deny"));
+		ruleId = actions + "HideForDepartmentChair";
+		rule7.setAttribute(new Attribute("RuleId", ruleId.replaceAll(
+				"[\\[\\]\\s\\,]", "")));
+		rule7.addContent(new Element("Description")
+				.setText("'Department Chair' can not see '"
+						+ actions
+						+ "' button when ApprovedByDepartmentChair = READYFORAPPROVAL and Delegated to = "
+						+ positionTitle));
+
+		Element allOf7 = new Element("AllOf");
+
+		allOf7.addContent(getMatch("Department Chair",
+				"urn:oasis:names:tc:xacml:1.0:subject:position.title",
+				"urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"));
+
+		Element target7 = new Element("Target").addContent(new Element("AnyOf")
+				.addContent(allOf7));
+
+		rule7.addContent(target7);
+
+		// Condition elements
+		Element function6 = new Element("Apply").setAttribute("FunctionId",
+				"urn:oasis:names:tc:xacml:1.0:function:and");
+
+		Element condition6 = new Element("Condition");
+
+		function6
+				.addContent(getConditionActionBag(
+						"urn:oasis:names:tc:xacml:1.0:function:string-at-least-one-member-of",
+						"urn:oasis:names:tc:xacml:1.0:function:string-bag",
+						"urn:oasis:names:tc:xacml:3.0:attribute-category:action",
+						"urn:oasis:names:tc:xacml:1.0:action:proposal.action",
+						"http://www.w3.org/2001/XMLSchema#string", actions));
+
+		function6.addContent(getCondition(
+				"urn:oasis:names:tc:xacml:1.0:function:string-equal",
+				"urn:oasis:names:tc:xacml:1.0:function:string-one-and-only",
+				"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
+				"http://www.w3.org/2001/XMLSchema#string",
+				"//ak:approvedbydepartmentchair/text()", "READYFORAPPROVAL"));
+
+		function6.addContent(getCondition(
+				"urn:oasis:names:tc:xacml:1.0:function:string-equal",
+				"urn:oasis:names:tc:xacml:1.0:function:string-one-and-only",
+				"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
+				"http://www.w3.org/2001/XMLSchema#string",
+				"//ak:authorprofile/ak:userid/text()", userProfileID));
+		function6
+				.addContent(getCondition(
+						"urn:oasis:names:tc:xacml:1.0:function:dateTime-greater-than-or-equal",
+						"urn:oasis:names:tc:xacml:1.0:function:dateTime-one-and-only",
+						"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
+						"http://www.w3.org/2001/XMLSchema#dateTime",
+						"//ak:currentdatetime/text()", fromDate));
+		function6
+				.addContent(getCondition(
+						"urn:oasis:names:tc:xacml:1.0:function:dateTime-less-than-or-equal",
+						"urn:oasis:names:tc:xacml:1.0:function:dateTime-one-and-only",
+						"urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
+						"http://www.w3.org/2001/XMLSchema#dateTime",
+						"//ak:currentdatetime/text()", toDate));
+
+		condition6.addContent(function6);
+
+		rule7.addContent(condition6);
+
+		// END Action Button Show Rule HERE
+		policy.addContent(rule7);
 
 		// Append Policy to the Root PolicySet
 		policySet.addContent(policy);
