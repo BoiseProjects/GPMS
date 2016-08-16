@@ -774,251 +774,196 @@ public class DelegationService {
 	}
 
 	@POST
-	@Path("/GetDelegableUsersForAction")
-	@ApiOperation(value = "Get Delegable Multiple Response For supplied Action of a User", notes = "This API gets Delegable Multiple Response For supplied Action for a User")
+	@Path("/GetDelegableUsersForAUser")
+	@ApiOperation(value = "Get Delegable Multiple Users Response for a User", notes = "This API gets Delegable Multiple Users Response for a User")
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Success: { User Detail for Dropdown }"),
 			@ApiResponse(code = 400, message = "Failed: { \"error\":\"error description\", \"status\": \"FAIL\" }") })
-	public Response produceDelegableUsersForAction(
+	public Response produceDelegableUsersForAUser(
 			@ApiParam(value = "Message", required = true, defaultValue = "", allowableValues = "", allowMultiple = false) String message) {
 		try {
-			log.info("DelegationService::produceDelegableUsersForAction started");
+			log.info("DelegationService::produceDelegableUsersForAUser started");
 
 			ObjectMapper mapper = new ObjectMapper();
 			JsonNode root = mapper.readTree(message);
 
-			if (root != null && root.has("policyInfo")) {
-				JsonNode policyInfo = root.get("policyInfo");
-				if (policyInfo != null && policyInfo.isArray()
-						&& policyInfo.size() > 0) {
-					Accesscontrol ac = new Accesscontrol();
-					HashMap<String, Multimap<String, String>> attrMap = new HashMap<String, Multimap<String, String>>();
+			@SuppressWarnings("unused")
+			String userProfileID = new String();
+			@SuppressWarnings("unused")
+			String userName = new String();
+			@SuppressWarnings("unused")
+			Boolean userIsAdmin = false;
+			String userCollege = new String();
+			String userDepartment = new String();
+			@SuppressWarnings("unused")
+			String userPositionType = new String();
+			String userPositionTitle = new String();
 
-					Multimap<String, String> subjectMap = ArrayListMultimap
-							.create();
-					Multimap<String, String> resourceMap = ArrayListMultimap
-							.create();
-					Multimap<String, String> actionMap = ArrayListMultimap
-							.create();
-					Multimap<String, String> environmentMap = ArrayListMultimap
-							.create();
-					String deleagableAction = new String();
-
-					for (JsonNode node : policyInfo) {
-						String attributeName = node.path("attributeName")
-								.asText();
-						String attributeValue = node.path("attributeValue")
-								.asText();
-						String attributeType = node.path("attributeType")
-								.asText();
-						switch (attributeType) {
-						case "Subject":
-							subjectMap.put(attributeName, attributeValue);
-							attrMap.put("Subject", subjectMap);
-							break;
-						case "Resource":
-							resourceMap.put(attributeName, attributeValue);
-							attrMap.put("Resource", resourceMap);
-							break;
-						case "Action":
-							deleagableAction = attributeValue;
-							actionMap.put(attributeName, attributeValue);
-							attrMap.put("Action", actionMap);
-							break;
-						case "Environment":
-							environmentMap.put(attributeName, attributeValue);
-							attrMap.put("Environment", environmentMap);
-							break;
-						default:
-							break;
-						}
-					}
-
-					@SuppressWarnings("unused")
-					String userProfileID = new String();
-					@SuppressWarnings("unused")
-					String userName = new String();
-					@SuppressWarnings("unused")
-					Boolean userIsAdmin = false;
-					@SuppressWarnings("unused")
-					String userCollege = new String();
-					@SuppressWarnings("unused")
-					String userDepartment = new String();
-					@SuppressWarnings("unused")
-					String userPositionType = new String();
-					@SuppressWarnings("unused")
-					String userPositionTitle = new String();
-
-					if (root != null && root.has("gpmsCommonObj")) {
-						JsonNode commonObj = root.get("gpmsCommonObj");
-						if (commonObj != null && commonObj.has("UserProfileID")) {
-							userProfileID = commonObj.get("UserProfileID")
-									.textValue();
-						}
-						if (commonObj != null && commonObj.has("UserName")) {
-							userName = commonObj.get("UserName").textValue();
-						}
-						if (commonObj != null && commonObj.has("UserIsAdmin")) {
-							userIsAdmin = Boolean.parseBoolean(commonObj.get(
-									"UserIsAdmin").textValue());
-						}
-						if (commonObj != null && commonObj.has("UserCollege")) {
-							userCollege = commonObj.get("UserCollege")
-									.textValue();
-						}
-						if (commonObj != null
-								&& commonObj.has("UserDepartment")) {
-							userDepartment = commonObj.get("UserDepartment")
-									.textValue();
-						}
-						if (commonObj != null
-								&& commonObj.has("UserPositionType")) {
-							userPositionType = commonObj
-									.get("UserPositionType").textValue();
-						}
-						if (commonObj != null
-								&& commonObj.has("UserPositionTitle")) {
-							userPositionTitle = commonObj.get(
-									"UserPositionTitle").textValue();
-						}
-					}
-
-					StringBuffer contentProfile = new StringBuffer();
-
-					contentProfile.append("<Content>");
-					contentProfile
-							.append("<ak:record xmlns:ak=\"http://akpower.org\">");
-
-					// TO GET all admin users here for Content as Delegatee
-					List<UserDetail> delegableUsers = userProfileDAO
-							.findAllUsersForDelegation(deleagableAction);
-
-					for (UserDetail userDetail : delegableUsers) {
-						contentProfile.append("<ak:user>");
-
-						contentProfile.append("<ak:userid>");
-						contentProfile.append(userDetail.getUserProfileId());
-						contentProfile.append("</ak:userid>");
-
-						contentProfile.append("<ak:fullname>");
-						contentProfile.append(userDetail.getFullName());
-						contentProfile.append("</ak:fullname>");
-
-						contentProfile.append("<ak:username>");
-						contentProfile.append(userDetail.getUserName());
-						contentProfile.append("</ak:username>");
-
-						contentProfile.append("<ak:email>");
-						contentProfile.append(userDetail.getEmail());
-						contentProfile.append("</ak:email>");
-
-						contentProfile.append("<ak:college>");
-						contentProfile.append(userDetail.getCollege());
-						contentProfile.append("</ak:college>");
-
-						contentProfile.append("<ak:department>");
-						contentProfile.append(userDetail.getDepartment());
-						contentProfile.append("</ak:department>");
-
-						contentProfile.append("<ak:positionType>");
-						contentProfile.append(userDetail.getPositionType());
-						contentProfile.append("</ak:positionType>");
-
-						contentProfile.append("<ak:positiontitle>");
-						contentProfile.append(userDetail.getPositionTitle());
-						contentProfile.append("</ak:positiontitle>");
-
-						contentProfile.append("</ak:user>");
-					}
-
-					contentProfile.append("</ak:record>");
-					contentProfile.append("</Content>");
-
-					contentProfile
-							.append("<Attribute AttributeId=\"urn:oasis:names:tc:xacml:3.0:profile:multiple:content-selector\" IncludeInResult=\"false\">");
-					contentProfile
-							.append("<AttributeValue DataType=\"urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression\" XPathCategory=\"urn:oasis:names:tc:xacml:3.0:attribute-category:resource\">//ak:record//ak:user</AttributeValue>");
-					contentProfile.append("</Attribute>");
-
-					if (attrMap.get("Resource") == null) {
-						attrMap.put("Resource", resourceMap);
-					}
-
-					Set<AbstractResult> results = ac
-							.getXACMLdecisionWithObligations(attrMap,
-									contentProfile);
-
-					List<UserDetail> userDetails = new ArrayList<UserDetail>();
-					for (AbstractResult result : results) {
-						if (AbstractResult.DECISION_PERMIT == result
-								.getDecision()) {
-							List<Advice> advices = result.getAdvices();
-							for (Advice advice : advices) {
-								if (advice instanceof org.wso2.balana.xacml3.Advice) {
-									UserDetail userDeatil = new UserDetail();
-
-									List<AttributeAssignment> assignments = ((org.wso2.balana.xacml3.Advice) advice)
-											.getAssignments();
-									for (AttributeAssignment assignment : assignments) {
-										switch (assignment.getAttributeId()
-												.toString()) {
-										case "userId":
-											userDeatil
-													.setUserProfileId(assignment
-															.getContent());
-											break;
-										case "userfullName":
-											userDeatil.setFullName(assignment
-													.getContent());
-											break;
-										case "userName":
-											userDeatil.setUserName(assignment
-													.getContent());
-											break;
-										case "userEmail":
-											userDeatil.setEmail(assignment
-													.getContent());
-											break;
-										case "userCollege":
-											userDeatil.setCollege(assignment
-													.getContent());
-											break;
-										case "userDepartment":
-											userDeatil.setDepartment(assignment
-													.getContent());
-											break;
-										case "userPositionType":
-											userDeatil
-													.setPositionType(assignment
-															.getContent());
-											break;
-										case "userPositionTitle":
-											userDeatil
-													.setPositionTitle(assignment
-															.getContent());
-											break;
-										default:
-											break;
-										}
-									}
-									userDetails.add(userDeatil);
-								}
-							}
-						}
-					}
-					Collections.sort(userDetails);
-					return Response
-							.status(Response.Status.OK)
-							.entity(mapper.setDateFormat(formatter)
-									.writerWithDefaultPrettyPrinter()
-									.writeValueAsString(userDetails)).build();
-				} else {
-					return Response.status(403)
-							.type(MediaType.APPLICATION_JSON)
-							.entity("No User Permission Attributes are send!")
-							.build();
+			if (root != null && root.has("gpmsCommonObj")) {
+				JsonNode commonObj = root.get("gpmsCommonObj");
+				if (commonObj != null && commonObj.has("UserProfileID")) {
+					userProfileID = commonObj.get("UserProfileID").textValue();
+				}
+				if (commonObj != null && commonObj.has("UserName")) {
+					userName = commonObj.get("UserName").textValue();
+				}
+				if (commonObj != null && commonObj.has("UserIsAdmin")) {
+					userIsAdmin = Boolean.parseBoolean(commonObj.get(
+							"UserIsAdmin").textValue());
+				}
+				if (commonObj != null && commonObj.has("UserCollege")) {
+					userCollege = commonObj.get("UserCollege").textValue();
+				}
+				if (commonObj != null && commonObj.has("UserDepartment")) {
+					userDepartment = commonObj.get("UserDepartment")
+							.textValue();
+				}
+				if (commonObj != null && commonObj.has("UserPositionType")) {
+					userPositionType = commonObj.get("UserPositionType")
+							.textValue();
+				}
+				if (commonObj != null && commonObj.has("UserPositionTitle")) {
+					userPositionTitle = commonObj.get("UserPositionTitle")
+							.textValue();
 				}
 			}
+
+			StringBuffer contentProfile = new StringBuffer();
+
+			contentProfile.append("<Content>");
+			contentProfile
+					.append("<ak:record xmlns:ak=\"http://akpower.org\">");
+
+			ObjectId id = new ObjectId(userProfileID);
+
+			// TO GET all admin users here for Content as Delegatee
+			List<UserDetail> delegableUsers = userProfileDAO
+					.findAllUsersForDelegation(id, userCollege, userDepartment);
+
+			for (UserDetail userDetail : delegableUsers) {
+				contentProfile.append("<ak:user>");
+
+				contentProfile.append("<ak:userid>");
+				contentProfile.append(userDetail.getUserProfileId());
+				contentProfile.append("</ak:userid>");
+
+				contentProfile.append("<ak:fullname>");
+				contentProfile.append(userDetail.getFullName());
+				contentProfile.append("</ak:fullname>");
+
+				contentProfile.append("<ak:username>");
+				contentProfile.append(userDetail.getUserName());
+				contentProfile.append("</ak:username>");
+
+				contentProfile.append("<ak:email>");
+				contentProfile.append(userDetail.getEmail());
+				contentProfile.append("</ak:email>");
+
+				contentProfile.append("<ak:college>");
+				contentProfile.append(userDetail.getCollege());
+				contentProfile.append("</ak:college>");
+
+				contentProfile.append("<ak:department>");
+				contentProfile.append(userDetail.getDepartment());
+				contentProfile.append("</ak:department>");
+
+				contentProfile.append("<ak:positionType>");
+				contentProfile.append(userDetail.getPositionType());
+				contentProfile.append("</ak:positionType>");
+
+				contentProfile.append("<ak:positiontitle>");
+				contentProfile.append(userDetail.getPositionTitle());
+				contentProfile.append("</ak:positiontitle>");
+
+				contentProfile.append("</ak:user>");
+			}
+
+			contentProfile.append("</ak:record>");
+			contentProfile.append("</Content>");
+
+			contentProfile
+					.append("<Attribute AttributeId=\"urn:oasis:names:tc:xacml:3.0:profile:multiple:content-selector\" IncludeInResult=\"false\">");
+			contentProfile
+					.append("<AttributeValue DataType=\"urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression\" XPathCategory=\"urn:oasis:names:tc:xacml:3.0:attribute-category:resource\">//ak:record//ak:user</AttributeValue>");
+			contentProfile.append("</Attribute>");
+
+			Accesscontrol ac = new Accesscontrol();
+			HashMap<String, Multimap<String, String>> attrMap = new HashMap<String, Multimap<String, String>>();
+
+			Multimap<String, String> subjectMap = ArrayListMultimap.create();
+			Multimap<String, String> resourceMap = ArrayListMultimap.create();
+
+			subjectMap.put("position.title", userPositionTitle);
+			subjectMap.put("department", userDepartment);
+
+			attrMap.put("Subject", subjectMap);
+
+			if (attrMap.get("Resource") == null) {
+				attrMap.put("Resource", resourceMap);
+			}
+
+			Set<AbstractResult> results = ac.getXACMLdecisionWithObligations(
+					attrMap, contentProfile);
+
+			List<UserDetail> userDetails = new ArrayList<UserDetail>();
+			for (AbstractResult result : results) {
+				if (AbstractResult.DECISION_PERMIT == result.getDecision()) {
+					List<Advice> advices = result.getAdvices();
+					for (Advice advice : advices) {
+						if (advice instanceof org.wso2.balana.xacml3.Advice) {
+							UserDetail userDeatil = new UserDetail();
+
+							List<AttributeAssignment> assignments = ((org.wso2.balana.xacml3.Advice) advice)
+									.getAssignments();
+							for (AttributeAssignment assignment : assignments) {
+								switch (assignment.getAttributeId().toString()) {
+								case "userId":
+									userDeatil.setUserProfileId(assignment
+											.getContent());
+									break;
+								case "userfullName":
+									userDeatil.setFullName(assignment
+											.getContent());
+									break;
+								case "userName":
+									userDeatil.setUserName(assignment
+											.getContent());
+									break;
+								case "userEmail":
+									userDeatil
+											.setEmail(assignment.getContent());
+									break;
+								case "userCollege":
+									userDeatil.setCollege(assignment
+											.getContent());
+									break;
+								case "userDepartment":
+									userDeatil.setDepartment(assignment
+											.getContent());
+									break;
+								case "userPositionType":
+									userDeatil.setPositionType(assignment
+											.getContent());
+									break;
+								case "userPositionTitle":
+									userDeatil.setPositionTitle(assignment
+											.getContent());
+									break;
+								default:
+									break;
+								}
+							}
+							userDetails.add(userDeatil);
+						}
+					}
+				}
+			}
+			Collections.sort(userDetails);
+			return Response
+					.status(Response.Status.OK)
+					.entity(mapper.setDateFormat(formatter)
+							.writerWithDefaultPrettyPrinter()
+							.writeValueAsString(userDetails)).build();
 		} catch (Exception e) {
 			log.error(
 					"Could not find User Detail for supplied Action of a User error e=",

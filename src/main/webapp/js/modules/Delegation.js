@@ -363,27 +363,8 @@ $(function() {
 		},
 
 		GetDelegableUsers : function() {
-			var attributeArray = [];
-
-			var currentPositionTitle = GPMS.utils.GetUserPositionTitle();
-			var currentDepartment = GPMS.utils.GetUserDepartment();
-
-			attributeArray.push({
-				attributeType : "Subject",
-				attributeName : "position.title",
-				attributeValue : currentPositionTitle
-			});
-
-			attributeArray.push({
-				attributeType : "Subject",
-				attributeName : "department",
-				attributeValue : currentDepartment
-			});
-
-			this.config.url = this.config.baseURL
-					+ "GetDelegableUsersForAction";
+			this.config.url = this.config.baseURL + "GetDelegableUsersForAUser";
 			this.config.data = JSON2.stringify({
-				policyInfo : attributeArray,
 				gpmsCommonObj : gpmsCommonObj()
 			});
 			this.config.ajaxCallMode = 1;

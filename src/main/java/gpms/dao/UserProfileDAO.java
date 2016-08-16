@@ -418,7 +418,8 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 		return users;
 	}
 
-	public List<UserDetail> findAllUsersForDelegation(String action)
+	public List<UserDetail> findAllUsersForDelegation(ObjectId id,
+			String userCollege, String userDepartment)
 			throws UnknownHostException {
 		Datastore ds = getDatastore();
 		List<UserDetail> users = new ArrayList<UserDetail>();
@@ -433,7 +434,12 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 
 		// TODO refine this query to get only new not existing users with
 		//
-		profileQuery.and(profileQuery.criteria("deleted").equal(false),
+		profileQuery.and(
+				profileQuery.criteria("_id").notEqual(id),
+				profileQuery.criteria("deleted").equal(false),
+				profileQuery.criteria("details.college").contains(userCollege),
+				profileQuery.criteria("details.department").contains(
+						userDepartment),
 				profileQuery.criteria("details.position type")
 						.in(positionTypes));
 
@@ -441,8 +447,7 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 
 		for (UserProfile userProfile : userProfiles) {
 			for (PositionDetails userPos : userProfile.getDetails()) {
-				if (!isAlreadyDelegatee(userProfile.getId().toString(),
-						userPos, action)) {
+				if (!isAlreadyDelegatee(userProfile.getId().toString(), userPos)) {
 
 					UserDetail userDetail = new UserDetail();
 
@@ -466,12 +471,11 @@ public class UserProfileDAO extends BasicDAO<UserProfile, String> {
 	}
 
 	private boolean isAlreadyDelegatee(String delegateeId,
-			PositionDetails posDetails, String action) {
+			PositionDetails posDetails) {
 		long delegationCount = ds.createQuery(Delegation.class)
-				.field("actions").contains(action).field("revoked")
-				.equal(false).field("delegatee user id").equal(delegateeId)
-				.field("delegatee college").equal(posDetails.getCollege())
-				.field("delegatee department")
+				.field("revoked").equal(false).field("delegatee user id")
+				.equal(delegateeId).field("delegatee college")
+				.equal(posDetails.getCollege()).field("delegatee department")
 				.equal(posDetails.getDepartment())
 				.field("delegatee position type")
 				.equal(posDetails.getPositionType())

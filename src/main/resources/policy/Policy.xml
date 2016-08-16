@@ -7408,13 +7408,6 @@
                         </Apply>
                         <AttributeSelector MustBePresent="false" ContextSelectorId="urn:oasis:names:tc:xacml:3.0:content-selector" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" Path="//ak:positiontitle/text()" DataType="http://www.w3.org/2001/XMLSchema#string"/>
                     </Apply>
-                    <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-at-least-one-member-of">
-                        <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-bag">
-                            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Approve</AttributeValue>
-                            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Disapprove</AttributeValue>
-                        </Apply>
-                        <AttributeDesignator MustBePresent="false" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action" AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action" DataType="http://www.w3.org/2001/XMLSchema#string"/>
-                    </Apply>
                 </Apply>
             </Condition>
             <AdviceExpressions>
@@ -7523,13 +7516,6 @@
                             <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Dean</AttributeValue>
                         </Apply>
                         <AttributeSelector MustBePresent="false" ContextSelectorId="urn:oasis:names:tc:xacml:3.0:content-selector" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" Path="//ak:positiontitle/text()" DataType="http://www.w3.org/2001/XMLSchema#string"/>
-                    </Apply>
-                    <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-at-least-one-member-of">
-                        <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-bag">
-                            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Approve</AttributeValue>
-                            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Disapprove</AttributeValue>
-                        </Apply>
-                        <AttributeDesignator MustBePresent="false" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action" AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action" DataType="http://www.w3.org/2001/XMLSchema#string"/>
                     </Apply>
                 </Apply>
             </Condition>
