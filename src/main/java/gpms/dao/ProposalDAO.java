@@ -1997,6 +1997,26 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 									signatures.add(signDeptChair);
 								}
 								departmentChairAlreadySigned = true;
+							} else if (signature.getPositionTitle().equals(
+									"Department Chair")
+									&& proposal.getChairApproval() == ApprovalType.APPROVED) {
+								signDeptChair.setUserProfileId(signature
+										.getUserProfileId());
+								signDeptChair.setFullName(signature
+										.getFullName());
+								signDeptChair.setSignature(signature
+										.getSignature());
+								signDeptChair.setSignedDate(signature
+										.getSignedDate());
+								signDeptChair.setNote(signature.getNote());
+								signDeptChair.setPositionTitle(signature
+										.getPositionTitle());
+								signDeptChair.setDelegated(signature
+										.isDelegated());
+								if (!signatures.contains(signDeptChair)) {
+									signatures.add(signDeptChair);
+								}
+								departmentChairAlreadySigned = true;
 							}
 						}
 
@@ -2123,6 +2143,26 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 									signatures.add(signBusinessMgr);
 								}
 								businessManagerAlreadySigned = true;
+							} else if (signature.getPositionTitle().equals(
+									"Business Manager")
+									&& proposal.getBusinessManagerApproval() == ApprovalType.APPROVED) {
+								signBusinessMgr.setUserProfileId(signature
+										.getUserProfileId());
+								signBusinessMgr.setFullName(signature
+										.getFullName());
+								signBusinessMgr.setSignature(signature
+										.getSignature());
+								signBusinessMgr.setSignedDate(signature
+										.getSignedDate());
+								signBusinessMgr.setNote(signature.getNote());
+								signBusinessMgr.setPositionTitle(signature
+										.getPositionTitle());
+								signBusinessMgr.setDelegated(signature
+										.isDelegated());
+								if (!signatures.contains(signBusinessMgr)) {
+									signatures.add(signBusinessMgr);
+								}
+								businessManagerAlreadySigned = true;
 							}
 						}
 
@@ -2222,6 +2262,23 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 									.equals(signature.getUserProfileId())
 									&& signature.getPositionTitle().equals(
 											"Dean")) {
+								signDean.setUserProfileId(signature
+										.getUserProfileId());
+								signDean.setFullName(signature.getFullName());
+								signDean.setSignature(signature.getSignature());
+								signDean.setSignedDate(signature
+										.getSignedDate());
+								signDean.setNote(signature.getNote());
+								signDean.setPositionTitle(signature
+										.getPositionTitle());
+								signDean.setDelegated(signature.isDelegated());
+								if (!signatures.contains(signDean)) {
+									signatures.add(signDean);
+								}
+								deanAlreadySigned = true;
+							} else if (signature.getPositionTitle().equals(
+									"Dean")
+									&& proposal.getDeanApproval() == ApprovalType.APPROVED) {
 								signDean.setUserProfileId(signature
 										.getUserProfileId());
 								signDean.setFullName(signature.getFullName());
