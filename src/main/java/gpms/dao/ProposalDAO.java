@@ -2036,6 +2036,7 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 								boolean delegatedDepartmentChairAlreadySigned = false;
 
 								for (SignatureInfo delegateeInfo : delegatedChair) {
+									delegatedDepartmentChairAlreadySigned = false;
 									for (SignatureInfo signature : proposalSignatures) {
 										if (delegateeInfo.getUserProfileId()
 												.equals(signature
@@ -2100,6 +2101,7 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 
 						boolean businessManagerAlreadySigned = false;
 						for (SignatureInfo signature : proposalSignatures) {
+							businessManagerAlreadySigned = false;
 							if (user.getId().toString()
 									.equals(signature.getUserProfileId())
 									&& signature.getPositionTitle().equals(
@@ -2215,6 +2217,7 @@ public class ProposalDAO extends BasicDAO<Proposal, String> {
 
 						boolean deanAlreadySigned = false;
 						for (SignatureInfo signature : proposalSignatures) {
+							deanAlreadySigned = false;
 							if (user.getId().toString()
 									.equals(signature.getUserProfileId())
 									&& signature.getPositionTitle().equals(
