@@ -926,6 +926,34 @@ public class WriteXMLUtil {
 		return conditionApply;
 	}
 
+	@SuppressWarnings("unused")
+	private static Element getDateTimeCondition(String functionId,
+			String compareFunctionId, String attrSelectorCategory,
+			String attrSelectorDataType, String attrDesignatorAttrId,
+			String attrValue) {
+
+		Element conditionApply = new Element("Apply")
+				.setAttribute("FunctionId", functionId)
+				.addContent(
+						new Element("Apply").setAttribute("FunctionId",
+								compareFunctionId)
+								.addContent(
+										new Element("AttributeDesignator")
+												.setAttribute("Category",
+														attrSelectorCategory)
+												.setAttribute("DataType",
+														attrSelectorDataType)
+												.setAttribute("AttributeId",
+														attrDesignatorAttrId)
+												.setAttribute("MustBePresent",
+														"false")))
+				.addContent(
+						new Element("AttributeValue").setAttribute("DataType",
+								attrSelectorDataType).setText(attrValue));
+
+		return conditionApply;
+	}
+
 	private static Element getConditionActionBag(String functionId,
 			String compareFunctionId, String attrDesignatorCategory,
 			String attrDesignatorAttrId, String attrDataType,
