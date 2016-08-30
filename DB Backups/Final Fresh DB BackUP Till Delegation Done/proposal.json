@@ -1,7 +1,7 @@
 { 
-    "_id" : ObjectId("57a758bf91ed7339ec7fe2cb"), 
-    "date created" : ISODate("2016-08-07T15:50:22.321+0000"), 
-    "date submitted" : ISODate("2016-08-07T15:52:21.277+0000"), 
+    "_id" : ObjectId("57c5d14965dbb306c2e3fa09"), 
+    "date created" : ISODate("2016-08-30T18:32:41.406+0000"), 
+    "date submitted" : ISODate("2016-08-30T18:32:47.988+0000"), 
     "proposal status" : [
         "WAITINGFORCHAIRAPPROVAL"
     ], 
@@ -29,7 +29,7 @@
         }
     }, 
     "project info" : {
-        "project title" : "Proposal 1", 
+        "project title" : "Project 1", 
         "project type" : {
             "research-basic" : false, 
             "research-applied" : true, 
@@ -43,10 +43,10 @@
             "continuation" : false, 
             "supplement" : false
         }, 
-        "due date" : ISODate("2016-08-31T06:00:00.000+0000"), 
+        "due date" : ISODate("2020-08-26T06:00:00.000+0000"), 
         "project period" : {
-            "from" : ISODate("2016-08-01T06:00:00.000+0000"), 
-            "to" : ISODate("2016-08-30T06:00:00.000+0000")
+            "from" : ISODate("2016-08-02T06:00:00.000+0000"), 
+            "to" : ISODate("2020-08-31T06:00:00.000+0000")
         }, 
         "location of project" : {
             "off-campus" : false, 
@@ -77,8 +77,8 @@
         "disclosure form change" : false
     }, 
     "compliance info" : {
-        "involve use of human subjects" : false, 
-        "irb" : "", 
+        "involve use of human subjects" : true, 
+        "irb" : "1", 
         "irb pending status" : false, 
         "involve use of vertebrate animals" : false, 
         "iacuc" : "", 
@@ -88,22 +88,22 @@
         "ibc pending status" : false, 
         "involve environmental health and safety concerns" : false
     }, 
-    "irb approval required" : false, 
+    "irb approval required" : true, 
     "additional info" : {
         "anticipates foreign nationals payment" : false, 
         "anticipates course release time" : false, 
         "related to center for advanced energy studies" : false
     }, 
     "collaboration info" : {
-        "involve non-funded collaborations" : false, 
-        "involve collaborators" : ""
+        "involve non-funded collaborations" : true, 
+        "involve collaborators" : "NSU"
     }, 
     "proprietary/confidential info" : {
-        "contain confidential information" : false, 
-        "on pages" : "", 
-        "patentable" : false, 
-        "copyrightable" : false, 
-        "involve intellectual property" : false
+        "contain confidential information" : true, 
+        "on pages" : "1, 100", 
+        "patentable" : true, 
+        "copyrightable" : true, 
+        "involve intellectual property" : true
     }, 
     "osp section info" : {
         "list agency" : "", 
@@ -176,10 +176,19 @@
             "full name" : "Milson Munakami", 
             "signature" : "Milson", 
             "position title" : "PI", 
-            "signed date" : ISODate("2016-08-07T15:48:34.000+0000"), 
+            "signed date" : ISODate("2016-08-30T18:32:37.000+0000"), 
             "note" : "Test", 
             "delegated" : false, 
             "delegated as" : ""
+        }
+    ], 
+    "appendices" : [
+        {
+            "filename" : "Xfsv1m5a_2016_08_30.jpg", 
+            "extension" : "jpg", 
+            "filepath" : "/uploads/Xfsv1m5a_2016_08_30.jpg", 
+            "filesize" : NumberLong(36276), 
+            "title" : "test"
         }
     ], 
     "version" : NumberLong(2), 
@@ -187,12 +196,12 @@
         {
             "author info" : DBRef("userprofile", ObjectId("57489f2565dbb306cef6702c")), 
             "action" : "Created proposal by milson", 
-            "activity on" : ISODate("2016-08-07T15:50:23.557+0000")
+            "activity on" : ISODate("2016-08-30T18:32:41.527+0000")
         }, 
         {
             "author info" : DBRef("userprofile", ObjectId("57489f2565dbb306cef6702c")), 
             "action" : "Updated proposal by milson", 
-            "activity on" : ISODate("2016-08-07T15:52:21.279+0000")
+            "activity on" : ISODate("2016-08-30T18:32:47.990+0000")
         }
     ]
 }

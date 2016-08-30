@@ -1,0 +1,456 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Policy xmlns:xacml="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" PolicyId="Dynamic-Delegation-Policy-Rules-For-Edmund-O.-Schweitzer-III-of-Computer-Science" RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable" Version="1.0" xsi:schemaLocation="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17 http://docs.oasis-open.org/xacml/3.0/xacml-core-v3-schema-wd-17.xsd" xmlns="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17">
+  <Description>Edmund O. Schweitzer III of Computer Science with position title Associate Chair is delegated to Approve by Computer Science Department Chair</Description>
+  <PolicyDefaults>
+    <XPathVersion>http://www.w3.org/TR/1999/REC-xpath-19991116</XPathVersion>
+  </PolicyDefaults>
+  <Target/>
+  <Rule Effect="Permit" RuleId="DelegatedEditProposalSectionRuleFor-Associate-Chair-DelegatedBy-Computer-Science-Department-Chair">
+    <Description>Edmund O. Schweitzer III of Computer Science with position title Associate Chair can "Edit" "Certification/Signatures" when Delegated by Computer Science Department Chair with position title "Department Chair" and ApprovedByDepartmentChair = READYFORAPPROVAL</Description>
+    <Target>
+      <AnyOf>
+        <AllOf>
+          <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Associate Chair</AttributeValue>
+            <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title" Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+          </Match>
+          <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Certification/Signatures</AttributeValue>
+            <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:proposal.section" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+          </Match>
+          <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+            <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDepartmentChair" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+          </Match>
+          <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Edit</AttributeValue>
+            <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+          </Match>
+        </AllOf>
+      </AnyOf>
+    </Target>
+  </Rule>
+  <Rule Effect="Permit" RuleId="DelegatedApproveProposalRule1For-Associate-Chair-DelegatedBy-Computer-Science-Department-Chair">
+    <Description>Edmund O. Schweitzer III of Computer Science with position title Associate Chair can "Approve" a "Whole Proposal" when Delegated by Computer Science Department Chair with position title "Department Chair" and ApprovedByDepartmentChair = READYFORAPPROVAL and where condition check all department chairs are not approved.</Description>
+    <Target>
+      <AnyOf>
+        <AllOf>
+          <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Associate Chair</AttributeValue>
+            <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title" Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+          </Match>
+          <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Whole Proposal</AttributeValue>
+            <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:proposal.section" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+          </Match>
+          <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+            <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDepartmentChair" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+          </Match>
+          <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Approve</AttributeValue>
+            <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+          </Match>
+        </AllOf>
+      </AnyOf>
+    </Target>
+    <Condition>
+      <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:and">
+        <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:boolean-equal">
+          <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:boolean-one-and-only">
+            <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="http://www.w3.org/2001/XMLSchema#boolean" MustBePresent="false" Path="//ak:signedByAllChairs/text()"/>
+          </Apply>
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#boolean">false</AttributeValue>
+        </Apply>
+        <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+          <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
+            <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" Path="//ak:authorprofile/ak:userid/text()"/>
+          </Apply>
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">57505b9e65dbb34d173fc701</AttributeValue>
+        </Apply>
+        <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:dateTime-greater-than-or-equal">
+          <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:dateTime-one-and-only">
+            <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="http://www.w3.org/2001/XMLSchema#dateTime" MustBePresent="false" Path="//ak:currentdatetime/text()"/>
+          </Apply>
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#dateTime">2016-08-02T00:00:00-06:00</AttributeValue>
+        </Apply>
+        <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:dateTime-less-than-or-equal">
+          <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:dateTime-one-and-only">
+            <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="http://www.w3.org/2001/XMLSchema#dateTime" MustBePresent="false" Path="//ak:currentdatetime/text()"/>
+          </Apply>
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#dateTime">2016-08-24T00:00:00-06:00</AttributeValue>
+        </Apply>
+      </Apply>
+    </Condition>
+    <ObligationExpressions>
+      <ObligationExpression FulfillOn="Permit" ObligationId="sendAlert">
+        <AttributeAssignmentExpression AttributeId="obligationType">
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">preobligation</AttributeValue>
+        </AttributeAssignmentExpression>
+        <AttributeAssignmentExpression AttributeId="signedByCurrentUser">
+          <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" Path="//ak:signedByCurrentUser/text()"/>
+        </AttributeAssignmentExpression>
+        <AttributeAssignmentExpression AttributeId="alertMessage">
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">You need to sign the proposal first!</AttributeValue>
+        </AttributeAssignmentExpression>
+      </ObligationExpression>
+      <ObligationExpression FulfillOn="Permit" ObligationId="sendEmail">
+        <AttributeAssignmentExpression AttributeId="obligationType">
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">postobligation</AttributeValue>
+        </AttributeAssignmentExpression>
+        <AttributeAssignmentExpression AttributeId="emailBody">
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Hello User,&amp;amp;lt;br/&amp;amp;gt;&amp;amp;lt;br/&amp;amp;gt;The proposal has been approved by Department Chair. Now it is waiting for another Department Chair approval. &amp;amp;lt;br/&amp;amp;gt;&amp;amp;lt;br/&amp;amp;gt;Thank you, &amp;amp;lt;br/&amp;amp;gt; GPMS Team</AttributeValue>
+        </AttributeAssignmentExpression>
+        <AttributeAssignmentExpression AttributeId="emailSubject">
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Your proposal has been approved by: </AttributeValue>
+        </AttributeAssignmentExpression>
+        <AttributeAssignmentExpression AttributeId="authorName">
+          <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" Path="//ak:authorprofile/ak:fullname/text()"/>
+        </AttributeAssignmentExpression>
+        <AttributeAssignmentExpression AttributeId="piEmail">
+          <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" Path="//ak:pi/ak:workemail/text()"/>
+        </AttributeAssignmentExpression>
+        <AttributeAssignmentExpression AttributeId="copisEmail">
+          <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" Path="//ak:copi/ak:workemail/text()"/>
+        </AttributeAssignmentExpression>
+        <AttributeAssignmentExpression AttributeId="seniorsEmail">
+          <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" Path="//ak:senior/ak:workemail/text()"/>
+        </AttributeAssignmentExpression>
+        <AttributeAssignmentExpression AttributeId="chairsEmail">
+          <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" Path="//ak:chair/ak:workemail/text()"/>
+        </AttributeAssignmentExpression>
+        <AttributeAssignmentExpression AttributeId="managersEmail">
+          <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" Path="//ak:manager/ak:workemail/text()"/>
+        </AttributeAssignmentExpression>
+        <AttributeAssignmentExpression AttributeId="irbsEmail">
+          <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" Path="//ak:irb/ak:workemail/text()"/>
+        </AttributeAssignmentExpression>
+      </ObligationExpression>
+    </ObligationExpressions>
+  </Rule>
+  <Rule Effect="Permit" RuleId="DelegatedApproveProposalRule2For-Associate-Chair-DelegatedBy-Computer-Science-Department-Chair">
+    <Description>Edmund O. Schweitzer III of Computer Science with position title Associate Chair can "Approve" a "Whole Proposal" when Delegated by Computer Science Department Chair with position title "Department Chair" and ApprovedByDepartmentChair = READYFORAPPROVAL and where condition check all department chairs are not approved and no IRB is required.</Description>
+    <Target>
+      <AnyOf>
+        <AllOf>
+          <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Associate Chair</AttributeValue>
+            <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title" Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+          </Match>
+          <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Whole Proposal</AttributeValue>
+            <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:proposal.section" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+          </Match>
+          <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+            <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDepartmentChair" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+          </Match>
+          <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Approve</AttributeValue>
+            <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+          </Match>
+        </AllOf>
+      </AnyOf>
+    </Target>
+    <Condition>
+      <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:and">
+        <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:boolean-equal">
+          <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:boolean-one-and-only">
+            <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="http://www.w3.org/2001/XMLSchema#boolean" MustBePresent="false" Path="//ak:signedByAllChairs/text()"/>
+          </Apply>
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#boolean">true</AttributeValue>
+        </Apply>
+        <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:boolean-equal">
+          <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:boolean-one-and-only">
+            <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="http://www.w3.org/2001/XMLSchema#boolean" MustBePresent="false" Path="//ak:irbApprovalRequired/text()"/>
+          </Apply>
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#boolean">false</AttributeValue>
+        </Apply>
+        <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+          <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
+            <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" Path="//ak:authorprofile/ak:userid/text()"/>
+          </Apply>
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">57505b9e65dbb34d173fc701</AttributeValue>
+        </Apply>
+        <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:dateTime-greater-than-or-equal">
+          <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:dateTime-one-and-only">
+            <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="http://www.w3.org/2001/XMLSchema#dateTime" MustBePresent="false" Path="//ak:currentdatetime/text()"/>
+          </Apply>
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#dateTime">2016-08-02T00:00:00-06:00</AttributeValue>
+        </Apply>
+        <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:dateTime-less-than-or-equal">
+          <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:dateTime-one-and-only">
+            <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="http://www.w3.org/2001/XMLSchema#dateTime" MustBePresent="false" Path="//ak:currentdatetime/text()"/>
+          </Apply>
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#dateTime">2016-08-24T00:00:00-06:00</AttributeValue>
+        </Apply>
+      </Apply>
+    </Condition>
+    <ObligationExpressions>
+      <ObligationExpression FulfillOn="Permit" ObligationId="sendAlert">
+        <AttributeAssignmentExpression AttributeId="obligationType">
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">preobligation</AttributeValue>
+        </AttributeAssignmentExpression>
+        <AttributeAssignmentExpression AttributeId="signedByCurrentUser">
+          <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" Path="//ak:signedByCurrentUser/text()"/>
+        </AttributeAssignmentExpression>
+        <AttributeAssignmentExpression AttributeId="alertMessage">
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">You need to sign the proposal first!</AttributeValue>
+        </AttributeAssignmentExpression>
+      </ObligationExpression>
+      <ObligationExpression FulfillOn="Permit" ObligationId="sendEmail">
+        <AttributeAssignmentExpression AttributeId="obligationType">
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">postobligation</AttributeValue>
+        </AttributeAssignmentExpression>
+        <AttributeAssignmentExpression AttributeId="emailBody">
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Hello User,&amp;lt;br/&amp;gt;&amp;lt;br/&amp;gt;The proposal has been approved by all Department Chairs.&amp;lt;br/&amp;gt;&amp;lt;br/&amp;gt;Thank you, &amp;lt;br/&amp;gt; GPMS Team</AttributeValue>
+        </AttributeAssignmentExpression>
+        <AttributeAssignmentExpression AttributeId="emailSubject">
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Your proposal has been approved by: </AttributeValue>
+        </AttributeAssignmentExpression>
+        <AttributeAssignmentExpression AttributeId="authorName">
+          <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" Path="//ak:authorprofile/ak:fullname/text()"/>
+        </AttributeAssignmentExpression>
+        <AttributeAssignmentExpression AttributeId="piEmail">
+          <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" Path="//ak:pi/ak:workemail/text()"/>
+        </AttributeAssignmentExpression>
+        <AttributeAssignmentExpression AttributeId="copisEmail">
+          <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" Path="//ak:copi/ak:workemail/text()"/>
+        </AttributeAssignmentExpression>
+        <AttributeAssignmentExpression AttributeId="seniorsEmail">
+          <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" Path="//ak:senior/ak:workemail/text()"/>
+        </AttributeAssignmentExpression>
+        <AttributeAssignmentExpression AttributeId="chairsEmail">
+          <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" Path="//ak:chair/ak:workemail/text()"/>
+        </AttributeAssignmentExpression>
+        <AttributeAssignmentExpression AttributeId="managersEmail">
+          <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" Path="//ak:manager/ak:workemail/text()"/>
+        </AttributeAssignmentExpression>
+        <AttributeAssignmentExpression AttributeId="irbsEmail">
+          <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" Path="//ak:irb/ak:workemail/text()"/>
+        </AttributeAssignmentExpression>
+      </ObligationExpression>
+    </ObligationExpressions>
+  </Rule>
+  <Rule Effect="Permit" RuleId="DelegatedApproveProposalRule3For-Associate-Chair-DelegatedBy-Computer-Science-Department-Chair">
+    <Description>Edmund O. Schweitzer III of Computer Science with position title Associate Chair can "Approve" a "Whole Proposal" when Delegated by Computer Science Department Chair with position title "Department Chair" ApprovedByDepartmentChair = READYFORAPPROVAL and where condition check all department chairs are approved and IRB is required.</Description>
+    <Target>
+      <AnyOf>
+        <AllOf>
+          <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Associate Chair</AttributeValue>
+            <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title" Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+          </Match>
+          <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Whole Proposal</AttributeValue>
+            <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:proposal.section" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+          </Match>
+          <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+            <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:ApprovedByDepartmentChair" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+          </Match>
+          <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Approve</AttributeValue>
+            <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+          </Match>
+        </AllOf>
+      </AnyOf>
+    </Target>
+    <Condition>
+      <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:and">
+        <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:boolean-equal">
+          <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:boolean-one-and-only">
+            <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="http://www.w3.org/2001/XMLSchema#boolean" MustBePresent="false" Path="//ak:signedByAllChairs/text()"/>
+          </Apply>
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#boolean">true</AttributeValue>
+        </Apply>
+        <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:boolean-equal">
+          <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:boolean-one-and-only">
+            <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="http://www.w3.org/2001/XMLSchema#boolean" MustBePresent="false" Path="//ak:irbApprovalRequired/text()"/>
+          </Apply>
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#boolean">true</AttributeValue>
+        </Apply>
+        <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+          <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
+            <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" Path="//ak:authorprofile/ak:userid/text()"/>
+          </Apply>
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">57505b9e65dbb34d173fc701</AttributeValue>
+        </Apply>
+        <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:dateTime-greater-than-or-equal">
+          <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:dateTime-one-and-only">
+            <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="http://www.w3.org/2001/XMLSchema#dateTime" MustBePresent="false" Path="//ak:currentdatetime/text()"/>
+          </Apply>
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#dateTime">2016-08-02T00:00:00-06:00</AttributeValue>
+        </Apply>
+        <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:dateTime-less-than-or-equal">
+          <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:dateTime-one-and-only">
+            <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="http://www.w3.org/2001/XMLSchema#dateTime" MustBePresent="false" Path="//ak:currentdatetime/text()"/>
+          </Apply>
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#dateTime">2016-08-24T00:00:00-06:00</AttributeValue>
+        </Apply>
+      </Apply>
+    </Condition>
+    <ObligationExpressions>
+      <ObligationExpression FulfillOn="Permit" ObligationId="sendAlert">
+        <AttributeAssignmentExpression AttributeId="obligationType">
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">preobligation</AttributeValue>
+        </AttributeAssignmentExpression>
+        <AttributeAssignmentExpression AttributeId="signedByCurrentUser">
+          <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" Path="//ak:signedByCurrentUser/text()"/>
+        </AttributeAssignmentExpression>
+        <AttributeAssignmentExpression AttributeId="alertMessage">
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">You need to sign the proposal first!</AttributeValue>
+        </AttributeAssignmentExpression>
+      </ObligationExpression>
+      <ObligationExpression FulfillOn="Permit" ObligationId="sendEmail">
+        <AttributeAssignmentExpression AttributeId="obligationType">
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">postobligation</AttributeValue>
+        </AttributeAssignmentExpression>
+        <AttributeAssignmentExpression AttributeId="emailBody">
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Hello User,&amp;lt;br/&amp;gt;&amp;lt;br/&amp;gt;The proposal has been approved by all Department Chairs.&amp;lt;br/&amp;gt;&amp;lt;br/&amp;gt;Thank you, &amp;lt;br/&amp;gt; GPMS Team</AttributeValue>
+        </AttributeAssignmentExpression>
+        <AttributeAssignmentExpression AttributeId="emailSubject">
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Your proposal has been approved by: </AttributeValue>
+        </AttributeAssignmentExpression>
+        <AttributeAssignmentExpression AttributeId="authorName">
+          <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" Path="//ak:authorprofile/ak:fullname/text()"/>
+        </AttributeAssignmentExpression>
+        <AttributeAssignmentExpression AttributeId="piEmail">
+          <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" Path="//ak:pi/ak:workemail/text()"/>
+        </AttributeAssignmentExpression>
+        <AttributeAssignmentExpression AttributeId="copisEmail">
+          <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" Path="//ak:copi/ak:workemail/text()"/>
+        </AttributeAssignmentExpression>
+        <AttributeAssignmentExpression AttributeId="seniorsEmail">
+          <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" Path="//ak:senior/ak:workemail/text()"/>
+        </AttributeAssignmentExpression>
+        <AttributeAssignmentExpression AttributeId="chairsEmail">
+          <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" Path="//ak:chair/ak:workemail/text()"/>
+        </AttributeAssignmentExpression>
+        <AttributeAssignmentExpression AttributeId="managersEmail">
+          <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" Path="//ak:manager/ak:workemail/text()"/>
+        </AttributeAssignmentExpression>
+        <AttributeAssignmentExpression AttributeId="irbsEmail">
+          <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" Path="//ak:irb/ak:workemail/text()"/>
+        </AttributeAssignmentExpression>
+      </ObligationExpression>
+    </ObligationExpressions>
+  </Rule>
+  <Rule Effect="Permit" RuleId="Revoke-b07xmh4w_2016_08_11.xml-by-Department-Chair">
+    <Description>"Department Chair" can "Revoke" delegation from Edmund O. Schweitzer III of Computer Science with position title Associate Chair</Description>
+    <Target>
+      <AnyOf>
+        <AllOf>
+          <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Revoke</AttributeValue>
+            <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+          </Match>
+        </AllOf>
+      </AnyOf>
+    </Target>
+    <Condition>
+      <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:and">
+        <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+          <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
+            <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" Path="//ak:delegationid/text()"/>
+          </Apply>
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">57ad1ae4bcbb291b2076c213</AttributeValue>
+        </Apply>
+        <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+          <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
+            <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" Path="//ak:delegator/ak:id/text()"/>
+          </Apply>
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">5745f0f7bcbb29192ce0d405</AttributeValue>
+        </Apply>
+        <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+          <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
+            <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" Path="//ak:delegationfilename/text()"/>
+          </Apply>
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">b07xmh4w_2016_08_11.xml</AttributeValue>
+        </Apply>
+        <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:boolean-equal">
+          <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:boolean-one-and-only">
+            <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="http://www.w3.org/2001/XMLSchema#boolean" MustBePresent="false" Path="//ak:revoked/text()"/>
+          </Apply>
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#boolean">false</AttributeValue>
+        </Apply>
+      </Apply>
+    </Condition>
+    <ObligationExpressions>
+      <ObligationExpression FulfillOn="Permit" ObligationId="sendEmail">
+        <AttributeAssignmentExpression AttributeId="emailBody">
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Hello User,&amp;lt;br/&amp;gt;&amp;lt;br/&amp;gt;You have been revoked from your delegation. &amp;lt;br/&amp;gt;&amp;lt;br/&amp;gt;Thank you, &amp;lt;br/&amp;gt; GPMS Team</AttributeValue>
+        </AttributeAssignmentExpression>
+        <AttributeAssignmentExpression AttributeId="emailSubject">
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Your delegation is revoked by: </AttributeValue>
+        </AttributeAssignmentExpression>
+        <AttributeAssignmentExpression AttributeId="delegatorName">
+          <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" Path="//ak:delegator/ak:fullname/text()"/>
+        </AttributeAssignmentExpression>
+        <AttributeAssignmentExpression AttributeId="delegatorEmail">
+          <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" Path="//ak:delegator/ak:email/text()"/>
+        </AttributeAssignmentExpression>
+        <AttributeAssignmentExpression AttributeId="delegateeName">
+          <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" Path="//ak:delegatee/ak:fullname/text()"/>
+        </AttributeAssignmentExpression>
+        <AttributeAssignmentExpression AttributeId="delegateeEmail">
+          <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" Path="//ak:delegatee/ak:email/text()"/>
+        </AttributeAssignmentExpression>
+      </ObligationExpression>
+    </ObligationExpressions>
+  </Rule>
+  <Rule Effect="Permit" RuleId="ApproveShowForAssociate-Chair">
+    <Description>'Associate Chair' can see 'Approve' button when ApprovedByDepartmentChair = READYFORAPPROVAL</Description>
+    <Target>
+      <AnyOf>
+        <AllOf>
+          <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Associate Chair</AttributeValue>
+            <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title" Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+          </Match>
+          <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Approve</AttributeValue>
+            <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+          </Match>
+        </AllOf>
+      </AnyOf>
+    </Target>
+    <Condition>
+      <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:and">
+        <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+          <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
+            <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" Path="//ak:approvedbydepartmentchair/text()"/>
+          </Apply>
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+        </Apply>
+      </Apply>
+    </Condition>
+  </Rule>
+  <Rule Effect="Permit" RuleId="ApproveShowForAssociate-Chair">
+    <Description>'Associate Chair' can see 'Approve' button when ApprovedByDepartmentChair = READYFORAPPROVAL</Description>
+    <Target>
+      <AnyOf>
+        <AllOf>
+          <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Associate Chair</AttributeValue>
+            <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:subject:position.title" Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+          </Match>
+          <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Approve</AttributeValue>
+            <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+          </Match>
+        </AllOf>
+      </AnyOf>
+    </Target>
+    <Condition>
+      <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:and">
+        <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+          <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
+            <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" Path="//ak:approvedbydepartmentchair/text()"/>
+          </Apply>
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READYFORAPPROVAL</AttributeValue>
+        </Apply>
+      </Apply>
+    </Condition>
+  </Rule>
+</Policy>

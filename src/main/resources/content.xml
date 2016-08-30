@@ -1,0 +1,58 @@
+<Request 
+    xmlns="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17" ReturnPolicyIdList="false" CombinedDecision="false">
+    <Attributes Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject">
+        <Attribute IncludeInResult="false" AttributeId="urn:oasis:names:tc:xacml:1.0:subject:subject-id">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">asela@asela.com</AttributeValue>
+        </Attribute>
+    </Attributes>
+    <Attributes Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource">
+        <Content>
+            <ak:record 
+                xmlns:ak="http://akpower.org">
+                <ak:user>
+                    <ak:userid>578918b9bcbb29090c4278e7</ak:userid>
+                    <ak:fullname>Computer Science Associate Chair</ak:fullname>
+                    <ak:workemail>csassociatechair@gmail.com</ak:workemail>
+                    <ak:department>Computer Science</ak:department>
+                    <ak:positiontitle>Associate Chair</ak:positiontitle>
+                </ak:user>
+                <ak:user>
+                    <ak:userid>578918b9bcbb29090c4278e1</ak:userid>
+                    <ak:fullname>Computer Engineering Associate Chair</ak:fullname>
+                    <ak:workemail>ceassociatechair@gmail.com</ak:workemail>
+                    <ak:department>Computer Engineering</ak:department>
+                    <ak:positiontitle>Associate Chair</ak:positiontitle>
+                </ak:user>
+                <ak:user>
+                    <ak:userid>578918b9bcbb29090c4278e2</ak:userid>
+                    <ak:fullname>Computer Science Department Administrative Assistant</ak:fullname>
+                    <ak:workemail>csdeptadminasst@gmail.com</ak:workemail>
+                    <ak:department>Computer Science</ak:department>
+                    <ak:positiontitle>Department Administrative Assistant</ak:positiontitle>
+                </ak:user>
+                <ak:user>
+                    <ak:userid>578918b9bcbb29090c4278e3</ak:userid>
+                    <ak:fullname>Computer Science Dean</ak:fullname>
+                    <ak:workemail>csdean@gmail.com</ak:workemail>
+                    <ak:department>Computer Science</ak:department>
+                    <ak:positiontitle>Dean</ak:positiontitle>
+                </ak:user>
+                <ak:user>
+                    <ak:userid>578918b9bcbb29090c4278e4</ak:userid>
+                    <ak:fullname>Computer Science Associate Dean</ak:fullname>
+                    <ak:workemail>csassociatedean@gmail.com</ak:workemail>
+                    <ak:department>Computer Science</ak:department>
+                    <ak:positiontitle>Associate Dean</ak:positiontitle>
+                </ak:user>
+            </ak:record>
+        </Content>
+        <Attribute IncludeInResult="false" AttributeId="urn:oasis:names:tc:xacml:3.0:profile:multiple:content-selector">
+            <AttributeValue XPathCategory="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression">//ak:record//ak:patient</AttributeValue>
+        </Attribute>
+    </Attributes>
+    <Attributes Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action">
+        <Attribute IncludeInResult="false" AttributeId="urn:oasis:names:tc:xacml:1.0:action:action-id">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">read</AttributeValue>
+        </Attribute>
+    </Attributes>
+</Request>

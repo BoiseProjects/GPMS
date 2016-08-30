@@ -433,14 +433,25 @@
     ], 
     "user id" : DBRef("useraccount", ObjectId("5745eedcbcbb29192ce0d3d9")), 
     "deleted" : false, 
+    "is delegator" : false, 
+    "version" : NumberLong(3), 
     "audit log" : [
         {
             "author info" : DBRef("userprofile", ObjectId("5745ed6fbcbb29192ce0d3c9")), 
             "action" : "Created user account and profile of bmcomputerengineering1", 
             "activity on" : ISODate("2016-05-25T18:28:44.904+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("5745ed6fbcbb29192ce0d3c9")), 
+            "action" : "Updated user account and profile of bmcomputerengineering1", 
+            "activity on" : ISODate("2016-07-19T10:48:57.707+0000")
+        }, 
+        {
+            "author info" : DBRef("userprofile", ObjectId("5745ed6fbcbb29192ce0d3c9")), 
+            "action" : "Updated user account and profile of bmcomputerengineering1", 
+            "activity on" : ISODate("2016-07-27T21:57:49.452+0000")
         }
-    ], 
-    "version" : NumberLong(1)
+    ]
 }
 { 
     "_id" : ObjectId("5745ef7cbcbb29192ce0d3e4"), 
