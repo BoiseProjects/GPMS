@@ -1,0 +1,5 @@
+Concurrency: http://javabeat.net/executorservice-framework-in-java/
+https://gist.github.com/sanaulla123/3029344
+
+JWT AUthentication:  
+https://dzone.com/articles/api-security-ways-to-authenticate-and-authorize?edition=201745&utm_source=Spotlight&utm_medium=email&utm_campaign=integration%202016-08-25

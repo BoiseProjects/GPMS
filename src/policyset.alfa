@@ -1,0 +1,152 @@
+namespace policysetTest{
+	import Attributes.*
+	
+	obligation breakTheGlass = "com.axiomatics.examples.breakTheGlass"
+	obligation auditLog = "com.axiomatics.examples.auditLog"
+	
+	namespace user{
+		attribute role{
+			category = subjectCat
+			id = "com.axiomatics.examples.user.role"
+			type = string
+		}
+		attribute identifier{
+			category = subjectCat
+			id = "com.axiomatics.examples.user.identifier"
+			type = string
+		}
+	}
+	namespace patient{
+		attribute assignedDoctor{
+			category = resourceCat
+			id = "com.axiomatics.examples.user.assignedDoctor"
+			type = string
+		}
+		attribute primaryPhysician{
+	        category = resourceCat
+	        id = "urn:oasis:names:tc:xacml:1.0:resource:resource-id"
+	        type = string
+    	}
+	}
+	namespace record{
+		attribute identifier{
+			category = resourceCat
+			id = "com.axiomatics.examples.record.identifier"
+			type = string
+		}
+		attribute author{
+	        category = resourceCat
+	        id = "urn:oasis:names:tc:xacml:1.0:resource:resource-id"
+	        type = string
+	    }
+	}
+	attribute actionId{
+		category = actionCat
+		id = "com.axiomatics.examples.actionId"
+		type = string
+	}
+	attribute requestorId{
+        category = resourceCat
+        id = "urn:oasis:names:tc:xacml:1.0:resource:resource-id"
+        type = string
+    } 
+	attribute objectType{
+		category = resourceCat
+		id = "com.axiomatics.examples.objectType"
+		type = string
+	}
+	attribute isEmergency{
+		category = environmentCat
+		id = "com.axiomatics.examples.isEmergency"
+		type = boolean
+	}
+	attribute message{
+		category = environmentCat
+		id = "com.axiomatics.examples.message"
+		type = boolean
+	}
+	
+	policyset global{
+		apply firstApplicable
+		accessMedicalRecord
+		progressNotes
+	}
+	
+	/**
+	 * Control access to medical records
+	 */
+	policy accessMedicalRecord{
+		target clause actionId == "view" and objectType == "medical record"
+		apply firstApplicable
+		/**
+		 * Doctors can view medical records of patients they are assigned to
+		 */
+		rule allowRegularAccess{
+			target clause user.role == "doctor"
+			condition patient.assignedDoctor == user.identifier
+			permit
+		}
+		/**
+		 * Doctors can view any medical reason in the case of an emergency
+		 */
+		rule allowBreakTheGlassAccess{
+			target clause isEmergency == true
+			permit
+			on permit{
+				obligation auditLog{
+					message = "A doctor has gotten access to a medical record by breaking the glass"
+					user.identifier = user.identifier
+					record.identifier = record.identifier
+					currentDateTime = currentDateTime
+				}
+				
+			}
+		}
+		/**
+		 * Deny other accesses. If access is normally denied, tell doctors how
+		 * they can get access by "breaking the glass".
+		 */
+		rule denyAccess{
+			deny
+			on deny{
+				obligation breakTheGlass{
+					message = "You do not have access to this medical record. To be granted access, set the isEmergency flag to true."
+					record.identifier = record.identifier
+					currentDateTime = currentDateTime
+				}
+			}
+		}
+	}
+	
+	/*
+	 * Access Control Based on Category of Action
+	 * URL: http://wiki.hl7.org/index.php?title=Security_and_Privacy_Ontology_Use_Cases#Access_Control_Based_on_Category_of_Action
+	 * Access to progress notes
+	 */
+	policy progressNotes{
+		target clause objectType=="progress note"
+		apply firstApplicable
+		/*
+		 * A primary physician can create a patient's progress note
+		 */
+		rule createNote{
+			target clause user.role=="physician" and actionId=="create"	
+			condition patient.primaryPhysician==requestorId
+			permit
+		}
+		/*
+		 * A physician can update a patient's progress note he/she wrote themselves
+		 */
+		rule updateNote{
+			target clause user.role=="physician" and actionId=="update"
+			condition record.author==requestorId
+			permit
+		}
+		/*
+		 * Safety rule to explicitly deny access unless one of the matching rules above has been matched
+		 */
+		rule safetyHarness{
+			deny
+		}
+	}
+}

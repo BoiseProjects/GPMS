@@ -59,8 +59,14 @@ namespace stackoverflow{
         id = "urn:oasis:names:tc:xacml:1.0:action:action-id"
         type = string
     }
-
-    obligation displayAttributes = "obligation.displayAttributes"
+    
+    obligation displayAttributes = "obligation.displayAttributes"    
+//    obligation displayAttributes2 = "obligation.displayAttributes"
+//     obligation displayAttributes2 { 
+//				    obligations = "Invited to Work Request Policy - The user :{" 
+//				    notificationRecipient = stringConcatenate(stringOneAndOnly(subjectAttributes.redSerialNumber),stringOneAndOnly(subjectAttributes.employeeCountryCode))
+//				    debugMsg2 = "}, was invited to XYZ."
+//				}
 
     policy example{
         apply firstApplicable
@@ -72,7 +78,7 @@ namespace stackoverflow{
                     resourceId = resourceId
                     resourceType = resourceType
                     actionId = actionId
-                }
+                }               
             }
         }
     }
