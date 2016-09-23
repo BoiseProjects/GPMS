@@ -39,7 +39,7 @@ public class PIdeletesCoPI {
 		driver.findElement(By.id("user_password")).sendKeys("Nickman5030");
 		driver.findElement(By.id("user_email")).clear();
 		driver.findElement(By.id("user_email")).sendKeys(
-				"nicholaschapa@u.boisestate.edu");
+				"nicholas1234@gmail.com");
 		Thread.sleep(1000);
 		driver.findElement(By.name("commit")).click();
 		Thread.sleep(1000);

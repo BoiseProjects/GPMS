@@ -39,7 +39,7 @@ public class SuccessfullProposalSubmitionIRB_twoFaculty {
 		driver.get(baseUrl + "GPMS/");
 		driver.findElement(By.id("user_email")).clear();
 		driver.findElement(By.id("user_email")).sendKeys(
-				"nicholaschapa@u.boisestate.edu");
+				"nicholas1234@gmail.com");
 		driver.findElement(By.id("user_password")).clear();
 		driver.findElement(By.id("user_password")).sendKeys("Nickman5030");
 		Thread.sleep(1000);
@@ -333,7 +333,7 @@ public class SuccessfullProposalSubmitionIRB_twoFaculty {
 		driver.get(baseUrl + "GPMS/");
 		driver.findElement(By.id("user_email")).clear();
 		driver.findElement(By.id("user_email")).sendKeys(
-				"nicholaschapa@u.boisestate.edu");
+				"nicholas1234@gmail.com");
 		driver.findElement(By.id("user_password")).clear();
 		driver.findElement(By.id("user_password")).sendKeys("Nickman5030");
 		Thread.sleep(1000);

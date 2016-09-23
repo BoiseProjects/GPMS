@@ -677,7 +677,7 @@
             "signature" : "driver.get(baseUrl + \"GPMS/\"); \t\tdriver.findE", 
             "position title" : "Business Manager", 
             "signed date" : ISODate("2016-07-27T21:59:17.000+0000"), 
-            "note" : "driver.get(baseUrl + \"GPMS/\");\n\t\tdriver.findElement(By.id(\"user_email\")).clear();\n\t\tdriver.findElement(By.id(\"user_email\")).sendKeys(\n\t\t\t\t\"nicholaschapa@u.boisestate.edu\");\n\t\tdrive", 
+            "note" : "driver.get(baseUrl + \"GPMS/\");\n\t\tdriver.findElement(By.id(\"user_email\")).clear();\n\t\tdriver.findElement(By.id(\"user_email\")).sendKeys(\n\t\t\t\t\"nicholas1234@gmail.com\");\n\t\tdrive", 
             "delegated" : false, 
             "delegated as" : ""
         }, 

@@ -241,22 +241,22 @@
 { 
     "_id" : ObjectId("574f638565dbb34d17834b32"), 
     "username" : "liliana", 
-    "password" : "1000:4bfc82c420a89e21a4f1ac48c5cec29c54394af56a6bfd86:2b77992eb25bae475e28cd47b475b03c5a8e33da1946e477", 
+    "password" : "1000:ce03d882c1b26863ede2d6ba5a25741b067ab8fdb5c433d5:855e29be751a1438b4be2844538c0951882e29befabe1243", 
     "deleted" : false, 
     "active" : true, 
     "admin" : false, 
     "added on" : ISODate("2016-06-01T22:36:53.217+0000"), 
-    "version" : NumberLong(4)
+    "version" : NumberLong(3)
 }
 { 
     "_id" : ObjectId("574f7adb65dbb34d17834b56"), 
     "username" : "NickC", 
-    "password" : "1000:dd9b8bef1fe1b93e3f2700e502406951373407076ccad68c:542093dbe287fa50019a9d71248798590d0d71165c0a4ce8", 
+    "password" : "1000:8e4bb238606509cf079a039b97e30488233c46c09f982446:01d835359dba42a093569a86ff72b2d8a1fd5971ebd9b92b", 
     "deleted" : false, 
     "active" : true, 
     "admin" : false, 
     "added on" : ISODate("2016-06-02T00:16:27.383+0000"), 
-    "version" : NumberLong(4)
+    "version" : NumberLong(3)
 }
 { 
     "_id" : ObjectId("57505b2d65dbb34d173fc6f8"), 
