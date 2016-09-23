@@ -7083,7 +7083,40 @@
                 </Apply>
             </Condition>
         </Rule>
-        <Rule Effect="Permit" RuleId="DeleteButtonShowForCo-PI-Rule103">
+        <Rule Effect="Permit" RuleId="SaveButtonShowForCo-PI-Rule103">
+            <Description>"Co-PI" can see "Save" button when SubmittedByPI = NOTSUBMITTED and  DeletedByPI = NOTDELETED</Description>
+            <Target>
+                <AnyOf>
+                    <AllOf>
+                        <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Co-PI</AttributeValue>
+                            <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:subject:proposal.role" Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+                        </Match>
+                        <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+							<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Save</AttributeValue>
+							<AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:action:proposal.action" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+                        </Match> 
+                    </AllOf>
+                </AnyOf>
+            </Target>
+            <Condition>
+                <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:and">
+                    <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                        <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">NOTSUBMITTED</AttributeValue>
+                        <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
+                            <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" Path="//ak:submittedbypi/text()" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+                        </Apply>
+                    </Apply>
+                    <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                        <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">NOTDELETED</AttributeValue>
+                        <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
+                            <AttributeSelector Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" Path="//ak:deletedbypi/text()" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false"/>
+                        </Apply>
+                    </Apply>
+                </Apply>
+            </Condition>
+        </Rule>
+		<Rule Effect="Permit" RuleId="DeleteButtonShowForUniversityResearchDirector-Rule104">
             <Description>"University Research Director" can see "Delete" button when ApprovedByUniversityResearchDirector = READYFORAPPROVAL and DeletedByUniversityResearchDirector = NOTDELETED</Description>
             <Target>
                 <AnyOf>
@@ -7116,7 +7149,7 @@
                 </Apply>
             </Condition>
         </Rule>
-        <Rule Effect="Permit" RuleId="WithdrawButtonShowForUniversityResearchAdministrator-Rule104">
+        <Rule Effect="Permit" RuleId="WithdrawButtonShowForUniversityResearchAdministrator-Rule105">
             <Description>"University Research Administrator" can see "Withdraw" button when ApprovedByUniversityResearchAdministrator = READYFORAPPROVAL and WithdrawnByUniversityResearchAdministrator = NOTWITHDRAWN</Description>
             <Target>
                 <AnyOf>
@@ -7149,7 +7182,7 @@
                 </Apply>
             </Condition>
         </Rule>
-        <Rule Effect="Permit" RuleId="ApproveDisapproveButtonShowForDepartmentChair-Rule105">
+        <Rule Effect="Permit" RuleId="ApproveDisapproveButtonShowForDepartmentChair-Rule106">
             <Description>"Department Chair" can see "Approve" and "Disapprove" button when ApprovedByDepartmentChair = READYFORAPPROVAL</Description>
             <Target>
                 <AnyOf>
@@ -7179,7 +7212,7 @@
                 </Apply>
             </Condition>
         </Rule>
-        <Rule Effect="Permit" RuleId="ApproveDisapproveButtonShowForBusinessManager-Rule106">
+        <Rule Effect="Permit" RuleId="ApproveDisapproveButtonShowForBusinessManager-Rule107">
             <Description>"Business Manager" can see "Approve" and "Disapprove" button when ApprovedByBusinessManager = READYFORAPPROVAL</Description>
             <Target>
                 <AnyOf>
@@ -7209,7 +7242,7 @@
                 </Apply>
             </Condition>
         </Rule>
-        <Rule Effect="Permit" RuleId="ApproveDisapproveButtonShowForIRB-Rule107">
+        <Rule Effect="Permit" RuleId="ApproveDisapproveButtonShowForIRB-Rule108">
             <Description>"IRB" can see "Approve" and "Disapprove" button when ApprovedByIRB = READYFORAPPROVAL</Description>
             <Target>
                 <AnyOf>
@@ -7245,7 +7278,7 @@
                 </Apply>
             </Condition>
         </Rule>
-        <Rule Effect="Permit" RuleId="ApproveDisapproveButtonShowForDean-Rule108">
+        <Rule Effect="Permit" RuleId="ApproveDisapproveButtonShowForDean-Rule109">
             <Description>"Dean" can see "Approve" and "Disapprove" button when ApprovedByDean = READYFORAPPROVAL</Description>
             <Target>
                 <AnyOf>
@@ -7275,7 +7308,7 @@
                 </Apply>
             </Condition>
         </Rule>
-        <Rule Effect="Permit" RuleId="ApproveDisapproveButtonShowForUniversityResearchAdministrator-Rule109">
+        <Rule Effect="Permit" RuleId="ApproveDisapproveButtonShowForUniversityResearchAdministrator-Rule110">
             <Description>"University Research Administrator" can see "Approve" and "Disapprove" button when ApprovedByUniversityResearchAdministrator = READYFORAPPROVAL</Description>
             <Target>
                 <AnyOf>
@@ -7305,7 +7338,7 @@
                 </Apply>
             </Condition>
         </Rule>
-        <Rule Effect="Permit" RuleId="ApproveDisapproveButtonShowForUniversityResearchDirector-Rule110">
+        <Rule Effect="Permit" RuleId="ApproveDisapproveButtonShowForUniversityResearchDirector-Rule111">
             <Description>"University Research Director" can see "Approve" and "Disapprove" button when ApprovedByUniversityResearchDirector = READYFORAPPROVAL</Description>
             <Target>
                 <AnyOf>
@@ -7335,7 +7368,7 @@
                 </Apply>
             </Condition>
         </Rule>
-        <Rule Effect="Permit" RuleId="ArchiveButtonShowForUniversityResearchDirector-Rule111">
+        <Rule Effect="Permit" RuleId="ArchiveButtonShowForUniversityResearchDirector-Rule112">
             <Description>"University Research Director" can see "Archive" button when ArchivedByUniversityResearchDirector = NOTARCHIVED and SubmittedByUniversityResearchAdministrator = SUBMITTED</Description>
             <Target>
                 <AnyOf>

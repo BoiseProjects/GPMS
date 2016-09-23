@@ -1861,7 +1861,7 @@ public class ProposalService {
 
 			contentProfile.append("<ak:approvedbyuniversityresearchdirector>");
 			contentProfile.append(existingProposal
-					.getResearchDirectorDeletion().name());
+					.getResearchDirectorApproval().name());
 			contentProfile.append("</ak:approvedbyuniversityresearchdirector>");
 
 			contentProfile.append("<ak:deletedbyuniversityresearchdirector>");
