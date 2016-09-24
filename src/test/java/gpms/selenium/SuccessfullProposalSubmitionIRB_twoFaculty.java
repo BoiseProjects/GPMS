@@ -41,7 +41,7 @@ public class SuccessfullProposalSubmitionIRB_twoFaculty {
 		driver.findElement(By.id("user_email")).sendKeys(
 				"nicholas1234@gmail.com");
 		driver.findElement(By.id("user_password")).clear();
-		driver.findElement(By.id("user_password")).sendKeys("Nickman5030");
+		driver.findElement(By.id("user_password")).sendKeys("gpmspassword");
 		Thread.sleep(1000);
 		driver.findElement(By.name("commit")).click();
 
@@ -335,7 +335,7 @@ public class SuccessfullProposalSubmitionIRB_twoFaculty {
 		driver.findElement(By.id("user_email")).sendKeys(
 				"nicholas1234@gmail.com");
 		driver.findElement(By.id("user_password")).clear();
-		driver.findElement(By.id("user_password")).sendKeys("Nickman5030");
+		driver.findElement(By.id("user_password")).sendKeys("gpmspassword");
 		Thread.sleep(1000);
 		driver.findElement(By.name("commit")).click();
 

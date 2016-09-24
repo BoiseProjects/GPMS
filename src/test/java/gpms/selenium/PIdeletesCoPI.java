@@ -36,7 +36,7 @@ public class PIdeletesCoPI {
 	public void testPIdeletesCoPI() throws Exception {
 		driver.get(baseUrl + "GPMS/");
 		driver.findElement(By.id("user_password")).clear();
-		driver.findElement(By.id("user_password")).sendKeys("Nickman5030");
+		driver.findElement(By.id("user_password")).sendKeys("gpmspassword");
 		driver.findElement(By.id("user_email")).clear();
 		driver.findElement(By.id("user_email")).sendKeys(
 				"nicholas1234@gmail.com");
