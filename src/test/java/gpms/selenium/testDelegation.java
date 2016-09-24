@@ -300,10 +300,10 @@ public class testDelegation {
 
 		assertFalse(driver.findElement(By.id("btnApproveProposal"))
 				.isDisplayed());
-		Thread.sleep(200);
+		Thread.sleep(1000);
 
 		driver.findElement(By.id("ui-id-21")).click();
-		Thread.sleep(1500);
+		Thread.sleep(2000);
 
 		driver.findElement(By.cssSelector("span.myProfile.icon-arrow-s"))
 				.click();
@@ -374,7 +374,7 @@ public class testDelegation {
 				.executeScript("var s=document.getElementById('edit0');s.click();");
 		Thread.sleep(1000);
 		driver.findElement(By.id("ui-id-21")).click();
-		Thread.sleep(1000);
+		Thread.sleep(2000);
 		driver.findElement(By.name("57505b9e65dbb34d173fc701Department_Chair"))
 				.clear();
 		Thread.sleep(400);
@@ -393,7 +393,7 @@ public class testDelegation {
 				.sendKeys("Test");
 		Thread.sleep(400);
 		driver.findElement(By.id("btnApproveProposal")).click();
-		Thread.sleep(1000);
+		Thread.sleep(1500);
 		driver.findElement(By.id("BoxConfirmBtnOk")).click();
 		Thread.sleep(200);
 
@@ -426,7 +426,7 @@ public class testDelegation {
 		Thread.sleep(1000);
 
 		driver.findElement(By.id("btnRevokeDelegation")).click();
-		Thread.sleep(1000);
+		Thread.sleep(1500);
 		driver.findElement(By.id("BoxConfirmBtnOk")).click();
 		Thread.sleep(400);
 
