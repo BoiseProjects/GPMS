@@ -321,19 +321,6 @@ public class testDelegation {
 		Thread.sleep(200);
 		driver.findElement(By.name("commit")).click();
 		Thread.sleep(200);
-		driver.findElement(By.linkText("My Proposals")).click();
-		Thread.sleep(200);
-
-		((JavascriptExecutor) driver)
-				.executeScript("var s=document.getElementById('edit0');s.click();");
-		Thread.sleep(1000);
-
-		driver.findElement(By.id("btnApproveProposal")).click();
-		Thread.sleep(200);
-
-		driver.findElement(By.id("ui-id-21")).click();
-		Thread.sleep(1500);
-
 		driver.findElement(By.linkText("Delegation")).click();
 		Thread.sleep(200);
 
@@ -358,7 +345,7 @@ public class testDelegation {
 		driver.findElement(By.id("btnSaveDelegation")).click();
 		Thread.sleep(1000);
 		driver.findElement(By.id("BoxConfirmBtnOk")).click();
-		Thread.sleep(200);
+		Thread.sleep(400);
 
 		assertTrue(driver.findElement(By.cssSelector("BODY")).getText()
 				.matches("^[\\s\\S]*$"));
@@ -409,6 +396,39 @@ public class testDelegation {
 		Thread.sleep(1000);
 		driver.findElement(By.id("BoxConfirmBtnOk")).click();
 		Thread.sleep(200);
+
+		assertTrue(driver.findElement(By.cssSelector("BODY")).getText()
+				.matches("^[\\s\\S]*$"));
+		Thread.sleep(200);
+		driver.findElement(By.id("BoxAlertBtnOk")).click();
+		Thread.sleep(1000);
+		driver.findElement(By.cssSelector("span.myProfile.icon-arrow-s"))
+				.click();
+		Thread.sleep(200);
+		driver.findElement(By.linkText("Log Out")).click();
+		Thread.sleep(1500);
+
+		// Revocation by Chair
+		driver.get(baseUrl + "GPMS/");
+		driver.findElement(By.id("user_email")).clear();
+		driver.findElement(By.id("user_email"))
+				.sendKeys("chaircomputerscience");
+		driver.findElement(By.id("user_password")).clear();
+		driver.findElement(By.id("user_password")).sendKeys("gpmspassword");
+		Thread.sleep(200);
+		driver.findElement(By.name("commit")).click();
+		Thread.sleep(200);
+		driver.findElement(By.linkText("Delegation")).click();
+		Thread.sleep(200);
+
+		((JavascriptExecutor) driver)
+				.executeScript("var s=document.getElementById('edit0');s.click();");
+		Thread.sleep(1000);
+
+		driver.findElement(By.id("btnRevokeDelegation")).click();
+		Thread.sleep(1000);
+		driver.findElement(By.id("BoxConfirmBtnOk")).click();
+		Thread.sleep(400);
 
 		assertTrue(driver.findElement(By.cssSelector("BODY")).getText()
 				.matches("^[\\s\\S]*$"));
