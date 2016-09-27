@@ -25,7 +25,7 @@ public class DelegationByChair {
 	@Before
 	public void setUp() throws Exception {
 		System.setProperty("webdriver.chrome.driver",
-				"D:/chromedriver_win32/chromedriver.exe");
+				"D:/!!#!@Playground/chromedriver.exe");
 		driver = new ChromeDriver();
 		baseUrl = "http://seal.boisestate.edu:8080/";
 		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
