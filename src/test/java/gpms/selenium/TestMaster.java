@@ -12,7 +12,7 @@ import org.junit.runners.Suite;
 		BusinessManagerAttatchmentFail.class, ChairApprovalFail.class,
 		ChairAttatchmentFail.class, CoPIaddsSeniorPersonal.class,
 		CoPIattemptsProposalDeletion.class, CoPIattemptsToDeleteCoPI.class,
-		CoPIproposalSubmitionFail.class, DeanApprovalFail.class,
+		CoPIproposalSubmissionFail.class, DeanApprovalFail.class,
 		DeanAttatchmentFail.class, DeanDeletesAttatchmentFail.class,
 		DeanFileUploadFail.class, PIaddsCoPI.class,
 		PIaddsFileAttatchment.class, PIdeletesAttatchment.class,
@@ -21,7 +21,8 @@ import org.junit.runners.Suite;
 		ResearchAdminApprovalFail.class, ResearchAdminProposalWithdrawn.class,
 		ResearchDirectorApprovalFail.class,
 		SeniorPersonalProposalDeleteFail.class,
-		SeniorPersonalProposalSaveFail.class, TenuredChemFacultyProposal.class })
+		SeniorPersonalProposalSaveFail.class, TenuredChemFacultyProposal.class,
+		DelegationByChair.class })
 public class TestMaster {
 	public TestMaster() {
 	}

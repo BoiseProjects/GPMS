@@ -16,7 +16,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.Select;
 
-public class testDelegation {
+public class DelegationByChair {
 	private WebDriver driver;
 	private String baseUrl;
 	private boolean acceptNextAlert = true;
@@ -25,7 +25,7 @@ public class testDelegation {
 	@Before
 	public void setUp() throws Exception {
 		System.setProperty("webdriver.chrome.driver",
-				"D:/!!#!@Playground/chromedriver.exe");
+				"D:/chromedriver_win32/chromedriver.exe");
 		driver = new ChromeDriver();
 		baseUrl = "http://seal.boisestate.edu:8080/";
 		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
@@ -47,7 +47,7 @@ public class testDelegation {
 		driver.findElement(By.id("btnAddNew")).click();
 		Thread.sleep(200);
 		driver.findElement(By.cssSelector("i.sidebarExpand")).click();
-		Thread.sleep(400);
+		Thread.sleep(5000);
 		driver.findElement(By.id("lblSection2")).click();
 		Thread.sleep(200);
 		driver.findElement(By.id("txtProjectTitle")).click();
@@ -303,7 +303,7 @@ public class testDelegation {
 		Thread.sleep(1000);
 
 		driver.findElement(By.id("ui-id-21")).click();
-		Thread.sleep(2000);
+		Thread.sleep(10000);
 
 		driver.findElement(By.cssSelector("span.myProfile.icon-arrow-s"))
 				.click();
@@ -334,7 +334,7 @@ public class testDelegation {
 		Thread.sleep(400);
 		driver.findElement(By.id("txtDelegationTo")).click();
 		Thread.sleep(400);
-		driver.findElement(By.linkText("25")).click();
+		driver.findElement(By.linkText("30")).click();
 		Thread.sleep(400);
 		driver.findElement(By.id("txtDelegationReason")).clear();
 		Thread.sleep(400);
@@ -343,7 +343,7 @@ public class testDelegation {
 		Thread.sleep(400);
 
 		driver.findElement(By.id("btnSaveDelegation")).click();
-		Thread.sleep(1000);
+		Thread.sleep(2000);
 		driver.findElement(By.id("BoxConfirmBtnOk")).click();
 		Thread.sleep(400);
 
@@ -393,9 +393,9 @@ public class testDelegation {
 				.sendKeys("Test");
 		Thread.sleep(400);
 		driver.findElement(By.id("btnApproveProposal")).click();
-		Thread.sleep(1500);
+		Thread.sleep(2000);
 		driver.findElement(By.id("BoxConfirmBtnOk")).click();
-		Thread.sleep(200);
+		Thread.sleep(10000);
 
 		assertTrue(driver.findElement(By.cssSelector("BODY")).getText()
 				.matches("^[\\s\\S]*$"));
@@ -426,9 +426,9 @@ public class testDelegation {
 		Thread.sleep(1000);
 
 		driver.findElement(By.id("btnRevokeDelegation")).click();
-		Thread.sleep(1500);
+		Thread.sleep(2000);
 		driver.findElement(By.id("BoxConfirmBtnOk")).click();
-		Thread.sleep(400);
+		Thread.sleep(10000);
 
 		assertTrue(driver.findElement(By.cssSelector("BODY")).getText()
 				.matches("^[\\s\\S]*$"));
