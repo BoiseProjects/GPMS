@@ -255,7 +255,7 @@ public class DelegationByChair {
 		driver.findElement(By.id("btnSaveProposal")).click();
 		Thread.sleep(1000);
 		driver.findElement(By.id("BoxConfirmBtnOk")).click();
-		Thread.sleep(200);
+		Thread.sleep(5000);
 		assertTrue(driver.findElement(By.cssSelector("BODY")).getText()
 				.matches("^[\\s\\S]*$"));
 		Thread.sleep(200);
@@ -268,7 +268,7 @@ public class DelegationByChair {
 		driver.findElement(By.id("btnSubmitProposal")).click();
 		Thread.sleep(1000);
 		driver.findElement(By.id("BoxConfirmBtnOk")).click();
-		Thread.sleep(200);
+		Thread.sleep(2000);
 		assertTrue(driver.findElement(By.cssSelector("BODY")).getText()
 				.matches("^[\\s\\S]*$"));
 		Thread.sleep(200);
@@ -278,7 +278,7 @@ public class DelegationByChair {
 				.click();
 		Thread.sleep(200);
 		driver.findElement(By.linkText("Log Out")).click();
-		Thread.sleep(1500);
+		Thread.sleep(10000);
 
 		// Associate Chair Approve Failure
 		driver.get(baseUrl + "GPMS/");
@@ -309,7 +309,7 @@ public class DelegationByChair {
 				.click();
 		Thread.sleep(200);
 		driver.findElement(By.linkText("Log Out")).click();
-		Thread.sleep(1500);
+		Thread.sleep(2500);
 
 		// Chair Delegate Associate Chair
 		driver.get(baseUrl + "GPMS/");
@@ -345,7 +345,7 @@ public class DelegationByChair {
 		driver.findElement(By.id("btnSaveDelegation")).click();
 		Thread.sleep(2000);
 		driver.findElement(By.id("BoxConfirmBtnOk")).click();
-		Thread.sleep(400);
+		Thread.sleep(5000);
 
 		assertTrue(driver.findElement(By.cssSelector("BODY")).getText()
 				.matches("^[\\s\\S]*$"));
@@ -356,7 +356,7 @@ public class DelegationByChair {
 				.click();
 		Thread.sleep(200);
 		driver.findElement(By.linkText("Log Out")).click();
-		Thread.sleep(1500);
+		Thread.sleep(2500);
 
 		// Associate Chair Approve Success
 		driver.get(baseUrl + "GPMS/");
@@ -406,7 +406,7 @@ public class DelegationByChair {
 				.click();
 		Thread.sleep(200);
 		driver.findElement(By.linkText("Log Out")).click();
-		Thread.sleep(1500);
+		Thread.sleep(5000);
 
 		// Revocation by Chair
 		driver.get(baseUrl + "GPMS/");
