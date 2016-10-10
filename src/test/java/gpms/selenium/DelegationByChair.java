@@ -260,7 +260,7 @@ public class DelegationByChair {
 				.matches("^[\\s\\S]*$"));
 		Thread.sleep(200);
 		driver.findElement(By.id("BoxAlertBtnOk")).click();
-		Thread.sleep(200);
+		Thread.sleep(7000);
 
 		((JavascriptExecutor) driver)
 				.executeScript("var s=document.getElementById('edit0');s.click();");
@@ -273,7 +273,7 @@ public class DelegationByChair {
 				.matches("^[\\s\\S]*$"));
 		Thread.sleep(200);
 		driver.findElement(By.id("BoxAlertBtnOk")).click();
-		Thread.sleep(200);
+		Thread.sleep(7000);
 		driver.findElement(By.cssSelector("span.myProfile.icon-arrow-s"))
 				.click();
 		Thread.sleep(200);
@@ -290,7 +290,7 @@ public class DelegationByChair {
 		driver.findElement(By.name("commit")).click();
 		Thread.sleep(200);
 		driver.findElement(By.linkText("My Proposals")).click();
-		Thread.sleep(200);
+		Thread.sleep(5000);
 
 		((JavascriptExecutor) driver)
 				.executeScript("var s=document.getElementById('edit0');s.click();");
@@ -300,7 +300,7 @@ public class DelegationByChair {
 
 		assertFalse(driver.findElement(By.id("btnApproveProposal"))
 				.isDisplayed());
-		Thread.sleep(1000);
+		Thread.sleep(2000);
 
 		driver.findElement(By.id("ui-id-21")).click();
 		Thread.sleep(10000);
@@ -351,12 +351,12 @@ public class DelegationByChair {
 				.matches("^[\\s\\S]*$"));
 		Thread.sleep(200);
 		driver.findElement(By.id("BoxAlertBtnOk")).click();
-		Thread.sleep(1000);
+		Thread.sleep(5000);
 		driver.findElement(By.cssSelector("span.myProfile.icon-arrow-s"))
 				.click();
 		Thread.sleep(200);
 		driver.findElement(By.linkText("Log Out")).click();
-		Thread.sleep(2500);
+		Thread.sleep(5000);
 
 		// Associate Chair Approve Success
 		driver.get(baseUrl + "GPMS/");
@@ -374,7 +374,7 @@ public class DelegationByChair {
 				.executeScript("var s=document.getElementById('edit0');s.click();");
 		Thread.sleep(1000);
 		driver.findElement(By.id("ui-id-21")).click();
-		Thread.sleep(2000);
+		Thread.sleep(3000);
 		driver.findElement(By.name("57505b9e65dbb34d173fc701Department_Chair"))
 				.clear();
 		Thread.sleep(400);
@@ -391,7 +391,7 @@ public class DelegationByChair {
 		driver.findElement(
 				By.name("proposalNotes57505b9e65dbb34d173fc701Department_Chair"))
 				.sendKeys("Test");
-		Thread.sleep(5000);
+		Thread.sleep(7000);
 		driver.findElement(By.id("btnApproveProposal")).click();
 		Thread.sleep(2000);
 		driver.findElement(By.id("BoxConfirmBtnOk")).click();
@@ -401,7 +401,7 @@ public class DelegationByChair {
 				.matches("^[\\s\\S]*$"));
 		Thread.sleep(200);
 		driver.findElement(By.id("BoxAlertBtnOk")).click();
-		Thread.sleep(3000);
+		Thread.sleep(7000);
 		driver.findElement(By.cssSelector("span.myProfile.icon-arrow-s"))
 				.click();
 		Thread.sleep(200);
@@ -434,7 +434,7 @@ public class DelegationByChair {
 				.matches("^[\\s\\S]*$"));
 		Thread.sleep(200);
 		driver.findElement(By.id("BoxAlertBtnOk")).click();
-		Thread.sleep(1000);
+		Thread.sleep(10000);
 		driver.findElement(By.cssSelector("span.myProfile.icon-arrow-s"))
 				.click();
 		Thread.sleep(200);
