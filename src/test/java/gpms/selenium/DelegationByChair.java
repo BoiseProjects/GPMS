@@ -264,7 +264,7 @@ public class DelegationByChair {
 
 		((JavascriptExecutor) driver)
 				.executeScript("var s=document.getElementById('edit0');s.click();");
-		Thread.sleep(1000);
+		Thread.sleep(5000);
 		driver.findElement(By.id("btnSubmitProposal")).click();
 		Thread.sleep(1000);
 		driver.findElement(By.id("BoxConfirmBtnOk")).click();
@@ -309,7 +309,7 @@ public class DelegationByChair {
 				.click();
 		Thread.sleep(200);
 		driver.findElement(By.linkText("Log Out")).click();
-		Thread.sleep(2500);
+		Thread.sleep(6000);
 
 		// Chair Delegate Associate Chair
 		driver.get(baseUrl + "GPMS/");
@@ -329,18 +329,18 @@ public class DelegationByChair {
 		driver.findElement(By.id("chkAction_0")).click();
 		Thread.sleep(400);
 		driver.findElement(By.id("txtDelegationFrom")).click();
-		Thread.sleep(400);
+		Thread.sleep(2000);
 		driver.findElement(By.linkText("1")).click();
 		Thread.sleep(400);
 		driver.findElement(By.id("txtDelegationTo")).click();
-		Thread.sleep(400);
+		Thread.sleep(2000);
 		driver.findElement(By.linkText("30")).click();
 		Thread.sleep(400);
 		driver.findElement(By.id("txtDelegationReason")).clear();
-		Thread.sleep(400);
+		Thread.sleep(2000);
 		driver.findElement(By.id("txtDelegationReason"))
 				.sendKeys("Sick Leave!");
-		Thread.sleep(400);
+		Thread.sleep(5000);
 
 		driver.findElement(By.id("btnSaveDelegation")).click();
 		Thread.sleep(2000);
@@ -391,7 +391,7 @@ public class DelegationByChair {
 		driver.findElement(
 				By.name("proposalNotes57505b9e65dbb34d173fc701Department_Chair"))
 				.sendKeys("Test");
-		Thread.sleep(400);
+		Thread.sleep(5000);
 		driver.findElement(By.id("btnApproveProposal")).click();
 		Thread.sleep(2000);
 		driver.findElement(By.id("BoxConfirmBtnOk")).click();
@@ -401,12 +401,12 @@ public class DelegationByChair {
 				.matches("^[\\s\\S]*$"));
 		Thread.sleep(200);
 		driver.findElement(By.id("BoxAlertBtnOk")).click();
-		Thread.sleep(1000);
+		Thread.sleep(3000);
 		driver.findElement(By.cssSelector("span.myProfile.icon-arrow-s"))
 				.click();
 		Thread.sleep(200);
 		driver.findElement(By.linkText("Log Out")).click();
-		Thread.sleep(5000);
+		Thread.sleep(10000);
 
 		// Revocation by Chair
 		driver.get(baseUrl + "GPMS/");
@@ -423,7 +423,7 @@ public class DelegationByChair {
 
 		((JavascriptExecutor) driver)
 				.executeScript("var s=document.getElementById('edit0');s.click();");
-		Thread.sleep(1000);
+		Thread.sleep(5000);
 
 		driver.findElement(By.id("btnRevokeDelegation")).click();
 		Thread.sleep(2000);
